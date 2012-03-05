@@ -1,0 +1,80 @@
+package fr.ippon.tatami.application;
+
+import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
+import me.prettyprint.cassandra.service.CassandraHostConfigurator;
+import me.prettyprint.cassandra.service.ThriftCluster;
+import me.prettyprint.cassandra.service.ThriftKsDef;
+import me.prettyprint.hector.api.HConsistencyLevel;
+import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
+import me.prettyprint.hector.api.factory.HFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.thrift.transport.TTransportException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+
+/**
+ * Main configuration file.
+ *
+ * @author Julien Dubois
+ */
+@Configuration
+public class ApplicationConfiguration {
+
+    private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
+
+    @Value("${cassandra.host}")
+    private String cassandraHost;
+
+    @Value("${cassandra.clusterName}")
+    private String cassandraClusterName;
+
+    @Value("${cassandra.keyspace}")
+    private String cassandraKeyspace;
+
+    @Bean
+    public Keyspace keyspaceOperator() {
+        CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
+        ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
+        ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
+        consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
+
+        KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
+        if (keyspaceDef == null) {
+            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+            keyspaceDef = new ThriftKsDef(cassandraKeyspace);
+            cluster.addKeyspace(keyspaceDef, true);
+
+            ColumnFamilyDefinition userCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "User");
+            cluster.addColumnFamily(userCf);
+            ColumnFamilyDefinition friendsCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Friends");
+            cluster.addColumnFamily(friendsCf);
+            ColumnFamilyDefinition followersCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Followers");
+            cluster.addColumnFamily(followersCf);
+            ColumnFamilyDefinition tweetCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Tweet");
+            cluster.addColumnFamily(tweetCf);
+            ColumnFamilyDefinition timelineCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Timeline");
+            cluster.addColumnFamily(timelineCf);
+            ColumnFamilyDefinition userlineCF =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Userline");
+            cluster.addColumnFamily(userlineCF);
+        }
+        return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
+    }
+
+    @PostConstruct
+    public void initTatami() throws IOException, TTransportException {
+        log.info("Tatami started!");
+    }
+}
