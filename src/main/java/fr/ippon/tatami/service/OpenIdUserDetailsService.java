@@ -4,12 +4,16 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Connects OpenId with the application.
@@ -25,12 +29,16 @@ public class OpenIdUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     public UserDetails loadUserByUsername(String openIdIdentifier) {
-        log.debug("Loading user " + openIdIdentifier);
-        User user = userRepository.findUserByLogin(openIdIdentifier);
+        // TODO find by Open ID
+        User user = userRepository.findUserByEmail(openIdIdentifier);
         if (user == null) {
             throw new UsernameNotFoundException("User not found for OpenID: " + openIdIdentifier);
         } else {
-            return user;
+            log.debug("Found user=" + user);
+            Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
+            grantedAuthorities.add(grantedAuthority);
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), "", grantedAuthorities);
         }
     }
 }

@@ -8,16 +8,28 @@
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <http pattern="/css/**" security="none"/>
-    <http pattern="/login*" security="none"/>
+    <http pattern="/tatami/welcome" security="none"/>
 
     <http auto-config="true">
         <intercept-url pattern="/**" access="ROLE_USER"/>
         <openid-login
                 login-page="/tatami/welcome"
-                user-service-ref="openIdUserDetailsService"/>
+                default-target-url="/tatami/timeline">
+            <attribute-exchange>
+                <openid-attribute name="oiContactEmail" type="http://schema.openid.net/contact/email" required="true"/>
+                <openid-attribute name="axNamePersonFirstName" type="http://axschema.org/namePerson/first"
+                                  required="true"/>
+                <openid-attribute name="axNamePersonLastName" type="http://axschema.org/namePerson/last"
+                                  required="true"/>
+            </attribute-exchange>
+        </openid-login>
 
-        <logout logout-url="/tatami/logout"
+        <logout logout-url="/logout"
                 logout-success-url="/tatami/welcome"/>
     </http>
+
+    <authentication-manager>
+        <authentication-provider ref="tatamiOpenIDAuthenticationProvider"/>
+    </authentication-manager>
 
 </beans:beans>

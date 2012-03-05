@@ -17,7 +17,7 @@ public class UserService {
     @Inject
     private UserRepository userRepository;
 
-    public User getUserByLogin(String login) {
-        return userRepository.findUserByLogin(login);
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }

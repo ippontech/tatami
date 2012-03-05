@@ -2,7 +2,12 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 /**
  * Cassandra implementation of the user repository.
@@ -12,11 +17,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CassandraUserRepository implements UserRepository {
 
+    private final Log log = LogFactory.getLog(CassandraUserRepository.class);
 
+    @Inject
+    private EntityManager em;
 
     @Override
     public void createUser(User user) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (log.isDebugEnabled()) {
+            log.debug("Creating user : " + user);
+        }
+        em.persist(user);
     }
 
     @Override
@@ -25,12 +36,16 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
-    public void deleteUser(String login) {
+    public void deleteUser(String email) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public User findUserByLogin(String login) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public User findUserByEmail(String email) {
+        try {
+            return em.find(User.class, email);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Julien Dubois
  */
 @Controller
-public class WelcomeController {
+public class TimeLineController {
 
-    @RequestMapping("/welcome")
+    @RequestMapping("/timeline")
     public String welcome() {
-        return "welcome";
+        return "timeline";
     }
 }
