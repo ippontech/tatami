@@ -1,7 +1,7 @@
-                Tatami
-                ================
-               Ippon Technologies
-               ------------------
+Tatami
+================
+Ippon Technologies
+------------------
 
 Tatami is a twitter-like application, for internal use inside a company.
 
