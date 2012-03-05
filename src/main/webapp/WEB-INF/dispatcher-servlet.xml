@@ -10,9 +10,7 @@
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-    <context:property-placeholder location="classpath:/META-INF/spring/tatami/tatami.properties"/>
-
-    <context:component-scan base-package="fr.ippon.tatami"/>
+    <context:component-scan base-package="fr.ippon.tatami.controller"/>
 
     <mvc:annotation-driven/>
 

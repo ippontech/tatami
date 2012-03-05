@@ -2,13 +2,17 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Cassandra implementation of the user repository.
  *
  * @author Julien Dubois
  */
+@Repository
 public class CassandraUserRepository implements UserRepository {
+
+
 
     @Override
     public void createUser(User user) {

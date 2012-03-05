@@ -9,6 +9,7 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import java.io.IOException;
 
 /**
@@ -71,6 +73,11 @@ public class ApplicationConfiguration {
             cluster.addColumnFamily(userlineCF);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
+    }
+
+    @Bean
+    public EntityManager entityManager(Keyspace keyspace) {
+        return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
     }
 
     @PostConstruct
