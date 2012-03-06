@@ -16,11 +16,12 @@ import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.io.IOException;
+
+import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
 
 /**
  * Main configuration file.

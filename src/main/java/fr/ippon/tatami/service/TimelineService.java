@@ -1,13 +1,8 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.OpenIdRepository;
 import fr.ippon.tatami.repository.TweetRepository;
-import fr.ippon.tatami.repository.UserRepository;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

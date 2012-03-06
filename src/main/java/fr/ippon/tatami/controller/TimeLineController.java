@@ -6,7 +6,10 @@ import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -36,15 +39,22 @@ public class TimelineController {
 
     @RequestMapping(value = "/rest/tweets", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> list() {
-        return null;
+    public Collection<Tweet> listTweets() {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the tweet list.");
+        }
+        return timelineService.getTimeline();
     }
 
-    @RequestMapping(value = "/rest/tweets", method = RequestMethod.POST, consumes = "application/json")
-    public void add(@RequestBody String content) {
+    @RequestMapping(value = "/rest/tweets",
+            method = RequestMethod.POST,
+            consumes = "application/json",
+            produces = "application/json")
+    public Collection<Tweet> postTweet(@RequestBody String content) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
         timelineService.postTweet(content);
+        return listTweets();
     }
 }

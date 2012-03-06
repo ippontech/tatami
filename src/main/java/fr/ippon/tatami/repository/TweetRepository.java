@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
 
 import java.util.Collection;
 
