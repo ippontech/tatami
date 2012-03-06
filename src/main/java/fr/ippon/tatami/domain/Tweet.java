@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * A user.
@@ -22,6 +23,9 @@ public class Tweet {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "tweetDate")
+    private Date tweetDate;
 
     public String getTweetId() {
         return tweetId;
@@ -47,6 +51,14 @@ public class Tweet {
         this.content = content;
     }
 
+    public Date getTweetDate() {
+        return tweetDate;
+    }
+
+    public void setTweetDate(Date tweetDate) {
+        this.tweetDate = tweetDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,6 +82,7 @@ public class Tweet {
                 "tweetId='" + tweetId + '\'' +
                 ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
+                ", tweetDate=" + tweetDate +
                 '}';
     }
 }

@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
@@ -46,6 +47,7 @@ public class CassandraTweetRepository implements TweetRepository {
         tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
         tweet.setEmail(email);
         tweet.setContent(content);
+        tweet.setTweetDate(Calendar.getInstance().getTime());
         if (log.isDebugEnabled()) {
             log.debug("Persisting Tweet : " + tweet);
         }
@@ -63,7 +65,7 @@ public class CassandraTweetRepository implements TweetRepository {
     @Override
     public void addTweetToTimeline(String email, Tweet tweet) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(email, USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        mutator.insert(email, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 

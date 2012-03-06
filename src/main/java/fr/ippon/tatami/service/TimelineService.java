@@ -3,6 +3,8 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.TweetRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -17,6 +19,8 @@ import java.util.Collection;
 @Service
 public class TimelineService {
 
+    private final Log log = LogFactory.getLog(TimelineService.class);
+
     @Inject
     private UserService userService;
 
@@ -24,6 +28,9 @@ public class TimelineService {
     private TweetRepository tweetRepository;
 
     public void postTweet(String content) {
+        if (log.isDebugEnabled()) {
+            log.debug("Creating new tweet : " + content);
+        }
         User currentUser = userService.getCurrentUser();
         Tweet tweet = tweetRepository.createTweet(currentUser.getEmail(), content);
         tweetRepository.addTweetToUserline(tweet);
