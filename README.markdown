@@ -6,6 +6,7 @@ Ippon Technologies
 Tatami is a twitter-like application, for internal use inside a company.
 
 Tatami is made with the following technologies :
+
 - Apache Cassandra
 - The Spring Framework
 - HTML5
