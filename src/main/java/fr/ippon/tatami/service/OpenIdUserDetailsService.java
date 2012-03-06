@@ -1,6 +1,8 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.OpenIdRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,10 +30,17 @@ public class OpenIdUserDetailsService implements UserDetailsService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private OpenIdRepository openIdRepository;
+
     public UserDetails loadUserByUsername(String token) {
-        User user = userRepository.findUserByOpenIdToken(token);
-        if (user == null) {
+        OpenId openId = openIdRepository.findOpenIdByToken(token);
+        if (openId == null) {
             throw new UsernameNotFoundException("User not found for token: " + token);
+        }
+        User user = userRepository.findUserByEmail(openId.getEmail());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found for email: " + openId.getEmail());
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Authenticated user=" + user);

@@ -1,6 +1,8 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.OpenIdRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +27,9 @@ public class TatamiOpenIDAuthenticationProvider extends OpenIDAuthenticationProv
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private OpenIdRepository openIdRepository;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (authentication instanceof OpenIDAuthenticationToken) {
@@ -44,6 +49,10 @@ public class TatamiOpenIDAuthenticationProvider extends OpenIDAuthenticationProv
             }
             user.setOpenIdToken(openIDToken.getIdentityUrl());
             userRepository.createUser(user);
+            OpenId openId = new OpenId();
+            openId.setToken(openIDToken.getIdentityUrl());
+            openId.setEmail(user.getEmail());
+            openIdRepository.createOpenId(openId);
         }
         return super.authenticate(authentication);
     }

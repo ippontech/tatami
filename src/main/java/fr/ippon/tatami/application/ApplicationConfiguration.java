@@ -56,21 +56,27 @@ public class ApplicationConfiguration {
             ColumnFamilyDefinition userCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "User");
             cluster.addColumnFamily(userCf);
+
             ColumnFamilyDefinition openidCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "OpenID");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "OpenId");
             cluster.addColumnFamily(openidCf);
+
             ColumnFamilyDefinition friendsCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Friends");
             cluster.addColumnFamily(friendsCf);
+
             ColumnFamilyDefinition followersCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Followers");
             cluster.addColumnFamily(followersCf);
+
             ColumnFamilyDefinition tweetCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Tweet");
             cluster.addColumnFamily(tweetCf);
+
             ColumnFamilyDefinition timelineCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Timeline");
             cluster.addColumnFamily(timelineCf);
+
             ColumnFamilyDefinition userlineCF =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Userline");
             cluster.addColumnFamily(userlineCF);

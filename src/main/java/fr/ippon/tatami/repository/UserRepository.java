@@ -16,6 +16,4 @@ public interface UserRepository {
     void deleteUser(String email);
 
     User findUserByEmail(String email);
-
-    User findUserByOpenIdToken(String openIdToken);
 }
