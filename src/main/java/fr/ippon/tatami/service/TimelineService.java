@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -31,9 +32,16 @@ public class TimelineService {
         User currentUser = userService.getCurrentUser();
         Tweet tweet = tweetRepository.createTweet(currentUser.getEmail(), content);
         tweetRepository.addTweetToUserline(tweet);
+        tweetRepository.addTweetToTimeline(currentUser.getEmail(), tweet);
     }
 
-    public Collection<Tweet> getTimeLine() {
-        return null;
+    public Collection<Tweet> getTimeline() {
+        User currentUser = userService.getCurrentUser();
+        Collection<String> tweetIds = tweetRepository.getTimeline(currentUser.getEmail());
+        Collection<Tweet> tweets = new ArrayList<Tweet>();
+        for (String tweedId : tweetIds) {
+            tweets.add(tweetRepository.findTweetById(tweedId));
+        }
+        return tweets;
     }
 }
