@@ -56,6 +56,9 @@ public class ApplicationConfiguration {
             ColumnFamilyDefinition userCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "User");
             cluster.addColumnFamily(userCf);
+            ColumnFamilyDefinition openidCf =
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "OpenID");
+            cluster.addColumnFamily(openidCf);
             ColumnFamilyDefinition friendsCf =
                     HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Friends");
             cluster.addColumnFamily(friendsCf);

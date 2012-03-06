@@ -42,9 +42,8 @@ public class TatamiOpenIDAuthenticationProvider extends OpenIDAuthenticationProv
             if (log.isDebugEnabled()) {
                 log.debug("Open ID user found = " + user);
             }
-            if (userRepository.findUserByEmail(user.getEmail()) == null) {
-                userRepository.createUser(user);
-            }
+            user.setOpenIdToken(openIDToken.getIdentityUrl());
+            userRepository.createUser(user);
         }
         return super.authenticate(authentication);
     }

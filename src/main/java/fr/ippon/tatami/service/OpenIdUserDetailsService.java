@@ -28,13 +28,14 @@ public class OpenIdUserDetailsService implements UserDetailsService {
     @Inject
     private UserRepository userRepository;
 
-    public UserDetails loadUserByUsername(String openIdIdentifier) {
-        // TODO find by Open ID
-        User user = userRepository.findUserByEmail(openIdIdentifier);
+    public UserDetails loadUserByUsername(String token) {
+        User user = userRepository.findUserByOpenIdToken(token);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found for OpenID: " + openIdIdentifier);
+            throw new UsernameNotFoundException("User not found for token: " + token);
         } else {
-            log.debug("Found user=" + user);
+            if (log.isDebugEnabled()) {
+                log.debug("Authenticated user=" + user);
+            }
             Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
             grantedAuthorities.add(grantedAuthority);

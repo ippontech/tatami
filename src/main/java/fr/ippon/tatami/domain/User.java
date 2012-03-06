@@ -23,6 +23,9 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "openIdToken")
+    private String openIdToken;
+
     public String getEmail() {
         return email;
     }
@@ -45,6 +48,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getOpenIdToken() {
+        return openIdToken;
+    }
+
+    public void setOpenIdToken(String openIdToken) {
+        this.openIdToken = openIdToken;
     }
 
     @Override
@@ -70,6 +81,7 @@ public class User {
                 "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", openIdToken='" + openIdToken + '\'' +
                 '}';
     }
 }
