@@ -1,9 +1,7 @@
-package fr.ippon.tatami.service;
+package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.OpenIdRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
@@ -25,10 +23,7 @@ public class TatamiOpenIDAuthenticationProvider extends OpenIDAuthenticationProv
     private final Log log = LogFactory.getLog(TatamiOpenIDAuthenticationProvider.class);
 
     @Inject
-    private UserRepository userRepository;
-
-    @Inject
-    private OpenIdRepository openIdRepository;
+    private UserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -48,11 +43,7 @@ public class TatamiOpenIDAuthenticationProvider extends OpenIDAuthenticationProv
                 log.debug("Open ID user found = " + user);
             }
             user.setOpenIdToken(openIDToken.getIdentityUrl());
-            userRepository.createUser(user);
-            OpenId openId = new OpenId();
-            openId.setToken(openIDToken.getIdentityUrl());
-            openId.setEmail(user.getEmail());
-            openIdRepository.createOpenId(openId);
+            userService.createOrUpdateUser(user);
         }
         return super.authenticate(authentication);
     }

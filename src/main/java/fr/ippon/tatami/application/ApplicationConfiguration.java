@@ -16,6 +16,7 @@ import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -54,31 +55,31 @@ public class ApplicationConfiguration {
             cluster.addKeyspace(keyspaceDef, true);
 
             ColumnFamilyDefinition userCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "User");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, USER_CF);
             cluster.addColumnFamily(userCf);
 
             ColumnFamilyDefinition openidCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "OpenId");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, OPENID_CF);
             cluster.addColumnFamily(openidCf);
 
             ColumnFamilyDefinition friendsCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Friends");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, FRIENDS_CF);
             cluster.addColumnFamily(friendsCf);
 
             ColumnFamilyDefinition followersCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Followers");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, FOLLOWERS_CF);
             cluster.addColumnFamily(followersCf);
 
             ColumnFamilyDefinition tweetCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Tweet");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, TWEET_CF);
             cluster.addColumnFamily(tweetCf);
 
             ColumnFamilyDefinition timelineCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Timeline");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, TIMELINE_CF);
             cluster.addColumnFamily(timelineCf);
 
             ColumnFamilyDefinition userlineCF =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, "Userline");
+                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, USERLINE_CF);
             cluster.addColumnFamily(userlineCF);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);

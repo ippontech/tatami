@@ -4,5 +4,6 @@
 <body>
 <h1>You are logged as <sec:authentication property="principal.username"/></h1>
 
+
 </body>
 </html>

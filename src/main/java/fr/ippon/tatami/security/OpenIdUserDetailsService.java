@@ -1,9 +1,7 @@
-package fr.ippon.tatami.service;
+package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.OpenIdRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,19 +26,12 @@ public class OpenIdUserDetailsService implements UserDetailsService {
     private final Log log = LogFactory.getLog(OpenIdUserDetailsService.class);
 
     @Inject
-    private UserRepository userRepository;
-
-    @Inject
-    private OpenIdRepository openIdRepository;
+    private UserService userService;
 
     public UserDetails loadUserByUsername(String token) {
-        OpenId openId = openIdRepository.findOpenIdByToken(token);
-        if (openId == null) {
-            throw new UsernameNotFoundException("User not found for token: " + token);
-        }
-        User user = userRepository.findUserByEmail(openId.getEmail());
+        User user = userService.getUserByOpenIdToken(token);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found for email: " + openId.getEmail());
+            throw new UsernameNotFoundException("User not found for token: " + token);
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Authenticated user=" + user);
