@@ -33,7 +33,9 @@ public class TimelineController {
 
     @RequestMapping("/timeline")
     public String welcome(HttpServletRequest request) {
-        log.warn("User : " + userService.getUserByEmail(request.getRemoteUser()));
+        if (log.isDebugEnabled()) {
+            log.debug("Welcome user : " + userService.getUserByEmail(request.getRemoteUser()));
+        }
         return "timeline";
     }
 
