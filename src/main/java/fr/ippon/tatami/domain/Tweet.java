@@ -18,8 +18,8 @@ public class Tweet {
     @Id
     private String tweetId;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "login")
+    private String login;
 
     @Column(name = "content")
     private String content;
@@ -35,12 +35,12 @@ public class Tweet {
         this.tweetId = tweetId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getContent() {
@@ -80,7 +80,7 @@ public class Tweet {
     public String toString() {
         return "Tweet{" +
                 "tweetId='" + tweetId + '\'' +
-                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
                 ", content='" + content + '\'' +
                 ", tweetDate=" + tweetDate +
                 '}';

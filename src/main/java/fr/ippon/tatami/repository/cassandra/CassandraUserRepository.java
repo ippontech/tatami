@@ -31,12 +31,12 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public User findUserByLogin(String login) {
         try {
-            return em.find(User.class, email);
+            return em.find(User.class, login);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for user " + email + " : " + e.getMessage());
+                log.debug("Exception while looking for user " + login + " : " + e.getMessage());
             }
             return null;
         }

@@ -2,10 +2,10 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript">window.location.href = '<%=request.getContextPath()%>/tatami/welcome'</script>
+    <script type="text/javascript">window.location.href = '<%=request.getContextPath()%>/tatami/timeline'</script>
 </head>
 <body>
 If you are not redirected automatically, click
-<a href="<%=request.getContextPath()%>/tatami/welcome">here</a>.
+<a href="<%=request.getContextPath()%>/tatami/timeline">here</a>.
 </body>
 </html>

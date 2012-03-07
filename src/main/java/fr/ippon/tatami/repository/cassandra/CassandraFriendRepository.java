@@ -29,9 +29,9 @@ public class CassandraFriendRepository implements FriendRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addFriend(String email, String friendEmail) {
+    public void addFriend(String login, String friendLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(email, FRIENDS_CF, HFactory.createColumn(friendEmail,
+        mutator.insert(login, FRIENDS_CF, HFactory.createColumn(friendLogin,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 }

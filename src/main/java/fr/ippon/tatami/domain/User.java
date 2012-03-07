@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class User {
 
     @Id
-    private String email;
+    private String login;
 
     @Column(name = "firstName")
     private String firstName;
@@ -23,21 +23,18 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
-    @Column(name = "openIdToken")
-    private String openIdToken;
-
     private long tweetCount;
 
     private long friendsCount;
 
     private long followersCount;
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -54,14 +51,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getOpenIdToken() {
-        return openIdToken;
-    }
-
-    public void setOpenIdToken(String openIdToken) {
-        this.openIdToken = openIdToken;
     }
 
     public long getTweetCount() {
@@ -95,23 +84,22 @@ public class User {
 
         User user = (User) o;
 
-        if (!email.equals(user.email)) return false;
+        if (!login.equals(user.login)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return email.hashCode();
+        return login.hashCode();
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "login='" + login + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", openIdToken='" + openIdToken + '\'' +
                 ", tweetCount=" + tweetCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +

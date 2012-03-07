@@ -7,27 +7,27 @@ package fr.ippon.tatami.repository;
  */
 public interface CounterRepository {
 
-    void incrementFollowersCounter(String email);
+    void incrementFollowersCounter(String login);
 
-    void incrementFriendsCounter(String email);
+    void incrementFriendsCounter(String login);
 
-    void incrementTweetCounter(String email);
+    void incrementTweetCounter(String login);
 
-    void decrementFollowersCounter(String email);
+    void decrementFollowersCounter(String login);
 
-    void decrementFriendsCounter(String email);
+    void decrementFriendsCounter(String login);
 
-    void decrementTweetCounter(String email);
+    void decrementTweetCounter(String login);
 
-    long getFollowersCounter(String email);
+    long getFollowersCounter(String login);
 
-    long getFriendsCounter(String email);
+    long getFriendsCounter(String login);
 
-    long getTweetCounter(String email);
+    long getTweetCounter(String login);
 
-    void createFollowersCounter(String email);
+    void createFollowersCounter(String login);
 
-    void createFriendsCounter(String email);
+    void createFriendsCounter(String login);
 
-    void createTweetCounter(String email);
+    void createTweetCounter(String login);
 }

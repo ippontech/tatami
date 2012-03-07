@@ -36,88 +36,88 @@ public class CassandraCounterRepository implements CounterRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void incrementFollowersCounter(String email) {
-        incrementCounter(FOLLOWERS_COUNTER, email);
+    public void incrementFollowersCounter(String login) {
+        incrementCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
-    public void incrementFriendsCounter(String email) {
-        incrementCounter(FRIENDS_COUNTER, email);
+    public void incrementFriendsCounter(String login) {
+        incrementCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
-    public void incrementTweetCounter(String email) {
-        incrementCounter(TWEET_COUNTER, email);
+    public void incrementTweetCounter(String login) {
+        incrementCounter(TWEET_COUNTER, login);
     }
 
     @Override
-    public void decrementFollowersCounter(String email) {
-        decrementCounter(FOLLOWERS_COUNTER, email);
+    public void decrementFollowersCounter(String login) {
+        decrementCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
-    public void decrementFriendsCounter(String email) {
-        decrementCounter(FRIENDS_COUNTER, email);
+    public void decrementFriendsCounter(String login) {
+        decrementCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
-    public void decrementTweetCounter(String email) {
-        decrementCounter(TWEET_COUNTER, email);
+    public void decrementTweetCounter(String login) {
+        decrementCounter(TWEET_COUNTER, login);
     }
 
     @Override
-    public long getFollowersCounter(String email) {
-        return getCounter(FOLLOWERS_COUNTER, email);
+    public long getFollowersCounter(String login) {
+        return getCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
-    public long getFriendsCounter(String email) {
-        return getCounter(FRIENDS_COUNTER, email);
+    public long getFriendsCounter(String login) {
+        return getCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
-    public long getTweetCounter(String email) {
-        return getCounter(TWEET_COUNTER, email);
+    public long getTweetCounter(String login) {
+        return getCounter(TWEET_COUNTER, login);
     }
 
     @Override
-    public void createFollowersCounter(String email) {
-        createCounter(FOLLOWERS_COUNTER, email);
+    public void createFollowersCounter(String login) {
+        createCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
-    public void createFriendsCounter(String email) {
-        createCounter(FRIENDS_COUNTER, email);
+    public void createFriendsCounter(String login) {
+        createCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
-    public void createTweetCounter(String email) {
-        createCounter(TWEET_COUNTER, email);
+    public void createTweetCounter(String login) {
+        createCounter(TWEET_COUNTER, login);
     }
 
-    private void createCounter(String counterName, String email) {
+    private void createCounter(String counterName, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insertCounter(email, COUNTER_CF,
+        mutator.insertCounter(login, COUNTER_CF,
                 createCounterColumn(counterName, 0));
     }
 
-    private void incrementCounter(String counterName, String email) {
+    private void incrementCounter(String counterName, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.incrementCounter(email, COUNTER_CF, counterName, 1);
+        mutator.incrementCounter(login, COUNTER_CF, counterName, 1);
     }
 
-    private void decrementCounter(String counterName, String email) {
+    private void decrementCounter(String counterName, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.decrementCounter(email, COUNTER_CF, counterName, 1);
+        mutator.decrementCounter(login, COUNTER_CF, counterName, 1);
     }
 
-    private long getCounter(String counterName, String email) {
+    private long getCounter(String counterName, String login) {
         CounterQuery<String, String> counter =
                 new ThriftCounterColumnQuery<String, String>(keyspaceOperator,
                         StringSerializer.get(),
                         StringSerializer.get());
 
-        counter.setColumnFamily(COUNTER_CF).setKey(email).setName(counterName);
+        counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
         return counter.execute().get().getValue();
     }
 }

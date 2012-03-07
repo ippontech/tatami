@@ -21,9 +21,9 @@ import java.util.Collection;
  * @author Julien Dubois
  */
 @Controller
-public class TimeLineController {
+public class TimelineController {
 
-    private final Log log = LogFactory.getLog(TimeLineController.class);
+    private final Log log = LogFactory.getLog(TimelineController.class);
 
     @Inject
     private UserService userService;
@@ -34,7 +34,7 @@ public class TimeLineController {
     @RequestMapping("/timeline")
     public String welcome(HttpServletRequest request) {
         if (log.isDebugEnabled()) {
-            log.debug("Welcome user : " + userService.getUserByEmail(request.getRemoteUser()));
+            log.debug("timeline for user : " + userService.getUserByLogin(request.getRemoteUser()));
         }
         return "timeline";
     }

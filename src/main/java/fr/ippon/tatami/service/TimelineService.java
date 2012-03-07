@@ -36,15 +36,15 @@ public class TimelineService {
             log.debug("Creating new tweet : " + content);
         }
         User currentUser = userService.getCurrentUser();
-        Tweet tweet = tweetRepository.createTweet(currentUser.getEmail(), content);
+        Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);
         tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(currentUser.getEmail(), tweet);
-        counterRepository.incrementTweetCounter(currentUser.getEmail());
+        tweetRepository.addTweetToTimeline(currentUser.getLogin(), tweet);
+        counterRepository.incrementTweetCounter(currentUser.getLogin());
     }
 
     public Collection<Tweet> getTimeline() {
         User currentUser = userService.getCurrentUser();
-        Collection<String> tweetIds = tweetRepository.getTimeline(currentUser.getEmail());
+        Collection<String> tweetIds = tweetRepository.getTimeline(currentUser.getLogin());
         Collection<Tweet> tweets = new ArrayList<Tweet>();
         for (String tweedId : tweetIds) {
             tweets.add(tweetRepository.findTweetById(tweedId));

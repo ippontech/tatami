@@ -7,7 +7,7 @@ package fr.ippon.tatami.repository;
  */
 public interface FollowerRepository {
 
-    void addFollower(String email, String followerEmail);
+    void addFollower(String login, String followerLogin);
 
-    int getFollowersCount(String email);
+    int getFollowersCount(String login);
 }

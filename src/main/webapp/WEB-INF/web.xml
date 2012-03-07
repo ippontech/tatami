@@ -21,7 +21,7 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>dispatcher</servlet-name>
     </filter-mapping>
 
     <servlet>

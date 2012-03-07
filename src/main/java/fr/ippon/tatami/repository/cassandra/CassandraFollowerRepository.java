@@ -29,14 +29,14 @@ public class CassandraFollowerRepository implements FollowerRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addFollower(String email, String followerEmail) {
+    public void addFollower(String login, String followerLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(email, FOLLOWERS_CF, HFactory.createColumn(followerEmail,
+        mutator.insert(login, FOLLOWERS_CF, HFactory.createColumn(followerLogin,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override
-    public int getFollowersCount(String email) {
+    public int getFollowersCount(String login) {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -1,8 +1,10 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.FriendRepository;
+import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,9 +27,6 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
-    private OpenIdRepository openIdRepository;
-
-    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -36,56 +35,41 @@ public class UserService {
     @Inject
     private CounterRepository counterRepository;
 
-    public User getUserByEmail(String email) {
+    public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
-            log.debug("Looking for user with email : " + email);
+            log.debug("Looking for user with login : " + login);
         }
-        return userRepository.findUserByEmail(email);
+        return userRepository.findUserByLogin(login);
     }
 
-    public User getUserProfileByEmail(String email) {
-        User user = getUserByEmail(email);
-        user.setTweetCount(counterRepository.getTweetCounter(email));
-        user.setFollowersCount(counterRepository.getFollowersCounter(email));
-        user.setFriendsCount(counterRepository.getFriendsCounter(email));
+    public User getUserProfileByLogin(String login) {
+        User user = getUserByLogin(login);
+        user.setTweetCount(counterRepository.getTweetCounter(login));
+        user.setFollowersCount(counterRepository.getFollowersCounter(login));
+        user.setFriendsCount(counterRepository.getFriendsCounter(login));
         return user;
     }
 
-    public User getUserByOpenIdToken(String token) {
-        OpenId openId = openIdRepository.findOpenIdByToken(token);
-        if (openId == null) {
-            return null;
-        }
-        return getUserByEmail(openId.getEmail());
-    }
-
-    public void createOrUpdateUser(User user) {
-        User existingUser = userRepository.findUserByEmail(user.getEmail());
-        if (existingUser == null) {
-            counterRepository.createTweetCounter(user.getEmail());
-            counterRepository.createFriendsCounter(user.getEmail());
-            counterRepository.createFollowersCounter(user.getEmail());
-        }
+    public void createUser(User user) {
+        counterRepository.createTweetCounter(user.getLogin());
+        counterRepository.createFriendsCounter(user.getLogin());
+        counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
-        OpenId openId = new OpenId();
-        openId.setToken(user.getOpenIdToken());
-        openId.setEmail(user.getEmail());
-        openIdRepository.createOpenId(openId);
     }
 
-    public void followUser(String email) {
+    public void followUser(String login) {
         if (log.isDebugEnabled()) {
-            log.debug("Adding follower : " + email);
+            log.debug("Adding follower : " + login);
         }
         User currentUser = getCurrentUser();
-        User followedUser = getUserByEmail(email);
+        User followedUser = getUserByLogin(login);
         if (followedUser != null) {
-            friendRepository.addFriend(currentUser.getEmail(), followedUser.getEmail());
-            counterRepository.incrementFriendsCounter(currentUser.getEmail());
-            followerRepository.addFollower(followedUser.getEmail(), currentUser.getEmail());
-            counterRepository.incrementFollowersCounter(followedUser.getEmail());
+            friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
+            counterRepository.incrementFriendsCounter(currentUser.getLogin());
+            followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
+            counterRepository.incrementFollowersCounter(followedUser.getLogin());
         } else {
-            log.debug("Followed user does not exist : " + email);
+            log.debug("Followed user does not exist : " + login);
         }
     }
 
@@ -94,6 +78,6 @@ public class UserService {
         org.springframework.security.core.userdetails.User springSecurityUser = (org.springframework.security.core.userdetails.User) securityContext
                 .getAuthentication().getPrincipal();
 
-        return getUserByEmail(springSecurityUser.getUsername());
+        return getUserByLogin(springSecurityUser.getUsername());
     }
 }

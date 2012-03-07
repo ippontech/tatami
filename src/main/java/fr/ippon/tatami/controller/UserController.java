@@ -22,25 +22,25 @@ public class UserController {
     @Inject
     private UserService userService;
 
-    @RequestMapping(value = "/rest/users/{email}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/rest/users/{login}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public User getUser(@PathVariable("email") String email) {
+    public User getUser(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get Profile : " + email);
+            log.debug("REST request to get Profile : " + login);
         }
-        return userService.getUserProfileByEmail(email);
+        return userService.getUserProfileByLogin(login);
     }
 
-    @RequestMapping(value = "/rest/users/{email}/addFriend",
+    @RequestMapping(value = "/rest/users/{login}/addFriend",
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public void addFriend(@PathVariable("email") String email, @RequestBody String friend) {
+    public void addFriend(@PathVariable("login") String login, @RequestBody String friend) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add friend : " + friend);
         }
         User currentUser = userService.getCurrentUser();
-        if (currentUser.getEmail().equals(email)) {
+        if (currentUser.getLogin().equals(login)) {
             userService.followUser(friend);
         } else {
             log.info("Cannot add a friend to another user");

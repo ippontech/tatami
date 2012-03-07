@@ -7,5 +7,5 @@ package fr.ippon.tatami.repository;
  */
 public interface FriendRepository {
 
-    void addFriend(String email, String friendEmail);
+    void addFriend(String login, String friendLogin);
 }

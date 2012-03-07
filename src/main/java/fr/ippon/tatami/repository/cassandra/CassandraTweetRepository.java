@@ -42,10 +42,10 @@ public class CassandraTweetRepository implements TweetRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public Tweet createTweet(String email, String content) {
+    public Tweet createTweet(String login, String content) {
         Tweet tweet = new Tweet();
         tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
-        tweet.setEmail(email);
+        tweet.setLogin(login);
         tweet.setContent(content);
         tweet.setTweetDate(Calendar.getInstance().getTime());
         if (log.isDebugEnabled()) {
@@ -58,23 +58,23 @@ public class CassandraTweetRepository implements TweetRepository {
     @Override
     public void addTweetToUserline(Tweet tweet) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(tweet.getEmail(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
     @Override
-    public void addTweetToTimeline(String email, Tweet tweet) {
+    public void addTweetToTimeline(String login, Tweet tweet) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(email, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
     @Override
-    public Collection<String> getTimeline(String email) {
+    public Collection<String> getTimeline(String login) {
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(USERLINE_CF)
-                .setKey(email)
+                .setKey(login)
                 .setRange(null, null, false, 50)
                 .execute()
                 .get();

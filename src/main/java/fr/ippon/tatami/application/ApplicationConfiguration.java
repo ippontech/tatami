@@ -58,7 +58,6 @@ public class ApplicationConfiguration {
             cluster.addKeyspace(keyspaceDef, true);
 
             addColumnFamily(cluster, USER_CF);
-            addColumnFamily(cluster, OPENID_CF);
             addColumnFamily(cluster, FRIENDS_CF);
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);

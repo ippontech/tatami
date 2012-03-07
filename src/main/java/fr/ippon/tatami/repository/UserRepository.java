@@ -11,5 +11,5 @@ public interface UserRepository {
 
     void createUser(User user);
 
-    User findUserByEmail(String email);
+    User findUserByLogin(String login);
 }

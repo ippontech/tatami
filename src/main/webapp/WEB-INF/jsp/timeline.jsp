@@ -23,6 +23,8 @@
 </div>
 
 <script type="text/javascript">
+    login = "<sec:authentication property="principal.username" htmlEscape="false"/>";
+
     function tweet() {
         $.ajax({
             type: 'POST',
@@ -34,10 +36,9 @@
     }
 
     function addFriend() {
-        var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/addFriend");
         $.ajax({
             type: 'POST',
-            url: url,
+            url: "rest/users/" + login +"/addFriend",
             contentType: "application/json",
             data: $("#friend").val(),
             dataType: "json"
@@ -45,10 +46,9 @@
     }
 
     $(document).ready(function() {
-        var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/");
         $.ajax({
             type: 'GET',
-            url: url,
+            url: "rest/users/" + login,
             dataType: "json",
             success: function(data) {
                 $("#firstName").text(data.firstName);
