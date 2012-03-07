@@ -2,11 +2,13 @@ package fr.ippon.tatami.application;
 
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
+import me.prettyprint.cassandra.service.ThriftCfDef;
 import me.prettyprint.cassandra.service.ThriftCluster;
 import me.prettyprint.cassandra.service.ThriftKsDef;
 import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
@@ -55,35 +57,27 @@ public class ApplicationConfiguration {
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
-            ColumnFamilyDefinition userCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, USER_CF);
-            cluster.addColumnFamily(userCf);
+            addColumnFamily(cluster, USER_CF);
+            addColumnFamily(cluster, OPENID_CF);
+            addColumnFamily(cluster, FRIENDS_CF);
+            addColumnFamily(cluster, FOLLOWERS_CF);
+            addColumnFamily(cluster, TWEET_CF);
+            addColumnFamily(cluster, TIMELINE_CF);
+            addColumnFamily(cluster, USERLINE_CF);
 
-            ColumnFamilyDefinition openidCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, OPENID_CF);
-            cluster.addColumnFamily(openidCf);
+            ThriftCfDef cfDef =
+                    new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
 
-            ColumnFamilyDefinition friendsCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, FRIENDS_CF);
-            cluster.addColumnFamily(friendsCf);
-
-            ColumnFamilyDefinition followersCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, FOLLOWERS_CF);
-            cluster.addColumnFamily(followersCf);
-
-            ColumnFamilyDefinition tweetCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, TWEET_CF);
-            cluster.addColumnFamily(tweetCf);
-
-            ColumnFamilyDefinition timelineCf =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, TIMELINE_CF);
-            cluster.addColumnFamily(timelineCf);
-
-            ColumnFamilyDefinition userlineCF =
-                    HFactory.createColumnFamilyDefinition(cassandraKeyspace, USERLINE_CF);
-            cluster.addColumnFamily(userlineCF);
+            cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
+            cluster.addColumnFamily(cfDef);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
+    }
+
+    private void addColumnFamily(ThriftCluster cluster, String cfName) {
+        ColumnFamilyDefinition cfd =
+                HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
+        cluster.addColumnFamily(cfd);
     }
 
     @Bean

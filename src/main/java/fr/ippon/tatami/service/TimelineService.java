@@ -2,6 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,9 @@ public class TimelineService {
     @Inject
     private TweetRepository tweetRepository;
 
+    @Inject
+    private CounterRepository counterRepository;
+
     public void postTweet(String content) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
@@ -35,6 +39,7 @@ public class TimelineService {
         Tweet tweet = tweetRepository.createTweet(currentUser.getEmail(), content);
         tweetRepository.addTweetToUserline(tweet);
         tweetRepository.addTweetToTimeline(currentUser.getEmail(), tweet);
+        counterRepository.incrementTweetCounter(currentUser.getEmail());
     }
 
     public Collection<Tweet> getTimeline() {

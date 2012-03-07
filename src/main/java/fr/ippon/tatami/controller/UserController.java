@@ -1,6 +1,5 @@
 package fr.ippon.tatami.controller;
 
-import fr.ippon.tatami.controller.bean.Profile;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -11,34 +10,28 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * Profile REST controller.
+ * User REST controller.
  *
  * @author Julien Dubois
  */
 @Controller
-public class ProfileController {
+public class UserController {
 
-    private final Log log = LogFactory.getLog(ProfileController.class);
+    private final Log log = LogFactory.getLog(UserController.class);
 
     @Inject
     private UserService userService;
 
-    @RequestMapping(value = "/rest/profiles/{email}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/rest/users/{email}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public Profile getProfile(@PathVariable("email") String email) {
+    public User getUser(@PathVariable("email") String email) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get Profile : " + email);
         }
-        Profile profile = new Profile();
-        User user = userService.getUserByEmail(email);
-        profile.setEmail(user.getEmail());
-        profile.setFirstName(user.getFirstName());
-        profile.setLastName(user.getLastName());
-
-        return profile;
+        return userService.getUserProfileByEmail(email);
     }
 
-    @RequestMapping(value = "/rest/profiles/{email}/addFriend",
+    @RequestMapping(value = "/rest/users/{email}/addFriend",
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")

@@ -2,10 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.OpenId;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.OpenIdRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,11 +33,22 @@ public class UserService {
     @Inject
     private FriendRepository friendRepository;
 
+    @Inject
+    private CounterRepository counterRepository;
+
     public User getUserByEmail(String email) {
         if (log.isDebugEnabled()) {
             log.debug("Looking for user with email : " + email);
         }
         return userRepository.findUserByEmail(email);
+    }
+
+    public User getUserProfileByEmail(String email) {
+        User user = getUserByEmail(email);
+        user.setTweetCount(counterRepository.getTweetCounter(email));
+        user.setFollowersCount(counterRepository.getFollowersCounter(email));
+        user.setFriendsCount(counterRepository.getFriendsCounter(email));
+        return user;
     }
 
     public User getUserByOpenIdToken(String token) {
@@ -52,6 +60,12 @@ public class UserService {
     }
 
     public void createOrUpdateUser(User user) {
+        User existingUser = userRepository.findUserByEmail(user.getEmail());
+        if (existingUser == null) {
+            counterRepository.createTweetCounter(user.getEmail());
+            counterRepository.createFriendsCounter(user.getEmail());
+            counterRepository.createFollowersCounter(user.getEmail());
+        }
         userRepository.createUser(user);
         OpenId openId = new OpenId();
         openId.setToken(user.getOpenIdToken());
@@ -67,7 +81,9 @@ public class UserService {
         User followedUser = getUserByEmail(email);
         if (followedUser != null) {
             friendRepository.addFriend(currentUser.getEmail(), followedUser.getEmail());
+            counterRepository.incrementFriendsCounter(currentUser.getEmail());
             followerRepository.addFollower(followedUser.getEmail(), currentUser.getEmail());
+            counterRepository.incrementFollowersCounter(followedUser.getEmail());
         } else {
             log.debug("Followed user does not exist : " + email);
         }

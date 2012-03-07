@@ -11,9 +11,5 @@ public interface UserRepository {
 
     void createUser(User user);
 
-    void updateUser(User user);
-
-    void deleteUser(String email);
-
     User findUserByEmail(String email);
 }

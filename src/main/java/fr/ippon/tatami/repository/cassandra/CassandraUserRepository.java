@@ -31,16 +31,6 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void deleteUser(String email) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public User findUserByEmail(String email) {
         try {
             return em.find(User.class, email);

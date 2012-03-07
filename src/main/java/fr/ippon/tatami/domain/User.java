@@ -26,6 +26,12 @@ public class User {
     @Column(name = "openIdToken")
     private String openIdToken;
 
+    private long tweetCount;
+
+    private long friendsCount;
+
+    private long followersCount;
+
     public String getEmail() {
         return email;
     }
@@ -58,6 +64,30 @@ public class User {
         this.openIdToken = openIdToken;
     }
 
+    public long getTweetCount() {
+        return tweetCount;
+    }
+
+    public void setTweetCount(long tweetCount) {
+        this.tweetCount = tweetCount;
+    }
+
+    public long getFriendsCount() {
+        return friendsCount;
+    }
+
+    public void setFriendsCount(long friendsCount) {
+        this.friendsCount = friendsCount;
+    }
+
+    public long getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(long followersCount) {
+        this.followersCount = followersCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,6 +112,9 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", openIdToken='" + openIdToken + '\'' +
+                ", tweetCount=" + tweetCount +
+                ", friendsCount=" + friendsCount +
+                ", followersCount=" + followersCount +
                 '}';
     }
 }

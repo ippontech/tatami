@@ -9,11 +9,11 @@
 
 <div>
     <h1>REST API for User</h1>
-    <div id="firstName"></div>
-    <div id="lastName"></div>
-    <div id="friends"></div>
-    <div id="followers"></div>
-    <div id="tweetCount"></div>
+    First name : <div id="firstName"></div>
+    Last Name : <div id="lastName"></div>
+    Friends : <div id="friends"></div>
+    Followers : <div id="followers"></div>
+    Tweets : <div id="tweetCount"></div>
     <input id="friend" name="friend" type="text" size="20" maxlength="50"/>
     <input type="submit" onclick="addFriend()"/>
     <hr/>
@@ -34,7 +34,7 @@
     }
 
     function addFriend() {
-        var url = encodeURI("rest/profiles/<sec:authentication property="principal.username" htmlEscape="false"/>/addFriend");
+        var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/addFriend");
         $.ajax({
             type: 'POST',
             url: url,
@@ -45,7 +45,7 @@
     }
 
     $(document).ready(function() {
-        var url = encodeURI("rest/profiles/<sec:authentication property="principal.username" htmlEscape="false"/>/");
+        var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/");
         $.ajax({
             type: 'GET',
             url: url,
@@ -53,6 +53,9 @@
             success: function(data) {
                 $("#firstName").text(data.firstName);
                 $("#lastName").text(data.lastName);
+                $("#tweetCount").text(data.tweetCount);
+                $("#friendsCount").text(data.friendsCount);
+                $("#followersCount").text(data.followersCount);
             }
         });
     });
