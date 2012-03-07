@@ -21,9 +21,9 @@ import java.util.Collection;
  * @author Julien Dubois
  */
 @Controller
-public class TimelineController {
+public class TimeLineController {
 
-    private final Log log = LogFactory.getLog(TimelineController.class);
+    private final Log log = LogFactory.getLog(TimeLineController.class);
 
     @Inject
     private UserService userService;
