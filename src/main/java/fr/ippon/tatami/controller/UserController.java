@@ -1,5 +1,8 @@
 package fr.ippon.tatami.controller;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -41,7 +44,11 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to set Profile : " + login);
         }
-        userService.setUserProfileByLogin(login, infos[0], infos[1], infos[2]);
+        try {
+			userService.setUserProfileByLogin(login, new URL(infos[0]), infos[1], infos[2]);
+		} catch (MalformedURLException e) {
+            log.error("invalid REST request : " + e.getMessage(), e);
+		}
     }
 
     @RequestMapping(value = "/rest/users/{login}/addFriend",

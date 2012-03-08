@@ -1,5 +1,7 @@
 package fr.ippon.tatami.service;
 
+import java.net.URL;
+
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
@@ -50,7 +52,7 @@ public class UserService {
         return user;
     }
 
-    public void setUserProfileByLogin(String login, String picture, String firstName, String lastName) {
+    public void setUserProfileByLogin(String login, URL picture, String firstName, String lastName) {
         User user = getUserByLogin(login);
 //        user.setPicture(picture); TODO
         user.setFirstName(firstName);
