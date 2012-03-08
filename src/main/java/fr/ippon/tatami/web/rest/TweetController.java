@@ -1,4 +1,4 @@
-package fr.ippon.tatami.controller;
+package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.service.TimelineService;
@@ -12,32 +12,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
- * Welcome page.
+ * REST controller for managing tweets.
  *
  * @author Julien Dubois
  */
 @Controller
-public class TimelineController {
+public class TweetController {
 
-    private final Log log = LogFactory.getLog(TimelineController.class);
+    private final Log log = LogFactory.getLog(TweetController.class);
 
     @Inject
     private UserService userService;
 
     @Inject
     private TimelineService timelineService;
-
-    @RequestMapping("/timeline")
-    public String welcome(HttpServletRequest request) {
-        if (log.isDebugEnabled()) {
-            log.debug("timeline for user : " + userService.getUserByLogin(request.getRemoteUser()));
-        }
-        return "timeline";
-    }
 
     @RequestMapping(value = "/rest/tweets", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

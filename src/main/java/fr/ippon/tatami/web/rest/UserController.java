@@ -1,4 +1,4 @@
-package fr.ippon.tatami.controller;
+package fr.ippon.tatami.web.rest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * User REST controller.
+ * REST controller for managing users.
  *
  * @author Julien Dubois
  */

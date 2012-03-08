@@ -4,7 +4,7 @@
 <body>
 <h1>Welcome</h1>
 
-<form action="login" method="post">
+<form action="authentication" method="post">
 
     <table>
 			<tr>

@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ import java.io.IOException;
  * @author Julien Dubois
  */
 @Component
-public class TatamiAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class TatamiAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Inject
     private UserService userService;
@@ -29,12 +30,14 @@ public class TatamiAuthenticationSuccessHandler implements AuthenticationSuccess
                                         Authentication authentication)
             throws IOException, ServletException {
 
+        super.onAuthenticationSuccess(request, response, authentication);
         String login = authentication.getName();
         if (userService.getUserByLogin(login) == null) {
             User user = new User();
             user.setLogin(login);
-            user.setFirstName("");
-            user.setLastName("");
+            user.setFirstName("First name");
+            user.setLastName("Last name");
+            user.setEmail("tatami@ippon.fr");
             userService.createUser(user);
         }
     }

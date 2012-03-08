@@ -39,8 +39,8 @@
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li><a href="/tatami/">Home</a></li>
-						<li><a href="/tatami/about">About</a></li>
-						<li class="active"><a href="#">Profile</a></li>
+						<li class="active"><a href="#">About</a></li>
+						<li><a href="/tatami/profile">Profile</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
@@ -52,21 +52,10 @@
 	</div>
 
 	<div class="alert alert-success">
-		<h1>Modification du profil utilisateur</h1>
+		<h1>A propos de TaTaMi</h1>
 	</div>
 
-	<form class="well">
-		<label>Avatar :</label> <input id="picture" type="text" class="input-xlarge"
-			placeholder="Entrez l'URL de votre image gravatar, etc." />
-		<fieldset>
-		<label>Pr&eacute;nom :</label> <input id="firstName" type="text"
-			placeholder="Saisissez un pr&eacute;nom..." />
-		<label>Nom :</label> <input id="lastName" type="text"
-			placeholder="Saisissez un nom de famille..." />
-		</fieldset>
 
-		<button onclick="javascript:setProfile();return false" type="submit" class="btn btn-primary">Enregistrer</button>
-	</form>
 
 	<!-- Le javascript
 	================================================== -->
@@ -74,32 +63,5 @@
 	<script src="/assets/js/jquery.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
 
-	<script type="text/javascript">
-		function setProfile() {
-			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/setProfile");
-			$.ajax({
-				type: 'POST',
-				url: url,
-				contentType: "application/json",
-				data: [$('#picture').val(), $("#firstName").val(), $("#lastName").val()],
-				dataType: "json"
-			});
-		}
-
-		$(document).ready(function() {
-			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/");
-			$.ajax({
-				type: 'GET',
-				url: url,
-				dataType: "json",
-				success: function(data) {
-					$("#picture").val(data.picture);
-					$("#firstName").val(data.firstName);
-					$("#lastName").val(data.lastName);
-				}
-			});
-			listTweets();
-		});
-	</script>
   </body>
 </html>

@@ -50,7 +50,11 @@ public class TimelineService {
 
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweedId : tweetIds) {
-            tweets.add(tweetRepository.findTweetById(tweedId));
+            Tweet tweet = tweetRepository.findTweetById(tweedId);
+            User tweetUser = userService.getUserByLogin(tweet.getLogin());
+            tweet.setFirstName(tweetUser.getFirstName());
+            tweet.setLastName(tweetUser.getLastName());
+            tweets.add(tweet);
         }
         return tweets;
     }

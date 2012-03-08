@@ -12,18 +12,20 @@
 
     <context:component-scan base-package="fr.ippon.tatami.security"/>
 
+    <http pattern="/tatami/login" security="none"/>
+
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/rest/**" access="isAuthenticated()" />
-        <intercept-url pattern="/tatami/timeline" access="isAuthenticated()" />
+        <intercept-url pattern="/**" access="isAuthenticated()" />
         <form-login
-                login-processing-url="/tatami/login"
-                login-page="/tatami/welcome"
-                authentication-failure-url="/tatami/welcome?error=true"
-                default-target-url="/tatami/timeline"
+                login-processing-url="/tatami/authentication"
+                login-page="/tatami/login"
+                authentication-failure-url="/tatami/login?error=true"
+                default-target-url="/tatami/"
+                always-use-default-target="true"
                 authentication-success-handler-ref="tatamiAuthenticationSuccessHandler"/>
         <remember-me user-service-ref="userDetailsService"/>
         <logout logout-url="/tatami/logout"
-                logout-success-url="/tatami/welcome"/>
+                logout-success-url="/tatami/login"/>
     </http>
 
     <authentication-manager>

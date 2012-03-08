@@ -17,6 +17,9 @@ public class User {
     @Id
     private String login;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "firstName")
     private String firstName;
 
@@ -35,6 +38,14 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -98,6 +109,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
+                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", tweetCount=" + tweetCount +

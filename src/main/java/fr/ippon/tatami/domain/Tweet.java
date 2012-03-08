@@ -27,6 +27,12 @@ public class Tweet {
     @Column(name = "tweetDate")
     private Date tweetDate;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String picture;
+
     public String getTweetId() {
         return tweetId;
     }
@@ -59,6 +65,30 @@ public class Tweet {
         this.tweetDate = tweetDate;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,6 +113,9 @@ public class Tweet {
                 ", login='" + login + '\'' +
                 ", content='" + content + '\'' +
                 ", tweetDate=" + tweetDate +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", picture='" + picture + '\'' +
                 '}';
     }
 }

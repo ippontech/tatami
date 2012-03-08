@@ -75,7 +75,7 @@ public class CassandraTweetRepository implements TweetRepository {
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(USERLINE_CF)
                 .setKey(login)
-                .setRange(null, null, false, 50)
+                .setRange(null, null, true, 20)
                 .execute()
                 .get();
 
