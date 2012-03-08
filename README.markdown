@@ -23,6 +23,15 @@ Installation
 - Run Tatami : mvn jetty:run
 - Connect to the application at http://127.0.0.1:8080
 
+Administration
+--------------
+
+If you need to reset Cassandra :
+
+- Run "cassandra-cli" and execute the following commands
+- connect 127.0.0.1/9160;
+- drop keyspace tatami;
+
 License
 -------
 
