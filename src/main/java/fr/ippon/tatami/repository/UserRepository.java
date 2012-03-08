@@ -11,5 +11,7 @@ public interface UserRepository {
 
     void createUser(User user);
 
+    void updateUser(User user);
+
     User findUserByLogin(String login);
 }

@@ -31,6 +31,14 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
+    public void updateUser(User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Updating user : " + user);
+        }
+        em.persist(user);	//DEBUG besoin d'un merge ??
+    }
+
+    @Override
     public User findUserByLogin(String login) {
         try {
             return em.find(User.class, login);

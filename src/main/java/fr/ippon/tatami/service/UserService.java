@@ -50,6 +50,14 @@ public class UserService {
         return user;
     }
 
+    public void setUserProfileByLogin(String login, String picture, String firstName, String lastName) {
+        User user = getUserByLogin(login);
+//        user.setPicture(picture); TODO
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        userRepository.updateUser(user);
+    }
+
     public void createUser(User user) {
         counterRepository.createTweetCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
