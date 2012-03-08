@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
 	<meta charset="utf-8">
-	<title>TaTaMi - proof of concept</title>
+	<title>TaTaMi - timeline</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -44,7 +44,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="login.html">d&eacute;connexion &times;</a></li>
+						<li class="close"><a href="welcome.jsp">d&eacute;connexion &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -62,23 +62,23 @@
 				<table class="table table-condensed table-striped" width="100%">
 					<thead>
 						<tr>
-							<td align="center"><img src="../images/julien-dubois.jpg" width="50" /></td>
-							<td colspan="2"><h2>JULIEN DUBOIS</h2></td>
+							<td align="center"><img id="picture" src="../images/julien-dubois.jpg" width="50" /></td>
+							<td colspan="2"><h2><span id="firstName" /> <span id="lastName" /></h2></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td><span class="label">765</span><br/>TWEETS</td>
-							<td><span class="label">16</span><br/>ABONNEMENTS</td>
-							<td><span class="label">4536</span><br/>ABONN&Eacute;S</td>
+							<td><span id="tweetCount" class="label" /><br/>TWEETS</td>
+							<td><span id="friendsCount" class="label" /><br/>ABONNEMENTS</td>
+							<td><span id="followersCount" class="label" /><br/>ABONN&Eacute;S</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
 							<td colspan="3">
 								<form class="form-inline">
-									<textarea class="focused" placeholder="Composez un nouveau tweet..." maxlength="140"></textarea>
-									<button type="submit" class="btn btn-primary">Tweeter</button>
+									<textarea id="content" class="focused" placeholder="Composez un nouveau tweet..." maxlength="140"></textarea>
+									<button onclick="javascript:tweet();return false;" type="submit" class="btn btn-primary">Tweeter</button>
 								</form>
 							</td>
 						<tr>
@@ -100,27 +100,10 @@
 									<thead>
 										<tr>
 											<th colspan="2"><h2>Tweets</h2></th>
-											<th align="right"><a href="javascript:window.location.reload(true)" title="Rafra&icirc;chir"><i class="icon-repeat icon-white" /></a></th>
+											<th colspan="2" align="right"><a href="javascript:listTweets()" title="Rafra&icirc;chir"><i class="icon-repeat icon-white" /></a></th>
 										</tr>
 									</thead>
-									<tbody style="color:black">
-										<tr valign="top">
-											<td align="center"><img src="../images/julien-dubois.jpg" width="75px" /></td>
-											<td width="100%">
-												<strong>Julien Dubois</strong> <em>@jdubois</em><br/>
-												Hi Hi&nbsp;; Je gazouille&nbsp;!
-											</td>
-											<td align="right">35&nbsp;min</td>
-										</tr>
-										<tr valign="top">
-											<td align="center"><img src="../images/julien-dubois.jpg" width="75px" /></td>
-											<td width="100%">
-												<strong>Julien Dubois</strong> <em>@jdubois</em><br/>
-												Et encore une&nbsp;! <a href="http://www.ippon.fr" target="_blank">VIENDEZ TOUS</a>
-											</td>
-											<td align="right">1&nbsp;h</td>
-										</tr>
-									</tbody>
+									<tbody id="tweetsList" style="color:black"></tbody>
 								</table>
 								<footer>
 									<div class="pagination">
@@ -166,5 +149,68 @@
 	<script src="../assets/js/bootstrap-carousel.js"></script>
 	<script src="../assets/js/bootstrap-typeahead.js"></script>
 
+	<script type="text/javascript">
+		function tweet() {
+			$.ajax({
+				type: 'POST',
+				url: "rest/tweets",
+				contentType: "application/json",
+				data: $("#content").val(),
+				dataType: "json"
+			});
+		}
+
+		function listTweets() {
+			$.ajax({
+				type: 'GET',
+				url: "rest/tweets",
+				dataType: "json"
+				success: function(data) {
+					$('#tweetsList').empty();
+					$.each(data, function(entryIndex, entry) {
+						var html = '<tr valign="top">';
+						html += '<td align="center"><img src="' + entry['picture'] + '" width="75px" /></td>';
+						html += '<td width="100%">';
+						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>' + entry['login'] + '</em><br/>';
+						html += entry['content'];
+						html += '</td>';
+						html += '<td><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Suivre"><i class="icon-heart" /></a></td>';
+						html += '<td align="right">' + entry['tweetDate'] + '</td>';
+						html += '</tr>';
+						$('#tweetsList').append(html);
+					});
+				}
+			});
+		}
+
+		function addFriend(friend) {
+			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/addFriend");
+			$.ajax({
+				type: 'POST',
+				url: url,
+				contentType: "application/json",
+				data: friend,
+				dataType: "json"
+			});
+		}
+
+		$(document).ready(function() {
+			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/");
+			$.ajax({
+				type: 'GET',
+				url: url,
+				dataType: "json",
+				success: function(data) {
+					$("#picture").src(data.picture);
+					$("#firstName").text(data.firstName);
+					$("#lastName").text(data.lastName);
+					$("#tweetCount").text(data.tweetCount);
+					$("#friendsCount").text(data.friendsCount);
+					$("#followersCount").text(data.followersCount);
+				}
+			});
+			listTweets();
+		});
+	</script>
   </body>
 </html>
