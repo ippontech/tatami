@@ -38,7 +38,7 @@
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="tatami.html">Home</a></li>
+						<li><a href="tatami.jsp">Home</a></li>
 						<li><a href="#about">About</a></li>
 						<li class="active"><a href="#">Profile</a></li>
 					</ul>
