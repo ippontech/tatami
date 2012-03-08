@@ -13,6 +13,7 @@
     <context:component-scan base-package="fr.ippon.tatami.security"/>
 
     <http pattern="/tatami/login" security="none"/>
+    <http pattern="/tatami/about" security="none"/>
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/**" access="isAuthenticated()" />
