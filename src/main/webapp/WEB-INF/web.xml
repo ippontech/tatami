@@ -15,6 +15,16 @@
     </listener>
 
     <filter>
+        <filter-name>monitoringFilter</filter-name>
+        <filter-class>fr.ippon.tatami.web.monitoring.MonitoringFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>monitoringFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>

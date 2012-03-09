@@ -166,7 +166,7 @@
 					$('#tweetsList').empty();
 					$.each(data, function(entryIndex, entry) {
 						var html = '<tr valign="top">';
-						html += '<td align="center"><img src="http://www.gravatar.com/avatar/' + entry['picture'] + '?f=y&s=75" width="75px" /></td>';
+						html += '<td align="center"><img src="http://www.gravatar.com/avatar/' + entry['picture'] + '?f=y&s=64" width="64px" /></td>';
 						html += '<td width="100%">';
 						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
 						html += entry['content'];
