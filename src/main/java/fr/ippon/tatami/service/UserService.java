@@ -1,6 +1,12 @@
 package fr.ippon.tatami.service;
 
-import java.net.URL;
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
@@ -8,13 +14,6 @@ import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.util.GravatarUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 
 /**
  * Manages the application's users.

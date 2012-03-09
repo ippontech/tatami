@@ -1,8 +1,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<html lang="fr">
+<html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>TaTaMi - profil</title>
+	<title>TaTaMi - profile</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -44,7 +44,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">d&eacute;connexion &times;</a></li>
+						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -52,20 +52,20 @@
 	</div>
 
 	<div class="alert alert-success">
-		<h1>Modification du profil utilisateur</h1>
+		<h1>User profile update</h1>
 	</div>
 
 	<form class="well">
-		<label>Avatar :</label> <input id="picture" type="text" class="input-xlarge"
-			placeholder="Entrez l'URL de votre image gravatar, etc." />
+		<label>Picture :</label> <input id="picture" type="text" class="input-xlarge"
+			placeholder="Enter gravatar ID..." />
 		<fieldset>
-		<label>Pr&eacute;nom :</label> <input id="firstName" type="text"
-			placeholder="Saisissez un pr&eacute;nom..." />
-		<label>Nom :</label> <input id="lastName" type="text"
-			placeholder="Saisissez un nom de famille..." />
+		<label>First name :</label> <input id="firstName" type="text"
+			placeholder="Enter first name..." />
+		<label>Last name :</label> <input id="lastName" type="text"
+			placeholder="Enter last name..." />
 		</fieldset>
 
-		<button onclick="javascript:setProfile();return false" type="submit" class="btn btn-primary">Enregistrer</button>
+		<button onclick="javascript:setProfile();return false" type="submit" class="btn btn-primary">Save</button>
 	</form>
 
 	<!-- Le javascript

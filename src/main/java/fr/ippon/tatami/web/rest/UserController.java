@@ -1,16 +1,18 @@
 package fr.ippon.tatami.web.rest;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import javax.inject.Inject;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing users.

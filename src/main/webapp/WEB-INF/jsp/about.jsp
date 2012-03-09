@@ -1,8 +1,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<html lang="fr">
+<html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>TaTaMi - profil</title>
+	<title>TaTaMi - about</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -44,7 +44,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">d&eacute;connexion &times;</a></li>
+						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -52,7 +52,7 @@
 	</div>
 
 	<div class="alert alert-success">
-		<h1>A propos de TaTaMi</h1>
+		<h1>About TaTaMi</h1>
 	</div>
 
 

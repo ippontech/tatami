@@ -1,5 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<html lang="fr">
+<html lang="en">
   <head>
 	<meta charset="utf-8">
 	<title>TaTaMi - timeline</title>
@@ -44,7 +44,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">d&eacute;connexion &times;</a></li>
+						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -52,8 +52,8 @@
 	</div>
 
 	<div class="alert alert-success">
-		<h1>Consultation des tweets</h1>
-		<p>Visualisez vos gazouillis <a href="http://www.ippon.fr/" target="_blank">Ippon Technologies</a> en un clin d'oeil.</p>
+		<h1>Tweets view</h1>
+		<p>View your <a href="http://www.ippon.fr/" target="_blank">Ippon Technologies</a> tweets at a glance.</p>
 	</div>
 
 	<div class="container-fluid">
@@ -77,8 +77,8 @@
 						<tr>
 							<td colspan="3">
 								<form class="form-inline">
-									<textarea id="tweetContent" class="focused" placeholder="Composez un nouveau tweet..." maxlength="140"></textarea>
-									<button onclick="tweet()" type="button" class="btn btn-primary">Tweeter</button>
+									<textarea id="tweetContent" class="focused" placeholder="Type a new tweet..." maxlength="140"></textarea>
+									<button onclick="tweet()" type="button" class="btn btn-primary">Tweet!</button>
 								</form>
 							</td>
 						<tr>
@@ -89,7 +89,7 @@
 			<div class="span8">
 				<div class="tabbable tabs-right">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#1" data-toggle="tab">Gazouillis</a></li>
+						<li class="active"><a href="#1" data-toggle="tab">Tweets</a></li>
 						<li><a href="#2" data-toggle="tab">Pie chart</a></li>
 						<li><a href="#3" data-toggle="tab">Time chart</a></li>
 					</ul>
@@ -99,8 +99,8 @@
 								<table class="table table-striped" width="100%">
 									<thead>
 										<tr>
-											<th colspan="2"><h2>Tweets</h2></th>
-											<th colspan="2" align="right"><a href="javascript:listTweets()" title="Rafra&icirc;chir"><i class="icon-repeat icon-white"></i></a></th>
+											<th colspan="2"><h2>Tweets list</h2></th>
+											<th colspan="2" align="right"><a href="javascript:listTweets()" title="Refresh"><i class="icon-repeat icon-white"></i></a></th>
 										</tr>
 									</thead>
 									<tbody id="tweetsList" style="color:black"></tbody>
@@ -108,11 +108,11 @@
 								<footer>
 									<div class="pagination">
 										<ul>
-											<li class="disabled"><a href="#">Pr&eacute;c.</a></li>
+											<li class="disabled"><a href="#">Prev.</a></li>
 											<li class="active"><a href="#">1</a></li>
 											<li><a href="#">2</a></li>
 											<li><a href="#">3</a></li>
-											<li><a href="#">Suiv.</a></li>
+											<li><a href="#">Next</a></li>
 										</ul>
 									</div>
 								</footer>
@@ -171,7 +171,7 @@
 						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
 						html += entry['content'];
 						html += '</td>';
-						html += '<td><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Suivre"><i class="icon-heart" /></a></td>';
+						html += '<td><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-heart" /></a></td>';
 						html += '<td align="right">' + entry['prettyPrintTweetDate'] + '</td>';
 						html += '</tr>';
 						$('#tweetsList').append(html);
