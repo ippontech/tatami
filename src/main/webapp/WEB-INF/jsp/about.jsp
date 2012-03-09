@@ -39,8 +39,8 @@
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li><a href="/tatami/">Home</a></li>
-						<li class="active"><a href="#">About</a></li>
 						<li><a href="/tatami/profile">Profile</a></li>
+						<li class="active"><a href="#">About</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
