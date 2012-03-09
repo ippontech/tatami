@@ -20,6 +20,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "gravatar")
+    private String gravatar;
+
     @Column(name = "firstName")
     private String firstName;
 
@@ -46,6 +49,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGravatar() {
+        return gravatar;
+    }
+
+    public void setGravatar(String gravatar) {
+        this.gravatar = gravatar;
     }
 
     public String getFirstName() {
@@ -110,6 +121,7 @@ public class User {
         return "User{" +
                 "login='" + login + '\'' +
                 ", email='" + email + '\'' +
+                ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", tweetCount=" + tweetCount +

@@ -62,15 +62,15 @@
 				<table class="table table-condensed table-striped" width="100%">
 					<thead>
 						<tr>
-							<td align="center"><img id="picture" src="../images/julien-dubois.jpg" width="50" /></td>
+							<td align="center"><span id="picture"></span></td>
 							<td colspan="2"><h2><span id="firstName"></span> <span id="lastName"></span></h2></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td><span id="tweetCount" class="label"></span><br/>TWEETS</td>
-							<td><span id="friendsCount" class="label"></span><br/>ABONNEMENTS</td>
-							<td><span id="followersCount" class="label"></span><br/>ABONN&Eacute;S</td>
+							<td><span id="friendsCount" class="label"></span><br/>FOLLOWING</td>
+							<td><span id="followersCount" class="label"></span><br/>FOLLOWERS</td>
 						</tr>
 					</tbody>
 					<tfoot>
@@ -198,7 +198,7 @@
 				url: url,
 				dataType: "json",
 				success: function(data) {
-					//$("#picture").src(data.picture);
+                    $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.picture + '?f=y&s=64" width="64px" />');
 					$("#firstName").text(data.firstName);
 					$("#lastName").text(data.lastName);
 					$("#tweetCount").text(data.tweetCount);

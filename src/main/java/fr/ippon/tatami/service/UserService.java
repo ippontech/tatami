@@ -7,6 +7,7 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.service.util.GravatarUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -52,15 +53,16 @@ public class UserService {
         return user;
     }
 
-    public void setUserProfileByLogin(String login, URL picture, String firstName, String lastName) {
+    public void updateUser(String login, String email, String firstName, String lastName) {
         User user = getUserByLogin(login);
-//        user.setPicture(picture); TODO
+        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         userRepository.updateUser(user);
     }
 
     public void createUser(User user) {
+        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
         counterRepository.createTweetCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());

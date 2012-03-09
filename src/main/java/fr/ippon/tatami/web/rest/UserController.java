@@ -44,11 +44,8 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to set Profile : " + login);
         }
-        try {
-			userService.setUserProfileByLogin(login, new URL(infos[0]), infos[1], infos[2]);
-		} catch (MalformedURLException e) {
-            log.error("invalid REST request : " + e.getMessage(), e);
-		}
+        //TODO use variables and not array
+        userService.updateUser(login, infos[0], infos[1], infos[2]);
     }
 
     @RequestMapping(value = "/rest/users/{login}/addFriend",
