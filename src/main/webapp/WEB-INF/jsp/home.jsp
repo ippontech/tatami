@@ -172,7 +172,7 @@
 						html += entry['content'];
 						html += '</td>';
 						html += '<td><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Suivre"><i class="icon-heart" /></a></td>';
-						html += '<td align="right">' + entry['tweetDate'] + '</td>';
+						html += '<td align="right">' + entry['prettyPrintTweetDate'] + '</td>';
 						html += '</tr>';
 						$('#tweetsList').append(html);
 					});

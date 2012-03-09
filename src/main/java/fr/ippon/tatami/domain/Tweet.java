@@ -1,9 +1,14 @@
 package fr.ippon.tatami.domain;
 
+import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -32,6 +37,24 @@ public class Tweet {
     private String lastName;
 
     private String picture;
+
+    public String getPrettyPrintTweetDate() {
+        Duration duration =
+                new Duration(Calendar.getInstance().getTimeInMillis() - tweetDate.getTime());
+
+        PeriodFormatter formatter = new PeriodFormatterBuilder()
+                .appendDays()
+                .appendSuffix("d")
+                .appendHours()
+                .appendSuffix("h")
+                .appendMinutes()
+                .appendSuffix("m")
+                .appendSeconds()
+                .appendSuffix("s")
+                .toFormatter();
+
+        return formatter.print(duration.toPeriod());
+    }
 
     public String getTweetId() {
         return tweetId;
