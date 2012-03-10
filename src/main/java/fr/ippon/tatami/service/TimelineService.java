@@ -54,6 +54,7 @@ public class TimelineService {
             User tweetUser = userService.getUserByLogin(tweet.getLogin());
             tweet.setFirstName(tweetUser.getFirstName());
             tweet.setLastName(tweetUser.getLastName());
+            tweet.setGravatar(tweetUser.getGravatar());
             tweets.add(tweet);
         }
         return tweets;

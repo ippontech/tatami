@@ -137,7 +137,7 @@
 	<script src="/assets/js/bootstrap-tab.js"></script>
 
 	<script type="text/javascript">
-        var login = "<sec:authentication property="principal.username" htmlEscape="false"/>";
+        var login = "<sec:authentication property="principal.username"/>";
 
         function tweet() {
             $.ajax({
@@ -166,7 +166,7 @@
 					$('#tweetsList').empty();
 					$.each(data, function(entryIndex, entry) {
 						var html = '<tr valign="top">';
-						html += '<td align="center"><img src="http://www.gravatar.com/avatar/' + entry['picture'] + '?f=y&s=64" width="64px" /></td>';
+						html += '<td align="center"><img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" /></td>';
 						html += '<td width="100%">';
 						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
 						html += entry['content'];
@@ -192,13 +192,12 @@
 		}
 
         function refreshProfile() {
-            var url = "rest/users/" + login + "/";
 			$.ajax({
 				type: 'GET',
-				url: url,
+				url: "rest/users/" + login + "/",
 				dataType: "json",
 				success: function(data) {
-                    $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.picture + '?f=y&s=64" width="64px" />');
+                    $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
 					$("#firstName").text(data.firstName);
 					$("#lastName").text(data.lastName);
 					$("#tweetCount").text(data.tweetCount);

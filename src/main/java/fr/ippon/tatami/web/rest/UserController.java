@@ -1,18 +1,13 @@
 package fr.ippon.tatami.web.rest;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
 
 /**
  * REST controller for managing users.
@@ -28,8 +23,8 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/rest/users/{login}",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public User getUser(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
@@ -38,16 +33,16 @@ public class UserController {
         return userService.getUserProfileByLogin(login);
     }
 
-    @RequestMapping(value = "/rest/users/{login}/setProfile",
-    		method = RequestMethod.POST,
-    		consumes = "application/json")
+    @RequestMapping(value = "/rest/users/{login}",
+            method = RequestMethod.POST,
+            consumes = "application/json")
     @ResponseBody
-    public void setUser(@PathVariable("login") String login, @RequestBody String[] infos) {
+    public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to set Profile : " + login);
+            log.debug("REST request to update user : " + login);
         }
-        //TODO use variables and not array
-        userService.updateUser(login, infos[0], infos[1], infos[2]);
+        user.setLogin(login);
+        userService.updateUser(user);
     }
 
     @RequestMapping(value = "/rest/users/{login}/addFriend",

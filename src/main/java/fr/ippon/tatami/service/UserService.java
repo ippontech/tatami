@@ -52,12 +52,15 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(String login, String email, String firstName, String lastName) {
-        User user = getUserByLogin(login);
-        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        userRepository.updateUser(user);
+    public void updateUser(User user) {
+        User currentUser = getCurrentUser();
+        if (currentUser.getLogin().equals(user.getLogin())) {
+            user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+            userRepository.updateUser(user);
+        } else {
+            log.info("Security alert : user " + currentUser.getLogin() +
+                " tried to update user " + user);
+        }
     }
 
     public void createUser(User user) {

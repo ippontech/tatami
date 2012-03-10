@@ -38,35 +38,45 @@
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="/tatami/">Home</a></li>
-						<li class="active"><a href="#">Profile</a></li>
-                        <li><a href="/tatami/about">About</a></li>
+						<li><a href="/tatami/"><i class="icon-home icon-white"></i> Home</a></li>
+						<li class="active"><a href="#"><i class="icon-user icon-white"></i> Profile</a></li>
+                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
+						<li class="close"><a href="/tatami/logout"> logout &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</div>
 	</div>
 
-	<div class="alert alert-success">
-		<h1>User profile update</h1>
-	</div>
+    <div class="alert alert-success">
+        <h1>User profile update</h1>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span4" style="text-align: center;">Picture (from <a href="http://www.gravatar.com/">Gravatar</a>) <br/><br/><span
+                    id="picture"></span></div>
+            <div class="span4">
+                <form id="updateUserForm" class="well">
 
-	<form class="well">
-		<label>Picture :</label> <input id="picture" type="text" class="input-xlarge"
-			placeholder="Enter gravatar ID..." />
-		<fieldset>
-		<label>First name :</label> <input id="firstName" type="text"
-			placeholder="Enter first name..." />
-		<label>Last name :</label> <input id="lastName" type="text"
-			placeholder="Enter last name..." />
-		</fieldset>
+                    <label>Email :</label> <input id="email" name="email" type="text"
+                                                  placeholder="Enter e-mail..."/>
+                    <fieldset>
+                        <label>First name :</label> <input id="firstName" name="firstName" type="text"
+                                                           placeholder="Enter first name..."/>
+                        <label>Last name :</label> <input id="lastName" name="lastName" type="text"
+                                                          placeholder="Enter last name..."/>
+                    </fieldset>
 
-		<button onclick="javascript:setProfile();return false" type="submit" class="btn btn-primary">Save</button>
-	</form>
+                    <button onclick="updateProfile()" type="button" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+            <div class="span4"></div>
+        </div>
+    </div>
+
 
 	<!-- Le javascript
 	================================================== -->
@@ -75,30 +85,46 @@
 	<script src="/assets/js/bootstrap-tab.js"></script>
 
 	<script type="text/javascript">
-		function setProfile() {
-			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/setProfile");
+        var login = "<sec:authentication property="principal.username"/>";
+
+        $.fn.serializeObject = function() {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+		function updateProfile() {
 			$.ajax({
 				type: 'POST',
-				url: url,
+				url: "rest/users/" + login,
 				contentType: "application/json",
-				data: [$('#picture').val(), $("#firstName").val(), $("#lastName").val()],
+				data: JSON.stringify($("#updateUserForm").serializeObject()),
 				dataType: "json"
 			});
 		}
 
 		$(document).ready(function() {
-			var url = encodeURI("rest/users/<sec:authentication property="principal.username" htmlEscape="false"/>/");
 			$.ajax({
 				type: 'GET',
-				url: url,
+				url: "rest/users/" + login,
 				dataType: "json",
 				success: function(data) {
-					$("#picture").val(data.picture);
+                    $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=150"/>');
+					$("#email").val(data.email);
 					$("#firstName").val(data.firstName);
 					$("#lastName").val(data.lastName);
 				}
 			});
-			listTweets();
 		});
 	</script>
   </body>

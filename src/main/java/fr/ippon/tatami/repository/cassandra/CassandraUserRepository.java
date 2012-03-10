@@ -35,7 +35,7 @@ public class CassandraUserRepository implements UserRepository {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);
         }
-        em.persist(user);	//DEBUG besoin d'un merge ??
+        em.persist(user);
     }
 
     @Override

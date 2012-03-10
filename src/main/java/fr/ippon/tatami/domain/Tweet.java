@@ -36,7 +36,7 @@ public class Tweet {
 
     private String lastName;
 
-    private String picture;
+    private String gravatar;
 
     public String getPrettyPrintTweetDate() {
         Duration duration =
@@ -104,12 +104,12 @@ public class Tweet {
         this.lastName = lastName;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getGravatar() {
+        return gravatar;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setGravatar(String gravatar) {
+        this.gravatar = gravatar;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Tweet {
                 ", tweetDate=" + tweetDate +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", picture='" + picture + '\'' +
+                ", gravatar='" + gravatar + '\'' +
                 '}';
     }
 }
