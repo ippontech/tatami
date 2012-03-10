@@ -15,7 +15,7 @@
 	  }
 	</style>
 	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
-
+    <link href="/assets/css/tatami-custom.css" rel="stylesheet">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -38,9 +38,9 @@
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="/tatami/profile">Profile</a></li>
-                        <li><a href="/tatami/about">About</a></li>
+						<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+						<li><a href="/tatami/profile"><i class="icon-user icon-white"></i> Profile</a></li>
+                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
@@ -103,7 +103,7 @@
 											<th colspan="2" align="right"><a href="javascript:listTweets()" title="Refresh"><i class="icon-repeat icon-white"></i></a></th>
 										</tr>
 									</thead>
-									<tbody id="tweetsList" style="color:black"></tbody>
+									<tbody id="tweetsList"></tbody>
 								</table>
 								<footer>
 									<div class="pagination">
@@ -166,13 +166,13 @@
 					$('#tweetsList').empty();
 					$.each(data, function(entryIndex, entry) {
 						var html = '<tr valign="top">';
-						html += '<td align="center"><img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" /></td>';
-						html += '<td width="100%">';
+						html += '<td class="tweetPicture"><img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" /></td>';
+						html += '<td>';
 						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
 						html += entry['content'];
 						html += '</td>';
-						html += '<td><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-heart" /></a></td>';
-						html += '<td align="right">' + entry['prettyPrintTweetDate'] + '</td>';
+						html += '<td class="tweetFriend"><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-heart" /></a></td>';
+						html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
 						html += '</tr>';
 						$('#tweetsList').append(html);
 					});

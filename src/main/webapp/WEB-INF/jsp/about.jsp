@@ -38,9 +38,9 @@
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="/tatami/">Home</a></li>
-						<li><a href="/tatami/profile">Profile</a></li>
-						<li class="active"><a href="#">About</a></li>
+						<li><a href="/tatami/"><i class="icon-home icon-white"></i> Home</a></li>
+						<li><a href="/tatami/profile"><i class="icon-user icon-white"></i> Profile</a></li>
+						<li class="active"><a href="#"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>

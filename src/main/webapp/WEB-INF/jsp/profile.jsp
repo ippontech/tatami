@@ -61,7 +61,7 @@
             <div class="span4">
                 <form id="updateUserForm" class="well">
 
-                    <label>Email :</label> <input id="email" name="email" type="text"
+                    <label>Email :</label> <input id="email" name="email" type="email"
                                                   placeholder="Enter e-mail..."/>
                     <fieldset>
                         <label>First name :</label> <input id="firstName" name="firstName" type="text"
@@ -109,11 +109,12 @@
 				url: "rest/users/" + login,
 				contentType: "application/json",
 				data: JSON.stringify($("#updateUserForm").serializeObject()),
-				dataType: "json"
+				dataType: "json",
+                success: displayProfile()
 			});
 		}
 
-		$(document).ready(function() {
+        function displayProfile() {
 			$.ajax({
 				type: 'GET',
 				url: "rest/users/" + login,
@@ -125,6 +126,10 @@
 					$("#lastName").val(data.lastName);
 				}
 			});
+		}
+
+		$(document).ready(function() {
+		    displayProfile();
 		});
 	</script>
   </body>
