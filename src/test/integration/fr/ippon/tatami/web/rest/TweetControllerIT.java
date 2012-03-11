@@ -23,7 +23,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TweetControllerTest {
+public class TweetControllerIT {
 
 	static HttpClient httpclient;
 
@@ -48,7 +48,7 @@ public class TweetControllerTest {
 		HttpEntity resEntity = response.getEntity();
 		EntityUtils.consume(resEntity);
 
-		TweetControllerTest.httpclient = httpclient; // en static : un peu bourrin ...
+		TweetControllerIT.httpclient = httpclient; // en static : un peu bourrin ...
 	}
 
 	@AfterClass
