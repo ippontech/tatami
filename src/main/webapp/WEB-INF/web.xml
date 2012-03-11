@@ -1,7 +1,20 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+         version="3.0"
+         metadata-complete="true">
+
+	<!-- 
+	Pour améliorer les performances de démarrage de Jetty, déactivation complète du classpath scanning servlet 3.0 que l'on utilise pas ici :
+	metadata-complete="true" ci-dessus + ordering absolu vide ci-dessous 
+	-->
+
+	<absolute-ordering>
+		<!--  ordering absolu vide pour déactiver complètement le classpath scanning :
+		  nécessaire suite à la présence de ServletContainerInitializer dans les jars (a minima dans spring-web.jar META-INF/services/javax.servlet.ServletContainerInitializer) 
+		  cf org.eclipse.jetty.annotations.AnnotationConfiguration.configure() et isFromExcludedJar()
+		  -->
+	</absolute-ordering>
 
     <display-name>Tatami</display-name>
 
