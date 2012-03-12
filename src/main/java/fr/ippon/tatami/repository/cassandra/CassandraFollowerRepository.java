@@ -36,6 +36,12 @@ public class CassandraFollowerRepository implements FollowerRepository {
     }
 
     @Override
+    public void removeFollower(String login, String followerLogin) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.delete(login, FOLLOWERS_CF, followerLogin, StringSerializer.get());
+    }
+
+    @Override
     public int getFollowersCount(String login) {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }

@@ -34,4 +34,10 @@ public class CassandraFriendRepository implements FriendRepository {
         mutator.insert(login, FRIENDS_CF, HFactory.createColumn(friendLogin,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
+
+    @Override
+    public void removeFriend(String login, String friendLogin) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.delete(login, FRIENDS_CF, friendLogin, StringSerializer.get());
+    }
 }

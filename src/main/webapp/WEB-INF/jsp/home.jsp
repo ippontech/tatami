@@ -59,12 +59,12 @@
 			<div class="span4">
 				<div class="tabbable tabs-below">
 					<div class="tab-content alert alert-info">
-						<div class="tab-pane active" id="homeTab"></div>
-						<div class="tab-pane" id="profileTab"></div>
+						<div class="tab-pane active" id="homeTabContent"></div>
+						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="defaultTab" href="#homeTab" data-toggle="tab">Home</a></li>
-						<li><a href="#profileTab" data-toggle="tab">Profile</a></li>
+						<li class="active"><a href="#homeTabContent" data-toggle="tab" id="defaultTab">Home</a></li>
+						<li><a href="#profileTabContent" data-toggle="tab">Profile</a></li>
 					</ul>
 				</div>
 			</div>
@@ -72,16 +72,16 @@
 			<div class="span8">
 				<div class="tabbable tabs-right">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#view1" data-toggle="tab">Tweets</a></li>
-						<li><a href="#view2" data-toggle="tab">Pie chart</a></li>
-						<li><a href="#view3" data-toggle="tab">Time chart</a></li>
+						<li class="active"><a href="#view1Content" data-toggle="tab">Tweets</a></li>
+						<li><a href="#view2Content" data-toggle="tab">Pie chart</a></li>
+						<li><a href="#view3Content" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
-						<div class="tab-pane active" id="view1"></div>
-						<div class="tab-pane" id="view2">
+						<div class="tab-pane active" id="view1Content"></div>
+						<div class="tab-pane" id="view2Content">
 							<h2>Howdy, I'm in Section 2.</h2>
 						</div>
-						<div class="tab-pane" id="view3">
+						<div class="tab-pane" id="view3Content">
 							<h2>Howdy, I'm in Section 3.</h2>
 						</div>
 					</div>
@@ -104,20 +104,20 @@
 
 		$(document).ready(function() {
 			// panneau de gauche
-			$('#homeTab').load('/assets/fragments/home.html', refreshHome);
-			$('#profileTab').load('/assets/fragments/profile.html');
+			$('#homeTabContent').load('/assets/fragments/home.html', refreshHome);
+			$('#profileTabContent').load('/assets/fragments/profile.html');
         	// auto-refresh
 		    $('a[data-toggle="tab"]').on('show', function (e) {
-		    	if (e.target.hash == '#homeTab') {
+		    	if (e.target.hash == '#homeTabContent') {
 					refreshHome();
-		    	} else if (e.target.hash == '#profileTab') {
+		    	} else if (e.target.hash == '#profileTabContent') {
 		        	displayProfile();
 		        }
 		    });
 
 		    // panneau de droite
-			$('#view1').load('/assets/fragments/timeline.html', listTweets);	//TODO WebSocket pour maj auto push
-			//TODO #view2 et #view3
+			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);	//TODO WebSocket pour maj auto push
+			//TODO #view2Content et #view3Content
 		});
 	</script>
   </body>

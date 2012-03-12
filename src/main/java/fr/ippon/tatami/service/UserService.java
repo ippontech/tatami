@@ -87,6 +87,22 @@ public class UserService {
         }
     }
 
+    public void forgetUser(String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Removing follower : " + login);
+        }
+        User currentUser = getCurrentUser();
+        User followedUser = getUserByLogin(login);
+        if (followedUser != null) {
+            friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
+            counterRepository.decrementFriendsCounter(currentUser.getLogin());
+            followerRepository.removeFollower(followedUser.getLogin(), currentUser.getLogin());
+            counterRepository.decrementFollowersCounter(followedUser.getLogin());
+        } else {
+            log.debug("Followed user does not exist : " + login);
+        }
+    }
+
     public User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         org.springframework.security.core.userdetails.User springSecurityUser = (org.springframework.security.core.userdetails.User) securityContext

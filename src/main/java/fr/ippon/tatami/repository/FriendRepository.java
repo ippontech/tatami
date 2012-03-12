@@ -8,4 +8,5 @@ package fr.ippon.tatami.repository;
 public interface FriendRepository {
 
     void addFriend(String login, String friendLogin);
+    void removeFriend(String login, String friendLogin);
 }
