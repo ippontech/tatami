@@ -1,3 +1,20 @@
+function refreshHome() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/users/" + login + "/",
+		dataType: "json",
+		success: function(data) {
+            $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
+			$("#firstName").text(data.firstName);
+			$("#lastName").text(data.lastName);
+			$("#tweetCount").text(data.tweetCount);
+			$("#friendsCount").text(data.friendsCount);
+			$("#followersCount").text(data.followersCount);
+		}
+	});
+}
+
+
 function tweet() {
     $.ajax({
         type: 'POST',
@@ -7,8 +24,7 @@ function tweet() {
         dataType: "json",
         success: function(data) {
             $("#tweetContent").val("");
-            setTimeout(
-                    function() {
+            setTimeout(function() {
                         refreshHome();
                         listTweets();
                     }, 1000);
@@ -49,14 +65,19 @@ function listTweets() {
 	});
 }
 
-function addFriend(friend) {
+
+function addFriend() {
 	var url = "rest/users/" + login + "/addFriend";
 	$.ajax({
 		type: 'POST',
 		url: url,
 		contentType: "application/json",
-		data: friend,
-		dataType: "json"
+		data: $('#friendInput'),
+		dataType: "json",
+        success: function(data) {
+            $("#friendInput").val("");
+            setTimeout(refreshHome(), 1000);
+        }
 	});
 }
 
@@ -67,22 +88,9 @@ function removeFriend(friend) {
 		url: url,
 		contentType: "application/json",
 		data: friend,
-		dataType: "json"
-	});
-}
-
-function refreshHome() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/users/" + login + "/",
 		dataType: "json",
-		success: function(data) {
-            $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
-			$("#firstName").text(data.firstName);
-			$("#lastName").text(data.lastName);
-			$("#tweetCount").text(data.tweetCount);
-			$("#friendsCount").text(data.friendsCount);
-			$("#followersCount").text(data.followersCount);
-		}
+        success: function(data) {
+            setTimeout(refreshHome(), 1000);
+        }
 	});
 }
