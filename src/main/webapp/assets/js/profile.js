@@ -21,9 +21,8 @@ function updateProfile() {
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
-        success: displayProfile();
 	});
-	return false;	// pour empêcher le rechargement de la page
+	return true;
 }
 
 function displayProfile() {
