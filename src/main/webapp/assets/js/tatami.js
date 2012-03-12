@@ -1,4 +1,4 @@
-function tweet(login) {
+function tweet() {
     $.ajax({
         type: 'POST',
         url: "rest/tweets",
@@ -9,14 +9,14 @@ function tweet(login) {
             $("#tweetContent").val("");
             setTimeout(
                     function() {
-                        refreshHome(login);
-                        listTweets(login);
+                        refreshHome();
+                        listTweets();
                     }, 1000);
         }
     });
 }
 
-function listTweets(login) {
+function listTweets() {
 	$.ajax({
 		type: 'GET',
 		url: "rest/tweets",
@@ -39,7 +39,7 @@ function listTweets(login) {
 	});
 }
 
-function addFriend(login, friend) {
+function addFriend(friend) {
 	var url = "rest/users/" + login + "/addFriend";
 	$.ajax({
 		type: 'POST',
@@ -50,7 +50,7 @@ function addFriend(login, friend) {
 	});
 }
 
-function refreshHome(login) {
+function refreshHome() {
 	$.ajax({
 		type: 'GET',
 		url: "rest/users/" + login + "/",

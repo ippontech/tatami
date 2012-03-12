@@ -104,14 +104,19 @@
 
 		$(document).ready(function() {
 			// panneau de gauche
-			$('#homeTab').load('/assets/fragments/home.html');
-			refreshHome(login);
+			$('#homeTab').load('/assets/fragments/home.html', refreshHome);
 			$('#profileTab').load('/assets/fragments/profile.html');
-		    displayProfile();
+        	// auto-refresh
+		    $('a[data-toggle="tab"]').on('show', function (e) {
+		    	if (e.target.hash == '#homeTab') {
+					refreshHome();
+		    	} else if (e.target.hash == '#profileTab') {
+		        	displayProfile();
+		        }
+		    });
 
 		    // panneau de droite
-			$('#view1').load('/assets/fragments/timeline.html');
-			listTweets(login);
+			$('#view1').load('/assets/fragments/timeline.html', listTweets);	//TODO WebSocket pour maj auto push
 			//TODO #view2 et #view3
 		});
 	</script>
