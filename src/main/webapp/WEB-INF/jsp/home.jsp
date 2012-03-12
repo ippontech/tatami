@@ -63,7 +63,7 @@
 						<div class="tab-pane" id="profileTab"></div>
 					</div>
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#homeTab" data-toggle="tab">Home</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTab" data-toggle="tab">Home</a></li>
 						<li><a href="#profileTab" data-toggle="tab">Profile</a></li>
 					</ul>
 				</div>

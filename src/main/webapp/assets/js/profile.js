@@ -15,14 +15,14 @@ $.fn.serializeObject = function() {
 };
 
 function updateProfile() {
-	//FIXME le service REST doit faire un appel synchrone à Cassandra !
+	//TODO le service REST doit faire un appel SYNCHRONE à Cassandra !
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login,
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
-		success: $('#homeTab').tab('show')	// retour à l'onglet principal
+		success: $('#defaultTab').tab('show')	// retour à l'onglet principal
 	});
 	return false;	// empêcher rafraîchissement page
 }
