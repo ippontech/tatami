@@ -33,13 +33,11 @@
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
-						<li><a href="/tatami/profile"><i class="icon-user icon-white"></i> Profile</a></li>
                         <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
@@ -58,23 +56,32 @@
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3 alert alert-info" id="profile">
+			<div class="span4">
+				<div class="tabbable tabs-below">
+					<div class="tab-content alert alert-info">
+						<div class="tab-pane active" id="homeTab"></div>
+						<div class="tab-pane" id="profileTab"></div>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#homeTab" data-toggle="tab">Home</a></li>
+						<li><a href="#profileTab" data-toggle="tab">Profile</a></li>
+					</ul>
+				</div>
 			</div>
 
 			<div class="span8">
 				<div class="tabbable tabs-right">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#1" data-toggle="tab">Tweets</a></li>
-						<li><a href="#2" data-toggle="tab">Pie chart</a></li>
-						<li><a href="#3" data-toggle="tab">Time chart</a></li>
+						<li class="active"><a href="#view1" data-toggle="tab">Tweets</a></li>
+						<li><a href="#view2" data-toggle="tab">Pie chart</a></li>
+						<li><a href="#view3" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
-						<div class="tab-pane active" id="1">
-						</div>
-						<div class="tab-pane" id="2">
+						<div class="tab-pane active" id="view1"></div>
+						<div class="tab-pane" id="view2">
 							<h2>Howdy, I'm in Section 2.</h2>
 						</div>
-						<div class="tab-pane" id="3">
+						<div class="tab-pane" id="view3">
 							<h2>Howdy, I'm in Section 3.</h2>
 						</div>
 					</div>
@@ -90,18 +97,22 @@
 	<script src="/assets/js/bootstrap-tab.js"></script>
 
 	<script src="/assets/js/tatami.js"></script>
+	<script src="/assets/js/profile.js"></script>
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
 
 		$(document).ready(function() {
-			$('#profile').load('/assets/fragments/profile.html');
+			// panneau de gauche
+			$('#homeTab').load('/assets/fragments/home.html');
+			refreshHome(login);
+			$('#profileTab').load('/assets/fragments/profile.html');
+		    displayProfile();
 
-			$('#1').load('/assets/fragments/timeline.html');
-			//TODO #2 et #3
-
-			refreshProfile(login);
+		    // panneau de droite
+			$('#view1').load('/assets/fragments/timeline.html');
 			listTweets(login);
+			//TODO #view2 et #view3
 		});
 	</script>
   </body>

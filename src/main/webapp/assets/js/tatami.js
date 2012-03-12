@@ -9,7 +9,7 @@ function tweet(login) {
             $("#tweetContent").val("");
             setTimeout(
                     function() {
-                        refreshProfile(login);
+                        refreshHome(login);
                         listTweets(login);
                     }, 1000);
         }
@@ -50,7 +50,7 @@ function addFriend(login, friend) {
 	});
 }
 
-function refreshProfile(login) {
+function refreshHome(login) {
 	$.ajax({
 		type: 'GET',
 		url: "rest/users/" + login + "/",

@@ -33,13 +33,11 @@
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="#">TaTaMi</a>
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li><a href="/tatami/"><i class="icon-home icon-white"></i> Home</a></li>
-						<li><a href="/tatami/profile"><i class="icon-user icon-white"></i> Profile</a></li>
 						<li class="active"><a href="#"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
@@ -54,8 +52,6 @@
 	<div class="alert alert-success">
 		<h1>About TaTaMi</h1>
 	</div>
-
-
 
 	<!-- Le javascript
 	================================================== -->

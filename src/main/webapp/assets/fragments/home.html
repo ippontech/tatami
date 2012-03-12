@@ -1,0 +1,25 @@
+<table class="table table-condensed table-striped" width="100%">
+	<thead>
+		<tr>
+			<td align="center"><span id="picture"></span></td>
+			<td colspan="2"><h2><span id="firstName"></span> <span id="lastName"></span></h2></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span id="tweetCount" class="label"></span><br/>TWEETS</td>
+			<td><span id="friendsCount" class="label"></span><br/>FOLLOWING</td>
+			<td><span id="followersCount" class="label"></span><br/>FOLLOWERS</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3">
+				<form class="form-inline">
+					<textarea id="tweetContent" class="focused" placeholder="Type a new tweet..." maxlength="140"></textarea>
+					<button onclick="tweet()" type="button" class="btn btn-primary">Tweet!</button>
+				</form>
+			</td>
+		<tr>
+	</tfoot>
+</table>
