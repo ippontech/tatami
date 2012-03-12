@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>TaTaMi - timeline</title>
+	<title>TaTaMi</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -58,32 +58,7 @@
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3 alert alert-info">
-				<table class="table table-condensed table-striped" width="100%">
-					<thead>
-						<tr>
-							<td align="center"><span id="picture"></span></td>
-							<td colspan="2"><h2><span id="firstName"></span> <span id="lastName"></span></h2></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><span id="tweetCount" class="label"></span><br/>TWEETS</td>
-							<td><span id="friendsCount" class="label"></span><br/>FOLLOWING</td>
-							<td><span id="followersCount" class="label"></span><br/>FOLLOWERS</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="3">
-								<form class="form-inline">
-									<textarea id="tweetContent" class="focused" placeholder="Type a new tweet..." maxlength="140"></textarea>
-									<button onclick="tweet()" type="button" class="btn btn-primary">Tweet!</button>
-								</form>
-							</td>
-						<tr>
-					</tfoot>
-				</table>
+			<div class="span3 alert alert-info" id="profile">
 			</div>
 
 			<div class="span8">
@@ -95,28 +70,6 @@
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="1">
-							<section>
-								<table class="table table-striped" width="100%">
-									<thead>
-										<tr>
-											<th colspan="2"><h2>Tweets list</h2></th>
-											<th colspan="2" align="right"><a href="javascript:listTweets()" title="Refresh"><i class="icon-repeat icon-white"></i></a></th>
-										</tr>
-									</thead>
-									<tbody id="tweetsList"></tbody>
-								</table>
-								<footer>
-									<div class="pagination">
-										<ul>
-											<li class="disabled"><a href="#">Prev.</a></li>
-											<li class="active"><a href="#">1</a></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">Next</a></li>
-										</ul>
-									</div>
-								</footer>
-							</section>
 						</div>
 						<div class="tab-pane" id="2">
 							<h2>Howdy, I'm in Section 2.</h2>
@@ -136,80 +89,19 @@
 	<script src="/assets/js/jquery.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
 
+	<script src="/assets/js/tatami.js"></script>
+
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
 
-        function tweet() {
-            $.ajax({
-                type: 'POST',
-                url: "rest/tweets",
-                contentType: "application/json",
-                data: $("#tweetContent").val(),
-                dataType: "json",
-                success: function(data) {
-                    $("#tweetContent").val("");
-                    setTimeout(
-                            function() {
-                                refreshProfile();
-                                listTweets();
-                            }, 1000);
-                }
-            });
-        }
-
-        function listTweets() {
-			$.ajax({
-				type: 'GET',
-				url: "rest/tweets",
-				dataType: "json",
-				success: function(data) {
-					$('#tweetsList').empty();
-					$.each(data, function(entryIndex, entry) {
-						var html = '<tr valign="top">';
-						html += '<td class="tweetPicture"><img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" /></td>';
-						html += '<td>';
-						html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
-						html += entry['content'];
-						html += '</td>';
-						html += '<td class="tweetFriend"><a href="javascript:addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-heart" /></a></td>';
-						html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
-						html += '</tr>';
-						$('#tweetsList').append(html);
-					});
-				}
-			});
-		}
-
-		function addFriend(friend) {
-			var url = "rest/users/" + login + "/addFriend";
-			$.ajax({
-				type: 'POST',
-				url: url,
-				contentType: "application/json",
-				data: friend,
-				dataType: "json"
-			});
-		}
-
-        function refreshProfile() {
-			$.ajax({
-				type: 'GET',
-				url: "rest/users/" + login + "/",
-				dataType: "json",
-				success: function(data) {
-                    $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
-					$("#firstName").text(data.firstName);
-					$("#lastName").text(data.lastName);
-					$("#tweetCount").text(data.tweetCount);
-					$("#friendsCount").text(data.friendsCount);
-					$("#followersCount").text(data.followersCount);
-				}
-			});
-        }
-
 		$(document).ready(function() {
-			refreshProfile();
-			listTweets();
+			$('#profile').load('/assets/fragments/profile.html');
+
+			$('#1').load('/assets/fragments/timeline.html');
+			//TODO #2 et #3
+
+			refreshProfile(login);
+			listTweets(login);
 		});
 	</script>
   </body>

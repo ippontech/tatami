@@ -59,7 +59,7 @@
             <div class="span4" style="text-align: center;">Picture (from <a href="http://www.gravatar.com/">Gravatar</a>) <br/><br/><span
                     id="picture"></span></div>
             <div class="span4">
-                <form id="updateUserForm" class="well">
+                <form id="updateUserForm" onsubmit="return updateProfile();" class="well">
 
                     <label>Email :</label> <input id="email" name="email" type="email"
                                                   placeholder="Enter e-mail..."/>
@@ -70,7 +70,7 @@
                                                           placeholder="Enter last name..."/>
                     </fieldset>
 
-                    <button onclick="updateProfile()" type="button" class="btn btn-primary">Update</button>
+                    <input type="submit" class="btn btn-primary" />
                 </form>
             </div>
             <div class="span4"></div>
@@ -112,6 +112,7 @@
 				dataType: "json",
                 success: displayProfile()
 			});
+			return true;
 		}
 
         function displayProfile() {
