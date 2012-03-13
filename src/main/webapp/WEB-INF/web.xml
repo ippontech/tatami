@@ -5,14 +5,13 @@
          metadata-complete="true">
 
 	<!-- 
-	Pour améliorer les performances de démarrage de Jetty, déactivation complète du classpath scanning servlet 3.0 que l'on utilise pas ici :
-	metadata-complete="true" ci-dessus + ordering absolu vide ci-dessous 
+	Remove classpath scanning (from servlet 3.0) :
+	metadata-complete="true" abvoe + empyt absolute ordering below
 	-->
 
 	<absolute-ordering>
-		<!--  ordering absolu vide pour déactiver complètement le classpath scanning :
-		  nécessaire suite à la présence de ServletContainerInitializer dans les jars (a minima dans spring-web.jar META-INF/services/javax.servlet.ServletContainerInitializer) 
-		  cf org.eclipse.jetty.annotations.AnnotationConfiguration.configure() et isFromExcludedJar()
+		<!--
+		 Empty absolute ordering to desactivate classpath scanning.r()
 		  -->
 	</absolute-ordering>
 
