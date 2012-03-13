@@ -59,6 +59,7 @@ function listTweets() {
 				// temps écoulé depuis la publication du message
 				html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
 				html += '</tr>';
+
 				$('#tweetsList').append(html);
 			});
 		}

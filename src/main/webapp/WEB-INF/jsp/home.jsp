@@ -103,11 +103,11 @@
         var login = "<sec:authentication property="principal.username"/>";
 
 		$(document).ready(function() {
-			// panneau de gauche
+			// left panel
 			$('#homeTabContent').load('/assets/fragments/home.html', refreshHome);
 			$('#profileTabContent').load('/assets/fragments/profile.html');
         	// auto-refresh
-		    $('a[data-toggle="tab"]').on('show', function (e) {
+		    $('a[data-toggle="tab"]').on('show', function(e) {
 		    	if (e.target.hash == '#homeTabContent') {
 					refreshHome();
 		    	} else if (e.target.hash == '#profileTabContent') {
@@ -115,7 +115,7 @@
 		        }
 		    });
 
-		    // panneau de droite
+		    // right panel
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);	//TODO WebSocket pour maj auto push
 			//TODO #view2Content et #view3Content
 		});
