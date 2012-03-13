@@ -116,8 +116,10 @@
 		    });
 
 		    // right panel
-			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);	//TODO WebSocket pour maj auto push
-			//TODO #view2Content et #view3Content
+			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);
+			//statusTweets(); //TODO WebSocket pour maj auto push
+
+			//TODO #view2Content et #view3Content : graphiques intéractifs
 		});
 	</script>
   </body>
