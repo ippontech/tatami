@@ -3,7 +3,9 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class TimelineService {
     @Inject
     private CounterRepository counterRepository;
 
+    @Inject
+    private FollowerRepository followerRepository;
+
     public void postTweet(String content) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
@@ -40,7 +45,9 @@ public class TimelineService {
         Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);
         tweetRepository.addTweetToUserline(tweet);
         tweetRepository.addTweetToTimeline(currentUser.getLogin(), tweet);
-
+        for (String followerLogin : followerRepository.findFollowersForUser(currentUser.getLogin())) {
+            tweetRepository.addTweetToTimeline(followerLogin, tweet);
+        }
         counterRepository.incrementTweetCounter(currentUser.getLogin());
     }
 
