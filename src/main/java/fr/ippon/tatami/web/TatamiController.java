@@ -25,11 +25,6 @@ public class TatamiController {
         return "home";
     }
 
-    @RequestMapping("/profile")
-    public String profile() {
-        return "profile";
-    }
-
     @RequestMapping("/about")
     public String about() {
         return "about";
