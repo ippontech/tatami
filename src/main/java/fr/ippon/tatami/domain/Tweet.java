@@ -1,6 +1,7 @@
 package fr.ippon.tatami.domain;
 
 import org.joda.time.Duration;
+import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -19,6 +20,22 @@ import java.util.Date;
 @Entity
 @Table(name = "Tweet")
 public class Tweet {
+
+    private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder()
+                .appendDays()
+                .appendSuffix("d").toFormatter();
+
+    private static PeriodFormatter hourFormatter = new PeriodFormatterBuilder()
+                .appendHours()
+                .appendSuffix("h").toFormatter();
+
+    private static PeriodFormatter minuteFormatter = new PeriodFormatterBuilder()
+                .appendMinutes()
+                .appendSuffix("m").toFormatter();
+
+    private static PeriodFormatter secondFormatter = new PeriodFormatterBuilder()
+                .appendSeconds()
+                .appendSuffix("s").toFormatter();
 
     @Id
     private String tweetId;
@@ -42,18 +59,17 @@ public class Tweet {
         Duration duration =
                 new Duration(Calendar.getInstance().getTimeInMillis() - tweetDate.getTime());
 
-        PeriodFormatter formatter = new PeriodFormatterBuilder()
-                .appendDays()
-                .appendSuffix("d")
-                .appendHours()
-                .appendSuffix("h")
-                .appendMinutes()
-                .appendSuffix("m")
-                .appendSeconds()
-                .appendSuffix("s")
-                .toFormatter();
+        Period period = duration.toPeriod();
 
-        return formatter.print(duration.toPeriod());
+        if (period.getDays() > 0) {
+            return dayFormatter.print(duration.toPeriod());
+        } else if (period.getHours() > 0) {
+            return hourFormatter.print(duration.toPeriod());
+        } else if (period.getMinutes() > 0) {
+            return minuteFormatter.print(duration.toPeriod());
+        } else {
+            return secondFormatter.print(duration.toPeriod());
+        }
     }
 
     public String getTweetId() {
