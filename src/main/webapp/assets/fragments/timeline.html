@@ -1,9 +1,14 @@
 <section>
+	<header>
+		<div class="alert" id="refreshStatus"></div>
+	</header>
 	<table class="table table-striped" width="100%">
 		<thead>
 			<tr>
 				<th colspan="2"><h2>Tweets list</h2></th>
-				<th colspan="2" align="right"><a href="javascript:listTweets()" title="Refresh"><i id="refreshStatus" class="icon-repeat icon-white"></i></a></th>
+				<th colspan="2" align="right">
+					<a href="javascript:listTweets()" title="Refresh"><i class="icon-repeat icon-white"></i></a>
+				</th>
 			</tr>
 		</thead>
 		<tbody id="tweetsList"></tbody>
