@@ -30,8 +30,7 @@ public class TweetController {
     @Inject
     private TimelineService timelineService;
 
-    @RequestMapping(value = "/rest/tweets", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    @RequestMapping(value = "/rest/tweets", method = RequestMethod.GET)
     public Collection<Tweet> listTweets() {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get the tweet list.");

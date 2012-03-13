@@ -13,7 +13,7 @@
     <context:component-scan base-package="fr.ippon.tatami.web"/>
 
     <mvc:annotation-driven/>
-
+    
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="mediaTypes">
             <map>
@@ -32,7 +32,9 @@
         </property>
         <property name="defaultViews">
             <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+                	<property name="extractValueFromSingleKeyModel" value="true"/>
+                </bean>
             </list>
         </property>
     </bean>
