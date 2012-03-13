@@ -78,12 +78,8 @@
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="view1Content"></div>
-						<div class="tab-pane" id="view2Content">
-							<h2>Howdy, I'm in Section 2.</h2>
-						</div>
-						<div class="tab-pane" id="view3Content">
-							<h2>Howdy, I'm in Section 3.</h2>
-						</div>
+						<div class="tab-pane" id="view2Content"></div>
+						<div class="tab-pane" id="view3Content"></div>
 					</div>
 				</div>
 			</div>
