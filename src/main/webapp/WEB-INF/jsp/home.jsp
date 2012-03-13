@@ -117,7 +117,7 @@
 
 		    // right panel
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);
-			//statusTweets(); //TODO WebSocket pour maj auto push
+			statusTweets();
 
 			//TODO #view2Content et #view3Content : graphiques intéractifs
 		});

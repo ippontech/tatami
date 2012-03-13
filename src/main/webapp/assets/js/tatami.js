@@ -32,7 +32,34 @@ function tweet() {
     });
 }
 
+var ws;
+
+function statusTweets() {
+	if (window.WebSocket) {
+		var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
+		ws.onopen = function(event) {
+			$('#refreshStatus').text("No new tweets");
+			// à la création, le service initialise un compteur correspondant au nb de tweets de la timeline
+		}
+		ws.onmessage = function(event) {
+			// pour chaque incrément interne de ce nb de tweets, un message est envoyé au client (nous)
+			$('#refreshStatus').text(event.data);
+		}
+
+		ws.onclose = function(event) {
+			$('#refreshStatus').text("");
+			statusTweets();	// ... réouverture du service en boucle
+		}
+	}
+}
+
 function listTweets() {
+	if (ws) {
+		// quand l'utilisateur prend la décision de rafraîchir sa timeline,
+		// on ferme la connexion pour relancer le polling...
+		ws.close();
+	}
+
 	$.ajax({
 		type: 'GET',
 		url: "rest/tweets",
@@ -41,21 +68,7 @@ function listTweets() {
 	});
 }
 
-function statusTweets() {
-	var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
-	ws.onopen = function(event) {
-	}
-	ws.onmessage = function(event) {
-		$('#refreshStatus').text(event.data);
-		// le service doit fermer la connexion pour relancer le polling
-	}
-	ws.onclose = function(event) {
-		statusTweets();	// réouverture du service en boucle
-	}
-}
-
 function makeList(data) {
-	$('#refreshStatus').text("");
 	$('#tweetsList').empty();
 
 	$.each(data, function(entryIndex, entry) {
