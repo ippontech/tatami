@@ -109,7 +109,7 @@ function addFriend() {
 		type: 'POST',
 		url: url,
 		contentType: "application/json",
-		data: $('#friendInput'),
+		data: $('#friendInput').val(),
 		dataType: "json",
         success: function(data) {
             $("#friendInput").val("");

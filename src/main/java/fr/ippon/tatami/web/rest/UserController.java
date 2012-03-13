@@ -47,8 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/rest/users/{login}/addFriend",
             method = RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json")
+            consumes = "application/json")
     public void addFriend(@PathVariable("login") String login, @RequestBody String friend) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add friend : " + friend);
