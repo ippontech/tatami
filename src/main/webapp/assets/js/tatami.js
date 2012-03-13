@@ -35,6 +35,7 @@ function tweet() {
 var ws;
 
 function statusTweets() {
+    /*
 	if (window.WebSocket) {
 		var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
 		ws.onopen = function(event) {
@@ -56,6 +57,7 @@ function statusTweets() {
         	$('#refreshStatus').hide();
         }, 4000);
 	}
+	*/
 }
 
 function listTweets() {
