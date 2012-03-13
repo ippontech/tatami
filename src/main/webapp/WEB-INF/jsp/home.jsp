@@ -117,7 +117,6 @@
 
 		    // right panel
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);
-			statusTweets();
 
 			//TODO #view2Content et #view3Content : graphiques intéractifs
 		});

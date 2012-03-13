@@ -47,9 +47,14 @@ function statusTweets() {
 		}
 
 		ws.onclose = function(event) {
-			$('#refreshStatus').text("");
 			statusTweets();	// ... réouverture du service en boucle
 		}
+
+	} else {
+		$('#refreshStatus').text("No WebSocket support enabled");
+        setTimeout(function() {
+        	$('#refreshStatus').hide();
+        }, 4000);
 	}
 }
 
@@ -94,6 +99,7 @@ function makeList(data) {
 
 		$('#tweetsList').append(html);
 	});
+	statusTweets();
 }
 
 
