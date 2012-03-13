@@ -55,6 +55,7 @@ function statusTweets() {
 }
 
 function makeList(data) {
+	$('#refreshStatus').text("");
 	$('#tweetsList').empty();
 
 	$.each(data, function(entryIndex, entry) {
