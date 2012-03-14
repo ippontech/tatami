@@ -37,8 +37,7 @@ function tweet() {
             $("#tweetContent").val("");
             setTimeout(function() {
                         refreshHome();
-                    	razNbTweets();
-                        listTweets();
+                        listTweets(true);
                     }, 1000);
         }
     });
@@ -70,12 +69,14 @@ function statusTweets() {
 	}
 }
 
-function listTweets() {
+function listTweets(raz) {
 	if (ws) {
 		// quand l'utilisateur prend la décision de rafraîchir sa timeline,
 		// on ferme la connexion pour relancer le polling...
 		ws.close();
 	}
+
+	if (raz)	razNbTweets();
 
 	$.ajax({
 		type: 'GET',

@@ -113,12 +113,12 @@
 		    });
 
 		    // right panel
-			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);
+			$('#view1Content').load('/assets/fragments/timeline.html', listTweets(true));
 		    // infinite scroll
 			$(window).scroll(function () { 
 				if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 					incrementNbTweets();
-					listTweets();
+					listTweets(false);
 				}
 			});
 
