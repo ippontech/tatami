@@ -97,7 +97,7 @@
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
-        razNbTweets();
+        resetNbTweets();
 
 		$(document).ready(function() {
 			// left panel
@@ -122,7 +122,7 @@
 				}
 			});
 
-			//TODO #view2Content et #view3Content : graphiques intéractifs
+			//TODO #view2Content et #view3Content : graphiques intï¿½ractifs
 		});
 	</script>
   </body>

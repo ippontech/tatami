@@ -1,6 +1,6 @@
 var nbTweets;
 
-function razNbTweets() {
+function resetNbTweets() {
 	nbTweets = 20;
 }
 
@@ -69,14 +69,14 @@ function statusTweets() {
 	}
 }
 
-function listTweets(raz) {
+function listTweets(reset) {
 	if (ws) {
 		// quand l'utilisateur prend la décision de rafraîchir sa timeline,
 		// on ferme la connexion pour relancer le polling...
 		ws.close();
 	}
 
-	if (raz)	razNbTweets();
+	if (reset)	resetNbTweets();
 
 	$.ajax({
 		type: 'GET',
