@@ -46,8 +46,7 @@ public class TweetController {
     }
 
     @RequestMapping(value = "/rest/tweets",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+            method = RequestMethod.POST)
     public void postTweet(@RequestBody String content) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
