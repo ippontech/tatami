@@ -122,7 +122,7 @@
 				}
 			});
 
-			//TODO #view2Content et #view3Content : graphiques int�ractifs
+			//TODO #view2Content et #view3Content : graphiques interactifs
 		});
 	</script>
   </body>
