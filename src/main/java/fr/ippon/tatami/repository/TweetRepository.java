@@ -17,7 +17,7 @@ public interface TweetRepository {
 
     void addTweetToTimeline(String login, Tweet tweet);
 
-    Collection<String> getTimeline(String login);
+    Collection<String> getTimeline(String login, int size);
 
     Tweet findTweetById(String tweetId);
 }

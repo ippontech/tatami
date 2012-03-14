@@ -97,6 +97,7 @@
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
+        razNbTweets();
 
 		$(document).ready(function() {
 			// left panel
@@ -113,6 +114,13 @@
 
 		    // right panel
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets);
+		    // infinite scroll
+			$(window).scroll(function () { 
+				if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+					incrementNbTweets();
+					listTweets();
+				}
+			});
 
 			//TODO #view2Content et #view3Content : graphiques intéractifs
 		});

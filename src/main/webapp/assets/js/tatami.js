@@ -1,3 +1,14 @@
+var nbTweets;
+
+function razNbTweets() {
+	nbTweets = 20;
+}
+
+function incrementNbTweets() {
+	nbTweets += 10;
+}
+
+
 function refreshHome() {
 	$.ajax({
 		type: 'GET',
@@ -26,6 +37,7 @@ function tweet() {
             $("#tweetContent").val("");
             setTimeout(function() {
                         refreshHome();
+                    	razNbTweets();
                         listTweets();
                     }, 1000);
         }
@@ -35,7 +47,6 @@ function tweet() {
 var ws;
 
 function statusTweets() {
-    /*
 	if (window.WebSocket) {
 		var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
 		ws.onopen = function(event) {
@@ -54,10 +65,9 @@ function statusTweets() {
 	} else {
 		$('#refreshStatus').text("No WebSocket support enabled");
         setTimeout(function() {
-        	$('#refreshStatus').hide();
+        	$('#refreshStatus').hide(300);
         }, 4000);
 	}
-	*/
 }
 
 function listTweets() {
@@ -69,7 +79,7 @@ function listTweets() {
 
 	$.ajax({
 		type: 'GET',
-		url: "rest/tweets",
+		url: "rest/tweets/" + nbTweets,
 		dataType: "json",
 		success: makeList
 	});
@@ -101,7 +111,9 @@ function makeList(data) {
 
 		$('#tweetsList').append(html);
 	});
-	statusTweets();
+
+//	statusTweets();
+	$('#refreshStatus').hide();	//DEBUG supprimer si activation status ci-dessus
 }
 
 
