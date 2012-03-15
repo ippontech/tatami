@@ -34,9 +34,6 @@ public class UserService {
     @Inject
     private CounterRepository counterRepository;
 
-    @Inject
-    private TweetRepository tweetRepository;
-
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Looking for user with login : " + login);

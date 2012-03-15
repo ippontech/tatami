@@ -4,6 +4,8 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -31,6 +33,7 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
+    @CacheEvict(value = "user-cache")
     public void updateUser(User user) {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);
@@ -39,6 +42,7 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
+    @Cacheable(value = "user-cache")
     public User findUserByLogin(String login) {
         try {
             return em.find(User.class, login);

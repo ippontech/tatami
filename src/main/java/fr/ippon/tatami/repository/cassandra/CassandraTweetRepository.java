@@ -22,6 +22,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import fr.ippon.tatami.domain.Tweet;
@@ -89,6 +90,7 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
+    @Cacheable("tweet-cache")
     public Tweet findTweetById(String tweetId) {
         if (log.isDebugEnabled()) {
             log.debug("Finding tweet : " + tweetId);
