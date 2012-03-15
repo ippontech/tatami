@@ -83,7 +83,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeList(data, $('#tweetsList'));
+			makeList(data, $('#tweetsList'), false);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -95,13 +95,13 @@ function listFriendTweets(friend) {
 		url: "rest/tweets/" + friend + "/20",	//TODO extension dynamique aussi ?
 		dataType: "json",
 		success: function(data) {
-			makeList(data, $('#friendTweetsList'));
+			makeList(data, $('#friendTweetsList'), true);
 			$('#friendTab').tab('show');
 		}
 	});
 }
 
-function makeList(data, dest) {
+function makeList(data, dest, friendListMode) {
 	dest.empty();
 
 	$.each(data, function(entryIndex, entry) {
@@ -124,7 +124,11 @@ function makeList(data, dest) {
 		// colonne de suppression des abonnements
 		html += '<td class="tweetFriend">';
 		if (login != entry['login']) {
-			html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+			if (friendListMode) {
+				html += '<a href="#" onclick="addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+			} else {
+				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+			}
 		} else {
 			html += '&nbsp;';
 		}
@@ -153,6 +157,17 @@ function addFriend() {
             $("#friendInput").val("");
             setTimeout(refreshHome(), 1000);
         }
+	});
+}
+function addFriend(friend) {
+	var url = "rest/users/" + login + "/addFriend";
+	$.ajax({
+		type: 'POST',
+		url: url,
+		contentType: "application/json",
+		data: friend,
+		dataType: "json",
+        success: alert('Friend added.')
 	});
 }
 
