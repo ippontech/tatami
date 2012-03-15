@@ -1,23 +1,28 @@
-<table class="table table-condensed table-striped" width="100%">
-	<thead>
-		<tr>
-			<td align="center"><span id="picture"></span></td>
-			<td colspan="2"><h2><span id="firstName"></span> <span id="lastName"></span></h2></td>
-		</tr>
-	</thead>
-</table>
-<table class="table table-condensed table-striped" width="100%">
-	<tbody>
-		<tr>
-			<td><span id="tweetCount" class="badge"></span><br/>TWEETS</td>
-			<td><span id="friendsCount" class="badge"></span><br/>FOLLOWING</td>
-			<td><span id="followersCount" class="badge"></span><br/>FOLLOWERS</td>
-		</tr>
-	</tbody>
-</table>
-
-<form class="form-inline">
-	<textarea id="tweetContent" class="focused" maxlength="140"
-			  placeholder="Type a new tweet..."></textarea>
-	<button class="btn btn-primary" onclick="tweet()">Tweet!</button>
-</form>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3"><span id="picture"></span></div>
+		<div class="span9">
+			<h2><span id="firstName"></span> <span id="lastName"></span></h2>
+		</div>
+	</div>
+	<div class="well row-fluid">
+		<div class="span4">
+			<span id="tweetCount" class="badge"></span><br/>TWEETS
+		</div>
+		<div class="span4">
+			<span id="friendsCount" class="badge"></span><br/>FOLLOWING
+		</div>
+		<div class="span4">
+			<span id="followersCount" class="badge"></span><br/>FOLLOWERS
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<form class="form-inline">
+				<textarea id="tweetContent" class="focused" maxlength="140"
+						  placeholder="Type a new tweet..."></textarea>
+				<button class="btn btn-primary" onclick="tweet()">Tweet!</button>
+			</form>
+		</div>
+	</div>
+</div>
