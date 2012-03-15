@@ -52,9 +52,12 @@ public class TimelineService {
         counterRepository.incrementTweetCounter(currentUser.getLogin());
     }
 
-    public Collection<Tweet> getTimeline(int nbTweets) {
-        User currentUser = userService.getCurrentUser();
-        Collection<String> tweetIds = tweetRepository.getTimeline(currentUser.getLogin(), nbTweets);
+    public Collection<Tweet> getTimeline(String login, int nbTweets) {
+    	if (login == null || login.isEmpty()) {
+	        User currentUser = userService.getCurrentUser();
+	        login = currentUser.getLogin();
+    	}
+        Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
 
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweedId : tweetIds) {

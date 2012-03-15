@@ -29,19 +29,19 @@ public class TweetController {
     @Inject
     private TimelineService timelineService;
 
-    @RequestMapping(value = "/rest/tweets/{nbTweets}",
+    @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}",
     		method = RequestMethod.GET,
     		produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweets(@PathVariable("nbTweets") String nbTweets) {
+    public Collection<Tweet> listTweets(@PathVariable("login") String login, @PathVariable("nbTweets") String nbTweets) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
         }
         try {
-			return timelineService.getTimeline(Integer.parseInt(nbTweets));
+			return timelineService.getTimeline(login, Integer.parseInt(nbTweets));
 		} catch (NumberFormatException e) {
 			log.warn("Page size undefined ; sizing to default", e);
-			return timelineService.getTimeline(20);
+			return timelineService.getTimeline(login, 20);
 		}
     }
 

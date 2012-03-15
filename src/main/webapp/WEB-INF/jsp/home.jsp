@@ -63,7 +63,7 @@
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#homeTabContent" data-toggle="tab" id="defaultTab">Home</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="tab">Home</a></li>
 						<li><a href="#profileTabContent" data-toggle="tab">Profile</a></li>
 					</ul>
 				</div>
@@ -72,9 +72,9 @@
 			<div class="span8">
 				<div class="tabbable tabs-right">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#view1Content" data-toggle="tab">Tweets</a></li>
-						<li><a href="#view2Content" data-toggle="tab">Pie chart</a></li>
-						<li><a href="#view3Content" data-toggle="tab">Time chart</a></li>
+						<li class="active"><a id="mainTab" href="#view1Content" data-toggle="tab">Tweets</a></li>
+						<li><a id="friendTab" href="#view2Content" data-toggle="tab">Friend Tweets</a></li>
+						<li><a id="chartTab" href="#view3Content" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="view1Content"></div>
@@ -122,7 +122,9 @@
 				}
 			});
 
-			//TODO #view2Content et #view3Content : graphiques interactifs
+			$('#view2Content').load('/assets/fragments/friendTimeline.html', listTweets(true));
+
+			//TODO #view3Content : graphique interactif
 		});
 	</script>
   </body>

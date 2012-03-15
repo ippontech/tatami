@@ -80,20 +80,41 @@ function listTweets(reset) {
 
 	$.ajax({
 		type: 'GET',
-		url: "rest/tweets/" + nbTweets,
+		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
-		success: makeList
+		success: function(data) {
+			makeList(data, $('#tweetsList'));
+			$('#mainTab').tab('show');
+		}
 	});
 }
 
-function makeList(data) {
-	$('#tweetsList').empty();
+function listFriendTweets(friend) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/tweets/" + friend + "/20",	//TODO extension dynamique aussi ?
+		dataType: "json",
+		success: function(data) {
+			makeList(data, $('#friendTweetsList'));
+			$('#friendTab').tab('show');
+		}
+	});
+}
+
+function makeList(data, dest) {
+	dest.empty();
 
 	$.each(data, function(entryIndex, entry) {
 		var html = '<tr valign="top">';
 		// identification de l'émetteur du message
 		html += '<td class="tweetPicture">';
-		html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" onclick="alert("hop!")" />';
+		if (login != entry['login']) {
+			html += '<a href="#" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+		}
+		html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
+		if (login != entry['login']) {
+			html += '</a>';
+		}
 		html += '</td>';
 		html += '<td><article>';
 		html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
@@ -103,7 +124,7 @@ function makeList(data) {
 		// colonne de suppression des abonnements
 		html += '<td class="tweetFriend">';
 		if (login != entry['login']) {
-			html += '<a href="javascript:removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+			html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
 		} else {
 			html += '&nbsp;';
 		}
@@ -112,7 +133,7 @@ function makeList(data) {
 		html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
 		html += '</tr>';
 
-		$('#tweetsList').append(html);
+		dest.append(html);
 	});
 
 //	statusTweets();
