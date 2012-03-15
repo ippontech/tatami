@@ -42,7 +42,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
+						<li class="close"><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout &times;</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
