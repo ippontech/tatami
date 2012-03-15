@@ -57,14 +57,14 @@
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span4">
-				<div class="tabbable tabs-below">
+				<div class="tabbable">
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
-					<ul class="nav nav-tabs">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="tab">Home</a></li>
-						<li><a href="#profileTabContent" data-toggle="tab">Profile</a></li>
+					<ul class="nav nav-pills">
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Home</a></li>
+						<li><a href="#profileTabContent" data-toggle="pill">Profile</a></li>
 					</ul>
 				</div>
 			</div>
