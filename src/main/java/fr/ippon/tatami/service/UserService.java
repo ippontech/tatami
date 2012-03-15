@@ -2,6 +2,7 @@ package fr.ippon.tatami.service;
 
 import javax.inject.Inject;
 
+import fr.ippon.tatami.repository.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -9,10 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.util.GravatarUtil;
 
 /**
@@ -36,6 +33,9 @@ public class UserService {
 
     @Inject
     private CounterRepository counterRepository;
+
+    @Inject
+    private TweetRepository tweetRepository;
 
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
@@ -78,10 +78,18 @@ public class UserService {
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(login);
         if (followedUser != null) {
-            friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
-            counterRepository.incrementFriendsCounter(currentUser.getLogin());
-            followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
-            counterRepository.incrementFollowersCounter(followedUser.getLogin());
+            boolean userAlreadyFollowed = false;
+            for (String alreadyFollowingTest : followerRepository.findFollowersForUser(login)) {
+                if (alreadyFollowingTest.equals(currentUser.getLogin())) {
+                    userAlreadyFollowed = true;
+                }
+            }
+            if (!userAlreadyFollowed) {
+                friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
+                counterRepository.incrementFriendsCounter(currentUser.getLogin());
+                followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
+                counterRepository.incrementFollowersCounter(followedUser.getLogin());
+            }
         } else {
             log.debug("Followed user does not exist : " + login);
         }
