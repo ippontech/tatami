@@ -1,18 +1,18 @@
 <form id="updateUserForm" onsubmit="return updateProfile();">
     <label>Email :</label> <input id="emailInput" name="email" type="email" required="required"
-                                  placeholder="Enter e-mail..."/>
+                                  placeholder="Enter e-mail..." class="input-xlarge"/>
     <fieldset>
         <label>First name :</label> <input id="firstNameInput" name="firstName" type="text"
-                                           placeholder="Enter first name..."/>
+                                  placeholder="Enter first name..." class="input-xlarge"/>
         <label>Last name :</label> <input id="lastNameInput" name="lastName" type="text"
-                                          placeholder="Enter last name..."/>
+                                  placeholder="Enter last name..." class="input-xlarge"/>
     </fieldset>
 
-    <input type="submit" class="btn btn-primary" />
+    <button type="submit" class="btn btn-primary">Change</button>
 </form>
 <hr/>
 <form class="form-search">
-	<input id="friendInput" type="text" class="input-medium search-query"
-		   placeholder="Type a friend login..."/>
-	<button type="button" class="btn" onclick="addFriend()">Follow</button>
+	<input id="friendInput" type="text" class="input-large search-query"
+		   placeholder="Type friend login..."/>
+	<button class="btn btn-inverse" onclick="addFriend()">Follow</button>
 </form>
