@@ -104,7 +104,7 @@
 			$('#homeTabContent').load('/assets/fragments/home.html', refreshHome);
 			$('#profileTabContent').load('/assets/fragments/profile.html');
         	// auto-refresh
-		    $('a[data-toggle="tab"]').on('show', function(e) {
+		    $('a[data-toggle="pill"]').on('show', function(e) {
 		    	if (e.target.hash == '#homeTabContent') {
 					refreshHome();
 		    	} else if (e.target.hash == '#profileTabContent') {

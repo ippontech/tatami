@@ -55,16 +55,16 @@
 	<form action="/tatami/authentication" method="post" class="well">
         <fieldset>
 			<label>Login :</label> <input id="j_username" name="j_username"
-				type="text" autofocus class="input-xlarge"
+				type="text" required="required" autofocus class="input-xlarge"
 				placeholder="Your login..." />
 			<label>Password :</label> <input id="j_password" name="j_password"
-				type="password" class="input-xlarge"
+				type="password" required="required" class="input-xlarge"
 				placeholder="Your password..." />
 		</fieldset>
 		<label class="checkbox">
 			<input type='checkbox'
-				name='_spring_security_remember_me' id="_spring_security_remember_me" value="true"
-            	checked="true" /> Remember for 30 days
+				name='_spring_security_remember_me' id="_spring_security_remember_me"
+				value="true" checked="true" /> Remember for 30 days
         </label>
 
 		<button type="submit" class="btn btn-primary">Authenticate</button>
