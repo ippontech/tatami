@@ -27,7 +27,12 @@ function refreshHome() {
 
 
 function tweet() {
-    $.ajax({
+	if ($("#tweetContent").val() == "") {
+		alert('Please type a message.');
+		return;
+	}
+
+	$.ajax({
         type: 'POST',
         url: "rest/tweets",
         contentType: "application/json",
@@ -47,6 +52,8 @@ var ws;
 
 function statusTweets() {
 	if (window.WebSocket) {
+		$('#refreshStatus').text("Connecting WebSocket...");
+
 		var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
 		ws.onopen = function(event) {
 			$('#refreshStatus').text("No new tweets");

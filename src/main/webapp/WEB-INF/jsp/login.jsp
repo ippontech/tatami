@@ -67,7 +67,7 @@
 				value="true" checked="true" /> Remember for 30 days
         </label>
 
-		<button type="submit" class="btn btn-primary">Authenticate</button>
+		<button type="submit" class="btn btn-success">Authenticate</button>
 	</form>
 
 	<!-- Le javascript
