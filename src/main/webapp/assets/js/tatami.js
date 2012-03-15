@@ -92,12 +92,14 @@ function makeList(data) {
 	$.each(data, function(entryIndex, entry) {
 		var html = '<tr valign="top">';
 		// identification de l'émetteur du message
-		html += '<td class="tweetPicture"><img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" /></td>';
-		html += '<td>';
+		html += '<td class="tweetPicture">';
+		html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" onclick="alert("hop!")" />';
+		html += '</td>';
+		html += '<td><article>';
 		html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
 		// contenu du message
 		html += entry['content'];
-		html += '</td>';
+		html += '</article></td>';
 		// colonne de suppression des abonnements
 		html += '<td class="tweetFriend">';
 		if (login != entry['login']) {

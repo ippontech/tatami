@@ -116,7 +116,7 @@
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets(true));
 		    // infinite scroll
 			$(window).scroll(function () { 
-				if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
 					incrementNbTweets();
 					listTweets(false);
 				}
