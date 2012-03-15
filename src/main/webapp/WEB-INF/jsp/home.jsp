@@ -70,7 +70,7 @@
 			</div>
 
 			<div class="span8">
-				<div class="tabbable tabs-right">
+				<div class="tabbable tabs-top">
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#view1Content" data-toggle="tab">Tweets</a></li>
 						<li><a id="friendTab" href="#view2Content" data-toggle="tab">Friend Tweets</a></li>

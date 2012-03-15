@@ -45,6 +45,17 @@ public class TweetController {
 		}
     }
 
+    @RequestMapping(value = "/rest/ownTweets/{login}",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTweets(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the own tweet list (" + login + ").");
+        }
+		return timelineService.getUserline(login, 20);
+    }
+
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
     public void postTweet(@RequestBody String content) {

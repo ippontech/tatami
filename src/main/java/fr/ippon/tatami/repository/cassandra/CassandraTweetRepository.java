@@ -90,6 +90,23 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
+    public Collection<String> getUserline(String login, int size) {
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(USERLINE_CF)
+                .setKey(login)
+                .setRange(null, null, true, size)
+                .execute()
+                .get();
+
+        Collection<String> tweetIds = new ArrayList<String>();
+        for (HColumn<String, String> column : result.getColumns()) {
+            tweetIds.add(column.getValue());
+        }
+        return tweetIds;
+    }
+
+    @Override
     @Cacheable("tweet-cache")
     public Tweet findTweetById(String tweetId) {
         if (log.isDebugEnabled()) {

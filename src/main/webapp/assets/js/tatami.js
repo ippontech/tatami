@@ -99,7 +99,7 @@ function listTweets(reset) {
 function listFriendTweets(friend) {
 	$.ajax({
 		type: 'GET',
-		url: "rest/tweets/" + friend + "/20",	//TODO extension dynamique aussi ?
+		url: "rest/ownTweets/" + friend,
 		dataType: "json",
 		success: function(data) {
 			makeList(data, $('#friendTweetsList'), true);
