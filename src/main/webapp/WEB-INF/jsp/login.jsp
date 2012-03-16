@@ -39,10 +39,6 @@
 						<li class="active"><a href="#"><i class="icon-lock icon-white"></i> Login</a></li>
 						<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
-					<ul class="nav pull-right">
-						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
-					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</div>
