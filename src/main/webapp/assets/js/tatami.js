@@ -117,21 +117,25 @@ function makeList(data, dest, friendListMode) {
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
+			var userline;
+			if (login != entry['login']) {
+				userline = '<a href="#" style="text-decoration:none" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+			}
+
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
 			html += '<td class="tweetPicture">';
-			if (login != entry['login']) {
-				html += '<a href="#" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
-			}
+			if (userline)	html += userline;
 			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
-			if (login != entry['login']) {
-				html += '</a>';
-			}
+			if (userline)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
-			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
+			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
+			if (userline)	html += userline;
+			html += '<em>@' + entry['login'] + '</em>';
+			if (userline)	html += '</a>';
 			// contenu du message
-			html += entry['content'];
+			html += '<br/>' + entry['content'];
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
