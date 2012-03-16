@@ -15,8 +15,10 @@ function refreshHome() {
 		url: "rest/users/" + login + "/",
 		dataType: "json",
 		success: function(data) {
-            $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
-			$("#firstName").text(data.firstName);
+			$("#picture").empty();
+            $("#picture").append('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
+
+            $("#firstName").text(data.firstName);
 			$("#lastName").text(data.lastName);
 			$("#tweetCount").text(data.tweetCount);
 			$("#friendsCount").text(data.friendsCount);
@@ -43,7 +45,7 @@ function tweet() {
             setTimeout(function() {
                         refreshHome();
                         listTweets(true);
-                    }, 1000);
+                    }, 1000);	//DEBUG wait for persistence consistency
         }
     });
 }
@@ -165,7 +167,7 @@ function addFriend() {
 		dataType: "json",
         success: function(data) {
             $("#friendInput").val("");
-            setTimeout(refreshHome(), 1000);
+            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
 }
@@ -190,7 +192,7 @@ function removeFriend(friend) {
 		data: friend,
 		dataType: "json",
         success: function(data) {
-            setTimeout(refreshHome(), 1000);
+            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
 }

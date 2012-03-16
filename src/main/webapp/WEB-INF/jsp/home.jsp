@@ -42,7 +42,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout &times;</a></li>
+						<li><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -62,7 +62,7 @@
 						<div class="tab-pane active" id="homeTabContent"></div>
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
-					<ul class="nav nav-pills">
+					<ul class="nav nav-pills pull-right">
 						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Home</a></li>
 						<li><a href="#profileTabContent" data-toggle="pill">Profile</a></li>
 					</ul>
