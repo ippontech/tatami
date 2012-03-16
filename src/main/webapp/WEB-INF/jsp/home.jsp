@@ -123,7 +123,7 @@
 				}
 			});
 
-			$('#view2Content').load('/assets/fragments/friendTimeline.html', listTweets(true));
+			$('#view2Content').load('/assets/fragments/friendTimeline.html');
 
 			//TODO #view3Content : graphique interactif
 		});
