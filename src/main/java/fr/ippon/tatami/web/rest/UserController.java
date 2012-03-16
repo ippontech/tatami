@@ -1,24 +1,16 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * REST controller for managing users.
@@ -91,25 +83,21 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/rest/tweeters",
+    @RequestMapping(value = "/rest/suggestions",
     		method = RequestMethod.GET,
     		produces = "application/json")
     @ResponseBody
-    public Collection<User> listTweeters() {
-        User currentUser = userService.getCurrentUser();
-        final String login = currentUser.getLogin();
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the last active tweeters list (except " + login + ").");
+    public Collection<User> suggestions() {
+        // TODO to implement
+        Collection<User> mock = new ArrayList<User>();
+        User jdubois = userService.getUserByLogin("jdubois");
+        if (jdubois != null) {
+            mock.add(jdubois);
         }
-        Collection<Tweet> tweets = timelineService.getTweetline(10);	// search depth
-
-        Map<String, User> users = new HashMap<String, User>();
-        for (Tweet tweet : tweets) {
-        	if (login.equals(tweet.getLogin()))	continue;
-
-        	users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
-        	if (users.size() == 3)	break;	// suggestions list limit
-		}
-		return users.values();
+        User tescolan = userService.getUserByLogin("tescolan");
+        if (tescolan != null) {
+            mock.add(tescolan);
+        }
+		return mock;
     }
 }

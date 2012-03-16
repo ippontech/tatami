@@ -1,19 +1,17 @@
 package fr.ippon.tatami.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Service;
-
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Manages the the timeline.
@@ -86,19 +84,6 @@ public class TimelineService {
 	        login = currentUser.getLogin();
     	}
         Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets);
-
-        return this.buildTweetsList(tweetIds);
-    }
-
-    /**
-     * The tweetline contains the system's whole tweets line
-     * 
-     * @param nbTweets
-     * 		the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
-     */
-    public Collection<Tweet> getTweetline(int nbTweets) {
-        Collection<String> tweetIds = tweetRepository.getTweetline(nbTweets);
 
         return this.buildTweetsList(tweetIds);
     }

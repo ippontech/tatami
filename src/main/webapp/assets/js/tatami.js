@@ -143,7 +143,7 @@ function makeTweetsList(data, dest, timelineMode) {
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
 			if (timelineMode && login != entry['login']) {
-				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
 			} else {
 				html += '&nbsp;';
 			}
@@ -159,13 +159,13 @@ function makeTweetsList(data, dest, timelineMode) {
 	});
 }
 
-function listTweeters() {
+function whoToFollow() {
 	$.ajax({
 		type: 'GET',
-		url: "rest/tweeters",
+		url: "rest/suggestions",
 		dataType: "json",
 		success: function(data) {
-			makeUsersList(data, $('#followersList'));
+			makeUsersList(data, $('#suggestions'));
 		}
 	});
 }
@@ -173,6 +173,7 @@ function listTweeters() {
 function makeUsersList(data, dest) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
+
 
 		$.each(data, function(entryIndex, entry) {
 			var userline;

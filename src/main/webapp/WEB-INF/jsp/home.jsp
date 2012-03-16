@@ -110,7 +110,7 @@
 			// left panel
 			$('#homeTabContent').load('/assets/fragments/home.html', refreshProfile());
 			$('#profileTabContent').load('/assets/fragments/profile.html');
-            $('#followUserContent').load('/assets/fragments/followUser.html', listTweeters());
+            $('#followUserContent').load('/assets/fragments/followUser.html', whoToFollow());
         	// auto-refresh
 		    $('a[data-toggle="pill"]').on('show', function(e) {
 		    	if (e.target.hash == '#homeTabContent') {
