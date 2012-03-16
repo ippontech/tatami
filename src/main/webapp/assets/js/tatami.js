@@ -97,7 +97,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#tweetsList'), false);
+			makeTweetsList(data, $('#tweetsList'), true);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -109,7 +109,7 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#userTweetsList'), true);
+			makeTweetsList(data, $('#userTweetsList'), false);
 			$('#userTab').tab('show');
 		}
 	});
@@ -142,10 +142,8 @@ function makeTweetsList(data, dest, timelineMode) {
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (login != entry['login']) {
-				if (timelineMode) {
-					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
-				}
+			if (timelineMode && login != entry['login']) {
+				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
 			} else {
 				html += '&nbsp;';
 			}
