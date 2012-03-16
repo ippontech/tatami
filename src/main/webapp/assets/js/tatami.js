@@ -187,10 +187,9 @@ function followUser(login) {
 }
 
 function removeFriend(friend) {
-	var url = "rest/users/" + login + "/removeFriend";
 	$.ajax({
 		type: 'POST',
-		url: url,
+		url: "rest/users/" + login + "/removeFriend",
 		contentType: "application/json",
 		data: friend,
 		dataType: "json",
