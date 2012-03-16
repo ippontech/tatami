@@ -77,7 +77,7 @@ function statusTweets() {
 	} else {
 		$('#refreshStatus').text("No WebSocket support enabled");
         setTimeout(function() {
-        	$('#refreshStatus').hide(300);
+        	$('#refreshStatus').fadeOut("slow");
         }, 4000);
 	}
 }
@@ -176,7 +176,11 @@ function followUser(friend) {
                 refreshProfile();
                 listTweets(true);
             }, 1000);	//DEBUG wait for persistence consistency
-        }
+        },
+    	error: function(xhr, ajaxOptions, thrownError) {
+    		$('#followStatus').fadeIn().text(thrownError);
+            setTimeout($('#followStatus').fadeOut("slow"), 4000);
+    	}
 	});
 
 	return false;
