@@ -41,13 +41,15 @@ function tweet() {
         data: $("#tweetContent").val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").val("");
+            $("#tweetContent").slideUp('fast').val("").slideDown('slow');
             setTimeout(function() {
                         refreshHome();
                         listTweets(true);
                     }, 1000);	//DEBUG wait for persistence consistency
         }
     });
+
+	return false;
 }
 
 var ws;
@@ -88,6 +90,7 @@ function listTweets(reset) {
 	}
 
 	if (reset)	resetNbTweets();
+	else		incrementNbTweets();
 
 	$.ajax({
 		type: 'GET',
@@ -113,25 +116,29 @@ function listFriendTweets(friend) {
 }
 
 function makeList(data, dest, friendListMode) {
-	dest.fadeTo(400, 0, function () {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
+			var userline;
+			if (login != entry['login']) {
+				userline = '<a href="#" style="text-decoration:none" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+			}
+
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
 			html += '<td class="tweetPicture">';
-			if (login != entry['login']) {
-				html += '<a href="#" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
-			}
+			if (userline)	html += userline;
 			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
-			if (login != entry['login']) {
-				html += '</a>';
-			}
+			if (userline)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
-			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
+			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
+			if (userline)	html += userline;
+			html += '<em>@' + entry['login'] + '</em>';
+			if (userline)	html += '</a>';
 			// contenu du message
-			html += entry['content'];
+			html += '<br/>' + entry['content'];
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
@@ -170,6 +177,8 @@ function addFriend() {
             setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
+
+	return false;
 }
 function addFriend(friend) {
 	var url = "rest/users/" + login + "/addFriend";

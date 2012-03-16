@@ -63,7 +63,7 @@
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
 					<ul class="nav nav-pills pull-right">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Home</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Dashboard</a></li>
 						<li><a href="#profileTabContent" data-toggle="pill">Profile</a></li>
 					</ul>
 				</div>
@@ -116,9 +116,8 @@
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets(true));
 //			statusTweets();
 		    // infinite scroll
-			$(window).scroll(function () { 
+			$(window).scroll(function() { 
 				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-					incrementNbTweets();
 					listTweets(false);
 				}
 			});
