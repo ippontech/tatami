@@ -31,7 +31,7 @@ function refreshHome() {
 function tweet() {
 	if ($("#tweetContent").val() == "") {
 		alert('Please type a message.');
-		return;
+		return false;
 	}
 
 	$.ajax({
