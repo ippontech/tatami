@@ -163,23 +163,23 @@ function makeList(data, dest, timelineMode) {
 	});
 }
 
-function followUser(login) {
+function followUser(loginToFollow) {
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login + "/followUser",
 		contentType: "application/json",
-		data: login ? login : $('#followUserInput').val(),
+		data: loginToFollow,
 		dataType: "json",
         success: function(data) {
             $("#followUserInput").val("");
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
-            }, 1000);	//DEBUG wait for persistence consistency
+            }, 500);	//DEBUG wait for persistence consistency
         },
     	error: function(xhr, ajaxOptions, thrownError) {
     		$('#followStatus').fadeIn("fast").text(thrownError);
-            setTimeout($('#followStatus').fadeOut("slow"), 4000);
+            setTimeout($('#followStatus').fadeOut("slow"), 2000);
     	}
 	});
 

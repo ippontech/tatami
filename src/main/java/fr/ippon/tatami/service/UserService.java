@@ -101,10 +101,18 @@ public class UserService {
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(login);
         if (followedUser != null) {
-            friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
-            counterRepository.decrementFriendsCounter(currentUser.getLogin());
-            followerRepository.removeFollower(followedUser.getLogin(), currentUser.getLogin());
-            counterRepository.decrementFollowersCounter(followedUser.getLogin());
+            boolean userAlreadyFollowed = false;
+            for (String alreadyFollowingTest : followerRepository.findFollowersForUser(currentUser.getLogin())) {
+                    if (alreadyFollowingTest.equals(login)) {
+                        userAlreadyFollowed = true;
+                    }
+                }
+            if (userAlreadyFollowed) {
+                friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
+                counterRepository.decrementFriendsCounter(currentUser.getLogin());
+                followerRepository.removeFollower(followedUser.getLogin(), currentUser.getLogin());
+                counterRepository.decrementFollowersCounter(followedUser.getLogin());
+            }
         } else {
             log.debug("Followed user does not exist : " + login);
         }

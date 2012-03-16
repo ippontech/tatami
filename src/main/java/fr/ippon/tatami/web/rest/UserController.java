@@ -73,7 +73,7 @@ public class UserController {
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);
         } else {
-            log.info("Cannot remove a friendLogin to another user");
+            log.info("Cannot remove a friend from another user");
         }
     }
 }
