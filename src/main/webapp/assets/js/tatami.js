@@ -88,6 +88,7 @@ function listTweets(reset) {
 	}
 
 	if (reset)	resetNbTweets();
+	else		incrementNbTweets();
 
 	$.ajax({
 		type: 'GET',
@@ -113,7 +114,7 @@ function listFriendTweets(friend) {
 }
 
 function makeList(data, dest, friendListMode) {
-	dest.fadeTo(400, 0, function () {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
