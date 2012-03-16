@@ -45,34 +45,35 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/rest/users/{login}/addFriend",
+    @RequestMapping(value = "/rest/users/{login}/followUser",
             method = RequestMethod.POST,
             consumes = "application/json")
-    public void addFriend(@PathVariable("login") String login, @RequestBody String friend) {
+    @ResponseBody
+    public void followUser(@PathVariable("login") String login, @RequestBody String loginToFollow) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to add friend : " + friend);
+            log.debug("REST request to follow user login : " + loginToFollow);
         }
         User currentUser = userService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
-            userService.followUser(friend);
+            userService.followUser(loginToFollow);
         } else {
-            log.info("Cannot add a friend to another user");
+            log.info("Cannot follow a user for another user");
         }
     }
 
     @RequestMapping(value = "/rest/users/{login}/removeFriend",
             method = RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json")
+            consumes = "application/json")
+    @ResponseBody
     public void removeFriend(@PathVariable("login") String login, @RequestBody String friend) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to remove friend : " + friend);
+            log.debug("REST request to remove friendLogin : " + friend);
         }
         User currentUser = userService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);
         } else {
-            log.info("Cannot remove a friend to another user");
+            log.info("Cannot remove a friendLogin to another user");
         }
     }
 }

@@ -68,17 +68,19 @@ public class UserService {
         userRepository.createUser(user);
     }
 
-    public void followUser(String login) {
+    public void followUser(String loginToFollow) {
         if (log.isDebugEnabled()) {
-            log.debug("Adding follower : " + login);
+            log.debug("Adding follower : " + loginToFollow);
         }
         User currentUser = getCurrentUser();
-        User followedUser = getUserByLogin(login);
-        if (followedUser != null && counterRepository.getFollowersCounter(currentUser.getLogin()) > 0) {
+        User followedUser = getUserByLogin(loginToFollow);
+        if (followedUser != null && !followedUser.equals(currentUser)) {
             boolean userAlreadyFollowed = false;
-            for (String alreadyFollowingTest : followerRepository.findFollowersForUser(login)) {
-                if (alreadyFollowingTest.equals(currentUser.getLogin())) {
-                    userAlreadyFollowed = true;
+            if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
+                for (String alreadyFollowingTest : followerRepository.findFollowersForUser(currentUser.getLogin())) {
+                    if (alreadyFollowingTest.equals(loginToFollow)) {
+                        userAlreadyFollowed = true;
+                    }
                 }
             }
             if (!userAlreadyFollowed) {
@@ -88,7 +90,7 @@ public class UserService {
                 counterRepository.incrementFollowersCounter(followedUser.getLogin());
             }
         } else {
-            log.debug("Followed user does not exist : " + login);
+            log.debug("Followed user does not exist : " + loginToFollow);
         }
     }
 

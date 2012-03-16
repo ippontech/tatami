@@ -67,18 +67,21 @@
 						<li><a href="#profileTabContent" data-toggle="pill">Profile</a></li>
 					</ul>
 				</div>
+                <div>
+                    <div class="alert alert-info" id="followUserContent"></div>
+                </div>
 			</div>
 
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#view1Content" data-toggle="tab">Tweets</a></li>
-						<li><a id="friendTab" href="#view2Content" data-toggle="tab">Friend Tweets</a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
+						<li><a id="friendTab" href="#userLinePanel" data-toggle="tab">Friend Tweets</a></li>
 						<li><a id="chartTab" href="#view3Content" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
-						<div class="tab-pane active" id="view1Content"></div>
-						<div class="tab-pane" id="view2Content"></div>
+						<div class="tab-pane active" id="timeLinePanel"></div>
+						<div class="tab-pane" id="userLinePanel"></div>
 						<div class="tab-pane" id="view3Content"></div>
 					</div>
 				</div>
@@ -101,20 +104,21 @@
 
 		$(document).ready(function() {
 			// left panel
-			$('#homeTabContent').load('/assets/fragments/home.html', refreshHome);
+			$('#homeTabContent').load('/assets/fragments/home.html', refreshProfile());
 			$('#profileTabContent').load('/assets/fragments/profile.html');
+            $('#followUserContent').load('/assets/fragments/followUser.html');
         	// auto-refresh
 		    $('a[data-toggle="pill"]').on('show', function(e) {
 		    	if (e.target.hash == '#homeTabContent') {
-					refreshHome();
+					refreshProfile();
 		    	} else if (e.target.hash == '#profileTabContent') {
 		        	displayProfile();
 		        }
 		    });
 
 		    // right panel
-			$('#view1Content').load('/assets/fragments/timeline.html', listTweets(true));
-//			statusTweets();
+			$('#timeLinePanel').load('/assets/fragments/timeline.html', listTweets(true));
+
 		    // infinite scroll
 			$(window).scroll(function() { 
 				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
@@ -122,7 +126,7 @@
 				}
 			});
 
-			$('#view2Content').load('/assets/fragments/friendTimeline.html');
+			$('#userLinePanel').load('/assets/fragments/friendTimeline.html');
 
 			//TODO #view3Content : interactive chart
 		});
