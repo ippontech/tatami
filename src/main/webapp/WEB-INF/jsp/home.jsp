@@ -49,23 +49,18 @@
 		</div>
 	</div>
 
-	<div class="alert alert-success">
-		<h1>Tweets view</h1>
-		<p>View your <a href="http://www.ippon.fr/" target="_blank">Ippon Technologies</a> tweets at a glance.</p>
-	</div>
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span4">
 				<div class="tabbable">
+                    <ul class="nav nav-tabs">
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
+						<li><a href="#profileTabContent" data-toggle="pill">Update Profile</a></li>
+					</ul>
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
-					<ul class="nav nav-pills pull-right">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Dashboard</a></li>
-						<li><a href="#profileTabContent" data-toggle="pill">Edit Profile</a></li>
-					</ul>
 				</div>
                 <div>
                     <div class="alert alert-info" id="followUserContent"></div>
