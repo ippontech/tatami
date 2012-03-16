@@ -70,14 +70,14 @@ public class UserService {
 
     public void followUser(String loginToFollow) {
         if (log.isDebugEnabled()) {
-            log.debug("Adding follower : " + loginToFollow);
+            log.debug("Adding friend : " + loginToFollow);
         }
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
             boolean userAlreadyFollowed = false;
             if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
-                for (String alreadyFollowingTest : followerRepository.findFollowersForUser(currentUser.getLogin())) {
+                for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(loginToFollow)) {
                         userAlreadyFollowed = true;
                     }
@@ -96,13 +96,13 @@ public class UserService {
 
     public void forgetUser(String login) {
         if (log.isDebugEnabled()) {
-            log.debug("Removing follower : " + login);
+            log.debug("Removing followed user : " + login);
         }
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(login);
         if (followedUser != null) {
             boolean userAlreadyFollowed = false;
-            for (String alreadyFollowingTest : followerRepository.findFollowersForUser(currentUser.getLogin())) {
+            for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(login)) {
                         userAlreadyFollowed = true;
                     }
