@@ -103,26 +103,26 @@ function listTweets(reset) {
 	});
 }
 
-function listFriendTweets(friend) {
+function listUserTweets(login) {
 	$.ajax({
 		type: 'GET',
-		url: "rest/ownTweets/" + friend,
+		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeList(data, $('#friendTweetsList'), true);
-			$('#friendTab').tab('show');
+			makeList(data, $('#userTweetsList'), true);
+			$('#userTab').tab('show');
 		}
 	});
 }
 
-function makeList(data, dest, friendListMode) {
+function makeList(data, dest, timelineMode) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (login != entry['login']) {
-				userline = '<a href="#" style="text-decoration:none" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+				userline = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' + entry['login'] + '\')" title="Show tweets">';
 			}
 
 			var html = '<tr valign="top">';
@@ -143,10 +143,10 @@ function makeList(data, dest, friendListMode) {
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
 			if (login != entry['login']) {
-				if (friendListMode) {
-					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
-				} else {
+				if (timelineMode) {
 					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+				} else {
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
 				}
 			} else {
 				html += '&nbsp;';
@@ -163,12 +163,12 @@ function makeList(data, dest, friendListMode) {
 	});
 }
 
-function followUser(friend) {
+function followUser(login) {
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login + "/followUser",
 		contentType: "application/json",
-		data: friend ? friend : $('#followUserInput').val(),
+		data: login ? login : $('#followUserInput').val(),
 		dataType: "json",
         success: function(data) {
             $("#followUserInput").val("");
@@ -178,7 +178,7 @@ function followUser(friend) {
             }, 1000);	//DEBUG wait for persistence consistency
         },
     	error: function(xhr, ajaxOptions, thrownError) {
-    		$('#followStatus').fadeIn().text(thrownError);
+    		$('#followStatus').fadeIn("fast").text(thrownError);
             setTimeout($('#followStatus').fadeOut("slow"), 4000);
     	}
 	});

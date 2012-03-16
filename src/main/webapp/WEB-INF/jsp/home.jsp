@@ -76,7 +76,7 @@
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
-						<li><a id="friendTab" href="#userLinePanel" data-toggle="tab">Friend Tweets</a></li>
+						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
 						<li><a id="chartTab" href="#view3Content" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
@@ -126,7 +126,7 @@
 				}
 			});
 
-			$('#userLinePanel').load('/assets/fragments/friendTimeline.html');
+			$('#userLinePanel').load('/assets/fragments/userline.html');
 
 			//TODO #view3Content : interactive chart
 		});
