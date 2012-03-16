@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>TaTaMi - login</title>
+	<title>Tatami - Authentication</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -22,7 +22,7 @@
 	<![endif]-->
 
 	<!-- Le fav and touch icons -->
-	<link rel="shortcut icon" href="../images/ippon.ico">
+	<link rel="shortcut icon" href="../assets/img/ippon.ico">
   </head>
 
   <body>
@@ -34,7 +34,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#">TaTaMi</a>
+				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png"> Tatami</a>
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class="active"><a href="#"><i class="icon-lock icon-white"></i> Login</a></li>
