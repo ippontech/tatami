@@ -9,7 +9,7 @@ function incrementNbTweets() {
 }
 
 
-function refreshHome() {
+function refreshProfile() {
 	$.ajax({
 		type: 'GET',
 		url: "rest/users/" + login + "/",
@@ -41,9 +41,9 @@ function tweet() {
         data: $("#tweetContent").val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").slideUp('slow').val("").slideDown('fast');
+            $("#tweetContent").slideUp().val("").slideDown('fast');
             setTimeout(function() {
-                        refreshHome();
+                        refreshProfile();
                         listTweets(true);
                     }, 1000);	//DEBUG wait for persistence consistency
         }
@@ -144,7 +144,7 @@ function makeList(data, dest, friendListMode) {
 			html += '<td class="tweetFriend">';
 			if (login != entry['login']) {
 				if (friendListMode) {
-					html += '<a href="#" onclick="addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
 				} else {
 					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
 				}
@@ -164,31 +164,17 @@ function makeList(data, dest, friendListMode) {
 }
 
 
-function addFriend() {
-	var url = "rest/users/" + login + "/addFriend";
+function followUser(loginToFollow) {
 	$.ajax({
 		type: 'POST',
-		url: url,
+		url: "rest/users/" + login + "/followUser",
 		contentType: "application/json",
-		data: $('#friendInput').val(),
+		data: loginToFollow,
 		dataType: "json",
         success: function(data) {
-            $("#friendInput").val("");
-            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
+            $("#followUserInput").val("");
+            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
-	});
-
-	return false;
-}
-function addFriend(friend) {
-	var url = "rest/users/" + login + "/addFriend";
-	$.ajax({
-		type: 'POST',
-		url: url,
-		contentType: "application/json",
-		data: friend,
-		dataType: "json",
-        success: alert('Friend added.')
 	});
 }
 
@@ -201,7 +187,7 @@ function removeFriend(friend) {
 		data: friend,
 		dataType: "json",
         success: function(data) {
-            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
+            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
 	});
 }
