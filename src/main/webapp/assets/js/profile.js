@@ -22,7 +22,9 @@ function updateProfile() {
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
-		success: $('#defaultTab').tab('show')	// retour à l'onglet principal
+		success: setTimeout(function() {
+				$('#defaultTab').tab('show');	// retour à l'onglet principal
+			}, 1000)	//DEBUG wait for persistence consistency
 	});
 	return false;	// empêcher rafraîchissement page
 }

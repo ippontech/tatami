@@ -43,7 +43,7 @@ function tweet() {
             setTimeout(function() {
                         refreshHome();
                         listTweets(true);
-                    }, 1000);
+                    }, 1000);	//DEBUG wait for persistence consistency
         }
     });
 }
@@ -165,7 +165,7 @@ function addFriend() {
 		dataType: "json",
         success: function(data) {
             $("#friendInput").val("");
-            setTimeout(refreshHome(), 1000);
+            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
 }
@@ -190,7 +190,7 @@ function removeFriend(friend) {
 		data: friend,
 		dataType: "json",
         success: function(data) {
-            setTimeout(refreshHome(), 1000);
+            setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
 }
