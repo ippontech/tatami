@@ -121,7 +121,7 @@ function makeTweetsList(data, dest, timelineMode) {
 
 		$.each(data, function(entryIndex, entry) {
 			var userline;
-			if (login != entry['login']) {
+			if (timelineMode && login != entry['login']) {
 				userline = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' + entry['login'] + '\')" title="Show tweets">';
 			}
 
@@ -145,8 +145,6 @@ function makeTweetsList(data, dest, timelineMode) {
 			if (login != entry['login']) {
 				if (timelineMode) {
 					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
-				} else {
-					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
 				}
 			} else {
 				html += '&nbsp;';
@@ -186,14 +184,15 @@ function makeUsersList(data, dest) {
 
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
-			html += '<td style="width: 34px; ">';
+			html += '<td>';
 			if (userline)	html += userline;
-			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
+			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ';
+			html += '<em>@' + entry['login'] + '</em>';
 			if (userline)	html += '</a>';
 			html += '</td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (login != entry['login']) {
+			if (userline) {
 				html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
 			} else {
 				html += '&nbsp;';
