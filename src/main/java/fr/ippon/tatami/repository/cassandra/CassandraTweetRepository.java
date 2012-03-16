@@ -1,6 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.TWEET_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
@@ -95,6 +96,22 @@ public class CassandraTweetRepository implements TweetRepository {
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(USERLINE_CF)
                 .setKey(login)
+                .setRange(null, null, true, size)
+                .execute()
+                .get();
+
+        Collection<String> tweetIds = new ArrayList<String>();
+        for (HColumn<String, String> column : result.getColumns()) {
+            tweetIds.add(column.getValue());
+        }
+        return tweetIds;
+    }
+
+    @Override
+    public Collection<String> getTweetline(int size) {
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(TWEET_CF)
                 .setRange(null, null, true, size)
                 .execute()
                 .get();

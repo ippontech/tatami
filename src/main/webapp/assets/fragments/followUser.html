@@ -1,7 +1,21 @@
-<form class="form-search" onsubmit="return followUser($('#followUserInput').val());">
-    <strong>Follow a user...</strong><br/>
-	<input id="followUserInput" type="text" class="input-large search-query"
-		   placeholder="Type the login to follow..." required="required"/>
-	<button type="submit" class="btn btn-primary">Follow</button>
-</form>
-<div class="alert" id="followStatus" hidden="hidden"></div>
+<section id="followline">
+	<header>
+    	<strong>Follow another user...</strong>
+
+		<form class="form-search" onsubmit="return followUser(($('#followUserInput').val());">
+			<input id="followUserInput" type="text" class="input-large search-query"
+				   placeholder="Type the login to follow..." required="required"/>
+			<button type="submit" class="btn btn-primary">Follow</button>
+		</form>
+		<div class="alert" id="followStatus" hidden="hidden"></div>
+	</header>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th colspan="2">Suggested tweeters list</th>
+			</tr>
+		</thead>
+		<tbody id="followersList"></tbody>
+	</table>
+</section>

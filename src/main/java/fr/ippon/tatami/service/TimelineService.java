@@ -90,6 +90,19 @@ public class TimelineService {
         return this.buildTweetsList(tweetIds);
     }
 
+    /**
+     * The tweetline contains the system's whole tweets line
+     * 
+     * @param nbTweets
+     * 		the number of tweets to retrieve, starting from most recent ones
+     * @return a tweets list
+     */
+    public Collection<Tweet> getTweetline(int nbTweets) {
+        Collection<String> tweetIds = tweetRepository.getTweetline(nbTweets);
+
+        return this.buildTweetsList(tweetIds);
+    }
+
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
 		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweedId : tweetIds) {

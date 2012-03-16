@@ -97,7 +97,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeList(data, $('#tweetsList'), false);
+			makeTweetsList(data, $('#tweetsList'), false);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -109,13 +109,13 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeList(data, $('#userTweetsList'), true);
+			makeTweetsList(data, $('#userTweetsList'), true);
 			$('#userTab').tab('show');
 		}
 	});
 }
 
-function makeList(data, dest, timelineMode) {
+function makeTweetsList(data, dest, timelineMode) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
@@ -154,6 +154,51 @@ function makeList(data, dest, timelineMode) {
 			html += '</td>';
 			// temps écoulé depuis la publication du message
 			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
+			html += '</tr>';
+	
+			dest.append(html);
+		});
+
+		dest.fadeTo(400, 1);
+	});
+}
+
+function listTweeters() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/tweeters",
+		dataType: "json",
+		success: function(data) {
+			makeUsersList(data, $('#followersList'));
+		}
+	});
+}
+
+function makeUsersList(data, dest) {
+	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+		dest.empty();
+
+		$.each(data, function(entryIndex, entry) {
+			var userline;
+			if (login != entry['login']) {
+				userline = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+			}
+
+			var html = '<tr valign="top">';
+			// identification de l'émetteur du message
+			html += '<td style="width: 34px; ">';
+			if (userline)	html += userline;
+			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
+			if (userline)	html += '</a>';
+			html += '</td>';
+			// colonne de suppression des abonnements
+			html += '<td class="tweetFriend">';
+			if (login != entry['login']) {
+				html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+			} else {
+				html += '&nbsp;';
+			}
+			html += '</td>';
 			html += '</tr>';
 	
 			dest.append(html);

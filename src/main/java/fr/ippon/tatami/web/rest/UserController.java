@@ -1,13 +1,24 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.UserService;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing users.
@@ -18,6 +29,9 @@ import javax.inject.Inject;
 public class UserController {
 
     private final Log log = LogFactory.getLog(UserController.class);
+
+    @Inject
+    private TimelineService timelineService;
 
     @Inject
     private UserService userService;
@@ -75,5 +89,27 @@ public class UserController {
         } else {
             log.info("Cannot remove a friend from another user");
         }
+    }
+
+    @RequestMapping(value = "/rest/tweeters",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<User> listTweeters() {
+        User currentUser = userService.getCurrentUser();
+        final String login = currentUser.getLogin();
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the last active tweeters list (except " + login + ").");
+        }
+        Collection<Tweet> tweets = timelineService.getTweetline(10);	// search depth
+
+        Map<String, User> users = new HashMap<String, User>();
+        for (Tweet tweet : tweets) {
+        	if (login.equals(tweet.getLogin()))	continue;
+
+        	users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
+        	if (users.size() == 3)	break;	// suggestions list limit
+		}
+		return users.values();
     }
 }
