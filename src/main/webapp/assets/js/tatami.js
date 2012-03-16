@@ -51,6 +51,8 @@ function tweet() {
 var ws;
 
 function statusTweets() {
+	if ($('#refreshStatus').is(':hidden'))	$('#refreshStatus').fadeIn();
+
 	if (window.WebSocket) {
 		$('#refreshStatus').text("Connecting WebSocket...");
 
@@ -109,6 +111,7 @@ function listFriendTweets(friend) {
 }
 
 function makeList(data, dest, friendListMode) {
+	dest.fadeOut();
 	dest.empty();
 
 	$.each(data, function(entryIndex, entry) {
@@ -146,9 +149,7 @@ function makeList(data, dest, friendListMode) {
 
 		dest.append(html);
 	});
-
-//	statusTweets();
-	$('#refreshStatus').hide();	//DEBUG supprimer si activation status ci-dessus
+	dest.fadeIn();
 }
 
 

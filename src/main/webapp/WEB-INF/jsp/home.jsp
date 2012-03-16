@@ -114,6 +114,7 @@
 
 		    // right panel
 			$('#view1Content').load('/assets/fragments/timeline.html', listTweets(true));
+//			statusTweets();
 		    // infinite scroll
 			$(window).scroll(function () { 
 				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
