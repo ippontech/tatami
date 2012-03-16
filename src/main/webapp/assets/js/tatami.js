@@ -31,7 +31,7 @@ function refreshHome() {
 function tweet() {
 	if ($("#tweetContent").val() == "") {
 		alert('Please type a message.');
-		return;
+		return false;
 	}
 
 	$.ajax({
@@ -41,7 +41,7 @@ function tweet() {
         data: $("#tweetContent").val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").slideUp('fast').val("").slideDown('slow');
+            $("#tweetContent").slideUp('slow').val("").slideDown('fast');
             setTimeout(function() {
                         refreshHome();
                         listTweets(true);
