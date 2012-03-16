@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
@@ -42,19 +43,16 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="close"><a href="/tatami/logout">logout &times;</a></li>
+						<li><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</div>
 	</div>
 
-    <div class="alert alert-success">
-        <h1>About TaTaMi</h1>
-    </div>
     <div class="container">
         <div class="span12">
-            <h2>Presentation</h2>
+            <h1>Presentation</h1>
 
             <p>Tatami is a twitter-like application, for internal use inside a company.
             </p>
@@ -82,6 +80,14 @@
                 limitations under the License.</p>
         </div>
     </div>
+    <br/><br/><br/><br/><br/><br/>
+    <footer>
+        <div class="span12" style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
+            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
+            <a href="http://blog.ippon.fr">Blog Ippon</a> |
+            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+        </div>
+    </footer>
 
     <!-- Le javascript
      ================================================== -->

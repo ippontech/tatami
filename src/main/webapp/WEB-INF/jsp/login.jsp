@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
@@ -44,28 +45,37 @@
 		</div>
 	</div>
 
-	<div class="alert alert-success">
-		<h1>Authentication</h1>
-	</div>
+    <div class="container">
+        <div class="span4 offset4">
+            <h1>Authentication</h1>
 
-	<form action="/tatami/authentication" method="post" class="well">
-        <fieldset>
-			<label>Login :</label> <input id="j_username" name="j_username"
-				type="text" required="required" autofocus class="input-xlarge"
-				placeholder="Your login..." />
-			<label>Password :</label> <input id="j_password" name="j_password"
-				type="password" required="required" class="input-xlarge"
-				placeholder="Your password..." />
-		</fieldset>
-		<label class="checkbox">
-			<input type='checkbox'
-				name='_spring_security_remember_me' id="_spring_security_remember_me"
-				value="true" checked="true" /> Remember for 30 days
-        </label>
+            <form action="/tatami/authentication" method="post" class="well">
+                <fieldset>
+                    <label>Login :</label> <input id="j_username" name="j_username"
+                                                  type="text" required="required" autofocus class="input-xlarge"
+                                                  placeholder="Your login..."/>
+                    <label>Password :</label> <input id="j_password" name="j_password"
+                                                     type="password" required="required" class="input-xlarge"
+                                                     placeholder="Your password..."/>
+                </fieldset>
+                <label class="checkbox">
+                    <input type='checkbox'
+                           name='_spring_security_remember_me' id="_spring_security_remember_me"
+                           value="true" checked="true"/> Remember for 30 days
+                </label>
 
-		<button type="submit" class="btn btn-success">Authenticate</button>
-	</form>
-
+                <button type="submit" class="btn btn-success">Authenticate</button>
+            </form>
+        </div>
+    </div>
+    <br/><br/><br/>
+    <footer>
+        <div class="span12" style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
+            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
+            <a href="http://blog.ippon.fr">Blog Ippon</a> |
+            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+        </div>
+    </footer>
 	<!-- Le javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
@@ -83,6 +84,14 @@
 			</div>
 		</div>
 	</div>
+
+    <footer>
+        <div class="span12" style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
+            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
+            <a href="http://blog.ippon.fr">Blog Ippon</a> |
+            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+        </div>
+    </footer>
 
 	<!-- Le javascript
 	================================================== -->
