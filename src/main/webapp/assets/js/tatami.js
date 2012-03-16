@@ -163,19 +163,23 @@ function makeList(data, dest, friendListMode) {
 	});
 }
 
-
-function followUser(loginToFollow) {
+function followUser(friend) {
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login + "/followUser",
 		contentType: "application/json",
-		data: loginToFollow,
+		data: friend ? friend : $('#followUserInput').val(),
 		dataType: "json",
         success: function(data) {
             $("#followUserInput").val("");
-            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+            setTimeout(function() {
+                refreshProfile();
+                listTweets(true);
+            }, 1000);	//DEBUG wait for persistence consistency
         }
 	});
+
+	return false;
 }
 
 function removeFriend(friend) {
