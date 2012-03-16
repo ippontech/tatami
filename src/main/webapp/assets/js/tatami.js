@@ -111,45 +111,47 @@ function listFriendTweets(friend) {
 }
 
 function makeList(data, dest, friendListMode) {
-	dest.fadeOut();
-	dest.empty();
+	dest.fadeTo(400, 0, function () {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+		dest.empty();
 
-	$.each(data, function(entryIndex, entry) {
-		var html = '<tr valign="top">';
-		// identification de l'émetteur du message
-		html += '<td class="tweetPicture">';
-		if (login != entry['login']) {
-			html += '<a href="#" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
-		}
-		html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
-		if (login != entry['login']) {
-			html += '</a>';
-		}
-		html += '</td>';
-		html += '<td><article>';
-		html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
-		// contenu du message
-		html += entry['content'];
-		html += '</article></td>';
-		// colonne de suppression des abonnements
-		html += '<td class="tweetFriend">';
-		if (login != entry['login']) {
-			if (friendListMode) {
-				html += '<a href="#" onclick="addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
-			} else {
-				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+		$.each(data, function(entryIndex, entry) {
+			var html = '<tr valign="top">';
+			// identification de l'émetteur du message
+			html += '<td class="tweetPicture">';
+			if (login != entry['login']) {
+				html += '<a href="#" onclick="listFriendTweets(\'' + entry['login'] + '\')" title="Show tweets">';
 			}
-		} else {
-			html += '&nbsp;';
-		}
-		html += '</td>';
-		// temps écoulé depuis la publication du message
-		html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
-		html += '</tr>';
+			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
+			if (login != entry['login']) {
+				html += '</a>';
+			}
+			html += '</td>';
+			html += '<td><article>';
+			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;<em>@' + entry['login'] + '</em><br/>';
+			// contenu du message
+			html += entry['content'];
+			html += '</article></td>';
+			// colonne de suppression des abonnements
+			html += '<td class="tweetFriend">';
+			if (login != entry['login']) {
+				if (friendListMode) {
+					html += '<a href="#" onclick="addFriend(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+				} else {
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Forget"><i class="icon-star-empty" /></a>';
+				}
+			} else {
+				html += '&nbsp;';
+			}
+			html += '</td>';
+			// temps écoulé depuis la publication du message
+			html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
+			html += '</tr>';
+	
+			dest.append(html);
+		});
 
-		dest.append(html);
+		dest.fadeTo(400, 1);
 	});
-	dest.fadeIn();
 }
 
 

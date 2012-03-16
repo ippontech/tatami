@@ -125,7 +125,7 @@
 
 			$('#view2Content').load('/assets/fragments/friendTimeline.html');
 
-			//TODO #view3Content : graphique interactif
+			//TODO #view3Content : interactive chart
 		});
 	</script>
   </body>
