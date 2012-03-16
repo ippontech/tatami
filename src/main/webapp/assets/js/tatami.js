@@ -15,8 +15,10 @@ function refreshHome() {
 		url: "rest/users/" + login + "/",
 		dataType: "json",
 		success: function(data) {
-            $("#picture").replaceWith('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
-			$("#firstName").text(data.firstName);
+			$("#picture").empty();
+            $("#picture").append('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
+
+            $("#firstName").text(data.firstName);
 			$("#lastName").text(data.lastName);
 			$("#tweetCount").text(data.tweetCount);
 			$("#friendsCount").text(data.friendsCount);
