@@ -41,13 +41,15 @@ function tweet() {
         data: $("#tweetContent").val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").val("");
+            $("#tweetContent").slideUp('fast').val("").slideDown('slow');
             setTimeout(function() {
                         refreshHome();
                         listTweets(true);
                     }, 1000);	//DEBUG wait for persistence consistency
         }
     });
+
+	return false;
 }
 
 var ws;
@@ -175,6 +177,8 @@ function addFriend() {
             setTimeout(refreshHome, 1000);	//DEBUG wait for persistence consistency
         }
 	});
+
+	return false;
 }
 function addFriend(friend) {
 	var url = "rest/users/" + login + "/addFriend";
