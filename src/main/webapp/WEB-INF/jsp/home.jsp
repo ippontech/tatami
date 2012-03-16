@@ -63,7 +63,7 @@
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
 					<ul class="nav nav-pills pull-right">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Home</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Dashboard</a></li>
 						<li><a href="#profileTabContent" data-toggle="pill">Profile</a></li>
 					</ul>
 				</div>
