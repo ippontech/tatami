@@ -15,7 +15,6 @@ $.fn.serializeObject = function() {
 };
 
 function updateProfile() {
-	//TODO le service REST doit faire un appel SYNCHRONE à Cassandra !
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login,
@@ -23,10 +22,10 @@ function updateProfile() {
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
 		success: setTimeout(function() {
-				$('#defaultTab').tab('show');	// retour à l'onglet principal
+				$('#defaultTab').tab('show');
 			}, 1000)	//DEBUG wait for persistence consistency
 	});
-	return false;	// empêcher rafraîchissement page
+	return false;	// no page refresh
 }
 
 function displayProfile() {

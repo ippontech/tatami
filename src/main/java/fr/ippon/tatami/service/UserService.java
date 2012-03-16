@@ -74,7 +74,7 @@ public class UserService {
         }
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(login);
-        if (followedUser != null) {
+        if (followedUser != null && counterRepository.getFollowersCounter(currentUser.getLogin()) > 0) {
             boolean userAlreadyFollowed = false;
             for (String alreadyFollowingTest : followerRepository.findFollowersForUser(login)) {
                 if (alreadyFollowingTest.equals(currentUser.getLogin())) {
