@@ -15,8 +15,8 @@ function refreshHome() {
 		url: "rest/users/" + login + "/",
 		dataType: "json",
 		success: function(data) {
-			$("#picture").empty();
-            $("#picture").append('<img src="http://www.gravatar.com/avatar/' + data.gravatar + '?s=64" width="64px" />');
+			$("#picture").parent().css('width', '68px');	// optional
+            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
 
             $("#firstName").text(data.firstName);
 			$("#lastName").text(data.lastName);
@@ -127,9 +127,9 @@ function makeList(data, dest, friendListMode) {
 
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
-			html += '<td class="tweetPicture">';
+			html += '<td style="width: 34px; ">';
 			if (userline)	html += userline;
-			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=64" width="64px" />';
+			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
 			if (userline)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
@@ -153,7 +153,7 @@ function makeList(data, dest, friendListMode) {
 			}
 			html += '</td>';
 			// temps écoulé depuis la publication du message
-			html += '<td class="tweetDate">' + entry['prettyPrintTweetDate'] + '</td>';
+			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
 			html += '</tr>';
 	
 			dest.append(html);

@@ -1,15 +1,12 @@
 #tweetsList {
   color:#000000;
 }
-.tweetPicture {
-    width: 68;
-}
-.tweetPicture img {
-    height: 64;
-    width: 64;
+#friendTweetsList {
+  color:#000000;
 }
 .tweetFriend {
     width: 24;
-}.tweetDate {
+}
+.tweetDate {
     width: 68;
 }
