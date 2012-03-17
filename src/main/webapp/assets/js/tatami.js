@@ -82,6 +82,9 @@ function statusTweets() {
 	}
 }
 
+var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
+var userlineREG = new RegExp("LOGIN", "g");
+
 function listTweets(reset) {
 	if (ws) {
 		// quand l'utilisateur prend la décision de rafraîchir sa timeline,
@@ -115,6 +118,9 @@ function listUserTweets(login) {
 	});
 }
 
+var userrefREG = new RegExp("@(\\w+)", "g");
+var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
+
 function makeTweetsList(data, dest, timelineMode) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
@@ -122,7 +128,7 @@ function makeTweetsList(data, dest, timelineMode) {
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (timelineMode && login != entry['login']) {
-				userline = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+				userline = userlineURL.replace(userlineREG, entry['login']);
 			}
 
 			var html = '<tr valign="top">';
@@ -138,7 +144,7 @@ function makeTweetsList(data, dest, timelineMode) {
 			html += '<em>@' + entry['login'] + '</em>';
 			if (userline)	html += '</a>';
 			// contenu du message
-			html += '<br/>' + entry['content'];
+			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
@@ -178,7 +184,7 @@ function makeUsersList(data, dest) {
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (login != entry['login']) {
-				userline = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' + entry['login'] + '\')" title="Show tweets">';
+				userline = userlineURL.replace(userlineREG, entry['login']);
 			}
 
 			var html = '<tr valign="top">';
