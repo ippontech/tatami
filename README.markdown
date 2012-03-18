@@ -8,9 +8,11 @@ Tatami is a twitter-like application, for internal use inside a company.
 
 Tatami is made with the following technologies :
 
-- Apache Cassandra
-- The Spring Framework
+- [Apache Cassandra](http://cassandra.apache.org/)
+- [The Spring Framework](http://www.springsource.org/)
 - HTML5 and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+
+Tatami is managed with [Pivotal Tracker](https://www.pivotaltracker.com/projects/505131).
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
@@ -22,7 +24,8 @@ Installation
 - Run Jetty from Maven : mvn jetty:run
 - Connect to the application at http://127.0.0.1:8080
 
-The default users are jdubois/password and tescolan/password.
+The default users are "jdubois/password" and "tescolan/password", you can check or modify the
+Spring Security configuration at /META-INF/spring/applicationContext-security.xml
 
 License
 -------
