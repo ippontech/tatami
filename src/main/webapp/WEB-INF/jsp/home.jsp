@@ -101,6 +101,7 @@
 
 	<script src="/assets/js/tatami.js"></script>
 	<script src="/assets/js/profile.js"></script>
+	<script src="/assets/js/shortcut.js"></script>
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
@@ -122,6 +123,10 @@
 
 		    // right panel
 			$('#timeLinePanel').load('/assets/fragments/timeline.html', listTweets(true));
+		    // browser's refresh shortcut override
+			shortcut.add("Ctrl+R", function() {
+				listTweets(true);
+			});
 
 		    // infinite scroll
 			$(window).scroll(function() { 
