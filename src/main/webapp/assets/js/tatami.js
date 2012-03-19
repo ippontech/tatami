@@ -52,45 +52,10 @@ function tweet() {
 	return false;
 }
 
-var ws;
-
-function statusTweets() {
-	if ($('#refreshStatus').is(':hidden'))	$('#refreshStatus').fadeIn();
-
-	if (window.WebSocket) {
-		$('#refreshStatus').text("Connecting WebSocket...");
-
-		var ws = new WebSocket("ws://localhost:8080/ws/tweets");	//FIXME URL relative
-		ws.onopen = function(event) {
-			$('#refreshStatus').text("No new tweets");
-			// à la création, le service initialise un compteur correspondant au nb de tweets de la timeline
-		}
-		ws.onmessage = function(event) {
-			// pour chaque incrément interne de ce nb de tweets, un message est envoyé au client (nous)
-			$('#refreshStatus').text(event.data);
-		}
-
-		ws.onclose = function(event) {
-			statusTweets();	// ... réouverture du service en boucle
-		}
-
-	} else {
-		$('#refreshStatus').text("No WebSocket support enabled");
-        setTimeout(function() {
-        	$('#refreshStatus').fadeOut("slow");
-        }, 4000);
-	}
-}
-
 var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
 var userlineREG = new RegExp("LOGIN", "g");
 
 function listTweets(reset) {
-	if (ws) {
-		// quand l'utilisateur prend la décision de rafraîchir sa timeline,
-		// on ferme la connexion pour relancer le polling...
-		ws.close();
-	}
 
 	if (reset)	resetNbTweets();
 	else		incrementNbTweets();
