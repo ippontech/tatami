@@ -12,8 +12,6 @@ Tatami is made with the following technologies :
 - [The Spring Framework](http://www.springsource.org/)
 - HTML5 and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 
-Tatami is managed with [Pivotal Tracker](https://www.pivotaltracker.com/projects/505131).
-
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
 Installation
