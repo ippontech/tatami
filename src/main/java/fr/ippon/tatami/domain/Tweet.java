@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,7 +25,6 @@ import org.joda.time.format.PeriodFormatterBuilder;
 @Entity
 @Table(name = "Tweet")
 @Data
-@Builder
 @EqualsAndHashCode(of = "tweetId")
 public class Tweet {
 

@@ -1,7 +1,5 @@
 package fr.ippon.tatami.security;
 
-import static fr.ippon.tatami.domain.User.user;
-
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -33,12 +31,11 @@ public class TatamiAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         super.onAuthenticationSuccess(request, response, authentication);
         String login = authentication.getName();
         if (userService.getUserByLogin(login) == null) {
-            User user = user() //
-                    .login(login) //
-                    .firstName(login) //
-                    .lastName("") //
-                    .email(login + "@ippon.fr") //
-                    .build();
+            User user = new User();
+            user.setLogin(login);
+            user.setFirstName(login);
+            user.setLastName("");
+            user.setEmail(login + "@ippon.fr");
             userService.createUser(user);
         }
     }
