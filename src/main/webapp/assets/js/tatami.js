@@ -212,7 +212,7 @@ function followUser(loginToFollow) {
         },
     	error: function(xhr, ajaxOptions, thrownError) {
     		$('#followStatus').fadeIn("fast").text(thrownError);
-            setTimeout($('#followStatus').fadeOut("slow"), 2000);
+            setTimeout($('#followStatus').fadeOut("slow"), 5000);
     	}
 	});
 
