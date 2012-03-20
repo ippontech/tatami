@@ -3,6 +3,9 @@ package fr.ippon.tatami.web.rest;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -106,7 +109,7 @@ public class UserController {
         exceptions.add(login);
 
         String date = null;	//TODO parameterized version
-        Collection<Tweet> tweets = timelineService.getDayline(date);
+        Collection<Tweet> tweets = timelineService.getDayline(date, 0);
 		Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
         	if (exceptions.contains(tweet.getLogin()))	continue;
@@ -115,5 +118,38 @@ public class UserController {
         	if (users.size() == 3)	break;	// suggestions list limit
 		}
 		return users.values();
+    }
+
+    @RequestMapping(value = "/rest/tweetStats",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<String> tweetStats() {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the users stats.");
+        }
+
+        String date = null;	//TODO parameterized version
+		Map<String, Integer> users = new HashMap<String, Integer>();
+        Collection<Tweet> tweets;
+        int pos = 0;
+        do {
+        	tweets = timelineService.getDayline(date, pos);
+            for (Tweet tweet : tweets) {
+            	Integer count = users.get(tweet.getLogin());
+            	if (count != null) {
+            		count = count.intValue() + 1;
+            	} else {
+            		count = 1;
+            	}
+        		users.put(tweet.getLogin(), count);
+    		}
+        } while (!tweets.isEmpty());
+
+        Set<String> stats = new TreeSet<String>();
+        for (Entry<String, Integer> entry : users.entrySet()) {
+        	stats.add("UserStat{login='" + entry.getKey() + "', tweetsCount='" + entry.getValue() + "'}");
+        }
+		return stats;
     }
 }

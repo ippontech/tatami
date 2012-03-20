@@ -78,12 +78,12 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    public Collection<String> getDayline(String date) {
+    public Collection<String> getDayline(String date, int start) {
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DAYLINE_CF)
                 .setKey(date)
-                .setRange(null, null, true, 100)
+                .setRange(String.valueOf(start), String.valueOf(start + 100), false, 100)
                 .execute()
                 .get();
 

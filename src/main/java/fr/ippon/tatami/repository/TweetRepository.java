@@ -20,7 +20,7 @@ public interface TweetRepository {
     void addTweetToTimeline(String login, Tweet tweet);
 
     /** a day's tweets */
-    Collection<String> getDayline(String date);
+    Collection<String> getDayline(String date, int pos);
 
     /** a user's and his followed users tweets */
     Collection<String> getTimeline(String login, int size);

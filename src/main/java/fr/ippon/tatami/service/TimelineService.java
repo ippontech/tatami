@@ -62,13 +62,15 @@ public class TimelineService {
      * 
      * @param date
      * 		the day to retrieve the tweets of
+     * @param pos
+     * 		the start position for list paging
      * @return a tweets list
      */
-    public Collection<Tweet> getDayline(String date) {
+    public Collection<Tweet> getDayline(String date, int pos) {
     	if (date == null || date.isEmpty() || !date.matches("^\\d{8}$")) {
     		date = DAYLINE_KEY_FORMAT.format(new Date());
     	}
-        Collection<String> tweetIds = tweetRepository.getDayline(date);
+        Collection<String> tweetIds = tweetRepository.getDayline(date, pos);
 
         return this.buildTweetsList(tweetIds);
     }
