@@ -30,6 +30,12 @@
             <groupId>me.prettyprint</groupId>
             <artifactId>hector-core</artifactId>
             <version>1.0-3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
