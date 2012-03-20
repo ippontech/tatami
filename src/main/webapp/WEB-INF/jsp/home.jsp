@@ -98,6 +98,8 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/assets/js/jquery.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
+	<script src="/assets/js/bootstrap-tooltip.js"></script>
+	<script src="/assets/js/bootstrap-popover.js"></script>
 	<script src="/assets/js/shortcut.js"></script>
 
 	<script src="/assets/js/tatami.js"></script>
@@ -127,7 +129,6 @@
 			shortcut.add("Ctrl+R", function() {
 				listTweets(true);
 			});
-
 		    // infinite scroll
 			$(window).scroll(function() { 
 				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {

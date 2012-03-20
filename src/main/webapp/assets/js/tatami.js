@@ -78,7 +78,24 @@ function listUserTweets(login) {
 		dataType: "json",
 		success: function(data) {
 			makeTweetsList(data, $('#userTweetsList'), false);
-			$('#userTab').tab('show');
+
+			$.ajax({
+				type: 'GET',
+				url: "rest/users/" + login + "/",
+				dataType: "json",
+				success: function(data) {
+		            $("#userPicture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+					$("#userPicture").popover({
+						placement: 'bottom',
+						title: data.firstName + ' ' + data.lastName,
+						content: '<span class="badge">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
+	            				 '<span class="badge">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
+	            				 '<span class="badge">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
+					});
+
+					$('#userTab').tab('show');
+				}
+			});
 		}
 	});
 }
@@ -91,23 +108,23 @@ function makeTweetsList(data, dest, timelineMode) {
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
-			var userline;
+			var userlineLink;
 			if (timelineMode && login != entry['login']) {
-				userline = userlineURL.replace(userlineREG, entry['login']);
+				userlineLink = userlineURL.replace(userlineREG, entry['login']);
 			}
 
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
 			html += '<td style="width: 34px; ">';
-			if (userline)	html += userline;
+			if (userlineLink)	html += userlineLink;
 			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
-			if (userline)	html += '</a>';
+			if (userlineLink)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
 			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
-			if (userline)	html += userline;
+			if (userlineLink)	html += userlineLink;
 			html += '<em>@' + entry['login'] + '</em>';
-			if (userline)	html += '</a>';
+			if (userlineLink)	html += '</a>';
 			// contenu du message
 			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL);
 			html += '</article></td>';
@@ -144,7 +161,6 @@ function whoToFollow() {
 function makeUsersList(data, dest) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
-
 
 		$.each(data, function(entryIndex, entry) {
 			var userline;
