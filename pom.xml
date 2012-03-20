@@ -172,6 +172,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<defaultGoal>jetty:run</defaultGoal>
 		<finalName>tatami</finalName>
 		<plugins>
 			<plugin>
