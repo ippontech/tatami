@@ -30,7 +30,10 @@ function refreshProfile() {
 
 function tweet() {
 	if ($("#tweetContent").val() == "") {
-		alert('Please type a message.');
+		$('#tweetContent').popover('show');
+		setTimeout(function() {
+			$('#tweetContent').popover('hide');
+        }, 5000);
 		return false;
 	}
 

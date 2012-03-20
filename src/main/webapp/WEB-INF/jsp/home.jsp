@@ -111,7 +111,15 @@
 
 		$(document).ready(function() {
 			// left panel
-			$('#homeTabContent').load('/assets/fragments/home.html', refreshProfile());
+			$('#homeTabContent').load('/assets/fragments/home.html', function () {
+				refreshProfile();
+				$('#tweetContent').popover({
+					trigger: 'manual',
+					placement: 'bottom',
+					title: 'Error',
+					content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
+				});
+			});
 			$('#profileTabContent').load('/assets/fragments/profile.html');
             $('#followUserContent').load('/assets/fragments/followUser.html', whoToFollow());
         	// auto-refresh
