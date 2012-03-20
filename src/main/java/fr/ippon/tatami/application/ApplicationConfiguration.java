@@ -7,6 +7,11 @@ import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TWEET_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USER_CF;
+import static me.prettyprint.hector.api.HConsistencyLevel.ONE;
+import static me.prettyprint.hector.api.ddl.ComparatorType.COUNTERTYPE;
+import static me.prettyprint.hector.api.ddl.ComparatorType.UTF8TYPE;
+import static me.prettyprint.hector.api.factory.HFactory.createColumnFamilyDefinition;
+import static me.prettyprint.hector.api.factory.HFactory.createKeyspace;
 
 import java.io.IOException;
 
@@ -18,12 +23,8 @@ import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
 import me.prettyprint.cassandra.service.ThriftCluster;
 import me.prettyprint.cassandra.service.ThriftKsDef;
-import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
-import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
-import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
 
 import org.apache.commons.logging.Log;
@@ -56,35 +57,46 @@ public class ApplicationConfiguration {
 
     @Bean
     public Keyspace keyspaceOperator() {
+        ThriftCluster cluster = buildCluster();
+        buildKeyspace(cluster);
+        return createKeyspace(cassandraKeyspace, cluster, buildConsistencyLevelPolicy());
+    }
+
+    private void buildKeyspace(ThriftCluster cluster) {
+        KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
+        if (keyspaceDef != null) {
+            return;
+        }
+        log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+        keyspaceDef = new ThriftKsDef(cassandraKeyspace);
+        cluster.addKeyspace(keyspaceDef, true);
+
+        addColumnFamily(cluster, USER_CF);
+        addColumnFamily(cluster, FRIENDS_CF);
+        addColumnFamily(cluster, FOLLOWERS_CF);
+        addColumnFamily(cluster, TWEET_CF);
+        addColumnFamily(cluster, TIMELINE_CF);
+        addColumnFamily(cluster, USERLINE_CF);
+
+        ThriftCfDef cfDef = new ThriftCfDef(cassandraKeyspace, COUNTER_CF, UTF8TYPE);
+        cfDef.setDefaultValidationClass(COUNTERTYPE.getClassName());
+        cluster.addColumnFamily(cfDef);
+    }
+
+    private ConfigurableConsistencyLevel buildConsistencyLevelPolicy() {
+        ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
+        consistencyLevelPolicy.setDefaultReadConsistencyLevel(ONE);
+        return consistencyLevelPolicy;
+    }
+
+    private ThriftCluster buildCluster() {
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
-        ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
-        consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
-
-        KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
-        if (keyspaceDef == null) {
-            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
-            keyspaceDef = new ThriftKsDef(cassandraKeyspace);
-            cluster.addKeyspace(keyspaceDef, true);
-
-            addColumnFamily(cluster, USER_CF);
-            addColumnFamily(cluster, FRIENDS_CF);
-            addColumnFamily(cluster, FOLLOWERS_CF);
-            addColumnFamily(cluster, TWEET_CF);
-            addColumnFamily(cluster, TIMELINE_CF);
-            addColumnFamily(cluster, USERLINE_CF);
-
-            ThriftCfDef cfDef = new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
-
-            cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
-            cluster.addColumnFamily(cfDef);
-        }
-        return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
+        return cluster;
     }
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
-        ColumnFamilyDefinition cfd = HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
-        cluster.addColumnFamily(cfd);
+        cluster.addColumnFamily(createColumnFamilyDefinition(cassandraKeyspace, cfName));
     }
 
     @Bean
