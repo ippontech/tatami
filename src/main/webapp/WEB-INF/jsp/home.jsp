@@ -19,7 +19,7 @@
     <link href="/assets/css/tatami-custom.css" rel="stylesheet">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
 	<!-- Le fav and touch icons -->
@@ -73,12 +73,12 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
-						<li><a id="chartTab" href="#view3Content" data-toggle="tab">Time chart</a></li>
+						<li><a id="chartTab" href="#chartPanel" data-toggle="tab">Time chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
 						<div class="tab-pane" id="userLinePanel"></div>
-						<div class="tab-pane" id="view3Content"></div>
+						<div class="tab-pane" id="chartPanel"></div>
 					</div>
 				</div>
 			</div>
@@ -104,6 +104,9 @@
 
 	<script src="/assets/js/tatami.js"></script>
 	<script src="/assets/js/profile.js"></script>
+
+	<script src="https://www.google.com/jsapi"></script>
+	<script src="/assets/js/chart.js"></script>
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
@@ -146,7 +149,13 @@
 
 			$('#userLinePanel').load('/assets/fragments/userline.html');
 
-			//TODO #view3Content : interactive chart
+			$('#chartPanel').load('/assets/fragments/chart.html');
+        	// auto-refresh
+		    $('a[data-toggle="tab"]').on('show', function(e) {
+		    	if (e.target.hash == '#chartPanel') {
+					refreshChart();
+		        }
+		    });
 		});
 	</script>
   </body>

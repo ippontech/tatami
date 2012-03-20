@@ -142,7 +142,7 @@ function makeTweetsList(data, dest, timelineMode) {
 			// temps écoulé depuis la publication du message
 			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
 			html += '</tr>';
-	
+
 			dest.append(html);
 		});
 

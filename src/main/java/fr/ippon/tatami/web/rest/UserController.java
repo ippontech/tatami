@@ -124,17 +124,19 @@ public class UserController {
     		method = RequestMethod.GET,
     		produces = "application/json")
     @ResponseBody
-    public Collection<String> tweetStats() {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the users stats.");
-        }
+    public Collection<Object> tweetStats() {
+        log.debug("REST request to get the users stats.");
 
         String date = null;	//TODO parameterized version
 		Map<String, Integer> users = new HashMap<String, Integer>();
+		// collect all, sliced into pages
         Collection<Tweet> tweets;
         int pos = 0;
         do {
         	tweets = timelineService.getDayline(date, pos);
+            if (log.isDebugEnabled()) {
+                log.debug("REST analysing " + users.size() + " items...");
+            }
             for (Tweet tweet : tweets) {
             	Integer count = users.get(tweet.getLogin());
             	if (count != null) {
@@ -146,10 +148,13 @@ public class UserController {
     		}
             pos += tweets.size();
         } while (!tweets.isEmpty());
+        if (log.isDebugEnabled()) {
+            log.debug("REST fetched total of " + users.size() + " stats.");
+        }
 
-        Set<String> stats = new TreeSet<String>();
+        Set<Object> stats = new TreeSet<Object>();
         for (Entry<String, Integer> entry : users.entrySet()) {
-        	stats.add("UserStat{login='" + entry.getKey() + "', tweetsCount='" + entry.getValue() + "'}");
+        	stats.add("UserStat { login='" + entry.getKey() + "', tweetsCount='" + entry.getValue() + "' }");
         }
 		return stats;
     }

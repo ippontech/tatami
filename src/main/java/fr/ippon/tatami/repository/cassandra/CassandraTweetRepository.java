@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import static fr.ippon.tatami.application.ColumnFamilyKeys.DAYLINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
@@ -83,14 +84,15 @@ public class CassandraTweetRepository implements TweetRepository {
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DAYLINE_CF)
                 .setKey(date)
-                .setRange(String.valueOf(start), String.valueOf(start + 100), false, 100)
+                .setRange(null, null, false, start + 100)	//FIXME
                 .execute()
                 .get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        List<String> tweetIds = new ArrayList<String>();
         for (HColumn<String, String> column : result.getColumns()) {
             tweetIds.add(column.getValue());
         }
+        if (start > 0)	tweetIds.subList(0, start).clear();	//FIXME
         return tweetIds;
     }
 
