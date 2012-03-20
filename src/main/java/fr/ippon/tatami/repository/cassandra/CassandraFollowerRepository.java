@@ -1,10 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.FOLLOWERS_CF;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class CassandraFollowerRepository implements FollowerRepository {
     @Override
     public Collection<String> findFollowersForUser(String login) {
         ColumnFamilyResult<String, String> result = template.queryColumns(login);
-        Collection<String> followers = new ArrayList<String>();
+        List<String> followers = newArrayList();
         for (String columnName : result.getColumnNames()) {
             followers.add(columnName);
         }

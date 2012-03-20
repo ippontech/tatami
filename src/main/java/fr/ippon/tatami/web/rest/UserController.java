@@ -1,7 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.ArrayList;
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -81,7 +83,7 @@ public class UserController {
     @ResponseBody
     public Collection<User> suggestions() {
         // TODO to implement
-        Collection<User> mock = new ArrayList<User>();
+        List<User> mock = newArrayList();
         User jdubois = userService.getUserByLogin("jdubois");
         if (jdubois != null) {
             mock.add(jdubois);

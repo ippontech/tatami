@@ -1,10 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.FRIENDS_CF;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class CassandraFriendRepository implements FriendRepository {
     @Override
     public Collection<String> findFriendsForUser(String login) {
         ColumnFamilyResult<String, String> result = template.queryColumns(login);
-        Collection<String> friends = new ArrayList<String>();
+        List<String> friends = newArrayList();
         for (String columnName : result.getColumnNames()) {
             friends.add(columnName);
         }

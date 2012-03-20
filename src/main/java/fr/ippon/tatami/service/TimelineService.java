@@ -1,7 +1,9 @@
 package fr.ippon.tatami.service;
 
-import java.util.ArrayList;
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -91,7 +93,7 @@ public class TimelineService {
     }
 
     private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
-        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
+        List<Tweet> tweets = newArrayList();
         for (String tweedId : tweetIds) {
             Tweet tweet = tweetRepository.findTweetById(tweedId);
             User tweetUser = userService.getUserByLogin(tweet.getLogin());

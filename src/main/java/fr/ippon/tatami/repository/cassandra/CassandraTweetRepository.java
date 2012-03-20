@@ -1,12 +1,13 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -77,7 +78,7 @@ public class CassandraTweetRepository implements TweetRepository {
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TIMELINE_CF).setKey(login).setRange(null, null, true, size).execute().get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        List<String> tweetIds = newArrayList();
         for (HColumn<String, String> column : result.getColumns()) {
             tweetIds.add(column.getValue());
         }
@@ -89,7 +90,7 @@ public class CassandraTweetRepository implements TweetRepository {
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(USERLINE_CF).setKey(login).setRange(null, null, true, size).execute().get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        List<String> tweetIds = newArrayList();
         for (HColumn<String, String> column : result.getColumns()) {
             tweetIds.add(column.getValue());
         }
