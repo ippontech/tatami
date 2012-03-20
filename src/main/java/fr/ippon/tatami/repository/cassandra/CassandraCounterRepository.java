@@ -2,15 +2,13 @@ package fr.ippon.tatami.repository.cassandra;
 
 import static fr.ippon.tatami.application.ColumnFamilyKeys.COUNTER_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
+import static me.prettyprint.hector.api.factory.HFactory.createMutator;
 
 import javax.inject.Inject;
 
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.CounterQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +27,8 @@ public class CassandraCounterRepository implements CounterRepository {
     private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
 
     private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
+
+    private static final StringSerializer stringSerializer = StringSerializer.get();
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -94,24 +94,27 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     private void createCounter(String counterName, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insertCounter(login, COUNTER_CF, createCounterColumn(counterName, 0));
+        createMutator(keyspaceOperator, stringSerializer)//
+                .insertCounter(login, COUNTER_CF, createCounterColumn(counterName, 0));
     }
 
     private void incrementCounter(String counterName, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.incrementCounter(login, COUNTER_CF, counterName, 1);
+        createMutator(keyspaceOperator, stringSerializer) //
+                .incrementCounter(login, COUNTER_CF, counterName, 1);
     }
 
     private void decrementCounter(String counterName, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.decrementCounter(login, COUNTER_CF, counterName, 1);
+        createMutator(keyspaceOperator, stringSerializer) //
+                .decrementCounter(login, COUNTER_CF, counterName, 1);
     }
 
     private long getCounter(String counterName, String login) {
-        CounterQuery<String, String> counter = new ThriftCounterColumnQuery<String, String>(keyspaceOperator, StringSerializer.get(), StringSerializer.get());
-
-        counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
-        return counter.execute().get().getValue();
+        return new ThriftCounterColumnQuery<String, String>(keyspaceOperator, stringSerializer, stringSerializer) //
+                .setColumnFamily(COUNTER_CF) //
+                .setKey(login) //
+                .setName(counterName) //
+                .execute() //
+                .get() //
+                .getValue();
     }
 }

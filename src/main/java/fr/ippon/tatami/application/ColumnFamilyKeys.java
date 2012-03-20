@@ -3,7 +3,7 @@ package fr.ippon.tatami.application;
 /**
  * @author Julien Dubois
  */
-public class ColumnFamilyKeys {
+public abstract class ColumnFamilyKeys {
 
     public final static String USER_CF = "User";
 
