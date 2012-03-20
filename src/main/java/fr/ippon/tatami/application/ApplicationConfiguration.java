@@ -25,7 +25,6 @@ import me.prettyprint.cassandra.service.ThriftCfDef;
 import me.prettyprint.cassandra.service.ThriftCluster;
 import me.prettyprint.cassandra.service.ThriftKsDef;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hom.EntityManagerImpl;
 
 import org.apache.thrift.transport.TTransportException;
@@ -55,30 +54,43 @@ public class ApplicationConfiguration {
 
     @Bean
     public Keyspace keyspaceOperator() {
-        ThriftCluster cluster = buildCluster();
-        buildKeyspace(cluster);
-        return createKeyspace(cassandraKeyspace, cluster, buildConsistencyLevelPolicy());
+        return createKeyspace(cassandraKeyspace, buildCluster(), buildConsistencyLevelPolicy());
     }
 
-    private void buildKeyspace(ThriftCluster cluster) {
-        KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
-        if (keyspaceDef != null) {
-            return;
+    private ThriftCluster initCluster(ThriftCluster cluster) {
+        if (hasKeyspace(cluster)) {
+            return cluster;
         }
         log.warn("Keyspace \"{}\" does not exist, creating it!", cassandraKeyspace);
-        keyspaceDef = new ThriftKsDef(cassandraKeyspace);
-        cluster.addKeyspace(keyspaceDef, true);
+        addKeyspace(cluster, cassandraKeyspace);
+        addColumnFamilies(cluster, cassandraKeyspace, USER_CF, FRIENDS_CF, FOLLOWERS_CF, TWEET_CF, TIMELINE_CF, USERLINE_CF);
+        addCounterColumnFamily(cluster, cassandraKeyspace, COUNTER_CF);
+        return cluster;
+    }
 
-        addColumnFamily(cluster, USER_CF);
-        addColumnFamily(cluster, FRIENDS_CF);
-        addColumnFamily(cluster, FOLLOWERS_CF);
-        addColumnFamily(cluster, TWEET_CF);
-        addColumnFamily(cluster, TIMELINE_CF);
-        addColumnFamily(cluster, USERLINE_CF);
+    private void addKeyspace(ThriftCluster cluster, String keyspace) {
+        boolean waitForSchemaAgreement = true;
+        cluster.addKeyspace(new ThriftKsDef(keyspace), waitForSchemaAgreement);
+    }
 
-        ThriftCfDef cfDef = new ThriftCfDef(cassandraKeyspace, COUNTER_CF, UTF8TYPE);
+    private void addColumnFamilies(ThriftCluster cluster, String keyspace, String... cfNames) {
+        for (String cfName : cfNames) {
+            addColumnFamily(cluster, keyspace, cfName);
+        }
+    }
+
+    private void addColumnFamily(ThriftCluster cluster, String keyspace, String cfName) {
+        cluster.addColumnFamily(createColumnFamilyDefinition(keyspace, cfName));
+    }
+
+    private void addCounterColumnFamily(ThriftCluster cluster, String keyspace, String cfName) {
+        ThriftCfDef cfDef = new ThriftCfDef(keyspace, cfName, UTF8TYPE);
         cfDef.setDefaultValidationClass(COUNTERTYPE.getClassName());
         cluster.addColumnFamily(cfDef);
+    }
+
+    private boolean hasKeyspace(ThriftCluster cluster) {
+        return cluster.describeKeyspace(cassandraKeyspace) != null;
     }
 
     private ConfigurableConsistencyLevel buildConsistencyLevelPolicy() {
@@ -88,13 +100,7 @@ public class ApplicationConfiguration {
     }
 
     private ThriftCluster buildCluster() {
-        CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
-        ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
-        return cluster;
-    }
-
-    private void addColumnFamily(ThriftCluster cluster, String cfName) {
-        cluster.addColumnFamily(createColumnFamilyDefinition(cassandraKeyspace, cfName));
+        return initCluster(new ThriftCluster(cassandraClusterName, new CassandraHostConfigurator(cassandraHost)));
     }
 
     @Bean
