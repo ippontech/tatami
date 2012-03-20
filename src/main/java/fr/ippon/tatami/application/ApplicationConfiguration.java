@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import fr.ippon.tatami.domain.Tweet;
+
 /**
  * Main configuration file.
  * 
@@ -87,7 +89,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public EntityManager entityManager(Keyspace keyspace) {
-        return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
+        return new EntityManagerImpl(keyspace, Tweet.class.getPackage().getName());
     }
 
     @PostConstruct
