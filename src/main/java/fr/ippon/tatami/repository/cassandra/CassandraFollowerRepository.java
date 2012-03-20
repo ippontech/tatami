@@ -24,7 +24,7 @@ import fr.ippon.tatami.repository.FollowerRepository;
 
 /**
  * Cassandra implementation of the Follower repository.
- *
+ * 
  * @author Julien Dubois
  */
 @Repository
@@ -37,17 +37,14 @@ public class CassandraFollowerRepository implements FollowerRepository {
 
     @PostConstruct
     public void init() {
-        template = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator,
-                FOLLOWERS_CF,
-                StringSerializer.get(),
-                StringSerializer.get());
+        template = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator, FOLLOWERS_CF, StringSerializer.get(), StringSerializer.get());
     }
 
     @Override
     public void addFollower(String login, String followerLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FOLLOWERS_CF, HFactory.createColumn(followerLogin,
-                Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
+        mutator.insert(login, FOLLOWERS_CF,
+                HFactory.createColumn(followerLogin, Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override

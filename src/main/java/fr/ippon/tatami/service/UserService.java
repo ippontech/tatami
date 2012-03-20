@@ -17,7 +17,7 @@ import fr.ippon.tatami.service.util.GravatarUtil;
 
 /**
  * Manages the application's users.
- *
+ * 
  * @author Julien Dubois
  */
 @Service
@@ -58,8 +58,7 @@ public class UserService {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
             userRepository.updateUser(user);
         } else {
-            log.info("Security alert : user " + currentUser.getLogin() +
-                " tried to update user " + user);
+            log.info("Security alert : user " + currentUser.getLogin() + " tried to update user " + user);
         }
     }
 
@@ -106,10 +105,10 @@ public class UserService {
         if (followedUser != null) {
             boolean userAlreadyFollowed = false;
             for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
-                    if (alreadyFollowingTest.equals(login)) {
-                        userAlreadyFollowed = true;
-                    }
+                if (alreadyFollowingTest.equals(login)) {
+                    userAlreadyFollowed = true;
                 }
+            }
             if (userAlreadyFollowed) {
                 friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
                 counterRepository.decrementFriendsCounter(currentUser.getLogin());

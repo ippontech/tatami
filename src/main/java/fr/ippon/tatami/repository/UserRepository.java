@@ -4,7 +4,7 @@ import fr.ippon.tatami.domain.User;
 
 /**
  * The User Respository.
- *
+ * 
  * @author Julien Dubois
  */
 public interface UserRepository {

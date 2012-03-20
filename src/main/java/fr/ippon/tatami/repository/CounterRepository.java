@@ -2,7 +2,7 @@ package fr.ippon.tatami.repository;
 
 /**
  * The Counter Respository.
- *
+ * 
  * @author Julien Dubois
  */
 public interface CounterRepository {

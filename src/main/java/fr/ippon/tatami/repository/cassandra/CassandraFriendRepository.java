@@ -24,7 +24,7 @@ import fr.ippon.tatami.repository.FriendRepository;
 
 /**
  * Cassandra implementation of the Follower repository.
- *
+ * 
  * @author Julien Dubois
  */
 @Repository
@@ -37,17 +37,14 @@ public class CassandraFriendRepository implements FriendRepository {
 
     @PostConstruct
     public void init() {
-        template = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator,
-                FRIENDS_CF,
-                StringSerializer.get(),
-                StringSerializer.get());
+        template = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator, FRIENDS_CF, StringSerializer.get(), StringSerializer.get());
     }
 
     @Override
     public void addFriend(String login, String friendLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FRIENDS_CF, HFactory.createColumn(friendLogin,
-                Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
+        mutator.insert(login, FRIENDS_CF,
+                HFactory.createColumn(friendLogin, Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override

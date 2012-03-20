@@ -6,7 +6,7 @@ import fr.ippon.tatami.domain.Tweet;
 
 /**
  * The User Respository.
- *
+ * 
  * @author Julien Dubois
  */
 public interface TweetRepository {

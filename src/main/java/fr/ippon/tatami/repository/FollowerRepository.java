@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * The Follower Respository.
- *
+ * 
  * @author Julien Dubois
  */
 public interface FollowerRepository {

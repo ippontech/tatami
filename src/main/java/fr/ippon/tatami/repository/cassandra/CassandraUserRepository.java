@@ -12,7 +12,7 @@ import fr.ippon.tatami.repository.UserRepository;
 
 /**
  * Cassandra implementation of the user repository.
- *
+ * 
  * @author Julien Dubois
  */
 @Repository

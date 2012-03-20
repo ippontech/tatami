@@ -15,28 +15,20 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
  * A user.
- *
+ * 
  * @author Julien Dubois
  */
 @Entity
 @Table(name = "Tweet")
 public class Tweet {
 
-    private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder()
-                .appendDays()
-                .appendSuffix("d").toFormatter();
+    private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder().appendDays().appendSuffix("d").toFormatter();
 
-    private static PeriodFormatter hourFormatter = new PeriodFormatterBuilder()
-                .appendHours()
-                .appendSuffix("h").toFormatter();
+    private static PeriodFormatter hourFormatter = new PeriodFormatterBuilder().appendHours().appendSuffix("h").toFormatter();
 
-    private static PeriodFormatter minuteFormatter = new PeriodFormatterBuilder()
-                .appendMinutes()
-                .appendSuffix("m").toFormatter();
+    private static PeriodFormatter minuteFormatter = new PeriodFormatterBuilder().appendMinutes().appendSuffix("m").toFormatter();
 
-    private static PeriodFormatter secondFormatter = new PeriodFormatterBuilder()
-                .appendSeconds()
-                .appendSuffix("s").toFormatter();
+    private static PeriodFormatter secondFormatter = new PeriodFormatterBuilder().appendSeconds().appendSuffix("s").toFormatter();
 
     @Id
     private String tweetId;
@@ -57,10 +49,7 @@ public class Tweet {
     private String gravatar;
 
     public String getPrettyPrintTweetDate() {
-        Period period =
-                new Period(tweetDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis(),
-                        PeriodType.dayTime());
+        Period period = new Period(tweetDate.getTime(), Calendar.getInstance().getTimeInMillis(), PeriodType.dayTime());
 
         if (period.getDays() > 0) {
             return dayFormatter.print(period);
@@ -131,12 +120,15 @@ public class Tweet {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Tweet tweet = (Tweet) o;
 
-        if (tweetId != null ? !tweetId.equals(tweet.tweetId) : tweet.tweetId != null) return false;
+        if (tweetId != null ? !tweetId.equals(tweet.tweetId) : tweet.tweetId != null)
+            return false;
 
         return true;
     }
@@ -148,14 +140,7 @@ public class Tweet {
 
     @Override
     public String toString() {
-        return "Tweet{" +
-                "tweetId='" + tweetId + '\'' +
-                ", login='" + login + '\'' +
-                ", content='" + content + '\'' +
-                ", tweetDate=" + tweetDate +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gravatar='" + gravatar + '\'' +
-                '}';
+        return "Tweet{" + "tweetId='" + tweetId + '\'' + ", login='" + login + '\'' + ", content='" + content + '\'' + ", tweetDate=" + tweetDate
+                + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", gravatar='" + gravatar + '\'' + '}';
     }
 }

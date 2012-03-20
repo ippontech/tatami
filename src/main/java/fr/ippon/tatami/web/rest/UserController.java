@@ -19,7 +19,7 @@ import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing users.
- *
+ * 
  * @author Julien Dubois
  */
 @Controller
@@ -30,9 +30,7 @@ public class UserController {
     @Inject
     private UserService userService;
 
-    @RequestMapping(value = "/rest/users/{login}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+    @RequestMapping(value = "/rest/users/{login}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public User getUser(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
@@ -41,9 +39,7 @@ public class UserController {
         return userService.getUserProfileByLogin(login);
     }
 
-    @RequestMapping(value = "/rest/users/{login}",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+    @RequestMapping(value = "/rest/users/{login}", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
         if (log.isDebugEnabled()) {
@@ -53,9 +49,7 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/rest/users/{login}/followUser",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+    @RequestMapping(value = "/rest/users/{login}/followUser", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public void followUser(@PathVariable("login") String login, @RequestBody String loginToFollow) {
         if (log.isDebugEnabled()) {
@@ -69,9 +63,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/rest/users/{login}/removeFriend",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+    @RequestMapping(value = "/rest/users/{login}/removeFriend", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public void removeFriend(@PathVariable("login") String login, @RequestBody String friend) {
         if (log.isDebugEnabled()) {
@@ -85,9 +77,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/rest/suggestions",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+    @RequestMapping(value = "/rest/suggestions", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
         // TODO to implement
@@ -100,6 +90,6 @@ public class UserController {
         if (tescolan != null) {
             mock.add(tescolan);
         }
-		return mock;
+        return mock;
     }
 }

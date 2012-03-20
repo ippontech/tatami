@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Main configuration file.
- *
+ * 
  * @author Julien Dubois
  */
 @Configuration
@@ -72,8 +72,7 @@ public class ApplicationConfiguration {
             addColumnFamily(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USERLINE_CF);
 
-            ThriftCfDef cfDef =
-                    new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
+            ThriftCfDef cfDef = new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
 
             cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
             cluster.addColumnFamily(cfDef);
@@ -82,8 +81,7 @@ public class ApplicationConfiguration {
     }
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
-        ColumnFamilyDefinition cfd =
-                HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
+        ColumnFamilyDefinition cfd = HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
         cluster.addColumnFamily(cfd);
     }
 

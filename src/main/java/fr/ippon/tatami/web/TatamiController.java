@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Main tatami page.
- *
+ * 
  * @author Julien Dubois
  */
 @Controller

@@ -16,7 +16,7 @@ import fr.ippon.tatami.service.UserService;
 
 /**
  * Manages a user's successful login.
- *
+ * 
  * @author Julien Dubois
  */
 @Component
@@ -26,10 +26,8 @@ public class TatamiAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private UserService userService;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication)
-            throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException,
+            ServletException {
 
         super.onAuthenticationSuccess(request, response, authentication);
         String login = authentication.getName();

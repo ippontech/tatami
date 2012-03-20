@@ -1,4 +1,5 @@
 package fr.ippon.tatami.web.monitoring;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -31,7 +32,6 @@ public class MonitoringFilter implements Filter {
             this.isMonitored = true;
         }
     }
-
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         if (isMonitored) {
@@ -80,4 +80,3 @@ public class MonitoringFilter implements Filter {
     }
 
 }
-

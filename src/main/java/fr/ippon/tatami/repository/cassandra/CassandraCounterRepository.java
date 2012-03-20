@@ -18,7 +18,7 @@ import fr.ippon.tatami.repository.CounterRepository;
 
 /**
  * Cassandra implementation of the Follower repository.
- *
+ * 
  * @author Julien Dubois
  */
 @Repository
@@ -95,8 +95,7 @@ public class CassandraCounterRepository implements CounterRepository {
 
     private void createCounter(String counterName, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insertCounter(login, COUNTER_CF,
-                createCounterColumn(counterName, 0));
+        mutator.insertCounter(login, COUNTER_CF, createCounterColumn(counterName, 0));
     }
 
     private void incrementCounter(String counterName, String login) {
@@ -110,10 +109,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     private long getCounter(String counterName, String login) {
-        CounterQuery<String, String> counter =
-                new ThriftCounterColumnQuery<String, String>(keyspaceOperator,
-                        StringSerializer.get(),
-                        StringSerializer.get());
+        CounterQuery<String, String> counter = new ThriftCounterColumnQuery<String, String>(keyspaceOperator, StringSerializer.get(), StringSerializer.get());
 
         counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
         return counter.execute().get().getValue();
