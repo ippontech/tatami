@@ -1,8 +1,8 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.Tweet;
-
 import java.util.Collection;
+
+import fr.ippon.tatami.domain.Tweet;
 
 /**
  * The User Respository.

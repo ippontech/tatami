@@ -1,17 +1,19 @@
 package fr.ippon.tatami.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Manages the the timeline.

@@ -1,5 +1,18 @@
 package fr.ippon.tatami.application;
 
+import static fr.ippon.tatami.application.ColumnFamilyKeys.COUNTER_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.FOLLOWERS_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.FRIENDS_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.TWEET_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.USER_CF;
+
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -12,18 +25,13 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import java.io.IOException;
-
-import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
 
 /**
  * Main configuration file.

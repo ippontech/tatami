@@ -1,20 +1,22 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.repository.CounterRepository;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.COUNTER_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
+
+import javax.inject.Inject;
+
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-import static fr.ippon.tatami.application.ColumnFamilyKeys.COUNTER_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
+import fr.ippon.tatami.repository.CounterRepository;
 
 /**
  * Cassandra implementation of the Follower repository.
