@@ -144,6 +144,7 @@ public class UserController {
             	}
         		users.put(tweet.getLogin(), count);
     		}
+            pos += tweets.size();
         } while (!tweets.isEmpty());
 
         Set<String> stats = new TreeSet<String>();
