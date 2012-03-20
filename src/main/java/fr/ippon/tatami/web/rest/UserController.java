@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 
 /**
@@ -27,9 +26,6 @@ import fr.ippon.tatami.service.UserService;
 public class UserController {
 
     private final Log log = LogFactory.getLog(UserController.class);
-
-    @Inject
-    private TimelineService timelineService;
 
     @Inject
     private UserService userService;

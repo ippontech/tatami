@@ -1,7 +1,5 @@
 package fr.ippon.tatami.web;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class TatamiController {
-
-    private final Log log = LogFactory.getLog(TatamiController.class);
 
     @RequestMapping("/login")
     public String welcome() {

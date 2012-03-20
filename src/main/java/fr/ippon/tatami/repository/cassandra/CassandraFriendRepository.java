@@ -18,8 +18,6 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import fr.ippon.tatami.repository.FriendRepository;
@@ -31,8 +29,6 @@ import fr.ippon.tatami.repository.FriendRepository;
  */
 @Repository
 public class CassandraFriendRepository implements FriendRepository {
-
-    private final Log log = LogFactory.getLog(CassandraFriendRepository.class);
 
     ColumnFamilyTemplate<String, String> template;
 
