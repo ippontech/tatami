@@ -34,7 +34,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png"> Tatami</a>
+				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class="active"><a href="#"><i class="icon-lock icon-white"></i> Login</a></li>
