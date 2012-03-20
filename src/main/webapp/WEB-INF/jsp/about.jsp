@@ -35,7 +35,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png"> Tatami</a>
+				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li><a href="/tatami/"><i class="icon-home icon-white"></i> Home</a></li>
@@ -53,10 +53,7 @@
     <div class="container">
         <div class="span12">
             <h1>Presentation</h1>
-
-            <p>Tatami is a twitter-like application, for internal use inside a company.
-            </p>
-
+            <p>Tatami is a twitter-like application, for internal use inside a company.</p>
             <p>
                 More information on our Github page : <a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a>
             </p>
@@ -82,7 +79,7 @@
     </div>
     <br/><br/><br/><br/><br/><br/>
     <footer>
-        <div class="span12" style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
+        <div style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
             <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
             <a href="http://blog.ippon.fr">Blog Ippon</a> |
             <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
@@ -94,6 +91,5 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/assets/js/jquery.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
-
   </body>
 </html>
