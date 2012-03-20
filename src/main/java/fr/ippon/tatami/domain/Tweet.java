@@ -1,5 +1,8 @@
 package fr.ippon.tatami.domain;
 
+import static java.lang.System.currentTimeMillis;
+import static org.joda.time.PeriodType.dayTime;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,8 +28,8 @@ import org.joda.time.format.PeriodFormatterBuilder;
 @Entity
 @Table(name = "Tweet")
 @Data
-@EqualsAndHashCode(of = "tweetId")
 @Builder
+@EqualsAndHashCode(of = "tweetId")
 public class Tweet {
 
     private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder().appendDays().appendSuffix("d").toFormatter();
@@ -56,7 +59,7 @@ public class Tweet {
     private String gravatar;
 
     public String getPrettyPrintTweetDate() {
-        Period period = new Period(tweetDate.getTime(), Calendar.getInstance().getTimeInMillis(), PeriodType.dayTime());
+        Period period = new Period(tweetDate.getTime(), currentTimeMillis(), dayTime());
 
         if (period.getDays() > 0) {
             return dayFormatter.print(period);

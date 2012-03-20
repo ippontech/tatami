@@ -17,8 +17,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "User")
 @Data
-@EqualsAndHashCode(of = "login")
 @Builder
+@EqualsAndHashCode(of = "login")
 public class User {
 
     @Id
