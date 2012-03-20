@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
+import static fr.ippon.tatami.application.ColumnFamilyKeys.DAYLINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -56,6 +57,13 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
+    public void addTweetToDayline(Tweet tweet, String key) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(tweet.getLogin(), tweet.getTweetId(),
+        		StringSerializer.get(), StringSerializer.get()));
+    }
+
+    @Override
     public void addTweetToUserline(Tweet tweet) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
@@ -67,6 +75,23 @@ public class CassandraTweetRepository implements TweetRepository {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+    }
+
+    @Override
+    public Collection<String> getDayline(String date) {
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(DAYLINE_CF)
+                .setKey(date)
+                .setRange(null, null, true, 100)
+                .execute()
+                .get();
+
+        Collection<String> tweetIds = new ArrayList<String>();
+        for (HColumn<String, String> column : result.getColumns()) {
+            tweetIds.add(column.getValue());
+        }
+        return tweetIds;
     }
 
     @Override
