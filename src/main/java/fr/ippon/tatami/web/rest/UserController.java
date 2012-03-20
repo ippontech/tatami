@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.apachecommons.CommonsLog;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +26,8 @@ import fr.ippon.tatami.service.UserService;
  * @author Julien Dubois
  */
 @Controller
+@CommonsLog
 public class UserController {
-
-    private final Log log = LogFactory.getLog(UserController.class);
 
     @Inject
     private UserService userService;

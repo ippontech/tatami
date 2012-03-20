@@ -17,14 +17,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import lombok.extern.apachecommons.CommonsLog;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -37,9 +36,8 @@ import fr.ippon.tatami.repository.TweetRepository;
  * @author Julien Dubois
  */
 @Repository
+@CommonsLog
 public class CassandraTweetRepository implements TweetRepository {
-
-    private final Log log = LogFactory.getLog(CassandraTweetRepository.class);
 
     private static final StringSerializer stringSerializer = StringSerializer.get();
     private static final LongSerializer longSerializer = LongSerializer.get();

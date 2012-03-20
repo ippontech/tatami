@@ -10,8 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.apachecommons.CommonsLog;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -20,10 +20,8 @@ import org.springframework.util.StopWatch;
 /**
  * @author Julien Dubois
  */
-
+@CommonsLog
 public class MonitoringFilter implements Filter {
-
-    private final Log log = LogFactory.getLog("monitoring");
 
     private boolean isMonitored = false;
 

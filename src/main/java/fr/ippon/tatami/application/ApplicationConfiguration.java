@@ -18,6 +18,7 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
+import lombok.extern.apachecommons.CommonsLog;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -27,8 +28,6 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hom.EntityManagerImpl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -42,9 +41,8 @@ import fr.ippon.tatami.domain.Tweet;
  * @author Julien Dubois
  */
 @Configuration
+@CommonsLog
 public class ApplicationConfiguration {
-
-    private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
 
     @Value("${cassandra.host}")
     private String cassandraHost;

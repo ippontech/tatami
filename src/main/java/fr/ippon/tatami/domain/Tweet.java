@@ -3,7 +3,6 @@ package fr.ippon.tatami.domain;
 import static java.lang.System.currentTimeMillis;
 import static org.joda.time.PeriodType.dayTime;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,7 +15,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 

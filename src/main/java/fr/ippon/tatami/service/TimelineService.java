@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.apachecommons.CommonsLog;
+
 import org.springframework.stereotype.Service;
 
 import fr.ippon.tatami.domain.Tweet;
@@ -23,9 +23,8 @@ import fr.ippon.tatami.repository.TweetRepository;
  * @author Julien Dubois
  */
 @Service
+@CommonsLog
 public class TimelineService {
-
-    private final Log log = LogFactory.getLog(TimelineService.class);
 
     @Inject
     private UserService userService;

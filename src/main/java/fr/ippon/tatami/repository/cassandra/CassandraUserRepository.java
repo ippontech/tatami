@@ -3,8 +3,8 @@ package fr.ippon.tatami.repository.cassandra;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.apachecommons.CommonsLog;
+
 import org.springframework.stereotype.Repository;
 
 import fr.ippon.tatami.domain.User;
@@ -16,9 +16,8 @@ import fr.ippon.tatami.repository.UserRepository;
  * @author Julien Dubois
  */
 @Repository
+@CommonsLog
 public class CassandraUserRepository implements UserRepository {
-
-    private final Log log = LogFactory.getLog(CassandraUserRepository.class);
 
     @Inject
     private EntityManager em;
