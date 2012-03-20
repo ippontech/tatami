@@ -88,9 +88,9 @@ function listUserTweets(login) {
 					$("#userPicture").popover({
 						placement: 'bottom',
 						title: data.firstName + ' ' + data.lastName,
-						content: '<span class="badge">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
-	            				 '<span class="badge">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
-	            				 '<span class="badge">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
+						content: '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
+	            				 '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
+	            				 '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
 					});
 
 					$('#userTab').tab('show');
