@@ -1,5 +1,7 @@
 package fr.ippon.tatami.service;
 
+import static fr.ippon.tatami.service.util.GravatarUtil.gravatarHash;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -13,7 +15,6 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.service.util.GravatarUtil;
 
 /**
  * Manages the application's users.
@@ -55,7 +56,7 @@ public class UserService {
     public void updateUser(User user) {
         User currentUser = getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
-            user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+            user.setGravatar(gravatarHash(user.getEmail()));
             userRepository.updateUser(user);
         } else {
             log.info("Security alert : user " + currentUser.getLogin() + " tried to update user " + user);
@@ -63,7 +64,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+        user.setGravatar(gravatarHash(user.getEmail()));
         counterRepository.createTweetCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());

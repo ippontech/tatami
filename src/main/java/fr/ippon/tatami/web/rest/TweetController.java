@@ -1,5 +1,8 @@
 package fr.ippon.tatami.web.rest;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -10,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.Tweet;
@@ -29,7 +31,7 @@ public class TweetController {
     @Inject
     private TimelineService timelineService;
 
-    @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}", method = GET, produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login, @PathVariable("nbTweets") String nbTweets) {
         if (log.isDebugEnabled()) {
@@ -43,7 +45,7 @@ public class TweetController {
         }
     }
 
-    @RequestMapping(value = "/rest/ownTweets/{login}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/rest/ownTweets/{login}", method = GET, produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
@@ -52,7 +54,7 @@ public class TweetController {
         return timelineService.getUserline(login, 20);
     }
 
-    @RequestMapping(value = "/rest/tweets", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/tweets", method = POST)
     public void postTweet(@RequestBody String content) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);

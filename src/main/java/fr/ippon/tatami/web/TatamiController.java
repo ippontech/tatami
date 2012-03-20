@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TatamiController {
 
     @RequestMapping("/login")
-    public String welcome() {
+    public String login() {
         return "login";
     }
 
     @RequestMapping("/")
-    public String tatami() {
+    public String home() {
         return "home";
     }
 

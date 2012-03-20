@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class GravatarUtil {
 
-    public static String getHash(String message) {
+    public static String gravatarHash(String message) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             return hex(md.digest(message.getBytes("CP1252")));
