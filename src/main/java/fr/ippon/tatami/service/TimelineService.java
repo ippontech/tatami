@@ -65,12 +65,9 @@ public class TimelineService {
      */
     public Collection<Tweet> getTimeline(String login, int nbTweets) {
         if (login == null || login.isEmpty()) {
-            User currentUser = userService.getCurrentUser();
-            login = currentUser.getLogin();
+            login = userService.getCurrentUser().getLogin();
         }
-        Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
-
-        return this.buildTweetsList(tweetIds);
+        return this.buildTweetsList(tweetRepository.getTimeline(login, nbTweets));
     }
 
     /**
@@ -84,12 +81,9 @@ public class TimelineService {
      */
     public Collection<Tweet> getUserline(String login, int nbTweets) {
         if (login == null || login.isEmpty()) {
-            User currentUser = userService.getCurrentUser();
-            login = currentUser.getLogin();
+            login = userService.getCurrentUser().getLogin();
         }
-        Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets);
-
-        return this.buildTweetsList(tweetIds);
+        return buildTweetsList(tweetRepository.getUserline(login, nbTweets));
     }
 
     private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
