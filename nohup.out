@@ -1,0 +1,18 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building tatami 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- cassandra-maven-plugin:1.0.0-1:start (default-cli) @ tatami ---
+[INFO] Waiting for Cassandra to start...
+[INFO] [WARN] 23:03:40,893 Generated random token 58885736361987215269385752089321434737. Random tokens will result in an unbalanced ring; see http://wiki.apache.org/cassandra/Operations
+[INFO] Cassandra cluster "Test Cluster" started.
+[INFO] Cassandra started in 1.9s
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3.676s
+[INFO] Finished at: Tue Mar 20 23:03:41 CET 2012
+[INFO] Final Memory: 6M/81M
+[INFO] ------------------------------------------------------------------------
