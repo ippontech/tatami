@@ -3,6 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.domain.Tweet.tweet;
 import static java.lang.System.currentTimeMillis;
 import static me.prettyprint.cassandra.utils.TimeUUIDUtils.getUniqueTimeUUIDinMillis;
 import static me.prettyprint.hector.api.factory.HFactory.createColumn;
@@ -51,11 +52,12 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Tweet createTweet(String login, String content) {
-        Tweet tweet = new Tweet();
-        tweet.setTweetId(getUniqueTimeUUIDinMillis().toString());
-        tweet.setLogin(login);
-        tweet.setContent(content);
-        tweet.setTweetDate(Calendar.getInstance().getTime());
+        Tweet tweet = tweet() //
+                .tweetId(getUniqueTimeUUIDinMillis().toString()) //
+                .login(login) //
+                .content(content) //
+                .tweetDate(Calendar.getInstance().getTime()) //
+                .build();
         if (log.isDebugEnabled()) {
             log.debug("Persisting Tweet : " + tweet);
         }

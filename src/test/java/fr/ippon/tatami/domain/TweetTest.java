@@ -1,5 +1,6 @@
 package fr.ippon.tatami.domain;
 
+import static fr.ippon.tatami.domain.Tweet.tweet;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
@@ -26,5 +27,12 @@ public class TweetTest {
 
         assertThat(tweet1).isEqualTo(tweet2);
         assertThat(tweet1.hashCode()).isEqualTo(tweet2.hashCode());
+    }
+
+    @Test
+    public void builder() {
+        Tweet tweet1 = tweet().tweetId("1").build();
+        Tweet tweet2 = tweet().tweetId("2").build();
+        assertThat(tweet1).isNotEqualTo(tweet2);
     }
 }

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,6 +26,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 @Table(name = "Tweet")
 @Data
 @EqualsAndHashCode(of = "tweetId")
+@Builder
 public class Tweet {
 
     private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder().appendDays().appendSuffix("d").toFormatter();
