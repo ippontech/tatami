@@ -102,11 +102,14 @@ public class UserController {
             log.debug("REST request to get the last active tweeters list (except " + login + ").");
         }
 
+        Collection<String> exceptions = userService.getFriendsForUser(login);
+        exceptions.add(login);
+
         String date = null;	//TODO parameterized version
         Collection<Tweet> tweets = timelineService.getDayline(date);
 		Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
-        	if (login.equals(tweet.getLogin()))	continue;
+        	if (exceptions.contains(tweet.getLogin()))	continue;
 
         	users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
         	if (users.size() == 3)	break;	// suggestions list limit

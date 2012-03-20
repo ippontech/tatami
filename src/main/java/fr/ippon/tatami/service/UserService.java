@@ -1,5 +1,7 @@
 package fr.ippon.tatami.service;
 
+import java.util.Collection;
+
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
@@ -118,6 +120,13 @@ public class UserService {
         } else {
             log.debug("Followed user does not exist : " + login);
         }
+    }
+
+    public Collection<String> getFriendsForUser(String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving followed users : " + login);
+        }
+        return friendRepository.findFriendsForUser(login);
     }
 
     public User getCurrentUser() {

@@ -165,6 +165,7 @@ function makeUsersList(data, dest) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
+		var updated = false;
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (login != entry['login']) {
@@ -190,7 +191,15 @@ function makeUsersList(data, dest) {
 			html += '</tr>';
 	
 			dest.append(html);
+			updated = true;
 		});
+		if (!updated) {
+			var html = '<tr valign="top">';
+			// identification de l'émetteur du message
+			html += '<td colspan="2">No one new tweeted yet today...</td>';
+			html += '</tr>';
+			dest.append(html);
+		}
 
 		dest.fadeTo(400, 1);
 	});
@@ -207,6 +216,7 @@ function followUser(loginToFollow) {
             $("#followUserInput").val("");
             setTimeout(function() {
                 refreshProfile();
+                whoToFollow();
                 listTweets(true);
             }, 500);	//DEBUG wait for persistence consistency
         },
