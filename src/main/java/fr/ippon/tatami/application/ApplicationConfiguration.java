@@ -18,7 +18,7 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -41,7 +41,7 @@ import fr.ippon.tatami.domain.Tweet;
  * @author Julien Dubois
  */
 @Configuration
-@CommonsLog
+@Slf4j
 public class ApplicationConfiguration {
 
     @Value("${cassandra.host}")
@@ -65,7 +65,7 @@ public class ApplicationConfiguration {
         if (keyspaceDef != null) {
             return;
         }
-        log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+        log.warn("Keyspace \"{}\" does not exist, creating it!", cassandraKeyspace);
         keyspaceDef = new ThriftKsDef(cassandraKeyspace);
         cluster.addKeyspace(keyspaceDef, true);
 

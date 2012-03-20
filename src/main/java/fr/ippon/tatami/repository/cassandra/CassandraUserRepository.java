@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import fr.ippon.tatami.repository.UserRepository;
  * @author Julien Dubois
  */
 @Repository
-@CommonsLog
+@Slf4j
 public class CassandraUserRepository implements UserRepository {
 
     @Inject
@@ -24,17 +24,13 @@ public class CassandraUserRepository implements UserRepository {
 
     @Override
     public void createUser(User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating user : " + user);
-        }
+        log.debug("Creating user : {}", user);
         em.persist(user);
     }
 
     @Override
     public void updateUser(User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("Updating user : " + user);
-        }
+        log.debug("Updating user : {}", user);
         em.persist(user);
     }
 
@@ -43,9 +39,7 @@ public class CassandraUserRepository implements UserRepository {
         try {
             return em.find(User.class, login);
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for user " + login + " : " + e.getMessage());
-            }
+            log.debug("Exception while looking for user {} : {}", login, e.getMessage());
             return null;
         }
     }

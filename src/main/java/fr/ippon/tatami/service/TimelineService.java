@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ import fr.ippon.tatami.repository.TweetRepository;
  * @author Julien Dubois
  */
 @Service
-@CommonsLog
+@Slf4j
 public class TimelineService {
 
     @Inject
@@ -39,9 +39,7 @@ public class TimelineService {
     private FollowerRepository followerRepository;
 
     public void postTweet(String content) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating new tweet : " + content);
-        }
+        log.debug("Creating new tweet : {}", content);
         User currentUser = userService.getCurrentUser();
 
         Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);

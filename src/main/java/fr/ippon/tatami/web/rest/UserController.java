@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ import fr.ippon.tatami.service.UserService;
  * @author Julien Dubois
  */
 @Controller
-@CommonsLog
+@Slf4j
 public class UserController {
 
     @Inject
@@ -35,18 +35,14 @@ public class UserController {
     @RequestMapping(value = "/rest/users/{login}", method = GET, produces = "application/json")
     @ResponseBody
     public User getUser(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get Profile : " + login);
-        }
+        log.debug("REST request to get Profile : {}", login);
         return userService.getUserProfileByLogin(login);
     }
 
     @RequestMapping(value = "/rest/users/{login}", method = POST, consumes = "application/json")
     @ResponseBody
     public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to update user : " + login);
-        }
+        log.debug("REST request to update user : {}", login);
         user.setLogin(login);
         userService.updateUser(user);
     }
@@ -54,9 +50,7 @@ public class UserController {
     @RequestMapping(value = "/rest/users/{login}/followUser", method = POST, consumes = "application/json")
     @ResponseBody
     public void followUser(@PathVariable("login") String login, @RequestBody String loginToFollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow user login : " + loginToFollow);
-        }
+        log.debug("REST request to follow user login : {}", loginToFollow);
         User currentUser = userService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.followUser(loginToFollow);
@@ -68,9 +62,7 @@ public class UserController {
     @RequestMapping(value = "/rest/users/{login}/removeFriend", method = POST, consumes = "application/json")
     @ResponseBody
     public void removeFriend(@PathVariable("login") String login, @RequestBody String friend) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to remove friendLogin : " + friend);
-        }
+        log.debug("REST request to remove friendLogin : {}", friend);
         User currentUser = userService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);

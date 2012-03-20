@@ -4,8 +4,8 @@ import static fr.ippon.tatami.service.util.GravatarUtil.gravatarHash;
 
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,8 @@ import fr.ippon.tatami.repository.UserRepository;
  * @author Julien Dubois
  */
 @Service
+@Slf4j
 public class UserService {
-
-    private final Log log = LogFactory.getLog(UserService.class);
 
     @Inject
     private UserRepository userRepository;
@@ -39,9 +38,7 @@ public class UserService {
     private CounterRepository counterRepository;
 
     public User getUserByLogin(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Looking for user with login : " + login);
-        }
+        log.debug("Looking for user with login : {}", login);
         return userRepository.findUserByLogin(login);
     }
 
@@ -72,9 +69,7 @@ public class UserService {
     }
 
     public void followUser(String loginToFollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("Adding friend : " + loginToFollow);
-        }
+        log.debug("Adding friend : {}", loginToFollow);
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
@@ -98,9 +93,7 @@ public class UserService {
     }
 
     public void forgetUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing followed user : " + login);
-        }
+        log.debug("Removing followed user : {}", login);
         User currentUser = getCurrentUser();
         User followedUser = getUserByLogin(login);
         if (followedUser != null) {

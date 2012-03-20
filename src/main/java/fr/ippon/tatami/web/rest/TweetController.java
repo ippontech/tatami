@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ import fr.ippon.tatami.service.TimelineService;
  * @author Julien Dubois
  */
 @Controller
-@CommonsLog
+@Slf4j
 public class TweetController {
 
     @Inject
@@ -33,9 +33,7 @@ public class TweetController {
     @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}", method = GET, produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login, @PathVariable("nbTweets") String nbTweets) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
-        }
+        log.debug("REST request to get the tweet list ({} sized).", nbTweets);
         try {
             return timelineService.getTimeline(login, Integer.parseInt(nbTweets));
         } catch (NumberFormatException e) {
@@ -47,17 +45,13 @@ public class TweetController {
     @RequestMapping(value = "/rest/ownTweets/{login}", method = GET, produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the own tweet list (" + login + ").");
-        }
+        log.debug("REST request to get the own tweet list ({}).", login);
         return timelineService.getUserline(login, 20);
     }
 
     @RequestMapping(value = "/rest/tweets", method = POST)
     public void postTweet(@RequestBody String content) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to add tweet : " + content);
-        }
+        log.debug("REST request to add tweet : {}", content);
         timelineService.postTweet(content);
     }
 }

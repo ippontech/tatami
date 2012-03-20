@@ -17,7 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -36,7 +36,7 @@ import fr.ippon.tatami.repository.TweetRepository;
  * @author Julien Dubois
  */
 @Repository
-@CommonsLog
+@Slf4j
 public class CassandraTweetRepository implements TweetRepository {
 
     private static final StringSerializer stringSerializer = StringSerializer.get();
@@ -56,9 +56,7 @@ public class CassandraTweetRepository implements TweetRepository {
                 .content(content) //
                 .tweetDate(Calendar.getInstance().getTime()) //
                 .build();
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting Tweet : " + tweet);
-        }
+        log.debug("Persisting Tweet : {}", tweet);
         em.persist(tweet);
         return tweet;
     }
@@ -112,9 +110,7 @@ public class CassandraTweetRepository implements TweetRepository {
     @Override
     @Cacheable("tweet-cache")
     public Tweet findTweetById(String tweetId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Finding tweet : " + tweetId);
-        }
+        log.debug("Finding tweet : {}", tweetId);
         return em.find(Tweet.class, tweetId);
     }
 }
