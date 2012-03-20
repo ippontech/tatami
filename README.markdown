@@ -19,8 +19,8 @@ Installation
 
 - Install [Maven 3](http://maven.apache.org/)
 - Install [Lombok](http://projectlombok.org/) `mvn -Pinstall-lombok`
-- Run Cassandra from Maven : mvn cassandra:run
-- Run Jetty from Maven : mvn jetty:run
+- Run Cassandra from Maven : `mvn cassandra:run`
+- Run Jetty from Maven : `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
 
 The default users are "jdubois/password" and "tescolan/password", you can check or modify the
