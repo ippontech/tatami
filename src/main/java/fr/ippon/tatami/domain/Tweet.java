@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormatter;
@@ -20,6 +23,8 @@ import org.joda.time.format.PeriodFormatterBuilder;
  */
 @Entity
 @Table(name = "Tweet")
+@Data
+@EqualsAndHashCode(of = "tweetId")
 public class Tweet {
 
     private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder().appendDays().appendSuffix("d").toFormatter();
@@ -60,87 +65,5 @@ public class Tweet {
         } else {
             return secondFormatter.print(period);
         }
-    }
-
-    public String getTweetId() {
-        return tweetId;
-    }
-
-    public void setTweetId(String tweetId) {
-        this.tweetId = tweetId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getTweetDate() {
-        return tweetDate;
-    }
-
-    public void setTweetDate(Date tweetDate) {
-        this.tweetDate = tweetDate;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getGravatar() {
-        return gravatar;
-    }
-
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        Tweet tweet = (Tweet) o;
-
-        if (tweetId != null ? !tweetId.equals(tweet.tweetId) : tweet.tweetId != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return tweetId != null ? tweetId.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Tweet{" + "tweetId='" + tweetId + '\'' + ", login='" + login + '\'' + ", content='" + content + '\'' + ", tweetDate=" + tweetDate
-                + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", gravatar='" + gravatar + '\'' + '}';
     }
 }
