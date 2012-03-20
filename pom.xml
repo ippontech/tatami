@@ -12,12 +12,12 @@
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 		<aspectj.version>1.6.12</aspectj.version>
 		<slf4j.version>1.6.4</slf4j.version>
-		<lombok.version>0.10.4</lombok.version>
+		<lombok.version>0.10.8</lombok.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.github.peichhorn</groupId>
-			<artifactId>lombok-pg</artifactId>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -172,6 +172,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<defaultGoal>jetty:run</defaultGoal>
 		<finalName>tatami</finalName>
 		<plugins>
 			<plugin>
@@ -249,7 +250,7 @@
 									<target>
 										<exec executable="java">
 											<arg value="-jar" />
-											<arg value="${settings.localRepository}/com/github/peichhorn/${lombok.version}/lombok-pg-${lombok.version}.jar" />
+											<arg value="${settings.localRepository}/org/projectlombok/lombok/${lombok.version}/lombok-${lombok.version}.jar" />
 										</exec>
 									</target>
 								</configuration>

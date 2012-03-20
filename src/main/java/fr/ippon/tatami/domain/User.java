@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,7 +16,6 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "User")
 @Data
-@Builder
 @EqualsAndHashCode(of = "login")
 public class User {
 
