@@ -3,6 +3,10 @@ package fr.ippon.tatami.repository.cassandra;
 import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
+import static java.lang.System.currentTimeMillis;
+import static me.prettyprint.cassandra.utils.TimeUUIDUtils.getUniqueTimeUUIDinMillis;
+import static me.prettyprint.hector.api.factory.HFactory.createColumn;
+import static me.prettyprint.hector.api.factory.HFactory.createMutator;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 import java.util.Calendar;
@@ -14,12 +18,9 @@ import javax.persistence.EntityManager;
 
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +40,9 @@ public class CassandraTweetRepository implements TweetRepository {
 
     private final Log log = LogFactory.getLog(CassandraTweetRepository.class);
 
+    private static final StringSerializer stringSerializer = StringSerializer.get();
+    private static final LongSerializer longSerializer = LongSerializer.get();
+
     @Inject
     private EntityManager em;
 
@@ -48,7 +52,7 @@ public class CassandraTweetRepository implements TweetRepository {
     @Override
     public Tweet createTweet(String login, String content) {
         Tweet tweet = new Tweet();
-        tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
+        tweet.setTweetId(getUniqueTimeUUIDinMillis().toString());
         tweet.setLogin(login);
         tweet.setContent(content);
         tweet.setTweetDate(Calendar.getInstance().getTime());
@@ -61,22 +65,26 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToUserline(Tweet tweet) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(tweet.getLogin(), USERLINE_CF,
-                HFactory.createColumn(Calendar.getInstance().getTimeInMillis(), tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+        createMutator(keyspaceOperator, stringSerializer) //
+                .insert(tweet.getLogin(), USERLINE_CF, //
+                        createColumn(currentTimeMillis(), tweet.getTweetId(), longSerializer, stringSerializer));
     }
 
     @Override
     public void addTweetToTimeline(String login, Tweet tweet) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, TIMELINE_CF,
-                HFactory.createColumn(Calendar.getInstance().getTimeInMillis(), tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+        createMutator(keyspaceOperator, stringSerializer) //
+                .insert(login, TIMELINE_CF, //
+                        createColumn(currentTimeMillis(), tweet.getTweetId(), longSerializer, stringSerializer));
     }
 
     @Override
     public Collection<String> getTimeline(String login, int size) {
-        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-                .setColumnFamily(TIMELINE_CF).setKey(login).setRange(null, null, true, size).execute().get();
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, stringSerializer, stringSerializer, stringSerializer) //
+                .setColumnFamily(TIMELINE_CF) //
+                .setKey(login) //
+                .setRange(null, null, true, size) //
+                .execute() //
+                .get();
 
         List<String> tweetIds = newArrayList();
         for (HColumn<String, String> column : result.getColumns()) {
@@ -87,8 +95,12 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getUserline(String login, int size) {
-        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-                .setColumnFamily(USERLINE_CF).setKey(login).setRange(null, null, true, size).execute().get();
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator, stringSerializer, stringSerializer, stringSerializer) //
+                .setColumnFamily(USERLINE_CF) //
+                .setKey(login) //
+                .setRange(null, null, true, size) //
+                .execute() //
+                .get();
 
         List<String> tweetIds = newArrayList();
         for (HColumn<String, String> column : result.getColumns()) {
