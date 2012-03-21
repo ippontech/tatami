@@ -68,7 +68,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#tweetsList'), true);
+			makeTweetsList(data, $('#tweetsList'), true, false);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -80,7 +80,7 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#userTweetsList'), false);
+			makeTweetsList(data, $('#userTweetsList'), false, true);
 
 			$.ajax({
 				type: 'GET',
@@ -110,7 +110,7 @@ function listTagTweets(tag) {
 		dataType: "json",
 		success: function(data) {
 			//TODO refesh title's tag name
-			makeTweetsList(data, $('#tagTweetsList'), true);
+			makeTweetsList(data, $('#tagTweetsList'), true, true);
 			$('#tagTab').tab('show');
 		}
 	});
@@ -122,7 +122,7 @@ var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTwee
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
-function makeTweetsList(data, dest, linkLogins) {
+function makeTweetsList(data, dest, linkLogins, followUsers) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
@@ -149,8 +149,12 @@ function makeTweetsList(data, dest, linkLogins) {
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (linkLogins && login != entry['login']) {
-				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+			if (login != entry['login']) {
+				if (followUsers) {
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+				} else {
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+				}
 			} else {
 				html += '&nbsp;';
 			}
