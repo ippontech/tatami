@@ -64,8 +64,8 @@ public class CassandraTweetRepository implements TweetRepository {
     @Override
     public void addTweetToDayline(Tweet tweet, String key) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(tweet.getLogin(), tweet.getTweetId(),
-        		StringSerializer.get(), StringSerializer.get()));
+        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        		tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
     @Override
