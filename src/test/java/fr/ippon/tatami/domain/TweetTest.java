@@ -1,6 +1,5 @@
 package fr.ippon.tatami.domain;
 
-import static java.lang.System.currentTimeMillis;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -106,21 +105,24 @@ public class TweetTest {
         assertErrors(tweet, 1);
     }
 
-    private Date tomorrow() {
-        Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.DAY_OF_YEAR, 1);
-        Date time = instance.getTime();
-        return time;
-    }
-
     private Tweet validTweet() {
         Tweet tweet = new Tweet();
         tweet.setLogin("login");
         tweet.setContent("good content");
         tweet.setLastName("lastname");
         tweet.setFirstName("firstname");
-        tweet.setTweetDate(new Date(currentTimeMillis()));
+        tweet.setTweetDate(now());
         return tweet;
+    }
+
+    private Date tomorrow() {
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.DAY_OF_YEAR, 1);
+        return instance.getTime();
+    }
+
+    private Date now() {
+        return Calendar.getInstance().getTime();
     }
 
     private void assertErrors(Tweet tweet, int expected) {
