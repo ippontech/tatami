@@ -9,42 +9,38 @@ function incrementNbTweets() {
 }
 
 
-function refreshProfile() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/users/" + login + "/",
-		dataType: "json",
-		success: function(data) {
-			$("#picture").parent().css('width', '68px');	// optional
-            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-
-            $("#firstName").text(data.firstName);
-			$("#lastName").text(data.lastName);
-			$("#tweetCount").text(data.tweetCount);
-			$("#friendsCount").text(data.friendsCount);
-			$("#followersCount").text(data.followersCount);
-		}
-	});
-}
-
+//cross site scripting defense ; http://ha.ckers.org/xss.html
+var xssREG1 = new RegExp("(javascript:|<\s*script.*?\s*>)", "i");
+var xssREG2 = new RegExp('\s+on\w+\s*=["\'].+["\']', "i");
+//TODO <img src="alert('it's a trap!');"/>
 
 function tweet() {
-	if ($("#tweetContent").val() == "") {
-		$('#tweetContent').popover('show');
+	var src = $('#tweetContent');
+
+	if (src.val() === "") {
+		src.popover('show');
 		setTimeout(function() {
-			$('#tweetContent').popover('hide');
+			src.popover('hide');
         }, 5000);
 		return false;
 	}
+	if (src.val().match(xssREG1) || src.val().match(xssREG2)) {
+		alert('Cross Site Scripting suspicion. Please check syntax.')
+		setTimeout(function() {
+			src.val("");
+        }, 1000);
+		return false;
+	}
+	alert('checked');
 
 	$.ajax({
         type: 'POST',
         url: "rest/tweets",
         contentType: "application/json",
-        data: $("#tweetContent").val(),
+        data: src.val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").slideUp().val("").slideDown('fast');
+            src.slideUp().val("").slideDown('fast');
             setTimeout(function() {
                         refreshProfile();
                         listTweets(true);

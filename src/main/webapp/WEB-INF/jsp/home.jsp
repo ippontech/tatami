@@ -102,8 +102,8 @@
 	<script src="/assets/js/bootstrap-popover.js"></script>
 	<script src="/assets/js/shortcut.js"></script>
 
-	<script src="/assets/js/tatami.js"></script>
 	<script src="/assets/js/profile.js"></script>
+	<script src="/assets/js/tatami.js"></script>
 
 	<script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
