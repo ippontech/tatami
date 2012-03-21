@@ -109,7 +109,7 @@ public class UserController {
         exceptions.add(login);
 
         String date = null;	//TODO parameterized version
-        Collection<Tweet> tweets = timelineService.getDayline(date, 0);
+        Collection<Tweet> tweets = timelineService.getDayline(date);
 		Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
         	if (exceptions.contains(tweet.getLogin()))	continue;
@@ -128,26 +128,20 @@ public class UserController {
         log.debug("REST request to get the users stats.");
 
         String date = null;	//TODO parameterized version
+		Collection<Tweet> tweets = timelineService.getDayline(date);
+        if (log.isDebugEnabled()) {
+            log.debug("REST analysing " + tweets.size() + " items...");
+        }
 		Map<String, Integer> users = new HashMap<String, Integer>();
-		// collect all, sliced into pages
-        Collection<Tweet> tweets;
-        int pos = 0;
-        do {
-        	tweets = timelineService.getDayline(date, pos);
-            if (log.isDebugEnabled()) {
-                log.debug("REST analysing " + users.size() + " items...");
-            }
-            for (Tweet tweet : tweets) {
-            	Integer count = users.get(tweet.getLogin());
-            	if (count != null) {
-            		count = count.intValue() + 1;
-            	} else {
-            		count = 1;
-            	}
-        		users.put(tweet.getLogin(), count);
-    		}
-            pos += tweets.size();
-        } while (!tweets.isEmpty());
+        for (Tweet tweet : tweets) {
+        	Integer count = users.get(tweet.getLogin());
+        	if (count != null) {
+        		count = count.intValue() + 1;
+        	} else {
+        		count = 1;
+        	}
+    		users.put(tweet.getLogin(), count);
+		}
         if (log.isDebugEnabled()) {
             log.debug("REST fetched total of " + users.size() + " stats.");
         }
