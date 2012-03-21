@@ -1,5 +1,6 @@
 package fr.ippon.tatami.domain;
 
+import static java.lang.System.currentTimeMillis;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -118,7 +119,7 @@ public class TweetTest {
         tweet.setContent("good content");
         tweet.setLastName("lastname");
         tweet.setFirstName("firstname");
-        tweet.setTweetDate(new Date(System.currentTimeMillis()));
+        tweet.setTweetDate(new Date(currentTimeMillis()));
         return tweet;
     }
 
