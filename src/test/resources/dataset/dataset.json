@@ -156,6 +156,63 @@
                 "name" : "lastName",
                 "value" : "ToForget"
             }]
+        },
+        {
+            "key" : "userWithTweets",
+            "columns" : [{
+                "name" : "email",
+                "value" : "userWithUserlinet@ippon.fr"
+            },
+            {
+                "name" : "gravatar",
+                "value" : "gravatar"
+            },
+            {
+                "name" : "firstName",
+                "value" : "User"
+            },
+            {
+                "name" : "lastName",
+                "value" : "WithUserline"
+            }]
+        },
+        {
+            "key" : "userWhoPostTweet",
+            "columns" : [{
+                "name" : "email",
+                "value" : "userWhoPostTweet@ippon.fr"
+            },
+            {
+                "name" : "gravatar",
+                "value" : "gravatar"
+            },
+            {
+                "name" : "firstName",
+                "value" : "User"
+            },
+            {
+                "name" : "lastName",
+                "value" : "WhoPostTweet"
+            }]
+        },
+        {
+            "key" : "userWhoReadTweet",
+            "columns" : [{
+                "name" : "email",
+                "value" : "userWhoReadTweet@ippon.fr"
+            },
+            {
+                "name" : "gravatar",
+                "value" : "gravatar"
+            },
+            {
+                "name" : "firstName",
+                "value" : "User"
+            },
+            {
+                "name" : "lastName",
+                "value" : "WhoReadTweet"
+            }]
         }]
     },
     {
@@ -267,6 +324,51 @@
                 "name" : "FRIENDS_COUNTER",
                 "value" : "0"
             }]
+    	},
+    	{
+            "key" : "userWithTweets",
+            "columns" : [{
+                "name" : "TWEET_COUNTER",
+                "value" : "2"
+            },
+            {
+                "name" : "FOLLOWERS_COUNTER",
+                "value" : "1"
+            },
+            {
+                "name" : "FRIENDS_COUNTER",
+                "value" : "0"
+            }]
+    	},
+    	{
+            "key" : "userWhoPostTweet",
+            "columns" : [{
+                "name" : "TWEET_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FOLLOWERS_COUNTER",
+                "value" : "1"
+            },
+            {
+                "name" : "FRIENDS_COUNTER",
+                "value" : "0"
+            }]
+    	},
+    	{
+            "key" : "userWhoReadTweet",
+            "columns" : [{
+                "name" : "TWEET_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FOLLOWERS_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FRIENDS_COUNTER",
+                "value" : "1"
+            }]
     	}]
     },
     {
@@ -287,12 +389,95 @@
                 "name" : "userToForget",
                 "value" : "0"
             }]
+       	},
+       	{
+            "key" : "userWhoReadTweet",
+            "columns" : [{
+                "name" : "userWhoPostTweet",
+                "value" : "0"
+            }]
        	}]
     },
     {
         "name" : "Followers",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
-        "defaultColumnValueType" : "LongType"
+        "defaultColumnValueType" : "LongType",
+        "rows" : [{
+            "key" : "userWhoPostTweet",
+            "columns" : [{
+                "name" : "userWhoReadTweet",
+                "value" : "0"
+            }]
+       	}]
+    },
+    {
+        "name" : "Userline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "userWithTweets",
+        	"columns" : [{
+        		"name" : "0",
+        		"value" : "tweetId1"
+        	},
+        	{
+        		"name" : "1",
+        		"value" : "tweetId2"
+        	}]
+        }]
+    },
+    {
+        "name" : "Timeline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "userWithTweets",
+        	"columns" : [{
+        		"name" : "0",
+        		"value" : "tweetId1"
+        	},
+        	{
+        		"name" : "1",
+        		"value" : "tweetId2"
+        	}]
+        }]
+    },
+    {
+        "name" : "Tweet",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "tweetId1",
+        	"columns" : [{
+        		"name" : "login",
+        		"value" : "utf8(userWithTweets)"
+        	},
+        	{
+        		"name" : "content",
+        		"value" : "utf8(Devoxx, c'est nowwwwww)"
+        	},
+        	{
+        		"name" : "tweetDate",
+        		"value" : "utf8(10/03/2012)"
+        	}]
+        },
+        {
+        	"key" : "tweetId2",
+        	"columns" : [{
+        		"name" : "login",
+        		"value" : "utf8(userWithTweets)"
+        	},
+        	{
+        		"name" : "content",
+        		"value" : "utf8(Devoxx, ça va déchirer)"
+        	},
+        	{
+        		"name" : "tweetDate",
+        		"value" : "utf8(11/03/2012)"
+        	}]
+        }]
     }]
 }

@@ -105,4 +105,9 @@ public class TimelineService {
         }
         return tweets;
 	}
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+        
+    }
 }
