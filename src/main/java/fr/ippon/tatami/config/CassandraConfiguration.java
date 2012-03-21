@@ -14,12 +14,11 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
@@ -34,7 +33,7 @@ public class CassandraConfiguration {
 
     private final Log log = LogFactory.getLog(CassandraConfiguration.class);
 
-    @Autowired
+    @Inject
     Environment env;
 
 
@@ -44,7 +43,6 @@ public class CassandraConfiguration {
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
-
 
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
@@ -73,7 +71,6 @@ public class CassandraConfiguration {
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
-
 
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {

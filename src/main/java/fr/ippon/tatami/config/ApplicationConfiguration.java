@@ -3,7 +3,6 @@ package fr.ippon.tatami.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 
 import javax.annotation.PostConstruct;

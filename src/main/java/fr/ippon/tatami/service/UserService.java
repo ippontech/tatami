@@ -58,7 +58,7 @@ public class UserService {
             userRepository.updateUser(user);
         } else {
             log.info("Security alert : user " + currentUser.getLogin() +
-                " tried to update user " + user);
+                    " tried to update user " + user);
         }
     }
 
@@ -105,10 +105,10 @@ public class UserService {
         if (followedUser != null) {
             boolean userAlreadyFollowed = false;
             for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
-                    if (alreadyFollowingTest.equals(login)) {
-                        userAlreadyFollowed = true;
-                    }
+                if (alreadyFollowingTest.equals(login)) {
+                    userAlreadyFollowed = true;
                 }
+            }
             if (userAlreadyFollowed) {
                 friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
                 counterRepository.decrementFriendsCounter(currentUser.getLogin());

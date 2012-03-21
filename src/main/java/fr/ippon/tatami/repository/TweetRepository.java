@@ -17,10 +17,14 @@ public interface TweetRepository {
 
     void addTweetToTimeline(String login, Tweet tweet);
 
-    /** a user's and his followed users tweets */
+    /**
+     * a user's and his followed users tweets
+     */
     Collection<String> getTimeline(String login, int size);
 
-    /** a users own tweets */
+    /**
+     * a users own tweets
+     */
     Collection<String> getUserline(String login, int size);
 
     Tweet findTweetById(String tweetId);

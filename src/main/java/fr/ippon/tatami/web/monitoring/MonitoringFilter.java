@@ -1,4 +1,5 @@
 package fr.ippon.tatami.web.monitoring;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;

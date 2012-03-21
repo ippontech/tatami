@@ -84,8 +84,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/rest/suggestions",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
         // TODO to implement
@@ -98,6 +98,6 @@ public class UserController {
         if (tescolan != null) {
             mock.add(tescolan);
         }
-		return mock;
+        return mock;
     }
 }

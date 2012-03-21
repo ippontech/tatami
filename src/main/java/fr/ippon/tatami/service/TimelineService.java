@@ -52,18 +52,16 @@ public class TimelineService {
 
     /**
      * The timeline contains the user's tweets merged with his friends tweets
-     * 
-     * @param login
-     * 		the user to retrieve the timeline of
-     * @param nbTweets
-     * 		the number of tweets to retrieve, starting from most recent ones
+     *
+     * @param login    the user to retrieve the timeline of
+     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
     public Collection<Tweet> getTimeline(String login, int nbTweets) {
-    	if (login == null || login.isEmpty()) {
-	        User currentUser = userService.getCurrentUser();
-	        login = currentUser.getLogin();
-    	}
+        if (login == null || login.isEmpty()) {
+            User currentUser = userService.getCurrentUser();
+            login = currentUser.getLogin();
+        }
         Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
 
         return this.buildTweetsList(tweetIds);
@@ -71,25 +69,23 @@ public class TimelineService {
 
     /**
      * The userline contains the user's own tweets
-     * 
-     * @param login
-     * 		the user to retrieve the userline of
-     * @param nbTweets
-     * 		the number of tweets to retrieve, starting from most recent ones
+     *
+     * @param login    the user to retrieve the userline of
+     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
     public Collection<Tweet> getUserline(String login, int nbTweets) {
-    	if (login == null || login.isEmpty()) {
-	        User currentUser = userService.getCurrentUser();
-	        login = currentUser.getLogin();
-    	}
+        if (login == null || login.isEmpty()) {
+            User currentUser = userService.getCurrentUser();
+            login = currentUser.getLogin();
+        }
         Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets);
 
         return this.buildTweetsList(tweetIds);
     }
 
-	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
-		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
+    private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweedId : tweetIds) {
             Tweet tweet = tweetRepository.findTweetById(tweedId);
             User tweetUser = userService.getUserByLogin(tweet.getLogin());
@@ -99,5 +95,5 @@ public class TimelineService {
             tweets.add(tweet);
         }
         return tweets;
-	}
+    }
 }

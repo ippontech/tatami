@@ -1,7 +1,6 @@
 package fr.ippon.tatami.config;
 
 import fr.ippon.tatami.web.monitoring.MonitoringFilter;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -37,7 +36,6 @@ public class WebInitializer implements WebApplicationInitializer {
 
         FilterRegistration.Dynamic monitoringFilter = servletContext.addFilter("monitoringFilter", new MonitoringFilter());
         monitoringFilter.addMappingForUrlPatterns(disps, true, "/*");
-
 
 
     }
