@@ -1,13 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.FOLLOWERS_CF;
 import static java.lang.System.currentTimeMillis;
 import static me.prettyprint.hector.api.factory.HFactory.createColumn;
 import static me.prettyprint.hector.api.factory.HFactory.createMutator;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -30,7 +28,7 @@ import fr.ippon.tatami.repository.FollowerRepository;
 @Repository
 public class CassandraFollowerRepository implements FollowerRepository {
 
-    ColumnFamilyTemplate<String, String> template;
+    private ColumnFamilyTemplate<String, String> template;
 
     private static final StringSerializer stringSerializer = StringSerializer.get();
     private static final LongSerializer longSerializer = LongSerializer.get();
@@ -58,10 +56,6 @@ public class CassandraFollowerRepository implements FollowerRepository {
 
     @Override
     public Collection<String> findFollowersForUser(String login) {
-        List<String> followers = newArrayList();
-        for (String columnName : template.queryColumns(login).getColumnNames()) {
-            followers.add(columnName);
-        }
-        return followers;
+        return template.queryColumns(login).getColumnNames();
     }
 }
