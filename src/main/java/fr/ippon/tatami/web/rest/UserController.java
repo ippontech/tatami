@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.TweetStat;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -124,13 +124,13 @@ public class UserController {
     		method = RequestMethod.GET,
     		produces = "application/json")
     @ResponseBody
-    public Collection<Object> tweetStats() {
+    public Collection<TweetStat> tweetStats() {
         log.debug("REST request to get the users stats.");
 
         String date = null;	//TODO parameterized version
 		Collection<Tweet> tweets = timelineService.getDayline(date);
         if (log.isDebugEnabled()) {
-            log.debug("REST analysing " + tweets.size() + " items...");
+            log.debug("analysing " + tweets.size() + " items...");
         }
 		Map<String, Integer> users = new HashMap<String, Integer>();
         for (Tweet tweet : tweets) {
@@ -143,12 +143,12 @@ public class UserController {
     		users.put(tweet.getLogin(), count);
 		}
         if (log.isDebugEnabled()) {
-            log.debug("REST fetched total of " + users.size() + " stats.");
+            log.debug("fetched total of " + users.size() + " stats.");
         }
 
-        Set<Object> stats = new TreeSet<Object>();
+        Collection<TweetStat> stats = new TreeSet<TweetStat>();
         for (Entry<String, Integer> entry : users.entrySet()) {
-        	stats.add("UserStat { login='" + entry.getKey() + "', tweetsCount='" + entry.getValue() + "' }");
+        	stats.add(new TweetStat(entry.getKey(), entry.getValue()));
         }
 		return stats;
     }

@@ -104,11 +104,12 @@
 
 	<script src="/assets/js/tatami.js"></script>
 	<script src="/assets/js/profile.js"></script>
-
-	<script src="https://www.google.com/jsapi"></script>
 	<script src="/assets/js/chart.js"></script>
 
+	<script src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript">
+	    google.load("visualization", "1", {packages:["corechart"]});
+
         var login = "<sec:authentication property="principal.username"/>";
         resetNbTweets();
 
