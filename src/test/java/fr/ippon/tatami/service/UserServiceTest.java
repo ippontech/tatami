@@ -17,166 +17,160 @@ import fr.ippon.tatami.security.AuthenticationService;
 
 public class UserServiceTest extends AbstractCassandraTatamiTest {
 
-	@Inject
-	public UserService userService;
+    @Inject
+    public UserService userService;
 
-	@Test
-	public void shouldGetAUserServiceInjected() {
-		assertThat(userService, notNullValue());
-	}
+    @Test
+    public void shouldGetAUserServiceInjected() {
+        assertThat(userService, notNullValue());
+    }
 
-	@Test
-	public void shouldGetAUserByLogin() {
-		User user = userService.getUserByLogin("jdubois");
-		assertThat(user, notNullValue());
-		assertThat(user.getEmail(), is("jdubois@ippon.fr"));
-		assertThat(user.getGravatar(), is("gravatar"));
-		assertThat(user.getFirstName(), is("Julien"));
-		assertThat(user.getLastName(), is("Dubois"));
-	}
+    @Test
+    public void shouldGetAUserByLogin() {
+        User user = userService.getUserByLogin("jdubois");
+        assertThat(user, notNullValue());
+        assertThat(user.getEmail(), is("jdubois@ippon.fr"));
+        assertThat(user.getGravatar(), is("gravatar"));
+        assertThat(user.getFirstName(), is("Julien"));
+        assertThat(user.getLastName(), is("Dubois"));
+    }
 
-	@Test
-	public void shouldNotGetAUserByLogin() {
-		User user = userService.getUserByLogin("unknownUserLogin");
-		assertThat(user, nullValue());
-	}
+    @Test
+    public void shouldNotGetAUserByLogin() {
+        User user = userService.getUserByLogin("unknownUserLogin");
+        assertThat(user, nullValue());
+    }
 
-	@Test
-	public void shouldGetAUserProfileByLogin() {
-		User user = userService.getUserProfileByLogin("jdubois");
-		assertThat(user.getEmail(), is("jdubois@ippon.fr"));
-		assertThat(user.getTweetCount(), is(2L));
-		assertThat(user.getFollowersCount(), is(3L));
-		assertThat(user.getFriendsCount(), is(4L));
-	}
+    @Test
+    public void shouldGetAUserProfileByLogin() {
+        User user = userService.getUserProfileByLogin("jdubois");
+        assertThat(user.getEmail(), is("jdubois@ippon.fr"));
+        assertThat(user.getTweetCount(), is(2L));
+        assertThat(user.getFollowersCount(), is(3L));
+        assertThat(user.getFriendsCount(), is(4L));
+    }
 
-	@Test
-	public void shouldNotGetAUserProfileByLogin() {
-		User user = userService.getUserProfileByLogin("unknownUserLogin");
-		assertThat(user, nullValue());
-	}
+    @Test
+    public void shouldNotGetAUserProfileByLogin() {
+        User user = userService.getUserProfileByLogin("unknownUserLogin");
+        assertThat(user, nullValue());
+    }
 
-	@Test
-	public void shouldUpdateUser() {
-		String login = "uuser";
-		String firstName = "UpdatedFirstName";
-		String lastName = "UpdatedLastName";
-		User userToUpdate = constructAUser(login, firstName, lastName);
+    @Test
+    public void shouldUpdateUser() {
+        String login = "uuser";
+        String email = "uuser@ippon.fr";
+        String firstName = "UpdatedFirstName";
+        String lastName = "UpdatedLastName";
+        User userToUpdate = constructAUser(login, email, firstName, lastName);
 
-		UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(userToUpdate);
+        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(login, email);
 
-		User updatedUser = userService.getUserByLogin(login);
+        userService.updateUser(userToUpdate);
 
-		assertThat(updatedUser.getFirstName(), is(firstName));
-		assertThat(updatedUser.getLastName(), is(lastName));
+        User updatedUser = userService.getUserByLogin(login);
 
-	}
+        assertThat(updatedUser.getFirstName(), is(firstName));
+        assertThat(updatedUser.getLastName(), is(lastName));
 
-	@Test
-	public void shouldCreateAUser() {
-		String login = "nuser";
-		String firstName = "New";
-		String lastName = "User";
-		String email = "nuser@ippon.fr";
-		String gravatar = "newGravatar";
+    }
 
-		User user = new User();
-		user.setLogin(login);
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setEmail(email);
-		user.setGravatar(gravatar);
+    @Test
+    public void shouldCreateAUser() {
+        String login = "nuser";
+        String firstName = "New";
+        String lastName = "User";
+        String email = "nuser@ippon.fr";
+        String gravatar = "newGravatar";
 
-		userService.createUser(user);
+        User user = new User();
+        user.setLogin(login);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setGravatar(gravatar);
 
-		/* verify */
-		User userToBeTheSame = userService.getUserProfileByLogin(login);
-		assertThat(userToBeTheSame.getLogin(), is(user.getLogin()));
-		assertThat(userToBeTheSame.getFirstName(), is(user.getFirstName()));
-		assertThat(userToBeTheSame.getLastName(), is(user.getLastName()));
-		assertThat(userToBeTheSame.getGravatar(), is(user.getGravatar()));
-		assertThat(userToBeTheSame.getTweetCount(), is(0L));
-		assertThat(userToBeTheSame.getFollowersCount(), is(0L));
-		assertThat(userToBeTheSame.getFriendsCount(), is(0L));
-	}
+        userService.createUser(user);
 
-	@Test
-	public void shouldFollowUser() {
+        /* verify */
+        User userToBeTheSame = userService.getUserProfileByLogin(login);
+        assertThat(userToBeTheSame.getLogin(), is(user.getLogin()));
+        assertThat(userToBeTheSame.getFirstName(), is(user.getFirstName()));
+        assertThat(userToBeTheSame.getLastName(), is(user.getLastName()));
+        assertThat(userToBeTheSame.getGravatar(), is(user.getGravatar()));
+        assertThat(userToBeTheSame.getTweetCount(), is(0L));
+        assertThat(userToBeTheSame.getFollowersCount(), is(0L));
+        assertThat(userToBeTheSame.getFriendsCount(), is(0L));
+    }
 
-		User userWhoWantToFollow = constructAUser("userWhoWantToFollow", "User", "WhoWantToFollow");
-		UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(userWhoWantToFollow);
+    @Test
+    public void shouldFollowUser() {
 
-		userService.followUser("userWhoWillBeFollowed");
+        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow",
+                        "userWhoWantToFollow@ippon.fr");
 
-		/* verify */
-		User userWhoFollow = userService.getUserProfileByLogin("userWhoWantToFollow");
-		assertThat(userWhoFollow.getFriendsCount(), is(1L));
+        userService.followUser("userWhoWillBeFollowed");
 
-		User userWhoIsFollowed = userService.getUserProfileByLogin("userWhoWillBeFollowed");
-		assertThat(userWhoIsFollowed.getFollowersCount(), is(1L));
-	}
+        /* verify */
+        User userWhoFollow = userService.getUserProfileByLogin("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(1L));
 
-	@Test
-	public void shouldFollowUserBecauseUserNotExist() {
+        User userWhoIsFollowed = userService.getUserProfileByLogin("userWhoWillBeFollowed");
+        assertThat(userWhoIsFollowed.getFollowersCount(), is(1L));
+    }
 
-		User userWhoWantToFollow = constructAUser("userWhoWantToFollow", "User", "WhoWantToFollow");
-		UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(userWhoWantToFollow);
+    @Test
+    public void shouldFollowUserBecauseUserNotExist() {
 
-		userService.followUser("unknownUser");
+        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow",
+                        "userWhoWantToFollow@ippon.fr");
 
-		/* verify */
-		User userWhoFollow = userService.getUserProfileByLogin("userWhoWantToFollow");
-		assertThat(userWhoFollow.getFriendsCount(), is(1L));
-	}
+        userService.followUser("unknownUser");
 
-	@Test
-	public void shouldNotFollowUserBecauseUserAlreadyFollowed() throws Exception {
+        /* verify */
+        User userWhoFollow = userService.getUserProfileByLogin("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(1L));
+    }
 
-		User currentUser = constructAUser("userWhoFollow", "User", "WhoFollow");
-		UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(currentUser);
+    @Test
+    public void shouldNotFollowUserBecauseUserAlreadyFollowed() throws Exception {
 
-		userService.followUser("userWhoIsFollowed");
+        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoFollow",
+                        "userWhoFollow@ippon.fr");
 
-		/* verify */
-		User userWhoFollow = userService.getUserProfileByLogin("userWhoFollow");
-		assertThat(userWhoFollow.getFriendsCount(), is(1L));
-		assertThat(userWhoFollow.getFollowersCount(), is(0L));
+        userService.followUser("userWhoIsFollowed");
 
-		User userWhoIsFollowed = userService.getUserProfileByLogin("userWhoIsFollowed");
-		assertThat(userWhoIsFollowed.getFriendsCount(), is(0L));
-		assertThat(userWhoIsFollowed.getFollowersCount(), is(1L));
-	}
+        /* verify */
+        User userWhoFollow = userService.getUserProfileByLogin("userWhoFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(1L));
+        assertThat(userWhoFollow.getFollowersCount(), is(0L));
 
-	@Test
-	public void shouldForgetUser() {
-		User currentUser = constructAUser("userWhoWantToForget", "User", "WhoWantToforget");
-		UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(currentUser);
+        User userWhoIsFollowed = userService.getUserProfileByLogin("userWhoIsFollowed");
+        assertThat(userWhoIsFollowed.getFriendsCount(), is(0L));
+        assertThat(userWhoIsFollowed.getFollowersCount(), is(1L));
+    }
 
-		userService.forgetUser("userToForget");
+    @Test
+    public void shouldForgetUser() {
+        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget",
+                        "userWhoWantToForget@ippon.fr");
 
-		/* verify */
-		User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");
-		assertThat(userWhoWantToForget.getFriendsCount(), is(0L));
+        userService.forgetUser("userToForget");
 
-		User userToForget = userService.getUserProfileByLogin("userToForget");
-		assertThat(userToForget.getFollowersCount(), is(0L));
-	}
+        /* verify */
+        User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");
+        assertThat(userWhoWantToForget.getFriendsCount(), is(0L));
 
-	private UserService mockAuthenticationOnUserServiceWithACurrentUser(User authenticateUser) {
-		AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
-		when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
-		userService.setAuthenticationService(mockAuthenticationService);
+        User userToForget = userService.getUserProfileByLogin("userToForget");
+        assertThat(userToForget.getFollowersCount(), is(0L));
+    }
 
-		userService.updateUser(authenticateUser);
-		return userService;
-	}
+    private UserService mockAuthenticationOnUserServiceWithACurrentUser(String login, String email) {
+        User authenticateUser = constructAUser(login, email);
+        AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+        when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
+        userService.setAuthenticationService(mockAuthenticationService);
+        return userService;
+    }
 
-	private User constructAUser(String login, String firstName, String lastName) {
-		User userToUpdate = new User();
-		userToUpdate.setLogin(login);
-		userToUpdate.setEmail("uuser@ippon.fr");
-		userToUpdate.setFirstName(firstName);
-		userToUpdate.setLastName(lastName);
-		return userToUpdate;
-	}
 }
