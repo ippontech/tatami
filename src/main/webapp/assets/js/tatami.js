@@ -39,7 +39,7 @@ function tweet() {
 	$.ajax({
         type: 'POST',
         url: "rest/tweets",
-        contentType: "application/json",
+        contentType: "application/json; charset=UTF-8",
         data: src.val(),
         dataType: "json",
         success: function(data) {
