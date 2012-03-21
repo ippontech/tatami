@@ -73,11 +73,13 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab">Tag Tweets</a></li>
 						<li><a id="chartTab" href="#chartPanel" data-toggle="tab">Tweets of the day Pie chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
 						<div class="tab-pane" id="userLinePanel"></div>
+						<div class="tab-pane" id="tagLinePanel"></div>
 						<div class="tab-pane" id="chartPanel"></div>
 					</div>
 				</div>
@@ -149,6 +151,7 @@
 			});
 
 			$('#userLinePanel').load('/assets/fragments/userline.html');
+			$('#tagLinePanel').load('/assets/fragments/tagline.html');
 
 			$('#chartPanel').load('/assets/fragments/chart.html');
         	// auto-refresh

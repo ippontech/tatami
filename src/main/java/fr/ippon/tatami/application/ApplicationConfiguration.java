@@ -62,6 +62,7 @@ public class ApplicationConfiguration {
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);
             addColumnFamily(cluster, DAYLINE_CF);
+            addColumnFamily(cluster, TAGLINE_CF);
             addColumnFamily(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USERLINE_CF);
 

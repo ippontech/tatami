@@ -50,7 +50,7 @@ public class TweetController {
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get the own tweet list (" + login + ").");
+            log.debug("REST request to get someone's own tweet list (" + login + ").");
         }
 		return timelineService.getUserline(login, 20);
     }
@@ -95,5 +95,21 @@ public class TweetController {
         	stats.add(new TweetStat(entry.getKey(), entry.getValue()));
         }
 		return stats;
+    }
+
+    @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTagTweets(@PathVariable("tag") String tag, @PathVariable("nbTweets") String nbTweets) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+        }
+        try {
+			return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
+		} catch (NumberFormatException e) {
+			log.warn("Page size undefined ; sizing to default", e);
+			return timelineService.getTagline(tag, 20);
+		}
     }
 }

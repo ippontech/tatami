@@ -19,6 +19,8 @@ public interface TweetRepository {
 
     void addTweetToTimeline(String login, Tweet tweet);
 
+    void addTweetToTagline(Tweet tweet);
+
     /** a day's tweets */
     Collection<String> getDayline(String date);
 
@@ -27,6 +29,9 @@ public interface TweetRepository {
 
     /** a users own tweets */
     Collection<String> getUserline(String login, int size);
+
+    /** a tag's tweets */
+    Collection<String> getTagline(String tag, int size);
 
     Tweet findTweetById(String tweetId);
 }

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fr.ippon.tatami.domain.Tweet;
@@ -39,6 +40,9 @@ public class TimelineService {
     @Inject
     private FollowerRepository followerRepository;
 
+    @Value("${hashtag.default}")
+	private String hashtagDefault;
+
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
     public void postTweet(String content) {
@@ -54,6 +58,7 @@ public class TimelineService {
         for (String followerLogin : followerRepository.findFollowersForUser(currentUser.getLogin())) {
             tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
+        tweetRepository.addTweetToTagline(tweet);
         counterRepository.incrementTweetCounter(currentUser.getLogin());
     }
 
@@ -69,6 +74,24 @@ public class TimelineService {
     		date = DAYLINE_KEY_FORMAT.format(new Date());
     	}
         Collection<String> tweetIds = tweetRepository.getDayline(date);
+
+        return this.buildTweetsList(tweetIds);
+    }
+
+    /**
+     * The tagline contains a tag's tweets
+     * 
+     * @param tag
+     * 		the tag to retrieve the timeline of
+     * @param nbTweets
+     * 		the number of tweets to retrieve, starting from most recent ones
+     * @return a tweets list
+     */
+    public Collection<Tweet> getTagline(String tag, int nbTweets) {
+    	if (tag == null || tag.isEmpty()) {
+	        tag = hashtagDefault;
+    	}
+        Collection<String> tweetIds = tweetRepository.getTagline(tag, nbTweets);
 
         return this.buildTweetsList(tweetIds);
     }

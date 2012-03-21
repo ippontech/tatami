@@ -103,16 +103,32 @@ function listUserTweets(login) {
 	});
 }
 
+function listTagTweets(tag) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/tagtweets/" + tag + "/30",
+		dataType: "json",
+		success: function(data) {
+			//TODO refesh title's tag name
+			makeTweetsList(data, $('#tagTweetsList'), true);
+			$('#tagTab').tab('show');
+		}
+	});
+}
+
 var userrefREG = new RegExp("@(\\w+)", "g");
 var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
 
-function makeTweetsList(data, dest, timelineMode) {
+var tagrefREG = new RegExp("#(\\w+)", "g");
+var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
+
+function makeTweetsList(data, dest, linkLogins) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
 			var userlineLink;
-			if (timelineMode && login != entry['login']) {
+			if (linkLogins && login != entry['login']) {
 				userlineLink = userlineURL.replace(userlineREG, entry['login']);
 			}
 
@@ -129,11 +145,11 @@ function makeTweetsList(data, dest, timelineMode) {
 			html += '<em>@' + entry['login'] + '</em>';
 			if (userlineLink)	html += '</a>';
 			// contenu du message
-			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL);
+			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (timelineMode && login != entry['login']) {
+			if (linkLogins && login != entry['login']) {
 				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
 			} else {
 				html += '&nbsp;';
