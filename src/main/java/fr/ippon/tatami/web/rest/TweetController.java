@@ -97,6 +97,22 @@ public class TweetController {
 		return stats;
     }
 
+    @RequestMapping(value = "/rest/tagtweets/{nbTweets}",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTagTweets(@PathVariable("nbTweets") String nbTweets) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+        }
+        try {
+			return timelineService.getTagline(null, Integer.parseInt(nbTweets));
+		} catch (NumberFormatException e) {
+			log.warn("Page size undefined ; sizing to default", e);
+			return timelineService.getTagline(null, 20);
+		}
+    }
+
     @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
     		method = RequestMethod.GET,
     		produces = "application/json")

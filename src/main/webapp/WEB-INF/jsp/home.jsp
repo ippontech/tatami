@@ -56,7 +56,7 @@
 				<div class="tabbable">
                     <ul class="nav nav-tabs">
 						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
-						<li><a href="#profileTabContent" data-toggle="pill">Update Profile</a></li>
+						<li><a href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
 					</ul>
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>
@@ -72,9 +72,9 @@
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
-						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
-						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab">Tag Tweets</a></li>
-						<li><a id="chartTab" href="#chartPanel" data-toggle="tab">Tweets of the day Pie chart</a></li>
+						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
+						<li><a id="chartTab" href="#chartPanel" data-toggle="tab"><i class="icon-signal"></i> Tweets of the day Pie chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>

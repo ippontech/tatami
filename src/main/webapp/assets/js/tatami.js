@@ -106,7 +106,7 @@ function listUserTweets(login) {
 function listTagTweets(tag) {
 	$.ajax({
 		type: 'GET',
-		url: "rest/tagtweets/" + tag + "/30",
+		url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
 		dataType: "json",
 		success: function(data) {
 			//TODO refesh title's tag name
