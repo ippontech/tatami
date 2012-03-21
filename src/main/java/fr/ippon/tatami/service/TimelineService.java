@@ -64,7 +64,7 @@ public class TimelineService {
         if (login == null || login.isEmpty()) {
             login = userService.getCurrentUser().getLogin();
         }
-        return this.buildTweetsList(tweetRepository.getTimeline(login, nbTweets));
+        return buildTweetsList(tweetRepository.getTimeline(login, nbTweets));
     }
 
     /**

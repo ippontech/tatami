@@ -27,7 +27,7 @@ public class MonitoringFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
         if (log.isDebugEnabled()) {
-            this.isMonitored = true;
+            isMonitored = true;
         }
     }
 
