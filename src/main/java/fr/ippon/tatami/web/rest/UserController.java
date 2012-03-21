@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -27,6 +28,9 @@ public class UserController {
 
     @Inject
     private UserService userService;
+    
+    @Inject
+    private AuthenticationService authenticationService;
 
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,
@@ -59,7 +63,7 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow user login : " + loginToFollow);
         }
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.followUser(loginToFollow);
         } else {
@@ -75,7 +79,7 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to remove friendLogin : " + friend);
         }
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);
         } else {

@@ -9,7 +9,7 @@
 
     <context:property-placeholder location="classpath:/META-INF/tatami/tatami.properties"/>
 
-    <context:component-scan base-package="fr.ippon.tatami.application, fr.ippon.tatami.repository, fr.ippon.tatami.service"/>
+    <context:component-scan base-package="fr.ippon.tatami.application, fr.ippon.tatami.repository, fr.ippon.tatami.service,fr.ippon.tatami.security"/>
 
     <import resource="applicationContext-security.xml"/>
     <import resource="applicationContext-cache.xml"/>

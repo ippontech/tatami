@@ -5,6 +5,7 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.GravatarUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,9 @@ public class UserService {
 
     @Inject
     private CounterRepository counterRepository;
+    
+    @Inject
+    private AuthenticationService authenticationService;
 
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
@@ -45,14 +49,16 @@ public class UserService {
 
     public User getUserProfileByLogin(String login) {
         User user = getUserByLogin(login);
-        user.setTweetCount(counterRepository.getTweetCounter(login));
-        user.setFollowersCount(counterRepository.getFollowersCounter(login));
-        user.setFriendsCount(counterRepository.getFriendsCounter(login));
+        if (user != null) {
+            user.setTweetCount(counterRepository.getTweetCounter(login));
+            user.setFollowersCount(counterRepository.getFollowersCounter(login));
+            user.setFriendsCount(counterRepository.getFriendsCounter(login));
+        }
         return user;
     }
 
     public void updateUser(User user) {
-        User currentUser = getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
             userRepository.updateUser(user);
@@ -74,7 +80,7 @@ public class UserService {
         if (log.isDebugEnabled()) {
             log.debug("Adding friend : " + loginToFollow);
         }
-        User currentUser = getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         User followedUser = getUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
             boolean userAlreadyFollowed = false;
@@ -100,7 +106,7 @@ public class UserService {
         if (log.isDebugEnabled()) {
             log.debug("Removing followed user : " + login);
         }
-        User currentUser = getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         User followedUser = getUserByLogin(login);
         if (followedUser != null) {
             boolean userAlreadyFollowed = false;
@@ -120,11 +126,7 @@ public class UserService {
         }
     }
 
-    public User getCurrentUser() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        org.springframework.security.core.userdetails.User springSecurityUser = (org.springframework.security.core.userdetails.User) securityContext
-                .getAuthentication().getPrincipal();
-
-        return getUserByLogin(springSecurityUser.getUsername());
+	public void setAuthenticationService(AuthenticationService authenticationService) {
+	    this.authenticationService = authenticationService;
     }
 }
