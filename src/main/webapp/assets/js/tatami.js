@@ -11,8 +11,12 @@ function incrementNbTweets() {
 
 //cross site scripting defense ; http://ha.ckers.org/xss.html
 var xssREG1 = new RegExp("(javascript:|<\s*script.*?\s*>)", "i");
-var xssREG2 = new RegExp('\s+on\w+\s*=["\'].+["\']', "i");
+var xssREG2 = new RegExp('\s+on\w+\s*=\s*["\'].+["\']', "i");
 //TODO <img src="alert('it's a trap!');"/>
+function isXSS(msg) {
+	return (msg.match(xssREG1) || msg.match(xssREG2));
+}
+
 
 function tweet() {
 	var src = $('#tweetContent');
@@ -24,7 +28,7 @@ function tweet() {
         }, 5000);
 		return false;
 	}
-	if (src.val().match(xssREG1) || src.val().match(xssREG2)) {
+	if (isXSS(src.val())) {
 		alert('Cross Site Scripting suspicion. Please check syntax.')
 		setTimeout(function() {
 			src.val("");
