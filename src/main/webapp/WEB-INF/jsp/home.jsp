@@ -73,7 +73,7 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
-						<li><a id="chartTab" href="#chartPanel" data-toggle="tab">Time chart</a></li>
+						<li><a id="chartTab" href="#chartPanel" data-toggle="tab">Tweets of the day Pie chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
