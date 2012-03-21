@@ -12,9 +12,12 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import lombok.extern.slf4j.Slf4j;
 import me.prettyprint.cassandra.serializers.LongSerializer;
@@ -47,6 +50,9 @@ public class CassandraTweetRepository implements TweetRepository {
     @Inject
     private Keyspace keyspaceOperator;
 
+    @Inject
+    private Validator validator;
+
     @Override
     public Tweet createTweet(String login, String content) {
         Tweet tweet = new Tweet();
@@ -54,6 +60,8 @@ public class CassandraTweetRepository implements TweetRepository {
         tweet.setLogin(login);
         tweet.setContent(content);
         tweet.setTweetDate(Calendar.getInstance().getTime());
+
+        checkTweet(tweet);
         log.debug("Persisting Tweet : {}", tweet);
         em.persist(tweet);
         return tweet;
@@ -110,5 +118,12 @@ public class CassandraTweetRepository implements TweetRepository {
     public Tweet findTweetById(String tweetId) {
         log.debug("Finding tweet : {}", tweetId);
         return em.find(Tweet.class, tweetId);
+    }
+
+    private void checkTweet(Tweet tweet) {
+        Set<ConstraintViolation<Tweet>> violations = validator.validate(tweet);
+        if (!violations.isEmpty()) {
+            throw new RuntimeException("Found " + violations.size() + " violations while validating " + tweet);
+        }
     }
 }

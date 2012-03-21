@@ -1,11 +1,13 @@
 package fr.ippon.tatami.application;
 
 import static fr.ippon.tatami.application.KeyspaceBuilder.newKeyspace;
+import static javax.validation.Validation.buildDefaultValidatorFactory;
 
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.validation.Validator;
 
 import lombok.extern.slf4j.Slf4j;
 import me.prettyprint.hector.api.Keyspace;
@@ -48,6 +50,11 @@ public class ApplicationConfiguration {
     @Bean
     public EntityManager entityManager(Keyspace keyspace) {
         return new EntityManagerImpl(keyspace, Tweet.class.getPackage().getName());
+    }
+
+    @Bean
+    public Validator validator() {
+        return buildDefaultValidatorFactory().getValidator();
     }
 
     @PostConstruct
