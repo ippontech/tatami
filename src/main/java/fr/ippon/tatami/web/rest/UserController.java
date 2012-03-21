@@ -3,8 +3,6 @@ package fr.ippon.tatami.web.rest;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.TweetStat;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -108,8 +105,7 @@ public class UserController {
         Collection<String> exceptions = userService.getFriendsForUser(login);
         exceptions.add(login);
 
-        String date = null;	//TODO parameterized version
-        Collection<Tweet> tweets = timelineService.getDayline(date);
+        Collection<Tweet> tweets = timelineService.getDayline(null);
 		Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
         	if (exceptions.contains(tweet.getLogin()))	continue;
@@ -118,38 +114,5 @@ public class UserController {
         	if (users.size() == 3)	break;	// suggestions list limit
 		}
 		return users.values();
-    }
-
-    @RequestMapping(value = "/rest/tweetStats",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
-    @ResponseBody
-    public Collection<TweetStat> tweetStats() {
-        log.debug("REST request to get the users stats.");
-
-        String date = null;	//TODO parameterized version
-		Collection<Tweet> tweets = timelineService.getDayline(date);
-        if (log.isDebugEnabled()) {
-            log.debug("analysing " + tweets.size() + " items...");
-        }
-		Map<String, Integer> users = new HashMap<String, Integer>();
-        for (Tweet tweet : tweets) {
-        	Integer count = users.get(tweet.getLogin());
-        	if (count != null) {
-        		count = count.intValue() + 1;
-        	} else {
-        		count = 1;
-        	}
-    		users.put(tweet.getLogin(), count);
-		}
-        if (log.isDebugEnabled()) {
-            log.debug("fetched total of " + users.size() + " stats.");
-        }
-
-        Collection<TweetStat> stats = new TreeSet<TweetStat>();
-        for (Entry<String, Integer> entry : users.entrySet()) {
-        	stats.add(new TweetStat(entry.getKey(), entry.getValue()));
-        }
-		return stats;
     }
 }
