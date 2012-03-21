@@ -35,7 +35,6 @@ function tweet() {
         }, 1000);
 		return false;
 	}
-	alert('checked');
 
 	$.ajax({
         type: 'POST',
