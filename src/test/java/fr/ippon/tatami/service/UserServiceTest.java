@@ -64,7 +64,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String lastName = "UpdatedLastName";
         User userToUpdate = constructAUser(login, email, firstName, lastName);
 
-        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser(login, email);
+        mockAuthenticationOnUserServiceWithACurrentUser(login, email);
 
         userService.updateUser(userToUpdate);
 
@@ -106,8 +106,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldFollowUser() {
 
-        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow",
-                        "userWhoWantToFollow@ippon.fr");
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow", "userWhoWantToFollow@ippon.fr");
 
         userService.followUser("userWhoWillBeFollowed");
 
@@ -120,10 +119,9 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldFollowUserBecauseUserNotExist() {
+    public void shouldNotFollowUserBecauseUserNotExist() {
 
-        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow",
-                        "userWhoWantToFollow@ippon.fr");
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow", "userWhoWantToFollow@ippon.fr");
 
         userService.followUser("unknownUser");
 
@@ -135,8 +133,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldNotFollowUserBecauseUserAlreadyFollowed() throws Exception {
 
-        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoFollow",
-                        "userWhoFollow@ippon.fr");
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoFollow", "userWhoFollow@ippon.fr");
 
         userService.followUser("userWhoIsFollowed");
 
@@ -151,9 +148,21 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
+    public void shouldNotFollowUserBecauseSameUser() throws Exception {
+
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToFollow", "userWhoWantToFollow@ippon.fr");
+
+        userService.followUser("userWhoWantToFollow");
+
+        /* verify */
+        User userWhoFollow = userService.getUserProfileByLogin("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(1L));
+        assertThat(userWhoFollow.getFollowersCount(), is(0L));
+    }
+
+    @Test
     public void shouldForgetUser() {
-        UserService userService = mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget",
-                        "userWhoWantToForget@ippon.fr");
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget", "userWhoWantToForget@ippon.fr");
 
         userService.forgetUser("userToForget");
 
@@ -165,12 +174,22 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userToForget.getFollowersCount(), is(0L));
     }
 
-    private UserService mockAuthenticationOnUserServiceWithACurrentUser(String login, String email) {
+    @Test
+    public void shouldNotForgetUserBecauseUserNotExist() {
+        mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget", "userWhoWantToForget@ippon.fr");
+
+        userService.forgetUser("unknownUser");
+
+        /* verify */
+        User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");
+        assertThat(userWhoWantToForget.getFriendsCount(), is(0L));
+    }
+
+    private void mockAuthenticationOnUserServiceWithACurrentUser(String login, String email) {
         User authenticateUser = constructAUser(login, email);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
         userService.setAuthenticationService(mockAuthenticationService);
-        return userService;
     }
 
 }
