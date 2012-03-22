@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
@@ -69,6 +70,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
+    @Ignore
     public void shouldPostTweet() throws Exception {
         String login = "userWhoPostTweet";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWhoPostTweet@ippon.fr");
