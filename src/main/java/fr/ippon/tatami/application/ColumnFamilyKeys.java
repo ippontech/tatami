@@ -13,6 +13,10 @@ public class ColumnFamilyKeys {
 
     public final static String TWEET_CF = "Tweet";
 
+    public final static String DAYLINE_CF = "Dayline";
+
+    public final static String TAGLINE_CF = "Tagline";
+
     public final static String TIMELINE_CF = "Timeline";
 
     public final static String USERLINE_CF = "Userline";
