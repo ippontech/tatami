@@ -1,7 +1,7 @@
 tatami.iml
 tatami.ipr
 tatami.iws
-/target
-/.settings
-/.classpath
-/.project
+.classpath
+.project
+.settings
+target

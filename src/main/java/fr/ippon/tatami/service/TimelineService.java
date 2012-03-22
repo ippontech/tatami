@@ -17,6 +17,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 
 /**
  * Manages the the timeline.
@@ -40,6 +41,9 @@ public class TimelineService {
     @Inject
     private FollowerRepository followerRepository;
 
+    @Inject
+	private AuthenticationService authenticationService;
+
     @Value("${hashtag.default}")
 	private String hashtagDefault;
 
@@ -49,7 +53,7 @@ public class TimelineService {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
 
         Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);
         tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
@@ -107,7 +111,7 @@ public class TimelineService {
      */
     public Collection<Tweet> getTimeline(String login, int nbTweets) {
     	if (login == null || login.isEmpty()) {
-	        User currentUser = userService.getCurrentUser();
+	        User currentUser = authenticationService.getCurrentUser();
 	        login = currentUser.getLogin();
     	}
         Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
@@ -126,7 +130,7 @@ public class TimelineService {
      */
     public Collection<Tweet> getUserline(String login, int nbTweets) {
     	if (login == null || login.isEmpty()) {
-	        User currentUser = userService.getCurrentUser();
+	        User currentUser = authenticationService.getCurrentUser();
 	        login = currentUser.getLogin();
     	}
         Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets);
@@ -146,4 +150,8 @@ public class TimelineService {
         }
         return tweets;
 	}
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 }
