@@ -67,7 +67,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#tweetsList'), true);
+			makeTweetsList(data, $('#tweetsList'), true, false);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -79,7 +79,7 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#userTweetsList'), false);
+			makeTweetsList(data, $('#userTweetsList'), false, true);
 
 			$.ajax({
 				type: 'GET',
@@ -102,16 +102,32 @@ function listUserTweets(login) {
 	});
 }
 
+function listTagTweets(tag) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
+		dataType: "json",
+		success: function(data) {
+			//TODO refesh title's tag name
+			makeTweetsList(data, $('#tagTweetsList'), true, true);
+			$('#tagTab').tab('show');
+		}
+	});
+}
+
 var userrefREG = new RegExp("@(\\w+)", "g");
 var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
 
-function makeTweetsList(data, dest, timelineMode) {
+var tagrefREG = new RegExp("#(\\w+)", "g");
+var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
+
+function makeTweetsList(data, dest, linkLogins, followUsers) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
 			var userlineLink;
-			if (timelineMode && login != entry['login']) {
+			if (linkLogins && login != entry['login']) {
 				userlineLink = userlineURL.replace(userlineREG, entry['login']);
 			}
 
@@ -128,12 +144,16 @@ function makeTweetsList(data, dest, timelineMode) {
 			html += '<em>@' + entry['login'] + '</em>';
 			if (userlineLink)	html += '</a>';
 			// contenu du message
-			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL);
+			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (timelineMode && login != entry['login']) {
-				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+			if (login != entry['login']) {
+				if (followUsers) {
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+				} else {
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+				}
 			} else {
 				html += '&nbsp;';
 			}
@@ -141,7 +161,7 @@ function makeTweetsList(data, dest, timelineMode) {
 			// temps écoulé depuis la publication du message
 			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
 			html += '</tr>';
-	
+
 			dest.append(html);
 		});
 
@@ -164,6 +184,7 @@ function makeUsersList(data, dest) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
+		var updated = false;
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (login != entry['login']) {
@@ -189,7 +210,15 @@ function makeUsersList(data, dest) {
 			html += '</tr>';
 	
 			dest.append(html);
+			updated = true;
 		});
+		if (!updated) {
+			var html = '<tr valign="top">';
+			// identification de l'émetteur du message
+			html += '<td colspan="2">No one new tweeted yet today...</td>';
+			html += '</tr>';
+			dest.append(html);
+		}
 
 		dest.fadeTo(400, 1);
 	});
@@ -206,6 +235,7 @@ function followUser(loginToFollow) {
             $("#followUserInput").val("");
             setTimeout(function() {
                 refreshProfile();
+                whoToFollow();
                 listTweets(true);
             }, 500);	//DEBUG wait for persistence consistency
         },

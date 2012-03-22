@@ -1,5 +1,7 @@
 package fr.ippon.tatami.service;
 
+import java.util.Collection;
+
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
@@ -126,7 +128,22 @@ public class UserService {
         }
     }
 
-	public void setAuthenticationService(AuthenticationService authenticationService) {
+    public Collection<String> getFriendsForUser(String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving followed users : " + login);
+        }
+        return friendRepository.findFriendsForUser(login);
+    }
+
+    public User getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        org.springframework.security.core.userdetails.User springSecurityUser = (org.springframework.security.core.userdetails.User) securityContext
+                .getAuthentication().getPrincipal();
+
+        return getUserByLogin(springSecurityUser.getUsername());
+    }
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
 	    this.authenticationService = authenticationService;
     }
 }
