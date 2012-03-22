@@ -1,25 +1,19 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -36,7 +30,7 @@ public class UserController {
 
     @Inject
     private UserService userService;
-    
+
     @Inject
     private AuthenticationService authenticationService;
 
@@ -96,8 +90,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/rest/suggestions",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
         User currentUser = userService.getCurrentUser();
@@ -110,13 +104,13 @@ public class UserController {
         exceptions.add(login);
 
         Collection<Tweet> tweets = timelineService.getDayline(null);
-		Map<String, User> users = new HashMap<String, User>();
+        Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
-        	if (exceptions.contains(tweet.getLogin()))	continue;
+            if (exceptions.contains(tweet.getLogin())) continue;
 
-        	users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
-        	if (users.size() == 3)	break;	// suggestions list limit
-		}
-		return users.values();
+            users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
+            if (users.size() == 3) break;    // suggestions list limit
+        }
+        return users.values();
     }
 }

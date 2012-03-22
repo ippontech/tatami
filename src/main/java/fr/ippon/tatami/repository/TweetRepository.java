@@ -21,16 +21,24 @@ public interface TweetRepository {
 
     void addTweetToTagline(Tweet tweet);
 
-    /** a day's tweets */
+    /**
+     * a day's tweets
+     */
     Collection<String> getDayline(String date);
 
-    /** a user's and his followed users tweets */
+    /**
+     * a user's and his followed users tweets
+     */
     Collection<String> getTimeline(String login, int size);
 
-    /** a user's own tweets */
+    /**
+     * a user's own tweets
+     */
     Collection<String> getUserline(String login, int size);
 
-    /** a tag's tweets */
+    /**
+     * a tag's tweets
+     */
     Collection<String> getTagline(String tag, int size);
 
     Tweet findTweetById(String tweetId);

@@ -1,7 +1,5 @@
 package fr.ippon.tatami.domain;
 
-import org.joda.time.Duration;
-import org.joda.time.DurationFieldType;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormatter;
@@ -24,20 +22,20 @@ import java.util.Date;
 public class Tweet {
 
     private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder()
-                .appendDays()
-                .appendSuffix("d").toFormatter();
+            .appendDays()
+            .appendSuffix("d").toFormatter();
 
     private static PeriodFormatter hourFormatter = new PeriodFormatterBuilder()
-                .appendHours()
-                .appendSuffix("h").toFormatter();
+            .appendHours()
+            .appendSuffix("h").toFormatter();
 
     private static PeriodFormatter minuteFormatter = new PeriodFormatterBuilder()
-                .appendMinutes()
-                .appendSuffix("m").toFormatter();
+            .appendMinutes()
+            .appendSuffix("m").toFormatter();
 
     private static PeriodFormatter secondFormatter = new PeriodFormatterBuilder()
-                .appendSeconds()
-                .appendSuffix("s").toFormatter();
+            .appendSeconds()
+            .appendSuffix("s").toFormatter();
 
     @Id
     private String tweetId;
