@@ -27,7 +27,7 @@ public interface TweetRepository {
     /** a user's and his followed users tweets */
     Collection<String> getTimeline(String login, int size);
 
-    /** a users own tweets */
+    /** a user's own tweets */
     Collection<String> getUserline(String login, int size);
 
     /** a tag's tweets */
