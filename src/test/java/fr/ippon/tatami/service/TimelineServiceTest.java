@@ -70,7 +70,6 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    @Ignore
     public void shouldPostTweet() throws Exception {
         String login = "userWhoPostTweet";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWhoPostTweet@ippon.fr");

@@ -446,6 +446,18 @@
         }]
     },
     {
+        "name" : "Dayline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type"
+    },
+    {
+        "name" : "Timeline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type"
+    },
+    {
         "name" : "Tweet",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
