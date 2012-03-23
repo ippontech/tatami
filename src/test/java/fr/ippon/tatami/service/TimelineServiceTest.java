@@ -10,7 +10,6 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
@@ -66,7 +65,21 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
         Collection<Tweet> tweets = timelineService.getTimeline("", 10);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
+        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+    }
+
+    @Test
+    public void shouldGetDayline() throws Exception {
+        String date = "19042012";
+        Collection<Tweet> tweets = timelineService.getDayline(date);
+        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+    }
+
+    @Test
+    public void shouldGetTagline() throws Exception {
+        String hashtag = "ippon";
+        Collection<Tweet> tweets = timelineService.getTagline(hashtag, 10);
+        assertThatLineForUserWithTweetsIsOk(hashtag, tweets);
     }
 
     @Test
