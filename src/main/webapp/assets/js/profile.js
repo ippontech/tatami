@@ -40,3 +40,21 @@ function displayProfile() {
 		}
 	});
 }
+
+function refreshProfile() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/users/" + login + "/",
+		dataType: "json",
+		success: function(data) {
+			$("#picture").parent().css('width', '68px');	// optional
+            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+
+            $("#firstName").text(data.firstName);
+			$("#lastName").text(data.lastName);
+			$("#tweetCount").text(data.tweetCount);
+			$("#friendsCount").text(data.friendsCount);
+			$("#followersCount").text(data.followersCount);
+		}
+	});
+}

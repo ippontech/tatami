@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.TweetStat;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeSet;
 
 /**
  * REST controller for managing tweets.
@@ -45,7 +50,7 @@ public class TweetController {
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get the own tweet list (" + login + ").");
+            log.debug("REST request to get someone's own tweet list (" + login + ").");
         }
         return timelineService.getUserline(login, 20);
     }
@@ -57,5 +62,70 @@ public class TweetController {
             log.debug("REST request to add tweet : " + content);
         }
         timelineService.postTweet(content);
+    }
+
+    @RequestMapping(value = "/rest/tweetStats",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<TweetStat> listTweetStats() {
+        log.debug("REST request to get the users stats.");
+
+        String date = null;    //TODO parameterized version
+        Collection<Tweet> tweets = timelineService.getDayline(date);
+        if (log.isDebugEnabled()) {
+            log.debug("analysing " + tweets.size() + " items...");
+        }
+        Map<String, Integer> users = new HashMap<String, Integer>();
+        for (Tweet tweet : tweets) {
+            Integer count = users.get(tweet.getLogin());
+            if (count != null) {
+                count = count.intValue() + 1;
+            } else {
+                count = 1;
+            }
+            users.put(tweet.getLogin(), count);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("fetched total of " + users.size() + " stats.");
+        }
+
+        Collection<TweetStat> stats = new TreeSet<TweetStat>();
+        for (Entry<String, Integer> entry : users.entrySet()) {
+            stats.add(new TweetStat(entry.getKey(), entry.getValue()));
+        }
+        return stats;
+    }
+
+    @RequestMapping(value = "/rest/tagtweets/{nbTweets}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTagTweets(@PathVariable("nbTweets") String nbTweets) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+        }
+        try {
+            return timelineService.getTagline(null, Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(null, 20);
+        }
+    }
+
+    @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTagTweets(@PathVariable("tag") String tag, @PathVariable("nbTweets") String nbTweets) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+        }
+        try {
+            return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(tag, 20);
+        }
     }
 }

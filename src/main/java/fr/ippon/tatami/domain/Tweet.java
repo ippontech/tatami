@@ -1,7 +1,7 @@
 package fr.ippon.tatami.domain;
 
-import org.joda.time.Duration;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -56,19 +56,19 @@ public class Tweet {
     private String gravatar;
 
     public String getPrettyPrintTweetDate() {
-        Duration duration =
-                new Duration(Calendar.getInstance().getTimeInMillis() - tweetDate.getTime());
-
-        Period period = duration.toPeriod();
+        Period period =
+                new Period(tweetDate.getTime(),
+                        Calendar.getInstance().getTimeInMillis(),
+                        PeriodType.dayTime());
 
         if (period.getDays() > 0) {
-            return dayFormatter.print(duration.toPeriod());
+            return dayFormatter.print(period);
         } else if (period.getHours() > 0) {
-            return hourFormatter.print(duration.toPeriod());
+            return hourFormatter.print(period);
         } else if (period.getMinutes() > 0) {
-            return minuteFormatter.print(duration.toPeriod());
+            return minuteFormatter.print(period);
         } else {
-            return secondFormatter.print(duration.toPeriod());
+            return secondFormatter.print(period);
         }
     }
 

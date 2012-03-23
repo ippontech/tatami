@@ -9,39 +9,41 @@ function incrementNbTweets() {
 }
 
 
-function refreshProfile() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/users/" + login + "/",
-		dataType: "json",
-		success: function(data) {
-			$("#picture").parent().css('width', '68px');	// optional
-            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-
-            $("#firstName").text(data.firstName);
-			$("#lastName").text(data.lastName);
-			$("#tweetCount").text(data.tweetCount);
-			$("#friendsCount").text(data.friendsCount);
-			$("#followersCount").text(data.followersCount);
-		}
-	});
+//cross site scripting defense ; http://ha.ckers.org/xss.html
+var xssREG1 = new RegExp("(javascript:|<\s*script.*?\s*>)", "i");
+var xssREG2 = new RegExp('\s+on\w+\s*=\s*["\'].+["\']', "i");
+//TODO <img src="alert('it's a trap!');"/>
+function isXSS(msg) {
+	return (msg.match(xssREG1) || msg.match(xssREG2));
 }
 
 
 function tweet() {
-	if ($("#tweetContent").val() == "") {
-		alert('Please type a message.');
+	var src = $('#tweetContent');
+
+	if (src.val() === "") {
+		src.popover('show');
+		setTimeout(function() {
+			src.popover('hide');
+        }, 5000);
+		return false;
+	}
+	if (isXSS(src.val())) {
+		alert('Cross Site Scripting suspicion. Please check syntax.')
+		setTimeout(function() {
+			src.val("");
+        }, 1000);
 		return false;
 	}
 
 	$.ajax({
         type: 'POST',
         url: "rest/tweets",
-        contentType: "application/json",
-        data: $("#tweetContent").val(),
+        contentType: "application/json; charset=UTF-8",
+        data: src.val(),
         dataType: "json",
         success: function(data) {
-            $("#tweetContent").slideUp().val("").slideDown('fast');
+            src.slideUp().val("").slideDown('fast');
             setTimeout(function() {
                         refreshProfile();
                         listTweets(true);
@@ -65,7 +67,7 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#tweetsList'), true);
+			makeTweetsList(data, $('#tweetsList'), true, false);
 			$('#mainTab').tab('show');
 		}
 	});
@@ -77,8 +79,38 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#userTweetsList'), false);
-			$('#userTab').tab('show');
+			makeTweetsList(data, $('#userTweetsList'), false, true);
+
+			$.ajax({
+				type: 'GET',
+				url: "rest/users/" + login + "/",
+				dataType: "json",
+				success: function(data) {
+		            $("#userPicture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+					$("#userPicture").popover({
+						placement: 'bottom',
+						title: data.firstName + ' ' + data.lastName,
+						content: '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
+	            				 '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
+	            				 '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
+					});
+
+					$('#userTab').tab('show');
+				}
+			});
+		}
+	});
+}
+
+function listTagTweets(tag) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
+		dataType: "json",
+		success: function(data) {
+			//TODO refesh title's tag name
+			makeTweetsList(data, $('#tagTweetsList'), true, true);
+			$('#tagTab').tab('show');
 		}
 	});
 }
@@ -86,35 +118,42 @@ function listUserTweets(login) {
 var userrefREG = new RegExp("@(\\w+)", "g");
 var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
 
-function makeTweetsList(data, dest, timelineMode) {
+var tagrefREG = new RegExp("#(\\w+)", "g");
+var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
+
+function makeTweetsList(data, dest, linkLogins, followUsers) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
 		$.each(data, function(entryIndex, entry) {
-			var userline;
-			if (timelineMode && login != entry['login']) {
-				userline = userlineURL.replace(userlineREG, entry['login']);
+			var userlineLink;
+			if (linkLogins && login != entry['login']) {
+				userlineLink = userlineURL.replace(userlineREG, entry['login']);
 			}
 
 			var html = '<tr valign="top">';
 			// identification de l'émetteur du message
 			html += '<td style="width: 34px; ">';
-			if (userline)	html += userline;
+			if (userlineLink)	html += userlineLink;
 			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
-			if (userline)	html += '</a>';
+			if (userlineLink)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
 			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
-			if (userline)	html += userline;
+			if (userlineLink)	html += userlineLink;
 			html += '<em>@' + entry['login'] + '</em>';
-			if (userline)	html += '</a>';
+			if (userlineLink)	html += '</a>';
 			// contenu du message
-			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL);
+			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
-			if (timelineMode && login != entry['login']) {
-				html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+			if (login != entry['login']) {
+				if (followUsers) {
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+				} else {
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+				}
 			} else {
 				html += '&nbsp;';
 			}
@@ -122,7 +161,7 @@ function makeTweetsList(data, dest, timelineMode) {
 			// temps écoulé depuis la publication du message
 			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
 			html += '</tr>';
-	
+
 			dest.append(html);
 		});
 
@@ -145,7 +184,7 @@ function makeUsersList(data, dest) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
-
+		var updated = false;
 		$.each(data, function(entryIndex, entry) {
 			var userline;
 			if (login != entry['login']) {
@@ -171,7 +210,15 @@ function makeUsersList(data, dest) {
 			html += '</tr>';
 	
 			dest.append(html);
+			updated = true;
 		});
+		if (!updated) {
+			var html = '<tr valign="top">';
+			// identification de l'émetteur du message
+			html += '<td colspan="2">No one new tweeted yet today...</td>';
+			html += '</tr>';
+			dest.append(html);
+		}
 
 		dest.fadeTo(400, 1);
 	});
@@ -188,12 +235,13 @@ function followUser(loginToFollow) {
             $("#followUserInput").val("");
             setTimeout(function() {
                 refreshProfile();
+                whoToFollow();
                 listTweets(true);
             }, 500);	//DEBUG wait for persistence consistency
         },
     	error: function(xhr, ajaxOptions, thrownError) {
     		$('#followStatus').fadeIn("fast").text(thrownError);
-            setTimeout($('#followStatus').fadeOut("slow"), 2000);
+            setTimeout($('#followStatus').fadeOut("slow"), 5000);
     	}
 	});
 

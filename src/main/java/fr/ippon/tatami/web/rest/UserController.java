@@ -1,6 +1,8 @@
 package fr.ippon.tatami.web.rest;
 
+import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -9,8 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -27,6 +30,9 @@ public class UserController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private AuthenticationService authenticationService;
 
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,
@@ -59,7 +65,7 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow user login : " + loginToFollow);
         }
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.followUser(loginToFollow);
         } else {
@@ -75,7 +81,7 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to remove friendLogin : " + friend);
         }
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);
         } else {
@@ -88,16 +94,23 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
-        // TODO to implement
-        Collection<User> mock = new ArrayList<User>();
-        User jdubois = userService.getUserByLogin("jdubois");
-        if (jdubois != null) {
-            mock.add(jdubois);
+        User currentUser = userService.getCurrentUser();
+        final String login = currentUser.getLogin();
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the last active tweeters list (except " + login + ").");
         }
-        User tescolan = userService.getUserByLogin("tescolan");
-        if (tescolan != null) {
-            mock.add(tescolan);
+
+        Collection<String> exceptions = userService.getFriendsForUser(login);
+        exceptions.add(login);
+
+        Collection<Tweet> tweets = timelineService.getDayline(null);
+        Map<String, User> users = new HashMap<String, User>();
+        for (Tweet tweet : tweets) {
+            if (exceptions.contains(tweet.getLogin())) continue;
+
+            users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
+            if (users.size() == 3) break;    // suggestions list limit
         }
-        return mock;
+        return users.values();
     }
 }
