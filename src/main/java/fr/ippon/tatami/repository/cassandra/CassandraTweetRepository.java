@@ -1,6 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import static fr.ippon.tatami.application.ColumnFamilyKeys.DAYLINE_CF;
+import static fr.ippon.tatami.application.ColumnFamilyKeys.FAVLINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TAGLINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
@@ -93,6 +94,14 @@ public class CassandraTweetRepository implements TweetRepository {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
         		tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+    }
+
+    @Override
+    public void addTweetToFavoritesline(Tweet tweet, String login) {
+    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+                tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
     @Override
@@ -190,6 +199,23 @@ public class CassandraTweetRepository implements TweetRepository {
         Collection<String> tweetIds = new ArrayList<String>();
         for (HColumn<String, String> column : result.getColumns()) {
             tweetIds.add(column.getValue());
+        }
+        return tweetIds;
+    }
+
+    @Override
+    public Collection<String> getFavoritesline(String login) {
+        SliceQuery<String, String, String> sq = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(FAVLINE_CF)
+                .setKey(login)
+                .setRange(null, null, false, 50);
+
+        Collection<String> tweetIds = new ArrayList<String>();
+        ColumnSliceIterator<String, String, String> csi =
+        		new ColumnSliceIterator<String, String, String>(sq, null, "", true);
+        while (csi.hasNext()) {
+            tweetIds.add(csi.next().getValue());
         }
         return tweetIds;
     }

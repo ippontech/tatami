@@ -135,4 +135,15 @@ public class UserController {
             log.info("Completed");
         }
     }
+
+    @RequestMapping(value = "/rest/likeTweet/{tweet}",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public void likeTweet(@PathVariable("tweet") String tweet) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to like tweet : " + tweet);
+        }
+        timelineService.addFavoriteTweet(tweet);
+        log.info("Completed");
+    }
 }

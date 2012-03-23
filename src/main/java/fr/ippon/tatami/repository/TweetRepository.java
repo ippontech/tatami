@@ -15,7 +15,17 @@ public interface TweetRepository {
 
     void removeTweet(Tweet tweet);
 
+    /**
+     * Retrieve a persisted tweet's informations
+     * @param tweetId
+     * @return null if tweet was removed
+     */
+    Tweet findTweetById(String tweetId);
+
+
     void addTweetToDayline(Tweet tweet, String key);
+
+    void addTweetToFavoritesline(Tweet tweet, String login);
 
     void addTweetToUserline(Tweet tweet);
 
@@ -35,10 +45,6 @@ public interface TweetRepository {
     /** a tag's tweets */
     Collection<String> getTagline(String tag, int size);
 
-    /**
-     * Retrieve a persisted tweet's informations
-     * @param tweetId
-     * @return null if tweet was removed
-     */
-    Tweet findTweetById(String tweetId);
+    /** a user's favorite tweets */
+    Collection<String> getFavoritesline(String login);
 }
