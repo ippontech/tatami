@@ -415,7 +415,7 @@
         "name" : "Dayline",
         "keyType" : "UTF8Type",
         "comparatorType" : "LongType",
-        "defaultColumnValueType" : "UTF8Type"
+        "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "19042012",
         	"columns" : [{
@@ -432,7 +432,7 @@
         "name" : "Tagline",
         "keyType" : "UTF8Type",
         "comparatorType" : "LongType",
-        "defaultColumnValueType" : "UTF8Type"
+        "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "ippon",
         	"columns" : [{
