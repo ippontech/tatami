@@ -77,7 +77,7 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    @CacheEvict(value="tweet-cache", allEntries=true)
+    @CacheEvict(value="tweet-cache", key="#tweet.tweetId")
     public void removeTweet(Tweet tweet) {
         tweet.setRemoved(true);
         if (log.isDebugEnabled()) {
