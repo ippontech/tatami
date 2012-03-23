@@ -73,6 +73,17 @@ function listTweets(reset) {
 	});
 }
 
+function listFavoriteTweets() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/favTweets/" + login,
+		dataType: "json",
+		success: function(data) {
+			makeTweetsList(data, $('#favTweetsList'), true, true, false);
+		}
+	});
+}
+
 function listUserTweets(login) {
 	$.ajax({
 		type: 'GET',
@@ -111,17 +122,6 @@ function listTagTweets(tag) {
 			//TODO refesh title's tag name
 			makeTweetsList(data, $('#tagTweetsList'), true, true, true);
 			$('#tagTab').tab('show');
-		}
-	});
-}
-
-function listFavoriteTweets() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/favTweets/" + login,
-		dataType: "json",
-		success: function(data) {
-			makeTweetsList(data, $('#favTweetsList'), true, true, false);
 		}
 	});
 }
@@ -169,15 +169,15 @@ function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
 			html += '<td class="tweetFriend">';
 			if (login != entry['login']) {
 				if (followUsers) {
-					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
 				} else {
-					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
 				}
-			} else {
-				html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>';
+			} else if (likeTweets) {
+				html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
 			}
 			if (likeTweets) {
-				html += '<br/><a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>';
+				html += '<a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
 			}
 			html += '</td>';
 			// temps écoulé depuis la publication du message
