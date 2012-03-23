@@ -1,21 +1,19 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.AbstractCassandraTatamiTest;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import org.junit.Test;
+
+import javax.inject.Inject;
+import java.util.Collection;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.junit.Test;
-
-import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
 
 public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 

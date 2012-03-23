@@ -17,7 +17,6 @@ public class ApplicationConfiguration {
 
     private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
 
-
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
         log.info("Tatami started!");

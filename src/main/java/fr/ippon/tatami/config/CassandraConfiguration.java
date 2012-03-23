@@ -36,7 +36,6 @@ public class CassandraConfiguration {
     @Inject
     Environment env;
 
-
     @Bean
     public Keyspace keyspaceOperator() {
 
@@ -88,6 +87,5 @@ public class CassandraConfiguration {
     public EntityManager entityManager(Keyspace keyspace) {
         return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
     }
-
 
 }
