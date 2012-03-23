@@ -1,18 +1,17 @@
 package fr.ippon.tatami.domain;
 
-import org.joda.time.Duration;
-import org.joda.time.DurationFieldType;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Calendar;
-import java.util.Date;
+
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
  * A user.
@@ -56,6 +55,9 @@ public class Tweet {
     private String lastName;
 
     private String gravatar;
+
+    @Column(name = "removed")
+    private Boolean removed;
 
     public String getPrettyPrintTweetDate() {
         Period period =
@@ -130,7 +132,15 @@ public class Tweet {
         this.gravatar = gravatar;
     }
 
-    @Override
+    public Boolean getRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(Boolean removed) {
+		this.removed = removed;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -157,6 +167,7 @@ public class Tweet {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +
+                ", removed='" + Boolean.TRUE.equals(removed) + '\'' +
                 '}';
     }
 }

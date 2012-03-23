@@ -13,6 +13,8 @@ public interface TweetRepository {
 
     Tweet createTweet(String login, String content);
 
+    void removeTweet(Tweet tweet);
+
     void addTweetToDayline(Tweet tweet, String key);
 
     void addTweetToUserline(Tweet tweet);
@@ -33,5 +35,10 @@ public interface TweetRepository {
     /** a tag's tweets */
     Collection<String> getTagline(String tag, int size);
 
+    /**
+     * Retrieve a persisted tweet's informations
+     * @param tweetId
+     * @return null if tweet was removed
+     */
     Tweet findTweetById(String tweetId);
 }

@@ -140,8 +140,12 @@ public class TimelineService {
 
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
 		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweedId : tweetIds) {
-            Tweet tweet = tweetRepository.findTweetById(tweedId);
+        for (String tweetId : tweetIds) {
+            Tweet tweet = tweetRepository.findTweetById(tweetId);
+            if (tweet == null) {
+                log.debug("Invisible tweet : " + tweetId);
+            	continue;
+            }
             User tweetUser = userService.getUserByLogin(tweet.getLogin());
             tweet.setFirstName(tweetUser.getFirstName());
             tweet.setLastName(tweetUser.getLastName());
@@ -150,6 +154,22 @@ public class TimelineService {
         }
         return tweets;
 	}
+
+    public boolean removeTweet(String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Removing tweet : " + tweetId);
+        }
+        Tweet tweet = tweetRepository.findTweetById(tweetId);
+
+        User currentUser = authenticationService.getCurrentUser();
+        if (tweet.getLogin().equals(currentUser.getLogin())
+        		&& !Boolean.TRUE.equals(tweet.getRemoved())) {
+			tweetRepository.removeTweet(tweet);
+			counterRepository.decrementTweetCounter(currentUser.getLogin());
+			return true;
+		}
+        return false;
+    }
 
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;

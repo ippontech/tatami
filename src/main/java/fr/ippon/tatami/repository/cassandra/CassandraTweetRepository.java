@@ -57,6 +57,7 @@ public class CassandraTweetRepository implements TweetRepository {
         tweet.setLogin(login);
         tweet.setContent(content);
         tweet.setTweetDate(Calendar.getInstance().getTime());
+        tweet.setRemoved(false);
         if (log.isDebugEnabled()) {
             log.debug("Persisting Tweet : " + tweet);
         }
@@ -65,7 +66,17 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
+    public void removeTweet(Tweet tweet) {
+        tweet.setRemoved(true);
+        if (log.isDebugEnabled()) {
+            log.debug("Updating Tweet : " + tweet);
+        }
+        em.persist(tweet);
+    }
+
+    @Override
     public void addTweetToDayline(Tweet tweet, String key) {
+    	assert !tweet.getRemoved() : "tweet is supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
         		tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -73,6 +84,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToUserline(Tweet tweet) {
+    	assert !tweet.getRemoved() : "tweet is supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -80,6 +92,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTimeline(String login, Tweet tweet) {
+    	assert !tweet.getRemoved() : "tweet is supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -89,6 +102,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTagline(Tweet tweet) {
+    	assert !tweet.getRemoved() : "tweet is supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
         while (m.find()) {
@@ -173,6 +187,7 @@ public class CassandraTweetRepository implements TweetRepository {
         if (log.isDebugEnabled()) {
             log.debug("Finding tweet : " + tweetId);
         }
-        return em.find(Tweet.class, tweetId);
+        Tweet tweet = em.find(Tweet.class, tweetId);
+        return Boolean.TRUE.equals(tweet.getRemoved()) ? null : tweet;
     }
 }

@@ -155,7 +155,7 @@ function makeTweetsList(data, dest, linkLogins, followUsers) {
 					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
 				}
 			} else {
-				html += '&nbsp;';
+				html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>';
 			}
 			html += '</td>';
 			// temps écoulé depuis la publication du message
@@ -257,6 +257,17 @@ function removeFriend(friend) {
 		dataType: "json",
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+function removeTweet(tweet) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/removeTweet/" + tweet,
+		dataType: "json",
+        success: function(data) {
+            setTimeout(listTweets(true), 500);	//DEBUG wait for persistence consistency
         }
 	});
 }

@@ -74,8 +74,9 @@ public class UserController {
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.followUser(loginToFollow);
+            log.info("Completed");
         } else {
-            log.info("Cannot follow a user for another user");
+            log.warn("Cannot follow a user for another user.");
         }
     }
 
@@ -90,8 +91,9 @@ public class UserController {
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(login)) {
             userService.forgetUser(friend);
+            log.info("Completed");
         } else {
-            log.info("Cannot remove a friend from another user");
+            log.warn("Cannot remove a friend from another user");
         }
     }
 
@@ -118,5 +120,19 @@ public class UserController {
         	if (users.size() == 3)	break;	// suggestions list limit
 		}
 		return users.values();
+    }
+
+    @RequestMapping(value = "/rest/removeTweet/{tweet}",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public void removeTweet(@PathVariable("tweet") String tweet) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to remove tweet : " + tweet);
+        }
+        if (!timelineService.removeTweet(tweet)) {
+            log.warn("Could not remove tweet ; wether it's already deleted or owned by another user.");
+        } else {
+            log.info("Completed");
+        }
     }
 }
