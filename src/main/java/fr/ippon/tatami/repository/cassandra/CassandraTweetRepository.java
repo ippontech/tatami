@@ -66,8 +66,18 @@ public class CassandraTweetRepository implements TweetRepository {
         return tweet;
     }
 
-    @CacheEvict(value="tweet-cache", allEntries=true)
     @Override
+    @Cacheable("tweet-cache")
+    public Tweet findTweetById(String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Finding tweet : " + tweetId);
+        }
+        Tweet tweet = em.find(Tweet.class, tweetId);
+        return Boolean.TRUE.equals(tweet.getRemoved()) ? null : tweet;
+    }
+
+    @Override
+    @CacheEvict(value="tweet-cache", allEntries=true)
     public void removeTweet(Tweet tweet) {
         tweet.setRemoved(true);
         if (log.isDebugEnabled()) {
@@ -75,6 +85,7 @@ public class CassandraTweetRepository implements TweetRepository {
         }
         em.persist(tweet);
     }
+
 
     @Override
     public void addTweetToDayline(Tweet tweet, String key) {
@@ -181,15 +192,5 @@ public class CassandraTweetRepository implements TweetRepository {
             tweetIds.add(column.getValue());
         }
         return tweetIds;
-    }
-
-    @Override
-    @Cacheable("tweet-cache")
-    public Tweet findTweetById(String tweetId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Finding tweet : " + tweetId);
-        }
-        Tweet tweet = em.find(Tweet.class, tweetId);
-        return Boolean.TRUE.equals(tweet.getRemoved()) ? null : tweet;
     }
 }
