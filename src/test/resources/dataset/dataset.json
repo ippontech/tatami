@@ -419,11 +419,11 @@
         "rows" : [{
         	"key" : "19042012",
         	"columns" : [{
-        		"name" : "0",
+        		"name" : "1",
         		"value" : "tweetId1"
         	},
         	{
-        		"name" : "1",
+        		"name" : "0",
         		"value" : "tweetId2"
         	}]
         }]

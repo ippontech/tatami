@@ -65,7 +65,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
         Collection<Tweet> tweets = timelineService.getTimeline("", 10);
-        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+        assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetTagline() throws Exception {
         String hashtag = "ippon";
         Collection<Tweet> tweets = timelineService.getTagline(hashtag, 10);
-        assertThatLineForUserWithTweetsIsOk(hashtag, tweets);
+        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
     }
 
     @Test
