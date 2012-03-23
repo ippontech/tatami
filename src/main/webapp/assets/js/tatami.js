@@ -267,7 +267,10 @@ function removeTweet(tweet) {
 		url: "rest/removeTweet/" + tweet,
 		dataType: "json",
         success: function(data) {
-            setTimeout(listTweets(true), 500);	//DEBUG wait for persistence consistency
+            setTimeout(function() {
+                refreshProfile();
+                listTweets(true);
+            }, 500);	//DEBUG wait for persistence consistency
         }
 	});
 }
