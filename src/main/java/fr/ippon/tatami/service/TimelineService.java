@@ -187,12 +187,12 @@ public class TimelineService {
 
 		// alerting
 		if (!currentUser.getLogin().equals(tweet.getLogin())) {
-			String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>TWEET_CONTENT...</em>";
-			int maxLength = 140 - content.length();
+			String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
+			int maxLength = 140 - content.length() + 4;
 			if (tweet.getContent().length() > maxLength) {
-				content = content.replace("TWEET_CONTENT", tweet.getContent().substring(0, maxLength));
+				content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
 			} else {
-				content = content.replace("TWEET_CONTENT", tweet.getContent());
+				content = content.replace("_PH_", tweet.getContent());
 			}
 
 			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
