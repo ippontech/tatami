@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 /**
  * REST controller for managing tweets.
@@ -29,30 +29,30 @@ public class TweetController {
     private TimelineService timelineService;
 
     @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login, @PathVariable("nbTweets") String nbTweets) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
         }
         try {
-			return timelineService.getTimeline(login, Integer.parseInt(nbTweets));
-		} catch (NumberFormatException e) {
-			log.warn("Page size undefined ; sizing to default", e);
-			return timelineService.getTimeline(login, 20);
-		}
+            return timelineService.getTimeline(login, Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTimeline(login, 20);
+        }
     }
 
     @RequestMapping(value = "/rest/ownTweets/{login}",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweets(@PathVariable("login") String login) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get someone's own tweet list (" + login + ").");
         }
-		return timelineService.getUserline(login, 20);
+        return timelineService.getUserline(login, 20);
     }
 
     @RequestMapping(value = "/rest/favTweets/{login}",
@@ -76,67 +76,67 @@ public class TweetController {
     }
 
     @RequestMapping(value = "/rest/tweetStats",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<TweetStat> listTweetStats() {
         log.debug("REST request to get the users stats.");
 
-        String date = null;	//TODO parameterized version
-		Collection<Tweet> tweets = timelineService.getDayline(date);
+        String date = null;    //TODO parameterized version
+        Collection<Tweet> tweets = timelineService.getDayline(date);
         if (log.isDebugEnabled()) {
             log.debug("analysing " + tweets.size() + " items...");
         }
-		Map<String, Integer> users = new HashMap<String, Integer>();
+        Map<String, Integer> users = new HashMap<String, Integer>();
         for (Tweet tweet : tweets) {
-        	Integer count = users.get(tweet.getLogin());
-        	if (count != null) {
-        		count = count.intValue() + 1;
-        	} else {
-        		count = 1;
-        	}
-    		users.put(tweet.getLogin(), count);
-		}
+            Integer count = users.get(tweet.getLogin());
+            if (count != null) {
+                count = count.intValue() + 1;
+            } else {
+                count = 1;
+            }
+            users.put(tweet.getLogin(), count);
+        }
         if (log.isDebugEnabled()) {
             log.debug("fetched total of " + users.size() + " stats.");
         }
 
         Collection<TweetStat> stats = new TreeSet<TweetStat>();
         for (Entry<String, Integer> entry : users.entrySet()) {
-        	stats.add(new TweetStat(entry.getKey(), entry.getValue()));
+            stats.add(new TweetStat(entry.getKey(), entry.getValue()));
         }
-		return stats;
+        return stats;
     }
 
     @RequestMapping(value = "/rest/tagtweets/{nbTweets}",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTagTweets(@PathVariable("nbTweets") String nbTweets) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
         }
         try {
-			return timelineService.getTagline(null, Integer.parseInt(nbTweets));
-		} catch (NumberFormatException e) {
-			log.warn("Page size undefined ; sizing to default", e);
-			return timelineService.getTagline(null, 20);
-		}
+            return timelineService.getTagline(null, Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(null, 20);
+        }
     }
 
     @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTagTweets(@PathVariable("tag") String tag, @PathVariable("nbTweets") String nbTweets) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
         }
         try {
-			return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
-		} catch (NumberFormatException e) {
-			log.warn("Page size undefined ; sizing to default", e);
-			return timelineService.getTagline(tag, 20);
-		}
+            return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(tag, 20);
+        }
     }
 }

@@ -93,7 +93,7 @@ public class CassandraTweetRepository implements TweetRepository {
     	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
-        		tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+                tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
     @Override
@@ -128,10 +128,10 @@ public class CassandraTweetRepository implements TweetRepository {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
         while (m.find()) {
-        	String tag = m.group(1);
-        	log.debug("tag list augmented : " + tag);
-	        mutator.insert(tag, TAGLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
-	                tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+            String tag = m.group(1);
+            log.debug("tag list augmented : " + tag);
+            mutator.insert(tag, TAGLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+                    tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
         }
     }
 
@@ -145,7 +145,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
         Collection<String> tweetIds = new ArrayList<String>();
         ColumnSliceIterator<String, String, String> csi =
-        		new ColumnSliceIterator<String, String, String>(sq, null, "", false);
+                new ColumnSliceIterator<String, String, String>(sq, null, "", false);
         while (csi.hasNext()) {
             tweetIds.add(csi.next().getValue());
         }

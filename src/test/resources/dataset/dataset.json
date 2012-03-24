@@ -412,7 +412,41 @@
        	}]
     },
     {
-        "name" : "Userline",
+        "name" : "Dayline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "19042012",
+        	"columns" : [{
+        		"name" : "1",
+        		"value" : "tweetId1"
+        	},
+        	{
+        		"name" : "0",
+        		"value" : "tweetId2"
+        	}]
+        }]
+    },
+    {
+        "name" : "Tagline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "LongType",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "ippon",
+        	"columns" : [{
+        		"name" : "0",
+        		"value" : "tweetId1"
+        	},
+        	{
+        		"name" : "1",
+        		"value" : "tweetId2"
+        	}]
+        }]
+    },
+    {
+        "name" : "Timeline",
         "keyType" : "UTF8Type",
         "comparatorType" : "LongType",
         "defaultColumnValueType" : "UTF8Type",
@@ -429,7 +463,7 @@
         }]
     },
     {
-        "name" : "Timeline",
+        "name" : "Userline",
         "keyType" : "UTF8Type",
         "comparatorType" : "LongType",
         "defaultColumnValueType" : "UTF8Type",

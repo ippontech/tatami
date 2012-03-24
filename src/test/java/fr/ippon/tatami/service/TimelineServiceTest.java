@@ -1,21 +1,19 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.AbstractCassandraTatamiTest;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import org.junit.Test;
+
+import javax.inject.Inject;
+import java.util.Collection;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.junit.Test;
-
-import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
 
 public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
@@ -66,6 +64,20 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
         Collection<Tweet> tweets = timelineService.getTimeline("", 10);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
+    }
+
+    @Test
+    public void shouldGetDayline() throws Exception {
+        String date = "19042012";
+        Collection<Tweet> tweets = timelineService.getDayline(date);
+        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+    }
+
+    @Test
+    public void shouldGetTagline() throws Exception {
+        String hashtag = "ippon";
+        Collection<Tweet> tweets = timelineService.getTagline(hashtag, 10);
+        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
     }
 
     @Test

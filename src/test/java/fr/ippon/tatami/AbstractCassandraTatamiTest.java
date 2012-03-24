@@ -1,5 +1,7 @@
 package fr.ippon.tatami;
 
+import fr.ippon.tatami.application.ApplicationTestConfiguration;
+import fr.ippon.tatami.domain.User;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -7,11 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import fr.ippon.tatami.domain.User;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/spring/applicationContext-test.xml" })
+@ContextConfiguration(
+        classes = ApplicationTestConfiguration.class,
+        loader = AnnotationConfigContextLoader.class)
 public abstract class AbstractCassandraTatamiTest {
 
     private static boolean isInitialized = false;
