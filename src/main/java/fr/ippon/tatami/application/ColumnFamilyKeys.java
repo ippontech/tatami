@@ -15,6 +15,8 @@ public class ColumnFamilyKeys {
 
     public final static String DAYLINE_CF = "Dayline";
 
+    public final static String FAVLINE_CF = "Favline";
+
     public final static String TAGLINE_CF = "Tagline";
 
     public final static String TIMELINE_CF = "Timeline";

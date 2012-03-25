@@ -54,15 +54,36 @@ public class TimelineService {
         User currentUser = authenticationService.getCurrentUser();
 
         Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);
+        // registering
         tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
         tweetRepository.addTweetToUserline(tweet);
         tweetRepository.addTweetToTimeline(currentUser.getLogin(), tweet);
+        // spreading
         for (String followerLogin : followerRepository.findFollowersForUser(currentUser.getLogin())) {
             tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
+        // referencing
         tweetRepository.addTweetToTagline(tweet);
+
         counterRepository.incrementTweetCounter(currentUser.getLogin());
     }
+
+	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
+        for (String tweetId : tweetIds) {
+            Tweet tweet = tweetRepository.findTweetById(tweetId);
+            if (tweet == null) {
+                log.debug("Invisible tweet : " + tweetId);
+            	continue;
+            }
+            User tweetUser = userService.getUserByLogin(tweet.getLogin());
+            tweet.setFirstName(tweetUser.getFirstName());
+            tweet.setLastName(tweetUser.getLastName());
+            tweet.setGravatar(tweetUser.getGravatar());
+            tweets.add(tweet);
+        }
+        return tweets;
+	}
 
     /**
      * The dayline contains a day's tweets
@@ -129,17 +150,62 @@ public class TimelineService {
         return this.buildTweetsList(tweetIds);
     }
 
-    private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
-        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweedId : tweetIds) {
-            Tweet tweet = tweetRepository.findTweetById(tweedId);
-            User tweetUser = userService.getUserByLogin(tweet.getLogin());
-            tweet.setFirstName(tweetUser.getFirstName());
-            tweet.setLastName(tweetUser.getLastName());
-            tweet.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweet);
+    public boolean removeTweet(String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Removing tweet : " + tweetId);
         }
-        return tweets;
+        Tweet tweet = tweetRepository.findTweetById(tweetId);
+
+        User currentUser = authenticationService.getCurrentUser();
+        if (tweet.getLogin().equals(currentUser.getLogin())
+        		&& !Boolean.TRUE.equals(tweet.getRemoved())) {
+			tweetRepository.removeTweet(tweet);
+			counterRepository.decrementTweetCounter(currentUser.getLogin());
+			return true;
+		}
+        return false;
+    }
+
+    public void addFavoriteTweet(String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Marking tweet : " + tweetId);
+        }
+        Tweet tweet = tweetRepository.findTweetById(tweetId);
+
+        // registering
+        User currentUser = authenticationService.getCurrentUser();
+		tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
+
+		// alerting
+		if (!currentUser.getLogin().equals(tweet.getLogin())) {
+			String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
+			int maxLength = 140 - content.length() + 4;
+			if (tweet.getContent().length() > maxLength) {
+				content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
+			} else {
+				content = content.replace("_PH_", tweet.getContent());
+			}
+
+			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
+			tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
+		}
+    }
+
+    /**
+     * The favline contains the user's favorites tweets
+     * 
+     * @param login
+     * 		the user to retrieve the favline of
+     * @return a tweets list
+     */
+    public Collection<Tweet> getFavoritesline(String login) {
+    	if (login == null || login.isEmpty()) {
+	        User currentUser = authenticationService.getCurrentUser();
+	        login = currentUser.getLogin();
+    	}
+        Collection<String> tweetIds = tweetRepository.getFavoritesline(login);
+
+        return this.buildTweetsList(tweetIds);
     }
 
     public void setAuthenticationService(AuthenticationService authenticationService) {

@@ -72,12 +72,14 @@
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><strong>Tweets</strong></a></li>
+						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
 						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
 						<li><a id="chartTab" href="#chartPanel" data-toggle="tab"><i class="icon-signal"></i> Tweets of the day Pie chart</a></li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
+						<div class="tab-pane" id="favLinePanel"></div>
 						<div class="tab-pane" id="userLinePanel"></div>
 						<div class="tab-pane" id="tagLinePanel"></div>
 						<div class="tab-pane" id="chartPanel"></div>
@@ -150,13 +152,16 @@
 				}
 			});
 
+			$('#favLinePanel').load('/assets/fragments/favline.html');
 			$('#userLinePanel').load('/assets/fragments/userline.html');
 			$('#tagLinePanel').load('/assets/fragments/tagline.html');
 
 			$('#chartPanel').load('/assets/fragments/chart.html');
         	// auto-refresh
 		    $('a[data-toggle="tab"]').on('show', function(e) {
-		    	if (e.target.hash == '#chartPanel') {
+		    	if (e.target.hash == '#favLinePanel') {
+		        	listFavoriteTweets();
+		    	} else if (e.target.hash == '#chartPanel') {
 					refreshChart();
 		        }
 		    });
