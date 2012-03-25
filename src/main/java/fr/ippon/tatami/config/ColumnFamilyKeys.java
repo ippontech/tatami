@@ -1,4 +1,4 @@
-package fr.ippon.tatami.application;
+package fr.ippon.tatami.config;
 
 /**
  * @author Julien Dubois

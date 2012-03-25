@@ -11,6 +11,7 @@ import javax.servlet.*;
 import java.util.EnumSet;
 
 public class WebInitializer implements WebApplicationInitializer {
+
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
@@ -36,7 +37,5 @@ public class WebInitializer implements WebApplicationInitializer {
 
         FilterRegistration.Dynamic monitoringFilter = servletContext.addFilter("monitoringFilter", new MonitoringFilter());
         monitoringFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-
     }
 }

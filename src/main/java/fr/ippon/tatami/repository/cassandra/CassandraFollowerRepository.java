@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-import static fr.ippon.tatami.application.ColumnFamilyKeys.FOLLOWERS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
 
 /**
  * Cassandra implementation of the Follower repository.

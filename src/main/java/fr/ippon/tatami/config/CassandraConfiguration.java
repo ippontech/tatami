@@ -21,7 +21,7 @@ import org.springframework.core.env.Environment;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
 /**
  * Main configuration file.
@@ -42,7 +42,6 @@ public class CassandraConfiguration {
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
-
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);

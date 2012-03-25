@@ -1,10 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static fr.ippon.tatami.application.ColumnFamilyKeys.DAYLINE_CF;
-import static fr.ippon.tatami.application.ColumnFamilyKeys.FAVLINE_CF;
-import static fr.ippon.tatami.application.ColumnFamilyKeys.TAGLINE_CF;
-import static fr.ippon.tatami.application.ColumnFamilyKeys.TIMELINE_CF;
-import static fr.ippon.tatami.application.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 import java.util.ArrayList;
