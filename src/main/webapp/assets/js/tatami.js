@@ -67,8 +67,19 @@ function listTweets(reset) {
 		url: "rest/tweets/" + login + "/" + nbTweets,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#tweetsList'), true, false);
+			makeTweetsList(data, $('#tweetsList'), true, false, true);
 			$('#mainTab').tab('show');
+		}
+	});
+}
+
+function listFavoriteTweets() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/favTweets/" + login,
+		dataType: "json",
+		success: function(data) {
+			makeTweetsList(data, $('#favTweetsList'), true, true, false);
 		}
 	});
 }
@@ -79,7 +90,7 @@ function listUserTweets(login) {
 		url: "rest/ownTweets/" + login,
 		dataType: "json",
 		success: function(data) {
-			makeTweetsList(data, $('#userTweetsList'), false, true);
+			makeTweetsList(data, $('#userTweetsList'), false, true, true);
 
 			$.ajax({
 				type: 'GET',
@@ -109,7 +120,7 @@ function listTagTweets(tag) {
 		dataType: "json",
 		success: function(data) {
 			//TODO refesh title's tag name
-			makeTweetsList(data, $('#tagTweetsList'), true, true);
+			makeTweetsList(data, $('#tagTweetsList'), true, true, true);
 			$('#tagTab').tab('show');
 		}
 	});
@@ -121,7 +132,12 @@ var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTwee
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
-function makeTweetsList(data, dest, linkLogins, followUsers) {
+/*
+ * linkLogins:	put links around login references
+ * followUsers:	put "follow" action icons ; "forget" if false
+ * likeTweets:	put "like" action icons
+ */
+function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
 	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
 
@@ -139,23 +155,29 @@ function makeTweetsList(data, dest, linkLogins, followUsers) {
 			if (userlineLink)	html += '</a>';
 			html += '</td>';
 			html += '<td><article>';
-			html += '<strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
-			if (userlineLink)	html += userlineLink;
-			html += '<em>@' + entry['login'] + '</em>';
-			if (userlineLink)	html += '</a>';
+			if (login != entry['login']) {
+				html += '<em>from:</em> <strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
+				if (userlineLink)	html += userlineLink;
+				html += '<em>@' + entry['login'] + '</em>';
+				if (userlineLink)	html += '</a>';
+				html += '<br/>';
+			}
 			// contenu du message
-			html += '<br/>' + entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
+			html += entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
 			if (login != entry['login']) {
 				if (followUsers) {
-					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
 				} else {
-					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>';
+					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
 				}
-			} else {
-				html += '&nbsp;';
+			} else if (likeTweets) {
+				html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
+			}
+			if (likeTweets) {
+				html += '<a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
 			}
 			html += '</td>';
 			// temps écoulé depuis la publication du message
@@ -257,6 +279,33 @@ function removeFriend(friend) {
 		dataType: "json",
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+function removeTweet(tweet) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/removeTweet/" + tweet,
+		dataType: "json",
+        success: function(data) {
+            setTimeout(function() {
+                refreshProfile();
+                listTweets(true);
+            }, 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+function addFavoriteTweet(tweet) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/likeTweet/" + tweet,
+		dataType: "json",
+        success: function(data) {
+            setTimeout(function() {
+            	$('#favTab').tab('show');
+            }, 500);	//DEBUG wait for persistence consistency
         }
 	});
 }

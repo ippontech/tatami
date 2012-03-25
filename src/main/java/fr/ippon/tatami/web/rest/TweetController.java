@@ -55,6 +55,17 @@ public class TweetController {
         return timelineService.getUserline(login, 20);
     }
 
+    @RequestMapping(value = "/rest/favTweets/{login}",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listFavoriteTweets(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get someone's favorite tweet list (" + login + ").");
+        }
+		return timelineService.getFavoritesline(login);
+    }
+
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
     public void postTweet(@RequestBody String content) {
