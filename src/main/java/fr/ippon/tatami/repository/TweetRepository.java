@@ -31,6 +31,10 @@ public interface TweetRepository {
 
     void addTweetToTimeline(String login, Tweet tweet);
 
+    /**
+     * analyze a message in order to extract and reference eventual hashtags
+     * @param tweet
+     */
     void addTweetToTagline(Tweet tweet);
 
     /**
@@ -50,6 +54,8 @@ public interface TweetRepository {
 
     /**
      * a tag's tweets
+     * @param tag
+     * 		cannot be null, empty, nor contain a sharp character (#)
      */
     Collection<String> getTagline(String tag, int size);
 
