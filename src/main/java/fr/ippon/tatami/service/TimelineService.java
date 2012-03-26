@@ -88,7 +88,7 @@ public class TimelineService {
     /**
      * The dayline contains a day's tweets
      *
-     * @param date the day to retrieve the tweets of
+     * @param date the day's name to retrieve the tweets of
      * @return a tweets list
      */
     public Collection<Tweet> getDayline(String date) {
@@ -96,6 +96,19 @@ public class TimelineService {
             date = DAYLINE_KEY_FORMAT.format(new Date());
         }
         Collection<String> tweetIds = tweetRepository.getDayline(date);
+
+        return this.buildTweetsList(tweetIds);
+    }
+
+    /**
+     * The dayline contains a day's tweets
+     *
+     * @param date the day to retrieve the tweets of
+     * @return a tweets list
+     */
+    public Collection<Tweet> getDayline(Date date) {
+        if (date == null)	date = new Date();
+        Collection<String> tweetIds = tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
 
         return this.buildTweetsList(tweetIds);
     }
@@ -186,7 +199,7 @@ public class TimelineService {
 				content = content.replace("_PH_", tweet.getContent());
 			}
 
-			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
+			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable ; adds one "point" to the referee
 			tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
 		}
     }
