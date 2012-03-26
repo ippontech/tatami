@@ -75,14 +75,21 @@
 						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
 						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
-						<li><a id="chartTab" href="#chartPanel" data-toggle="tab"><i class="icon-signal"></i> Tweets of the day Pie chart</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistics <b class="caret"></b></a>
+				            <ul class="dropdown-menu">
+				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab">Tweets of the day (pie chart)</a></li>
+				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab">Tweets of the week (punch chart)</a></li>
+				            </ul>
+						</li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
 						<div class="tab-pane" id="favLinePanel"></div>
 						<div class="tab-pane" id="userLinePanel"></div>
 						<div class="tab-pane" id="tagLinePanel"></div>
-						<div class="tab-pane" id="chartPanel"></div>
+						<div class="tab-pane" id="piechartPanel"></div>
+						<div class="tab-pane" id="punchchartPanel"></div>
 					</div>
 				</div>
 			</div>
@@ -101,10 +108,12 @@
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/assets/js/jquery.js"></script>
+	<script src="/assets/js/bootstrap-dropdown.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
 	<script src="/assets/js/bootstrap-tooltip.js"></script>
 	<script src="/assets/js/bootstrap-popover.js"></script>
 	<script src="/assets/js/shortcut.js"></script>
+	<script src="/assets/js/raphael-min.js"></script>
 
 	<script src="/assets/js/profile.js"></script>
 	<script src="/assets/js/chart.js"></script>
@@ -156,13 +165,16 @@
 			$('#userLinePanel').load('/assets/fragments/userline.html');
 			$('#tagLinePanel').load('/assets/fragments/tagline.html');
 
-			$('#chartPanel').load('/assets/fragments/chart.html');
+			$('#piechartPanel').load('/assets/fragments/piechart.html');
+			$('#punchchartPanel').load('/assets/fragments/punchchart.html');
         	// auto-refresh
 		    $('a[data-toggle="tab"]').on('show', function(e) {
 		    	if (e.target.hash == '#favLinePanel') {
 		        	listFavoriteTweets();
-		    	} else if (e.target.hash == '#chartPanel') {
-					refreshChart();
+		    	} else if (e.target.hash == '#piechartPanel') {
+					refreshPieChart();
+		    	} else if (e.target.hash == '#punchchartPanel') {
+					refreshPunchChart();
 		        }
 		    });
 		});
