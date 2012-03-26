@@ -105,7 +105,7 @@ public class UserController {
         Collection<String> exceptions = userService.getFriendsForUser(login);
         exceptions.add(login);
 
-        Collection<Tweet> tweets = timelineService.getDayline(null);
+        Collection<Tweet> tweets = timelineService.getDayline("");
         Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
             if (exceptions.contains(tweet.getLogin())) continue;
