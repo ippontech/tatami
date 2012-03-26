@@ -199,7 +199,7 @@ public class TimelineService {
 				content = content.replace("_PH_", tweet.getContent());
 			}
 
-			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable ; adds one "point" to the referee
+			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
 			tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
 		}
     }
