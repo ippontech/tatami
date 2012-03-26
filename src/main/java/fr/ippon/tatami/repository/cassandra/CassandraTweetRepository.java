@@ -129,8 +129,9 @@ public class CassandraTweetRepository implements TweetRepository {
         Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
         while (m.find()) {
             String tag = m.group(1);
+            assert tag != null && !tag.isEmpty() && !tag.contains("#");
             log.debug("tag list augmented : " + tag);
-            mutator.insert(tag, TAGLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+            mutator.insert(tag.toLowerCase(), TAGLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                     tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
         }
     }
@@ -188,10 +189,11 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getTagline(String tag, int size) {
+        assert tag != null && !tag.isEmpty() && !tag.contains("#");
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
-                .setKey(tag)
+                .setKey(tag.toLowerCase())
                 .setRange(null, null, true, size)
                 .execute()
                 .get();
