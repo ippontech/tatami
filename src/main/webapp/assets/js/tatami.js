@@ -1,4 +1,5 @@
 var nbTweets;
+var durationOfFadeTo = 400;
 
 function resetNbTweets() {
 	nbTweets = 20;
@@ -133,13 +134,17 @@ var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
 var fieldLoginInSession = 'login';
+
+function assertStringNotEquals(stringOne, StringTwo){
+    return stringOne != StringTwo;
+}
 /*
  * linkLogins:	put links around login references
  * followUsers:	put "follow" action icons ; "forget" if false
  * likeTweets:	put "like" action icons
  */
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
-    dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+    dest.fadeTo(durationOfFadeTo, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
         $.each(data, function(entryIndex, entry) {
             var userlineLink;
@@ -188,27 +193,12 @@ function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
             dest.append(html);
         });
 
-        dest.fadeTo(400, 1);
+        dest.fadeTo(durationOfFadeTo, 1);
     });
-}
-
-function whoToFollow() {
-    $.ajax({
-        type: 'GET',
-        url: "rest/suggestions",
-        dataType: "json",
-        success: function(data) {
-            makeUsersList(data, $('#suggestions'));
-        }
-    });
-}
-
-function assertStringNotEquals(stringOne, StringTwo){
-    return stringOne != StringTwo;
 }
 
 function makeUsersList(data, dest) {
-    dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+    dest.fadeTo(durationOfFadeTo, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
         var updated = false;
         $.each(data, function(entryIndex, entry) {
@@ -247,7 +237,18 @@ function makeUsersList(data, dest) {
             dest.append(html);
         }
 
-        dest.fadeTo(400, 1);
+        dest.fadeTo(durationOfFadeTo, 1);
+    });
+}
+
+function whoToFollow() {
+    $.ajax({
+        type: 'GET',
+        url: "rest/suggestions",
+        dataType: "json",
+        success: function(data) {
+            makeUsersList(data, $('#suggestions'));
+        }
     });
 }
 
