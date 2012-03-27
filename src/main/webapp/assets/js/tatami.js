@@ -137,11 +137,12 @@ var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTwee
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
-var fieldLoginInSession = 'login';
-var fieldfirstNameInSession = 'firstName'; 
-var fieldLastNameInSession = 'lastName';
-var fieldContentInSession = 'content';
-var fieldGravatarInSession = 'gravatar';
+var fieldLoginInSession                 = 'login';
+var fieldfirstNameInSession             = 'firstName'; 
+var fieldLastNameInSession              = 'lastName';
+var fieldContentInSession               = 'content';
+var fieldGravatarInSession              = 'gravatar';
+var fieldPrettyPrintTweetDateInSession  = 'prettyPrintTweetDate'
 
 function assertStringNotEquals(stringOne, StringTwo){
     return stringOne != StringTwo;
@@ -187,7 +188,7 @@ function buildHtmlAreaForTheTweetContent(userlineLink, login, loginInSession, fi
             html += userlineLink;
         }
         
-        html += '<em>@' + entry['login'] + '</em>';
+        html += '<em>@' + login + '</em>';
         
         if (userlineLink){
             html += '</a>';
@@ -201,41 +202,81 @@ function buildHtmlAreaForTheTweetContent(userlineLink, login, loginInSession, fi
     return html;
 }
 
+function buildHtmlAreaForTheConnectionPart(login, loginInSession, followUsers, likeTweets){
+    var html = '<td class="tweetFriend">';
+    if (assertStringNotEquals(login, loginInSession)) {
+        if (followUsers) {
+            html += '<a href="#" onclick="followUser(\'' + loginInSession + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
+        } else {
+            html += '<a href="#" onclick="removeFriend(\'' + loginInSession + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
+        }
+    } else if (likeTweets) {
+        html += '<a href="#" onclick="removeTweet(\'' + loginInSession + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
+    }
+    if (likeTweets) {
+        html += '<a href="#" onclick="addFavoriteTweet(\'' + loginInSession + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
+    }
+    html += '</td>';
+    return html;
+}
+
+function buildHtmlAreaForDisplayingTheDateSincePublication(fieldPrettyPrintTweetDateInSession){
+    return '<td class="tweetDate"><aside>' + fieldPrettyPrintTweetDateInSession+ '</aside></td>';
+}
+
+function buildContentForAHtmlLinePerTweet(
+        userlineLink,
+        fieldGravatarInSession,
+        login, 
+        fieldLoginInSession, 
+        fieldfirstNameInSession, 
+        fieldLastNameInSession, 
+        fieldContentInSession,
+        followUsers, 
+        likeTweets,
+        fieldPrettyPrintTweetDateInSession){
+            
+    var html = buildHtmlAreaForTheAvatar(
+                userlineLink, 
+                fieldGravatarInSession);
+                
+    html += buildHtmlAreaForTheTweetContent(
+                userlineLink, 
+                login, 
+                fieldLoginInSession, 
+                fieldfirstNameInSession, 
+                fieldLastNameInSession, 
+                fieldContentInSession);  
+                
+    html += buildHtmlAreaForTheConnectionPart(
+                login,
+                fieldLoginInSession,
+                followUsers, 
+                likeTweets);
+                
+    html += buildHtmlAreaForDisplayingTheDateSincePublication(fieldPrettyPrintTweetDateInSession);
+    return html;
+}
+
 function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry){
     
     var userlineLink = buildTheUserLineLink(linkLogins, login, entry);
       
     var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';  
-    
-    html += buildHtmlAreaForTheAvatar(
-                userlineLink, 
-                entry[fieldGravatarInSession]);
-                
-    html += buildHtmlAreaForTheTweetContent(
-                userlineLink, 
-                login, 
-                entry[fieldLoginInSession], 
-                entry[fieldfirstNameInSession], 
-                entry[fieldLastNameInSession], 
-                entry[fieldContentInSession]);    
-    
-    // colonne de suppression des abonnements
-    html += '<td class="tweetFriend">';
-    if (login != entry['login']) {
-        if (followUsers) {
-            html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
-        } else {
-            html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
-        }
-    } else if (likeTweets) {
-        html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
-    }
-    if (likeTweets) {
-        html += '<a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
-    }
-    html += '</td>';
-    // temps écoulé depuis la publication du message
-    html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
+
+    html += buildContentForAHtmlLinePerTweet(
+        userlineLink,
+        entry[fieldGravatarInSession],
+        login, 
+        entry[fieldLoginInSession], 
+        entry[fieldfirstNameInSession], 
+        entry[fieldLastNameInSession], 
+        entry[fieldContentInSession],
+        followUsers, 
+        likeTweets,
+        entry[fieldPrettyPrintTweetDateInSession]
+        );
+
     html += '</tr>';
     return html;
 }
