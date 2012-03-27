@@ -132,118 +132,123 @@ var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTwee
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
+var fieldLoginInSession = 'login';
 /*
  * linkLogins:	put links around login references
  * followUsers:	put "follow" action icons ; "forget" if false
  * likeTweets:	put "like" action icons
  */
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
-	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-		dest.empty();
+    dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+        dest.empty();
+        $.each(data, function(entryIndex, entry) {
+            var userlineLink;
+            var userWhoRunsTheApplication = entry[fieldLoginInSession];
+            if (linkLogins && assertStringNotEquals(login,userWhoRunsTheApplication)) {
+                userlineLink = userlineURL.replace(userlineREG, userWhoRunsTheApplication);
+            }
 
-		$.each(data, function(entryIndex, entry) {
-			var userlineLink;
-			if (linkLogins && login != entry['login']) {
-				userlineLink = userlineURL.replace(userlineREG, entry['login']);
-			}
+            var html = '<tr valign="top">';
+            // identification de l'émetteur du message
+            html += '<td style="width: 34px; ">';
+            if (userlineLink)	html += userlineLink;
+            html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
+            if (userlineLink)	html += '</a>';
+            html += '</td>';
+            html += '<td><article>';
+            if (login != entry['login']) {
+                html += '<em>from:</em> <strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
+                if (userlineLink)	html += userlineLink;
+                html += '<em>@' + entry['login'] + '</em>';
+                if (userlineLink)	html += '</a>';
+                html += '<br/>';
+            }
+            // contenu du message
+            html += entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
+            html += '</article></td>';
+            // colonne de suppression des abonnements
+            html += '<td class="tweetFriend">';
+            if (login != entry['login']) {
+                if (followUsers) {
+                    html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
+                } else {
+                    html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
+                }
+            } else if (likeTweets) {
+                html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
+            }
+            if (likeTweets) {
+                html += '<a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
+            }
+            html += '</td>';
+            // temps écoulé depuis la publication du message
+            html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
+            html += '</tr>';
 
-			var html = '<tr valign="top">';
-			// identification de l'émetteur du message
-			html += '<td style="width: 34px; ">';
-			if (userlineLink)	html += userlineLink;
-			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" />';
-			if (userlineLink)	html += '</a>';
-			html += '</td>';
-			html += '<td><article>';
-			if (login != entry['login']) {
-				html += '<em>from:</em> <strong>' + entry['firstName'] + ' ' + entry['lastName'] + '</strong>&nbsp;';
-				if (userlineLink)	html += userlineLink;
-				html += '<em>@' + entry['login'] + '</em>';
-				if (userlineLink)	html += '</a>';
-				html += '<br/>';
-			}
-			// contenu du message
-			html += entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
-			html += '</article></td>';
-			// colonne de suppression des abonnements
-			html += '<td class="tweetFriend">';
-			if (login != entry['login']) {
-				if (followUsers) {
-					html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
-				} else {
-					html += '<a href="#" onclick="removeFriend(\'' + entry['login'] + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
-				}
-			} else if (likeTweets) {
-				html += '<a href="#" onclick="removeTweet(\'' + entry['tweetId'] + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
-			}
-			if (likeTweets) {
-				html += '<a href="#" onclick="addFavoriteTweet(\'' + entry['tweetId'] + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
-			}
-			html += '</td>';
-			// temps écoulé depuis la publication du message
-			html += '<td class="tweetDate"><aside>' + entry['prettyPrintTweetDate'] + '</aside></td>';
-			html += '</tr>';
+            dest.append(html);
+        });
 
-			dest.append(html);
-		});
-
-		dest.fadeTo(400, 1);
-	});
+        dest.fadeTo(400, 1);
+    });
 }
 
 function whoToFollow() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/suggestions",
-		dataType: "json",
-		success: function(data) {
-			makeUsersList(data, $('#suggestions'));
-		}
-	});
+    $.ajax({
+        type: 'GET',
+        url: "rest/suggestions",
+        dataType: "json",
+        success: function(data) {
+            makeUsersList(data, $('#suggestions'));
+        }
+    });
+}
+
+function assertStringNotEquals(stringOne, StringTwo){
+    return stringOne != StringTwo;
 }
 
 function makeUsersList(data, dest) {
-	dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-		dest.empty();
+    dest.fadeTo(400, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+        dest.empty();
+        var updated = false;
+        $.each(data, function(entryIndex, entry) {
+            var userline;
+            var userWhoRunsTheApplication = entry[fieldLoginInSession];
+            if (assertStringNotEquals(login,userWhoRunsTheApplication)) {
+                userline = userlineURL.replace(userlineREG, userWhoRunsTheApplication);
+            }
 
-		var updated = false;
-		$.each(data, function(entryIndex, entry) {
-			var userline;
-			if (login != entry['login']) {
-				userline = userlineURL.replace(userlineREG, entry['login']);
-			}
-
-			var html = '<tr valign="top">';
-			// identification de l'émetteur du message
-			html += '<td>';
-			if (userline)	html += userline;
-			html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ';
-			html += '<em>@' + entry['login'] + '</em>';
-			if (userline)	html += '</a>';
-			html += '</td>';
-			// colonne de suppression des abonnements
-			html += '<td class="tweetFriend">';
-			if (userline) {
-				html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
-			} else {
-				html += '&nbsp;';
-			}
-			html += '</td>';
-			html += '</tr>';
+            var html = '<tr valign="top">';
+            // identification de l'émetteur du message
+            html += '<td>';
+            if (userline)	html += userline;
+            html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ';
+            html += '<em>@' + entry['login'] + '</em>';
+            if (userline)	html += '</a>';
+            html += '</td>';
+            // colonne de suppression des abonnements
+            html += '<td class="tweetFriend">';
+            if (userline) {
+                html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+            } else {
+                html += '&nbsp;';
+            }
+            html += '</td>';
+            html += '</tr>';
 	
-			dest.append(html);
-			updated = true;
-		});
-		if (!updated) {
-			var html = '<tr valign="top">';
-			// identification de l'émetteur du message
-			html += '<td colspan="2">No one new tweeted yet today...</td>';
-			html += '</tr>';
-			dest.append(html);
-		}
+            dest.append(html);
+            updated = true;
+        });
+        if (!updated) {
+            var html = '<tr valign="top">';
+            // identification de l'émetteur du message
+            html += '<td colspan="2">No one new tweeted yet today...</td>';
+            html += '</tr>';
+            dest.append(html);
+        }
 
-		dest.fadeTo(400, 1);
-	});
+        dest.fadeTo(400, 1);
+    });
 }
 
 function followUser(loginToFollow) {
