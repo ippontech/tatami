@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
-import static fr.ippon.tatami.application.ColumnFamilyKeys.COUNTER_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
 
 /**

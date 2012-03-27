@@ -1,4 +1,4 @@
-package fr.ippon.tatami.application;
+package fr.ippon.tatami.config;
 
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
@@ -14,16 +14,14 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.thrift.transport.TTransportException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.io.IOException;
 
-import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
 /**
  * Main configuration file.
@@ -31,21 +29,20 @@ import static fr.ippon.tatami.application.ColumnFamilyKeys.*;
  * @author Julien Dubois
  */
 @Configuration
-public class ApplicationConfiguration {
+public class CassandraConfiguration {
 
-    private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
+    private final Log log = LogFactory.getLog(CassandraConfiguration.class);
 
-    @Value("${cassandra.host}")
-    private String cassandraHost;
-
-    @Value("${cassandra.clusterName}")
-    private String cassandraClusterName;
-
-    @Value("${cassandra.keyspace}")
-    private String cassandraKeyspace;
+    @Inject
+    Environment env;
 
     @Bean
     public Keyspace keyspaceOperator() {
+
+        String cassandraHost = env.getProperty("cassandra.host");
+        String cassandraClusterName = env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
         ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
@@ -61,6 +58,9 @@ public class ApplicationConfiguration {
             addColumnFamily(cluster, FRIENDS_CF);
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);
+            addColumnFamily(cluster, DAYLINE_CF);
+            addColumnFamily(cluster, FAVLINE_CF);
+            addColumnFamily(cluster, TAGLINE_CF);
             addColumnFamily(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USERLINE_CF);
 
@@ -73,7 +73,11 @@ public class ApplicationConfiguration {
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
 
+
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
+
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
         cluster.addColumnFamily(cfd);
@@ -84,8 +88,4 @@ public class ApplicationConfiguration {
         return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
     }
 
-    @PostConstruct
-    public void initTatami() throws IOException, TTransportException {
-        log.info("Tatami started!");
-    }
 }

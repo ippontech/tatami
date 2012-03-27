@@ -5,55 +5,20 @@
          metadata-complete="true">
 
 	<!-- 
-	Remove classpath scanning (from servlet 3.0) :
-	metadata-complete="true" abvoe + empyt absolute ordering below
+	Remove classpath scanning (from servlet 3.0) in order to speed jetty startup :
+	metadata-complete="true" above + empty absolute ordering below
 	-->
-
 	<absolute-ordering>
 		<!--
-		 Empty absolute ordering to desactivate classpath scanning.r()
+		 Empty absolute ordering is necessary to completely desactivate classpath scanning
 		  -->
 	</absolute-ordering>
 
     <display-name>Tatami</display-name>
 
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:META-INF/spring/applicationContext.xml</param-value>
-    </context-param>
-
+    <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class>fr.ippon.tatami.web.init.WebConfigurer</listener-class>
     </listener>
-
-    <filter>
-        <filter-name>monitoringFilter</filter-name>
-        <filter-class>fr.ippon.tatami.web.monitoring.MonitoringFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>monitoringFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <servlet-name>dispatcher</servlet-name>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/tatami/*</url-pattern>
-    </servlet-mapping>
+    
 </web-app>

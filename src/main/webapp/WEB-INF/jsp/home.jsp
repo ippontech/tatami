@@ -19,7 +19,7 @@
     <link href="/assets/css/tatami-custom.css" rel="stylesheet">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
 	<!-- Le fav and touch icons -->
@@ -56,7 +56,7 @@
 				<div class="tabbable">
                     <ul class="nav nav-tabs">
 						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
-						<li><a href="#profileTabContent" data-toggle="pill">Update Profile</a></li>
+						<li><a href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
 					</ul>
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>
@@ -71,14 +71,25 @@
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab">Tweets</a></li>
-						<li><a id="userTab" href="#userLinePanel" data-toggle="tab">Other User Tweets</a></li>
-						<li><a id="chartTab" href="#view3Content" data-toggle="tab">Time chart</a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><strong>Tweets</strong></a></li>
+						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
+						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistics <b class="caret"></b></a>
+				            <ul class="dropdown-menu">
+				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab">Tweets of the day (pie chart)</a></li>
+				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab">Tweets of the week (punch chart)</a></li>
+				            </ul>
+						</li>
 					</ul>
 					<div class="tab-content alert alert-success">
 						<div class="tab-pane active" id="timeLinePanel"></div>
+						<div class="tab-pane" id="favLinePanel"></div>
 						<div class="tab-pane" id="userLinePanel"></div>
-						<div class="tab-pane" id="view3Content"></div>
+						<div class="tab-pane" id="tagLinePanel"></div>
+						<div class="tab-pane" id="piechartPanel"></div>
+						<div class="tab-pane" id="punchchartPanel"></div>
 					</div>
 				</div>
 			</div>
@@ -97,15 +108,21 @@
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/assets/js/jquery.js"></script>
+	<script src="/assets/js/bootstrap-dropdown.js"></script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
 	<script src="/assets/js/bootstrap-tooltip.js"></script>
 	<script src="/assets/js/bootstrap-popover.js"></script>
 	<script src="/assets/js/shortcut.js"></script>
+	<script src="/assets/js/raphael-min.js"></script>
 
-	<script src="/assets/js/tatami.js"></script>
 	<script src="/assets/js/profile.js"></script>
+	<script src="/assets/js/chart.js"></script>
+	<script src="/assets/js/tatami.js"></script>
 
+	<script src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript">
+	    google.load("visualization", "1", {packages:["corechart"]});
+
         var login = "<sec:authentication property="principal.username"/>";
         resetNbTweets();
 
@@ -144,9 +161,22 @@
 				}
 			});
 
+			$('#favLinePanel').load('/assets/fragments/favline.html');
 			$('#userLinePanel').load('/assets/fragments/userline.html');
+			$('#tagLinePanel').load('/assets/fragments/tagline.html');
 
-			//TODO #view3Content : interactive chart
+			$('#piechartPanel').load('/assets/fragments/piechart.html');
+			$('#punchchartPanel').load('/assets/fragments/punchchart.html');
+        	// auto-refresh
+		    $('a[data-toggle="tab"]').on('show', function(e) {
+		    	if (e.target.hash == '#favLinePanel') {
+		        	listFavoriteTweets();
+		    	} else if (e.target.hash == '#piechartPanel') {
+					refreshPieChart();
+		    	} else if (e.target.hash == '#punchchartPanel') {
+					refreshPunchChart();
+		        }
+		    });
 		});
 	</script>
   </body>
