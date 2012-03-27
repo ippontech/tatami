@@ -68,9 +68,12 @@ function makePunchChartsList(data, dest) {
 	}
 	for (var j=0; j < axisy.length; j++) {
 		r.text(leftgutter, Y * (j + .5), '@' + axisy[j]).attr(txt)
+		// Make Y labels interactive
 			.data('login', axisy[j]).click(function () {
 				listUserTweets(this.data('login'));
-			}).attr({title: 'Show ' + this.data('login') + ' tweets'});
+			})
+		// Add help tooltip
+			.attr({title: 'Show ' + axisy[j] + ' tweets'});
 	}
 
 	for (var i = 0; i < axisx.length; i++) {
@@ -79,10 +82,12 @@ function makePunchChartsList(data, dest) {
 			if (R) {
 				(function (dx, dy, R, value) {
 					var color = "hsb(" + [(1 - R / max) * .5, 1, .75] + ")";
+					// Draw the punch
 					var punch = r.circle(dx + 60 + R, dy + 10, R).attr({stroke: "none", fill: color});
 					if (R < 6) {
 						var bg = r.circle(dx + 60 + R, dy + 10, 6).attr({stroke: "none", fill: "#000", opacity: .4}).hide();
 					}
+					// Show punch values as integrated tooltips
 					var lbl = r.text(dx + 60 + R, dy + 10, dt[i][j])
 							.attr({"font": '10px Fontin-Sans, Arial', stroke: "none", fill: "#fff"}).hide();
 					var dot = r.circle(dx + 60 + R, dy + 10, max).attr({stroke: "none", fill: "#000", opacity: 0});
