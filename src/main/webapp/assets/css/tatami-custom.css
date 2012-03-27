@@ -10,3 +10,12 @@
 .tweetDate {
     width: 68;
 }
+
+
+section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine{
+    vertical-align: top;
+}
+
+section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine td.avatar{
+    width:34px;
+}
