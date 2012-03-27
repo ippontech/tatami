@@ -58,17 +58,19 @@ function makePunchChartsList(data, dest) {
 	var width = dest.width(), height = dest.height(),
 		leftgutter = 30, bottomgutter = 20,
 		r = Raphael(dest.attr('id'), width, height),
-		txt = {"font": '10px Fontin-Sans, Arial', stroke: "none", fill: "#fff"},
+		txt = {"font": '12px Fontin-Sans, Arial', stroke: "none", fill: "#08c"},
 		X = (width - leftgutter) / axisx.length,
 		Y = (height - bottomgutter) / axisy.length,
 		max = Math.round(X / 2) - 1;
-//	alert('CONFIG width:'+width+', height:'+height+', r:'+r+', txt:'+txt+', X:'+X+', Y:'+Y+', max:'+max);
-	r.rect(0, 0, width, height, 5).attr({fill: "#000", stroke: "none"});
+	r.rect(0, 0, width, height, 5).attr({fill: "#fff", stroke: "none"});
 	for (var i=0; i < axisx.length; i++) {
 		r.text(leftgutter + X * (i + .5), height * .98, axisx[i]).attr(txt);
 	}
 	for (var j=0; j < axisy.length; j++) {
-		r.text(leftgutter, Y * (j + .5), axisy[j]).attr(txt);
+		r.text(leftgutter, Y * (j + .5), '@' + axisy[j]).attr(txt)
+			.data('login', axisy[j]).click(function () {
+				listUserTweets(this.data('login'));
+			}).attr({title: 'Show ' + this.data('login') + ' tweets'});
 	}
 
 	for (var i = 0; i < axisx.length; i++) {
