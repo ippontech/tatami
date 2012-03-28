@@ -117,6 +117,9 @@
 
 	<script src="/assets/js/profile.js"></script>
 	<script src="/assets/js/chart.js"></script>
+	<script src="/assets/js/tatami.constants.js"></script>
+	<script src="/assets/js/tatami.utils.js"></script>
+	<script src="/assets/js/tatami.tweets.js"></script>
 	<script src="/assets/js/tatami.js"></script>
 
 	<script src="https://www.google.com/jsapi"></script>
