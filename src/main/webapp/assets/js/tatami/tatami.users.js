@@ -9,7 +9,7 @@ function buildTheUserLineLink(login, entry){
 }
 
 function buildHtmlAreaForTheTweetAuthor(entry, userline){
-	var html += '<td>';
+	var html = '<td>';
     if (userline){
 		html += userline;
 	}	
@@ -23,7 +23,7 @@ function buildHtmlAreaForTheTweetAuthor(entry, userline){
 }
 
 function buildHtmlAreaToDeleteAnAbo(entry, userline){
-	var html += '<td class="tweetFriend">';
+	var html = '<td class="tweetFriend">';
     if (userline) {
         html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
     } else {

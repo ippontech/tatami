@@ -120,6 +120,7 @@
 	<script src="/assets/js/tatami/tatami.constants.js"></script>
 	<script src="/assets/js/tatami/tatami.utils.js"></script>
 	<script src="/assets/js/tatami/tatami.tweets.js"></script>
+	<script src="/assets/js/tatami/tatami.users.js"></script>
 	<script src="/assets/js/tatami/tatami.ajax.js"></script>
 	<script src="/assets/js/tatami.js"></script>
 
