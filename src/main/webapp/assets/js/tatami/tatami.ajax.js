@@ -8,7 +8,7 @@ function postTheTweet(tweet){
         data: tweet.val(),
         dataType: JSON_DATA_TYPE,
         success: function(data) {
-            tweet.slideUp().val("").slideDown(FAST_EFFECT);
+            tweet.slideUp().empty().slideDown(FAST_EFFECT);
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
@@ -40,7 +40,7 @@ function displayFavoriteTweets(favTweetsList) {
     });
 }
 
-function displayTagTweets(tagTweetsList, tagTab) {
+function displayTagTweets(tagTweetsList, tagTab, tag) {
     $.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
@@ -118,7 +118,7 @@ function newUserToFollow(loginToFollow, login, followUserInput, followStatus){
 	});
 }
 
-function removeFriendFromMyList(friend) {
+function removeFriendFromMyList(login) {
 	$.ajax({
 		type: POST_TYPE_REQUEST,
 		url: "rest/users/" + login + "/removeFriend",
@@ -131,7 +131,7 @@ function removeFriendFromMyList(friend) {
 	});
 }
 
-function addATweetToMyFavorites(favTab){
+function addATweetToMyFavorites(tweet, favTab){
 	$.ajax({
 		type: GET_TYPE_REQUEST,
 		url: "rest/likeTweet/" + tweet,

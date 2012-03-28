@@ -33,7 +33,7 @@ function listUserTweets(login) {
 }
 
 function listTagTweets(tag) {
-	displayTagTweets($('#tagTweetsList'), $('#tagTab'));
+	displayTagTweets($('#tagTweetsList'), $('#tagTab'), tag);
 }
 
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
@@ -70,10 +70,10 @@ function followUser(loginToFollow) {
 	return false;
 }
 
-function removeTweet(tweet) {
-	removeFriendFromMyList(friend);
+function removeTweet(login) {
+	removeFriendFromMyList(login);
 }
 
 function addFavoriteTweet(tweet) {
-	addATweetToMyFavorites($('#favTab'));
+	addATweetToMyFavorites(tweet, $('#favTab'));
 }
