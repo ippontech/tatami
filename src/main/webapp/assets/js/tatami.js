@@ -8,50 +8,12 @@ function incrementNbTweets() {
 	nbTweets += 10;
 }
 
-
-//cross site scripting defense ; http://ha.ckers.org/xss.html
-var xssREG1 = new RegExp("(javascript:|<\s*script.*?\s*>)", "i");
-var xssREG2 = new RegExp('\s+on\w+\s*=\s*["\'].+["\']', "i");
-//TODO <img src="alert('it's a trap!');"/>
-function isXSS(msg) {
-    return (msg.match(xssREG1) || msg.match(xssREG2));
-}
-
-
 function tweet() {
-    var src = $('#tweetContent');
-
-    if (src.val() === "") {
-        src.popover('show');
-        setTimeout(function() {
-            src.popover('hide');
-        }, 5000);
-        return false;
-    }
-    if (isXSS(src.val())) {
-        alert('Cross Site Scripting suspicion. Please check syntax.')
-        setTimeout(function() {
-            src.val("");
-        }, 1000);
-        return false;
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: "rest/tweets",
-        contentType: "application/json; charset=UTF-8",
-        data: src.val(),
-        dataType: "json",
-        success: function(data) {
-            src.slideUp().val("").slideDown('fast');
-            setTimeout(function() {
-                refreshProfile();
-                listTweets(true);
-            }, 1000);	//DEBUG wait for persistence consistency
-        }
-    });
-
-    return false;
+    var $src = $('#tweetContent');
+	if(validateTweetContent($src) && validateXSS($src)){
+		postTheTweet($src);
+	}
+	return false;
 }
 
 var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
