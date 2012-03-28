@@ -66,65 +66,14 @@ function whoToFollow() {
 }
 
 function followUser(loginToFollow) {
-	$.ajax({
-		type: 'POST',
-		url: "rest/users/" + login + "/followUser",
-		contentType: "application/json",
-		data: loginToFollow,
-		dataType: "json",
-        success: function(data) {
-            $("#followUserInput").val("");
-            setTimeout(function() {
-                refreshProfile();
-                whoToFollow();
-                listTweets(true);
-            }, 500);	//DEBUG wait for persistence consistency
-        },
-    	error: function(xhr, ajaxOptions, thrownError) {
-    		$('#followStatus').fadeIn("fast").text(thrownError);
-            setTimeout($('#followStatus').fadeOut("slow"), 5000);
-    	}
-	});
-
+	newUserToFollow(loginToFollow, login, $("#followUserInput"), $('#followStatus'));
 	return false;
 }
 
-function removeFriend(friend) {
-	$.ajax({
-		type: 'POST',
-		url: "rest/users/" + login + "/removeFriend",
-		contentType: "application/json",
-		data: friend,
-		dataType: "json",
-        success: function(data) {
-            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
-        }
-	});
-}
-
 function removeTweet(tweet) {
-	$.ajax({
-		type: 'GET',
-		url: "rest/removeTweet/" + tweet,
-		dataType: "json",
-        success: function(data) {
-            setTimeout(function() {
-                refreshProfile();
-                listTweets(true);
-            }, 500);	//DEBUG wait for persistence consistency
-        }
-	});
+	removeFriendFromMyList(friend);
 }
 
 function addFavoriteTweet(tweet) {
-	$.ajax({
-		type: 'GET',
-		url: "rest/likeTweet/" + tweet,
-		dataType: "json",
-        success: function(data) {
-            setTimeout(function() {
-            	$('#favTab').tab('show');
-            }, 500);	//DEBUG wait for persistence consistency
-        }
-	});
+	addATweetToMyFavorites($('#favTab'));
 }
