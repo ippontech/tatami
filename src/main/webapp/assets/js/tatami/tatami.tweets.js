@@ -54,19 +54,19 @@ function buildHtmlAreaForTheTweetContent(userlineLink, login, loginInSession, fi
     return html;
 }
 
-function buildHtmlAreaForTheConnectionPart(login, loginInSession, followUsers, likeTweets){
+function buildHtmlAreaForTheConnectionPart(login, loginInSession, tweetId, followUsers, likeTweets){
     var html = '<td class="tweetFriend">';
     if (assertStringNotEquals(login, loginInSession)) {
         if (followUsers) {
-            html += '<a href="#" onclick="followUser(\'' + loginInSession + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
+            html += '<a href="#" onclick="followUser(\'' + login + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
         } else {
-            html += '<a href="#" onclick="removeFriend(\'' + loginInSession + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
+            html += '<a href="#" onclick="removeFriend(\'' + login + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
         }
     } else if (likeTweets) {
-        html += '<a href="#" onclick="removeTweet(\'' + loginInSession + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
+        html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
     }
     if (likeTweets) {
-        html += '<a href="#" onclick="addFavoriteTweet(\'' + loginInSession + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
+        html += '<a href="#" onclick="addFavoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
     }
     html += '</td>';
     return html;
@@ -80,6 +80,7 @@ function buildContentForAHtmlLinePerTweet(
         userlineLink,
         fieldGravatarInSession,
         login, 
+		tweetId,
         fieldLoginInSession, 
         fieldfirstNameInSession, 
         fieldLastNameInSession, 
@@ -94,7 +95,7 @@ function buildContentForAHtmlLinePerTweet(
                 
     html += buildHtmlAreaForTheTweetContent(
                 userlineLink, 
-                login, 
+                login,
                 fieldLoginInSession, 
                 fieldfirstNameInSession, 
                 fieldLastNameInSession, 
@@ -103,6 +104,7 @@ function buildContentForAHtmlLinePerTweet(
     html += buildHtmlAreaForTheConnectionPart(
                 login,
                 fieldLoginInSession,
+				tweetId,
                 followUsers, 
                 likeTweets);
                 
@@ -120,6 +122,7 @@ function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entr
         userlineLink,
         entry[fieldGravatarInSession],
         login, 
+		entry[fieldTweetIdInSession],
         entry[fieldLoginInSession], 
         entry[fieldfirstNameInSession], 
         entry[fieldLastNameInSession], 

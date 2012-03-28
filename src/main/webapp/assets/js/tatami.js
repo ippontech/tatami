@@ -70,8 +70,12 @@ function followUser(loginToFollow) {
 	return false;
 }
 
-function removeTweet(login) {
-	removeFriendFromMyList(login);
+function removeFriend(login, friend) {
+	removeFriendFromMyList(login, friend);
+}
+
+function removeTweet(tweet) {
+	removeOneOfMyTweet(tweet);
 }
 
 function addFavoriteTweet(tweet) {

@@ -118,7 +118,7 @@ function newUserToFollow(loginToFollow, login, followUserInput, followStatus){
 	});
 }
 
-function removeFriendFromMyList(login) {
+function removeFriendFromMyList(login, friend) {
 	$.ajax({
 		type: POST_TYPE_REQUEST,
 		url: "rest/users/" + login + "/removeFriend",
@@ -129,6 +129,20 @@ function removeFriendFromMyList(login) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
 	});
+}
+
+function removeOneOfMyTweet(tweet) {
+	$.ajax({
+		type: 'GET',
+		url: "rest/removeTweet/" + tweet,
+		dataType: "json",
+      		success: function(data) {
+          		setTimeout(function() {
+              		refreshProfile();
+              		listTweets(true);
+          			}, 500); //DEBUG wait for persistence consistency
+      			}
+			});
 }
 
 function addATweetToMyFavorites(tweet, favTab){
