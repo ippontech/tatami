@@ -1,12 +1,6 @@
-var nbTweets;
-
-function resetNbTweets() {
-	nbTweets = 20;
-}
-
-function incrementNbTweets() {
-	nbTweets += 10;
-}
+var nbTweetsToDisplay;
+var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
+var userlineREG = new RegExp("LOGIN", "g");
 
 function tweet() {
     var $src = $('#tweetContent');
@@ -16,28 +10,13 @@ function tweet() {
 	return false;
 }
 
-var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
-var userlineREG = new RegExp("LOGIN", "g");
-
-function listTweets(reset) {
-    if (reset){
-        resetNbTweets();
-    }else{
-        incrementNbTweets();
-    }
-    
-	displayTweets(login, nbTweets, $('#tweetsList'), $('#mainTab'));
+function listTweets(reset) {    
+	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset)
+	displayTweets(login, nbTweetsToDisplay, $('#tweetsList'), $('#mainTab'));
 }
 
 function listFavoriteTweets() {
-    $.ajax({
-        type: 'GET',
-        url: "rest/favTweets/" + login,
-        dataType: "json",
-        success: function(data) {
-            makeTweetsList(data, $('#favTweetsList'), true, true, false);
-        }
-    });
+	displayFavoriteTweets($('#favTweetsList'));
 }
 
 function listUserTweets(login) {

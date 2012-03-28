@@ -128,7 +128,7 @@
 	    google.load("visualization", "1", {packages:["corechart"]});
 
         var login = "<sec:authentication property="principal.username"/>";
-        resetNbTweets();
+        resetNbTweetsToDefaultNumber();
 
 		$(document).ready(function() {
 			// left panel
