@@ -132,6 +132,16 @@ var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTwee
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
+var linkREG = /(\b(https?|ftp|file):\/\/([-A-Z0-9+&@#\/%?=~_|!:,.;]*)([-A-Z0-9+&@#\/%=~_|]))/ig;
+var linkURL = '<a href="$1" style="text-decoration:none" target="_blank">$3</a>';
+
+function manageTweetContent(content) {
+	content = content.replace(userrefREG, userrefURL);
+	content = content.replace(tagrefREG, tagrefURL);
+	content = content.replace(linkREG, linkURL);
+	return content;
+}
+
 /*
  * linkLogins:	put links around login references
  * followUsers:	put "follow" action icons ; "forget" if false
@@ -163,7 +173,7 @@ function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
 				html += '<br/>';
 			}
 			// contenu du message
-			html += entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
+			html += manageTweetContent(entry['content']);
 			html += '</article></td>';
 			// colonne de suppression des abonnements
 			html += '<td class="tweetFriend">';
