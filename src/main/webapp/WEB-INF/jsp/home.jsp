@@ -117,6 +117,11 @@
 
 	<script src="/assets/js/profile.js"></script>
 	<script src="/assets/js/chart.js"></script>
+	<script src="/assets/js/tatami/tatami.constants.js"></script>
+	<script src="/assets/js/tatami/tatami.utils.js"></script>
+	<script src="/assets/js/tatami/tatami.tweets.js"></script>
+	<script src="/assets/js/tatami/tatami.users.js"></script>
+	<script src="/assets/js/tatami/tatami.ajax.js"></script>
 	<script src="/assets/js/tatami.js"></script>
 
 	<script src="https://www.google.com/jsapi"></script>
@@ -124,7 +129,7 @@
 	    google.load("visualization", "1", {packages:["corechart"]});
 
         var login = "<sec:authentication property="principal.username"/>";
-        resetNbTweets();
+        resetNbTweetsToDefaultNumber();
 
 		$(document).ready(function() {
 			// left panel

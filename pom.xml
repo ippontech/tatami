@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
     <description>Tatami is a private Tweeter clone</description>
     <inceptionYear>2012</inceptionYear>
     <properties>
@@ -209,7 +209,7 @@
                             </rules>
                         </configuration>
                     </execution>
-                </executions>
+                </executions> 
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
