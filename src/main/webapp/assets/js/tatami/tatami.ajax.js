@@ -9,6 +9,7 @@ function postTheTweet(tweet){
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             tweet.slideUp().empty().slideDown(FAST_EFFECT);
+            $('#tweetContent').val("");
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
