@@ -1,0 +1,45 @@
+{
+    "name" : "tatami",
+    "replicationFactor" : 1,
+    "strategy" : "org.apache.cassandra.locator.SimpleStrategy",
+    "columnFamilies" : [
+        {    
+            "name" : "User",    
+            "type" : "STANDARD",
+            "keyType" : "UTF8Type",
+            "comparatorType" : "UTF8Type",
+            "defaultColumnValueType" : "UTF8Type",
+            "columnsMetadata" : [{
+                "name" : "login",
+                "validationClass" : "UTF8Type",
+                "indexType" : "KEYS"
+            },{
+                "name" : "email",
+                "validationClass" : "UTF8Type",
+                "indexType" : "KEYS"
+            },{
+                "name" : "gravatar",
+                "validationClass" : "UTF8Type",
+                "indexType" : "KEYS"
+            },{
+                "name" : "firstName",
+                "validationClass" : "UTF8Type",
+                "indexType" : "KEYS"
+            },{
+                "name" : "lastName",
+                "validationClass" : "UTF8Type",
+                "indexType" : "KEYS"
+            }],
+            "rows" : [{
+                "key" : "fdescamps",
+                "columns" : [
+                    {"name" : "login",      "value" : "fdescamps"},
+                    {"name" : "email",      "value" : "francois.descamps@gmail.com"},
+                    {"name" : "gravatar",   "value" : "fdescampsgravatar"},
+                    {"name" : "firstName",  "value" : "Francois"},
+                    {"name" : "lastName",   "value" : "Descamps"}
+                ]
+            }]
+        }
+    ]    
+}
