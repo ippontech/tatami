@@ -36,11 +36,6 @@ function listTagTweets(tag) {
 	displayTagTweets($('#tagTweetsList'), $('#tagTab'));
 }
 
-/*
- * linkLogins:	put links around login references
- * followUsers:	put "follow" action icons ; "forget" if false
- * likeTweets:	put "like" action icons
- */
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
     dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_ZERO, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
@@ -56,54 +51,18 @@ function makeUsersList(data, dest) {
         dest.empty();
         var updated = false;
         $.each(data, function(entryIndex, entry) {
-            var userline;
-            var userWhoRunsTheApplication = entry[fieldLoginInSession];
-            if (assertStringNotEquals(login,userWhoRunsTheApplication)) {
-                userline = userlineURL.replace(userlineREG, userWhoRunsTheApplication);
-            }
-
-            var html = '<tr valign="top">';
-            // identification de l'émetteur du message
-            html += '<td>';
-            if (userline)	html += userline;
-            html += '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ';
-            html += '<em>@' + entry['login'] + '</em>';
-            if (userline)	html += '</a>';
-            html += '</td>';
-            // colonne de suppression des abonnements
-            html += '<td class="tweetFriend">';
-            if (userline) {
-                html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
-            } else {
-                html += '&nbsp;';
-            }
-            html += '</td>';
-            html += '</tr>';
-	
-            dest.append(html);
-            updated = true;
+            dest.append(buildAHtmlLinePerUser(login, entry));
+			updated = true;
         });
         if (!updated) {
-            var html = '<tr valign="top">';
-            // identification de l'émetteur du message
-            html += '<td colspan="2">No one new tweeted yet today...</td>';
-            html += '</tr>';
-            dest.append(html);
+			dest.append(buildAHtmlEmptyLineInsteadOfAUser());
         }
-
-        dest.fadeTo(DURATION_OF_FADE_TO, 1);
+        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
     });
 }
 
 function whoToFollow() {
-    $.ajax({
-        type: 'GET',
-        url: "rest/suggestions",
-        dataType: "json",
-        success: function(data) {
-            makeUsersList(data, $('#suggestions'));
-        }
-    });
+	displayWhoToFollow($('#suggestions'));
 }
 
 function followUser(loginToFollow) {
