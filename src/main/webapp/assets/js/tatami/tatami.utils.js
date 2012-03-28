@@ -1,3 +1,5 @@
+/* Functions called by *.js that are censed to be generic and reusable */
+
 //cross site scripting defense ; http://ha.ckers.org/xss.html
 var xssREG1 = new RegExp("(javascript:|<\s*script.*?\s*>)", "i");
 var xssREG2 = new RegExp('\s+on\w+\s*=\s*["\'].+["\']', "i");
@@ -5,8 +7,6 @@ var xssREG2 = new RegExp('\s+on\w+\s*=\s*["\'].+["\']', "i");
 function isXSS(msg) {
     return (msg.match(xssREG1) || msg.match(xssREG2));
 }
-
-/* Functions called by *.js that are censed to be generic and reusable */
 
 function assertStringNotEquals(stringOne, StringTwo){
     return stringOne != StringTwo;

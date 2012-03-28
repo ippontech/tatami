@@ -2,13 +2,13 @@
 
 function postTheTweet(tweet){
 	$.ajax({
-        type: 'POST',
+        type: POST_TYPE_REQUEST,
         url: "rest/tweets",
-        contentType: "application/json; charset=UTF-8",
+        contentType: JSON_CONTENT_TYPE,
         data: tweet.val(),
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
-            tweet.slideUp().val("").slideDown('fast');
+            tweet.slideUp().val("").slideDown(FAST_EFFECT);
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
@@ -19,21 +19,21 @@ function postTheTweet(tweet){
 
 function displayTweets(login, nbTweets, tweetsList, mainTab){
 	$.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/tweets/" + login + "/" + nbTweets,
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeTweetsList(data, tweetsList, true, false, true);
-            mainTab.tab('show');
+            mainTab.tab(SHOW_EFFECT);
         }
     });
 }
 
 function displayFavoriteTweets(favTweetsList) {
     $.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/favTweets/" + login,
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeTweetsList(data, favTweetsList, true, true, false);
         }
@@ -42,22 +42,22 @@ function displayFavoriteTweets(favTweetsList) {
 
 function displayTagTweets(tagTweetsList, tagTab) {
     $.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             //TODO refesh title's tag name
             makeTweetsList(data, tagTweetsList, true, true, true);
-            tagTab.tab('show');
+            tagTab.tab(SHOW_EFFECT);
         }
     });
 }
 
 function displayUserInformations(userPicture, userTab, data){
 	$.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/users/" + login + "/",
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             userPicture.attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
             userPicture.popover({
@@ -68,16 +68,16 @@ function displayUserInformations(userPicture, userTab, data){
                 '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
             });
 
-            userTab.tab('show');
+            userTab.tab(SHOW_EFFECT);
         }
     });
 }
 
 function displayUserTweets(userTweetsList, userPicture, userTab, data){
 	$.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/ownTweets/" + login,
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeTweetsList(data, userTweetsList, false, true, true);
 			displayUserInformations(userPicture, data, userTab);  
@@ -87,9 +87,9 @@ function displayUserTweets(userTweetsList, userPicture, userTab, data){
 
 function displayWhoToFollow(suggestions){
 	$.ajax({
-        type: 'GET',
+        type: GET_TYPE_REQUEST,
         url: "rest/suggestions",
-        dataType: "json",
+        dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeUsersList(data, suggestions);
         }
@@ -98,11 +98,11 @@ function displayWhoToFollow(suggestions){
 
 function newUserToFollow(loginToFollow, login, followUserInput, followStatus){
 	$.ajax({
-		type: 'POST',
+		type: POST_TYPE_REQUEST,
 		url: "rest/users/" + login + "/followUser",
-		contentType: "application/json",
+		contentType: JSON_CONTENT_TYPE,
 		data: loginToFollow,
-		dataType: "json",
+		dataType: JSON_DATA_TYPE,
         success: function(data) {
             followUserInput.val("");
             setTimeout(function() {
@@ -112,19 +112,19 @@ function newUserToFollow(loginToFollow, login, followUserInput, followStatus){
             }, 500);	//DEBUG wait for persistence consistency
         },
     	error: function(xhr, ajaxOptions, thrownError) {
-    		followStatus.fadeIn("fast").text(thrownError);
-            setTimeout(followStatus.fadeOut("slow"), 5000);
+    		followStatus.fadeIn(FAST_EFFECT).text(thrownError);
+            setTimeout(followStatus.fadeOut(SHOW_EFFECT), 5000);
     	}
 	});
 }
 
 function removeFriendFromMyList(friend) {
 	$.ajax({
-		type: 'POST',
+		type: POST_TYPE_REQUEST,
 		url: "rest/users/" + login + "/removeFriend",
-		contentType: "application/json",
+		contentType: JSON_CONTENT_TYPE,
 		data: friend,
-		dataType: "json",
+		dataType: JSON_DATA_TYPE,
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
@@ -133,12 +133,12 @@ function removeFriendFromMyList(friend) {
 
 function addATweetToMyFavorites(favTab){
 	$.ajax({
-		type: 'GET',
+		type: GET_TYPE_REQUEST,
 		url: "rest/likeTweet/" + tweet,
-		dataType: "json",
+		dataType: JSON_DATA_TYPE,
         success: function(data) {
             setTimeout(function() {
-            	favTab.tab('show');
+            	favTab.tab(SHOW_EFFECT);
             }, 500);	//DEBUG wait for persistence consistency
         }
 	});
