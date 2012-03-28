@@ -26,15 +26,7 @@ function listTweets(reset) {
         incrementNbTweets();
     }
     
-    $.ajax({
-        type: 'GET',
-        url: "rest/tweets/" + login + "/" + nbTweets,
-        dataType: "json",
-        success: function(data) {
-            makeTweetsList(data, $('#tweetsList'), true, false, true);
-            $('#mainTab').tab('show');
-        }
-    });
+	displayTweets(login, nbTweets, $('#tweetsList'), $('#mainTab'));
 }
 
 function listFavoriteTweets() {
