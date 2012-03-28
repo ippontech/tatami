@@ -1,6 +1,15 @@
+/* Functions called by jsp/html/etc.. */
+
 var nbTweetsToDisplay;
+
 var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
 var userlineREG = new RegExp("LOGIN", "g");
+
+var userrefREG = new RegExp("@(\\w+)", "g");
+var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
+
+var tagrefREG = new RegExp("#(\\w+)", "g");
+var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
 function tweet() {
     var $src = $('#tweetContent');
@@ -20,52 +29,12 @@ function listFavoriteTweets() {
 }
 
 function listUserTweets(login) {
-    $.ajax({
-        type: 'GET',
-        url: "rest/ownTweets/" + login,
-        dataType: "json",
-        success: function(data) {
-            makeTweetsList(data, $('#userTweetsList'), false, true, true);
-
-            $.ajax({
-                type: 'GET',
-                url: "rest/users/" + login + "/",
-                dataType: "json",
-                success: function(data) {
-                    $("#userPicture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-                    $("#userPicture").popover({
-                        placement: 'bottom',
-                        title: data.firstName + ' ' + data.lastName,
-                        content: '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
-                        '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
-                        '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
-                    });
-
-                    $('#userTab').tab('show');
-                }
-            });
-        }
-    });
+	displayUserTweets($('#userTweetsList'), $("#userPicture"), $('#userTab'), data);
 }
 
 function listTagTweets(tag) {
-    $.ajax({
-        type: 'GET',
-        url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
-        dataType: "json",
-        success: function(data) {
-            //TODO refesh title's tag name
-            makeTweetsList(data, $('#tagTweetsList'), true, true, true);
-            $('#tagTab').tab('show');
-        }
-    });
+	displayTagTweets($('#tagTweetsList'), $('#tagTab'));
 }
-
-var userrefREG = new RegExp("@(\\w+)", "g");
-var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
-
-var tagrefREG = new RegExp("#(\\w+)", "g");
-var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
 /*
  * linkLogins:	put links around login references
