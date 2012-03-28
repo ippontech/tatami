@@ -18,10 +18,10 @@ function isAnEmptyTextArea(tweet){
 
 function validateTweetContent(tweet){
 	if (isAnEmptyTextArea(tweet)) {
-		tweet.attr("data-content", "Please type a message to tweet.");
-        tweet.popover('show');
+		tweet.attr(ATTRIBUTE_DATA, "Please type a message to tweet.");
+        tweet.popover(SHOW_EFFECT);
 		setTimeout(function() {
-            tweet.popover('hide');
+            tweet.popover(HIDE_EFFECT);
         }, 5000);
         return false;
     }
@@ -30,8 +30,8 @@ function validateTweetContent(tweet){
 
 function validateXSS(tweet){
 	if (isXSS(tweet.val())) {
-		tweet.attr("data-content", "Cross Site Scripting suspicion. Please check syntax.");
- 		tweet.popover('show');
+		tweet.attr(ATTRIBUTE_DATA, "Cross Site Scripting suspicion. Please check syntax.");
+ 		tweet.popover(SHOW_EFFECT);
         setTimeout(function() {
             tweet.empty();
         }, 1000);
