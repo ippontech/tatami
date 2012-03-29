@@ -48,3 +48,18 @@ function buildAHtmlLinePerUser(login, entry){
 function buildAHtmlEmptyLineInsteadOfAUser(){
 	return '<tr valign="top"><td colspan="2">No one new tweeted yet today...</td></tr>';
 }
+
+function makeUsersList(data, dest) {
+    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+        dest.empty();
+        var updated = false;
+        $.each(data, function(entryIndex, entry) {
+            dest.append(buildAHtmlLinePerUser(login, entry));
+			updated = true;
+        });
+        if (!updated) {
+			dest.append(buildAHtmlEmptyLineInsteadOfAUser());
+        }
+        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
+    });
+}

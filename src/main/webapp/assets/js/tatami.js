@@ -20,7 +20,7 @@ function tweet() {
 }
 
 function listTweets(reset) {    
-	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset)
+	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
 	displayTweets(login, nbTweetsToDisplay, $('#tweetsList'), $('#mainTab'));
 }
 
@@ -28,37 +28,12 @@ function listFavoriteTweets() {
 	displayFavoriteTweets($('#favTweetsList'));
 }
 
-function listUserTweets(login) {
+function listUserTweets() {
 	displayUserTweets($('#userTweetsList'), $("#userPicture"), $('#userTab'), data);
 }
 
 function listTagTweets(tag) {
 	displayTagTweets($('#tagTweetsList'), $('#tagTab'), tag);
-}
-
-function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
-    dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_ZERO, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-        dest.empty();
-        $.each(data, function(entryIndex, entry) {
-            dest.append(buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry));
-        });
-        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
-    });
-}
-
-function makeUsersList(data, dest) {
-    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-        dest.empty();
-        var updated = false;
-        $.each(data, function(entryIndex, entry) {
-            dest.append(buildAHtmlLinePerUser(login, entry));
-			updated = true;
-        });
-        if (!updated) {
-			dest.append(buildAHtmlEmptyLineInsteadOfAUser());
-        }
-        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
-    });
 }
 
 function whoToFollow() {
@@ -70,7 +45,7 @@ function followUser(loginToFollow) {
 	return false;
 }
 
-function removeFriend(login, friend) {
+function removeFriend(friend) {
 	removeFriendFromMyList(login, friend);
 }
 
