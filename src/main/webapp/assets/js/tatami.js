@@ -116,7 +116,7 @@ function listUserTweets(login) {
 function listTagTweets(tag) {
 	$.ajax({
 		type: 'GET',
-		url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
+		url: "rest/tagTweets" + (tag ? '/' + tag : '') + "/30",
 		dataType: "json",
 		success: function(data) {
 			//TODO refesh title's tag name
@@ -136,6 +136,7 @@ var linkREG = /(\b(https?|ftp|file):\/\/([-A-Z0-9+&@#\/%?=~_|!:,.;]*)([-A-Z0-9+&
 var linkURL = '<a href="$1" style="text-decoration:none" target="_blank">$3</a>';
 
 function manageTweetContent(content) {
+	content = content.replace(/\n/g, '<br/>');
 	content = content.replace(userrefREG, userrefURL);
 	content = content.replace(tagrefREG, tagrefURL);
 	content = content.replace(linkREG, linkURL);
