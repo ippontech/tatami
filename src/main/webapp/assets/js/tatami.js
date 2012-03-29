@@ -126,20 +126,33 @@ function listTagTweets(tag) {
 	});
 }
 
-var userrefREG = new RegExp("@(\\w+)", "g");
-var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
+var userrefREG = new RegExp("(^|[\\s,])@(\\w+)", "g");
+var userrefURL = '$1<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$2\')" title="Show $2 tweets"><em>@$2</em></a>';
 
-var tagrefREG = new RegExp("#(\\w+)", "g");
-var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
+var tagrefREG = new RegExp("(^|[\\s,])#(\\w+)", "g");
+var tagrefURL = '$1<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$2\')" title="Show $2 related tweets"><em>#$2</em></a>';
 
-var linkREG = /(\b(https?|ftp|file):\/\/([-A-Z0-9+&@#\/%?=~_|!:,.;]*)([-A-Z0-9+&@#\/%=~_|]))/ig;
-var linkURL = '<a href="$1" style="text-decoration:none" target="_blank">$3</a>';
+if (!String.linkify) {
+    String.prototype.linkify = function() {
+        // http://, https://, ftp://
+        var urlPattern = /((https?|ftp):\/\/(www\.)?([\w-+&@#\/%?=~|!:,.;]+))/gi;
+        // www. without http:// or https://
+        var pseudoUrlPattern = /(^|[^\/])(www\.([\w-+&@#\/%?=~|!:,.;]+))/gi;
+        // Email addresses
+        var emailAddressPattern = /([\w\.-]+@[\w-]+?(?:\.[a-z]{2,6})+)/gi;
+
+        return this
+        	.replace(urlPattern, '<a href="$1" style="text-decoration:none" target="_blank">$4 <i class="icon-share icon-white"></i></a>')
+        	.replace(pseudoUrlPattern, '$1<a href="http://$2" style="text-decoration:none" target="_blank">$3 <i class="icon-share icon-white"></i></a>')
+            .replace(emailAddressPattern, '<a href="mailto:$1" style="text-decoration:none"><i class="icon-envelope icon-white"></i> $1</a>');
+    };
+}
 
 function manageTweetContent(content) {
 	content = content.replace(/\n/g, '<br/>');
 	content = content.replace(userrefREG, userrefURL);
 	content = content.replace(tagrefREG, tagrefURL);
-	content = content.replace(linkREG, linkURL);
+	content = content.linkify();
 	return content;
 }
 
