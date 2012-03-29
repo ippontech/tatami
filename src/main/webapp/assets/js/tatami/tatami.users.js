@@ -1,4 +1,5 @@
 /* Functions called by tatami.js that deal about tweet html object*/
+
 function buildTheUserLineLink(login, entry){
    	var userline;
     var userWhoRunsTheApplication = entry[fieldLoginInSession];
