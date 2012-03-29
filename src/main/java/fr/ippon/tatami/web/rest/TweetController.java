@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing tweets.
@@ -39,6 +41,9 @@ public class TweetController {
 
     @Inject
     private TimelineService timelineService;
+
+	@Inject
+	private UserService userService;
 
     @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}",
             method = RequestMethod.GET,
@@ -85,6 +90,7 @@ public class TweetController {
             log.debug("REST request to add tweet : " + content);
         }
         timelineService.postTweet(content);
+		timelineService.broadCastTweet(content);
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
