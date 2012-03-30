@@ -154,7 +154,9 @@
 		    });
 
 		    // right panel
-			$('#timeLinePanel').load('/assets/fragments/timeline.html', listTweets(true));
+			$('#timeLinePanel').load('/assets/fragments/timeline.html', function(){
+				listTweets(true);
+			});
 		    // browser's refresh shortcut override
 			shortcut.add("Ctrl+R", function() {
 				listTweets(true);

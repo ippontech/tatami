@@ -135,3 +135,13 @@ function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entr
     html += '</tr>';
     return html;
 }
+
+function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
+    dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_ZERO, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+		dest.empty();
+        $.each(data, function(entryIndex, entry) {
+            dest.append(buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry));
+        });
+        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
+    });
+}
