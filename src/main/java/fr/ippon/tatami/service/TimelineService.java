@@ -29,10 +29,6 @@ import fr.ippon.tatami.security.AuthenticationService;
 @Service
 public class TimelineService {
 
-    private final Log log = LogFactory.getLog(TimelineService.class);
-
-	private final static String PATTERN_LOGGIN = "@[a-zA-Z0-9_.-]{3,}";
-
     @Inject
     private UserService userService;
 
@@ -52,35 +48,40 @@ public class TimelineService {
     private String hashtagDefault;
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
+    
+    private final Log log = LogFactory.getLog(TimelineService.class);
 
+	private final static String PATTERN_LOGGIN = "@[^\\s]+";
+	
+	private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
+    
 	public void postTweet(String content) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
         User currentUser = authenticationService.getCurrentUser();
-		processTweet(currentUser.getLogin(), content);
+		Tweet tweet = processTweet(currentUser.getLogin(), content); 
+		spreadTweet(currentUser.getLogin(), tweet);
     }
 
-	public void postTweetTo(String content, String user) {
+	public void postTweetTo(String content, String login) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
-
-		processTweet(user, content);
+        processTweet(login, content); 
     }
-
+	
 	public void broadCastTweet(String content){
 		
-		String mentioned = null;
+		String login = null;
 		User currentUser = authenticationService.getCurrentUser();
 		String userLogin = currentUser.getLogin();
 		
-		Pattern p = Pattern.compile(PATTERN_LOGGIN);
-		Matcher m = p.matcher(content);
+		Matcher m = PATTERN_COMPILER.matcher(content);
 		while(m.find()){
-			mentioned = extractLoginWithoutAt(m.group());
-			if(isNotTheCurrentLogin(userLogin, mentioned)){
-				distributeTweet(mentioned, content);
+			login = extractLoginWithoutAt(m.group());
+			if(isNotTheCurrentLogin(userLogin, login)){
+				distributeTweet(login, content);
 			}
 		}
 	}
@@ -241,28 +242,31 @@ public class TimelineService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
-    private void registerTweet(Tweet tweet, String login){
-		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(login, tweet);
-	}
-	
-	private void processTweet(String login, String content){
+    
+    private void spreadTweet(String login, Tweet tweet){
+        for (String followerLogin : followerRepository.findFollowersForUser(login)) {
+            tweetRepository.addTweetToTimeline(followerLogin, tweet);
+        }
+    }
+    
+	private Tweet processTweet(String login, String content){
 		Tweet tweet = tweetRepository.createTweet(login, content);
 	   
 	 	// registering
 		registerTweet(tweet, login);
 
-        // spreading
-        for (String followerLogin : followerRepository.findFollowersForUser(login)) {
-            tweetRepository.addTweetToTimeline(followerLogin, tweet);
-        }
-
         // referencing
         tweetRepository.addTweetToTagline(tweet);
 
         counterRepository.incrementTweetCounter(login);
+        
+        return tweet;
+	}
+
+    private void registerTweet(Tweet tweet, String login){
+		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        tweetRepository.addTweetToUserline(tweet);
+        tweetRepository.addTweetToTimeline(login, tweet);
 	}
 	
 	private boolean isValidUser(User user){

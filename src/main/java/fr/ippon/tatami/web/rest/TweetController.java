@@ -26,7 +26,6 @@ import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing tweets.
@@ -40,9 +39,6 @@ public class TweetController {
 
     @Inject
     private TimelineService timelineService;
-
-	@Inject
-	private UserService userService;
 
     @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}",
             method = RequestMethod.GET,
