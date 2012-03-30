@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;

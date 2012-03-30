@@ -1,23 +1,25 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.TweetRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 
 /**
  * Manages the the timeline.
@@ -85,19 +87,19 @@ public class TimelineService {
 
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
 		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweetId : tweetIds) {
-            Tweet tweet = tweetRepository.findTweetById(tweetId);
-            if (tweet == null) {
-                log.debug("Invisible tweet : " + tweetId);
-            	continue;
-            }
-            User tweetUser = userService.getUserByLogin(tweet.getLogin());
+		for (String tweetId : tweetIds) {
+			Tweet tweet = tweetRepository.findTweetById(tweetId);
+			if (tweet == null) {
+				log.debug("Invisible tweet : " + tweetId);
+				continue;
+			}
+			User tweetUser = userService.getUserByLogin(tweet.getLogin());
 			tweet.setFirstName(tweetUser.getFirstName());
-            tweet.setLastName(tweetUser.getLastName());
-            tweet.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweet);
-        }
-        return tweets;
+			tweet.setLastName(tweetUser.getLastName());
+			tweet.setGravatar(tweetUser.getGravatar());
+			tweets.add(tweet);
+		}
+		return tweets;
 	}
 
     /**
