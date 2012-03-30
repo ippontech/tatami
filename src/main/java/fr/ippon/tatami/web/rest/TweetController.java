@@ -85,6 +85,7 @@ public class TweetController {
             log.debug("REST request to add tweet : " + content);
         }
         timelineService.postTweet(content);
+		timelineService.broadCastTweet(content);
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
