@@ -1,21 +1,25 @@
 package fr.ippon.tatami.service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  * Manages the the timeline.
@@ -24,8 +28,6 @@ import java.util.Date;
  */
 @Service
 public class TimelineService {
-
-    private final Log log = LogFactory.getLog(TimelineService.class);
 
     @Inject
     private UserService userService;
@@ -46,43 +48,59 @@ public class TimelineService {
     private String hashtagDefault;
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
+    
+    private final Log log = LogFactory.getLog(TimelineService.class);
 
-    public void postTweet(String content) {
+	private final static String PATTERN_LOGGIN = "@[^\\s]+";
+	
+	private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
+    
+	public void postTweet(String content) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
         User currentUser = authenticationService.getCurrentUser();
-
-        Tweet tweet = tweetRepository.createTweet(currentUser.getLogin(), content);
-        // registering
-        tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(currentUser.getLogin(), tweet);
-        // spreading
-        for (String followerLogin : followerRepository.findFollowersForUser(currentUser.getLogin())) {
-            tweetRepository.addTweetToTimeline(followerLogin, tweet);
-        }
-        // referencing
-        tweetRepository.addTweetToTagline(tweet);
-
-        counterRepository.incrementTweetCounter(currentUser.getLogin());
+		Tweet tweet = processTweet(currentUser.getLogin(), content); 
+		spreadTweet(currentUser.getLogin(), tweet);
     }
+
+	public void postTweetTo(String content, String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Creating new tweet : " + content);
+        }
+        processTweet(login, content); 
+    }
+	
+	public void broadCastTweet(String content){
+		
+		String login = null;
+		User currentUser = authenticationService.getCurrentUser();
+		String userLogin = currentUser.getLogin();
+		
+		Matcher m = PATTERN_COMPILER.matcher(content);
+		while(m.find()){
+			login = extractLoginWithoutAt(m.group());
+			if(isNotTheCurrentLogin(userLogin, login)){
+				distributeTweet(login, content);
+			}
+		}
+	}
 
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
 		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweetId : tweetIds) {
-            Tweet tweet = tweetRepository.findTweetById(tweetId);
-            if (tweet == null) {
-                log.debug("Invisible tweet : " + tweetId);
-            	continue;
-            }
-            User tweetUser = userService.getUserByLogin(tweet.getLogin());
-            tweet.setFirstName(tweetUser.getFirstName());
-            tweet.setLastName(tweetUser.getLastName());
-            tweet.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweet);
-        }
-        return tweets;
+		for (String tweetId : tweetIds) {
+			Tweet tweet = tweetRepository.findTweetById(tweetId);
+			if (tweet == null) {
+				log.debug("Invisible tweet : " + tweetId);
+				continue;
+			}
+			User tweetUser = userService.getUserByLogin(tweet.getLogin());
+			tweet.setFirstName(tweetUser.getFirstName());
+			tweet.setLastName(tweetUser.getLastName());
+			tweet.setGravatar(tweetUser.getGravatar());
+			tweets.add(tweet);
+		}
+		return tweets;
 	}
 
     /**
@@ -224,4 +242,49 @@ public class TimelineService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+    
+    private void spreadTweet(String login, Tweet tweet){
+        for (String followerLogin : followerRepository.findFollowersForUser(login)) {
+            tweetRepository.addTweetToTimeline(followerLogin, tweet);
+        }
+    }
+    
+	private Tweet processTweet(String login, String content){
+		Tweet tweet = tweetRepository.createTweet(login, content);
+	   
+	 	// registering
+		registerTweet(tweet, login);
+
+        // referencing
+        tweetRepository.addTweetToTagline(tweet);
+
+        counterRepository.incrementTweetCounter(login);
+        
+        return tweet;
+	}
+
+    private void registerTweet(Tweet tweet, String login){
+		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        tweetRepository.addTweetToUserline(tweet);
+        tweetRepository.addTweetToTimeline(login, tweet);
+	}
+	
+	private boolean isValidUser(User user){
+		return null!=user && null!=user.getLogin();
+	}
+
+	private String extractLoginWithoutAt(String dest){
+		return dest.substring(1, dest.length());
+	}
+
+	private void distributeTweet(String mentioned, String content){
+		User user = userService.getUserByLogin(mentioned);
+		if(isValidUser(user)){
+			postTweetTo(content,mentioned);
+		}
+	}
+	
+	private boolean isNotTheCurrentLogin(String userLogin, String dest){
+		return null!=userLogin && !userLogin.equals(dest);
+	}
 }
