@@ -2,7 +2,7 @@
     <div>
         <i class="icon-zoom-in icon-white"></i> <strong>Follow another user...</strong>
 
-        <form class="form-search" onsubmit="return followUser(($('#followUserInput').val()))">
+        <form id="followUserForm" class="form-search" onsubmit="return followUser(($('#followUserInput').val()))">
             <input id="followUserInput" type="text" class="input-large search-query"
                    placeholder="Type the login to follow..." required="required"/>
              <ul id="usersSuggestions"></ul>
@@ -22,8 +22,21 @@
 </section>
 <script type="text/javascript">
 	$(document).ready( function () {
-		$("section#followline input#followUserInput").keyup( function() {
+		var $inputUserToFollow = $("section#followline input#followUserInput");
+		
+		$inputUserToFollow.keyup(function() {
 			searchUsers($(this).val());
 		});
+		
+		$inputUserToFollow.blur( function() {
+			setTimeout("$('#usersSuggestions').hide();", 200);
+		});
+		
+		$('#usersSuggestions li').live('click', function(event){
+		    event.preventDefault();
+		    event.stopPropagation();
+			$inputUserToFollow.val($(this).text());
+			$("#followUserForm").submit();
+		})
 	});
 </script>

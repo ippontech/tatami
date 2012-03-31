@@ -58,7 +58,7 @@ function addFavoriteTweet(tweet) {
 }
 
 function searchUsers(login) {
-	$suggest = $('#usersSuggestions');
+	var $suggest = $('#usersSuggestions');
 	if(login.length <= 3){
 		$suggest.hide();
 	} else {
