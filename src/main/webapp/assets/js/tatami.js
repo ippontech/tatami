@@ -56,3 +56,12 @@ function removeTweet(tweet) {
 function addFavoriteTweet(tweet) {
 	addATweetToMyFavorites(tweet, $('#favTab'));
 }
+
+function searchUsers(login) {
+	$suggest = $('#usersSuggestions');
+	if(login.length <= 3){
+		$suggest.hide();
+	} else {
+		searchUsersPossibilities($suggest, login);
+	}
+}

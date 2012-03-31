@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -145,5 +146,16 @@ public class UserController {
         }
         timelineService.addFavoriteTweet(tweet);
         log.info("Completed");
+    }
+     
+    @RequestMapping(value = "/rest/users/similar/{login}/",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public List<String> getUsersPossibility(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get users possibilites for a suggestion : " + login);
+        }
+        return userService.getSimilarUsers(login);
     }
 }

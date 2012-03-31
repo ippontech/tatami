@@ -149,12 +149,27 @@ function removeOneOfMyTweet(tweet) {
 function addATweetToMyFavorites(tweet, favTab){
 	$.ajax({
 		type: GET_TYPE_REQUEST,
-		url: "rest/likeTweet/" + tweet,
+		url: "rest/users/" + tweet,
 		dataType: JSON_DATA_TYPE,
         success: function(data) {
             setTimeout(function() {
             	favTab.tab(SHOW_EFFECT);
             }, 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+function searchUsersPossibilities(suggest, login){
+	$.ajax({
+		type: GET_TYPE_REQUEST,
+		url: "rest/users/similar/"+login+"/",
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	suggest.empty();
+        	if(null!=data && data.length >0) {
+        		buildList(suggest, data);
+        		suggest.show();
+			}
         }
 	});
 }

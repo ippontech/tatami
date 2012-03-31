@@ -63,3 +63,13 @@ function makeUsersList(data, dest) {
         dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
     });
 }
+
+function addLineToList(dest, content){
+	dest.append('<li>' + content + '</li>');
+}
+
+function buildList(dest, array){
+	$.each(array, function(i,user){
+		addLineToList(dest, user);
+    });
+}

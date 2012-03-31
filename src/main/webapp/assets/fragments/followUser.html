@@ -5,9 +5,12 @@
         <form class="form-search" onsubmit="return followUser(($('#followUserInput').val()))">
             <input id="followUserInput" type="text" class="input-large search-query"
                    placeholder="Type the login to follow..." required="required"/>
+             <ul id="usersSuggestions"></ul>
+             
             <button type="submit" class="btn btn-primary">Follow</button>
         </form>
-        <div class="alert" id="followStatus" hidden="hidden"></div>
+        
+		<div class="alert" id="followStatus" hidden="hidden"></div>
     </div>
 
     <div>
@@ -17,3 +20,10 @@
 	    </table>
     </div>
 </section>
+<script type="text/javascript">
+	$(document).ready( function () {
+		$("section#followline input#followUserInput").keyup( function() {
+			searchUsers($(this).val());
+		});
+	});
+</script>

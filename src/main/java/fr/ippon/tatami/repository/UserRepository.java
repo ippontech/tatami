@@ -1,5 +1,7 @@
 package fr.ippon.tatami.repository;
 
+import java.util.List;
+
 import fr.ippon.tatami.domain.User;
 
 /**
@@ -14,4 +16,6 @@ public interface UserRepository {
     void updateUser(User user);
 
     User findUserByLogin(String login);
+    
+    List<String> getSimilarUsers(String login);
 }
