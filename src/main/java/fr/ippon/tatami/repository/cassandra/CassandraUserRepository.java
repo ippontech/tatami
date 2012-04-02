@@ -12,6 +12,7 @@ import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
@@ -69,42 +70,50 @@ public class CassandraUserRepository implements UserRepository {
 
 	@Override
 	public List<String> getSimilarUsers(String login) {
+
+		RangeSlicesQuery<String, String, String> query = buildQueryForFindingSimilarLogins();
 		
-		RangeSlicesQuery<String, String, String> rangeSlicesQuery = buildQueryForFindingSimilarLogins(login);
+		QueryResult<OrderedRows<String, String, String>> result = query.execute();
 		
-		QueryResult<OrderedRows<String, String, String>> result = rangeSlicesQuery.execute();
-		
-		return buildResult(result);
+		return buildResult(result, login);
 	}
 
-	private List<String> buildResult(QueryResult<OrderedRows<String, String, String>> result) {
+	private List<String> buildResult(QueryResult<OrderedRows<String, String, String>> result, String login) {
 		
-		List<String> similarLogins = null;
+		List<String> logins = null;
 		
 		if(null!=result){
-			OrderedRows<String, String, String> orderedRows = result.get();
+			Rows<String, String, String> orderedRows = result.get();
 			if(null!=orderedRows && orderedRows.getCount()>0){
-				similarLogins = new ArrayList<String>();
+				String key = null;
+				logins = new ArrayList<String>();
 				for (Row<String, String, String> row : orderedRows) {
-			        log.debug("A possibility with key=" + row.getKey());
-			        similarLogins.add(row.getKey());	
+					key = row.getKey();
+					if(key.startsWith(login)){
+						log.debug("A possibility with key=" + key);
+						logins.add(key);	
+					}
 				}
 			}
 		}
 		
-		return similarLogins;
+		return logins;
 	}
 
-	private RangeSlicesQuery<String, String, String> buildQueryForFindingSimilarLogins(
-			String login) {
+	private RangeSlicesQuery<String, String, String> buildQueryForFindingSimilarLogins() {
+		
 		StringSerializer stringSerializer = StringSerializer.get();
-		RangeSlicesQuery<String, String, String> rangeSlicesQuery = 
+		
+		// TODO : Get a better request, after some searching hours nothing in order to do a sql query like with the keys
+		// ie : SELECT key FROM User WHERE key LIKE 'login%'
+		
+		RangeSlicesQuery<String, String, String> query = 
 				HFactory.createRangeSlicesQuery(keyspaceOperator, stringSerializer, stringSerializer, stringSerializer);
 		
-		rangeSlicesQuery.setColumnFamily(USER_CF);
-		rangeSlicesQuery.setReturnKeysOnly();
-		rangeSlicesQuery.setKeys(login, "");
+		query.setColumnFamily(USER_CF);
+		query.setReturnKeysOnly();
+		query.setKeys(null, null);
 		
-		return rangeSlicesQuery;
+		return query;
 	}
 }
