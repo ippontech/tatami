@@ -54,7 +54,7 @@ function displayTagTweets(tagTweetsList, tagTab, tag) {
     });
 }
 
-function displayUserInformations(userPicture, userTab, data){
+function displayUserInformations(userPicture, userTab, login){
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/users/" + login + "/",
@@ -74,14 +74,14 @@ function displayUserInformations(userPicture, userTab, data){
     });
 }
 
-function displayUserTweets(userTweetsList, userPicture, userTab, data){
+function displayUserTweets(userTweetsList, userPicture, userTab, login){
 	$.ajax({
         type: GET_TYPE_REQUEST,
-        url: "rest/ownTweets/" + login,
+        url: "rest/users/" + login + "/tweets",
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeTweetsList(data, userTweetsList, false, true, true);
-			displayUserInformations(userPicture, data, userTab);  
+			displayUserInformations(userPicture, userTab, login);
         }
     });
 }

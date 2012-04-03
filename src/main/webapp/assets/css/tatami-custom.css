@@ -12,10 +12,10 @@
 }
 
 
-section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine{
+section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine {
     vertical-align: top;
 }
 
-section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine td.avatar{
+.avatar {
     width:34px;
 }

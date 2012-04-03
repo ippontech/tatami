@@ -42,7 +42,7 @@ public class TweetController {
         }
     }
 
-    @RequestMapping(value = "/rest/ownTweets/{login}",
+    @RequestMapping(value = "/rest/users/{login}/tweets",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
