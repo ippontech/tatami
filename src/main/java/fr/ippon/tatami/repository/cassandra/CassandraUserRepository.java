@@ -34,6 +34,8 @@ public class CassandraUserRepository implements UserRepository {
 
     private final Log log = LogFactory.getLog(CassandraUserRepository.class);
     
+    private final StringSerializer stringSerializer = StringSerializer.get();
+    
     @Inject
     private Keyspace keyspaceOperator;
     
@@ -101,8 +103,6 @@ public class CassandraUserRepository implements UserRepository {
 	}
 
 	private RangeSlicesQuery<String, String, String> buildQueryForFindingSimilarLogins() {
-		
-		StringSerializer stringSerializer = StringSerializer.get();
 		
 		// TODO : Get a better request, after some searching hours nothing in order to do a sql query like with the keys
 		// ie : SELECT key FROM User WHERE key LIKE 'login%'
