@@ -1,17 +1,16 @@
 package fr.ippon.tatami.domain;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A user.

@@ -1,13 +1,12 @@
 package fr.ippon.tatami.security;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.UserRepository;
+import javax.inject.Inject;
 
 @Service
 public class AuthenticationService {

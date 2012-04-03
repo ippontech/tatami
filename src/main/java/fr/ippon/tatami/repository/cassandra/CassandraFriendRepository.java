@@ -1,14 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import fr.ippon.tatami.repository.FriendRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
@@ -17,12 +9,17 @@ import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.repository.FriendRepository;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 
 /**
  * Cassandra implementation of the Follower repository.

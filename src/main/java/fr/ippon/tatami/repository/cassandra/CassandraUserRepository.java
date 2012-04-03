@@ -1,14 +1,13 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.UserRepository;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 /**
  * Cassandra implementation of the user repository.
