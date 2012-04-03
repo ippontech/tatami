@@ -278,7 +278,7 @@ public class TimelineService {
 	private void distributeTweet(String mentioned, String content){
 		User user = userService.getUserByLogin(mentioned);
 		if(isValidUser(user)){
-			postTweetTo(content,mentioned);
+			postTweetTo(content, mentioned);
 		}
 	}
 	
