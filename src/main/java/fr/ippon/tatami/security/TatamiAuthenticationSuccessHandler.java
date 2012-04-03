@@ -1,16 +1,18 @@
 package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * Manages a user's successful login.
