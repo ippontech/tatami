@@ -162,13 +162,26 @@ function addATweetToMyFavorites(tweet, favTab){
 function searchUsersPossibilities(suggest, login){
 	$.ajax({
 		type: GET_TYPE_REQUEST,
-		url: "rest/users/similar/"+login+"/",
+		url: "rest/users/similar/"+login,
 		dataType: JSON_DATA_TYPE,
         success: function(data) {
         	suggest.empty();
         	if(null!=data && data.length >0) {
         		buildList(suggest, data);
         		suggest.show();
+			}
+        }
+	});
+}
+
+function getByAjaxTheMostPopularUser(suggest){
+	$.ajax({
+		type: GET_TYPE_REQUEST,
+		url: "rest/counters/theMostPopularUser",
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	if(null!=data && data.length >0) {
+        		suggest.append("The Most Popular User is : "+data)
 			}
         }
 	});

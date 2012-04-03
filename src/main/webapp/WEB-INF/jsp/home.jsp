@@ -156,6 +156,7 @@
 		    // right panel
 			$('#timeLinePanel').load('/assets/fragments/timeline.html', function(){
 				listTweets(true);
+				getTheMostPopularUser();
 			});
 		    // browser's refresh shortcut override
 			shortcut.add("Ctrl+R", function() {

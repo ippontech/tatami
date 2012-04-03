@@ -65,3 +65,10 @@ function searchUsers(login) {
 		searchUsersPossibilities($suggest, login);
 	}
 }
+
+function getTheMostPopularUser(){
+	var $suggest = $('#suggestions');
+	if($suggest.length>0){
+		getByAjaxTheMostPopularUser($suggest);
+	}
+}

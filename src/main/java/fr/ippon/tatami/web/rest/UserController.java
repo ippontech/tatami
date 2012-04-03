@@ -148,7 +148,7 @@ public class UserController {
         log.info("Completed");
     }
      
-    @RequestMapping(value = "/rest/users/similar/{login}/",
+    @RequestMapping(value = "/rest/users/similar/{login}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
