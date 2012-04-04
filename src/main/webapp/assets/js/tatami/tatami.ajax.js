@@ -44,7 +44,7 @@ function displayFavoriteTweets(favTweetsList) {
 function displayTagTweets(tagTweetsList, tagTab, tag) {
     $.ajax({
         type: GET_TYPE_REQUEST,
-        url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
+        url: "rest/tags" + (tag ? '/' + tag : '') + "/30",
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             //TODO refesh title's tag name

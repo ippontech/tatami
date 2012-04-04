@@ -146,7 +146,7 @@ public class TweetController {
 		}
 	}
 
-    @RequestMapping(value = "/rest/tagtweets/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{nbTweets}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -162,7 +162,7 @@ public class TweetController {
         }
     }
 
-    @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{tag}/{nbTweets}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
