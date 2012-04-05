@@ -4,6 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * A user.
@@ -14,18 +19,27 @@ import javax.persistence.Table;
 @Table(name = "User")
 public class User {
 
+	@NotEmpty(message="Login is mandatory.")
+	@NotNull
     @Id
     private String login;
 
+	@Email(message="Email is invalid.")
     @Column(name = "email")
     private String email;
 
     @Column(name = "gravatar")
     private String gravatar;
 
+    @NotNull
+    @NotEmpty(message="First Name field is mandatory.")
+    @Size(min=1, max=16)
     @Column(name = "firstName")
     private String firstName;
 
+    @NotNull
+    @NotEmpty(message="Last field is mandatory.")
+    @Size(min=1, max=16)
     @Column(name = "lastName")
     private String lastName;
 

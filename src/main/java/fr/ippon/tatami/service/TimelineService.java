@@ -1,25 +1,23 @@
 package fr.ippon.tatami.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Manages the the timeline.
@@ -59,32 +57,32 @@ public class TimelineService {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
-        User currentUser = authenticationService.getCurrentUser();
-		Tweet tweet = processTweet(currentUser.getLogin(), content); 
-		spreadTweet(currentUser.getLogin(), tweet);
-    }
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+		Tweet tweet = tweetRepository.createTweet(currentLogin, content);
 
-	public void postTweetTo(String content, String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating new tweet : " + content);
+	 	// add tweet to the dayline, userline, timeline, tagline
+		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        tweetRepository.addTweetToUserline(tweet);
+        tweetRepository.addTweetToTimeline(currentLogin, tweet);
+        tweetRepository.addTweetToTagline(tweet);
+
+        // add tweet to the follower's timelines
+        for (String followerLogin : followerRepository.findFollowersForUser(currentLogin)) {
+            tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
-        processTweet(login, content); 
+
+        // add tweet to the mentioned users' timeline
+		Matcher m = PATTERN_COMPILER.matcher(tweet.getContent());
+        while (m.find()) {
+            String mentionedLogin = extractLoginWithoutAt(m.group());
+            if (mentionedLogin != null && !mentionedLogin.equals(currentLogin)) {
+                tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
+            }
+        }
+
+        // Increment tweet count for the current user
+        counterRepository.incrementTweetCounter(currentLogin);
     }
-	
-	public void broadCastTweet(String content){
-		
-		String login = null;
-		User currentUser = authenticationService.getCurrentUser();
-		String userLogin = currentUser.getLogin();
-		
-		Matcher m = PATTERN_COMPILER.matcher(content);
-		while(m.find()){
-			login = extractLoginWithoutAt(m.group());
-			if(isNotTheCurrentLogin(userLogin, login)){
-				distributeTweet(login, content);
-			}
-		}
-	}
 
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
 		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
@@ -242,49 +240,8 @@ public class TimelineService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-    
-    private void spreadTweet(String login, Tweet tweet){
-        for (String followerLogin : followerRepository.findFollowersForUser(login)) {
-            tweetRepository.addTweetToTimeline(followerLogin, tweet);
-        }
-    }
-    
-	private Tweet processTweet(String login, String content){
-		Tweet tweet = tweetRepository.createTweet(login, content);
-	   
-	 	// registering
-		registerTweet(tweet, login);
-
-        // referencing
-        tweetRepository.addTweetToTagline(tweet);
-
-        counterRepository.incrementTweetCounter(login);
-        
-        return tweet;
-	}
-
-    private void registerTweet(Tweet tweet, String login){
-		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(login, tweet);
-	}
-	
-	private boolean isValidUser(User user){
-		return null!=user && null!=user.getLogin();
-	}
 
 	private String extractLoginWithoutAt(String dest){
 		return dest.substring(1, dest.length());
-	}
-
-	private void distributeTweet(String mentioned, String content){
-		User user = userService.getUserByLogin(mentioned);
-		if(isValidUser(user)){
-			postTweetTo(content,mentioned);
-		}
-	}
-	
-	private boolean isNotTheCurrentLogin(String userLogin, String dest){
-		return null!=userLogin && !userLogin.equals(dest);
 	}
 }

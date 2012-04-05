@@ -4,15 +4,6 @@ function buildHtmlImgGravatarTag(gravatarName){
     return '<img src="http://www.gravatar.com/avatar/' + gravatarName + '?s=32" />';
 }
 
-function buildTheUserLineLink(linkLogins, login, entry){
-    var userlineLink;
-    var userWhoRunsTheApplication = entry[fieldLoginInSession];
-    if (linkLogins && assertStringNotEquals(login,userWhoRunsTheApplication)) {
-        userlineLink = userlineURL.replace(userlineREG, userWhoRunsTheApplication);
-    }
-    return userlineLink;
-}
-
 function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     // identification de l'émetteur du message
     var html = '<td class="avatar">';
@@ -31,23 +22,16 @@ function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     return html;
 }
 
-function buildHtmlAreaForTheTweetContent(userlineLink, login, loginInSession, firstName, lastName, content){
+function buildHtmlAreaForTheTweetContent(userlineLink, loginInSession, firstName, lastName, content) {
     var html = '<td><article>';
-    if (assertStringNotEquals(login, loginInSession)) {
-        html += '<em>from:</em> <strong>' + firstName + ' ' + lastName + '</strong>&nbsp;';
-        
-        if (userlineLink){
-            html += userlineLink;
-        }
-        
-        html += '<em>@' + login + '</em>';
-        
-        if (userlineLink){
-            html += '</a>';
-        }
-        
-        html += '<br/>';
+    if (userlineLink) {
+        html += userlineLink;
     }
+    html += firstName + ' ' + lastName;
+    if (userlineLink) {
+        html += '</a>';
+    }
+    html += ' <em>@' + loginInSession + '</em><br/>';
     // contenu du message
     html += content.replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
     html += '</article></td>';
@@ -92,15 +76,14 @@ function buildContentForAHtmlLinePerTweet(
     var html = buildHtmlAreaForTheAvatar(
                 userlineLink, 
                 fieldGravatarInSession);
-                
+
     html += buildHtmlAreaForTheTweetContent(
-                userlineLink, 
-                login,
-                fieldLoginInSession, 
-                fieldfirstNameInSession, 
-                fieldLastNameInSession, 
-                fieldContentInSession);  
-                
+                userlineLink,
+                fieldLoginInSession,
+                fieldfirstNameInSession,
+                fieldLastNameInSession,
+                fieldContentInSession);
+
     html += buildHtmlAreaForTheConnectionPart(
                 login,
                 fieldLoginInSession,
@@ -113,8 +96,13 @@ function buildContentForAHtmlLinePerTweet(
 }
 
 function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry){
-    
-    var userlineLink = buildTheUserLineLink(linkLogins, login, entry);
+
+    if (linkLogins) {
+        var userlineLink =
+            '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' +
+                entry[fieldLoginInSession] +
+                '\')" title="Show LOGIN tweets">';
+    }
       
     var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';  
 
@@ -137,11 +125,11 @@ function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entr
 }
 
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets) {
-    dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_ZERO, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
 		dest.empty();
         $.each(data, function(entryIndex, entry) {
             dest.append(buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry));
         });
-        dest.fadeTo(DURATION_OF_FADE_TO, OPACITY_UN);
+        dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });
 }

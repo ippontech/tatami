@@ -17,12 +17,11 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
-
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.UserRepository;
 
 /**
  * Cassandra implementation of the user repository.

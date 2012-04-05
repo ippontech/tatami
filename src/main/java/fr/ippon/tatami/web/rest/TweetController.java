@@ -26,6 +26,7 @@ import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.util.HtmlEntities;
 
 /**
  * REST controller for managing tweets.
@@ -56,7 +57,7 @@ public class TweetController {
         }
     }
 
-    @RequestMapping(value = "/rest/ownTweets/{login}",
+    @RequestMapping(value = "/rest/users/{login}/tweets",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -77,15 +78,14 @@ public class TweetController {
         }
 		return timelineService.getFavoritesline(login);
     }
-
+    
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
     public void postTweet(@RequestBody String content) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
-        timelineService.postTweet(content);
-		timelineService.broadCastTweet(content);
+        timelineService.postTweet(HtmlEntities.encode(content));
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
@@ -161,7 +161,7 @@ public class TweetController {
 		}
 	}
 
-    @RequestMapping(value = "/rest/tagtweets/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{nbTweets}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -177,7 +177,7 @@ public class TweetController {
         }
     }
 
-    @RequestMapping(value = "/rest/tagtweets/{tag}/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{tag}/{nbTweets}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody

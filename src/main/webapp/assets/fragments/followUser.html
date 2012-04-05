@@ -2,7 +2,7 @@
     <div>
         <i class="icon-zoom-in icon-white"></i> <strong>Follow another user...</strong>
 
-        <form id="followUserForm" class="form-search" onsubmit="return followUser(($('#followUserInput').val()))">
+        <form id="followUserForm" class="form-search" onsubmit="return followUser(($('#followUserInput').val()))" htmlEscape="true" >
             <input id="followUserInput" type="text" class="input-large search-query"
                    placeholder="Type the login to follow..." required="required"/>
              <ul id="usersSuggestions"></ul>

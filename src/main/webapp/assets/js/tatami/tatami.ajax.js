@@ -1,5 +1,4 @@
 /* Functions called by tatami.js that make requests on the server*/
-
 function postTheTweet(tweet){
 	$.ajax({
         type: POST_TYPE_REQUEST,
@@ -44,7 +43,7 @@ function displayFavoriteTweets(favTweetsList) {
 function displayTagTweets(tagTweetsList, tagTab, tag) {
     $.ajax({
         type: GET_TYPE_REQUEST,
-        url: "rest/tagtweets" + (tag ? '/' + tag : '') + "/30",
+        url: "rest/tags" + (tag ? '/' + tag : '') + "/30",
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             //TODO refesh title's tag name
@@ -54,7 +53,7 @@ function displayTagTweets(tagTweetsList, tagTab, tag) {
     });
 }
 
-function displayUserInformations(userPicture, userTab, data){
+function displayUserInformations(userPicture, userTab, login){
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/users/" + login + "/",
@@ -74,14 +73,14 @@ function displayUserInformations(userPicture, userTab, data){
     });
 }
 
-function displayUserTweets(userTweetsList, userPicture, userTab, data){
+function displayUserTweets(userTweetsList, userPicture, userTab, login){
 	$.ajax({
         type: GET_TYPE_REQUEST,
-        url: "rest/ownTweets/" + login,
+        url: "rest/users/" + login + "/tweets",
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             makeTweetsList(data, userTweetsList, false, true, true);
-			displayUserInformations(userPicture, data, userTab);  
+			displayUserInformations(userPicture, userTab, login);
         }
     });
 }
