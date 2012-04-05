@@ -1,7 +1,28 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.repository.TweetRepository;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
@@ -12,22 +33,15 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.repository.TweetRepository;
 
 /**
  * Cassandra implementation of the user repository.
@@ -44,6 +58,9 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
+    
+    private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static Validator validator = factory.getValidator();
 
     @Override
     public Tweet createTweet(String login, String content) {
@@ -55,6 +72,10 @@ public class CassandraTweetRepository implements TweetRepository {
         tweet.setRemoved(false);
         if (log.isDebugEnabled()) {
             log.debug("Persisting Tweet : " + tweet);
+        }
+        Set<ConstraintViolation<Tweet>> constraintViolations = validator.validate(tweet);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
         em.persist(tweet);
         return tweet;

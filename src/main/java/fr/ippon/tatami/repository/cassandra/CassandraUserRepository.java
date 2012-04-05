@@ -3,10 +3,17 @@ package fr.ippon.tatami.repository.cassandra;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_CF;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -40,19 +47,30 @@ public class CassandraUserRepository implements UserRepository {
     
     @Inject
     private EntityManager em;
+    
+    private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static Validator validator = factory.getValidator();
 
     @Override
-    public void createUser(User user) {
+    public void createUser(User user){
         if (log.isDebugEnabled()) {
             log.debug("Creating user : " + user);
         }
-        em.persist(user);
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
+        }
+       	em.persist(user);
     }
 
     @Override
     public void updateUser(User user) {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);
+        }
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
         em.persist(user);
     }

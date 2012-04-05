@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.SafeHtml;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -51,21 +51,14 @@ public class Tweet {
     @NotNull
     @NotEmpty(message="Content field is mandatory.")
     @Size(min=1, max=140)
-    @SafeHtml(message="Invalid Content.")
     @Column(name = "content")
     private String content;
 
     @Column(name = "tweetDate")
     private Date tweetDate;
 
-    @NotNull
-    @NotEmpty(message="First Name field is mandatory.")
-    @Size(min=1, max=16)
     private String firstName;
 
-    @NotNull 
-    @NotEmpty(message="Last Name field is mandatory.")
-    @Size(min=1, max=16)
     private String lastName;
 
     private String gravatar;

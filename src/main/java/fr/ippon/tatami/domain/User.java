@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User {
 
 	@NotEmpty(message="Login is mandatory.")
-	@NotNull
+	@NotNull(message="Login is mandatory.")
     @Id
     private String login;
 
