@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-             xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:context="http://www.springframework.org/schema/context"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans:beans 
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:elasticsearch="http://www.pilato.fr/schema/elasticsearch"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.1.xsd
            http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		   http://www.pilato.fr/schema/elasticsearch 
+		   https://github.com/dadoonet/spring-elasticsearch/blob/master/src/main/resources/fr/pilato/spring/elasticsearch/xml/elasticsearch-0.1.xsd
+		   http://www.springframework.org/schema/aop 
+		   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" ">
 
     <context:component-scan base-package="fr.ippon.tatami.security"/>
 
@@ -42,5 +48,30 @@
         <user name="user4" password="password" authorities="ROLE_USER"/>
         <user name="user5" password="password" authorities="ROLE_USER"/>
     </user-service>
+    
+    <!-- Aspect to manage index content life cycle -->
+   <aop:aspectj-autoproxy/>
+
+	<!-- beans used by the aspect : -->
+	<bean class="fr.ippon.tatami.service.IndexService" />
+	
+	<bean id="clientFactory" class="fr.ippon.tatami.service.TransportClientFactory" />
+
+	<bean id="client" class="org.elasticsearch.client.transport.TransportClient"
+		factory-bean="clientFactory" factory-method="createInstance"
+		destroy-method="close">
+		<constructor-arg name="host" value="localhost" />
+		<constructor-arg name="port" value="9300" />
+		<constructor-arg name="settings">
+			<map>
+				<entry key="cluster.name" value="tatamiCluster" />
+				<entry key="client.transport.sniff" value="true" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="indexName" class="java.lang.String">
+		<constructor-arg value="tatami"></constructor-arg>
+	</bean>
   
 </beans:beans>
