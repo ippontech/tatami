@@ -18,7 +18,7 @@
 
     <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
     <filter>
-	<filter-name>XSS</filter-name>
+		<filter-name>XSS</filter-name>
 		<filter-class>fr.ippon.tatami.web.filter.XSSFilter</filter-class>
 	</filter>
 	<filter-mapping>
