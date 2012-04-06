@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="home" template="/WEB-INF/layouts/standard/home.jsp">
+    </definition>
+
+    <definition name="login" template="/WEB-INF/layouts/standard/login.jsp">
+    </definition>
+
+    <definition name="about" template="/WEB-INF/layouts/standard/about.jsp">
+    </definition>
+
+</tiles-definitions>
