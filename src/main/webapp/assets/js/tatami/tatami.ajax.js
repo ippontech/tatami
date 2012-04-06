@@ -1,6 +1,6 @@
 /* Functions called by tatami.js that make requests on the server*/
 
-function postTheTweet(tweet){
+function postTheTweet(tweet) {
 	$.ajax({
         type: POST_TYPE_REQUEST,
         url: "rest/tweets",
@@ -18,7 +18,7 @@ function postTheTweet(tweet){
     });
 }
 
-function displayTweets(login, nbTweets, tweetsList, mainTab){
+function displayTweets(login, nbTweets, tweetsList, mainTab) {
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/tweets/" + login + "/" + nbTweets,
@@ -54,7 +54,7 @@ function displayTagTweets(tagTweetsList, tagTab, tag) {
     });
 }
 
-function displayUserInformations(userPicture, userTab, login){
+function displayUserInformations(userPicture, userTab, login) {
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/users/" + login + "/",
@@ -74,7 +74,7 @@ function displayUserInformations(userPicture, userTab, login){
     });
 }
 
-function displayUserTweets(userTweetsList, userPicture, userTab, login){
+function displayUserTweets(userTweetsList, userPicture, userTab, login) {
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/users/" + login + "/tweets",
@@ -86,18 +86,18 @@ function displayUserTweets(userTweetsList, userPicture, userTab, login){
     });
 }
 
-function displayWhoToFollow(suggestions){
+function displayWhoToFollow() {
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/suggestions",
         dataType: JSON_DATA_TYPE,
         success: function(data) {
-            makeUsersList(data, suggestions);
+            makeWhoToFollowList(data);
         }
     });
 }
 
-function newUserToFollow(loginToFollow, login, followUserInput, followStatus){
+function newUserToFollow(loginToFollow, login, followUserInput, followStatus) {
 	$.ajax({
 		type: POST_TYPE_REQUEST,
 		url: "rest/users/" + login + "/followUser",

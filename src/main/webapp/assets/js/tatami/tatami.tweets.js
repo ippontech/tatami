@@ -98,26 +98,23 @@ function buildContentForAHtmlLinePerTweet(
 function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry){
 
     if (linkLogins) {
-        var userlineLink =
-            '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'' +
-                entry[fieldLoginInSession] +
-                '\')" title="Show LOGIN tweets">';
+        var userlineLink = userlineURL.replace(userlineREG, entry['login']);
     }
       
     var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';  
 
     html += buildContentForAHtmlLinePerTweet(
         userlineLink,
-        entry[fieldGravatarInSession],
+        entry['gravatar'],
         login, 
-		entry[fieldTweetIdInSession],
-        entry[fieldLoginInSession], 
-        entry[fieldfirstNameInSession], 
-        entry[fieldLastNameInSession], 
-        entry[fieldContentInSession],
+		entry['tweetId'],
+        entry['login'],
+        entry['firstName'],
+        entry['lastName'],
+        entry['content'],
         followUsers, 
         likeTweets,
-        entry[fieldPrettyPrintTweetDateInSession]
+        entry['prettyPrintTweetDate']
         );
 
     html += '</tr>';

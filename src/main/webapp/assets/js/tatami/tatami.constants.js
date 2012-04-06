@@ -15,11 +15,3 @@ var ATTRIBUTE_DATA						= "data-content";
 var HIDE_EFFECT							= "hide";
 var SHOW_EFFECT							= "show";
 var FAST_EFFECT							= "fast";
-
-var fieldLoginInSession                 = 'login';
-var fieldfirstNameInSession             = 'firstName'; 
-var fieldLastNameInSession              = 'lastName';
-var fieldContentInSession               = 'content';
-var fieldGravatarInSession              = 'gravatar';
-var fieldPrettyPrintTweetDateInSession  = 'prettyPrintTweetDate';
-var fieldTweetIdInSession				= 'tweetId';

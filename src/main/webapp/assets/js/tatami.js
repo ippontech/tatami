@@ -2,6 +2,9 @@
 
 var nbTweetsToDisplay;
 
+var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
+var userlineREG = new RegExp("LOGIN", "g");
+
 var userrefREG = new RegExp("@(\\w+)", "g");
 var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
 
@@ -34,7 +37,7 @@ function listTagTweets(tag) {
 }
 
 function whoToFollow() {
-	displayWhoToFollow($('#suggestions'));
+	displayWhoToFollow();
 }
 
 function followUser(loginToFollow) {
