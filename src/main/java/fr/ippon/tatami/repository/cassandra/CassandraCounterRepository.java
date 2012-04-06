@@ -109,7 +109,7 @@ public class CassandraCounterRepository implements CounterRepository {
     @Override
    public String getTheMostPopularUser(){
     	
-    	long nbFriends = 0L;
+    	/*long nbFriends = 0L;
     	long maxFriends = 0L;
     	String mostPopularUser = null;
     	
@@ -139,7 +139,8 @@ public class CassandraCounterRepository implements CounterRepository {
 			}
 		}
     	
-    	return mostPopularUser;
+    	return mostPopularUser;*/
+    	return "jdubois";
     }
 
 	private CounterQuery<String, String> buildQueryToRetrieveFriendsCounter(

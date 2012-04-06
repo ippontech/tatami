@@ -37,5 +37,5 @@
         <user name="jdubois" password="password" authorities="ROLE_USER"/>
         <user name="tescolan" password="password" authorities="ROLE_USER"/>
     </user-service>
-
+  
 </beans:beans>
