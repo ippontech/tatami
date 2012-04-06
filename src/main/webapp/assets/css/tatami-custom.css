@@ -22,6 +22,7 @@ section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine 
 
 .error{
 	color:red;
+	font-weight:bold;
 }
 
 section#followline ul#usersSuggestions{

@@ -63,7 +63,7 @@ public class CassandraTweetRepository implements TweetRepository {
     private static Validator validator = factory.getValidator();
 
     @Override
-    public Tweet createTweet(String login, String content) {
+    public Tweet createTweet(String login, String content) throws ConstraintViolationException{
         Tweet tweet = new Tweet();
         tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
         tweet.setLogin(login);

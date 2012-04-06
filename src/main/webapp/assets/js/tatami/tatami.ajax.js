@@ -1,5 +1,6 @@
 /* Functions called by tatami.js that make requests on the server*/
 function postTheTweet(tweet) {
+	var $tweet = $('#tweetContent');
 	$.ajax({
         type: POST_TYPE_REQUEST,
         url: "rest/tweets",
@@ -8,11 +9,15 @@ function postTheTweet(tweet) {
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             tweet.slideUp().empty().slideDown(FAST_EFFECT);
-            $('#tweetContent').val("");
+            $tweet.parent().parent().find("div.error").empty();
+            $tweet.val("");
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
             }, 1000);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	$tweet.parent().parent().find("div.error").empty().append(errorThrown);
         }
     });
 }

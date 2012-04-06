@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,11 +83,16 @@ public class TweetController {
     
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
-    public void postTweet(@RequestBody String content) {
+    public void postTweet(@RequestBody String content) throws ConstraintViolationException, IllegalArgumentException{
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
-        timelineService.postTweet(Jsoup.clean(content, Whitelist.basic()));
+        String cleanedContent = Jsoup.clean(content, Whitelist.basic());
+        if(null!=content && content.equals(cleanedContent)){
+       		timelineService.postTweet(cleanedContent);
+        }else{
+        	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
+        }
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
