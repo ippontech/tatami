@@ -69,7 +69,7 @@ function initTatami() {
 
 function tweet() {
     var $src = $('#tweetContent');
-	if(validateTweetContent($src) /*&& validateXSS($src)*/){
+	if(validateTweetContent($src) && validateXSS($src)){
 		postTheTweet($src);
 	}
 	return false;
