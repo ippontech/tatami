@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Configuration
 @PropertySource("classpath:/tatami/tatami-test.properties")
-@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
+@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security", "fr.ippon.tatami.repository"})
 @Import(value = {CassandraConfiguration.class})
 public class ApplicationTestConfiguration {
 

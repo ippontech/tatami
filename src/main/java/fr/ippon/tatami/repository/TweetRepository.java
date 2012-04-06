@@ -1,8 +1,10 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.Tweet;
-
 import java.util.Collection;
+
+import javax.validation.ConstraintViolationException;
+
+import fr.ippon.tatami.domain.Tweet;
 
 /**
  * The User Respository.
@@ -11,7 +13,7 @@ import java.util.Collection;
  */
 public interface TweetRepository {
 
-    Tweet createTweet(String login, String content);
+    Tweet createTweet(String login, String content) throws ConstraintViolationException;
 
     void removeTweet(Tweet tweet);
 

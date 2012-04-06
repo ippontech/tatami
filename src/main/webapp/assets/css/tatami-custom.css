@@ -19,3 +19,31 @@ section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine 
 .avatar {
     width:34px;
 }
+
+.error{
+	color:red;
+	font-weight:bold;
+}
+
+section#followline ul#usersSuggestions{
+	display:			none;
+	background-color: 	#D9EDF7;
+    border: 			1px solid #BCE8F1;
+    border-radius: 		14px 14px 14px 14px;
+    color: 				#3A87AD;
+    left: 				34px;
+    margin: 			0;
+    padding:			0px 14px;
+    position: 			absolute;
+    width: 				210px;
+}
+
+section#followline ul#usersSuggestions li {
+    cursor: 			pointer;
+    list-style: 		none outside none;
+    margin: 			0px;
+    padding: 			3px;
+}
+section#followline ul#usersSuggestions li:hover {
+    color: 				#555555;
+}

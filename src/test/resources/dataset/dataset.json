@@ -213,6 +213,25 @@
                 "name" : "lastName",
                 "value" : "WhoReadTweet"
             }]
+        },
+        {
+            "key" : "userWhoShouldBeFoundBySimilarSearch",
+            "columns" : [{
+                "name" : "email",
+                "value" : "userWhoShouldBeFoundBySimilarSearch@ippon.fr"
+            },
+            {
+                "name" : "gravatar",
+                "value" : "gravatar"
+            },
+            {
+                "name" : "firstName",
+                "value" : "User"
+            },
+            {
+                "name" : "lastName",
+                "value" : "WhoShouldBeFoundBySimilarSearch"
+            }]
         }]
     },
     {

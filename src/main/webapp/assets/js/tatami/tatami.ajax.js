@@ -1,6 +1,6 @@
 /* Functions called by tatami.js that make requests on the server*/
-
 function postTheTweet(tweet) {
+	var $tweet = $('#tweetContent');
 	$.ajax({
         type: POST_TYPE_REQUEST,
         url: "rest/tweets",
@@ -9,11 +9,15 @@ function postTheTweet(tweet) {
         dataType: JSON_DATA_TYPE,
         success: function(data) {
             tweet.slideUp().empty().slideDown(FAST_EFFECT);
-            $('#tweetContent').val("");
+            $tweet.parent().parent().find("div.error").empty();
+            $tweet.val("");
             setTimeout(function() {
                 refreshProfile();
                 listTweets(true);
             }, 1000);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	$tweet.parent().parent().find("div.error").empty().append(errorThrown);
         }
     });
 }
@@ -149,12 +153,40 @@ function removeOneOfMyTweet(tweet) {
 function addATweetToMyFavorites(tweet, favTab){
 	$.ajax({
 		type: GET_TYPE_REQUEST,
-		url: "rest/likeTweet/" + tweet,
+		url: "rest/users/" + tweet,
 		dataType: JSON_DATA_TYPE,
         success: function(data) {
             setTimeout(function() {
             	favTab.tab(SHOW_EFFECT);
             }, 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+function searchUsersPossibilities(suggest, login){
+	$.ajax({
+		type: GET_TYPE_REQUEST,
+		url: "rest/users/similar/"+login,
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	suggest.empty();
+        	if(null!=data && data.length >0) {
+        		buildList(suggest, data);
+        		suggest.show();
+			}
+        }
+	});
+}
+
+function getByAjaxTheMostPopularUser(suggest){
+	$.ajax({
+		type: GET_TYPE_REQUEST,
+		url: "rest/counters/theMostPopularUser",
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	if(null!=data && data.length >0) {
+        		suggest.append("The Most Popular User is : "+data)
+			}
         }
 	});
 }

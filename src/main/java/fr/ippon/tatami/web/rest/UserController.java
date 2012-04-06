@@ -1,19 +1,26 @@
 package fr.ippon.tatami.web.rest;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -139,5 +146,16 @@ public class UserController {
         }
         timelineService.addFavoriteTweet(tweet);
         log.info("Completed");
+    }
+     
+    @RequestMapping(value = "/rest/users/similar/{login}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public List<String> getUsersPossibility(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get users possibilites for a suggestion : " + login);
+        }
+        return userService.getSimilarUsers(login);
     }
 }

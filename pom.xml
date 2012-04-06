@@ -11,6 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
+        <spring.social.version>1.0.1.RELEASE</spring.social.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.6.4</slf4j.version>
     </properties>
@@ -72,6 +73,16 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
+         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>4.2.0.Final</version>
+	</dependency>
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -156,6 +167,11 @@
             <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+		  	<groupId>org.jsoup</groupId>
+		  	<artifactId>jsoup</artifactId>
+		  	<version>1.6.2</version>
+		</dependency>
     </dependencies>
     <build>
         <finalName>tatami</finalName>
@@ -219,5 +235,4 @@
             </plugin>
         </plugins>
     </build>
-    
 </project>

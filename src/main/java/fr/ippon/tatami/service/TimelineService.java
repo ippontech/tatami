@@ -1,23 +1,26 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.TweetRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 
 /**
  * Manages the the timeline.
@@ -53,7 +56,7 @@ public class TimelineService {
 	
 	private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
     
-	public void postTweet(String content) {
+	public void postTweet(String content) throws ConstraintViolationException{
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }

@@ -35,7 +35,7 @@ public class TatamiAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             User user = new User();
             user.setLogin(login);
             user.setFirstName(login);
-            user.setLastName("");
+            user.setLastName(login);
             user.setEmail(login + "@ippon.fr");
             userService.createUser(user);
         }
