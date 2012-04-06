@@ -86,7 +86,6 @@ public class TweetController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
-        //timelineService.postTweet(HtmlEntities.encode(content));
         timelineService.postTweet(Jsoup.clean(content, Whitelist.basic()));
     }
 
