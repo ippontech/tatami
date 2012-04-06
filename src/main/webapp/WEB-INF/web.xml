@@ -16,7 +16,7 @@
 
     <display-name>Tatami</display-name>
 
-    <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
+    <!-- All the Servlets and Filters are configured by this ServletContextListener :
     <filter>
 		<filter-name>XSS</filter-name>
 		<filter-class>fr.ippon.tatami.web.monitoring.XSSFilter</filter-class>
@@ -27,6 +27,6 @@
 	</filter-mapping>
     <listener>
         <listener-class>fr.ippon.tatami.web.init.WebConfigurer</listener-class>
-    </listener>
+    </listener> -->
     
 </web-app>

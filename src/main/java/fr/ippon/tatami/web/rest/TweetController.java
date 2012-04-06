@@ -15,6 +15,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +28,6 @@ import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.util.HtmlEntities;
 
 /**
  * REST controller for managing tweets.
@@ -85,7 +86,8 @@ public class TweetController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
-        timelineService.postTweet(HtmlEntities.encode(content));
+        //timelineService.postTweet(HtmlEntities.encode(content));
+        timelineService.postTweet(Jsoup.clean(content, Whitelist.basic()));
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
