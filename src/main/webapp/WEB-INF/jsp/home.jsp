@@ -71,10 +71,10 @@
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><strong>Tweets</strong></a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i> Tweets</a></li>
 						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
-						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tags</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i> Statistics <b class="caret"></b></a>
 				            <ul class="dropdown-menu">
@@ -132,58 +132,7 @@
         resetNbTweetsToDefaultNumber();
 
 		$(document).ready(function() {
-			// left panel
-			$('#homeTabContent').load('/assets/fragments/home.html', function () {
-				refreshProfile();
-				$('#tweetContent').popover({
-					trigger: 'manual',
-					placement: 'bottom',
-					title: 'Error',
-					content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
-				});
-			});
-			$('#profileTabContent').load('/assets/fragments/profile.html');
-            $('#followUserContent').load('/assets/fragments/followUser.html', whoToFollow());
-        	// auto-refresh
-		    $('a[data-toggle="pill"]').on('show', function(e) {
-		    	if (e.target.hash == '#homeTabContent') {
-					refreshProfile();
-		    	} else if (e.target.hash == '#profileTabContent') {
-		        	displayProfile();
-		        }
-		    });
-
-		    // right panel
-			$('#timeLinePanel').load('/assets/fragments/timeline.html', function(){
-				listTweets(true);
-			});
-		    // browser's refresh shortcut override
-			shortcut.add("Ctrl+R", function() {
-				listTweets(true);
-			});
-		    // infinite scroll
-			$(window).scroll(function() { 
-				if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-					listTweets(false);
-				}
-			});
-
-			$('#favLinePanel').load('/assets/fragments/favline.html');
-			$('#userLinePanel').load('/assets/fragments/userline.html');
-			$('#tagLinePanel').load('/assets/fragments/tagline.html');
-
-			$('#piechartPanel').load('/assets/fragments/piechart.html');
-			$('#punchchartPanel').load('/assets/fragments/punchchart.html');
-        	// auto-refresh
-		    $('a[data-toggle="tab"]').on('show', function(e) {
-		    	if (e.target.hash == '#favLinePanel') {
-		        	listFavoriteTweets();
-		    	} else if (e.target.hash == '#piechartPanel') {
-					refreshPieChart();
-		    	} else if (e.target.hash == '#punchchartPanel') {
-					refreshPunchChart();
-		        }
-		    });
+			initTatami();
 		});
 	</script>
   </body>
