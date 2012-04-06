@@ -71,10 +71,10 @@
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><strong>Tweets</strong></a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i> Tweets</a></li>
 						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
 						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
-						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tag Tweets</a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tags</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i> Statistics <b class="caret"></b></a>
 				            <ul class="dropdown-menu">
@@ -185,6 +185,7 @@
 					refreshPunchChart();
 		        }
 		    });
+			initTatami();
 		});
 	</script>
   </body>
