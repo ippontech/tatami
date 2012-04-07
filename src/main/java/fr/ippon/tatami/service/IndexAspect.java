@@ -50,9 +50,8 @@ public class IndexAspect {
 
     @Around("execution(* fr.ippon.tatami.service.UserService.createUser(..))")
 	public Object addUserToIndex(ProceedingJoinPoint pjp) throws Throwable {
-		log.debug("adding an user to the index...");
+		log.debug("--------------> adding an user to the index..."+pjp.toString());
 		Object p = pjp.proceed();
-		
 		if (p != null) {
 			User user = (User) p;
 			log.debug("adding a user to the index... " + user.getLogin());
