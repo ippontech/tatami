@@ -16,6 +16,7 @@
     <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js">
     </script>
     <script src="/assets/js/tatami/tatami.constants.js"></script>
+    <script src="/assets/js/tatami/tatami.mobile.js"></script>
 
     <style>
         .ui-li-desc {
@@ -34,9 +35,25 @@
         </h3>
     </div>
     <div data-role="content">
-        <ul id="tweetList" data-role="listview">
-        </ul>
+        <div data-role="collapsible" >
+            <h3>Send </h3>
+
+            <div>
+                <textarea id="tweetText" placeholder="tweet me">
+                </textarea>
+                <input type="submit" value="Tweet" onclick="sendTweet()"/>
+
+            </div>
+        </div>
+        <br/>
+
+        <div>
+            <ul id="tweetList" data-role="listview">
+            </ul>
+        </div>
+
     </div>
+
     <div data-theme="a" data-role="footer" data-position="fixed">
         <div data-role="navbar" data-iconpos="top">
             <ul>
@@ -90,13 +107,6 @@
 
     var login = "<sec:authentication property="principal.username"/>";
 
-    $(document).bind("mobileinit", function () {
-        $.mobile.defaultPageTransition = 'none';
-        $.mobile.defaultDialogTransition = 'none';
-        $.mobile.useFastClick = true;
-    });
-
-
     $(function () {
 
         refreshTweet();
@@ -104,58 +114,8 @@
 
     });
 
-    function refreshTweet() {
-        jQuery.ajax({
-            type:GET_TYPE_REQUEST,
-            url:"rest/tweets/" + login + "/" + DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY,
-            dataType:JSON_DATA_TYPE,
-            success:function (data) {
-
-                $("#tweetList").empty();
-                $.each(data, function (entryIndex, entry) {
-                    var line = '<li class="ui-li-desc">' +
-                            '<a href="#">' +
-                            '<img src="http://www.gravatar.com/avatar/' + entry["gravatar"] + '"/>' +
-                            '' + entry["content"] + '' +
-                            '</a>' +
-                            '</li>';
-                    $("#tweetList").append(line);
-
-                });
-                $("#tweetList").listview("refresh")
-            },
-            error:function (jqXHR, textStatus, errorThrown) {
-                alert("error");
-            }
-
-        });
-    }
-
-    function listFavorite() {
-        $.ajax({
-            type:GET_TYPE_REQUEST,
-            url:"rest/favTweets/" + login,
-            dataType:JSON_DATA_TYPE,
-            success:function (data) {
-
-                $("#favoritesTweet").empty();
-                $.each(data, function (entryIndex, entry) {
-                    var line = '<li class="ui-li-desc">' +
-                            '<a href="#">' +
-                            '<img src="http://www.gravatar.com/avatar/' + entry["gravatar"] + '"/>' +
-                            '' + entry["content"] + '' +
-                            '</a>' +
-                            '</li>';
-                    $("#favoritesTweet").append(line);
-
-                });
-                $("#favoritesTweet").listview("refresh")
-            },
-            error:function (jqXHR, textStatus, errorThrown) {
-                alert("error");
-            }
-
-        });
+    function sendTweet() {
+        postTheTweet($('#tweetText').val());
     }
 
 
