@@ -40,11 +40,11 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 		indexService.addTweet(tweet1);
 		indexService.addTweet(tweet2);
 
-		final List<String> ids = indexService.searchTweets("texte riche pouvant être ecrit en francais");
+		final List<String> ids = indexService.searchTweets("trying out Elastic Search");
 
 		assertNotNull(ids); // not null
 		assertEquals(1, ids.size()); // only one match if everything is ok
-		assertEquals("1234-4567-8988", ids.get(0)); // should be the second tweet
+		assertEquals("3333g-gggg-gggg-gggg", ids.get(0)); // should be the second tweet
 	}
 
 }
