@@ -80,7 +80,7 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 		List<String> similarsUsers = indexService.searchSimilarUsers("user");
 
 		// verify
-		assertThat(similarsUsers.size(), is(5));
+		assertThat(similarsUsers.size(), is(2));
 	}
 
 }
