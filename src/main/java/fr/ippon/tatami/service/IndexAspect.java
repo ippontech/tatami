@@ -50,43 +50,54 @@ public class IndexAspect {
 
     @Around("execution(* fr.ippon.tatami.service.UserService.createUser(..))")
 	public Object addUserToIndex(ProceedingJoinPoint pjp) throws Throwable {
-		log.debug("--------------> adding an user to the index..."+pjp.toString());
-		Object p = pjp.proceed();
-		if (p != null) {
-			User user = (User) p;
-			log.debug("adding a user to the index... " + user.getLogin());
-			indexService.addUser(user);
+    	log.debug("creating an user to the index...");
+    	
+    	if(null!=pjp.getArgs()){
+			for(Object o : pjp.getArgs()){
+				
+				User user = (User) o;
+				log.debug("--------------> adding a user to the index... " + user.getLogin());
+				indexService.addUser(user);
+				
+			}
 		}
 		
+		Object p = pjp.proceed();
 		return p;
 	}
     
     @Around("execution(* fr.ippon.tatami.service.UserService.updateUser(..))")
    	public Object updateUserToIndex(ProceedingJoinPoint pjp) throws Throwable {
    		log.debug("updating an user to the index...");
-   		Object p = pjp.proceed();
    		
-   		if (p != null) {
-			User user = (User) p;
-			log.debug("updating a user to the index... " + user.getLogin());
-			indexService.removeUser(user);
-			indexService.addUser(user);
+   		if(null!=pjp.getArgs()){
+			for(Object o : pjp.getArgs()){
+				
+				User user = (User) o;
+				log.debug("--------------> updating a user to the index... " + user.getLogin());
+				indexService.removeUser(user);
+				indexService.addUser(user);
+			}
 		}
    		
+   		Object p = pjp.proceed();
    		return p;
    	}
     
     @Around("execution(* fr.ippon.tatami.service.UserService.removeUser(..))")
    	public Object removeUserToIndex(ProceedingJoinPoint pjp) throws Throwable {
    		log.debug("removing an user to the index...");
-   		Object p = pjp.proceed();
    		
-   		if (p != null) {
-			User user = (User) p;
-			log.debug("removing a user to the index... " + user.getLogin());
-			indexService.removeUser(user);
+   		if(null!=pjp.getArgs()){
+			for(Object o : pjp.getArgs()){
+				
+				User user = (User) o;
+				log.debug("--------------> removing a user to the index... " + user.getLogin());
+				indexService.removeUser(user);
+			}
 		}
    		
+   		Object p = pjp.proceed();
    		return p;
    	}
 }

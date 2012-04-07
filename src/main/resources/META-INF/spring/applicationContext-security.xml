@@ -59,6 +59,9 @@
         <security:user name="user10" password="password" authorities="ROLE_USER"/>
         <security:user name="user11" password="password" authorities="ROLE_USER"/>
         <security:user name="user12" password="password" authorities="ROLE_USER"/>
+        <security:user name="user13" password="password" authorities="ROLE_USER"/>
+        <security:user name="user14" password="password" authorities="ROLE_USER"/>
+        <security:user name="user15" password="password" authorities="ROLE_USER"/>
     </security:user-service>
     
     <!-- Aspect to manage index content life cycle -->
