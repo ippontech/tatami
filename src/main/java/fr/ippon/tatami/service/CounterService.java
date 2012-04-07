@@ -20,8 +20,4 @@ public class CounterService {
     public long getFriendsCounter(String login){
     	return counterRepository.getFriendsCounter(login);
     }
-    
-    public String getTheMostPopularUser(){
-    	return counterRepository.getTheMostPopularUser();
-    }
 }

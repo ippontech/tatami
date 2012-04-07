@@ -177,16 +177,3 @@ function searchUsersPossibilities(suggest, login){
         }
 	});
 }
-
-function getByAjaxTheMostPopularUser(suggest){
-	$.ajax({
-		type: GET_TYPE_REQUEST,
-		url: "rest/counters/theMostPopularUser",
-		dataType: JSON_DATA_TYPE,
-        success: function(data) {
-        	if(null!=data && data.length >0) {
-        		suggest.append("The Most Popular User is : "+data)
-			}
-        }
-	});
-}
