@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Configuration
 @PropertySource("classpath:/META-INF/tatami/tatami.properties")
-@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service"})
+@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
 @Import(value = {CacheConfiguration.class, CassandraConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationConfiguration {

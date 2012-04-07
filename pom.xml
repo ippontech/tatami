@@ -46,20 +46,6 @@
 			<artifactId>httpcore</artifactId>
 			<version>4.1</version>
 		</dependency>
-		<dependency>
-		  <groupId>org.aspectj</groupId>
-		  <artifactId>aspectjrt</artifactId>
-		  <version>${aspectj.version}</version>
-		  <type>jar</type>
-		  <scope>compile</scope>
-		</dependency>
-		<dependency>
-		  <groupId>org.aspectj</groupId>
-		  <artifactId>aspectjweaver</artifactId>
-		  <version>${aspectj.version}</version>
-		  <type>jar</type>
-		  <scope>compile</scope>
-		</dependency>
         <dependency>
             <groupId>me.prettyprint</groupId>
             <artifactId>hector-core</artifactId>
@@ -122,16 +108,30 @@
             <artifactId>validation-api</artifactId>
             <version>1.0.0.GA</version>
         </dependency>
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-validator</artifactId>
-		<version>4.2.0.Final</version>
-	</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>
+		</dependency>
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+	    <dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>

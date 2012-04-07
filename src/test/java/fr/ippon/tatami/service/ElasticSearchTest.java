@@ -22,7 +22,7 @@ import fr.ippon.tatami.service.IndexService;
 public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 
 	@Inject
-	private IndexService idxservice;
+	private IndexService indexService;
 
 	@Test
 	public void testSingleMatch() throws ElasticSearchException, IOException {
@@ -37,10 +37,10 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 		tweet2.setTweetId("1234-4567-8988");
 		tweet2.setLogin("dmartinpro");
 
-		idxservice.addTweet(tweet1);
-		idxservice.addTweet(tweet2);
+		indexService.addTweet(tweet1);
+		indexService.addTweet(tweet2);
 
-		final List<String> ids = idxservice.searchTweets("texte riche pouvant être ecrit en francais");
+		final List<String> ids = indexService.searchTweets("texte riche pouvant être ecrit en francais");
 
 		assertNotNull(ids); // not null
 		assertEquals(1, ids.size()); // only one match if everything is ok
