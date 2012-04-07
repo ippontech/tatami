@@ -3,15 +3,21 @@ package fr.ippon.tatami.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
+import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles2.TilesView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,10 +49,16 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
         viewResolvers.add(new BeanNameViewResolver());
+        /*
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
         internalResourceViewResolver.setPrefix("/WEB-INF/jsp/");
         internalResourceViewResolver.setSuffix(".jsp");
         viewResolvers.add(internalResourceViewResolver);
+        */
+
+        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setViewClass(TilesView.class);
+        viewResolvers.add(urlBasedViewResolver);
 
         viewResolver.setViewResolvers(viewResolvers);
 
@@ -59,5 +71,22 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     }
 
+    /**
+     * Configures Tiles at application startup.
+     */
+    @Bean
+    public TilesConfigurer tilesConfigurer() {
+        TilesConfigurer configurer = new TilesConfigurer();
+        configurer.setDefinitions(new String[] {
+                "/WEB-INF/layouts/tiles.xml"
+        });
+        configurer.setCheckRefresh(true);
+        return configurer;
+    }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new DeviceResolverHandlerInterceptor());
+        registry.addInterceptor(new SitePreferenceHandlerInterceptor());
+    }
 }
