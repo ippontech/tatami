@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,7 +63,7 @@ public class UserController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
+    public void updateUser(@PathVariable("login") String login, @RequestBody User user)  throws ConstraintViolationException, IllegalArgumentException {
         if (log.isDebugEnabled()) {
             log.debug("REST request to update user : " + login);
         }
@@ -77,8 +78,6 @@ public class UserController {
         }else{
         	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
         }
-        /*user.setLogin(login);
-        userService.updateUser(user);*/
     }
 
     @RequestMapping(value = "/rest/users/{login}/followUser",

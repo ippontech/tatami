@@ -47,7 +47,7 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user)  throws ConstraintViolationException, IllegalArgumentException {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);
         }

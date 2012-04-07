@@ -3,6 +3,7 @@ package fr.ippon.tatami.service;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,9 +44,6 @@ public class UserService {
     @Inject
     private AuthenticationService authenticationService;
     
-    /*@Inject
-    private IndexService indexService;*/
-
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Looking for user with login : " + login);
@@ -63,13 +61,11 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user)  throws ConstraintViolationException, IllegalArgumentException{
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
             userRepository.updateUser(user);
-            /*indexService.removeUser(user);
-            indexService.addUser(user);*/
         } else {
             log.info("Security alert : user " + currentUser.getLogin() +
                     " tried to update user " + user);
@@ -82,7 +78,6 @@ public class UserService {
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
-        //indexService.addUser(user);
     }
 
     public void followUser(String loginToFollow) {

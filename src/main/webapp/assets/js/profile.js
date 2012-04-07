@@ -15,6 +15,7 @@ $.fn.serializeObject = function() {
 };
 
 function updateProfile() {
+	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login,
@@ -22,8 +23,12 @@ function updateProfile() {
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
 		success: setTimeout(function() {
-				$('#defaultTab').tab('show');
-			}, 1000)	//DEBUG wait for persistence consistency
+			$('#defaultTab').tab('show');
+			$profileFormErrors.empty();
+		}, 1000)	//DEBUG wait for persistence consistency
+		error: function(jqXHR, textStatus, errorThrown){
+	       	$profileFormErrors.empty().append(errorThrown);
+	    }	
 	});
 	return false;	// no page refresh
 }
