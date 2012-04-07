@@ -59,6 +59,7 @@
     <security:user-service id="userDetailsService">
         <security:user name="jdubois" password="password" authorities="ROLE_USER"/>
         <security:user name="tescolan" password="password" authorities="ROLE_USER"/>
+        <security:user name="fdescamps" password="password" authorities="ROLE_USER"/>
         <security:user name="user1" password="password" authorities="ROLE_USER"/>
         <security:user name="user2" password="password" authorities="ROLE_USER"/>
         <security:user name="user3" password="password" authorities="ROLE_USER"/>
@@ -69,6 +70,8 @@
         <security:user name="user8" password="password" authorities="ROLE_USER"/>
         <security:user name="user9" password="password" authorities="ROLE_USER"/>
         <security:user name="user10" password="password" authorities="ROLE_USER"/>
+        <security:user name="user11" password="password" authorities="ROLE_USER"/>
+        <security:user name="user12" password="password" authorities="ROLE_USER"/>
     </security:user-service>
     
     <!-- Aspect to manage index content life cycle -->
