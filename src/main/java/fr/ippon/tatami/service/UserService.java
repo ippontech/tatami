@@ -43,8 +43,8 @@ public class UserService {
     @Inject
     private AuthenticationService authenticationService;
     
-    @Inject
-    private IndexService indexService;
+    /*@Inject
+    private IndexService indexService;*/
 
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
@@ -68,8 +68,8 @@ public class UserService {
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
             userRepository.updateUser(user);
-            indexService.removeUser(user);
-            indexService.addUser(user);
+            /*indexService.removeUser(user);
+            indexService.addUser(user);*/
         } else {
             log.info("Security alert : user " + currentUser.getLogin() +
                     " tried to update user " + user);
@@ -82,7 +82,7 @@ public class UserService {
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
-        indexService.addUser(user);
+        //indexService.addUser(user);
     }
 
     public void followUser(String loginToFollow) {
