@@ -11,9 +11,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.hector.api.Keyspace;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
@@ -30,11 +27,6 @@ import fr.ippon.tatami.repository.UserRepository;
 public class CassandraUserRepository implements UserRepository {
 
     private final Log log = LogFactory.getLog(CassandraUserRepository.class);
-    
-    private final StringSerializer stringSerializer = StringSerializer.get();
-    
-    @Inject
-    private Keyspace keyspaceOperator;
     
     @Inject
     private EntityManager em;

@@ -214,7 +214,6 @@ public class IndexService {
 		Assert.notNull(query, "query can't be null");
 		
 		final QueryBuilder qb = QueryBuilders.prefixQuery("_all", query);
-		//final QueryBuilder qb = QueryBuilders.textQuery("_all", query);
 		final SearchResponse searchResponse = client.prepareSearch("tatami")
 		        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 		        .setQuery(qb)
