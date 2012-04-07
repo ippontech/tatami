@@ -160,6 +160,6 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get users possibilites for a suggestion : " + login);
         }
-        return indexService.searchUsers(login);
+        return indexService.searchSimilarUsers(login);
     }
 }

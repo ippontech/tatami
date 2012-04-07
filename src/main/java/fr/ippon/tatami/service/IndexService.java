@@ -209,11 +209,11 @@ public class IndexService {
 	 * @return a List of users' ids
 	 */
 	public List<String> searchSimilarUsers(final String query) {
-		
-		//SpanTermQuery
+
 		Assert.notNull(query, "query can't be null");
 		
 		final QueryBuilder qb = QueryBuilders.prefixQuery("_all", query);
+		
 		final SearchResponse searchResponse = client.prepareSearch("tatami")
 		        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 		        .setQuery(qb)
