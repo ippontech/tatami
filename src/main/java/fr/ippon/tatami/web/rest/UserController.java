@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 
@@ -37,6 +38,9 @@ public class UserController {
 
     @Inject
     private UserService userService;
+    
+    @Inject
+    private IndexService indexService;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -156,6 +160,6 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get users possibilites for a suggestion : " + login);
         }
-        return userService.getSimilarUsers(login);
+        return indexService.searchUsers(login);
     }
 }

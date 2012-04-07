@@ -202,5 +202,39 @@ public class IndexService {
 
 		return users;
 	}
+	
+	/**
+	 * Search for who the login starts the semae
+	 * @param query the query to look for
+	 * @return a List of users' ids
+	 */
+	public List<String> searchSimilarUsers(final String query) {
+		
+		//SpanTermQuery
+		Assert.notNull(query, "query can't be null");
+		
+		final QueryBuilder qb = QueryBuilders.prefixQuery("_all", query);
+		//final QueryBuilder qb = QueryBuilders.textQuery("_all", query);
+		final SearchResponse searchResponse = client.prepareSearch("tatami")
+		        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+		        .setQuery(qb)
+		        .setFrom(0).setSize(60).setExplain(true)
+		        .execute()
+		        .actionGet();
+
+		final SearchHits searchHits = searchResponse.getHits();
+		final Long hitsNumber = searchResponse.getHits().getTotalHits();
+		if (hitsNumber == 0) {
+			return new ArrayList<String>(0);
+		}
+
+		final SearchHit[] searchHitsArray = searchHits.getHits();
+		final List<String> users = new ArrayList<String>(hitsNumber.intValue());
+		for (int i = 0; i < searchHitsArray.length; i++) {
+			users.add(searchHitsArray[i].getId());
+		}
+
+		return users;
+	}
 
 }

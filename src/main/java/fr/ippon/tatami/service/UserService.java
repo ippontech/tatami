@@ -148,8 +148,4 @@ public class UserService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-    
-    public List<String> getSimilarUsers(String login) {
-        return userRepository.getSimilarUsers(login);
-    }
 }
