@@ -13,7 +13,7 @@
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
         <aspectj.version>1.6.11</aspectj.version>
-        <slf4j.version>1.6.4</slf4j.version>
+        <slf4j.version>1.5.8</slf4j.version>
     </properties>
     <repositories>
 		<repository>
@@ -216,6 +216,28 @@
 		  	<artifactId>jsoup</artifactId>
 		  	<version>1.6.2</version>
 		</dependency>
+        <!-- Apache Tiles -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-el</artifactId>
+            <version>2.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.mobile</groupId>
+            <artifactId>spring-mobile-device</artifactId>
+            <version>1.0.0.RC1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>tatami</finalName>
@@ -279,4 +301,11 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>org.springframework.maven.milestone</id>
+            <name>Spring Maven Milestone Repository</name>
+            <url>http://maven.springframework.org/milestone</url>
+        </repository>
+    </repositories>
 </project>
