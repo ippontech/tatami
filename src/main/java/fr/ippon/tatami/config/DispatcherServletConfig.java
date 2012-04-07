@@ -34,12 +34,10 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/about").setViewName("about");
-
     }
 
     @Bean
     public ViewResolver ContentNegotiatingViewResolver() {
-
         ContentNegotiatingViewResolver viewResolver = new ContentNegotiatingViewResolver();
 
         Map<String, String> mediaTypes = new HashMap<String, String>();
@@ -49,12 +47,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
         viewResolvers.add(new BeanNameViewResolver());
-        /*
-        InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-        internalResourceViewResolver.setPrefix("/WEB-INF/jsp/");
-        internalResourceViewResolver.setSuffix(".jsp");
-        viewResolvers.add(internalResourceViewResolver);
-        */
 
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
         urlBasedViewResolver.setViewClass(TilesView.class);
@@ -66,9 +58,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         defaultViews.add(new MappingJacksonJsonView());
         viewResolver.setDefaultViews(defaultViews);
 
-
         return viewResolver;
-
     }
 
     /**
