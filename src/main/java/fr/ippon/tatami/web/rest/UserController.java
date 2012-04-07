@@ -74,7 +74,11 @@ public class UserController {
             user.setEmail(Jsoup.clean(user.getEmail(), Whitelist.basic()));
             user.setFirstName(Jsoup.clean(user.getFirstName(), Whitelist.basic()));
             user.setLastName(Jsoup.clean(user.getLastName(), Whitelist.basic()));
-            userService.updateUser(user);
+            try{
+            	userService.updateUser(user);
+            }catch(ConstraintViolationException cve ){
+            	throw new IllegalArgumentException("Illegal Argument : One of the data in under an invalid format.");
+            }
         }else{
         	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
         }

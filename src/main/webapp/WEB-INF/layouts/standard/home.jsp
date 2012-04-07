@@ -56,7 +56,7 @@
 				<div class="tabbable">
                     <ul class="nav nav-tabs">
 						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
-						<li><a href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
+						<li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
 					</ul>
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>

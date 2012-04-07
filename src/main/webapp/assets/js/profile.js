@@ -23,12 +23,13 @@ function updateProfile() {
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
 		success: setTimeout(function() {
-			$('#defaultTab').tab('show');
 			$profileFormErrors.empty();
-		}, 1000)	//DEBUG wait for persistence consistency
-		error: function(jqXHR, textStatus, errorThrown){
+			$('#defaultTab').tab('show');
+		}, 1000),	//DEBUG wait for persistence consistency
+		error: setTimeout(function(jqXHR, textStatus, errorThrown){
 	       	$profileFormErrors.empty().append(errorThrown);
-	    }	
+	       	$('#updateProfilTab').tab('show');
+	    }, 1000)
 	});
 	return false;	// no page refresh
 }
