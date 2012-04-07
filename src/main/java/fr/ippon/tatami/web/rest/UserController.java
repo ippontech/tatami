@@ -9,6 +9,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,8 +66,19 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to update user : " + login);
         }
-        user.setLogin(login);
-        userService.updateUser(user);
+        
+        String cleanedContent = Jsoup.clean(login, Whitelist.basic());
+        if(null!=login && login.equals(cleanedContent)){
+        	user.setLogin(login);
+            user.setEmail(Jsoup.clean(user.getEmail(), Whitelist.basic()));
+            user.setFirstName(Jsoup.clean(user.getFirstName(), Whitelist.basic()));
+            user.setLastName(Jsoup.clean(user.getLastName(), Whitelist.basic()));
+            userService.updateUser(user);
+        }else{
+        	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
+        }
+        /*user.setLogin(login);
+        userService.updateUser(user);*/
     }
 
     @RequestMapping(value = "/rest/users/{login}/followUser",

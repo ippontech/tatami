@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * A user.
@@ -19,11 +20,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "User")
 public class User {
 
+	@SafeHtml
 	@NotEmpty(message="Login is mandatory.")
 	@NotNull(message="Login is mandatory.")
     @Id
     private String login;
 
+	@SafeHtml
 	@Email(message="Email is invalid.")
     @Column(name = "email")
     private String email;
@@ -31,12 +34,14 @@ public class User {
     @Column(name = "gravatar")
     private String gravatar;
 
+    @SafeHtml
     @NotNull
     @NotEmpty(message="First Name field is mandatory.")
     @Size(min=1, max=16)
     @Column(name = "firstName")
     private String firstName;
 
+    @SafeHtml
     @NotNull
     @NotEmpty(message="Last field is mandatory.")
     @Size(min=1, max=16)
