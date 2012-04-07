@@ -1,5 +1,7 @@
 package fr.ippon.tatami.service;
 
+import java.util.List;
+
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -180,6 +182,36 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         /* verify */
         User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");
         assertThat(userWhoWantToForget.getFriendsCount(), is(0L));
+    }
+    
+    @Test
+    public void shouldFindSimilarUsers(){
+    	mockAuthenticationOnUserServiceWithACurrentUser("userWhoShouldBeFoundBySimilarSearch", "userWhoShouldBeFoundBySimilarSearch@ippon.fr");
+    	
+    	List<String> similarsUsers = userService.getSimilarUsers("user");
+    	
+    	// verify
+        assertThat(similarsUsers, notNullValue());
+    }
+    
+    @Test
+    public void shouldFindAOnlySimilarUser(){
+    	mockAuthenticationOnUserServiceWithACurrentUser("userWhoShouldBeFoundBySimilarSearch", "userWhoShouldBeFoundBySimilarSearch@ippon.fr");
+    	
+    	List<String> similarsUsers = userService.getSimilarUsers("userWhoShouldBeFoundBySimilarSearch");
+    	
+    	// verify
+        assertThat(similarsUsers.size(), is(1));
+    }
+    
+    @Test
+    public void shouldFindAllUsersWithUserStartingWithUser(){
+    	mockAuthenticationOnUserServiceWithACurrentUser("userWhoShouldBeFoundBySimilarSearch", "userWhoShouldBeFoundBySimilarSearch@ippon.fr");
+    	
+    	List<String> similarsUsers = userService.getSimilarUsers("user");
+    	
+    	// verify
+        assertThat(similarsUsers.size(), is(10));
     }
 
     private void mockAuthenticationOnUserServiceWithACurrentUser(String login, String email) {

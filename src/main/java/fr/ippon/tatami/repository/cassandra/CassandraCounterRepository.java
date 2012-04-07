@@ -1,20 +1,28 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.repository.CounterRepository;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
+
+import javax.inject.Inject;
+
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.HCounterColumn;
+import me.prettyprint.hector.api.beans.OrderedRows;
+import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
+import me.prettyprint.hector.api.query.QueryResult;
+import me.prettyprint.hector.api.query.RangeSlicesQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
+import fr.ippon.tatami.repository.CounterRepository;
 
 /**
  * Cassandra implementation of the Follower repository.
@@ -23,13 +31,16 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
  */
 @Repository
 public class CassandraCounterRepository implements CounterRepository {
+	
+	private static final StringSerializer stringSerializer 			= StringSerializer.get();
+	
 
-    private static final String TWEET_COUNTER = "TWEET_COUNTER";
+	private static final String TWEET_COUNTER 		= "TWEET_COUNTER";
 
-    private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
+    private static final String FOLLOWERS_COUNTER 	= "FOLLOWERS_COUNTER";
 
-    private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
-
+    private static final String FRIENDS_COUNTER 	= "FRIENDS_COUNTER";
+    
     private final Log log = LogFactory.getLog(CassandraCounterRepository.class);
 
     @Inject
@@ -94,6 +105,64 @@ public class CassandraCounterRepository implements CounterRepository {
     public void createTweetCounter(String login) {
         createCounter(TWEET_COUNTER, login);
     }
+    
+    @Override
+   public String getTheMostPopularUser(){
+    	
+    	/*long nbFriends = 0L;
+    	long maxFriends = 0L;
+    	String mostPopularUser = null;
+    	
+    	RangeSlicesQuery<String, String, String> query = buildQueryToRetrieveAllCounters();
+		
+		QueryResult<OrderedRows<String, String, String>> result = query.execute();
+		
+		if(null!=result){
+			Rows<String, String, String> orderedRows = result.get();
+			if(null!=orderedRows && orderedRows.getCount()>0){
+				String key = null;
+				for (Row<String, String, String> row : orderedRows) {
+					key = row.getKey();
+					
+					CounterQuery<String, String> counterQuery = buildQueryToRetrieveFriendsCounter(key);
+					
+					QueryResult<HCounterColumn<String>> r = counterQuery.execute();
+					
+					if(null!=r && null!=r.get() && null!=r.get().getValue()){
+						nbFriends = r.get().getValue();
+						if(nbFriends>maxFriends){
+							maxFriends=nbFriends;
+							mostPopularUser = key;
+						}
+					}
+				}
+			}
+		}
+    	
+    	return mostPopularUser;*/
+    	return "jdubois";
+    }
+
+	private CounterQuery<String, String> buildQueryToRetrieveFriendsCounter(
+			String key) {
+		CounterQuery<String,String> counterQuery = 
+				HFactory.createCounterColumnQuery(keyspaceOperator, stringSerializer, stringSerializer);
+
+		counterQuery.setColumnFamily(COUNTER_CF);
+		counterQuery.setName(FRIENDS_COUNTER);
+		counterQuery.setKey(key);
+		return counterQuery;
+	}
+
+	private RangeSlicesQuery<String, String, String> buildQueryToRetrieveAllCounters() {
+		RangeSlicesQuery<String, String, String> query = 
+				HFactory.createRangeSlicesQuery(keyspaceOperator, stringSerializer, stringSerializer, stringSerializer);
+		
+		query.setColumnFamily(COUNTER_CF);
+		query.setReturnKeysOnly();
+		query.setKeys(null, null);
+		return query;
+	}
 
     private void createCounter(String counterName, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());

@@ -30,4 +30,6 @@ public interface CounterRepository {
     void createFriendsCounter(String login);
 
     void createTweetCounter(String login);
+    
+    String getTheMostPopularUser();
 }

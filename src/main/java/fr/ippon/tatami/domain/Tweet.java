@@ -1,16 +1,20 @@
 package fr.ippon.tatami.domain;
 
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Calendar;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
  * A user.
@@ -40,9 +44,13 @@ public class Tweet {
     @Id
     private String tweetId;
 
+    @NotNull
     @Column(name = "login")
     private String login;
 
+    @NotNull
+    @NotEmpty(message="Content field is mandatory.")
+    @Size(min=1, max=140)
     @Column(name = "content")
     private String content;
 

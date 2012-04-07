@@ -112,3 +112,19 @@ function removeTweet(tweet) {
 function addFavoriteTweet(tweet) {
 	addATweetToMyFavorites(tweet, $('#favTab'));
 }
+
+function searchUsers(login) {
+	var $suggest = $('#usersSuggestions');
+	if(login.length <= 3){
+		$suggest.hide();
+	} else {
+		searchUsersPossibilities($suggest, login);
+	}
+}
+
+function getTheMostPopularUser(){
+	var $suggest = $('#suggestions');
+	if($suggest.length>0){
+		getByAjaxTheMostPopularUser($suggest);
+	}
+}

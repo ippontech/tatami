@@ -36,3 +36,13 @@ function makeWhoToFollowList(data) {
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });
 }
+
+function addLineToList(dest, content){
+	dest.append('<li>' + content + '</li>');
+}
+
+function buildList(dest, array){
+	$.each(array, function(i,user){
+		addLineToList(dest, user);
+    });
+}
