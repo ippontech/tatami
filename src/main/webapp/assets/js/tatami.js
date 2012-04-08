@@ -67,12 +67,9 @@ function initTatami() {
 }
 
 function initTatamiProfile(login) {
-	alert(login);
-	/*
-	displayUserInformations($("#userPicture"), $('#userProfileDesc'), login);
 	$('#userTimeline').load('/assets/fragments/timeline.html', function() {
         listTweetsForAnUser(login, true);
-    });*/
+    });
 }
 
 function tweet() {
@@ -85,7 +82,7 @@ function tweet() {
 
 function listTweetsForAnUser(login, reset) {    
 	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
-	displayTweets(login, nbTweetsToDisplay, $('#tweetsList'), $('#userTimeline'));
+	displayTweetsForAnUser(login, nbTweetsToDisplay, $('#tweetsList'), $('#userTimeline'));
 }
 
 function listTweets(reset) {    

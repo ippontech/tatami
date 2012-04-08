@@ -148,4 +148,31 @@ public class UserService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+    
+    public boolean isFollowed(String login){
+    	if (log.isDebugEnabled()) {
+            log.debug("Retrieving if you follow this user : " + login);
+        }
+    	boolean isFollowed = false;
+    	User user = getCurrentUser();
+    	if(null!=user  && !login.equals(user.getLogin())){
+    		Collection<String> users = findFollowersForUser(login);
+    		if(null!=users && users.size()>0){
+    			for(String anUser : users){
+    				if(anUser.equals(login)){
+    					isFollowed = true;
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	return isFollowed;
+    }
+    
+    public Collection<String> findFollowersForUser(String login){
+    	  if (log.isDebugEnabled()) {
+              log.debug("Retrieving followed users : " + login);
+          }
+    	  return followerRepository.findFollowersForUser(login);
+    }
 }

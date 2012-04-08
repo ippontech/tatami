@@ -22,13 +22,25 @@ function postTheTweet(tweet) {
     });
 }
 
+function displayTweetsForAnUser(login, nbTweets, tweetsList, mainTab) {
+	$.ajax({
+        type: GET_TYPE_REQUEST,
+        url: "/tatami/rest/tweets/" + login + "/" + nbTweets,
+        dataType: JSON_DATA_TYPE,
+        success: function(data) {
+            makeTweetsList(data, tweetsList, true, false, true, login);
+            mainTab.tab(SHOW_EFFECT);
+        }
+    });
+}
+
 function displayTweets(login, nbTweets, tweetsList, mainTab) {
 	$.ajax({
         type: GET_TYPE_REQUEST,
         url: "rest/tweets/" + login + "/" + nbTweets,
         dataType: JSON_DATA_TYPE,
         success: function(data) {
-            makeTweetsList(data, tweetsList, true, false, true);
+            makeTweetsList(data, tweetsList, true, false, true, login);
             mainTab.tab(SHOW_EFFECT);
         }
     });
@@ -40,7 +52,7 @@ function displayFavoriteTweets(favTweetsList) {
         url: "rest/favTweets/" + login,
         dataType: JSON_DATA_TYPE,
         success: function(data) {
-            makeTweetsList(data, favTweetsList, true, true, false);
+            makeTweetsList(data, favTweetsList, true, true, false, login);
         }
     });
 }

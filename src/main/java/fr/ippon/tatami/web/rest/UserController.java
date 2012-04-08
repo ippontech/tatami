@@ -49,13 +49,6 @@ public class UserController {
     @Inject
     private AuthenticationService authenticationService;
 
-    
-    
-    
-    
-    
-    
-    
     @RequestMapping(value = "/profile/{login}",
             method = RequestMethod.GET)
     @ResponseBody
@@ -66,15 +59,9 @@ public class UserController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("profile");
         mav.addObject("user", userService.getUserProfileByLogin(login));
+        mav.addObject("followed", userService.isFollowed(login));
         return mav;
     }
-    
-    
-    
-    
-    
-    
-    
     
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,

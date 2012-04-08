@@ -47,3 +47,23 @@ section#followline ul#usersSuggestions li {
 section#followline ul#usersSuggestions li:hover {
     color: 				#555555;
 }
+
+div#userProfile{
+    margin: 		0 auto;
+    min-height: 	100%;
+    padding: 		14px 14px 10px;
+    position: 		relative;
+    width: 			837px;
+}
+
+div#userProfileDesc{
+	 background-color: 	#F9F9F9;
+	 border:			1px solid #DDDDDD;
+	 border-radius: 	5px;
+	 padding:			5px;
+}
+
+UL#profileStats{
+	padding:			15px 5px;
+	list-style-type:	none;
+}
