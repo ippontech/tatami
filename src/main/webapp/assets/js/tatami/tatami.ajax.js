@@ -177,3 +177,16 @@ function searchUsersPossibilities(suggest, login){
         }
 	});
 }
+
+function getUserProfile(login){
+	$.ajax({
+		type: GET_TYPE_REQUEST,
+		url: "user/"+login,
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	if(null!=data && data.length >0) {
+        		alert(data.login);
+			}
+        }
+	});
+}
