@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>Tatami - Authentication</title>
+	<title><spring:message code="tatami.title" /> - Authentication</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -35,11 +35,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
+				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#"><i class="icon-lock icon-white"></i> Login</a></li>
-						<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
+						<li class="active"><a href="#"><i class="icon-lock icon-white"></i>&nbsp;<spring:message code="tatami.login" /></a></li>
+						<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message code="tatami.about" /></a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>

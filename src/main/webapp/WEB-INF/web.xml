@@ -23,7 +23,7 @@
     
     <error-page>
 	    <error-code>404</error-code>
-	    <location>/httpError.jsp</location>
+	    <location>/WEB-INF/layouts/standard/httpError.jsp</location>
 	</error-page>
     
 </web-app>
