@@ -109,10 +109,10 @@
 		</div>
 		
 		<footer>
-	        <div style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
-	            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
-	            <a href="http://blog.ippon.fr">Blog Ippon</a> |
-	            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+	        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+	            <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
+	            <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
+	            <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
 	        </div>
 	    </footer>
 
