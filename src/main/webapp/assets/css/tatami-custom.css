@@ -63,7 +63,24 @@ div#userProfileDesc{
 	 padding:			5px;
 }
 
-UL#profileStats{
+ul#profileStats{
 	padding:			15px 5px;
 	list-style-type:	none;
+	font-family: 		"HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:			1.2em;
+	font-weight:		400;
+	font-style:			normal;
+	font-size-adjust:	none;
+	color:				#999999;
+	text-transform: 	uppercase;
+}
+
+ul#profileStats li.bottomline strong{
+	 color:				#333333;
+}
+
+ul#profileStats li.bottomline{
+	 margin-top:		5px;
+	 border-bottom:		1px solid #DDDDDD;
+	 line-height:		24px;
 }

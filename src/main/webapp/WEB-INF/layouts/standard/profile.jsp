@@ -1,5 +1,6 @@
-<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="c" 	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"		uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" 	uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +42,7 @@
 						<ul class="nav">
 							<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
 	                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
+	                        <!-- <li><a href="?language=en"> English</a>|<a href="?language=fr"> Francais</a></li> -->
 						</ul>
 						<ul class="nav pull-right">
 							<li class="divider-vertical"></li>
@@ -52,37 +54,58 @@
 		</div>
 	
 		<div class="container-fluid" id="userProfile">
-			<div id="userProfileDesc" class="row-fluid">
-				<div class="span2">
-					<img id="userPicture" src="http://www.gravatar.com/avatar/${user.gravatar}/>?s=128" rel="popover"/>
-				</div>
-				<div class="span7">
-					<h1>${user.firstName}&nbsp;${user.lastName}</h1>
-					<span><a href="<%=request.getContextPath()%>/tatami/profile/${user.login}" title="${user.firstName}&nbsp;${user.lastName}">@${user.login}</a></span>
-				</div>
-				<div class="span3">
-					<ul id="profileStats">
-						<c:choose>
-							<c:when test="${not empty followed && followed}">
-								<li>
-									<a href="rest/users/${user.login}/followUser" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
+			<c:choose>
+				<c:when test="${not empty user}">
+					
+					<div id="userProfileDesc" class="row-fluid">
+						<div class="span2">
+							<img id="userPicture" src="http://www.gravatar.com/avatar/${user.gravatar}/>?s=128" rel="popover"/>
+						</div>
+						<div class="span7">
+							<h1>${user.firstName}&nbsp;${user.lastName}</h1>
+							<span><a href="<%=request.getContextPath()%>/tatami/profile/${user.login}" title="${user.firstName}&nbsp;${user.lastName}">@${user.login}</a></span>
+						</div>
+						<div class="span3">
+							<ul id="profileStats">
+								<c:choose>
+									<c:when test="${not empty followed && followed}">
+										<li>
+											<a href="rest/users/${user.login}/followUser" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li>
+											<a href="#" class="btn btn-success" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+								<li class="bottomline">
+									<strong>1&nbsp;305&nbsp;</strong>&nbsp;Tweets
 								</li>
-							</c:when>
-							<c:otherwise>
-								<li>
-									<a href="#" class="btn btn-success" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
-								</li>
-							</c:otherwise>
-						</c:choose>
-						
-						<li>1&nbsp;305&nbsp;Tweets</li>
-	    				<li>151&nbsp;Abonnements</li>
-	    				<li>810&nbsp;Abonn&eacute;s</li>
-					</ul>
-				</div>
-			</div>
-			<div id="userTimeline" class="row-fluid">
-			</div>
+			    				<li class="bottomline">
+			    					<strong>151&nbsp;</strong>&nbsp;Abonnements
+			    				</li>
+			    				<li class="bottomline">
+			    					<strong>810&nbsp;</strong>&nbsp;Abonn&eacute;s
+			    				</li>
+							</ul>
+						</div>
+					</div>
+					<div id="userTimeline" class="row-fluid">
+					</div>
+					
+				</c:when>
+				<c:otherwise>
+					
+					<div class="row-fluid">
+						<a href="#" title="404">
+							<img src="${request.getContextPath}/assets/img/judoka_prise_404.jpg"/>
+						</a>
+						<spring:message code="tatami.user.undefined" />
+					</div>
+					
+				</c:otherwise>
+			</c:choose>
 		</div>
 		
 		<footer>
