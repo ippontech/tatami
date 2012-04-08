@@ -67,10 +67,12 @@ function initTatami() {
 }
 
 function initTatamiProfile(login) {
+	alert(login);
+	/*
 	displayUserInformations($("#userPicture"), $('#userProfileDesc'), login);
 	$('#userTimeline').load('/assets/fragments/timeline.html', function() {
         listTweetsForAnUser(login, true);
-    });
+    });*/
 }
 
 function tweet() {

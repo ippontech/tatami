@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
@@ -48,6 +49,33 @@ public class UserController {
     @Inject
     private AuthenticationService authenticationService;
 
+    
+    
+    
+    
+    
+    
+    
+    @RequestMapping(value = "/profile/{login}",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView getUserProfile(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Request to get Profile : " + login);
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("profile");
+        mav.addObject("user", userService.getUserProfileByLogin(login));
+        return mav;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,
             produces = "application/json")
