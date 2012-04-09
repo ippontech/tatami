@@ -37,16 +37,11 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
+					<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
-	                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
-	                        <!-- <li><a href="?language=en"> English</a>|<a href="?language=fr"> Francais</a></li> -->
-						</ul>
-						<ul class="nav pull-right">
-							<li class="divider-vertical"></li>
-							<li><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout</a></li>
+							<li class="active"><a href="#"><i class="icon-lock icon-white"></i>&nbsp;<spring:message code="tatami.login" /></a></li>
+							<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message code="tatami.about" /></a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
