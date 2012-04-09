@@ -115,6 +115,14 @@ function removeFriend(friend) {
 	removeFriendFromMyList(login, friend);
 }
 
+function followUserFromHisProfile(login, loginToFollow) {
+	newUserToFollowFromHisProfile(loginToFollow, login, $("#followUserInput"), $('#followStatus'));
+}
+
+function removeFollowingAnUserFromHisProfile(login, friend) {
+	removeFriendFromHisProfile(login, friend);
+}
+
 function removeTweet(tweet) {
 	removeOneOfMyTweet(tweet);
 }

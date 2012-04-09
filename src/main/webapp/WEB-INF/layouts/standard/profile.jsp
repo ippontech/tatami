@@ -37,7 +37,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
+					<a class="brand" href="#"><img src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
 					<div class="nav-collapse">
 						<ul class="nav">
 							<li class="active"><a href="#"><i class="icon-home icon-white"></i>&nbsp;<spring:message code="tatami.home" /></a></li>
@@ -70,12 +70,14 @@
 								<c:choose>
 									<c:when test="${not empty followed && followed}">
 										<li>
-											<a href="rest/users/${user.login}/followUser" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
+											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
+											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li>
-											<a href="#" class="btn btn-success" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
+											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
+											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
 										</li>
 									</c:otherwise>
 								</c:choose>
@@ -140,8 +142,8 @@
 		<script type="text/javascript">
 	    	google.load("visualization", "1", {packages:["corechart"]});
 	        resetNbTweetsToDefaultNumber();
-			$(document).ready(function() {
-				var login = '<c:out value="${user.login}"/>';
+	        var login = "<sec:authentication property='principal.username'/>";
+	        $(document).ready(function() {
 				initTatamiProfile(login);
 			});
 		</script>

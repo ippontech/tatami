@@ -148,6 +148,34 @@ function removeFriendFromMyList(login, friend) {
 	});
 }
 
+function newUserToFollowFromHisProfile(loginToFollow, login, followUserInput, followStatus) {
+	$.ajax({
+		type: POST_TYPE_REQUEST,
+		url: "/tatami/rest/users/" + login + "/followUser",
+		contentType: JSON_CONTENT_TYPE,
+		data: loginToFollow,
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	$("#userProfile a#followBtn").hide();
+        	$("#userProfile a#unfollowBtn").show();
+        }
+	});
+}
+
+function removeFriendFromHisProfile(login, friend) {
+	$.ajax({
+		type: POST_TYPE_REQUEST,
+		url: "/tatami/rest/users/" + login + "/removeFriend",
+		contentType: JSON_CONTENT_TYPE,
+		data: friend,
+		dataType: JSON_DATA_TYPE,
+        success: function(data) {
+        	$("#userProfile a#followBtn").show();
+        	$("#userProfile a#unfollowBtn").hide();
+        }
+	});
+}
+
 function removeOneOfMyTweet(tweet) {
 	$.ajax({
 		type: 'GET',

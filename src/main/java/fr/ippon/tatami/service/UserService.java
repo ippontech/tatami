@@ -159,7 +159,7 @@ public class UserService {
     		Collection<String> users = findFollowersForUser(login);
     		if(null!=users && users.size()>0){
     			for(String anUser : users){
-    				if(anUser.equals(login)){
+    				if(anUser.equals(user.getLogin())){
     					isFollowed = true;
     					break;
     				}

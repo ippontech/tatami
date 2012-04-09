@@ -25,6 +25,10 @@ section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine 
 	font-weight:bold;
 }
 
+.hide{
+	display:none;
+}
+
 section#followline ul#usersSuggestions{
 	display:			none;
 	background-color: 	#D9EDF7;
