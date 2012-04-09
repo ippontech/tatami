@@ -193,7 +193,7 @@ function removeOneOfMyTweet(tweet) {
 function addATweetToMyFavorites(tweet, favTab){
 	$.ajax({
 		type: GET_TYPE_REQUEST,
-		url: "/tatami/rest/users/" + tweet,
+		url: "/tatami/rest/likeTweet/" + tweet,
 		dataType: JSON_DATA_TYPE,
         success: function(data) {
             setTimeout(function() {
