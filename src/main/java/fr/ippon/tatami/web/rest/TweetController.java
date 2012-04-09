@@ -89,7 +89,11 @@ public class TweetController {
         }
         String cleanedContent = Jsoup.clean(content, Whitelist.basic());
         if(null!=content && content.equals(cleanedContent)){
-       		timelineService.postTweet(content);
+        	try{
+        		timelineService.postTweet(content);
+        	}catch(ConstraintViolationException cve ){
+        		throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
+        	}
         }else{
         	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
         }

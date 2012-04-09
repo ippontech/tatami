@@ -1,9 +1,9 @@
 package fr.ippon.tatami.service;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +43,7 @@ public class UserService {
 
     @Inject
     private AuthenticationService authenticationService;
-
+    
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Looking for user with login : " + login);
@@ -61,7 +61,7 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user)  throws ConstraintViolationException, IllegalArgumentException{
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
@@ -149,7 +149,30 @@ public class UserService {
         this.authenticationService = authenticationService;
     }
     
-    public List<String> getSimilarUsers(String login) {
-        return userRepository.getSimilarUsers(login);
+    public boolean isFollowed(String login){
+    	if (log.isDebugEnabled()) {
+            log.debug("Retrieving if you follow this user : " + login);
+        }
+    	boolean isFollowed = false;
+    	User user = getCurrentUser();
+    	if(null!=user  && !login.equals(user.getLogin())){
+    		Collection<String> users = findFollowersForUser(login);
+    		if(null!=users && users.size()>0){
+    			for(String anUser : users){
+    				if(anUser.equals(user.getLogin())){
+    					isFollowed = true;
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	return isFollowed;
+    }
+    
+    public Collection<String> findFollowersForUser(String login){
+    	  if (log.isDebugEnabled()) {
+              log.debug("Retrieving followed users : " + login);
+          }
+    	  return followerRepository.findFollowersForUser(login);
     }
 }

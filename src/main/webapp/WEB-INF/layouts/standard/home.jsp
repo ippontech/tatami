@@ -1,9 +1,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" 	uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>Tatami</title>
+	<title><spring:message code="tatami.title" /></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -29,36 +31,37 @@
   <body>
 
 	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
-				<div class="nav-collapse">
-					<ul class="nav">
-						<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
-                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
-					</ul>
-					<ul class="nav pull-right">
-						<li class="divider-vertical"></li>
-						<li><a href="/tatami/logout"><i class="icon-user icon-white"></i> logout</a></li>
-					</ul>
-				</div><!--/.nav-collapse -->
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="#"><img src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="active"><a href="#"><i class="icon-home icon-white"></i>&nbsp;<spring:message code="tatami.home" /></a></li>
+	                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message code="tatami.about" /></a></li>
+	                        <!-- <li><a href="?language=en"> English</a>|<a href="?language=fr"> Francais</a></li> -->
+						</ul>
+						<ul class="nav pull-right">
+							<li class="divider-vertical"></li>
+							<li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message code="tatami.logout" /></a></li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="container-fluid">
+	<div id="home" class="container-fluid">
 		<div class="row-fluid">
 			<div class="span4">
 				<div class="tabbable">
                     <ul class="nav nav-tabs">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
-						<li><a href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">&nbsp;<spring:message code="tatami.show.profile" /></a></li>
+						<li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message code="tatami.update.profile" /></a></li>
 					</ul>
-					<div class="tab-content alert alert-info">
+					<div class="tab-content alert alert-info profileview">
 						<div class="tab-pane active" id="homeTabContent"></div>
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>
@@ -71,15 +74,15 @@
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i> Tweets</a></li>
-						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
-						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
-						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tags</a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i>&nbsp;<spring:message code="tatami.tweets" /></a></li>
+						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i>&nbsp;<spring:message code="tatami.user.favoritetweets" /></a></li>
+						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i>&nbsp;<spring:message code="tatami.user.otheruser.tweets" /></a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags" /></a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i> Statistics <b class="caret"></b></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i>&nbsp;<spring:message code="tatami.tweets.stats" />&nbsp;<b class="caret"></b></a>
 				            <ul class="dropdown-menu">
-				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab">Tweets of the day (pie chart)</a></li>
-				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab">Tweets of the week (punch chart)</a></li>
+				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab"><spring:message code="tatami.stats.tweets.piechart" /></a></li>
+				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab"><spring:message code="tatami.stats.tweets.punchchart" /></a></li>
 				            </ul>
 						</li>
 					</ul>
@@ -97,10 +100,10 @@
 	</div>
 
     <footer>
-        <div style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
-            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
-            <a href="http://blog.ippon.fr">Blog Ippon</a> |
-            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+            <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
+            <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
+            <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
         </div>
     </footer>
 

@@ -21,7 +21,15 @@ public class CounterService {
     	return counterRepository.getFriendsCounter(login);
     }
     
-    public String getTheMostPopularUser(){
-    	return counterRepository.getTheMostPopularUser();
+    public long getNbTweets(String login){
+    	return counterRepository.getTweetCounter(login);
+    }
+    
+    public long getNbFollowed(String login){
+    	return counterRepository.getFriendsCounter(login);
+    }
+    
+    public long getNbFollowers(String login){
+    	return counterRepository.getFollowersCounter(login);
     }
 }

@@ -25,6 +25,10 @@ section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine 
 	font-weight:bold;
 }
 
+.hide{
+	display:none;
+}
+
 section#followline ul#usersSuggestions{
 	display:			none;
 	background-color: 	#D9EDF7;
@@ -46,4 +50,66 @@ section#followline ul#usersSuggestions li {
 }
 section#followline ul#usersSuggestions li:hover {
     color: 				#555555;
+}
+
+div#userProfile{
+    margin: 		0 auto;
+    min-height: 	100%;
+    padding: 		14px 14px 10px;
+    position: 		relative;
+    width: 			837px;
+}
+
+div#userProfileDesc{
+	 background-color: 	#F9F9F9;
+	 border:			1px solid #DDDDDD;
+	 border-radius: 	5px;
+	 padding:			5px;
+}
+
+ul#profileStats{
+	padding:			15px 5px;
+	list-style-type:	none;
+	font-family: 		"HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:			1.2em;
+	font-weight:		400;
+	font-style:			normal;
+	font-size-adjust:	none;
+	color:				#999999;
+	text-transform: 	uppercase;
+}
+
+ul#profileStats li.bottomline strong{
+	 color:				#333333;
+}
+
+ul#profileStats li.bottomline{
+	 margin-top:		5px;
+	 border-bottom:		1px solid #DDDDDD;
+	 line-height:		24px;
+}
+
+#profilemenuleft{
+	margin:		10px 0px 0px 0px;
+}
+
+#tweetToHim{
+	padding:	2px;
+}
+
+#tweetToHim form {
+	margin:		5px 0px;
+}
+
+#tweetToHim form textarea{
+	width: 		180px;
+	margin:		5px 0px;
+}
+
+#tweetToHim form button{
+	float:		right;
+}
+
+#home div.profileview{
+	padding:	0px;
 }

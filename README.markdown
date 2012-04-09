@@ -14,6 +14,7 @@ Tatami is a twitter-like application, for internal use inside a company.
 Tatami is made with the following technologies :
 
 - [Apache Cassandra](http://cassandra.apache.org/)
+- [Elastic Search](http://www.elasticsearch.org/) - version : 0.19.2
 - [The Spring Framework](http://www.springsource.org/)
 - HTML5 and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 
@@ -24,6 +25,7 @@ Installation
 
 - Install [Maven 3](http://maven.apache.org/)
 - Run Cassandra from Maven : mvn cassandra:run
+- Install & Config Elastic Search : After downloading the latest release and extracting it, elasticsearch can be started using: $ bin/elasticsearch -f but before just edit the config file : ./config/elasticsearch.yml and uncomment the property cluster.name and the value to Tatami cluster.
 - Run Jetty from Maven : mvn jetty:run
 - Connect to the application at http://127.0.0.1:8080
 
