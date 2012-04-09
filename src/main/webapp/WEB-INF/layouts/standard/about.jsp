@@ -5,7 +5,7 @@
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title><spring:message code="tatami.title" /> - About</title>
+	<title><spring:message code="tatami.title" />&nbsp;-&nbsp;<spring:message code="tatami.about" /></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -55,34 +55,28 @@
 
     <div class="container">
         <div class="span12">
-            <h1>Presentation</h1>
-            <p>Tatami is a twitter-like application, for internal use inside a company.</p>
+            <h1><spring:message code="tatami.presentation" /></h1>
+            <p><spring:message code="tatami.presentation.text" /></p>
             <p>
-                More information on our Github page : <a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a>
+                <spring:message code="tatami.presentation.moreinfo" /><a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a>
             </p>
         </div>
         <div class="span12">
-            <h2>License</h2>
+            <h2><spring:message code="tatami.license" /></h2>
 
-            <p>Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a></p>
+            <p><spring:message code="tatami.copyright" /> |<a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a></p>
 
-            <p>Licensed under the Apache License, Version 2.0 (the "License");
-                you may not use this application except in compliance with the License.
-                You may obtain a copy of the License at</p>
+            <p><spring:message code="tatami.licence" /></p>
 
             <p><a href="http://www.apache.org/licenses/LICENSE-2.0"></a><a
                     href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
 
-            <p>Unless required by applicable law or agreed to in writing, software
-                distributed under the License is distributed on an "AS IS" BASIS,
-                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                See the License for the specific language governing permissions and
-                limitations under the License.</p>
+            <p><spring:message code="tatami.cg" /></p>
         </div>
     </div>
     <br/><br/><br/><br/><br/><br/>
     <footer>
-        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+        <div style="text-align: center;"><spring:message code="tatami.copyright" /> |<a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
             <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
             <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
             <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
