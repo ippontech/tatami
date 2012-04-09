@@ -62,11 +62,14 @@ public class UserController {
         }
         ModelAndView mav = new ModelAndView();
         mav.setViewName("profile");
-        mav.addObject("user", userService.getUserProfileByLogin(login));
-        mav.addObject("followed", userService.isFollowed(login));
-        mav.addObject("nbTweets", counterService.getNbTweets(login));
-        mav.addObject("nbFollowed", counterService.getNbFollowed(login));
-        mav.addObject("nbFollowers", counterService.getNbFollowers(login));
+        User user = userService.getUserProfileByLogin(login);
+        if(null!=user){
+        	mav.addObject("user", user);
+        	mav.addObject("followed", userService.isFollowed(login));
+	        mav.addObject("nbTweets", counterService.getNbTweets(login));
+	        mav.addObject("nbFollowed", counterService.getNbFollowed(login));
+	        mav.addObject("nbFollowers", counterService.getNbFollowers(login));
+        };
         return mav;
     }
     
