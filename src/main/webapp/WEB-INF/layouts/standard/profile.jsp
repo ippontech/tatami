@@ -68,7 +68,13 @@
 						</div>
 						<div class="span3">
 							<ul id="profileStats">
+								<sec:authentication property='principal.username' var="login"/>
 								<c:choose>
+									<c:when test="${not empty user && user.login eq login}">
+										<li>
+											<a href="#" id="followBtn" class="btn btn-inverse disabled" title="You are!"><spring:message code="tatami.user.yourare" /></a>
+										</li>
+									</c:when>
 									<c:when test="${not empty followed && followed}">
 										<li>
 											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}"><spring:message code="tatami.user.followed" /></a>
