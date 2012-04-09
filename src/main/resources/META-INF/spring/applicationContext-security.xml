@@ -85,18 +85,11 @@
 		</property>
 	</bean>
 	
+	<!-- Register the welcome.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages" />
 	</bean>
-	
-	<cache:annotation-driven />
-
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager">
-            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
-        </property>
-    </bean>
     
     <!-- Aspect to manage index content life cycle -->
     <aop:aspectj-autoproxy/>
