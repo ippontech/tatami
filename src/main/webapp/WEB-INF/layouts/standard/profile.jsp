@@ -1,6 +1,7 @@
 <%@ taglib prefix="sec"		uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" 	uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt"	 	uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,13 +83,13 @@
 									</c:otherwise>
 								</c:choose>
 								<li class="bottomline">
-									<strong>1&nbsp;305&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbTweets" />
+									<strong><fmt:formatNumber value="${nbTweets}" pattern="# ### ###"/></strong>&nbsp;<spring:message code="tatami.user.nbTweets" />
 								</li>
 			    				<li class="bottomline">
-			    					<strong>151&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbFollowedUsers" />
+			    					<strong><fmt:formatNumber value="${nbFollowed}" pattern="# ### ###"/></strong>&nbsp;<spring:message code="tatami.user.nbFollowedUsers" />
 			    				</li>
 			    				<li class="bottomline">
-			    					<strong>810&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbFollowers" />
+			    					<strong><fmt:formatNumber value="${nbFollowers}" pattern="# ### ###"/></strong>&nbsp;<spring:message code="tatami.user.nbFollowers" />
 			    				</li>
 							</ul>
 						</div>

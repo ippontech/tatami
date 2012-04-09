@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -45,6 +46,9 @@ public class UserController {
     
     @Inject
     private IndexService indexService;
+    
+    @Inject
+    private CounterService counterService;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -60,6 +64,9 @@ public class UserController {
         mav.setViewName("profile");
         mav.addObject("user", userService.getUserProfileByLogin(login));
         mav.addObject("followed", userService.isFollowed(login));
+        mav.addObject("nbTweets", counterService.getNbTweets(login));
+        mav.addObject("nbFollowed", counterService.getNbFollowed(login));
+        mav.addObject("nbFollowers", counterService.getNbFollowers(login));
         return mav;
     }
     
