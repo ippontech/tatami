@@ -37,7 +37,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
+					<a class="brand" href="#"><img src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
 					<div class="nav-collapse">
 						<ul class="nav">
 							<li class="active"><a href="#"><i class="icon-home icon-white"></i>&nbsp;<spring:message code="tatami.home" /></a></li>
