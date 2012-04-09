@@ -58,8 +58,8 @@
 			<div class="span4">
 				<div class="tabbable">
                     <ul class="nav nav-tabs">
-						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">Show profile</a></li>
-						<li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i> Update Profile</a></li>
+						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">&nbsp;<spring:message code="tatami.show.profile" /></a></li>
+						<li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message code="tatami.update.profile" /></a></li>
 					</ul>
 					<div class="tab-content alert alert-info">
 						<div class="tab-pane active" id="homeTabContent"></div>
@@ -74,15 +74,15 @@
 			<div class="span8">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i> Tweets</a></li>
-						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i> Favorite Tweets</a></li>
-						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i> Other User Tweets</a></li>
-						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i> Tags</a></li>
+						<li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i class="icon-th-list"></i>&nbsp;<spring:message code="tatami.tweets" /></a></li>
+						<li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i class="icon-heart"></i>&nbsp;<spring:message code="tatami.user.favoritetweets" /></a></li>
+						<li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i class="icon-user"></i>&nbsp;<spring:message code="tatami.user.otheruser.tweets" /></a></li>
+						<li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags" /></a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i> Statistics <b class="caret"></b></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-signal"></i>&nbsp;<spring:message code="tatami.tweets.stats" />&nbsp;<b class="caret"></b></a>
 				            <ul class="dropdown-menu">
-				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab">Tweets of the day (pie chart)</a></li>
-				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab">Tweets of the week (punch chart)</a></li>
+				            	<li><a id="piechartTab" href="#piechartPanel" data-toggle="tab"><spring:message code="tatami.stats.tweets.piechart" /></a></li>
+				            	<li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab"><spring:message code="tatami.stats.tweets.punchchart" /></a></li>
 				            </ul>
 						</li>
 					</ul>
