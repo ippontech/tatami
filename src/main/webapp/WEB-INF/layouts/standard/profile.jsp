@@ -100,7 +100,29 @@
 							</ul>
 						</div>
 					</div>
-					<div id="userTimeline" class="row-fluid">
+					
+					<div class="row-fluid">
+						<div id="profilemenuleft" class="span3">
+							<div class="row-fluid">
+								<h2><spring:message code="tatami.user.tweettohim" />&nbsp;:</h2>
+								<div id="tweetToHim" class="row-fluid">
+									<c:set var="tweetTo" value="@${user.login}"/>
+									<form class="form-inline" onsubmit="return tweet();">
+										<textarea id="tweetContent" rel="popover" class="focused" maxlength="140" placeholder="Type here..." ></textarea>
+										<button type="submit" class="btn btn-primary"><spring:message code="tatami.user.tweet" /></button>
+									</form>
+									<div class="error"></div>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<h2><spring:message code="tatami.user.suggestions" />&nbsp;:</h2>
+								<div id="suggestions" class="row-fluid"></div>
+							</div>
+						</div>
+						<div id="userTimeline" class="span9">
+						
+							
+						</div>
 					</div>
 					
 				</c:when>
@@ -152,6 +174,10 @@
 	        var login = "<sec:authentication property='principal.username'/>";
 	        $(document).ready(function() {
 				initTatamiProfile(login);
+				
+				$('#tweetContent').click(function(){
+					this.value='${tweetTo} ';
+				});
 			});
 		</script>
 		

@@ -70,6 +70,7 @@ function initTatamiProfile(login) {
 	$('#userTimeline').load('/assets/fragments/timeline.html', function() {
         listTweetsForAnUser(login, true);
     });
+	whoToFollow();
 }
 
 function tweet() {

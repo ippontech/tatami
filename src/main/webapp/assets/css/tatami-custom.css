@@ -88,3 +88,24 @@ ul#profileStats li.bottomline{
 	 border-bottom:		1px solid #DDDDDD;
 	 line-height:		24px;
 }
+
+#profilemenuleft{
+	margin:		10px 0px 0px 0px;
+}
+
+#tweetToHim{
+	padding:	2px;
+}
+
+#tweetToHim form {
+	margin:		5px 0px;
+}
+
+#tweetToHim form textarea{
+	width: 		180px;
+	margin:		5px 0px;
+}
+
+#tweetToHim form button{
+	float:		right;
+}
