@@ -53,7 +53,7 @@
 			</div>
 		</div>
 
-	<div class="container-fluid">
+	<div id="home" class="container-fluid">
 		<div class="row-fluid">
 			<div class="span4">
 				<div class="tabbable">
@@ -61,7 +61,7 @@
 						<li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">&nbsp;<spring:message code="tatami.show.profile" /></a></li>
 						<li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message code="tatami.update.profile" /></a></li>
 					</ul>
-					<div class="tab-content alert alert-info">
+					<div class="tab-content alert alert-info profileview">
 						<div class="tab-pane active" id="homeTabContent"></div>
 						<div class="tab-pane" id="profileTabContent"></div>
 					</div>

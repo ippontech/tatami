@@ -109,3 +109,7 @@ ul#profileStats li.bottomline{
 #tweetToHim form button{
 	float:		right;
 }
+
+#home div.profileview{
+	padding:	0px;
+}
