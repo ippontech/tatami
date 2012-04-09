@@ -1,9 +1,11 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" 	uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title><spring:message code="tatami.title" /> - Authentication</title>
+	<title><spring:message code="tatami.title" />&nbsp;-&nbsp;<spring:message code="tatami.authentification"/></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -52,20 +54,20 @@
 
             <form action="/tatami/authentication" method="post" class="well">
                 <fieldset>
-                    <label>Login :</label> <input id="j_username" name="j_username"
+                    <label><spring:message code="tatami.login" />&nbsp;:</label> <input id="j_username" name="j_username"
                                                   type="text" required="required" autofocus class="input-xlarge"
                                                   placeholder="Your login..."/>
-                    <label>Password :</label> <input id="j_password" name="j_password"
+                    <label><spring:message code="tatami.password" />&nbsp;:</label> <input id="j_password" name="j_password"
                                                      type="password" required="required" class="input-xlarge"
                                                      placeholder="Your password..."/>
                 </fieldset>
                 <label class="checkbox">
                     <input type='checkbox'
                            name='_spring_security_remember_me' id="_spring_security_remember_me"
-                           value="true" checked="true"/> Remember for 30 days
+                           value="true" checked="true"/>&nbsp;<spring:message code="tatami.remember.password.time" />
                 </label>
 
-                <button type="submit" class="btn btn-success">Authenticate</button>
+                <button type="submit" class="btn btn-success"><spring:message code="tatami.authentificate" /></button>
             </form>
         </div>
     </div>
