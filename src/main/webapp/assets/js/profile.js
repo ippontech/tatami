@@ -16,21 +16,21 @@ $.fn.serializeObject = function() {
 
 function updateProfile() {
 	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
-	setTimeout($.ajax({
+	$.ajax({
 		type: 'POST',
-		url: "/tatami/rest/users/" + login,
+		url: "rest/users/" + login,
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
-		success: function() {
+		success: setTimeout(function() {
 			$profileFormErrors.empty();
 			$('#defaultTab').tab('show');
-		},	//DEBUG wait for persistence consistency
-		error: function(jqXHR, textStatus, errorThrown){
+		}, 1000),	//DEBUG wait for persistence consistency
+		error: setTimeout(function(jqXHR, textStatus, errorThrown){
 	       	$profileFormErrors.empty().append(errorThrown);
 	       	$('#updateProfilTab').tab('show');
-	    }
-	}), 1000);
+	    }, 1000)
+	});
 	return false;	// no page refresh
 }
 
