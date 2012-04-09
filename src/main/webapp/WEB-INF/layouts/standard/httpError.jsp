@@ -58,7 +58,7 @@
 		</div>
 		
 		<footer>
-	        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+	        <div style="text-align: center;"> |<spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
 	            <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
 	            <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
 	            <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
