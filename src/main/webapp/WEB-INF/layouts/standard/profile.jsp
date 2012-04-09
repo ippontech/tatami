@@ -70,25 +70,25 @@
 								<c:choose>
 									<c:when test="${not empty followed && followed}">
 										<li>
-											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
-											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
+											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}"><spring:message code="tatami.user.followed" /></a>
+											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}"><spring:message code="tatami.user.follow" /></a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li>
-											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}">Followed</a>
-											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}">Follow</a>
+											<a href="#" id="unfollowBtn" onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')" class="btn btn-info" title="${user.firstName}&nbsp;${user.lastName}"><spring:message code="tatami.user.followed" /></a>
+											<a href="#" id="followBtn" onclick="followUserFromHisProfile(login, '${user.login}')" class="btn btn-success hide" title="${user.firstName}&nbsp;${user.lastName}"><spring:message code="tatami.user.follow" /></a>
 										</li>
 									</c:otherwise>
 								</c:choose>
 								<li class="bottomline">
-									<strong>1&nbsp;305&nbsp;</strong>&nbsp;Tweets
+									<strong>1&nbsp;305&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbTweets" />
 								</li>
 			    				<li class="bottomline">
-			    					<strong>151&nbsp;</strong>&nbsp;Abonnements
+			    					<strong>151&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbFollowedUsers" />
 			    				</li>
 			    				<li class="bottomline">
-			    					<strong>810&nbsp;</strong>&nbsp;Abonn&eacute;s
+			    					<strong>810&nbsp;</strong>&nbsp;<spring:message code="tatami.user.nbFollowers" />
 			    				</li>
 							</ul>
 						</div>
@@ -111,7 +111,7 @@
 		</div>
 		
 		<footer>
-	        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+	        <div style="text-align: center;"><spring:message code="tatami.copyright" /> | <a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
 	            <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
 	            <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
 	            <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
