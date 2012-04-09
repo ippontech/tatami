@@ -18,7 +18,7 @@ function updateProfile() {
 	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
 	setTimeout($.ajax({
 		type: 'POST',
-		url: "rest/users/" + login,
+		url: "/tatami/rest/users/" + login,
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
@@ -37,7 +37,7 @@ function updateProfile() {
 function displayProfile() {
 	$.ajax({
 		type: 'GET',
-		url: "rest/users/" + login,
+		url: "/tatami/rest/users/" + login,
 		dataType: "json",
 		success: function(data) {
 			$("#emailInput").val(data.email);
@@ -50,7 +50,7 @@ function displayProfile() {
 function refreshProfile() {
 	$.ajax({
 		type: 'GET',
-		url: "rest/users/" + login + "/",
+		url: "/tatami/rest/users/" + login + "/",
 		dataType: "json",
 		success: function(data) {
 			$("#picture").parent().css('width', '68px');	// optional
