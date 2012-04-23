@@ -1,0 +1,34 @@
+{
+          "index" : {
+          	"number_of_replicas" : 0,
+			"number_of_shards" : 1,
+            "analysis" : {
+                "analyzer" : {
+                    "default" : {
+                        "type" : "snowball",
+                        "language" : "French",
+						"tokenizer" : "simple",
+						"stopwords" : ["de,des,du,le,les,la,et,a,y"],
+                        "filter": ["asciifolding","lowercase","french_stemmer"]
+                    },
+                    "sortable": {
+                        "tokenizer": "keyword",
+                        "filter": ["lowercase"]
+                    }
+                },
+				"tokenizer" : {
+					"simple" : {
+						"type" : "standard",
+						"max_token_length" : 900
+					}
+				},
+				"filter" : {
+					"french_stemmer" : {
+						"type" : "stemmer",
+						"name" : "light_french"
+					}
+				}
+            }
+        }
+
+}

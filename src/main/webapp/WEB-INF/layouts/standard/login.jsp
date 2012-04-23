@@ -1,8 +1,11 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" 	uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<title>Tatami - Authentication</title>
+	<title><spring:message code="tatami.title" />&nbsp;-&nbsp;<spring:message code="tatami.authentification"/></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Ippon Technologies">
@@ -34,11 +37,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;Tatami</a>
+				<a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message code="tatami.title" /></a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#"><i class="icon-lock icon-white"></i> Login</a></li>
-						<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i> About</a></li>
+						<li class="active"><a href="#"><i class="icon-lock icon-white"></i>&nbsp;<spring:message code="tatami.login" /></a></li>
+						<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message code="tatami.about" /></a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -51,29 +54,29 @@
 
             <form action="/tatami/authentication" method="post" class="well">
                 <fieldset>
-                    <label>Login :</label> <input id="j_username" name="j_username"
+                    <label><spring:message code="tatami.login" />&nbsp;:</label> <input id="j_username" name="j_username"
                                                   type="text" required="required" autofocus class="input-xlarge"
                                                   placeholder="Your login..."/>
-                    <label>Password :</label> <input id="j_password" name="j_password"
+                    <label><spring:message code="tatami.password" />&nbsp;:</label> <input id="j_password" name="j_password"
                                                      type="password" required="required" class="input-xlarge"
                                                      placeholder="Your password..."/>
                 </fieldset>
                 <label class="checkbox">
                     <input type='checkbox'
                            name='_spring_security_remember_me' id="_spring_security_remember_me"
-                           value="true" checked="true"/> Remember for 30 days
+                           value="true" checked="true"/>&nbsp;<spring:message code="tatami.remember.password.time" />
                 </label>
 
-                <button type="submit" class="btn btn-success">Authenticate</button>
+                <button type="submit" class="btn btn-success"><spring:message code="tatami.authentificate" /></button>
             </form>
         </div>
     </div>
     <br/><br/><br/>
     <footer>
-        <div style="text-align: center;">Copyright 2012 <a href="http://www.ippon.fr">Ippon Technologies</a> |
-            <a href="https://github.com/ippontech/tatami">Fork Tatami on Github</a> |
-            <a href="http://blog.ippon.fr">Blog Ippon</a> |
-            <a href="https://twitter.com/#!/ippontech">Follow @ippontech on Twitter</a>
+        <div style="text-align: center;"><spring:message code="tatami.copyright" /><a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies" /></a> |
+            <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork" /></a> |
+            <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog" /></a> |
+            <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow" /></a>
         </div>
     </footer>
 	<!-- Le javascript

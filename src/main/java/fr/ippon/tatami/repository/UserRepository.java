@@ -1,6 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import java.util.List;
+import javax.validation.ConstraintViolationException;
 
 import fr.ippon.tatami.domain.User;
 
@@ -13,9 +13,7 @@ public interface UserRepository {
 
     void createUser(User user);
 
-    void updateUser(User user);
+    void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException;
 
     User findUserByLogin(String login);
-    
-    List<String> getSimilarUsers(String login);
 }

@@ -66,6 +66,12 @@ function initTatami() {
     });
 }
 
+function initTatamiProfile(login) {
+	$('#userTimeline').load('/assets/fragments/timeline.html', function() {
+        listTweetsForAnUser(login, true);
+    });
+	whoToFollow();
+}
 
 function tweet() {
     var $src = $('#tweetContent');
@@ -73,6 +79,11 @@ function tweet() {
 		postTheTweet($src);
 	}
 	return false;
+}
+
+function listTweetsForAnUser(login, reset) {    
+	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
+	displayTweetsForAnUser(login, nbTweetsToDisplay, $('#tweetsList'), $('#userTimeline'));
 }
 
 function listTweets(reset) {    
@@ -105,6 +116,14 @@ function removeFriend(friend) {
 	removeFriendFromMyList(login, friend);
 }
 
+function followUserFromHisProfile(login, loginToFollow) {
+	newUserToFollowFromHisProfile(loginToFollow, login, $("#followUserInput"), $('#followStatus'));
+}
+
+function removeFollowingAnUserFromHisProfile(login, friend) {
+	removeFriendFromHisProfile(login, friend);
+}
+
 function removeTweet(tweet) {
 	removeOneOfMyTweet(tweet);
 }
@@ -119,12 +138,5 @@ function searchUsers(login) {
 		$suggest.hide();
 	} else {
 		searchUsersPossibilities($suggest, login);
-	}
-}
-
-function getTheMostPopularUser(){
-	var $suggest = $('#suggestions');
-	if($suggest.length>0){
-		getByAjaxTheMostPopularUser($suggest);
 	}
 }

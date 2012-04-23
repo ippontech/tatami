@@ -14,7 +14,6 @@ import fr.ippon.tatami.domain.User;
 
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
-    
     @Inject
     public UserRepository userRepository;
 

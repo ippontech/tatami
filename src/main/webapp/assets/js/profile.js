@@ -15,6 +15,7 @@ $.fn.serializeObject = function() {
 };
 
 function updateProfile() {
+	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
 	$.ajax({
 		type: 'POST',
 		url: "rest/users/" + login,
@@ -22,8 +23,13 @@ function updateProfile() {
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
 		success: setTimeout(function() {
-				$('#defaultTab').tab('show');
-			}, 1000)	//DEBUG wait for persistence consistency
+			$profileFormErrors.empty();
+			$('#defaultTab').tab('show');
+		}, 1000),	//DEBUG wait for persistence consistency
+		error: setTimeout(function(jqXHR, textStatus, errorThrown){
+	       	$profileFormErrors.empty().append(errorThrown);
+	       	$('#updateProfilTab').tab('show');
+	    }, 1000)
 	});
 	return false;	// no page refresh
 }
@@ -31,7 +37,7 @@ function updateProfile() {
 function displayProfile() {
 	$.ajax({
 		type: 'GET',
-		url: "rest/users/" + login,
+		url: "/tatami/rest/users/" + login,
 		dataType: "json",
 		success: function(data) {
 			$("#emailInput").val(data.email);
@@ -44,7 +50,7 @@ function displayProfile() {
 function refreshProfile() {
 	$.ajax({
 		type: 'GET',
-		url: "rest/users/" + login + "/",
+		url: "/tatami/rest/users/" + login + "/",
 		dataType: "json",
 		success: function(data) {
 			$("#picture").parent().css('width', '68px');	// optional
