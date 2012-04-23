@@ -25,7 +25,7 @@ Installation
 
 - Install [Maven 3](http://maven.apache.org/)
 - Run Cassandra from Maven : mvn cassandra:run
-- Install & Config Elastic Search : After downloading the latest release and extracting it, elasticsearch can be started using: $ bin/elasticsearch -f but before just edit the config file : ./config/elasticsearch.yml and uncomment the property cluster.name and the value to Tatami cluster.
+- Optionnal : if you want the search features to work, install & configure Elastic Search : After downloading the latest release and extracting it, elasticsearch can be started using: $ bin/elasticsearch -f but before just edit the config file : ./config/elasticsearch.yml and uncomment the property cluster.name and the value to Tatami cluster.
 - Run Jetty from Maven : mvn jetty:run
 - Connect to the application at http://127.0.0.1:8080
 
