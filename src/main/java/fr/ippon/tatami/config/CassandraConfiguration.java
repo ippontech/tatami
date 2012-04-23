@@ -24,7 +24,7 @@ import javax.persistence.EntityManager;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
 /**
- * Main configuration file.
+ * Cassandra configuration file.
  *
  * @author Julien Dubois
  */

@@ -4,26 +4,26 @@
          version="3.0"
          metadata-complete="true">
 
-	<!-- 
-	Remove classpath scanning (from servlet 3.0) in order to speed jetty startup :
-	metadata-complete="true" above + empty absolute ordering below
-	-->
-	<absolute-ordering>
-		<!--
-		 Empty absolute ordering is necessary to completely desactivate classpath scanning
-		  -->
-	</absolute-ordering>
+    <!--
+     Remove classpath scanning (from servlet 3.0) in order to speed jetty startup :
+     metadata-complete="true" above + empty absolute ordering below
+     -->
+    <absolute-ordering>
+        <!--
+           Empty absolute ordering is necessary to completely desactivate classpath scanning
+            -->
+    </absolute-ordering>
 
     <display-name>Tatami</display-name>
 
     <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
     <listener>
         <listener-class>fr.ippon.tatami.web.init.WebConfigurer</listener-class>
-    </listener> 
-    
+    </listener>
+
     <error-page>
-	    <error-code>404</error-code>
-	    <location>/WEB-INF/layouts/standard/httpError.jsp</location>
-	</error-page>
-    
+        <error-code>404</error-code>
+        <location>/WEB-INF/layouts/standard/httpError.jsp</location>
+    </error-page>
+
 </web-app>

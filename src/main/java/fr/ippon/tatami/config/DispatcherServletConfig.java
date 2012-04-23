@@ -1,13 +1,11 @@
 package fr.ippon.tatami.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
@@ -16,6 +14,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
@@ -72,6 +73,30 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         });
         configurer.setCheckRefresh(true);
         return configurer;
+    }
+
+    @Bean
+    public SessionLocaleResolver localeChangeInterceptor() {
+        SessionLocaleResolver resolver = new SessionLocaleResolver();
+        Locale locale = new Locale("en");
+        resolver.setDefaultLocale(locale);
+        return resolver;
+    }
+
+    @Bean
+    public ControllerClassNameHandlerMapping controllerClassNameHandlerMapping() {
+        ControllerClassNameHandlerMapping mapping = new ControllerClassNameHandlerMapping();
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("language");
+        mapping.setInterceptors(new Object[] {localeChangeInterceptor});
+        return mapping;
+    }
+
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        return messageSource;
     }
 
     @Override

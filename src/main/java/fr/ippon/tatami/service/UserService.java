@@ -1,16 +1,5 @@
 package fr.ippon.tatami.service;
 
-import java.util.Collection;
-
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
@@ -18,6 +7,15 @@ import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.GravatarUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 
 /**
  * Manages the application's users.
@@ -43,7 +41,13 @@ public class UserService {
 
     @Inject
     private AuthenticationService authenticationService;
-    
+
+    @Inject
+    private IndexService indexService;
+
+    @Inject
+    private boolean indexActivated;
+
     public User getUserByLogin(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Looking for user with login : " + login);
@@ -61,11 +65,16 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(User user)  throws ConstraintViolationException, IllegalArgumentException{
+    public void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException {
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
             userRepository.updateUser(user);
+            // Add to Elastic Search index if it is activated
+            if (indexActivated) {
+                indexService.removeUser(user);
+                indexService.addUser(user);
+            }
         } else {
             log.info("Security alert : user " + currentUser.getLogin() +
                     " tried to update user " + user);
@@ -78,6 +87,11 @@ public class UserService {
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
+
+        // Add to Elastic Search index if it is activated
+        if (indexActivated) {
+            indexService.addUser(user);
+        }
     }
 
     public void followUser(String loginToFollow) {
@@ -148,31 +162,31 @@ public class UserService {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-    
-    public boolean isFollowed(String login){
-    	if (log.isDebugEnabled()) {
+
+    public boolean isFollowed(String login) {
+        if (log.isDebugEnabled()) {
             log.debug("Retrieving if you follow this user : " + login);
         }
-    	boolean isFollowed = false;
-    	User user = getCurrentUser();
-    	if(null!=user  && !login.equals(user.getLogin())){
-    		Collection<String> users = findFollowersForUser(login);
-    		if(null!=users && users.size()>0){
-    			for(String anUser : users){
-    				if(anUser.equals(user.getLogin())){
-    					isFollowed = true;
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	return isFollowed;
+        boolean isFollowed = false;
+        User user = getCurrentUser();
+        if (null != user && !login.equals(user.getLogin())) {
+            Collection<String> users = findFollowersForUser(login);
+            if (null != users && users.size() > 0) {
+                for (String anUser : users) {
+                    if (anUser.equals(user.getLogin())) {
+                        isFollowed = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isFollowed;
     }
-    
-    public Collection<String> findFollowersForUser(String login){
-    	  if (log.isDebugEnabled()) {
-              log.debug("Retrieving followed users : " + login);
-          }
-    	  return followerRepository.findFollowersForUser(login);
+
+    public Collection<String> findFollowersForUser(String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving followed users : " + login);
+        }
+        return followerRepository.findFollowersForUser(login);
     }
 }

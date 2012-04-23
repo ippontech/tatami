@@ -45,8 +45,13 @@ public class TimelineService {
     @Inject
     private AuthenticationService authenticationService;
 
-    @Value("${hashtag.default}")
-    private String hashtagDefault;
+    @Inject
+    private IndexService indexService;
+
+    @Inject
+    private boolean indexActivated;
+
+    private String hashtagDefault = "---";
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
     
@@ -85,6 +90,11 @@ public class TimelineService {
 
         // Increment tweet count for the current user
         counterRepository.incrementTweetCounter(currentLogin);
+
+        // Add to Elastic Search index if it is activated
+        if (indexActivated) {
+            indexService.addTweet(tweet);
+        }
     }
 
 	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {

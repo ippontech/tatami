@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.elasticsearch.ElasticSearchException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
@@ -24,6 +25,8 @@ import fr.ippon.tatami.service.IndexService;
  * .
  * @author dmartinpro, fdescamps
  */
+//TODO this test is ignored, waiting to have an embbeded version of Elastic Search
+@Ignore
 public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 
 	@Inject
