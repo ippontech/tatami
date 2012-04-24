@@ -100,7 +100,7 @@ function listTweets(reset) {
         nbTweetsToDisplay += DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY;
         url += "?count=" + nbTweetsToDisplay;
     }
-	$.ajax({
+    $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
@@ -115,13 +115,13 @@ function listTweets(reset) {
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  */
 function listUserTweets(userLogin) {
-	$.ajax({
+    $.ajax({
         type: 'GET',
         url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
         dataType: 'json',
         success: function(data) {
             makeTweetsList(data, $('#userTweetsList'), false, true, true);
-			displayUserInformations(userLogin);
+            displayUserInformations(userLogin);
         }
     });
 }
@@ -130,31 +130,31 @@ function listUserTweets(userLogin) {
  * POST /account/update_profile -> update the current user
  */
 function updateProfile() {
-	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/account/update_profile",
-		contentType: "application/json",
-		data: JSON.stringify($("#updateUserForm").serializeObject()),
-		dataType: "json",
-		success: setTimeout(function() {
-			$profileFormErrors.empty();
-			$('#profileTab').tab('show');
-		}, 500)	//DEBUG wait for persistence consistency
-	});
-	return false;	// no page refresh
+    $profileFormErrors = $("#updateUserForm").parent().find("div.error");
+    $.ajax({
+        type: 'POST',
+        url: "/tatami/rest/account/update_profile",
+        contentType: "application/json",
+        data: JSON.stringify($("#updateUserForm").serializeObject()),
+        dataType: "json",
+        success: setTimeout(function() {
+            $profileFormErrors.empty();
+            $('#profileTab').tab('show');
+        }, 500)    //DEBUG wait for persistence consistency
+    });
+    return false;	// no page refresh
 }
 
 /**
  * POST /friendships/create -> follow user
  */
 function followUser(loginToFollow) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/friendships/create",
-		contentType: 'application/json; charset=UTF-8',
+    $.ajax({
+        type: 'POST',
+        url: "/tatami/rest/friendships/create",
+        contentType: 'application/json; charset=UTF-8',
         data: '{"login":"' + loginToFollow + '"}',
-		dataType: 'json',
+        dataType: 'json',
         success: function(data) {
             $("#followUserInput").val("");
             setTimeout(function() {
@@ -163,11 +163,11 @@ function followUser(loginToFollow) {
                 listTweets(true);
             }, 500);	//DEBUG wait for persistence consistency
         },
-    	error: function(xhr, ajaxOptions, thrownError) {
-    		$('#followStatus').fadeIn('FAST').text(thrownError);
+        error: function(xhr, ajaxOptions, thrownError) {
+            $('#followStatus').fadeIn('FAST').text(thrownError);
             setTimeout(followStatus.fadeOut('show'), 500);
-    	}
-	});
+        }
+    });
     return false;
 }
 
@@ -175,23 +175,23 @@ function followUser(loginToFollow) {
  * POST /friendships/destroy -> unfollow user
  */
 function unfollowUser(loginToUnfollow) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/friendships/destroy",
-		contentType: 'application/json; charset=UTF-8',
+    $.ajax({
+        type: 'POST',
+        url: "/tatami/rest/friendships/destroy",
+        contentType: 'application/json; charset=UTF-8',
         data: '{"login":"' + loginToUnfollow + '"}',
-		dataType: 'json',
+        dataType: 'json',
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
-	});
+    });
 }
 
 /**
  * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
  */
 function getUser(userLogin, callback) {
-	$.ajax({
+    $.ajax({
         type: 'GET',
         url: "/tatami/rest/users/show?screen_name=" + userLogin,
         dataType: 'json',
@@ -219,16 +219,16 @@ function favoriteTweets() {
  * POST /favorites/create/:id -> Favorites the tweet
  */
 function favoriteTweet(tweet) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/favorites/create/" + tweet,
-		dataType: 'json',
+    $.ajax({
+        type: 'POST',
+        url: "/tatami/rest/favorites/create/" + tweet,
+        dataType: 'json',
         success: function(data) {
             setTimeout(function() {
-            	$('#favTab').tab('show');
+                $('#favTab').tab('show');
             }, 500);	//DEBUG wait for persistence consistency
         }
-	});
+    });
 }
 
 /**
@@ -258,7 +258,7 @@ function searchUser(userLogin) {
  * GET  /users/suggestions -> suggest users to follow
  */
 function suggestUsersToFollow() {
-	$.ajax({
+    $.ajax({
         type: 'GET',
         url: "/tatami/rest/users/suggestions",
         dataType: 'json',
@@ -289,27 +289,27 @@ function listTagTweets(tag) {
  * GET  /stats/day -> statistics for today
  */
 function refreshPieChart() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/stats/day",
-		dataType: "json",
-		success: function(data) {
-			makePieChartsList(data, $('#piechart_div'));
-		}
-	});
+    $.ajax({
+        type: 'GET',
+        url: "rest/stats/day",
+        dataType: "json",
+        success: function(data) {
+            makePieChartsList(data, $('#piechart_div'));
+        }
+    });
 }
 
 /**
  * GET  /stats/week -> statistics for this week
  */
 function refreshPunchChart() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/stats/week",
-		dataType: "json",
-		success: function(data) {
-			makePunchChartsList(data, $('#punchchart_div'));
-		}
-	});
+    $.ajax({
+        type: 'GET',
+        url: "rest/stats/week",
+        dataType: "json",
+        success: function(data) {
+            makePunchChartsList(data, $('#punchchart_div'));
+        }
+    });
 }
 
