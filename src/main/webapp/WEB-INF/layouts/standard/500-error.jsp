@@ -17,7 +17,7 @@
                 <span class="icon-bar"></span>
             </a>
             <a class="brand" href="#"><img
-                    src="/tatami/assets/img/ippon-logo.png">&nbsp;<spring:message
+                    src="/assets/img/ippon-logo.png">&nbsp;<spring:message
                     code="tatami.title"/></a>
 
             <div class="nav-collapse">
@@ -33,10 +33,17 @@
     </div>
 </div>
 
-<div class="container-fluid" id="userProfile">
-    <div class="row-fluid">
-        <spring:message code="tatami.500"/>
+<div class="row">
+    <div class="span2">&nbsp;</div>
+    <div class="span8">
+        <table>
+            <tr>
+                <td><h1><spring:message code="tatami.500"/></h1></td>
+                <td><img src="/assets/img/500-error.jpg" width="500" height="478"/></td>
+            </tr>
+        </table>
     </div>
+    <div class="span2">&nbsp;</div>
 </div>
 
 <jsp:include page="includes/footer.jsp"/>

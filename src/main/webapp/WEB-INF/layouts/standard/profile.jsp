@@ -60,7 +60,7 @@
                             <c:when test="${not empty user && user.login eq login}">
                                 <li>
                                     <a href="#" id="followBtn" class="btn btn-inverse disabled"
-                                       title="You are"><spring:message code="tatami.user.youare"/></a>
+                                       title="You are"><spring:message code="tatami.user.yourself"/></a>
                                 </li>
                             </c:when>
                             <c:when test="${not empty followed && followed}">

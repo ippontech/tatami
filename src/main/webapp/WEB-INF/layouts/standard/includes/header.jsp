@@ -7,13 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 
-    <!-- Le styles -->
+    <!-- Le style -->
     <link href="/assets/css/bootstrap/2.0.2/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
     <link href="/assets/css/bootstrap/2.0.2/bootstrap-responsive.css" rel="stylesheet">
     <link href="/assets/css/tatami-custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->

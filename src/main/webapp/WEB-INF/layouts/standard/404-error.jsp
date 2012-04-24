@@ -17,7 +17,7 @@
                 <span class="icon-bar"></span>
             </a>
             <a class="brand" href="#"><img
-                    src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message
+                    src="/assets/img/ippon-logo.png">&nbsp;<spring:message
                     code="tatami.title"/></a>
 
             <div class="nav-collapse">
@@ -33,13 +33,17 @@
     </div>
 </div>
 
-<div class="container-fluid" id="userProfile">
-    <div class="row-fluid">
-        <a href="#" title="404">
-            <img src="${request.getContextPath}/assets/img/judoka_prise_404.jpg"/>
-        </a>
-        <spring:message code="tatami.404"/>
+<div class="row">
+    <div class="span2">&nbsp;</div>
+    <div class="span8">
+        <table>
+            <tr>
+                <td><h1><spring:message code="tatami.404"/></h1></td>
+                <td><img src="/assets/img/404-error.jpg" width="500" height="570"/></td>
+            </tr>
+        </table>
     </div>
+    <div class="span2">&nbsp;</div>
 </div>
 
 <jsp:include page="includes/footer.jsp"/>
