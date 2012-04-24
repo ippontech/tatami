@@ -1,7 +1,5 @@
 package fr.ippon.tatami.config;
 
-import java.util.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +21,8 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
+
+import java.util.*;
 
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
@@ -68,7 +68,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Bean
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer configurer = new TilesConfigurer();
-        configurer.setDefinitions(new String[] {
+        configurer.setDefinitions(new String[]{
                 "/WEB-INF/layouts/tiles.xml"
         });
         configurer.setCheckRefresh(true);
@@ -88,7 +88,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         ControllerClassNameHandlerMapping mapping = new ControllerClassNameHandlerMapping();
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
-        mapping.setInterceptors(new Object[] {localeChangeInterceptor});
+        mapping.setInterceptors(new Object[]{localeChangeInterceptor});
         return mapping;
     }
 

@@ -1,22 +1,20 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.repository.CounterRepository;
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.repository.CounterRepository;
+import javax.inject.Inject;
+
+import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
 
 /**
  * Cassandra implementation of the Follower repository.
@@ -25,13 +23,13 @@ import fr.ippon.tatami.repository.CounterRepository;
  */
 @Repository
 public class CassandraCounterRepository implements CounterRepository {
-	
-	private static final String TWEET_COUNTER 		= "TWEET_COUNTER";
 
-    private static final String FOLLOWERS_COUNTER 	= "FOLLOWERS_COUNTER";
+    private static final String TWEET_COUNTER = "TWEET_COUNTER";
 
-    private static final String FRIENDS_COUNTER 	= "FRIENDS_COUNTER";
-    
+    private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
+
+    private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
+
     private final Log log = LogFactory.getLog(CassandraCounterRepository.class);
 
     @Inject

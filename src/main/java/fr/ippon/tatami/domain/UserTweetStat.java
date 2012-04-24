@@ -21,7 +21,7 @@ public class UserTweetStat implements Comparable<UserTweetStat> {
         return this.login.compareToIgnoreCase(o.login);
     }
 
-	@Override
+    @Override
     public String toString() {
         return "UserTweetStat{login='" + this.login + "', tweetsCount=" + this.tweetsCount + "}";
     }

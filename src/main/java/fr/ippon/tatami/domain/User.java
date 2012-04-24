@@ -1,15 +1,15 @@
 package fr.ippon.tatami.domain;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.SafeHtml;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * A user.
@@ -20,14 +20,14 @@ import org.hibernate.validator.constraints.SafeHtml;
 @Table(name = "User")
 public class User {
 
-	@SafeHtml
-	@NotEmpty(message="Login is mandatory.")
-	@NotNull(message="Login is mandatory.")
+    @SafeHtml
+    @NotEmpty(message = "Login is mandatory.")
+    @NotNull(message = "Login is mandatory.")
     @Id
     private String login;
 
-	@SafeHtml
-	@Email(message="Email is invalid.")
+    @SafeHtml
+    @Email(message = "Email is invalid.")
     @Column(name = "email")
     private String email;
 
@@ -36,15 +36,15 @@ public class User {
 
     @SafeHtml
     @NotNull
-    @NotEmpty(message="First Name field is mandatory.")
-    @Size(min=1, max=16)
+    @NotEmpty(message = "First Name field is mandatory.")
+    @Size(min = 1, max = 16)
     @Column(name = "firstName")
     private String firstName;
 
     @SafeHtml
     @NotNull
-    @NotEmpty(message="Last field is mandatory.")
-    @Size(min=1, max=16)
+    @NotEmpty(message = "Last field is mandatory.")
+    @Size(min = 1, max = 16)
     @Column(name = "lastName")
     private String lastName;
 

@@ -1,10 +1,9 @@
 package fr.ippon.tatami.repository;
 
-import java.util.Collection;
+import fr.ippon.tatami.domain.Tweet;
 
 import javax.validation.ConstraintViolationException;
-
-import fr.ippon.tatami.domain.Tweet;
+import java.util.Collection;
 
 /**
  * The User Respository.
@@ -19,6 +18,7 @@ public interface TweetRepository {
 
     /**
      * Retrieve a persisted tweet's informations
+     *
      * @param tweetId
      * @return null if tweet was removed
      */
@@ -35,6 +35,7 @@ public interface TweetRepository {
 
     /**
      * analyze a message in order to extract and reference eventual hashtags
+     *
      * @param tweet
      */
     void addTweetToTagline(Tweet tweet);
@@ -56,11 +57,13 @@ public interface TweetRepository {
 
     /**
      * a tag's tweets
-     * @param tag
-     * 		cannot be null, empty, nor contain a sharp character (#)
+     *
+     * @param tag cannot be null, empty, nor contain a sharp character (#)
      */
     Collection<String> getTagline(String tag, int size);
 
-    /** a user's favorite tweets */
+    /**
+     * a user's favorite tweets
+     */
     Collection<String> getFavoritesline(String login);
 }

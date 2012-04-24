@@ -1,28 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.repository.TweetRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
@@ -33,15 +12,21 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceQuery;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.repository.TweetRepository;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.validation.*;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * Cassandra implementation of the user repository.
@@ -58,12 +43,12 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
-    
+
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
 
     @Override
-    public Tweet createTweet(String login, String content) throws ConstraintViolationException{
+    public Tweet createTweet(String login, String content) throws ConstraintViolationException {
         Tweet tweet = new Tweet();
         tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
         tweet.setLogin(login);
@@ -92,7 +77,7 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    @CacheEvict(value="tweet-cache", key="#tweet.tweetId")
+    @CacheEvict(value = "tweet-cache", key = "#tweet.tweetId")
     public void removeTweet(Tweet tweet) {
         tweet.setRemoved(true);
         if (log.isDebugEnabled()) {
@@ -104,7 +89,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToDayline(Tweet tweet, String key) {
-    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -112,7 +97,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToFavoritesline(Tweet tweet, String login) {
-    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, FAVLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -120,7 +105,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToUserline(Tweet tweet) {
-    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -128,7 +113,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTimeline(String login, Tweet tweet) {
-    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -138,7 +123,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTagline(Tweet tweet) {
-    	assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
         while (m.find()) {
@@ -229,7 +214,7 @@ public class CassandraTweetRepository implements TweetRepository {
 
         Collection<String> tweetIds = new ArrayList<String>();
         ColumnSliceIterator<String, String, String> csi =
-        		new ColumnSliceIterator<String, String, String>(sq, null, "", true);
+                new ColumnSliceIterator<String, String, String>(sq, null, "", true);
         while (csi.hasNext()) {
             tweetIds.add(csi.next().getValue());
         }

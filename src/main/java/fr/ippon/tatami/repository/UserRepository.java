@@ -1,8 +1,8 @@
 package fr.ippon.tatami.repository;
 
-import javax.validation.ConstraintViolationException;
-
 import fr.ippon.tatami.domain.User;
+
+import javax.validation.ConstraintViolationException;
 
 /**
  * The User Respository.

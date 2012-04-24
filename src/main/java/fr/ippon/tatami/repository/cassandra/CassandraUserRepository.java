@@ -1,22 +1,16 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.UserRepository;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.validation.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Cassandra implementation of the user repository.
@@ -27,15 +21,15 @@ import fr.ippon.tatami.repository.UserRepository;
 public class CassandraUserRepository implements UserRepository {
 
     private final Log log = LogFactory.getLog(CassandraUserRepository.class);
-    
+
     @Inject
     private EntityManager em;
-    
+
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
 
     @Override
-    public void createUser(User user){
+    public void createUser(User user) {
         if (log.isDebugEnabled()) {
             log.debug("Creating user : " + user);
         }
@@ -43,11 +37,11 @@ public class CassandraUserRepository implements UserRepository {
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
-       	em.persist(user);
+        em.persist(user);
     }
 
     @Override
-    public void updateUser(User user)  throws ConstraintViolationException, IllegalArgumentException {
+    public void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);
         }

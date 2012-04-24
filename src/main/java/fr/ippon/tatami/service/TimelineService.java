@@ -1,26 +1,23 @@
 package fr.ippon.tatami.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Manages the the timeline.
@@ -54,22 +51,22 @@ public class TimelineService {
     private String hashtagDefault = "---";
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
-    
+
     private final Log log = LogFactory.getLog(TimelineService.class);
 
-	private final static String PATTERN_LOGGIN = "@[^\\s]+";
-	
-	private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
-    
-	public void postTweet(String content) throws ConstraintViolationException{
+    private final static String PATTERN_LOGGIN = "@[^\\s]+";
+
+    private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
+
+    public void postTweet(String content) throws ConstraintViolationException {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-		Tweet tweet = tweetRepository.createTweet(currentLogin, content);
+        Tweet tweet = tweetRepository.createTweet(currentLogin, content);
 
-	 	// add tweet to the dayline, userline, timeline, tagline
-		tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        // add tweet to the dayline, userline, timeline, tagline
+        tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
         tweetRepository.addTweetToUserline(tweet);
         tweetRepository.addTweetToTimeline(currentLogin, tweet);
         tweetRepository.addTweetToTagline(tweet);
@@ -80,7 +77,7 @@ public class TimelineService {
         }
 
         // add tweet to the mentioned users' timeline
-		Matcher m = PATTERN_COMPILER.matcher(tweet.getContent());
+        Matcher m = PATTERN_COMPILER.matcher(tweet.getContent());
         while (m.find()) {
             String mentionedLogin = extractLoginWithoutAt(m.group());
             if (mentionedLogin != null && !mentionedLogin.equals(currentLogin)) {
@@ -97,22 +94,22 @@ public class TimelineService {
         }
     }
 
-	private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
-		Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-		for (String tweetId : tweetIds) {
-			Tweet tweet = tweetRepository.findTweetById(tweetId);
-			if (tweet == null) {
-				log.debug("Invisible tweet : " + tweetId);
-				continue;
-			}
-			User tweetUser = userService.getUserByLogin(tweet.getLogin());
-			tweet.setFirstName(tweetUser.getFirstName());
-			tweet.setLastName(tweetUser.getLastName());
-			tweet.setGravatar(tweetUser.getGravatar());
-			tweets.add(tweet);
-		}
-		return tweets;
-	}
+    private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
+        for (String tweetId : tweetIds) {
+            Tweet tweet = tweetRepository.findTweetById(tweetId);
+            if (tweet == null) {
+                log.debug("Invisible tweet : " + tweetId);
+                continue;
+            }
+            User tweetUser = userService.getUserByLogin(tweet.getLogin());
+            tweet.setFirstName(tweetUser.getFirstName());
+            tweet.setLastName(tweetUser.getLastName());
+            tweet.setGravatar(tweetUser.getGravatar());
+            tweets.add(tweet);
+        }
+        return tweets;
+    }
 
     /**
      * The dayline contains a day's tweets
@@ -136,7 +133,7 @@ public class TimelineService {
      * @return a tweets list
      */
     public Collection<Tweet> getDayline(Date date) {
-        if (date == null)	date = new Date();
+        if (date == null) date = new Date();
         Collection<String> tweetIds = tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
 
         return this.buildTweetsList(tweetIds);
@@ -200,11 +197,11 @@ public class TimelineService {
 
         User currentUser = authenticationService.getCurrentUser();
         if (tweet.getLogin().equals(currentUser.getLogin())
-        		&& !Boolean.TRUE.equals(tweet.getRemoved())) {
-			tweetRepository.removeTweet(tweet);
-			counterRepository.decrementTweetCounter(currentUser.getLogin());
-			return true;
-		}
+                && !Boolean.TRUE.equals(tweet.getRemoved())) {
+            tweetRepository.removeTweet(tweet);
+            counterRepository.decrementTweetCounter(currentUser.getLogin());
+            return true;
+        }
         return false;
     }
 
@@ -216,35 +213,34 @@ public class TimelineService {
 
         // registering
         User currentUser = authenticationService.getCurrentUser();
-		tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
+        tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
 
-		// alerting
-		if (!currentUser.getLogin().equals(tweet.getLogin())) {
-			String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
-			int maxLength = 140 - content.length() + 4;
-			if (tweet.getContent().length() > maxLength) {
-				content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
-			} else {
-				content = content.replace("_PH_", tweet.getContent());
-			}
+        // alerting
+        if (!currentUser.getLogin().equals(tweet.getLogin())) {
+            String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
+            int maxLength = 140 - content.length() + 4;
+            if (tweet.getContent().length() > maxLength) {
+                content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
+            } else {
+                content = content.replace("_PH_", tweet.getContent());
+            }
 
-			Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
-			tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
-		}
+            Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
+            tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
+        }
     }
 
     /**
      * The favline contains the user's favorites tweets
-     * 
-     * @param login
-     * 		the user to retrieve the favline of
+     *
+     * @param login the user to retrieve the favline of
      * @return a tweets list
      */
     public Collection<Tweet> getFavoritesline(String login) {
-    	if (login == null || login.isEmpty()) {
-	        User currentUser = authenticationService.getCurrentUser();
-	        login = currentUser.getLogin();
-    	}
+        if (login == null || login.isEmpty()) {
+            User currentUser = authenticationService.getCurrentUser();
+            login = currentUser.getLogin();
+        }
         Collection<String> tweetIds = tweetRepository.getFavoritesline(login);
 
         return this.buildTweetsList(tweetIds);
@@ -254,7 +250,7 @@ public class TimelineService {
         this.authenticationService = authenticationService;
     }
 
-	private String extractLoginWithoutAt(String dest){
-		return dest.substring(1, dest.length());
-	}
+    private String extractLoginWithoutAt(String dest) {
+        return dest.substring(1, dest.length());
+    }
 }

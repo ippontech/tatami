@@ -1,10 +1,9 @@
 package fr.ippon.tatami.service;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.repository.CounterRepository;
 import org.springframework.stereotype.Service;
 
-import fr.ippon.tatami.repository.CounterRepository;
+import javax.inject.Inject;
 
 /**
  * Manages the application's counters.
@@ -17,19 +16,19 @@ public class CounterService {
     @Inject
     private CounterRepository counterRepository;
 
-    public long getFriendsCounter(String login){
-    	return counterRepository.getFriendsCounter(login);
+    public long getFriendsCounter(String login) {
+        return counterRepository.getFriendsCounter(login);
     }
-    
-    public long getNbTweets(String login){
-    	return counterRepository.getTweetCounter(login);
+
+    public long getNbTweets(String login) {
+        return counterRepository.getTweetCounter(login);
     }
-    
-    public long getNbFollowed(String login){
-    	return counterRepository.getFriendsCounter(login);
+
+    public long getNbFollowed(String login) {
+        return counterRepository.getFriendsCounter(login);
     }
-    
-    public long getNbFollowers(String login){
-    	return counterRepository.getFollowersCounter(login);
+
+    public long getNbFollowers(String login) {
+        return counterRepository.getFollowersCounter(login);
     }
 }

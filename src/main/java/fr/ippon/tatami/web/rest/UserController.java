@@ -1,25 +1,5 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -27,6 +7,20 @@ import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -43,10 +37,10 @@ public class UserController {
 
     @Inject
     private UserService userService;
-    
+
     @Inject
     private IndexService indexService;
-    
+
     @Inject
     private CounterService counterService;
 
@@ -63,16 +57,17 @@ public class UserController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("profile");
         User user = userService.getUserProfileByLogin(login);
-        if(null!=user){
-        	mav.addObject("user", user);
-        	mav.addObject("followed", userService.isFollowed(login));
-	        mav.addObject("nbTweets", counterService.getNbTweets(login));
-	        mav.addObject("nbFollowed", counterService.getNbFollowed(login));
-	        mav.addObject("nbFollowers", counterService.getNbFollowers(login));
-        };
+        if (null != user) {
+            mav.addObject("user", user);
+            mav.addObject("followed", userService.isFollowed(login));
+            mav.addObject("nbTweets", counterService.getNbTweets(login));
+            mav.addObject("nbFollowed", counterService.getNbFollowed(login));
+            mav.addObject("nbFollowers", counterService.getNbFollowers(login));
+        }
+        ;
         return mav;
     }
-    
+
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,
             produces = "application/json")
@@ -88,24 +83,24 @@ public class UserController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void updateUser(@PathVariable("login") String login, @RequestBody User user)  throws ConstraintViolationException, IllegalArgumentException {
+    public void updateUser(@PathVariable("login") String login, @RequestBody User user) throws ConstraintViolationException, IllegalArgumentException {
         if (log.isDebugEnabled()) {
             log.debug("REST request to update user : " + login);
         }
-        
+
         String cleanedContent = Jsoup.clean(login, Whitelist.basic());
-        if(null!=login && login.equals(cleanedContent)){
-        	user.setLogin(login);
+        if (null != login && login.equals(cleanedContent)) {
+            user.setLogin(login);
             user.setEmail(Jsoup.clean(user.getEmail(), Whitelist.basic()));
             user.setFirstName(Jsoup.clean(user.getFirstName(), Whitelist.basic()));
             user.setLastName(Jsoup.clean(user.getLastName(), Whitelist.basic()));
-            try{
-            	userService.updateUser(user);
-            }catch(ConstraintViolationException cve ){
-            	throw new IllegalArgumentException("Illegal Argument : One of the data in under an invalid format.");
+            try {
+                userService.updateUser(user);
+            } catch (ConstraintViolationException cve) {
+                throw new IllegalArgumentException("Illegal Argument : One of the data in under an invalid format.");
             }
-        }else{
-        	throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
+        } else {
+            throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
         }
     }
 
@@ -192,7 +187,7 @@ public class UserController {
         timelineService.addFavoriteTweet(tweet);
         log.info("Completed");
     }
-     
+
     @RequestMapping(value = "/rest/users/similar/{login}",
             method = RequestMethod.GET,
             produces = "application/json")

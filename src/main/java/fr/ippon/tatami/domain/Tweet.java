@@ -1,7 +1,10 @@
 package fr.ippon.tatami.domain;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A user.
@@ -49,8 +48,8 @@ public class Tweet {
     private String login;
 
     @NotNull
-    @NotEmpty(message="Content field is mandatory.")
-    @Size(min=1, max=140)
+    @NotEmpty(message = "Content field is mandatory.")
+    @Size(min = 1, max = 140)
     @Column(name = "content")
     private String content;
 
@@ -140,14 +139,14 @@ public class Tweet {
     }
 
     public Boolean getRemoved() {
-		return removed;
-	}
+        return removed;
+    }
 
-	public void setRemoved(Boolean removed) {
-		this.removed = removed;
-	}
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
+    }
 
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
