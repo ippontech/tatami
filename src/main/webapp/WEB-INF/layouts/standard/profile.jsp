@@ -50,7 +50,7 @@
                 </div>
                 <div class="span7">
                     <h1>${user.firstName}&nbsp;${user.lastName}</h1>
-                    <span><a href="<%=request.getContextPath()%>/tatami/profile/${user.login}"
+                    <span><a href="/tatami/profile/${user.login}"
                              title="${user.firstName}&nbsp;${user.lastName}">@${user.login}</a></span>
                 </div>
                 <div class="span3">

@@ -49,9 +49,6 @@ public class UserService {
     private boolean indexActivated;
 
     public User getUserByLogin(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Looking for user with login : " + login);
-        }
         return userRepository.findUserByLogin(login);
     }
 
@@ -65,15 +62,19 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException {
+    public void updateUser(User user) {
         User currentUser = authenticationService.getCurrentUser();
         if (currentUser.getLogin().equals(user.getLogin())) {
             user.setGravatar(GravatarUtil.getHash(user.getEmail()));
-            userRepository.updateUser(user);
-            // Add to Elastic Search index if it is activated
-            if (indexActivated) {
-                indexService.removeUser(user);
-                indexService.addUser(user);
+            try {
+                userRepository.updateUser(user);
+                // Add to Elastic Search index if it is activated
+                if (indexActivated) {
+                    indexService.removeUser(user);
+                    indexService.addUser(user);
+                }
+            } catch (ConstraintViolationException cve) {
+                log.info("Constraint violated while updating user " + user);
             }
         } else {
             log.info("Security alert : user " + currentUser.getLogin() +

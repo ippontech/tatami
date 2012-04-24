@@ -1,18 +1,3 @@
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
 
 function updateProfile() {
 	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
@@ -37,8 +22,8 @@ function displayProfile() {
 		dataType: "json",
 		success: function(data) {
 			$("#emailInput").val(data.email);
-			$("#firstNameInput").val(data.firstName);
-			$("#lastNameInput").val(data.lastName);
+			$("#firstNameInput").val(htmlDecode(data.firstName));
+			$("#lastNameInput").val(htmlDecode(data.lastName));
 		}
 	});
 }
@@ -51,8 +36,8 @@ function refreshProfile() {
 		success: function(data) {
 			$("#picture").parent().css('width', '68px');	// optional
             $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-            $("#firstName").text(data.firstName);
-			$("#lastName").text(data.lastName);
+            $("#firstName").html(data.firstName);
+			$("#lastName").html(data.lastName);
 			$("#tweetCount").text(data.tweetCount);
 			$("#friendsCount").text(data.friendsCount);
 			$("#followersCount").text(data.followersCount);

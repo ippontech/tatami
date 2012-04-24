@@ -73,14 +73,6 @@ function initTatamiProfile(login) {
 	whoToFollow();
 }
 
-function tweet() {
-    var $src = $('#tweetContent');
-	if(validateTweetContent($src) && validateXSS($src)){
-		postTheTweet($src);
-	}
-	return false;
-}
-
 function listTweetsForAnUser(login, reset) {    
 	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
 	displayTweetsForAnUser(login, nbTweetsToDisplay, $('#tweetsList'), $('#userTimeline'));

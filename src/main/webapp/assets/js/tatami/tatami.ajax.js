@@ -1,56 +1,62 @@
-/* Functions called by tatami.js that make requests on the server*/
-function postTheTweet(tweet) {
-	var $tweet = $('#tweetContent');
-	$.ajax({
-        type: POST_TYPE_REQUEST,
-        url: "/tatami/rest/tweets",
-        contentType: JSON_CONTENT_TYPE,
-        data: tweet.val(),
-        dataType: JSON_DATA_TYPE,
-        success: function(data) {
-            tweet.slideUp().empty().slideDown(FAST_EFFECT);
-            $tweet.parent().parent().find("div.error").empty();
-            $tweet.val("");
-            setTimeout(function() {
-                refreshProfile();
-                listTweets(true);
-            }, 1000);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-        	$tweet.parent().parent().find("div.error").empty().append(errorThrown);
-        }
-    });
+/*
+* Ajax functions.
+*/
+
+function tweet() {
+    var tweet = $('#tweetContent');
+    if (tweet.val() != "") {
+        $.ajax({
+            type: 'POST',
+            url: "/tatami/rest/tweets",
+            contentType: 'application/json; charset=UTF-8',
+            data: tweet.val(),
+            dataType: 'json',
+            success: function(data) {
+                tweet.slideUp().empty().slideDown('FAST');
+                tweet.parent().parent().find("div.error").empty();
+                tweet.val("");
+                setTimeout(function() {
+                    refreshProfile();
+                    listTweets(true);
+                }, 500);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                tweet.parent().parent().find("div.error").empty().append(errorThrown);
+            }
+        });
+    }
+    return false;
 }
 
 function displayTweetsForAnUser(login, nbTweets, tweetsList, mainTab) {
 	$.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/tweets/" + login + "/" + nbTweets,
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             makeTweetsList(data, tweetsList, true, false, true, login);
-            mainTab.tab(SHOW_EFFECT);
+            mainTab.tab('show');
         }
     });
 }
 
 function displayTweets(login, nbTweets, tweetsList, mainTab) {
 	$.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/tweets/" + login + "/" + nbTweets,
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             makeTweetsList(data, tweetsList, true, false, true, login);
-            mainTab.tab(SHOW_EFFECT);
+            mainTab.tab('show');
         }
     });
 }
 
 function displayFavoriteTweets(favTweetsList) {
     $.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/favTweets/" + login,
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             makeTweetsList(data, favTweetsList, true, true, false, login);
         }
@@ -59,22 +65,22 @@ function displayFavoriteTweets(favTweetsList) {
 
 function displayTagTweets(tagTweetsList, tagTab, tag) {
     $.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             //TODO refesh title's tag name
             makeTweetsList(data, tagTweetsList, true, true, true);
-            tagTab.tab(SHOW_EFFECT);
+            tagTab.tab('show');
         }
     });
 }
 
 function displayUserInformations(userPicture, userTab, login) {
 	$.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/users/" + login + "/",
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             userPicture.attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
             userPicture.popover({
@@ -85,16 +91,16 @@ function displayUserInformations(userPicture, userTab, login) {
                 '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
             });
 
-            userTab.tab(SHOW_EFFECT);
+            userTab.tab('show');
         }
     });
 }
 
 function displayUserTweets(userTweetsList, userPicture, userTab, login) {
 	$.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/users/" + login + "/tweets",
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             makeTweetsList(data, userTweetsList, false, true, true);
 			displayUserInformations(userPicture, userTab, login);
@@ -104,9 +110,9 @@ function displayUserTweets(userTweetsList, userPicture, userTab, login) {
 
 function displayWhoToFollow() {
 	$.ajax({
-        type: GET_TYPE_REQUEST,
+        type: 'GET',
         url: "/tatami/rest/suggestions",
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             makeWhoToFollowList(data);
         }
@@ -115,11 +121,11 @@ function displayWhoToFollow() {
 
 function newUserToFollow(loginToFollow, login, followUserInput, followStatus) {
 	$.ajax({
-		type: POST_TYPE_REQUEST,
+		type: 'POST',
 		url: "/tatami/rest/users/" + login + "/followUser",
-		contentType: JSON_CONTENT_TYPE,
+		contentType: 'application/json; charset=UTF-8',
 		data: loginToFollow,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
             followUserInput.val("");
             setTimeout(function() {
@@ -129,19 +135,19 @@ function newUserToFollow(loginToFollow, login, followUserInput, followStatus) {
             }, 500);	//DEBUG wait for persistence consistency
         },
     	error: function(xhr, ajaxOptions, thrownError) {
-    		followStatus.fadeIn(FAST_EFFECT).text(thrownError);
-            setTimeout(followStatus.fadeOut(SHOW_EFFECT), 5000);
+    		followStatus.fadeIn('FAST').text(thrownError);
+            setTimeout(followStatus.fadeOut('show'), 500);
     	}
 	});
 }
 
 function removeFriendFromMyList(login, friend) {
 	$.ajax({
-		type: POST_TYPE_REQUEST,
+		type: 'POST',
 		url: "/tatami/rest/users/" + login + "/removeFriend",
-		contentType: JSON_CONTENT_TYPE,
+		contentType: 'application/json; charset=UTF-8',
 		data: friend,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
         }
@@ -150,11 +156,11 @@ function removeFriendFromMyList(login, friend) {
 
 function newUserToFollowFromHisProfile(loginToFollow, login, followUserInput, followStatus) {
 	$.ajax({
-		type: POST_TYPE_REQUEST,
+		type: 'POST',
 		url: "/tatami/rest/users/" + login + "/followUser",
-		contentType: JSON_CONTENT_TYPE,
+		contentType: 'application/json; charset=UTF-8',
 		data: loginToFollow,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
         	$("#userProfile a#followBtn").hide();
         	$("#userProfile a#unfollowBtn").show();
@@ -164,11 +170,11 @@ function newUserToFollowFromHisProfile(loginToFollow, login, followUserInput, fo
 
 function removeFriendFromHisProfile(login, friend) {
 	$.ajax({
-		type: POST_TYPE_REQUEST,
+		type: 'POST',
 		url: "/tatami/rest/users/" + login + "/removeFriend",
-		contentType: JSON_CONTENT_TYPE,
+		contentType: 'application/json; charset=UTF-8',
 		data: friend,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
         	$("#userProfile a#followBtn").show();
         	$("#userProfile a#unfollowBtn").hide();
@@ -192,12 +198,12 @@ function removeOneOfMyTweet(tweet) {
 
 function addATweetToMyFavorites(tweet, favTab){
 	$.ajax({
-		type: GET_TYPE_REQUEST,
+		type: 'GET',
 		url: "/tatami/rest/likeTweet/" + tweet,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
             setTimeout(function() {
-            	favTab.tab(SHOW_EFFECT);
+            	favTab.tab('show');
             }, 500);	//DEBUG wait for persistence consistency
         }
 	});
@@ -205,9 +211,9 @@ function addATweetToMyFavorites(tweet, favTab){
 
 function searchUsersPossibilities(suggest, login){
 	$.ajax({
-		type: GET_TYPE_REQUEST,
+		type: 'GET',
 		url: "/tatami/rest/users/similar/"+login,
-		dataType: JSON_DATA_TYPE,
+		dataType: 'json',
         success: function(data) {
         	suggest.empty();
         	if(null!=data && data.length >0) {

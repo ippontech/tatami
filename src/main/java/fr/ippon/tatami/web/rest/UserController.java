@@ -7,10 +7,9 @@ import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,7 +63,6 @@ public class UserController {
             mav.addObject("nbFollowed", counterService.getNbFollowed(login));
             mav.addObject("nbFollowers", counterService.getNbFollowers(login));
         }
-        ;
         return mav;
     }
 
@@ -76,32 +74,22 @@ public class UserController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get Profile : " + login);
         }
-        return userService.getUserProfileByLogin(login);
+        User user = userService.getUserProfileByLogin(login);
+        return user;
     }
 
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void updateUser(@PathVariable("login") String login, @RequestBody User user) throws ConstraintViolationException, IllegalArgumentException {
+    public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to update user : " + login);
         }
-
-        String cleanedContent = Jsoup.clean(login, Whitelist.basic());
-        if (null != login && login.equals(cleanedContent)) {
-            user.setLogin(login);
-            user.setEmail(Jsoup.clean(user.getEmail(), Whitelist.basic()));
-            user.setFirstName(Jsoup.clean(user.getFirstName(), Whitelist.basic()));
-            user.setLastName(Jsoup.clean(user.getLastName(), Whitelist.basic()));
-            try {
-                userService.updateUser(user);
-            } catch (ConstraintViolationException cve) {
-                throw new IllegalArgumentException("Illegal Argument : One of the data in under an invalid format.");
-            }
-        } else {
-            throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
-        }
+        user.setLogin(login);
+        user.setFirstName(StringEscapeUtils.escapeHtml(user.getFirstName()));
+        user.setLastName(StringEscapeUtils.escapeHtml(user.getLastName()));
+        userService.updateUser(user);
     }
 
     @RequestMapping(value = "/rest/users/{login}/followUser",

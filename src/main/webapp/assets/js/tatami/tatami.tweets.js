@@ -1,8 +1,6 @@
-/* Functions called by tatami.js that deal about tweet html object*/
-
-function buildHtmlImgGravatarTag(gravatarName){
-    return '<img src="http://www.gravatar.com/avatar/' + gravatarName + '?s=32" />';
-}
+/*
+* Manage the tweet list.
+*/
 
 function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     // identification de l'émetteur du message
@@ -12,7 +10,7 @@ function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
         html += userlineLink;
     }
     
-    html += buildHtmlImgGravatarTag(gravatar);
+    html += '<img src="http://www.gravatar.com/avatar/' + gravatar + '?s=32" />'
     
     if (userlineLink){
 	html += '</a>';
@@ -32,15 +30,15 @@ function buildHtmlAreaForTheTweetContent(userlineLink, loginInSession, firstName
         html += '</a>';
     }
     html += ' <em>@' + loginInSession + '</em><br/>';
-    // contenu du message
+    // tweet content
     html += content.replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
     html += '</article></td>';
     return html;
 }
 
-function buildHtmlAreaForTheConnectionPart(login, loginInSession, tweetId, followUsers, likeTweets){
+function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers, likeTweets){
     var html = '<td class="tweetFriend">';
-    if (assertStringNotEquals(login, loginInSession)) {
+    if (login != loginInSession) {
         if (followUsers) {
             html += '<a href="#" onclick="followUser(\'' + login + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
         } else {
@@ -56,76 +54,38 @@ function buildHtmlAreaForTheConnectionPart(login, loginInSession, tweetId, follo
     return html;
 }
 
-function buildHtmlAreaForDisplayingTheDateSincePublication(fieldPrettyPrintTweetDateInSession){
-    return '<td class="tweetDate"><aside>' + fieldPrettyPrintTweetDateInSession+ '</aside></td>';
-}
-
-function buildContentForAHtmlLinePerTweet(
-        userlineLink,
-        fieldGravatarInSession,
-        login, 
-		tweetId,
-        fieldLoginInSession, 
-        fieldfirstNameInSession, 
-        fieldLastNameInSession, 
-        fieldContentInSession,
-        followUsers, 
-        likeTweets,
-        fieldPrettyPrintTweetDateInSession){
-            
-    var html = buildHtmlAreaForTheAvatar(
-                userlineLink, 
-                fieldGravatarInSession);
-
-    html += buildHtmlAreaForTheTweetContent(
-                userlineLink,
-                fieldLoginInSession,
-                fieldfirstNameInSession,
-                fieldLastNameInSession,
-                fieldContentInSession);
-
-    html += buildHtmlAreaForTheConnectionPart(
-                login,
-                fieldLoginInSession,
-				tweetId,
-                followUsers, 
-                likeTweets);
-                
-    html += buildHtmlAreaForDisplayingTheDateSincePublication(fieldPrettyPrintTweetDateInSession);
-    return html;
-}
-
-function buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry){
-
-    if (linkLogins) {
-        var userlineLink = userlineURL.replace(userlineREG, entry['login']);
-    }
-      
-    var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';  
-
-    html += buildContentForAHtmlLinePerTweet(
-        userlineLink,
-        entry['gravatar'],
-        login, 
-		entry['tweetId'],
-        entry['login'],
-        entry['firstName'],
-        entry['lastName'],
-        entry['content'],
-        followUsers, 
-        likeTweets,
-        entry['prettyPrintTweetDate']
-        );
-
-    html += '</tr>';
-    return html;
-}
-
 function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets, login) {
-    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {	//DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-		dest.empty();
+    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
+        dest.empty();
         $.each(data, function(entryIndex, entry) {
-            dest.append(buildAHtmlLinePerTweet(followUsers, likeTweets, linkLogins, login, entry));
+            if (linkLogins) {
+                var userlineLink = userlineURL.replace(userlineREG, entry['login']);
+            }
+            var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';
+
+            html += buildHtmlAreaForTheAvatar(
+                userlineLink,
+                entry['gravatar']);
+
+            html += buildHtmlAreaForTheTweetContent(
+                userlineLink,
+                entry['login'],
+                entry['firstName'],
+                entry['lastName'],
+                entry['content']);
+
+            html += buildHtmlAreaForTheActions(
+                login,
+                entry['login'],
+                entry['tweetId'],
+                followUsers,
+                likeTweets);
+
+            html +=
+                "<td class=\"tweetDate\"><aside>" + entry['prettyPrintTweetDate']+ "</aside></td>";
+
+            html += '</tr>';
+            dest.append(html);
         });
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });

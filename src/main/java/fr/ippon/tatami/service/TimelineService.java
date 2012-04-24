@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,11 +53,9 @@ public class TimelineService {
 
     private final Log log = LogFactory.getLog(TimelineService.class);
 
-    private final static String PATTERN_LOGGIN = "@[^\\s]+";
+    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
-    private final static Pattern PATTERN_COMPILER = Pattern.compile(PATTERN_LOGGIN);
-
-    public void postTweet(String content) throws ConstraintViolationException {
+    public void postTweet(String content) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new tweet : " + content);
         }
@@ -77,7 +74,7 @@ public class TimelineService {
         }
 
         // add tweet to the mentioned users' timeline
-        Matcher m = PATTERN_COMPILER.matcher(tweet.getContent());
+        Matcher m = PATTERN_LOGIN.matcher(tweet.getContent());
         while (m.find()) {
             String mentionedLogin = extractLoginWithoutAt(m.group());
             if (mentionedLogin != null && !mentionedLogin.equals(currentLogin)) {

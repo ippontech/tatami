@@ -1,8 +1,8 @@
 function refreshTweet() {
     jQuery.ajax({
-        type:GET_TYPE_REQUEST,
+        type:'GET',
         url:"rest/tweets/" + login + "/" + DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY,
-        dataType:JSON_DATA_TYPE,
+        dataType:'json',
         success:function (data) {
 
             $("#tweetList").empty();
@@ -27,9 +27,9 @@ function refreshTweet() {
 
 function listFavorite() {
     $.ajax({
-        type:GET_TYPE_REQUEST,
+        type:'GET',
         url:"rest/favTweets/" + login,
-        dataType:JSON_DATA_TYPE,
+        dataType:'json',
         success:function (data) {
 
             $("#favoritesTweet").empty();
@@ -54,11 +54,11 @@ function listFavorite() {
 
 function postTheTweet(tweet) {
     $.ajax({
-        type: POST_TYPE_REQUEST,
+        type: 'POST',
         url: "rest/tweets",
-        contentType: JSON_CONTENT_TYPE,
+        contentType: 'application/json; charset=UTF-8',
         data: tweet,
-        dataType: JSON_DATA_TYPE,
+        dataType: 'json',
         success: function(data) {
             $('#tweetText').val("");
             setTimeout(function() {

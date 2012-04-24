@@ -4,10 +4,9 @@ import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,20 +68,12 @@ public class TweetController {
 
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
-    public void postTweet(@RequestBody String content) throws ConstraintViolationException, IllegalArgumentException {
+    public void postTweet(@RequestBody String content) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add tweet : " + content);
         }
-        String cleanedContent = Jsoup.clean(content, Whitelist.basic());
-        if (null != content && content.equals(cleanedContent)) {
-            try {
-                timelineService.postTweet(content);
-            } catch (ConstraintViolationException cve) {
-                throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
-            }
-        } else {
-            throw new IllegalArgumentException("Illegal Argument : Content of the tweet.");
-        }
+        String escapedContent = StringEscapeUtils.escapeHtml(content);
+        timelineService.postTweet(escapedContent);
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",

@@ -2,7 +2,6 @@ package fr.ippon.tatami.domain;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,13 +19,11 @@ import javax.validation.constraints.Size;
 @Table(name = "User")
 public class User {
 
-    @SafeHtml
     @NotEmpty(message = "Login is mandatory.")
     @NotNull(message = "Login is mandatory.")
     @Id
     private String login;
 
-    @SafeHtml
     @Email(message = "Email is invalid.")
     @Column(name = "email")
     private String email;
@@ -34,17 +31,15 @@ public class User {
     @Column(name = "gravatar")
     private String gravatar;
 
-    @SafeHtml
     @NotNull
     @NotEmpty(message = "First Name field is mandatory.")
-    @Size(min = 1, max = 16)
+    @Size(min = 1, max = 50)
     @Column(name = "firstName")
     private String firstName;
 
-    @SafeHtml
     @NotNull
     @NotEmpty(message = "Last field is mandatory.")
-    @Size(min = 1, max = 16)
+    @Size(min = 1, max = 50)
     @Column(name = "lastName")
     private String lastName;
 
