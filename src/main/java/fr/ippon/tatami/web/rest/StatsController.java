@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /**
- * REST controller for managing tweets.
+ * REST controller for managing stats.
  *
  * @author Julien Dubois
  */
