@@ -6,6 +6,7 @@ import java.util.TreeSet;
 public class DayTweetStat {
 
     private String day;
+
     private Collection<UserTweetStat> stats = new TreeSet<UserTweetStat>();
 
     public DayTweetStat(String day) {
