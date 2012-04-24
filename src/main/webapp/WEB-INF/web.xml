@@ -23,12 +23,12 @@
 
     <error-page>
         <error-code>500</error-code>
-        <location>/WEB-INF/layouts/standard/500-error.jsp</location>
+        <location>/tatami/500-error</location>
     </error-page>
 
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/layouts/standard/404-error.jsp</location>
+        <location>/tatami/404-error</location>
     </error-page>
 
 </web-app>

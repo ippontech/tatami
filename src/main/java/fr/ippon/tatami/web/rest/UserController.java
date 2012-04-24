@@ -2,12 +2,10 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -40,11 +38,9 @@ public class UserController {
     private CounterService counterService;
 
     @Inject
-    private AuthenticationService authenticationService;
-
-    @Inject
     private boolean indexActivated;
 
+    //TODO
     @RequestMapping(value = "/profile/{login}",
             method = RequestMethod.GET)
     @ResponseBody
@@ -66,59 +62,13 @@ public class UserController {
     }
 
     /**
-     * POST /tatami/rest/users/jdubois -> update the "jdubois" user
+     * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
      */
-    @RequestMapping(value = "/rest/users/{login}",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to update user : " + login);
-        }
-        user.setLogin(login);
-        user.setFirstName(StringEscapeUtils.escapeHtml(user.getFirstName()));
-        user.setLastName(StringEscapeUtils.escapeHtml(user.getLastName()));
-        userService.updateUser(user);
-    }
-
-
-    /**
-     * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
-     */
-    @RequestMapping(value = "/rest/users/{login}/follow",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void followUser(@PathVariable("login") String loginToFollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow user login : " + loginToFollow);
-        }
-        userService.followUser(loginToFollow);
-    }
-
-    /**
-     * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
-     */
-    @RequestMapping(value = "/rest/users/{login}/unfollow",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void unfollowUser(@PathVariable("login") String loginToUnfollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow user login  : " + loginToUnfollow);
-        }
-        userService.unfollowUser(loginToUnfollow);
-    }
-
-    /**
-     *  GET  /tatami/rest/users/jdubois -> get the "jdubois" user
-     */
-    @RequestMapping(value = "/rest/users/{login}",
+    @RequestMapping(value = "/rest/users/show",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public User getUser(@PathVariable("login") String login) {
+    public User getUser(@RequestParam("screen_name") String login) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get Profile : " + login);
         }
@@ -127,37 +77,9 @@ public class UserController {
     }
 
     /**
-     * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
+     * GET  /users/suggestions -> suggest users to follow
      */
-    @RequestMapping(value = "/rest/users/{login}/tweets",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTweetsForUser(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's tweets (" + login + ").");
-        }
-        return timelineService.getUserline(login, 20);
-    }
-
-    /**
-     * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
-     */
-    @RequestMapping(value = "/rest/users/{login}/favorites",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listFavoriteTweets(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's favorite tweet list (" + login + ").");
-        }
-        return timelineService.getFavoritesline(login);
-    }
-
-    /**
-     * GET  /tatami/rest/suggestions -> suggest users to follow
-     */
-    @RequestMapping(value = "/rest/suggestions",
+    @RequestMapping(value = "/rest/users/suggestions",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -183,46 +105,21 @@ public class UserController {
     }
 
     /**
-     * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+     * GET  /users/search -> search user by login
      */
-    @RequestMapping(value = "/rest/users/{login}/autocomplete",
+    @RequestMapping(value = "/rest/users/search",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public List<String> findSimilarUsers(@PathVariable("login") String login) {
+    public List<String> searchUsers(@RequestParam("q") String query) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get users possibilites for a suggestion : " + login);
+            log.debug("REST request to find users starting with : " + query);
         }
         if (indexActivated) {
-            return indexService.searchSimilarUsers(login);
+            return indexService.searchSimilarUsers(query);
         } else {
             return new ArrayList<String>();
         }
-    }
-
-    @RequestMapping(value = "/rest/removeTweet/{tweet}",
-            method = RequestMethod.GET)
-    @ResponseBody
-    public void removeTweet(@PathVariable("tweet") String tweet) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to remove tweet : " + tweet);
-        }
-        if (!timelineService.removeTweet(tweet)) {
-            log.warn("Could not remove tweet ; wether it's already deleted or owned by another user.");
-        } else {
-            log.info("Completed");
-        }
-    }
-
-    @RequestMapping(value = "/rest/likeTweet/{tweet}",
-            method = RequestMethod.GET)
-    @ResponseBody
-    public void likeTweet(@PathVariable("tweet") String tweet) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to like tweet : " + tweet);
-        }
-        timelineService.addFavoriteTweet(tweet);
-        log.info("Completed");
     }
 
 }

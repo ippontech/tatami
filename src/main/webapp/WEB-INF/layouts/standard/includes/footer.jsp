@@ -22,7 +22,6 @@
 <script src="/assets/js/shortcut.js"></script>
 <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
 
-<script src="/assets/js/tatami/tatami.constants.js"></script>
 <script src="/assets/js/tatami/tatami.utils.js"></script>
 <script src="/assets/js/tatami/tatami.tweets.js"></script>
 <script src="/assets/js/tatami/tatami.users.js"></script>

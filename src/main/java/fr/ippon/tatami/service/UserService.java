@@ -64,22 +64,19 @@ public class UserService {
 
     public void updateUser(User user) {
         User currentUser = authenticationService.getCurrentUser();
-        if (currentUser.getLogin().equals(user.getLogin())) {
-            user.setGravatar(GravatarUtil.getHash(user.getEmail()));
-            try {
-                userRepository.updateUser(user);
-                // Add to Elastic Search index if it is activated
-                if (indexActivated) {
-                    indexService.removeUser(user);
-                    indexService.addUser(user);
-                }
-            } catch (ConstraintViolationException cve) {
-                log.info("Constraint violated while updating user " + user);
+        user.setLogin(currentUser.getLogin());
+        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+        try {
+            userRepository.updateUser(user);
+            // Add to Elastic Search index if it is activated
+            if (indexActivated) {
+                indexService.removeUser(user);
+                indexService.addUser(user);
             }
-        } else {
-            log.info("Security alert : user " + currentUser.getLogin() +
-                    " tried to update user " + user);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating user " + user);
         }
+
     }
 
     public void createUser(User user) {

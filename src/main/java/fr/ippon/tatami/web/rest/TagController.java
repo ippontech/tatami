@@ -1,18 +1,17 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.Collection;
 
 /**
  * REST controller for managing tags.
@@ -28,7 +27,7 @@ public class TagController {
     private TimelineService timelineService;
 
     /**
-     * GET  /tatami/rest/tags -> get the latest tweets with no tags
+     * GET  /tags -> get the latest tweets with no tags
      */
     @RequestMapping(value = "/rest/tags/{nbTweets}",
             method = RequestMethod.GET,
@@ -47,7 +46,7 @@ public class TagController {
     }
 
     /**
-     * GET  /tatami/rest/tags/ippon -> get the latest tweets tagged with "ippon"
+     * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
      */
     @RequestMapping(value = "/rest/tags/{tag}/{nbTweets}",
             method = RequestMethod.GET,

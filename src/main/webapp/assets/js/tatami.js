@@ -1,5 +1,10 @@
 /* Functions called by jsp/html/etc.. */
 
+// Constants
+var DURATION_OF_FADE_TO 				= 400;
+var DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY	= 20;
+var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY	= 10;
+
 var nbTweetsToDisplay;
 
 var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
@@ -57,7 +62,7 @@ function initTatami() {
     // auto-refresh
     $('a[data-toggle="tab"]').on('show', function(e) {
         if (e.target.hash == '#favLinePanel') {
-            listFavoriteTweets();
+            favoriteTweets();
         } else if (e.target.hash == '#piechartPanel') {
             refreshPieChart();
         } else if (e.target.hash == '#punchchartPanel') {

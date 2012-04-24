@@ -4,14 +4,14 @@ import fr.ippon.tatami.domain.DayTweetStat;
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.UserTweetStat;
 import fr.ippon.tatami.service.TimelineService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -21,50 +21,17 @@ import java.util.Map.Entry;
  * @author Julien Dubois
  */
 @Controller
-public class TweetController {
+public class StatsController {
 
-    private final Log log = LogFactory.getLog(TweetController.class);
+    private final Log log = LogFactory.getLog(StatsController.class);
 
     @Inject
     private TimelineService timelineService;
 
-
     /**
-     * POST /tatami/rest/tweets -> create a new Tweet
+     * GET  /stats/day -> statistics for today
      */
-    @RequestMapping(value = "/rest/tweets",
-            method = RequestMethod.POST)
-    public void postTweet(@RequestBody String content) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to add tweet : " + content);
-        }
-        String escapedContent = StringEscapeUtils.escapeHtml(content);
-        timelineService.postTweet(escapedContent);
-    }
-
-    /**
-     * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
-     */
-    @RequestMapping(value = "/rest/tweets/{nbTweets}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTweets(@PathVariable("nbTweets") String nbTweets) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
-        }
-        try {
-            if (nbTweets == null || nbTweets.equals("")) {
-                return timelineService.getTimeline();
-            }
-            return timelineService.getTimeline(Integer.parseInt(nbTweets));
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTimeline();
-        }
-    }
-
-    @RequestMapping(value = "/rest/tweetStats/day",
+    @RequestMapping(value = "/rest/stats/day",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -102,7 +69,10 @@ public class TweetController {
         return stats;
     }
 
-    @RequestMapping(value = "/rest/tweetStats/week",
+    /**
+     * GET  /stats/week -> statistics for this week
+     */
+    @RequestMapping(value = "/rest/stats/week",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody

@@ -168,10 +168,6 @@ public class TimelineService {
         return this.buildTweetsList(tweetIds);
     }
 
-    public Collection<Tweet> getTimeline() {
-        return getTimeline(20);
-    }
-
     /**
      * The userline contains the user's own tweets
      *
@@ -189,7 +185,7 @@ public class TimelineService {
         return this.buildTweetsList(tweetIds);
     }
 
-    public boolean removeTweet(String tweetId) {
+    public void removeTweet(String tweetId) {
         if (log.isDebugEnabled()) {
             log.debug("Removing tweet : " + tweetId);
         }
@@ -200,9 +196,7 @@ public class TimelineService {
                 && !Boolean.TRUE.equals(tweet.getRemoved())) {
             tweetRepository.removeTweet(tweet);
             counterRepository.decrementTweetCounter(currentUser.getLogin());
-            return true;
         }
-        return false;
     }
 
     public void addFavoriteTweet(String tweetId) {
@@ -233,16 +227,11 @@ public class TimelineService {
     /**
      * The favline contains the user's favorites tweets
      *
-     * @param login the user to retrieve the favline of
      * @return a tweets list
      */
-    public Collection<Tweet> getFavoritesline(String login) {
-        if (login == null || login.isEmpty()) {
-            User currentUser = authenticationService.getCurrentUser();
-            login = currentUser.getLogin();
-        }
+    public Collection<Tweet> getFavoritesline() {
+        String login = authenticationService.getCurrentUser().getLogin();
         Collection<String> tweetIds = tweetRepository.getFavoritesline(login);
-
         return this.buildTweetsList(tweetIds);
     }
 

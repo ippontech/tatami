@@ -2,18 +2,6 @@
  * Tatami charts.
  */
 
-function refreshPieChart() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/tweetStats/day",
-		dataType: "json",
-		success: function(data) {
-			makePieChartsList(data, $('#piechart_div'));
-//			$('#piechartTab').tab('show');
-		}
-	});
-}
-
 function makePieChartsList(data, dest) {
 	var dt = new google.visualization.DataTable();
 	dt.addColumn('string', 'Login');
@@ -29,18 +17,6 @@ function makePieChartsList(data, dest) {
 	google.visualization.events.addListener(chart, 'select', function() {
 		  var login = dt.getValue(chart.getSelection()[0].row, 0).substring(1);
 		  listUserTweets(login);
-	});
-}
-
-function refreshPunchChart() {
-	$.ajax({
-		type: 'GET',
-		url: "rest/tweetStats/week",
-		dataType: "json",
-		success: function(data) {
-			makePunchChartsList(data, $('#punchchart_div'));
-//			$('#punchchartTab').tab('show');
-		}
 	});
 }
 

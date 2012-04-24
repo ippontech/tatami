@@ -48,7 +48,7 @@ function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers,
         html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
     }
     if (likeTweets) {
-        html += '<a href="#" onclick="addFavoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
+        html += '<a href="#" onclick="favoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
     }
     html += '</td>';
     return html;

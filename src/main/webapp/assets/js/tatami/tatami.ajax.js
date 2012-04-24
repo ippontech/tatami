@@ -1,42 +1,57 @@
 /**
  * Ajax functions.
  *
- * Tweets
+ * See Twitter's API : https://dev.twitter.com/docs/api
  *
- * POST /tatami/rest/tweets -> create a new Tweet
- * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
- *
- *
- * Tags
- *
- * GET  /tatami/rest/tags -> get the latest tweets with no tags
- * GET  /tatami/rest/tags/ippon -> get the latest tweets tagged with "ippon"
+ * Timelines
+ * --------
+ * POST /statuses/update -> create a new Tweet
+ * POST /statuses/destroy/:id -> delete Tweet
+ * GET  /statuses/home_timeline -> get the latest tweets from the current user
+ * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  *
  * Users
+ * --------
+ * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
+ * GET  /users/suggestions -> suggest users to follow
+ * GET  /users/search -> search user by login
  *
- * POST /tatami/rest/users/jdubois -> update the "jdubois" user
- * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
- * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
- * GET  /tatami/rest/users/jdubois -> get the "jdubois" user
- * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
- * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
- * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+ * Friends & Followers
+ * -------
+ * POST /friendships/create -> follow user
+ * POST /friendships/destroy -> unfollow user
+ *
+ * Account
+ * --------
+ * POST /account/update_profile -> update the current user
+ *
+ * Favorites
+ * --------
+ * GET  /favorites -> get the favorite tweets of the current user
+ * POST /favorites/create/:id -> Favorites the tweet
  *
  *
- * Other
+ * Tags (does not exist in Twitter)
+ * --------
+ * GET  /tags -> get the latest tweets with no tags
+ * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
  *
- * GET  /tatami/rest/suggestions -> suggest users to follow
+ * Stats (does not exist in Twitter)
+ * --------
+ * GET  /stats/day -> statistics for today
+ * GET  /stats/week -> statistics for this week
+ *
  */
 
 /**
- * POST /tatami/rest/tweets -> create a new Tweet
+ * POST /statuses/update -> create a new Tweet
  */
 function tweet() {
     var tweet = $('#tweetContent');
     if (tweet.val() != "") {
         $.ajax({
             type: 'POST',
-            url: "/tatami/rest/tweets",
+            url: "/tatami/rest/statuses/update",
             contentType: 'application/json; charset=UTF-8',
             data: tweet.val(),
             dataType: 'json',
@@ -58,17 +73,36 @@ function tweet() {
 }
 
 /**
- * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
+ * POST /statuses/destroy/:id -> delete Tweet
+ */
+function removeTweet(tweetId) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/statuses/destroy/" + tweetId,
+        dataType: "json",
+        success: function(data) {
+            setTimeout(function() {
+                refreshProfile();
+                listTweets(true);
+            }, 500); //DEBUG wait for persistence consistency
+        }
+    });
+}
+
+/**
+ * GET  /statuses/home_timeline -> get the latest tweets from the current user
  */
 function listTweets(reset) {
+    var url = "/tatami/rest/statuses/home_timeline";
     if (reset) {
         nbTweetsToDisplay = DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY;
     } else {
         nbTweetsToDisplay += DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY;
+        url += "?count=" + nbTweetsToDisplay;
     }
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/tweets/" + nbTweetsToDisplay,
+        url: url,
         dataType: 'json',
         success: function(data) {
             makeTweetsList(data, $('#tweetsList'), true, false, true, login);
@@ -78,31 +112,28 @@ function listTweets(reset) {
 }
 
 /**
- * GET  /tatami/rest/tags -> get the latest tweets with no tags
- * GET  /tatami/rest/tags/ippon -> get the latest tweets tagged with "ippon"
+ * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  */
-function listTagTweets(tag) {
-    $.ajax({
+function listUserTweets(userLogin) {
+	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
+        url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
         dataType: 'json',
         success: function(data) {
-            //TODO refesh title's tag name
-            makeTweetsList(data, $('#tagTweetsList'), true, true, true);
-            $('#tagTab').tab('show');
+            makeTweetsList(data, $('#userTweetsList'), false, true, true);
+			displayUserInformations(userLogin);
         }
     });
 }
 
-
 /**
- * POST /tatami/rest/users/jdubois -> update the "jdubois" user
+ * POST /account/update_profile -> update the current user
  */
 function updateProfile() {
 	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
 	$.ajax({
 		type: 'POST',
-		url: "/tatami/rest/users/" + login,
+		url: "/tatami/rest/account/update_profile",
 		contentType: "application/json",
 		data: JSON.stringify($("#updateUserForm").serializeObject()),
 		dataType: "json",
@@ -115,13 +146,14 @@ function updateProfile() {
 }
 
 /**
- * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
+ * POST /friendships/create -> follow user
  */
 function followUser(loginToFollow) {
 	$.ajax({
 		type: 'POST',
-		url: "/tatami/rest/users/" + loginToFollow + "/follow",
+		url: "/tatami/rest/friendships/create",
 		contentType: 'application/json; charset=UTF-8',
+        data: '{"login":"' + loginToFollow + '"}',
 		dataType: 'json',
         success: function(data) {
             $("#followUserInput").val("");
@@ -140,13 +172,14 @@ function followUser(loginToFollow) {
 }
 
 /**
- * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
+ * POST /friendships/destroy -> unfollow user
  */
 function unfollowUser(loginToUnfollow) {
 	$.ajax({
 		type: 'POST',
-		url: "/tatami/rest/users/" + loginToUnfollow + "/unfollow",
+		url: "/tatami/rest/friendships/destroy",
 		contentType: 'application/json; charset=UTF-8',
+        data: '{"login":"' + loginToUnfollow + '"}',
 		dataType: 'json',
         success: function(data) {
             setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
@@ -155,12 +188,12 @@ function unfollowUser(loginToUnfollow) {
 }
 
 /**
- * GET  /tatami/rest/users/jdubois -> get the "jdubois" user
+ * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
  */
 function getUser(userLogin, callback) {
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/users/" + userLogin,
+        url: "/tatami/rest/users/show?screen_name=" + userLogin,
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -169,27 +202,12 @@ function getUser(userLogin, callback) {
 }
 
 /**
- * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
+ * GET  /favorites -> get the favorite tweets of the current user
  */
-function listUserTweets(userLogin) {
-	$.ajax({
-        type: 'GET',
-        url: "/tatami/rest/users/" + userLogin + "/tweets",
-        dataType: 'json',
-        success: function(data) {
-            makeTweetsList(data, $('#userTweetsList'), false, true, true);
-			displayUserInformations(userLogin);
-        }
-    });
-}
-
-/**
- * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
- */
-function listFavoriteTweets() {
+function favoriteTweets() {
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/users/" + login + "/favorites",
+        url: "/tatami/rest/favorites",
         dataType: 'json',
         success: function(data) {
             makeTweetsList(data, $('#favTweetsList'), true, true, false, login);
@@ -198,16 +216,32 @@ function listFavoriteTweets() {
 }
 
 /**
- * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+ * POST /favorites/create/:id -> Favorites the tweet
  */
-function autocompleteUser(userLogin) {
+function favoriteTweet(tweet) {
+	$.ajax({
+		type: 'POST',
+		url: "/tatami/rest/favorites/create/" + tweet,
+		dataType: 'json',
+        success: function(data) {
+            setTimeout(function() {
+            	$('#favTab').tab('show');
+            }, 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+/**
+ * GET  /users/search -> search user by login
+ */
+function searchUser(userLogin) {
     var suggest = $('#usersSuggestions');
     if (login.length <= 3) {
         suggest.hide();
     } else {
         $.ajax({
             type: 'GET',
-            url: "/tatami/rest/users/" + userLogin + "/autocomplete",
+            url: "/tatami/rest/users/search?q=" + userLogin,
             dataType: 'json',
             success: function(data) {
                 suggest.empty();
@@ -221,12 +255,12 @@ function autocompleteUser(userLogin) {
 }
 
 /**
- * GET  /tatami/rest/suggestions -> suggest users to follow
+ * GET  /users/suggestions -> suggest users to follow
  */
 function suggestUsersToFollow() {
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/suggestions",
+        url: "/tatami/rest/users/suggestions",
         dataType: 'json',
         success: function(data) {
             makeWhoToFollowList(data);
@@ -234,30 +268,48 @@ function suggestUsersToFollow() {
     });
 }
 
-function removeTweet(tweet) {
-	$.ajax({
-		type: 'GET',
-		url: "/tatami/rest/removeTweet/" + tweet,
-		dataType: "json",
-      		success: function(data) {
-          		setTimeout(function() {
-              		refreshProfile();
-              		listTweets(true);
-          			}, 500); //DEBUG wait for persistence consistency
-      			}
-			});
+/**
+ * GET  /tags -> get the latest tweets with no tags
+ * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
+ */
+function listTagTweets(tag) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
+        dataType: 'json',
+        success: function(data) {
+            //TODO refesh title's tag name
+            makeTweetsList(data, $('#tagTweetsList'), true, true, true);
+            $('#tagTab').tab('show');
+        }
+    });
 }
 
-function addFavoriteTweet(tweet) {
+/**
+ * GET  /stats/day -> statistics for today
+ */
+function refreshPieChart() {
 	$.ajax({
 		type: 'GET',
-		url: "/tatami/rest/likeTweet/" + tweet,
-		dataType: 'json',
-        success: function(data) {
-            setTimeout(function() {
-            	$('#favTab').tab('show');
-            }, 500);	//DEBUG wait for persistence consistency
-        }
+		url: "rest/stats/day",
+		dataType: "json",
+		success: function(data) {
+			makePieChartsList(data, $('#piechart_div'));
+		}
+	});
+}
+
+/**
+ * GET  /stats/week -> statistics for this week
+ */
+function refreshPunchChart() {
+	$.ajax({
+		type: 'GET',
+		url: "rest/stats/week",
+		dataType: "json",
+		success: function(data) {
+			makePunchChartsList(data, $('#punchchart_div'));
+		}
 	});
 }
 
