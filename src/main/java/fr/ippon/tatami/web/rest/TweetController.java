@@ -28,44 +28,10 @@ public class TweetController {
     @Inject
     private TimelineService timelineService;
 
-    @RequestMapping(value = "/rest/tweets/{login}/{nbTweets}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTweets(@PathVariable("login") String login, @PathVariable("nbTweets") String nbTweets) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
-        }
-        try {
-            return timelineService.getTimeline(login, Integer.parseInt(nbTweets));
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTimeline(login, 20);
-        }
-    }
 
-    @RequestMapping(value = "/rest/users/{login}/tweets",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTweets(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's own tweet list (" + login + ").");
-        }
-        return timelineService.getUserline(login, 20);
-    }
-
-    @RequestMapping(value = "/rest/favTweets/{login}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listFavoriteTweets(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's favorite tweet list (" + login + ").");
-        }
-        return timelineService.getFavoritesline(login);
-    }
-
+    /**
+     * POST /tatami/rest/tweets -> create a new Tweet
+     */
     @RequestMapping(value = "/rest/tweets",
             method = RequestMethod.POST)
     public void postTweet(@RequestBody String content) {
@@ -74,6 +40,28 @@ public class TweetController {
         }
         String escapedContent = StringEscapeUtils.escapeHtml(content);
         timelineService.postTweet(escapedContent);
+    }
+
+    /**
+     * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
+     */
+    @RequestMapping(value = "/rest/tweets/{nbTweets}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTweets(@PathVariable("nbTweets") String nbTweets) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get the tweet list (" + nbTweets + " sized).");
+        }
+        try {
+            if (nbTweets == null || nbTweets.equals("")) {
+                return timelineService.getTimeline();
+            }
+            return timelineService.getTimeline(Integer.parseInt(nbTweets));
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTimeline();
+        }
     }
 
     @RequestMapping(value = "/rest/tweetStats/day",
@@ -146,38 +134,6 @@ public class TweetController {
                     stat.getStats().add(new UserTweetStat(login, 0));
                 }
             }
-        }
-    }
-
-    @RequestMapping(value = "/rest/tags/{nbTweets}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTagTweets(@PathVariable("nbTweets") String nbTweets) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
-        }
-        try {
-            return timelineService.getTagline(null, Integer.parseInt(nbTweets));
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(null, 20);
-        }
-    }
-
-    @RequestMapping(value = "/rest/tags/{tag}/{nbTweets}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tweet> listTagTweets(@PathVariable("tag") String tag, @PathVariable("nbTweets") String nbTweets) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
-        }
-        try {
-            return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(tag, 20);
         }
     }
 }

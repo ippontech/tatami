@@ -15,11 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * REST controller for managing users.
@@ -46,6 +42,9 @@ public class UserController {
     @Inject
     private AuthenticationService authenticationService;
 
+    @Inject
+    private boolean indexActivated;
+
     @RequestMapping(value = "/profile/{login}",
             method = RequestMethod.GET)
     @ResponseBody
@@ -66,18 +65,9 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping(value = "/rest/users/{login}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public User getUser(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get Profile : " + login);
-        }
-        User user = userService.getUserProfileByLogin(login);
-        return user;
-    }
-
+    /**
+     * POST /tatami/rest/users/jdubois -> update the "jdubois" user
+     */
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.POST,
             consumes = "application/json")
@@ -92,40 +82,81 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/rest/users/{login}/followUser",
+
+    /**
+     * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
+     */
+    @RequestMapping(value = "/rest/users/{login}/follow",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void followUser(@PathVariable("login") String login, @RequestBody String loginToFollow) {
+    public void followUser(@PathVariable("login") String loginToFollow) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow user login : " + loginToFollow);
         }
-        User currentUser = authenticationService.getCurrentUser();
-        if (currentUser.getLogin().equals(login)) {
-            userService.followUser(loginToFollow);
-            log.info("Completed");
-        } else {
-            log.warn("Cannot follow a user for another user.");
-        }
+        userService.followUser(loginToFollow);
     }
 
-    @RequestMapping(value = "/rest/users/{login}/removeFriend",
+    /**
+     * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
+     */
+    @RequestMapping(value = "/rest/users/{login}/unfollow",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void removeFriend(@PathVariable("login") String login, @RequestBody String friend) {
+    public void unfollowUser(@PathVariable("login") String loginToUnfollow) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to remove friendLogin : " + friend);
+            log.debug("REST request to unfollow user login  : " + loginToUnfollow);
         }
-        User currentUser = authenticationService.getCurrentUser();
-        if (currentUser.getLogin().equals(login)) {
-            userService.forgetUser(friend);
-            log.info("Completed");
-        } else {
-            log.warn("Cannot remove a friend from another user");
-        }
+        userService.unfollowUser(loginToUnfollow);
     }
 
+    /**
+     *  GET  /tatami/rest/users/jdubois -> get the "jdubois" user
+     */
+    @RequestMapping(value = "/rest/users/{login}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public User getUser(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get Profile : " + login);
+        }
+        User user = userService.getUserProfileByLogin(login);
+        return user;
+    }
+
+    /**
+     * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
+     */
+    @RequestMapping(value = "/rest/users/{login}/tweets",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listTweetsForUser(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get someone's tweets (" + login + ").");
+        }
+        return timelineService.getUserline(login, 20);
+    }
+
+    /**
+     * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
+     */
+    @RequestMapping(value = "/rest/users/{login}/favorites",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tweet> listFavoriteTweets(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get someone's favorite tweet list (" + login + ").");
+        }
+        return timelineService.getFavoritesline(login);
+    }
+
+    /**
+     * GET  /tatami/rest/suggestions -> suggest users to follow
+     */
     @RequestMapping(value = "/rest/suggestions",
             method = RequestMethod.GET,
             produces = "application/json")
@@ -149,6 +180,24 @@ public class UserController {
             if (users.size() == 3) break;    // suggestions list limit
         }
         return users.values();
+    }
+
+    /**
+     * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+     */
+    @RequestMapping(value = "/rest/users/{login}/autocomplete",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public List<String> findSimilarUsers(@PathVariable("login") String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get users possibilites for a suggestion : " + login);
+        }
+        if (indexActivated) {
+            return indexService.searchSimilarUsers(login);
+        } else {
+            return new ArrayList<String>();
+        }
     }
 
     @RequestMapping(value = "/rest/removeTweet/{tweet}",
@@ -176,14 +225,4 @@ public class UserController {
         log.info("Completed");
     }
 
-    @RequestMapping(value = "/rest/users/similar/{login}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public List<String> getUsersPossibility(@PathVariable("login") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get users possibilites for a suggestion : " + login);
-        }
-        return indexService.searchSimilarUsers(login);
-    }
 }

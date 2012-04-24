@@ -46,23 +46,8 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldGetTimeline() throws Exception {
         String login = "userWithTweets";
-        Collection<Tweet> tweets = timelineService.getTimeline(login, 10);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
-    }
-
-    @Test
-    public void shouldGetAuthenticateUserTimelineWithNullLoginSet() throws Exception {
-        String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getTimeline(null, 10);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
-    }
-
-    @Test
-    public void shouldGetAuthenticateUserTimelineWithEmptyLoginSet() throws Exception {
-        String login = "userWithTweets";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getTimeline("", 10);
+        Collection<Tweet> tweets = timelineService.getTimeline(10);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
@@ -92,11 +77,8 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         Collection<Tweet> tweetsFromUserline = timelineService.getUserline(login, 10);
         assertThatNewTestIsPosted(login, content, tweetsFromUserline);
 
-        Collection<Tweet> tweetsFromTimeline = timelineService.getTimeline(login, 10);
+        Collection<Tweet> tweetsFromTimeline = timelineService.getTimeline(10);
         assertThatNewTestIsPosted(login, content, tweetsFromTimeline);
-
-        Collection<Tweet> tweetsFromTimelineOfAFollower = timelineService.getTimeline("userWhoReadTweet", 10);
-        assertThatNewTestIsPosted(login, content, tweetsFromTimelineOfAFollower);
 
         Collection<Tweet> tweetsFromUserlineOfAFollower = timelineService.getUserline("userWhoReadTweet", 10);
         assertThat(tweetsFromUserlineOfAFollower.isEmpty(), is(true));

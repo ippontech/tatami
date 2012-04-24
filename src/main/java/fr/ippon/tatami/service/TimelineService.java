@@ -69,7 +69,8 @@ public class TimelineService {
         tweetRepository.addTweetToTagline(tweet);
 
         // add tweet to the follower's timelines
-        for (String followerLogin : followerRepository.findFollowersForUser(currentLogin)) {
+        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        for (String followerLogin : followersForUser) {
             tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
 
@@ -77,7 +78,10 @@ public class TimelineService {
         Matcher m = PATTERN_LOGIN.matcher(tweet.getContent());
         while (m.find()) {
             String mentionedLogin = extractLoginWithoutAt(m.group());
-            if (mentionedLogin != null && !mentionedLogin.equals(currentLogin)) {
+            if (mentionedLogin != null &&
+                    !mentionedLogin.equals(currentLogin) &&
+                    !followersForUser.contains(mentionedLogin)) {
+
                 tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
             }
         }
@@ -155,18 +159,17 @@ public class TimelineService {
     /**
      * The timeline contains the user's tweets merged with his friends tweets
      *
-     * @param login    the user to retrieve the timeline of
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
-    public Collection<Tweet> getTimeline(String login, int nbTweets) {
-        if (login == null || login.isEmpty()) {
-            User currentUser = authenticationService.getCurrentUser();
-            login = currentUser.getLogin();
-        }
+    public Collection<Tweet> getTimeline(int nbTweets) {
+        String login = authenticationService.getCurrentUser().getLogin();
         Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
-
         return this.buildTweetsList(tweetIds);
+    }
+
+    public Collection<Tweet> getTimeline() {
+        return getTimeline(20);
     }
 
     /**

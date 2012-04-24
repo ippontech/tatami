@@ -164,7 +164,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     public void shouldForgetUser() {
         mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget", "userWhoWantToForget@ippon.fr");
 
-        userService.forgetUser("userToForget");
+        userService.unfollowUser("userToForget");
 
         /* verify */
         User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");
@@ -178,7 +178,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     public void shouldNotForgetUserBecauseUserNotExist() {
         mockAuthenticationOnUserServiceWithACurrentUser("userWhoWantToForget", "userWhoWantToForget@ippon.fr");
 
-        userService.forgetUser("unknownUser");
+        userService.unfollowUser("unknownUser");
 
         /* verify */
         User userWhoWantToForget = userService.getUserProfileByLogin("userWhoWantToForget");

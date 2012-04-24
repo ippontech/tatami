@@ -1,9 +1,5 @@
 /* Functions called by *.js that are censed to be generic and reusable */
 
-function resetNbTweetsToDefaultNumber() {
-	return DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY;
-}
-
 /**
  * Decode HTML escaped characters
  * see http://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
@@ -32,16 +28,3 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
-
-function incrementNbTweets(nbTweets, nbTweetsInMore) {
-	return nbTweets += nbTweetsInMore;
-}
-
-function computeNbTweetsToDisplay(nbTweets, reset){
-	if (reset){
-        nbTweets = resetNbTweetsToDefaultNumber();
-    }else{
-        nbTweets = incrementNbTweets(nbTweets, DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY);
-    }
-	return nbTweets;
-}

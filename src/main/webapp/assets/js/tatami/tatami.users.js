@@ -1,5 +1,41 @@
 /* Functions called by tatami.js that deal about users */
 
+function displayUserInformations(userLogin) {
+    getUser(userLogin, function(data) {
+        $("#userPicture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+
+        $("#userDetails").html(
+            '<h3>' + data.firstName + ' ' + data.lastName + '</h3>'+
+                '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS ' +
+                '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING ' +
+                '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
+        );
+
+        $('#userTab').tab('show');
+    });
+}
+
+function displayProfile() {
+	getUser(login, function(data) {
+			$("#emailInput").val(data.email);
+			$("#firstNameInput").val(htmlDecode(data.firstName));
+			$("#lastNameInput").val(htmlDecode(data.lastName));
+		});
+}
+
+function refreshProfile() {
+	getUser(login, function(data) {
+			$("#picture").parent().css('width', '68px');	// optional
+            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+            $("#firstName").html(data.firstName);
+			$("#lastName").html(data.lastName);
+			$("#tweetCount").text(data.tweetCount);
+			$("#friendsCount").text(data.friendsCount);
+			$("#followersCount").text(data.followersCount);
+		});
+}
+
+
 function makeWhoToFollowList(data) {
     dest = $('#suggestions');
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
@@ -7,7 +43,7 @@ function makeWhoToFollowList(data) {
         var updated = false;
         $.each(data, function(entryIndex, entry) {
             var suggestedLogin = entry['login'];
-            if (assertStringNotEquals(login, suggestedLogin)) {
+            if (login != suggestedLogin) {
                 userline = userlineURL.replace(userlineREG, suggestedLogin);
             }
 

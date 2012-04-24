@@ -40,9 +40,9 @@ function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers,
     var html = '<td class="tweetFriend">';
     if (login != loginInSession) {
         if (followUsers) {
-            html += '<a href="#" onclick="followUser(\'' + login + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
+            html += '<a href="#" onclick="followUser(\'' + loginInSession + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
         } else {
-            html += '<a href="#" onclick="removeFriend(\'' + login + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
+            html += '<a href="#" onclick="unfollowUser(\'' + loginInSession + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
         }
     } else if (likeTweets) {
         html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';

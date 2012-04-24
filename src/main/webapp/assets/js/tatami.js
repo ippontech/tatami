@@ -23,7 +23,7 @@ function initTatami() {
         });
     });
     $('#updateProfileTabContent').load('/assets/fragments/updateProfile.html');
-    $('#followUserContent').load('/assets/fragments/followUser.html', whoToFollow());
+    $('#followUserContent').load('/assets/fragments/followUser.html', suggestUsersToFollow());
     // auto-refresh
     $('a[data-toggle="pill"]').on('show', function(e) {
         if (e.target.hash == '#profileTabContent') {
@@ -64,71 +64,4 @@ function initTatami() {
             refreshPunchChart();
         }
     });
-}
-
-function initTatamiProfile(login) {
-	$('#userTimeline').load('/assets/fragments/timeline.html', function() {
-        listTweetsForAnUser(login, true);
-    });
-	whoToFollow();
-}
-
-function listTweetsForAnUser(login, reset) {    
-	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
-	displayTweetsForAnUser(login, nbTweetsToDisplay, $('#tweetsList'), $('#userTimeline'));
-}
-
-function listTweets(reset) {    
-	nbTweetsToDisplay = computeNbTweetsToDisplay(nbTweetsToDisplay, reset);
-	displayTweets(login, nbTweetsToDisplay, $('#tweetsList'), $('#mainTab'));
-}
-
-function listFavoriteTweets() {
-	displayFavoriteTweets($('#favTweetsList'));
-}
-
-function listUserTweets(login) {
-	displayUserTweets($('#userTweetsList'), $("#userPicture"), $('#userTab'),  login);
-}
-
-function listTagTweets(tag) {
-	displayTagTweets($('#tagTweetsList'), $('#tagTab'), tag);
-}
-
-function whoToFollow() {
-	displayWhoToFollow();
-}
-
-function followUser(loginToFollow) {
-	newUserToFollow(loginToFollow, login, $("#followUserInput"), $('#followStatus'));
-	return false;
-}
-
-function removeFriend(friend) {
-	removeFriendFromMyList(login, friend);
-}
-
-function followUserFromHisProfile(login, loginToFollow) {
-	newUserToFollowFromHisProfile(loginToFollow, login, $("#followUserInput"), $('#followStatus'));
-}
-
-function removeFollowingAnUserFromHisProfile(login, friend) {
-	removeFriendFromHisProfile(login, friend);
-}
-
-function removeTweet(tweet) {
-	removeOneOfMyTweet(tweet);
-}
-
-function addFavoriteTweet(tweet) {
-	addATweetToMyFavorites(tweet, $('#favTab'));
-}
-
-function searchUsers(login) {
-	var $suggest = $('#usersSuggestions');
-	if(login.length <= 3){
-		$suggest.hide();
-	} else {
-		searchUsersPossibilities($suggest, login);
-	}
 }

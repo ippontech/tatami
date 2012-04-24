@@ -101,7 +101,6 @@
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});
     var login = "<sec:authentication property="principal.username"/>";
-    resetNbTweetsToDefaultNumber();
 
     $(document).ready(function() {
         initTatami();

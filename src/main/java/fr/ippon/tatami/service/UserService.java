@@ -121,7 +121,7 @@ public class UserService {
         }
     }
 
-    public void forgetUser(String login) {
+    public void unfollowUser(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Removing followed user : " + login);
         }

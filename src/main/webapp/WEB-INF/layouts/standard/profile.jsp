@@ -66,7 +66,7 @@
                             <c:when test="${not empty followed && followed}">
                                 <li>
                                     <a href="#" id="unfollowBtn"
-                                       onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')"
+                                       onclick="removeFollowingAUserFromHisProfile(login, '${user.login}')"
                                        class="btn btn-info"
                                        title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                             code="tatami.user.followed"/></a>
@@ -80,7 +80,7 @@
                             <c:otherwise>
                                 <li>
                                     <a href="#" id="unfollowBtn"
-                                       onclick="removeFollowingAnUserFromHisProfile(login, '${user.login}')"
+                                       onclick="removeFollowingAUserFromHisProfile(login, '${user.login}')"
                                        class="btn btn-info"
                                        title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                             code="tatami.user.followed"/></a>

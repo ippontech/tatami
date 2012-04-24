@@ -1,7 +1,36 @@
-/*
-* Ajax functions.
-*/
+/**
+ * Ajax functions.
+ *
+ * Tweets
+ *
+ * POST /tatami/rest/tweets -> create a new Tweet
+ * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
+ *
+ *
+ * Tags
+ *
+ * GET  /tatami/rest/tags -> get the latest tweets with no tags
+ * GET  /tatami/rest/tags/ippon -> get the latest tweets tagged with "ippon"
+ *
+ * Users
+ *
+ * POST /tatami/rest/users/jdubois -> update the "jdubois" user
+ * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
+ * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
+ * GET  /tatami/rest/users/jdubois -> get the "jdubois" user
+ * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
+ * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
+ * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+ *
+ *
+ * Other
+ *
+ * GET  /tatami/rest/suggestions -> suggest users to follow
+ */
 
+/**
+ * POST /tatami/rest/tweets -> create a new Tweet
+ */
 function tweet() {
     var tweet = $('#tweetContent');
     if (tweet.val() != "") {
@@ -28,87 +57,173 @@ function tweet() {
     return false;
 }
 
-function displayTweetsForAnUser(login, nbTweets, tweetsList, mainTab) {
+/**
+ * GET  /tatami/rest/tweets/20 -> get the latest 20 tweets from the current user
+ */
+function listTweets(reset) {
+    if (reset) {
+        nbTweetsToDisplay = DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY;
+    } else {
+        nbTweetsToDisplay += DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY;
+    }
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/tweets/" + login + "/" + nbTweets,
+        url: "/tatami/rest/tweets/" + nbTweetsToDisplay,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, tweetsList, true, false, true, login);
-            mainTab.tab('show');
+            makeTweetsList(data, $('#tweetsList'), true, false, true, login);
+            $('#mainTab').tab('show');
         }
     });
 }
 
-function displayTweets(login, nbTweets, tweetsList, mainTab) {
-	$.ajax({
-        type: 'GET',
-        url: "/tatami/rest/tweets/" + login + "/" + nbTweets,
-        dataType: 'json',
-        success: function(data) {
-            makeTweetsList(data, tweetsList, true, false, true, login);
-            mainTab.tab('show');
-        }
-    });
-}
-
-function displayFavoriteTweets(favTweetsList) {
-    $.ajax({
-        type: 'GET',
-        url: "/tatami/rest/favTweets/" + login,
-        dataType: 'json',
-        success: function(data) {
-            makeTweetsList(data, favTweetsList, true, true, false, login);
-        }
-    });
-}
-
-function displayTagTweets(tagTweetsList, tagTab, tag) {
+/**
+ * GET  /tatami/rest/tags -> get the latest tweets with no tags
+ * GET  /tatami/rest/tags/ippon -> get the latest tweets tagged with "ippon"
+ */
+function listTagTweets(tag) {
     $.ajax({
         type: 'GET',
         url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
         dataType: 'json',
         success: function(data) {
             //TODO refesh title's tag name
-            makeTweetsList(data, tagTweetsList, true, true, true);
-            tagTab.tab('show');
+            makeTweetsList(data, $('#tagTweetsList'), true, true, true);
+            $('#tagTab').tab('show');
         }
     });
 }
 
-function displayUserInformations(userPicture, userTab, login) {
+
+/**
+ * POST /tatami/rest/users/jdubois -> update the "jdubois" user
+ */
+function updateProfile() {
+	$profileFormErrors = $("#updateUserForm").parent().find("div.error");
+	$.ajax({
+		type: 'POST',
+		url: "/tatami/rest/users/" + login,
+		contentType: "application/json",
+		data: JSON.stringify($("#updateUserForm").serializeObject()),
+		dataType: "json",
+		success: setTimeout(function() {
+			$profileFormErrors.empty();
+			$('#profileTab').tab('show');
+		}, 500)	//DEBUG wait for persistence consistency
+	});
+	return false;	// no page refresh
+}
+
+/**
+ * POST /tatami/rest/users/jdubois/follow -> follow user "jdubois"
+ */
+function followUser(loginToFollow) {
+	$.ajax({
+		type: 'POST',
+		url: "/tatami/rest/users/" + loginToFollow + "/follow",
+		contentType: 'application/json; charset=UTF-8',
+		dataType: 'json',
+        success: function(data) {
+            $("#followUserInput").val("");
+            setTimeout(function() {
+                refreshProfile();
+                suggestUsersToFollow();
+                listTweets(true);
+            }, 500);	//DEBUG wait for persistence consistency
+        },
+    	error: function(xhr, ajaxOptions, thrownError) {
+    		$('#followStatus').fadeIn('FAST').text(thrownError);
+            setTimeout(followStatus.fadeOut('show'), 500);
+    	}
+	});
+    return false;
+}
+
+/**
+ * POST /tatami/rest/users/jdubois/unfollow -> unfollow user "jdubois"
+ */
+function unfollowUser(loginToUnfollow) {
+	$.ajax({
+		type: 'POST',
+		url: "/tatami/rest/users/" + loginToUnfollow + "/unfollow",
+		contentType: 'application/json; charset=UTF-8',
+		dataType: 'json',
+        success: function(data) {
+            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+        }
+	});
+}
+
+/**
+ * GET  /tatami/rest/users/jdubois -> get the "jdubois" user
+ */
+function getUser(userLogin, callback) {
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/users/" + login + "/",
+        url: "/tatami/rest/users/" + userLogin,
         dataType: 'json',
         success: function(data) {
-            userPicture.attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-            userPicture.popover({
-                placement: 'bottom',
-                title: data.firstName + ' ' + data.lastName,
-                content: '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS<br/>' +
-                '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING<br/>' +
-                '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
-            });
-
-            userTab.tab('show');
+            callback(data);
         }
     });
 }
 
-function displayUserTweets(userTweetsList, userPicture, userTab, login) {
+/**
+ * GET  /tatami/rest/users/jdubois/tweets -> get the latest tweets from user "jdubois"
+ */
+function listUserTweets(userLogin) {
 	$.ajax({
         type: 'GET',
-        url: "/tatami/rest/users/" + login + "/tweets",
+        url: "/tatami/rest/users/" + userLogin + "/tweets",
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, userTweetsList, false, true, true);
-			displayUserInformations(userPicture, userTab, login);
+            makeTweetsList(data, $('#userTweetsList'), false, true, true);
+			displayUserInformations(userLogin);
         }
     });
 }
 
-function displayWhoToFollow() {
+/**
+ * GET  /tatami/rest/users/jdubois/favorites -> get the favorite tweets of user "jdubois"
+ */
+function listFavoriteTweets() {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/users/" + login + "/favorites",
+        dataType: 'json',
+        success: function(data) {
+            makeTweetsList(data, $('#favTweetsList'), true, true, false, login);
+        }
+    });
+}
+
+/**
+ * GET  /tatami/rest/users/jdub/autocomplete -> autocomplete login starting with "jdub"
+ */
+function autocompleteUser(userLogin) {
+    var suggest = $('#usersSuggestions');
+    if (login.length <= 3) {
+        suggest.hide();
+    } else {
+        $.ajax({
+            type: 'GET',
+            url: "/tatami/rest/users/" + userLogin + "/autocomplete",
+            dataType: 'json',
+            success: function(data) {
+                suggest.empty();
+                if (null != data && data.length > 0) {
+                    buildList(suggest, data);
+                    suggest.show();
+                }
+            }
+        });
+    }
+}
+
+/**
+ * GET  /tatami/rest/suggestions -> suggest users to follow
+ */
+function suggestUsersToFollow() {
 	$.ajax({
         type: 'GET',
         url: "/tatami/rest/suggestions",
@@ -119,70 +234,7 @@ function displayWhoToFollow() {
     });
 }
 
-function newUserToFollow(loginToFollow, login, followUserInput, followStatus) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/users/" + login + "/followUser",
-		contentType: 'application/json; charset=UTF-8',
-		data: loginToFollow,
-		dataType: 'json',
-        success: function(data) {
-            followUserInput.val("");
-            setTimeout(function() {
-                refreshProfile();
-                whoToFollow();
-                listTweets(true);
-            }, 500);	//DEBUG wait for persistence consistency
-        },
-    	error: function(xhr, ajaxOptions, thrownError) {
-    		followStatus.fadeIn('FAST').text(thrownError);
-            setTimeout(followStatus.fadeOut('show'), 500);
-    	}
-	});
-}
-
-function removeFriendFromMyList(login, friend) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/users/" + login + "/removeFriend",
-		contentType: 'application/json; charset=UTF-8',
-		data: friend,
-		dataType: 'json',
-        success: function(data) {
-            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
-        }
-	});
-}
-
-function newUserToFollowFromHisProfile(loginToFollow, login, followUserInput, followStatus) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/users/" + login + "/followUser",
-		contentType: 'application/json; charset=UTF-8',
-		data: loginToFollow,
-		dataType: 'json',
-        success: function(data) {
-        	$("#userProfile a#followBtn").hide();
-        	$("#userProfile a#unfollowBtn").show();
-        }
-	});
-}
-
-function removeFriendFromHisProfile(login, friend) {
-	$.ajax({
-		type: 'POST',
-		url: "/tatami/rest/users/" + login + "/removeFriend",
-		contentType: 'application/json; charset=UTF-8',
-		data: friend,
-		dataType: 'json',
-        success: function(data) {
-        	$("#userProfile a#followBtn").show();
-        	$("#userProfile a#unfollowBtn").hide();
-        }
-	});
-}
-
-function removeOneOfMyTweet(tweet) {
+function removeTweet(tweet) {
 	$.ajax({
 		type: 'GET',
 		url: "/tatami/rest/removeTweet/" + tweet,
@@ -196,30 +248,16 @@ function removeOneOfMyTweet(tweet) {
 			});
 }
 
-function addATweetToMyFavorites(tweet, favTab){
+function addFavoriteTweet(tweet) {
 	$.ajax({
 		type: 'GET',
 		url: "/tatami/rest/likeTweet/" + tweet,
 		dataType: 'json',
         success: function(data) {
             setTimeout(function() {
-            	favTab.tab('show');
+            	$('#favTab').tab('show');
             }, 500);	//DEBUG wait for persistence consistency
         }
 	});
 }
 
-function searchUsersPossibilities(suggest, login){
-	$.ajax({
-		type: 'GET',
-		url: "/tatami/rest/users/similar/"+login,
-		dataType: 'json',
-        success: function(data) {
-        	suggest.empty();
-        	if(null!=data && data.length >0) {
-        		buildList(suggest, data);
-        		suggest.show();
-			}
-        }
-	});
-}
