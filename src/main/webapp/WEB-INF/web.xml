@@ -22,8 +22,13 @@
     </listener>
 
     <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/layouts/standard/500-error.jsp</location>
+    </error-page>
+
+    <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/layouts/standard/httpError.jsp</location>
+        <location>/WEB-INF/layouts/standard/404-error.jsp</location>
     </error-page>
 
 </web-app>

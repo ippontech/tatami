@@ -24,12 +24,8 @@ function updateProfile() {
 		dataType: "json",
 		success: setTimeout(function() {
 			$profileFormErrors.empty();
-			$('#defaultTab').tab('show');
-		}, 1000),	//DEBUG wait for persistence consistency
-		error: setTimeout(function(jqXHR, textStatus, errorThrown){
-	       	$profileFormErrors.empty().append(errorThrown);
-	       	$('#updateProfilTab').tab('show');
-	    }, 1000)
+			$('#profileTab').tab('show');
+		}, 500)	//DEBUG wait for persistence consistency
 	});
 	return false;	// no page refresh
 }
@@ -50,12 +46,11 @@ function displayProfile() {
 function refreshProfile() {
 	$.ajax({
 		type: 'GET',
-		url: "/tatami/rest/users/" + login + "/",
+		url: "/tatami/rest/users/" + login,
 		dataType: "json",
 		success: function(data) {
 			$("#picture").parent().css('width', '68px');	// optional
             $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-
             $("#firstName").text(data.firstName);
 			$("#lastName").text(data.lastName);
 			$("#tweetCount").text(data.tweetCount);

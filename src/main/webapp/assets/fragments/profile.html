@@ -1,13 +1,29 @@
-<form id="updateUserForm" onsubmit="return updateProfile();">
-    <label>Email :</label> <input id="emailInput" name="email" type="email" required="required"
-                                  placeholder="Enter e-mail..." class="input-xlarge"/>
-    <fieldset>
-        <label>First name :</label> <input id="firstNameInput" name="firstName" type="text"
-                                           placeholder="Enter first name..." class="input-xlarge"/>
-        <label>Last name :</label> <input id="lastNameInput" name="lastName" type="text"
-                                          placeholder="Enter last name..." class="input-xlarge"/>
-    </fieldset>
-
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
-<div class="error"></div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3"><img id="picture"/></div>
+        <div class="span9">
+            <h2><span id="firstName"></span> <span id="lastName"></span></h2>
+        </div>
+    </div>
+    <div class="well well-small row-fluid">
+        <div class="span4">
+            <span id="tweetCount" class="badge"></span><br/>TWEETS
+        </div>
+        <div class="span4">
+            <span id="friendsCount" class="badge"></span><br/>FOLLOWING
+        </div>
+        <div class="span4">
+            <span id="followersCount" class="badge"></span><br/>FOLLOWERS
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <form class="form-inline" onsubmit="return tweet();">
+                <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
+                          placeholder="Type a new tweet..."></textarea>
+                <button type="submit" class="btn btn-primary">Tweet !</button>
+            </form>
+            <div class="error"></div>
+        </div>
+    </div>
+</div>

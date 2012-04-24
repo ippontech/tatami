@@ -1,3 +1,7 @@
+/**
+ * Tatami charts.
+ */
+
 function refreshPieChart() {
 	$.ajax({
 		type: 'GET',

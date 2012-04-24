@@ -13,7 +13,7 @@ var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets
 
 function initTatami() {
     // left panel
-    $('#homeTabContent').load('/assets/fragments/home.html', function () {
+    $('#profileTabContent').load('/assets/fragments/profile.html', function () {
         refreshProfile();
         $('#tweetContent').popover({
             trigger: 'manual',
@@ -22,13 +22,13 @@ function initTatami() {
             content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
         });
     });
-    $('#profileTabContent').load('/assets/fragments/profile.html');
+    $('#updateProfileTabContent').load('/assets/fragments/updateProfile.html');
     $('#followUserContent').load('/assets/fragments/followUser.html', whoToFollow());
     // auto-refresh
     $('a[data-toggle="pill"]').on('show', function(e) {
-        if (e.target.hash == '#homeTabContent') {
+        if (e.target.hash == '#profileTabContent') {
             refreshProfile();
-        } else if (e.target.hash == '#profileTabContent') {
+        } else if (e.target.hash == '#updateProfileTabContent') {
             displayProfile();
         }
     });

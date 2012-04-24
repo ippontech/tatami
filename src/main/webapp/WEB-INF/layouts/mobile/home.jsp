@@ -11,12 +11,12 @@
     <style>
             /* App custom styles */
     </style>
-    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/CDN/jquery-1.6.4.min.js"%3E%3C/script%3E'))</script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
     <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/CDN/jquery.mobile-1.1.0.min.js"%3E%3C/script%3E'))</script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery.mobile-1.1.0.min.js"%3E%3C/script%3E'))</script>
 
-    <script src="/assets/js/CDN/jquery.mobile-css-CDN-fail.js"></script>
+    <script src="/assets/js/jquery/jquery.mobile-css-CDN-fail.js"></script>
 
     <script src="/assets/js/tatami/tatami.constants.js"></script>
     <script src="/assets/js/tatami/tatami.mobile.js"></script>

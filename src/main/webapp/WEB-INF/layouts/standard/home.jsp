@@ -3,30 +3,8 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title><spring:message code="tatami.title"/></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Ippon Technologies">
 
-    <!-- Le styles -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/assets/css/tatami-custom.css" rel="stylesheet">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../assets/img/ippon.ico">
-</head>
+<jsp:include page="includes/header.jsp"/>
 
 <body>
 
@@ -65,14 +43,14 @@
         <div class="span4">
             <div class="tabbable">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a id="defaultTab" href="#homeTabContent" data-toggle="pill">
+                    <li class="active"><a id="profileTab" href="#profileTabContent" data-toggle="pill">
                         &nbsp;<spring:message code="tatami.show.profile"/></a></li>
-                    <li><a id="updateProfilTab" href="#profileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message
+                    <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message
                             code="tatami.update.profile"/></a></li>
                 </ul>
                 <div class="tab-content alert alert-info profileview">
-                    <div class="tab-pane active" id="homeTabContent"></div>
-                    <div class="tab-pane" id="profileTabContent"></div>
+                    <div class="tab-pane active" id="profileTabContent"></div>
+                    <div class="tab-pane" id="updateProfileTabContent"></div>
                 </div>
             </div>
             <div>
@@ -116,40 +94,12 @@
     </div>
 </div>
 
-<footer>
-    <div style="text-align: center;"><spring:message code="tatami.copyright"/><a
-            href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies"/></a> |
-        <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork"/></a> |
-        <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog"/></a> |
-        <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow"/></a>
-    </div>
-</footer>
+<jsp:include page="includes/footer.jsp"/>
 
-<!-- Le javascript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/CDN/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
-<script src="/assets/js/bootstrap-dropdown.js"></script>
-<script src="/assets/js/bootstrap-tab.js"></script>
-<script src="/assets/js/bootstrap-tooltip.js"></script>
-<script src="/assets/js/bootstrap-popover.js"></script>
-<script src="/assets/js/shortcut.js"></script>
-<script src="/assets/js/raphael-min.js"></script>
-
-<script src="/assets/js/profile.js"></script>
-<script src="/assets/js/chart.js"></script>
-<script src="/assets/js/tatami/tatami.constants.js"></script>
-<script src="/assets/js/tatami/tatami.utils.js"></script>
-<script src="/assets/js/tatami/tatami.tweets.js"></script>
-<script src="/assets/js/tatami/tatami.users.js"></script>
-<script src="/assets/js/tatami/tatami.ajax.js"></script>
-<script src="/assets/js/tatami.js"></script>
-
-<script src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="/assets/js/tatami/tatami.charts.js"></script>
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});
-
     var login = "<sec:authentication property="principal.username"/>";
     resetNbTweetsToDefaultNumber();
 
