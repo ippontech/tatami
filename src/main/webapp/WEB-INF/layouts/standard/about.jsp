@@ -86,7 +86,8 @@
     <!-- Le javascript
      ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="/assets/js/jquery.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/CDN/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
 	<script src="/assets/js/bootstrap-tab.js"></script>
   </body>
 </html>
