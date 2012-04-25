@@ -7,11 +7,11 @@ var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY	= 10;
 
 var nbTweetsToDisplay;
 
-var userlineURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'LOGIN\')" title="Show LOGIN tweets">';
+var userlineURL = '<a href="/tatami/profile/LOGIN" style="text-decoration:none" title="Show LOGIN tweets">';
 var userlineREG = new RegExp("LOGIN", "g");
 
 var userrefREG = new RegExp("@(\\w+)", "g");
-var userrefURL = '<a href="#" style="text-decoration:none" onclick="listUserTweets(\'$1\')" title="Show $1 tweets"><em>@$1</em></a>';
+var userrefURL = '<a href="/tatami/profile/$1" style="text-decoration:none" title="Show $1 tweets"><em>@$1</em></a>';
 
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
@@ -54,7 +54,6 @@ function initTatami() {
     });
 
     $('#favLinePanel').load('/assets/fragments/favline.html');
-    $('#userLinePanel').load('/assets/fragments/userline.html');
     $('#tagLinePanel').load('/assets/fragments/tagline.html');
     $('#searchLinePanel').load('/assets/fragments/searchline.html');
 

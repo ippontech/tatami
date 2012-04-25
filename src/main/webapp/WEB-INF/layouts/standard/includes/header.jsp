@@ -17,5 +17,5 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../assets/img/ippon.ico">
+    <link rel="shortcut icon" href="/assets/img/ippon.ico">
 </head>

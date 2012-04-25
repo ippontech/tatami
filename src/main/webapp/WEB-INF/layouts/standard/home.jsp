@@ -73,8 +73,6 @@
                             class="icon-th-list"></i>&nbsp;<spring:message code="tatami.tweets"/></a></li>
                     <li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i
                             class="icon-heart"></i>&nbsp;<spring:message code="tatami.user.favoritetweets"/></a></li>
-                    <li><a id="userTab" href="#userLinePanel" data-toggle="tab"><i
-                            class="icon-user"></i>&nbsp;<spring:message code="tatami.user.otheruser.tweets"/></a></li>
                     <li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i
                             class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags"/></a></li>
                     <li><a id="searchTab" href="#searchLinePanel" data-toggle="tab"><i
@@ -94,7 +92,6 @@
                 <div class="tab-content alert alert-success">
                     <div class="tab-pane active" id="timeLinePanel"></div>
                     <div class="tab-pane" id="favLinePanel"></div>
-                    <div class="tab-pane" id="userLinePanel"></div>
                     <div class="tab-pane" id="tagLinePanel"></div>
                     <div class="tab-pane" id="searchLinePanel"></div>
                     <div class="tab-pane" id="piechartPanel"></div>

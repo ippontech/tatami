@@ -17,17 +17,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#"><img
-                    src="/tatami/assets/img/ippon-logo.png">&nbsp;<spring:message
+            <a class="brand" href="/tatami/"><img
+                    src="/assets/img/ippon-logo.png">&nbsp;<spring:message
                     code="tatami.title"/></a>
 
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#"><i class="icon-home icon-white"></i>&nbsp;<spring:message
+                    <li class="active"><a href="/tatami/"><i class="icon-home icon-white"></i>&nbsp;<spring:message
                             code="tatami.home"/></a></li>
                     <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
                             code="tatami.about"/></a></li>
-                    <!-- <li><a href="?language=en"> English</a>|<a href="?language=fr"> Francais</a></li> -->
                 </ul>
                 <ul class="nav pull-right">
                     <li class="divider-vertical"></li>
