@@ -1,11 +1,9 @@
-/**
- *
- */
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
 import fr.ippon.tatami.domain.Tweet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,22 +33,26 @@ import static org.junit.Assert.assertNotNull;
         loader = AnnotationConfigContextLoader.class)
 public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 
-    private static final Log LOG = LogFactory.getLog(ElasticSearchTest.class);
+    private static final Log log = LogFactory.getLog(ElasticSearchTest.class);
 
     @Inject
     private IndexService service;
 
-    @Inject
     private ElasticSearchServerNodeFactory factory;
 
     @Before
-    public void flushIndex() {
+    public void initElasticSearch() throws IOException {
+        factory = new ElasticSearchServerNodeFactory();
+        factory.setIndexActivated(true);
+        factory.setIndexName("tatami");
+        factory.setEsSettings(new ElasticSearchSettings());
+        factory.buildServerNodes();
         factory.getServerNodes().get(0).client().admin().indices().delete(deleteIndexRequest("tatami")).actionGet();
     }
 
     @Test
     public void testSingleMatch() throws ElasticSearchException, IOException {
-        LOG.debug(ElasticSearchTest.class.getSimpleName() + ": testing...");
+        log.debug(ElasticSearchTest.class.getSimpleName() + ": testing...");
 
         final Tweet tweet1 = new Tweet();
         tweet1.setContent("trying out Elastic Search");

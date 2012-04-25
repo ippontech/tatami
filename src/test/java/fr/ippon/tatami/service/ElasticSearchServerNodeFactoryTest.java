@@ -1,6 +1,3 @@
-/**
- *
- */
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
@@ -19,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ElasticSearchServerNodeFactoryTest {
 
-    private static final Log LOG = LogFactory.getLog(ElasticSearchServerNodeFactoryTest.class);
+    private static final Log log = LogFactory.getLog(ElasticSearchServerNodeFactoryTest.class);
 
     /**
      * Should simply test if the factory is able to locate the settings resource
@@ -29,9 +26,10 @@ public class ElasticSearchServerNodeFactoryTest {
      */
     @Test
     public void testFactory() throws IOException {
-        LOG.debug(this.getClass().getSimpleName() + ": testing the ES Factory");
+        log.debug(this.getClass().getSimpleName() + ": testing the ES Factory");
 
         final ElasticSearchServerNodeFactory f = new ElasticSearchServerNodeFactory();
+        f.setIndexActivated(true);
         f.setIndexName("tatami");
         f.setEsSettings(new ElasticSearchSettings());
         f.buildServerNodes();
