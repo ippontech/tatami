@@ -46,6 +46,7 @@ public class ElasticSearchConfiguration {
     }
 
     @Bean
+    @DependsOn("nodeFactory")
     public Client client() {
         if (indexActivated()) {
             log.info("Elastic Search is activated, initializing client connection...");
