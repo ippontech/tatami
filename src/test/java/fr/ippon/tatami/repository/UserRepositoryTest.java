@@ -1,16 +1,15 @@
 package fr.ippon.tatami.repository;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import fr.ippon.tatami.AbstractCassandraTatamiTest;
+import fr.ippon.tatami.domain.User;
+import org.junit.Test;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
-import org.junit.Test;
-
-import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.User;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
@@ -21,7 +20,7 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
     public void shouldGetAUserRepositoryInjected() {
         assertThat(userRepository, notNullValue());
     }
-    
+
     @Test
     public void shouldCreateAUser() {
         String login = "ulogin";
@@ -36,13 +35,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setGravatar(gravatar);
-        
+
         userRepository.createUser(user);
-        
+
         assertThat(userRepository.findUserByLogin("ulogin"), notNullValue());
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotCreateAUserBecauseLoginNull() {
         String login = null;
         String firstName = "New";
@@ -59,8 +58,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseLoginEmpty() {
         String login = "";
         String firstName = "New";
@@ -77,8 +76,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseEmailInvalid() {
         String login = "nuser-testemail";
         String firstName = "New";
@@ -95,8 +94,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotCreateAUserBecauseLastNameNull() {
         String login = "nuser-testemail";
         String firstName = "fs";
@@ -113,8 +112,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseLastNameEmpty() {
         String login = "nuser-testemail";
         String firstName = "eee";
@@ -131,8 +130,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseLastNameWithSeventeenCharacters() {
         String login = "nuser-testemail";
         String firstName = "eeee";
@@ -149,8 +148,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotCreateAUserBecauseFirstNameNull() {
         String login = "nuser-testemail";
         String firstName = null;
@@ -167,8 +166,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseFirstNameEmpty() {
         String login = "nuser-testemail";
         String firstName = "";
@@ -185,8 +184,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAUserBecauseFirstNameWithSeventeenCharacters() {
         String login = "nuser-testemail";
         String firstName = "12345678901234567";
@@ -203,8 +202,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.createUser(user);
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotUpdateAUserBecauseLoginNull() {
         String login = null;
         String firstName = "New";
@@ -221,8 +220,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseLoginEmpty() {
         String login = "";
         String firstName = "New";
@@ -239,8 +238,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseEmailInvalid() {
         String login = "nuser-testemail";
         String firstName = "New";
@@ -257,8 +256,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotUpdateAUserBecauseLastNameNull() {
         String login = "nuser-testemail";
         String firstName = "fs";
@@ -275,8 +274,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseLastNameEmpty() {
         String login = "nuser-testemail";
         String firstName = "eee";
@@ -293,8 +292,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseLastNameWithSeventeenCharacters() {
         String login = "nuser-testemail";
         String firstName = "eeee";
@@ -311,8 +310,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ValidationException.class) 
+
+    @Test(expected = ValidationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameNull() {
         String login = "nuser-testemail";
         String firstName = null;
@@ -329,8 +328,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameEmpty() {
         String login = "nuser-testemail";
         String firstName = "";
@@ -347,8 +346,8 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
         userRepository.updateUser(user);
     }
-    
-    @Test (expected=ConstraintViolationException.class) 
+
+    @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameWithSeventeenCharacters() {
         String login = "nuser-testemail";
         String firstName = "12345678901234567";

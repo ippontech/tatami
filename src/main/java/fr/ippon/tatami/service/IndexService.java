@@ -1,16 +1,10 @@
 /**
- * 
+ *
  */
 package fr.ippon.tatami.service;
 
-import static org.elasticsearch.client.Requests.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -31,196 +25,206 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.elasticsearch.client.Requests.refreshRequest;
 
 /**
  * @author dmartinpro
- *
  */
 @Service
 public class IndexService {
 
-    private static final Log LOG = LogFactory.getLog(IndexService.class);
+    private static final Log log = LogFactory.getLog(IndexService.class);
 
     private static final String ALL_FIELDS = "_all";
-    
-	@Inject
-	private Client client;
 
-	@Inject
-	private String indexName;
+    @Inject
+    private Client client;
 
-	/**
-	 * Add an item to the index
-	 * @param clazz the item class
-	 * @param uid the item identifier
-	 * @param jsonifiedObject the item json representation
-	 * @return the response's Id
-	 */
-	private String addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
+    @Inject
+    private String indexName;
 
-		if (LOG.isDebugEnabled()) {
-			String itemAsString = null;
-			try {
-				itemAsString = jsonifiedObject.prettyPrint().string();
-			} catch (IOException e) {
-				itemAsString = clazz.getSimpleName() + "-" + uid;
-			}
-			LOG.debug("Ready to inject this json object into ES: " + itemAsString);
-		}
+    /**
+     * Add an item to the index.
+     *
+     * @param clazz           the item class
+     * @param uid             the item identifier
+     * @param jsonifiedObject the item json representation
+     * @return the response's Id
+     */
+    private String addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
 
-		final String dataType = clazz.getSimpleName().toLowerCase();
-		IndexResponse response = client.prepareIndex(indexName, dataType, uid)
-	        .setSource(jsonifiedObject)
-	        .execute()
-	        .actionGet();
-
-		// Should we force the update ? Not sure... due to performance cost
-		client.admin().indices().refresh(refreshRequest(indexName)).actionGet();
-
-		return (response == null) ? null : response.getId();
-	}
-
-	/**
-	 * Delete a object from the index
-	 * @param clazz the item class
-	 * @param uid : the item identifier
-	 * @return the response's Id
-	 */
-	private String removeObject(@SuppressWarnings("rawtypes") final Class clazz, String uid) {
-
-		final String dataType = clazz.getSimpleName().toLowerCase();
-        if (LOG.isDebugEnabled()) {
-        	LOG.debug("Removing a " + dataType + " item from the index : #" + uid);
+        if (log.isDebugEnabled()) {
+            String itemAsString = null;
+            try {
+                itemAsString = jsonifiedObject.prettyPrint().string();
+            } catch (IOException e) {
+                itemAsString = clazz.getSimpleName() + "-" + uid;
+            }
+            log.debug("Ready to inject this json object into Elastic Search: " + itemAsString);
         }
-		final DeleteResponse response = client.delete(new DeleteRequest(indexName, dataType, uid)).actionGet();
-		return response.getId();
-	}
 
-	/**
-	 * Add a tweet to the index
-	 * @param tweet the tweet to add : can't be null
-	 * @return the response's Id
-	 */
-	public String addTweet(final Tweet tweet) {
-		Assert.notNull(tweet, "tweet can't be null");
+        final String dataType = clazz.getSimpleName().toLowerCase();
+        IndexResponse response = client.prepareIndex(indexName, dataType, uid)
+                .setSource(jsonifiedObject)
+                .execute()
+                .actionGet();
 
-		XContentBuilder jsonifiedObject = null;
-		try {
-			jsonifiedObject = XContentFactory.jsonBuilder()
-										        .startObject()
-										            .field("login", tweet.getLogin())
-										            .field("postDate", tweet.getTweetDate())
-										            .field("message", StringEscapeUtils.unescapeHtml(tweet.getContent()))
-										        .endObject();
-		} catch (IOException e) {
-			LOG.error("The message wasn't added to the index: "
-						+ tweet.getTweetId()
-						+ " ["
-						+ tweet.toString()
-						+ "]", e);
-			return null;
-		}
+        // Should we force the update ? Not sure... due to performance cost
+        client.admin().indices().refresh(refreshRequest(indexName)).actionGet();
 
-		return addObject(tweet.getClass(), tweet.getTweetId(), jsonifiedObject);
-	}
+        return (response == null) ? null : response.getId();
+    }
 
-	/**
-	 * Delete a tweet from the index
-	 * @param tweet the tweet to delete
-	 * @return the response's Id
-	 */
-	public String removeTweet(final Tweet tweet) {
-		Assert.notNull(tweet, "tweet can't be null");
-		return removeObject(tweet.getClass(), tweet.getTweetId());
-	}
+    /**
+     * Delete a object from the index.
+     *
+     * @param clazz the item class
+     * @param uid   : the item identifier
+     * @return the response's Id
+     */
+    private String removeObject(@SuppressWarnings("rawtypes") final Class clazz, String uid) {
 
-	/**
-	 * Search an item in the index
-	 * @param clazz the item type
-	 * @param field a particular field to search into
-	 * @param query the query
-	 * @param page the page to return
-	 * @param size the size of a page
-	 * @return a list of uid
-	 */
-	public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field, final String query, int page, int size) {
+        final String dataType = clazz.getSimpleName().toLowerCase();
+        if (log.isDebugEnabled()) {
+            log.debug("Removing a " + dataType + " item from the index : #" + uid);
+        }
+        final DeleteResponse response = client.delete(new DeleteRequest(indexName, dataType, uid)).actionGet();
+        return response.getId();
+    }
 
-		final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
-		final QueryBuilder qb = QueryBuilders.textQuery(name, query);
-		final String dataType = clazz.getSimpleName().toLowerCase();
+    /**
+     * Add a tweet to the index.
+     *
+     * @param tweet the tweet to add : can't be null
+     * @return the response's Id
+     */
+    public String addTweet(final Tweet tweet) {
+        Assert.notNull(tweet, "tweet can't be null");
 
-		SearchResponse searchResponse = null;
-		try {
-			searchResponse = client.prepareSearch(indexName)
-		        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-		        .setQuery(qb)
-		        .setTypes(dataType)
-		        .setFrom(page*size).setSize(size).setExplain(false)
-		        .execute()
-		        .actionGet();
-		} catch (IndexMissingException e)  {
-			LOG.warn("The index was not found in the cluster.");
-			return new ArrayList<String>(0);
-		}
+        XContentBuilder jsonifiedObject = null;
+        try {
+            jsonifiedObject = XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("login", tweet.getLogin())
+                    .field("postDate", tweet.getTweetDate())
+                    .field("message", StringEscapeUtils.unescapeHtml(tweet.getContent()))
+                    .endObject();
+        } catch (IOException e) {
+            log.error("The message wasn't added to the index: "
+                    + tweet.getTweetId()
+                    + " ["
+                    + tweet.toString()
+                    + "]", e);
+            return null;
+        }
 
-		final SearchHits searchHits = searchResponse.getHits();
-		final Long hitsNumber = searchHits.getTotalHits();
-		if (hitsNumber == 0) {
-			return new ArrayList<String>(0);
-		}
+        return addObject(tweet.getClass(), tweet.getTweetId(), jsonifiedObject);
+    }
 
-		final SearchHit[] searchHitsArray = searchHits.getHits();
-		final List<String> items = new ArrayList<String>(hitsNumber.intValue());
-		for (int i = 0; i < searchHitsArray.length; i++) {
-			items.add(searchHitsArray[i].getId());
-		}
+    /**
+     * Delete a tweet from the index.
+     *
+     * @param tweet the tweet to delete
+     * @return the response's Id
+     */
+    public String removeTweet(final Tweet tweet) {
+        Assert.notNull(tweet, "tweet can't be null");
+        return removeObject(tweet.getClass(), tweet.getTweetId());
+    }
 
-		return items;
-	}
+    /**
+     * Search an item in the index.
+     *
+     * @param clazz the item type
+     * @param field a particular field to search into
+     * @param query the query
+     * @param page  the page to return
+     * @param size  the size of a page
+     * @return a list of uid
+     */
+    public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field, final String query, int page, int size) {
 
-	/**
-	 * Add a user to the index
-	 * @param user the user to add : can't be null
-	 * @return the response's Id
-	 */
-	public String addUser(final User user) {
-		Assert.notNull(user, "user can't be null");
+        final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
+        final QueryBuilder qb = QueryBuilders.textQuery(name, query);
+        final String dataType = clazz.getSimpleName().toLowerCase();
 
-		XContentBuilder jsonifiedObject;
-		try {
-			jsonifiedObject = XContentFactory.jsonBuilder()
-										        .startObject()
-										            .field("login", user.getLogin())
-										            .field("email", user.getEmail())
-										            .field("firstName", user.getFirstName())
-										            .field("lastName", user.getLastName())
-										        .endObject();
-		} catch (IOException e) {
-			LOG.error("The user wasn't added to the index: "
-					+ user.getLogin()
-					+ " ["
-					+ user.toString()
-					+ "]", e);
-			return null;
-		}
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = client.prepareSearch(indexName)
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                    .setQuery(qb)
+                    .setTypes(dataType)
+                    .setFrom(page * size).setSize(size).setExplain(false)
+                    .execute()
+                    .actionGet();
+        } catch (IndexMissingException e) {
+            log.warn("The index was not found in the cluster.");
+            return new ArrayList<String>(0);
+        }
 
-		return addObject(user.getClass(), user.getLogin(), jsonifiedObject);
-	}
+        final SearchHits searchHits = searchResponse.getHits();
+        final Long hitsNumber = searchHits.getTotalHits();
+        if (hitsNumber == 0) {
+            return new ArrayList<String>(0);
+        }
 
-	/**
-	 * Delete a user from the index (based on his login, as it's his primary key)
-	 * @param user the user to delete
-	 * @return the response's Id
-	 */
-	public String removeUser(final User user) {
-		Assert.notNull(user, "user can't be null");
-		return removeObject(user.getClass(), user.getLogin());
-	}
+        final SearchHit[] searchHitsArray = searchHits.getHits();
+        final List<String> items = new ArrayList<String>(hitsNumber.intValue());
+        for (int i = 0; i < searchHitsArray.length; i++) {
+            items.add(searchHitsArray[i].getId());
+        }
 
-   /**
-     * Search for who the login starts the semae
+        return items;
+    }
+
+    /**
+     * Add a user to the index.
+     *
+     * @param user the user to add : can't be null
+     * @return the response's Id
+     */
+    public String addUser(final User user) {
+        Assert.notNull(user, "user can't be null");
+
+        XContentBuilder jsonifiedObject;
+        try {
+            jsonifiedObject = XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("login", user.getLogin())
+                    .field("email", user.getEmail())
+                    .field("firstName", user.getFirstName())
+                    .field("lastName", user.getLastName())
+                    .endObject();
+        } catch (IOException e) {
+            log.error("The user wasn't added to the index: "
+                    + user.getLogin()
+                    + " ["
+                    + user.toString()
+                    + "]", e);
+            return null;
+        }
+
+        return addObject(user.getClass(), user.getLogin(), jsonifiedObject);
+    }
+
+    /**
+     * Delete a user from the index (based on his login, as it's his primary key).
+     *
+     * @param user the user to delete
+     * @return the response's Id
+     */
+    public String removeUser(final User user) {
+        Assert.notNull(user, "user can't be null");
+        return removeObject(user.getClass(), user.getLogin());
+    }
+
+    /**
+     * Search for who the login starts the same.
      *
      * @param query the query to look for
      * @return a List of users' ids

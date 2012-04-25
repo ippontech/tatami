@@ -1,5 +1,6 @@
 package fr.ippon.tatami.config;
 
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;

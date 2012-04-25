@@ -23,8 +23,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 public abstract class AbstractCassandraTatamiTest {
 
     private static boolean isInitialized = false;
-    
-	protected static Client client = null;
+
+    protected static Client client = null;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -35,23 +35,23 @@ public abstract class AbstractCassandraTatamiTest {
             String host = "localhost:9171";
             DataLoader dataLoader = new DataLoader(clusterName, host);
             dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
-            
+
             final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-			builder.put("cluster.name", clusterName);
+            builder.put("cluster.name", clusterName);
 
-			final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
-			client = node.client();
+            final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
+            client = node.client();
 
-			isInitialized = true;
+            isInitialized = true;
         }
     }
-    
-	@AfterClass
-	public static void afterClass() throws Exception {
-		if (client != null) {
-			client.close();
-		}
-	}
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        if (client != null) {
+            client.close();
+        }
+    }
 
     protected User constructAUser(String login, String email, String firstName, String lastName) {
         User user = new User();
