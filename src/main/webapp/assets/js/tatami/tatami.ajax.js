@@ -286,6 +286,21 @@ function listTagTweets(tag) {
 }
 
 /**
+ * GET  /search?q=keywords&page=m&rpp=n -> get the tweets matching the keywords, from the page m, containing n tweets
+ */
+function searchTweets(query) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/search?" + query,
+        dataType: 'json',
+        success: function(data) {
+            makeTweetsList(data, $('#searchTweetsList'), true, true, true);
+            $('#searchTab').tab('show');
+        }
+    });
+}
+
+/**
  * GET  /stats/day -> statistics for today
  */
 function refreshPieChart() {

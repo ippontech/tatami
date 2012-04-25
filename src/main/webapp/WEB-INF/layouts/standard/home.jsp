@@ -32,6 +32,14 @@
                     <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message
                             code="tatami.logout"/></a></li>
                 </ul>
+                <ul class="nav pull-right">
+					<form id="global-tweet-search" class="well form-search" style="padding:4px 2px 4px 2px;margin:3px 0px;" action="/tatami/rest/search" method="post">
+					  <input type="hidden" name="page" value="0" />
+					  <input type="hidden" name="rpp" value="20" />
+					  <input type="text" name="q" class="input-medium search-query" placeholder="<spring:message code="tatami.search.placeholder"/>">
+					  <button type="submit" class="btn" style="margin-top:0px;"><spring:message code="tatami.search.button"/></button>
+					</form>
+                </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
@@ -69,6 +77,8 @@
                             class="icon-user"></i>&nbsp;<spring:message code="tatami.user.otheruser.tweets"/></a></li>
                     <li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i
                             class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags"/></a></li>
+                    <li><a id="searchTab" href="#searchLinePanel" data-toggle="tab"><i
+                            class="icon-search"></i>&nbsp;<spring:message code="tatami.search"/></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
                                 class="icon-signal"></i>&nbsp;<spring:message code="tatami.tweets.stats"/>&nbsp;<b
@@ -86,6 +96,7 @@
                     <div class="tab-pane" id="favLinePanel"></div>
                     <div class="tab-pane" id="userLinePanel"></div>
                     <div class="tab-pane" id="tagLinePanel"></div>
+                    <div class="tab-pane" id="searchLinePanel"></div>
                     <div class="tab-pane" id="piechartPanel"></div>
                     <div class="tab-pane" id="punchchartPanel"></div>
                 </div>
