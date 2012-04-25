@@ -12,6 +12,7 @@
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
+        <elasticsearch.version>0.19.2</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
     </properties>
@@ -31,7 +32,7 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>0.19.1</version>
+            <version>${elasticsearch.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -276,6 +277,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.0.4.v20111024</version>
                 <configuration>
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
                 </configuration>

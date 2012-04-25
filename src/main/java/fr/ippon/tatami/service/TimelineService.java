@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Manages the the timeline.
+ * Manages the timeline.
  *
  * @author Julien Dubois
  */
@@ -95,7 +95,7 @@ public class TimelineService {
         }
     }
 
-    private Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+    public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweetId : tweetIds) {
             Tweet tweet = tweetRepository.findTweetById(tweetId);

@@ -56,6 +56,7 @@ function initTatami() {
     $('#favLinePanel').load('/assets/fragments/favline.html');
     $('#userLinePanel').load('/assets/fragments/userline.html');
     $('#tagLinePanel').load('/assets/fragments/tagline.html');
+    $('#searchLinePanel').load('/assets/fragments/searchline.html');
 
     $('#piechartPanel').load('/assets/fragments/piechart.html');
     $('#punchchartPanel').load('/assets/fragments/punchchart.html');
@@ -69,4 +70,12 @@ function initTatami() {
             refreshPunchChart();
         }
     });
+
+    // search form binding
+    $('#global-tweet-search').submit(function() {
+    	  var query = $(this).serialize();
+    	  searchTweets(query);
+          return false;
+    });
+
 }
