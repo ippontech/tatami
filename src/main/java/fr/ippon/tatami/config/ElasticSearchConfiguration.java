@@ -1,18 +1,30 @@
 package fr.ippon.tatami.config;
 
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest;
+import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
+import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.node.Node;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
+import fr.ippon.tatami.service.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.service.util.ElasticSearchSettings;
 
 /**
  * Elastic Search configuration file.
@@ -28,6 +40,14 @@ public class ElasticSearchConfiguration {
     Environment env;
 
     @Bean
+    public ElasticSearchSettings esSettings() {
+    	final ElasticSearchSettings esSettings = new ElasticSearchSettings();
+    	
+    	return esSettings;
+    }
+
+//    @Bean
+//    @DependsOn(value="nodeFactory")
     public TransportClient transportClient() {
         boolean activated = env.getProperty("elasticsearch.activated", Boolean.class);
         if (activated) {
@@ -55,13 +75,44 @@ public class ElasticSearchConfiguration {
         }
     }
 
+    @Bean(name="nodeFactory")
+    public ElasticSearchServerNodeFactory nodeFactory() {
+    	final ElasticSearchServerNodeFactory factory = new ElasticSearchServerNodeFactory();
+    	factory.setEsSettings(esSettings());
+    	factory.setIndexName(indexName());
+    	return factory;
+    }
+
+    @Bean
+    @DependsOn(value="nodeFactory")
+    public Client client() {
+        boolean activated = env.getProperty("elasticsearch.activated", Boolean.class);
+        if (activated) {
+            log.info("Elastic Search is activated, initializing client connection...");
+
+    		final Settings settings = esSettings().getSettings();
+            final Node clientNode = nodeBuilder().settings(settingsBuilder().put(settings).put("name", "client")).client(true).node();
+
+            Client client = clientNode.client();
+            if (log.isDebugEnabled()) {
+            	NodesInfoResponse nir = client.admin().cluster().nodesInfo(new NodesInfoRequest()).actionGet();
+            	log.debug("Client is now part of a " + nir.getNodes().length + " nodes cluster");
+            }
+            return client;
+        } else {
+            log.warn("WARNING ! Elastic Search is NOT activated !");
+            return new TransportClient();
+        }
+    }
+
     @Bean
     public String indexName() {
-        return "tatami";
+        return env.getRequiredProperty("elasticsearch.indexName");
     }
 
     @Bean
     public boolean indexActivated() {
         return env.getProperty("elasticsearch.activated", Boolean.class);
     }
+    
 }

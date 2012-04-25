@@ -1,39 +1,57 @@
+/**
+ * 
+ */
 package fr.ippon.tatami.service;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.elasticsearch.client.Requests.*;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
+import fr.ippon.tatami.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.IndexService;
 
 /**
- * .
- * @author dmartinpro, fdescamps
+ * @author dmartinpro
+ *
  */
-//TODO this test is ignored, waiting to have an embbeded version of Elastic Search
-@Ignore
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+        classes = ApplicationTestConfiguration.class,
+        loader = AnnotationConfigContextLoader.class)
 public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 
-	@Inject
-	private IndexService indexService;
+    private static final Log LOG = LogFactory.getLog(ElasticSearchTest.class);
 
+	@Inject
+	private IndexService service;
+
+	@Inject
+	private ElasticSearchServerNodeFactory factory;
+	
+	@Before
+	public void flushIndex() {
+		factory.getServerNodes().get(0).client().admin().indices().delete(deleteIndexRequest("tatami")).actionGet();
+	}
+	
 	@Test
 	public void testSingleMatch() throws ElasticSearchException, IOException {
+    	LOG.debug(ElasticSearchTest.class.getSimpleName() + ": testing...");
 
 		final Tweet tweet1 = new Tweet();
 		tweet1.setContent("trying out Elastic Search");
@@ -45,46 +63,24 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
 		tweet2.setTweetId("1234-4567-8988");
 		tweet2.setLogin("dmartinpro");
 
-		indexService.addTweet(tweet1);
-		indexService.addTweet(tweet2);
+		final List<String> ids0 = service.search(Tweet.class, null, "trying", 0, 50);
+		assertNotNull(ids0);
+		assertEquals(0, ids0.size());
 
-		final List<String> ids = indexService.searchTweets("trying out Elastic Search");
+		service.addTweet(tweet1);
+		service.addTweet(tweet2);
+		factory.getServerNodes().get(0).client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-		assertNotNull(ids); // not null
-		assertEquals(1, ids.size()); // only one match if everything is ok
-		assertEquals("3333g-gggg-gggg-gggg", ids.get(0)); // should be the second tweet
-	}
-	
-	@Test
-	public void shouldFindSimilarUsers(){
-		
-		User user = constructAUser("user","user@ippon.fr","userfirstname","userlastname");
-		indexService.addUser(user);
-		
-		List<String> similarsUsers = indexService.searchUsers("user");
+		final List<String> ids1 = service.search(Tweet.class, null, "trying", 0, 50);
+		final List<String> ids2 = service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50);
 
-		// verify
-		assertThat(similarsUsers, notNullValue());
-	}
+		assertNotNull(ids1); // not null
+		assertEquals(1, ids1.size()); // only one match if everything is ok
+		assertEquals(tweet1.getTweetId(), ids1.get(0)); // should be the first tweet
 
-	@Test
-	public void shouldFindAOnlySimilarUser(){
-		
-		User user = constructAUser("userWhoShouldBeFoundBySimilarSearch","userWhoShouldBeFoundBySimilarSearch@ippon.fr","userWhoShouldBeFoundBySimilarSearchfirstname","userWhoShouldBeFoundBySimilarSearchlastname");
-		indexService.addUser(user);
-		
-		List<String> similarsUsers = indexService.searchUsers("userWhoShouldBeFoundBySimilarSearch");
-
-		// verify
-		assertThat(similarsUsers.size(), is(1));
-	}
-
-	@Test
-	public void shouldFindAllUsersWithUserStartingWithUser(){
-		List<String> similarsUsers = indexService.searchSimilarUsers("user");
-
-		// verify
-		assertThat(similarsUsers.size(), greaterThan(0));
+		assertNotNull(ids2); // not null
+		assertEquals(1, ids2.size()); // only one match if everything is ok
+		assertEquals(tweet2.getTweetId(), ids2.get(0)); // should be the second tweet
 	}
 
 }
