@@ -120,8 +120,7 @@ function listUserTweets(userLogin) {
         url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#userTweetsList'), false, true, true);
-            displayUserInformations(userLogin);
+            makeTweetsList(data, $('#userTimeline'), false, true, true);
         }
     });
 }

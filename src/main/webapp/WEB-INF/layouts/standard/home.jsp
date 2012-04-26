@@ -53,8 +53,8 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a id="profileTab" href="#profileTabContent" data-toggle="pill">
                         &nbsp;<spring:message code="tatami.show.profile"/></a></li>
-                    <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;<spring:message
-                            code="tatami.update.profile"/></a></li>
+                    <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;
+                        <spring:message code="tatami.update.profile"/></a></li>
                 </ul>
                 <div class="tab-content alert alert-info profileview">
                     <div class="tab-pane active" id="profileTabContent"></div>

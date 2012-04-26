@@ -59,7 +59,7 @@
                             <c:when test="${not empty user && user.login eq login}">
                                 <li>
                                     <a href="#" id="followBtn" class="btn btn-inverse disabled"
-                                       title="You are"><spring:message code="tatami.user.yourself"/></a>
+                                       title="It s you"><spring:message code="tatami.user.yourself"/></a>
                                 </li>
                             </c:when>
                             <c:when test="${not empty followed && followed}">
@@ -111,28 +111,22 @@
             </div>
 
             <div class="row-fluid">
-                <div id="profilemenuleft" class="span3">
-                    <div class="row-fluid">
-                        <h2><spring:message code="tatami.user.tweettohim"/>&nbsp;:</h2>
+                <div id="profilemenuleft" class="span4">
+                    <div class="alert alert-info">
+                        <h4><spring:message code="tatami.user.tweettohim"/>&nbsp${user.login}</h4>
 
                         <div id="tweetToHim" class="row-fluid">
-                            <c:set var="tweetTo" value="@${user.login}"/>
                             <form class="form-inline" onsubmit="return tweet();">
-                                <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
-                                          placeholder="Type here..."></textarea>
+                                <textarea id="tweetContent" rel="popover" class="focused"
+                                          maxlength="140">@${user.login} </textarea>
                                 <button type="submit" class="btn btn-primary"><spring:message
                                         code="tatami.user.tweet"/></button>
                             </form>
                             <div class="error"></div>
                         </div>
                     </div>
-                    <div class="row-fluid">
-                        <h2><spring:message code="tatami.user.suggestions"/>&nbsp;:</h2>
-
-                        <div id="suggestions" class="row-fluid"></div>
-                    </div>
                 </div>
-                <div id="userTimeline" class="span9">
+                <div id="userTimeline" class="span8">
 
 
                 </div>
@@ -142,9 +136,6 @@
         <c:otherwise>
 
             <div class="row-fluid">
-                <a href="#" title="404">
-                    <img src="/tatami/assets/img/judoka_prise_404.jpg"/>
-                </a>
                 <spring:message code="tatami.user.undefined"/>
             </div>
 
@@ -153,6 +144,10 @@
 </div>
 
 <jsp:include page="includes/footer.jsp"/>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        listUserTweets('${user.login}');
+    });
+</script>
 </body>
 </html>
