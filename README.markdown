@@ -1,11 +1,6 @@
 Tatami
 ================
 
-Concours
---------
-Tatami est l'objet d'un concours organisé par Ippon Technologies, pour plus d'informations :
-[Bienvenue sur le Tatami](http://blog.ippon.fr/2012/03/19/bienvenue-sur-le-tatami-ippon-lance-un-grand-concours-de-code-pour-devoxx-france/)
-
 Presentation
 ------------------
 
