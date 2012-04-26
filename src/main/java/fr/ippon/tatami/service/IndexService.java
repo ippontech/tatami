@@ -3,15 +3,24 @@
  */
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -25,12 +34,8 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.elasticsearch.client.Requests.refreshRequest;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
 
 /**
  * @author dmartinpro
@@ -47,6 +52,8 @@ public class IndexService {
 
     @Inject
     private String indexName;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Add an item to the index.
@@ -74,8 +81,8 @@ public class IndexService {
                 .execute()
                 .actionGet();
 
-        // Should we force the update ? Not sure... due to performance cost
-        client.admin().indices().refresh(refreshRequest(indexName)).actionGet();
+        // Should we force the update ? Not sure... due to performance cost. "index.refresh_interval" properties may be adjusted if needed
+        // client.admin().indices().refresh(Requests.refreshRequest(indexName)).actionGet();
 
         return (response == null) ? null : response.getId();
     }
@@ -140,14 +147,28 @@ public class IndexService {
     /**
      * Search an item in the index.
      *
-     * @param clazz the item type
+     * @param clazz the item type : mandatory
      * @param field a particular field to search into
-     * @param query the query
+     * @param query the query : mandatory
      * @param page  the page to return
      * @param size  the size of a page
+     * @param sortField which field should be used to sort the results
+     * @param sortOrder which order to apply, ASC if not provided
      * @return a list of uid
      */
-    public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field, final String query, int page, int size) {
+    public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field,
+            final String query, int page, int size, final String sortField, final String sortOrder) {
+
+        Assert.notNull(clazz);
+        Assert.notNull(query);
+
+        if (page < 0) {
+            page = 0; //Default value
+        }
+        if (size <= 0) {
+            size = 20; //Default value
+        }
+
 
         final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
         final QueryBuilder qb = QueryBuilders.textQuery(name, query);
@@ -155,13 +176,17 @@ public class IndexService {
 
         SearchResponse searchResponse = null;
         try {
-            searchResponse = client.prepareSearch(indexName)
+            SearchRequestBuilder builder = client.prepareSearch(indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
                     .setTypes(dataType)
-                    .setFrom(page * size).setSize(size).setExplain(false)
-                    .execute()
-                    .actionGet();
+                    .setFrom(page * size).setSize(size).setExplain(false);
+            if (StringUtils.isNotBlank(sortField)) {// TODO Bad implementation...
+//                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
+            }
+
+            searchResponse = builder.execute()
+                                    .actionGet();
         } catch (IndexMissingException e) {
             log.warn("The index was not found in the cluster.");
             return new ArrayList<String>(0);
@@ -177,6 +202,63 @@ public class IndexService {
         final List<String> items = new ArrayList<String>(hitsNumber.intValue());
         for (int i = 0; i < searchHitsArray.length; i++) {
             items.add(searchHitsArray[i].getId());
+        }
+
+        return items;
+    }
+
+    /**
+     * Search an item in the index.
+     *
+     * @param clazz the item type
+     * @param field a particular field to search into
+     * @param query the query
+     * @param page  the page to return
+     * @param size  the size of a page
+     * @return a list of uid
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<String> searchPrefix(final Class<T> clazz, final String field, final String query, int page, int size) {
+
+        final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
+        final QueryBuilder qb = QueryBuilders.prefixQuery(name, query);
+        final String dataType = clazz.getSimpleName().toLowerCase();
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = client.prepareSearch(indexName)
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                    .setQuery(qb)
+                    .setTypes(dataType)
+                    .setFrom(page * size).setSize(size).setExplain(false)
+//                    .addSort(SortBuilders.fieldSort(field).order(SortOrder.ASC))
+                    .execute()
+                    .actionGet();
+        } catch (IndexMissingException e) {
+            log.warn("The index was not found in the cluster.");
+            return new ArrayList<String>(0);
+        }
+
+        final SearchHits searchHits = searchResponse.getHits();
+        final Long hitsNumber = searchHits.getTotalHits();
+        if (hitsNumber == 0) {
+            return new ArrayList<String>(0);
+        }
+
+        final SearchHit[] searchHitsArray = searchHits.getHits();
+        final List<String> items = new ArrayList<String>(hitsNumber.intValue());
+        Map<String, Object> item = null;
+        try {
+            for (int i = 0; i < searchHitsArray.length; i++) {
+                item = mapper.readValue(searchHitsArray[i].source(), Map.class);
+                items.add((String) item.get(field));
+            }
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return items;
@@ -221,40 +303,6 @@ public class IndexService {
     public String removeUser(final User user) {
         Assert.notNull(user, "user can't be null");
         return removeObject(user.getClass(), user.getLogin());
-    }
-
-    /**
-     * Search for who the login starts the same.
-     *
-     * @param query the query to look for
-     * @return a List of users' ids
-     */
-    public List<String> searchSimilarUsers(final String query) {
-
-        Assert.notNull(query, "query can't be null");
-
-        final QueryBuilder qb = QueryBuilders.prefixQuery("_all", query);
-
-        final SearchResponse searchResponse = client.prepareSearch("tatami")
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(qb)
-                .setFrom(0).setSize(60).setExplain(true)
-                .execute()
-                .actionGet();
-
-        final SearchHits searchHits = searchResponse.getHits();
-        final Long hitsNumber = searchResponse.getHits().getTotalHits();
-        if (hitsNumber == 0) {
-            return new ArrayList<String>(0);
-        }
-
-        final SearchHit[] searchHitsArray = searchHits.getHits();
-        final List<String> users = new ArrayList<String>(hitsNumber.intValue());
-        for (int i = 0; i < searchHitsArray.length; i++) {
-            users.add(searchHitsArray[i].getId());
-        }
-
-        return users;
     }
 
 }

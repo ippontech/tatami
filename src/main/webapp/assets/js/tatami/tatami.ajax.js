@@ -77,7 +77,7 @@ function tweet() {
  */
 function removeTweet(tweetId) {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: "/tatami/rest/statuses/destroy/" + tweetId,
         dataType: "json",
         success: function(data) {
@@ -233,14 +233,14 @@ function favoriteTweet(tweet) {
 /**
  * GET  /users/search -> search user by login
  */
-function searchUser(userLogin) {
+function searchUser(userLoginStartWith) {
     var suggest = $('#usersSuggestions');
     if (login.length <= 3) {
         suggest.hide();
     } else {
         $.ajax({
             type: 'GET',
-            url: "/tatami/rest/users/search?q=" + userLogin,
+            url: "/tatami/rest/users/search?q=" + userLoginStartWith,
             dataType: 'json',
             success: function(data) {
                 suggest.empty();

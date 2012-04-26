@@ -116,7 +116,7 @@ public class UserController {
             log.debug("REST request to find users starting with : " + query);
         }
         if (indexActivated) {
-            return indexService.searchSimilarUsers(query);
+            return indexService.searchPrefix(User.class, "login", query, 0, 20);
         } else {
             return new ArrayList<String>();
         }

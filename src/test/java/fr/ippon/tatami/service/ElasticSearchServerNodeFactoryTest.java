@@ -20,7 +20,7 @@ public class ElasticSearchServerNodeFactoryTest {
 
     /**
      * Should simply test if the factory is able to locate the settings resource
-     * and instantiate two nodes. If not, this test will fail.
+     * and instantiate some nodes. If not, this test will fail.
      *
      * @throws IOException
      */

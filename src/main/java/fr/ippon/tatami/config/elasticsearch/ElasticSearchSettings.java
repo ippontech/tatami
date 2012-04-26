@@ -1,11 +1,13 @@
 package fr.ippon.tatami.config.elasticsearch;
 
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+
+import java.util.Properties;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.common.settings.Settings;
 import org.springframework.stereotype.Component;
-
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
 /**
  * @author dmartin
@@ -26,6 +28,11 @@ public class ElasticSearchSettings {
     public ElasticSearchSettings(String settingsResourcePath) {
         LOG.debug("Loading Elastic Search settings from " + settingsResourcePath);
         this.settings = settingsBuilder().loadFromClasspath(settingsResourcePath).build();
+    }
+
+    public ElasticSearchSettings(Properties properties) {
+        LOG.debug("Loading Elastic Search settings from properties: " + properties);
+        this.settings = settingsBuilder().put(properties).build();
     }
 
     public Settings getSettings() {

@@ -1,15 +1,27 @@
 package fr.ippon.tatami.config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.inject.Inject;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -22,12 +34,22 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
 
-import java.util.*;
-
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
+@PropertySource(value="classpath:/META-INF/tatami/tatami.properties")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
+
+    @Inject
+    private Environment env;
+
+    // Any other way to inject a Properties object containing all the properties?
+    @Bean
+    public Properties applicationProps() {
+        Properties props = new Properties();
+        props.put("tatami.version", env.getProperty("tatami.version"));
+        return props;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -106,4 +128,12 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new DeviceResolverHandlerInterceptor());
         registry.addInterceptor(new SitePreferenceHandlerInterceptor());
     }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources-" + env.getProperty("tatami.version") + "/**")
+            .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
+            .setCachePeriod(31556926);
+    }
+
 }

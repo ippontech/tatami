@@ -189,13 +189,16 @@ public class TimelineService {
         if (log.isDebugEnabled()) {
             log.debug("Removing tweet : " + tweetId);
         }
-        Tweet tweet = tweetRepository.findTweetById(tweetId);
+        final Tweet tweet = tweetRepository.findTweetById(tweetId);
 
-        User currentUser = authenticationService.getCurrentUser();
+        final User currentUser = authenticationService.getCurrentUser();
         if (tweet.getLogin().equals(currentUser.getLogin())
                 && !Boolean.TRUE.equals(tweet.getRemoved())) {
             tweetRepository.removeTweet(tweet);
             counterRepository.decrementTweetCounter(currentUser.getLogin());
+            if (indexActivated) {
+                indexService.removeTweet(tweet);
+            }
         }
     }
 
