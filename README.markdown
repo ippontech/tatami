@@ -36,6 +36,14 @@ If you want to remote debug, don't forget to set MAVEN_OPTS accordingly :
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 And remote debug under your IDE on port 8000
 
+Note 1 : if you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize.
+For instance :
+-XX:PermSize=256m -XX:MaxPermSize=256m
+Adding this to MAVEN_OPTS is the simplest solution
+
+Note 2 : if you want to look inside ElasticSearch index, feel free to use elasticsearch-head, by @mobz, under /tatami/etc/
+Credits : https://github.com/mobz/elasticsearch-head
+
 License
 -------
 

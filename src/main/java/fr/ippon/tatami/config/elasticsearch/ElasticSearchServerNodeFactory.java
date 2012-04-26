@@ -1,23 +1,22 @@
 package fr.ippon.tatami.config.elasticsearch;
 
+import static org.elasticsearch.client.Requests.createIndexRequest;
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.admin.indices.exists.IndicesExistsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
-import org.springframework.core.env.Environment;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.elasticsearch.client.Requests.createIndexRequest;
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * Create some Elastic Search nodes.
@@ -83,7 +82,6 @@ public class ElasticSearchServerNodeFactory {
                 node = nodeBuilder()
                         .settings(settingsBuilder()
                                 .put(settings)
-                                .put("name", "node" + i)
                         ).node();
                 serverNodes.add(node);
                 log.debug("  -> node \"" + node.settings().get("name") + "\" instantiated.");

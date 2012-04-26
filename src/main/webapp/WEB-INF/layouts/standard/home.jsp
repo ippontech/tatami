@@ -33,7 +33,7 @@
                             code="tatami.logout"/></a></li>
                 </ul>
                 <ul class="nav pull-right">
-					<form id="global-tweet-search" class="well form-search" style="padding:4px 2px 4px 2px;margin:3px 0px;" action="/tatami/rest/search" method="post">
+					<form id="global-tweet-search" class="well form-search" style="padding:4px 2px 4px 2px;margin:3px 0px;background-color:#2C2C2C;" action="/tatami/rest/search" method="post">
 					  <input type="hidden" name="page" value="0" />
 					  <input type="hidden" name="rpp" value="20" />
 					  <input type="text" name="q" class="input-medium search-query" placeholder="<spring:message code="tatami.search.placeholder"/>">
@@ -105,6 +105,13 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<spring:eval expression="@applicationProps['tatami.version']" var="applicationVersion"/>
+
+<spring:url value="/resources-{applicationVersion}" var="resourceUrl">
+    <spring:param name="applicationVersion" value="${applicationVersion}"/>
+</spring:url>
+
+<script src="/tatami/${resourceUrl}/tatami.js" type="text/javascript" />
 <script src="/assets/js/tatami/tatami.charts.js"></script>
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});

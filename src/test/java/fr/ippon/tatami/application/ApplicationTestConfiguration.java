@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Configuration
 @PropertySource("classpath:/tatami/tatami-test.properties")
-@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
+@ComponentScan(basePackages = {"fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
 @Import(value = {CassandraConfiguration.class, ElasticSearchConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationTestConfiguration {
