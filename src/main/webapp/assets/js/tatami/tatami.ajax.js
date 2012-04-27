@@ -9,6 +9,7 @@
  * POST /statuses/destroy/:id -> delete Tweet
  * GET  /statuses/home_timeline -> get the latest tweets from the current user
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
+ * GET  /search?q=keywords&page=m&rpp=n -> get the tweets matching the keywords, from the page m, containing n tweets
  *
  * Users
  * --------
@@ -236,12 +237,15 @@ function favoriteTweet(tweet) {
  */
 function searchUser(userLoginStartWith) {
     var suggest = $('#usersSuggestions');
-    if (login.length <= 3) {
+    var searchTerm = userLoginStartWith;
+    searchTerm = (searchTerm.indexOf('@') == 0) ? searchTerm.substring(1, searchTerm.length) : searchTerm;
+
+    if (searchTerm.length < 3) {
         suggest.hide();
     } else {
         $.ajax({
             type: 'GET',
-            url: "/tatami/rest/users/search?q=" + userLoginStartWith,
+            url: "/tatami/rest/users/search?q=" + searchTerm,
             dataType: 'json',
             success: function(data) {
                 suggest.empty();
