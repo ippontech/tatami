@@ -107,11 +107,11 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <spring:eval expression="@applicationProps['tatami.version']" var="applicationVersion"/>
 
-<spring:url value="/resources-{applicationVersion}" var="resourceUrl">
+<spring:url value="resources/{applicationVersion}" var="resourceUrl">
     <spring:param name="applicationVersion" value="${applicationVersion}"/>
 </spring:url>
 
-<script src="/tatami/${resourceUrl}/tatami.js" type="text/javascript" />
+<script src="/assets/js/tatami.js"></script>
 <script src="/assets/js/tatami/tatami.charts.js"></script>
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});

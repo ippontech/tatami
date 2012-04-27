@@ -18,7 +18,7 @@ var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets
 
 function initTatami() {
     // left panel
-    $('#profileTabContent').load('/assets/fragments/profile.html', function () {
+    $('#profileTabContent').load('/assets/fragments/standard/profile.html', function () {
         refreshProfile();
         $('#tweetContent').popover({
             trigger: 'manual',
@@ -27,8 +27,8 @@ function initTatami() {
             content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
         });
     });
-    $('#updateProfileTabContent').load('/assets/fragments/updateProfile.html');
-    $('#followUserContent').load('/assets/fragments/followUser.html', suggestUsersToFollow());
+    $('#updateProfileTabContent').load('/assets/fragments/standard/updateProfile.html');
+    $('#followUserContent').load('/assets/fragments/standard/followUser.html', suggestUsersToFollow());
     // auto-refresh
     $('a[data-toggle="pill"]').on('show', function(e) {
         if (e.target.hash == '#profileTabContent') {
@@ -39,7 +39,7 @@ function initTatami() {
     });
 
     // right panel
-    $('#timeLinePanel').load('/assets/fragments/timeline.html', function() {
+    $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
         listTweets(true);
     });
     // browser's refresh shortcut override
@@ -53,12 +53,12 @@ function initTatami() {
         }
     });
 
-    $('#favLinePanel').load('/assets/fragments/favline.html');
-    $('#tagLinePanel').load('/assets/fragments/tagline.html');
-    $('#searchLinePanel').load('/assets/fragments/searchline.html');
+    $('#favLinePanel').load('/assets/fragments/standard/favline.html');
+    $('#tagLinePanel').load('/assets/fragments/standard/tagline.html');
+    $('#searchLinePanel').load('/assets/fragments/standard/searchline.html');
 
-    $('#piechartPanel').load('/assets/fragments/piechart.html');
-    $('#punchchartPanel').load('/assets/fragments/punchchart.html');
+    $('#piechartPanel').load('/assets/fragments/standard/piechart.html');
+    $('#punchchartPanel').load('/assets/fragments/standard/punchchart.html');
     // auto-refresh
     $('a[data-toggle="tab"]').on('show', function(e) {
         if (e.target.hash == '#favLinePanel') {

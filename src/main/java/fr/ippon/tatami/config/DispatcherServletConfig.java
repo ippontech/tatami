@@ -131,7 +131,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources-" + env.getProperty("tatami.version") + "/**")
+        registry.addResourceHandler("/resources/" + env.getProperty("tatami.version") + "/**")
             .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
             .setCachePeriod(31556926);
     }
