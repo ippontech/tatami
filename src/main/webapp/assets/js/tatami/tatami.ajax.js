@@ -30,7 +30,7 @@
  * --------
  * GET  /favorites -> get the favorite tweets of the current user
  * POST /favorites/create/:id -> Favorites the tweet
- * POST /favorites/remove/:id -> Unfavorites the tweet
+ * POST /favorites/destroy/:id -> Unfavorites the tweet
  *
  *
  * Tags (does not exist in Twitter)
@@ -233,12 +233,12 @@ function favoriteTweet(tweet) {
 }
 
 /**
- * POST /favorites/remove/:id -> Unfavorites the tweet
+ * POST /favorites/destroy/:id -> Unfavorites the tweet
  */
 function unfavoriteTweet(tweet) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/remove/" + tweet,
+        url: "/tatami/rest/favorites/destroy/" + tweet,
         dataType: 'json',
         success: function(data) {
             setTimeout(function() {

@@ -54,9 +54,9 @@ public class FavoritesController {
     }
     
     /**
-     * POST /favorites/remove/:id -> Unfavorites the tweet
+     * POST /favorites/destroy/:id -> Unfavorites the tweet
      */
-    @RequestMapping(value = "/rest/favorites/remove/{tweetId}",
+    @RequestMapping(value = "/rest/favorites/destroy/{tweetId}",
             method = RequestMethod.POST)
     @ResponseBody
     public void unfavoriteTweet(@PathVariable("tweetId") String tweetId) {
