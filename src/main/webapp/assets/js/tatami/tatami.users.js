@@ -73,8 +73,8 @@ function makeWhoToFollowList(data) {
     });
 }
 
-function addLineToList(dest, content){
-	dest.append('<li>' + content + '</li>');
+function addLineToList(dest, user){
+	dest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">&nbsp;' + user.login + '</li>');
 }
 
 function buildList(dest, array){

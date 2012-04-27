@@ -1,19 +1,29 @@
 package fr.ippon.tatami.web.rest;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.inject.Inject;
-import java.util.*;
 
 /**
  * REST controller for managing users.
@@ -105,20 +115,29 @@ public class UserController {
     }
 
     /**
-     * GET  /users/search -> search user by login
+     * GET  /users/search -> search user by login<br>
+     * Should return a collection of users matching the query.<br>
+     * The collection doesn't contain the current user even if he matches the query.<br>
+     * If nothing matches, an empty collection (but not null) is returned.<br>
+     * @param query the query
+     * @return a Collection of User
      */
     @RequestMapping(value = "/rest/users/search",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public List<String> searchUsers(@RequestParam("q") String query) {
+    public Collection<User> searchUsers(@RequestParam("q") String query) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to find users starting with : " + query);
         }
         if (indexActivated) {
-            return indexService.searchPrefix(User.class, "login", query, 0, 20);
+            final List<String> logins = indexService.searchPrefix(User.class, "login", query, 0, 20);
+            final Collection<User> users = userService.getUsersByLogin(logins);
+            final User currentUser = userService.getCurrentUser();
+            users.remove(currentUser);
+            return users;
         } else {
-            return new ArrayList<String>();
+            return new ArrayList<User>();
         }
     }
 
