@@ -1,57 +1,54 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-    </title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
-    <style>
-            /* App custom styles */
-    </style>
-    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
-    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery.mobile-1.1.0.min.js"%3E%3C/script%3E'))</script>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
-    <script src="/assets/js/jquery/jquery.mobile-css-CDN-fail.js"></script>
-</head>
-<body>
-<div data-role="page" id="page1">
-    <div data-theme="a" data-role="header">
-        <h3>
-            Tatami
-        </h3>
-    </div>
-    <div data-role="content">
-        <form action="/tatami/authentication" method="POST" >
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup">
-                    <label for="j_username">
-                        Login
-                    </label>
-                    <input id="j_username" name="j_username" placeholder="" value="jdubois" type="text" />
-                </fieldset>
-            </div>
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup">
-                    <label for="j_password">
-                        Password
-                    </label>
-                    <input id="j_password" name="j_password" placeholder="" value="password" type="text" />
-                </fieldset>
-            </div>
-            <input type="submit" data-icon="star" data-iconpos="left" value="Authenticate" />
+<jsp:include page="includes/header.jsp"/>
+
+  <body>
+		<div id="topbar-login" class="navbar navbar-fixed-top topbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="#"><img src="/assets/img/ippon-logo.png"></img><spring:message
+                    code="tatami.title"/></a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="active"><a href="/tatami/login"><i class="icon-lock icon-white"></i>&nbsp;<spring:message
+                            code="tatami.login"/></a></li>
+							<li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
+                            code="tatami.about"/></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	<br/>
+    <div id="mobileLoginContainer">
+        <h1><spring:message code="tatami.authentification"/></h1>
+		<br/>
+        <form id="loginForm" action="/tatami/authentication" method="post" class="well" >
+        	<br/>
+            <fieldset>
+                <label><spring:message code="tatami.login"/> :</label> <input id="j_username" name="j_username"
+                       type="text" required="required" autofocus="autofocus" class="input-large"
+                       placeholder="<spring:message code="tatami.login"/>..."/>
+                <label><spring:message code="tatami.password"/> :</label> <input id="j_password" name="j_password"
+                       type="password" required="required" class="input-large"
+                       placeholder="<spring:message code="tatami.password"/>..."/>
+	            <label class="checkbox"><spring:message code="tatami.remember.password.time"/> :</label> <input type="checkbox"
+	                       name="_spring_security_remember_me" id="_spring_security_remember_me"
+	                       value="true" checked="true"/>
+            </fieldset>
+
+            <button type="submit" class="btn btn-success btn-large"><spring:message code="tatami.authentificate"/></button>
+            <br/>&nbsp;
         </form>
     </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h1>
-            Copyright 2012 Ippon Technologies
-        </h1>
-    </div>
-</div>
-<script>
-    //App custom javascript
-</script>
-</body>
+   
+	<jsp:include page="includes/footer.jsp"/>
+  </body>
 </html>

@@ -1,5 +1,19 @@
 package fr.ippon.tatami.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
@@ -7,15 +21,6 @@ import fr.ippon.tatami.repository.FriendRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.GravatarUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-import java.util.Collection;
 
 /**
  * Manages the application's users.
@@ -50,6 +55,22 @@ public class UserService {
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
+    }
+
+    /**
+     * Return a collection of Users based on their login (ie : uid)
+     * @param logins the collection : must not be null
+     * @return a Collection of User
+     */
+    public Collection<User> getUsersByLogin(final List<String> logins) {
+        Assert.notNull(logins);
+        
+        final Collection<User> users = new ArrayList<User>(logins.size());
+        for (String login : logins) {
+            users.add(userRepository.findUserByLogin(login));
+        }
+
+        return users;
     }
 
     public User getUserProfileByLogin(String login) {

@@ -11,6 +11,7 @@ import javax.servlet.ServletRegistration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.mobile.device.DeviceResolverHandlerFilter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -24,7 +25,7 @@ import fr.ippon.tatami.web.monitoring.MonitoringFilter;
  * Configuration of web application with Servlet 3.0 APIs.<br>
  * <p/>
  * This class is to be used as a standard listener within a web.xml.
- * To optimise startup time, you can completely disabled classpath scanning :
+ * To optimise startup time, you can completely disable classpath scanning :
  * <ul>
  * <li>with metadata-complete="true" global attribute
  * <li>with an empty &lt;absolute-ordering&gt; ( it's necessary with Jetty at least <b>TODO</b> : test with other
@@ -94,7 +95,12 @@ public class WebConfigurer implements ServletContextListener {
         FilterRegistration.Dynamic monitoringFilter = servletContext.addFilter("monitoringFilter",
                 new MonitoringFilter());
         monitoringFilter.addMappingForUrlPatterns(disps, true, "/*");
-    }
+
+        FilterRegistration.Dynamic deviceResolverHandlerFilter = servletContext.addFilter("deviceResolverHandlerFilter",
+                new DeviceResolverHandlerFilter());
+        deviceResolverHandlerFilter.addMappingForUrlPatterns(disps, true, "/*");
+
+   }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
