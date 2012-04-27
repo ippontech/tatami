@@ -111,8 +111,8 @@
     <spring:param name="applicationVersion" value="${applicationVersion}"/>
 </spring:url>
 
-<script src="/assets/js/tatami.js"></script>
-<script src="/assets/js/tatami/tatami.charts.js"></script>
+<script src="/assets/js/tatami/standard/tatami.js"></script>
+<script src="/assets/js/tatami/standard/tatami.charts.js"></script>
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});
     var login = "<sec:authentication property="principal.username"/>";

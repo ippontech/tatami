@@ -20,12 +20,12 @@
 <script src="/assets/js/bootstrap/2.0.2/bootstrap-tooltip.js"></script>
 <script src="/assets/js/bootstrap/2.0.2/bootstrap-popover.js"></script>
 <script src="/assets/js/bootstrap/2.0.2/bootstrap-typeahead.js"></script>
-<script src="/assets/js/shortcut.js"></script>
+<script src="/assets/js/tatami/standard/shortcut.js"></script>
 <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
 
-<script src="/assets/js/tatami/tatami.utils.js"></script>
-<script src="/assets/js/tatami/tatami.tweets.js"></script>
-<script src="/assets/js/tatami/tatami.users.js"></script>
-<script src="/assets/js/tatami/tatami.ajax.js"></script>
-<script src="/assets/js/tatami.js"></script>
+<script src="/assets/js/tatami/standard/tatami.utils.js"></script>
+<script src="/assets/js/tatami/standard/tatami.tweets.js"></script>
+<script src="/assets/js/tatami/standard/tatami.users.js"></script>
+<script src="/assets/js/tatami/standard/tatami.ajax.js"></script>
+<script src="/assets/js/tatami/standard/tatami.js"></script>
 
