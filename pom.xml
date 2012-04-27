@@ -278,7 +278,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.0.4.v20111024</version>
                 <configuration>
-                    <scanIntervalSeconds>30</scanIntervalSeconds>
+                    <scanIntervalSeconds>1</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
                 </configuration>
