@@ -19,24 +19,33 @@ Installation
 ------------
 
 - Install [Maven 3](http://maven.apache.org/)
-- Run Cassandra from Maven : mvn cassandra:run
-- Run Jetty from Maven : mvn jetty:run
-- Optional : if you want to activate ElasticSearch, just add -Delasticsearch.activated=true
+- Run Cassandra from Maven : `mvn cassandra:run`
+- Run Jetty from Maven : `mvn jetty:run`
+- Optional : if you want to activate ElasticSearch, just add `-Delasticsearch.activated=true`
 - Connect to the application at http://127.0.0.1:8080
 
 The default users are "jdubois/password" and "tescolan/password", you can check or modify the
-Spring Security configuration at /META-INF/spring/applicationContext-security.xml
+Spring Security configuration at `/META-INF/spring/applicationContext-security.xml`
 
 If you want to remote debug, don't forget to set MAVEN_OPTS accordingly :
+```
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+```
 And remote debug under your IDE on port 8000
 
-Note 1 : if you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize.
-For instance :
+Note 1 : if you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize. For instance : 
+```
 -XX:PermSize=256m -XX:MaxPermSize=256m
+```
 Adding this to MAVEN_OPTS is the simplest solution
 
-Note 2 : if you want to look inside ElasticSearch index, feel free to use elasticsearch-head, by @mobz, under /tatami/etc/
+Note 2 : if you want to look inside ElasticSearch index, feel free to use elasticsearch-head, by @mobz, under /tatami/etc/ as a submodule of tatami. 
+
+To setup the submodule :
+```
+git submodule init
+git submodule update
+```
 Credits : https://github.com/mobz/elasticsearch-head
 
 License
