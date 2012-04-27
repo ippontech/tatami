@@ -49,7 +49,10 @@ function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers,
     }
     if (likeTweets) {
         html += '<a href="#" onclick="favoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
+    } else {
+    	html += '<a href="#" onclick="unfavoriteTweet(\'' + tweetId + '\')" title="Unlike"><i class="icon-remove" /></a>&nbsp;';
     }
+    
     html += '</td>';
     return html;
 }

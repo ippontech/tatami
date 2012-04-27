@@ -29,6 +29,7 @@
  * --------
  * GET  /favorites -> get the favorite tweets of the current user
  * POST /favorites/create/:id -> Favorites the tweet
+ * POST /favorites/remove/:id -> Unfavorites the tweet
  *
  *
  * Tags (does not exist in Twitter)
@@ -221,6 +222,22 @@ function favoriteTweet(tweet) {
     $.ajax({
         type: 'POST',
         url: "/tatami/rest/favorites/create/" + tweet,
+        dataType: 'json',
+        success: function(data) {
+            setTimeout(function() {
+                $('#favTab').tab('show');
+            }, 500);	//DEBUG wait for persistence consistency
+        }
+    });
+}
+
+/**
+ * POST /favorites/remove/:id -> Unfavorites the tweet
+ */
+function unfavoriteTweet(tweet) {
+    $.ajax({
+        type: 'POST',
+        url: "/tatami/rest/favorites/remove/" + tweet,
         dataType: 'json',
         success: function(data) {
             setTimeout(function() {

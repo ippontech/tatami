@@ -227,6 +227,17 @@ public class TimelineService {
         }
     }
 
+    public void removeFavoriteTweet(String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Unmarking tweet : " + tweetId);
+        }
+        Tweet tweet = tweetRepository.findTweetById(tweetId);
+
+        // registering
+        User currentUser = authenticationService.getCurrentUser();
+        tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
+    }
+    
     /**
      * The favline contains the user's favorites tweets
      *

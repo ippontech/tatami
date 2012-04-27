@@ -102,6 +102,13 @@ public class CassandraTweetRepository implements TweetRepository {
         mutator.insert(login, FAVLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
+    
+    @Override
+    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
+        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.delete(login, FAVLINE_CF, tweet.getTweetId(), StringSerializer.get());
+    }
 
     @Override
     public void addTweetToUserline(Tweet tweet) {

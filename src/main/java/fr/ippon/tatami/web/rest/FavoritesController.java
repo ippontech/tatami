@@ -52,5 +52,18 @@ public class FavoritesController {
         }
         timelineService.addFavoriteTweet(tweetId);
     }
+    
+    /**
+     * POST /favorites/remove/:id -> Unfavorites the tweet
+     */
+    @RequestMapping(value = "/rest/favorites/remove/{tweetId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void unfavoriteTweet(@PathVariable("tweetId") String tweetId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unlike tweet : " + tweetId);
+        }
+        timelineService.removeFavoriteTweet(tweetId);
+    }
 
 }
