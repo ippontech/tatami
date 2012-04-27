@@ -1,0 +1,1 @@
+All the resources under this folder are served with this URL : /tatami/resources/*

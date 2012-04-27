@@ -34,6 +34,9 @@ public class AccountController {
             consumes = "application/json")
     @ResponseBody
     public void updateProfile(@RequestBody User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Update profile request received for user: " + user.getLogin());
+        }
         user.setFirstName(StringEscapeUtils.escapeHtml(user.getFirstName()));
         user.setLastName(StringEscapeUtils.escapeHtml(user.getLastName()));
         userService.updateUser(user);

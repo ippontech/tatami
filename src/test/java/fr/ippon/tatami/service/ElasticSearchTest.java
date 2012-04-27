@@ -1,10 +1,15 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.application.ApplicationTestConfiguration;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
-import fr.ippon.tatami.domain.Tweet;
+import static org.elasticsearch.client.Requests.deleteIndexRequest;
+import static org.elasticsearch.client.Requests.refreshRequest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
@@ -15,23 +20,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.List;
-
-import static org.elasticsearch.client.Requests.deleteIndexRequest;
-import static org.elasticsearch.client.Requests.refreshRequest;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
+import fr.ippon.tatami.domain.Tweet;
 
 /**
  * @author dmartinpro
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = ApplicationTestConfiguration.class,
+        classes = ApplicationElasticSearchTestConfiguration.class,
         loader = AnnotationConfigContextLoader.class)
-public class ElasticSearchTest extends AbstractCassandraTatamiTest {
+public class ElasticSearchTest {
 
     private static final Log log = LogFactory.getLog(ElasticSearchTest.class);
 
@@ -64,7 +65,7 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
         tweet2.setTweetId("1234-4567-8988");
         tweet2.setLogin("dmartinpro");
 
-        final List<String> ids0 = service.search(Tweet.class, null, "trying", 0, 50);
+        final List<String> ids0 = service.search(Tweet.class, null, "trying", 0, 50, null, null);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -72,8 +73,8 @@ public class ElasticSearchTest extends AbstractCassandraTatamiTest {
         service.addTweet(tweet2);
         factory.getServerNodes().get(0).client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final List<String> ids1 = service.search(Tweet.class, null, "trying", 0, 50);
-        final List<String> ids2 = service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50);
+        final List<String> ids1 = service.search(Tweet.class, null, "trying", 0, 50, null, null);
+        final List<String> ids2 = service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

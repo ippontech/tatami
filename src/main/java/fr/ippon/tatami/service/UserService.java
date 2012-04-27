@@ -70,7 +70,6 @@ public class UserService {
             userRepository.updateUser(user);
             // Add to Elastic Search index if it is activated
             if (indexActivated) {
-                indexService.removeUser(user);
                 indexService.addUser(user);
             }
         } catch (ConstraintViolationException cve) {
