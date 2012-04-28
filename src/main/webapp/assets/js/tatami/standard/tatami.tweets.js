@@ -20,7 +20,7 @@ function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     return html;
 }
 
-function buildHtmlAreaForTheTweetContent(userlineLink, loginInSession, firstName, lastName, content) {
+function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, lastName, content) {
     var html = '<td><article>';
     if (userlineLink) {
         html += userlineLink;
@@ -29,7 +29,7 @@ function buildHtmlAreaForTheTweetContent(userlineLink, loginInSession, firstName
     if (userlineLink) {
         html += '</a>';
     }
-    html += ' <em>@' + loginInSession + '</em><br/>';
+    html += ' <em>@' + userLogin + '</em><br/>';
     // tweet content
     html += content.replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
     html += '</article></td>';

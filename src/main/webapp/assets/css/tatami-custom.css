@@ -3,115 +3,99 @@ body {
 }
 
 #tweetsList {
-  color:#000000;
+    color: #000000;
 }
+
 #friendTweetsList {
-  color:#000000;
+    color: #000000;
 }
+
 .tweetFriend {
     width: 24;
 }
+
 .tweetDate {
     width: 68;
 }
+
 section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine {
     vertical-align: top;
 }
 
 .avatar {
-    width:34px;
+    width: 34px;
 }
 
-.error{
-	color:red;
-	font-weight:bold;
+.error {
+    color: red;
+    font-weight: bold;
 }
 
-.hide{
-	display:none;
+.hide {
+    display: none;
 }
 
-section#followline ul#usersSuggestions{
-	display:			none;
-	background-color: 	#D9EDF7;
-    border: 			1px solid #BCE8F1;
-    border-radius: 		14px 14px 14px 14px;
-    color: 				#3A87AD;
-    left: 				34px;
-    margin: 			0;
-    padding:			0px 14px;
-    position: 			absolute;
-    width: 				210px;
+section#followline ul#usersSuggestions {
+    display: none;
+    background-color: #D9EDF7;
+    border: 1px solid #BCE8F1;
+    border-radius: 14px 14px 14px 14px;
+    color: #3A87AD;
+    left: 34px;
+    margin: 0;
+    padding: 0px 14px;
+    position: absolute;
+    width: 210px;
 }
 
 section#followline ul#usersSuggestions li {
-    cursor: 			pointer;
-    list-style: 		none outside none;
-    margin: 			0px;
-    padding: 			3px;
+    cursor: pointer;
+    list-style: none outside none;
+    margin: 0px;
+    padding: 3px;
 }
+
 section#followline ul#usersSuggestions li:hover {
-    color: 				#555555;
+    color: #555555;
 }
 
-div#userProfile{
-    margin: 		0 auto;
-    min-height: 	100%;
-    padding: 		14px 14px 10px;
-    position: 		relative;
-    width: 			837px;
+div#userProfile {
+    margin: 10px 80px 0px 0px;
+    position: relative;
 }
 
-div#userProfileDesc{
-	 background-color: 	#F9F9F9;
-	 border:			1px solid #DDDDDD;
-	 border-radius: 	5px;
-	 padding:			5px;
+div#userProfileDesc {
+    background-color: #F9F9F9;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    padding: 5px;
 }
 
-ul#profileStats{
-	padding:			15px 5px;
-	list-style-type:	none;
-	font-family: 		"HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-size:			1.2em;
-	font-weight:		400;
-	font-style:			normal;
-	font-size-adjust:	none;
-	color:				#999999;
-	text-transform: 	uppercase;
+#profilemenuleft {
+    margin: 10px 0px 0px 20px;
 }
 
-ul#profileStats li.bottomline strong{
-	 color:				#333333;
+#profilemain {
+    margin: 10px 0px 0px 20px;
 }
 
-ul#profileStats li.bottomline{
-	 margin-top:		5px;
-	 border-bottom:		1px solid #DDDDDD;
-	 line-height:		24px;
-}
-
-#profilemenuleft{
-	margin:		10px 0px 0px 0px;
-}
-
-#tweetToHim{
-	padding:	2px;
+#tweetToHim {
+    padding: 2px;
 }
 
 #tweetToHim form {
-	margin:		5px 0px;
+    margin: 5px 0px;
 }
 
-#tweetToHim form textarea{
-	width: 		180px;
-	margin:		5px 0px;
+#tweetToHim form textarea {
+    width: 180px;
+    margin: 5px 0px;
 }
 
-#tweetToHim form button{
-	float:		right;
+#tweetToHim form button {
+    float: right;
 }
 
-#home div.profileview{
-	padding:	0px;
+#home div.profileview {
+    padding: 0px;
 }

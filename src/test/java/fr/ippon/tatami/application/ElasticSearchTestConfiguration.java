@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ippon.tatami.application;
 
 import org.springframework.context.annotation.Bean;
