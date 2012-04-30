@@ -2,6 +2,31 @@
 * Manage the tweet list.
 */
 
+function tweet() {
+    postTweet(function(data) {
+        var tweet = $('#tweetContent');
+        tweet.slideUp().empty().slideDown('fast');
+        tweet.parent().parent().find("div.error").empty();
+        tweet.val("");
+        setTimeout(function() {
+            refreshProfile();
+            $('#refreshTweets').click();
+        }, 500);
+    });
+    return false;
+}
+
+//Create a Tweet sent to a user (from the "profile" page).
+function tweetToUser() {
+    postTweet(function(data) {
+        var tweet = $('#tweetContent');
+        tweet.slideUp().empty().slideDown('fast');
+        tweet.parent().parent().find("div.error").empty();
+        tweet.val("@" + userLogin + " ");
+    });
+    return false;
+}
+
 function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     // identification de l'émetteur du message
     var html = '<td class="avatar">';
@@ -36,25 +61,26 @@ function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, las
     return html;
 }
 
-function buildHtmlAreaForTheActions(tweetId, likeTweets){
+function buildHtmlAreaForTheActions(tweetId){
     var html = '<td class="tweetActions">';
+
+    // Favorite tweet
+    html += '<a id="' + tweetId + '-favorite" href="#"></a>';
+
+    // Remove Tweet
     html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
-    if (likeTweets) {
-        html += '<a href="#" onclick="favoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
-    } else {
-    	html += '<a href="#" onclick="unfavoriteTweet(\'' + tweetId + '\')" title="Unlike"><i class="icon-remove" /></a>&nbsp;';
-    }
     
     html += '</td>';
     return html;
 }
 
-function makeTweetsList(data, dest, likeTweets) {
+function makeTweetsList(data, dest) {
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
         $.each(data, function(entryIndex, entry) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
-            var html = '<tr class="tweet">';
+
+            var html = '<tr id="' + entry['tweetId'] + '" class="tweet">';
 
             html += buildHtmlAreaForTheAvatar(
                 userlineLink,
@@ -68,8 +94,7 @@ function makeTweetsList(data, dest, likeTweets) {
                 entry['content']);
 
             html += buildHtmlAreaForTheActions(
-                entry['tweetId'],
-                likeTweets);
+                entry['tweetId']);
 
             html +=
                 "<td class=\"tweetDate\"><aside>" + entry['prettyPrintTweetDate']+ "</aside></td>";
@@ -77,6 +102,7 @@ function makeTweetsList(data, dest, likeTweets) {
             html += '</tr>';
             dest.append(html);
         });
+        decorateFavoriteTweets();
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });
 }

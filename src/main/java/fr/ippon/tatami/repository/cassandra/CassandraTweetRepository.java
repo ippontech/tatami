@@ -89,7 +89,6 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToDayline(Tweet tweet, String key) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -97,22 +96,18 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToFavoritesline(Tweet tweet, String login) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
-                tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
+        mutator.insert(login, FAVLINE_CF, HFactory.createStringColumn(tweet.getTweetId(), ""));
     }
     
     @Override
     public void removeTweetFromFavoritesline(Tweet tweet, String login) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(login, FAVLINE_CF, tweet.getTweetId(), StringSerializer.get());
     }
 
     @Override
     public void addTweetToUserline(Tweet tweet) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -120,7 +115,6 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTimeline(String login, Tweet tweet) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
@@ -130,7 +124,6 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public void addTweetToTagline(Tweet tweet) {
-        assert !tweet.getRemoved() : "tweet is not supposed to be removed";
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
         while (m.find()) {
@@ -223,7 +216,7 @@ public class CassandraTweetRepository implements TweetRepository {
         ColumnSliceIterator<String, String, String> csi =
                 new ColumnSliceIterator<String, String, String>(sq, null, "", true);
         while (csi.hasNext()) {
-            tweetIds.add(csi.next().getValue());
+            tweetIds.add(csi.next().getName());
         }
         return tweetIds;
     }

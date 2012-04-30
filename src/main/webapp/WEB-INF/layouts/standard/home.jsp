@@ -25,7 +25,6 @@
                             code="tatami.home"/></a></li>
                     <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
                             code="tatami.about"/></a></li>
-                    <!-- <li><a href="?language=en"> English</a>|<a href="?language=fr"> Francais</a></li> -->
                 </ul>
                 <ul class="nav pull-right">
                     <li class="divider-vertical"></li>
@@ -41,7 +40,6 @@
 					</form>
                 </ul>
             </div>
-            <!--/.nav-collapse -->
         </div>
     </div>
 </div>
@@ -72,7 +70,7 @@
                     <li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i
                             class="icon-th-list"></i>&nbsp;<spring:message code="tatami.tweets"/></a></li>
                     <li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i
-                            class="icon-heart"></i>&nbsp;<spring:message code="tatami.user.favoritetweets"/></a></li>
+                            class="icon-star"></i>&nbsp;<spring:message code="tatami.user.favoritetweets"/></a></li>
                     <li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i
                             class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags"/></a></li>
                     <li><a id="searchTab" href="#searchLinePanel" data-toggle="tab"><i

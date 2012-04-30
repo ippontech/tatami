@@ -21,7 +21,6 @@ function refreshProfile() {
 		});
 }
 
-
 function makeWhoToFollowList(data) {
     dest = $('#suggestions');
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
@@ -59,12 +58,3 @@ function makeWhoToFollowList(data) {
     });
 }
 
-function addLineToList(dest, user){
-	dest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">&nbsp;' + user.login + '</li>');
-}
-
-function buildList(dest, array){
-	$.each(array, function(i,user){
-		addLineToList(dest, user);
-    });
-}

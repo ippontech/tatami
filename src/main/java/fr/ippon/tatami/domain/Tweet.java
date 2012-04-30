@@ -77,8 +77,10 @@ public class Tweet {
             return hourFormatter.print(period);
         } else if (period.getMinutes() > 0) {
             return minuteFormatter.print(period);
-        } else {
+        } else if (period.getSeconds() > 0) {
             return secondFormatter.print(period);
+        } else {
+            return "0s";
         }
     }
 
