@@ -40,11 +40,11 @@ function initHome() {
 
     // right panel
     $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
-        listTweets(true);
         $('#refreshTweets').click(function() {
             listTweets(true);
         });
     });
+    listTweets(true);
 
     // browser's refresh shortcut override
     shortcut.add("Ctrl+R", function() {
@@ -81,6 +81,9 @@ function initHome() {
           return false;
     });
 
+    if (tag != "") {
+        listTagTweets(tag);
+    }
 }
 
 function initProfile() {

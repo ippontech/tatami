@@ -285,16 +285,20 @@ function suggestUsersToFollow() {
  * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
  */
 function listTagTweets(tag) {
-    $.ajax({
-        type: 'GET',
-        url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
-        dataType: 'json',
-        success: function(data) {
-            //TODO refesh title's tag name
-            makeTweetsList(data, $('#tagTweetsList'));
-            $('#tagTab').tab('show');
-        }
-    });
+    if (page == "home") {  // home page
+        $.ajax({
+            type: 'GET',
+            url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
+            dataType: 'json',
+            success: function(data) {
+                makeTweetsList(data, $('#tagTweetsList'));
+                $('#tagTab').tab('show');
+            }
+        });
+        return false;
+    } else {  // profile page
+        window.location = "/tatami/?tag=" + tag;
+    }
 }
 
 /**

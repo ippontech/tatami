@@ -143,6 +143,8 @@
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var userLogin = "${user.login}";
+    var page = "profile";
+
     $(document).ready(function() {
         initProfile();
     });
