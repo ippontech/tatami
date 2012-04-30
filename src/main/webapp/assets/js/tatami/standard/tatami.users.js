@@ -67,7 +67,7 @@ function makeWhoToFollowList(data) {
             updated = true;
         });
         if (!updated) {
-            dest.append('<tr valign="top"><td colspan="2">No new user tweeted today...</td></tr>');
+            dest.append('<tr valign="top"><td colspan="2">No new user to follow today...</td></tr>');
         }
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });

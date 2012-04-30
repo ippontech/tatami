@@ -32,11 +32,11 @@
            <ul class="nav nav-tabs">
            		<li class="dropdown">
             		<a id="defaultTab" href="#homePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<spring:message code="tatami.tweet"/></a>	            
+            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<spring:message code="tatami.new.tweet"/></a>
 				</li>
 				<li class="dropdown">
             		<a id="timelineTab" href="#timelinePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<spring:message code="tatami.tweet"/></a>
+            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<spring:message code="tatami.tweets"/></a>
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -59,7 +59,7 @@
 		            			<i class="icon-tags"></i>&nbsp;<spring:message code="tatami.tagline.mobile" /></a>
 		            	</li>
 		            	<li>
-		            		<a id="profileTab" href="#followPanel"  data-toggle="tab">
+		            		<a id="followTab" href="#followPanel"  data-toggle="tab">
 		            			<i class="icon-random"></i>&nbsp;<spring:message code="tatami.user.suggestions.mobile" /></a>
 		            	</li>
 		            </ul>
@@ -141,12 +141,12 @@
 			<tbody>
             	<tr id="emptyUserTemplate">
 					<td colSpan="2">
-						No new people to follow today ...
+						No new user to follow today...
 					</td>
             	</tr>
             	<tr id="emptyUserSearchTemplate">
 					<td colSpan="2" class="center">
-						No user found for your search ...
+						No user found for your search...
 					</td>
             	</tr>            	
             	<tr id="fullUserTemplate">
