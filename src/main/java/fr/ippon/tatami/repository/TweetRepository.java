@@ -24,7 +24,6 @@ public interface TweetRepository {
      */
     Tweet findTweetById(String tweetId);
 
-
     void addTweetToDayline(Tweet tweet, String key);
 
     void addTweetToFavoritesline(Tweet tweet, String login);

@@ -23,7 +23,7 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li class="active"><a href="#"><i class="icon-lock icon-white"></i>&nbsp;<spring:message
-                            code="tatami.login"/></a></li>
+                            code="tatami.authentification"/></a></li>
                     <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
                             code="tatami.about"/></a></li>
                 </ul>

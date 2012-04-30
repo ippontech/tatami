@@ -15,7 +15,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#"><img
+            <a class="brand" href="/tatami/"><img
                     src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message
                     code="tatami.title"/></a>
 
@@ -51,10 +51,10 @@
     <div class="span12">
         <h1><spring:message code="tatami.license"/></h1>
 
-        <p><spring:message code="tatami.copyright"/> |<a href="http://www.ippon.fr"><spring:message
+        <p><spring:message code="tatami.copyright"/> <a href="http://www.ippon.fr"><spring:message
                 code="tatami.ippon.technologies"/></a></p>
 
-        <p><spring:message code="tatami.licence"/></p>
+        <p><spring:message code="tatami.license.text"/></p>
 
         <p><a href="http://www.apache.org/licenses/LICENSE-2.0"></a><a
                 href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
