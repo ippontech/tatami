@@ -95,17 +95,17 @@ function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, las
 }
 
 function buildHtmlAreaForTheActions(tweetId, userLogin){
-    var html = '<td class="tweetActions">';
+    var html = '<td class="tweetActions"><div class="hide ' + tweetId + '-actions">';
 
     // Favorite tweet
-    html += '<a id="' + tweetId + '-favorite" href="#"></a>';
+    html += '<a id="' + tweetId + '-favorite" href="#" title="Favorite"></a>';
 
     // Remove Tweet
     if (login == userLogin) {
         html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>';
     }
 
-    html += '</td>';
+    html += '</div></td>';
     return html;
 }
 
@@ -115,7 +115,10 @@ function makeTweetsList(data, dest) {
         $.each(data, function(entryIndex, entry) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
 
-            var html = '<tr tweetId="' + entry['tweetId'] + '" class="tweet id-' + entry['tweetId'] + '\">';
+            var html = '<tr tweetId="' + entry['tweetId'] + '" ' +
+                'class="tweet id-' + entry['tweetId'] + '" ' +
+                'onmouseover="showActions(\'' + entry['tweetId'] + '\')" '+
+                'onmouseout="hideActions(\'' + entry['tweetId'] + '\')">';
 
             html += buildHtmlAreaForTheAvatar(
                 userlineLink,
@@ -141,4 +144,12 @@ function makeTweetsList(data, dest) {
         decorateFavoriteTweets();
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });
+}
+
+function showActions(tweetId) {
+    $("." + tweetId + "-actions").show();
+}
+
+function hideActions(tweetId) {
+    $("." + tweetId + "-actions").hide();
 }
