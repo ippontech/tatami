@@ -39,12 +39,16 @@ Note 1 : if you run into some Permgen errors, don't forget to boost these parame
 ```
 Adding this to MAVEN_OPTS is the simplest solution
 
-Note 2 : if you want to look inside ElasticSearch index, feel free to use elasticsearch-head, by @mobz, under /tatami/etc/ as a submodule of tatami. 
-
-To setup the submodule :
+Note 2 : if you want to look inside ElasticSearch index, feel free to use [elasticsearch-head](https://github.com/Aconex/elasticsearch-head), by @mobz, under /tatami/etc/ as a submodule of tatami. 
 ```
-git submodule init
+# to setup the submodule 
+git submodule init 
+
+# and fetch the submodule
 git submodule update
+
+# otherwise, if you don't have clone the repository, you can setup and fetch directly during the clone
+git clone --recursive ${tatami_git_repository}
 ```
 Credits : https://github.com/mobz/elasticsearch-head
 
