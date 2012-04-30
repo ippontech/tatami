@@ -36,17 +36,9 @@ function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, las
     return html;
 }
 
-function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers, likeTweets){
-    var html = '<td class="tweetFriend">';
-    if (login != loginInSession) {
-        if (followUsers) {
-            html += '<a href="#" onclick="followUser(\'' + loginInSession + '\')" title="Follow"><i class="icon-star" /></a>&nbsp;';
-        } else {
-            html += '<a href="#" onclick="unfollowUser(\'' + loginInSession + '\')" title="Unfollow"><i class="icon-star-empty" /></a>&nbsp;';
-        }
-    } else if (likeTweets) {
-        html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
-    }
+function buildHtmlAreaForTheActions(tweetId, likeTweets){
+    var html = '<td class="tweetActions">';
+    html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
     if (likeTweets) {
         html += '<a href="#" onclick="favoriteTweet(\'' + tweetId + '\')" title="Like"><i class="icon-heart" /></a>&nbsp;';
     } else {
@@ -57,13 +49,11 @@ function buildHtmlAreaForTheActions(login, loginInSession, tweetId, followUsers,
     return html;
 }
 
-function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets, login) {
+function makeTweetsList(data, dest, likeTweets) {
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
         $.each(data, function(entryIndex, entry) {
-            if (linkLogins) {
-                var userlineLink = userlineURL.replace(userlineREG, entry['login']);
-            }
+            var userlineLink = userlineURL.replace(userlineREG, entry['login']);
             var html = '<tr class="tweet">';
 
             html += buildHtmlAreaForTheAvatar(
@@ -78,10 +68,7 @@ function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets, login) 
                 entry['content']);
 
             html += buildHtmlAreaForTheActions(
-                login,
-                entry['login'],
                 entry['tweetId'],
-                followUsers,
                 likeTweets);
 
             html +=

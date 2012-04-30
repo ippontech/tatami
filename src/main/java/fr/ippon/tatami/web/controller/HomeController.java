@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ippon.tatami.web.controller;
 
 import javax.inject.Inject;
@@ -19,16 +16,12 @@ import fr.ippon.tatami.service.UserService;
 @Controller
 public class HomeController {
 
-
     @Inject
     private UserService userService;
     
     @RequestMapping(value="/")
     public ModelAndView home() {
-        final User currentUser = userService.getCurrentUser();
-        final ModelAndView mv = new ModelAndView("home", "user", currentUser);
-
-        return mv;
-
+        User currentUser = userService.getCurrentUser();
+        return new ModelAndView("home", "user", currentUser);
     }
 }

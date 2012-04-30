@@ -181,17 +181,20 @@ public class UserService {
         this.authenticationService = authenticationService;
     }
 
-    public boolean isFollowed(String login) {
+    /**
+     * Finds if the "userLogin" user is followed by the current user.
+     */
+    public boolean isFollowed(String userLogin) {
         if (log.isDebugEnabled()) {
-            log.debug("Retrieving if you follow this user : " + login);
+            log.debug("Retrieving if you follow this user : " + userLogin);
         }
         boolean isFollowed = false;
         User user = getCurrentUser();
-        if (null != user && !login.equals(user.getLogin())) {
-            Collection<String> users = findFollowersForUser(login);
+        if (null != user && !userLogin.equals(user.getLogin())) {
+            Collection<String> users = findFollowersForUser(userLogin);
             if (null != users && users.size() > 0) {
-                for (String anUser : users) {
-                    if (anUser.equals(user.getLogin())) {
+                for (String follower : users) {
+                    if (follower.equals(user.getLogin())) {
                         isFollowed = true;
                         break;
                     }

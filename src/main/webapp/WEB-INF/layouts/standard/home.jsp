@@ -118,7 +118,7 @@
     var login = "<sec:authentication property="principal.username"/>";
 
     $(document).ready(function() {
-        initTatami();
+        initHome();
     });
 </script>
 </body>

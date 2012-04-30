@@ -1,20 +1,5 @@
 /* Functions called by tatami.js that deal about users */
 
-function displayUserInformations(userLogin) {
-    getUser(userLogin, function(data) {
-        $("#userPicture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-
-        $("#userDetails").html(
-            '<h3>' + data.firstName + ' ' + data.lastName + '</h3>'+
-                '<span class="badge badge-success">' + data.tweetCount + '</span>&nbsp;TWEETS ' +
-                '<span class="badge badge-success">' + data.friendsCount + '</span>&nbsp;FOLLOWING ' +
-                '<span class="badge badge-success">' + data.followersCount + '</span>&nbsp;FOLLOWERS'
-        );
-
-        $('#userTab').tab('show');
-    });
-}
-
 function displayProfile() {
 	getUser(login, function(data) {
 			$("#emailInput").val(data.email);

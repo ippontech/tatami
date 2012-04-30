@@ -16,7 +16,7 @@ var userrefURL = '<a href="/tatami/profile/$1" style="text-decoration:none" titl
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
-function initTatami() {
+function initHome() {
     // left panel
     $('#profileTabContent').load('/assets/fragments/standard/profile.html', function () {
         refreshProfile();
@@ -41,7 +41,11 @@ function initTatami() {
     // right panel
     $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
         listTweets(true);
+        $('#refreshTweets').click(function() {
+            listUserTweets(login);
+        });
     });
+
     // browser's refresh shortcut override
     shortcut.add("Ctrl+R", function() {
         listTweets(true);
@@ -77,4 +81,17 @@ function initTatami() {
           return false;
     });
 
+}
+
+function initProfile() {
+    $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
+        listUserTweets(userLogin);
+        $('#refreshTweets').click(function() {
+            listUserTweets(userLogin);
+        });
+    });
+    // browser's refresh shortcut override
+    shortcut.add("Ctrl+R", function() {
+        listUserTweets(userLogin);
+    });
 }

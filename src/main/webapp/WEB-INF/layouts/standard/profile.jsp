@@ -47,57 +47,46 @@
                 <div class="span1">
                     <img id="userPicture" src="http://www.gravatar.com/avatar/${user.gravatar}/>?s=64"/>
                 </div>
-                <div class="span2">
-                    <h3>${user.firstName}&nbsp;${user.lastName}</h3>
-                    <span><a href="/tatami/profile/${user.login}"
-                             title="${user.firstName}&nbsp;${user.lastName}">@${user.login}</a></span>
+                <div class="span7" style="width: 250px">
+                    <a href="/tatami/profile/${user.login}"><h3>${user.firstName}&nbsp;${user.lastName}</h3>
+                        @${user.login}</a>
                 </div>
-                <div class="span2">
+                <div class="span1" style="width: 80px">
                     <sec:authentication property='principal.username' var="login"/>
                     <c:choose>
                         <c:when test="${not empty user && user.login eq login}">
-                            <div class="btn btn-inverse disabled"
+                            <div class="btn btn-info"
                                  title="It s you"><spring:message code="tatami.user.yourself"/></a>
                             </div>
                         </c:when>
                         <c:when test="${not empty followed && followed}">
                             <a href="#" id="unfollowBtn"
-                               onclick="removeFollowingAUserFromHisProfile(login, '${user.login}')"
+                               onclick="unfollowUser(userLogin)"
                                class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                     code="tatami.user.followed"/></a>
-                            <a href="#" id="followBtn"
-                               onclick="followUserFromHisProfile(login, '${user.login}')"
-                               class="btn btn-success hide"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.follow"/></a>
                         </c:when>
                         <c:otherwise>
-                            <a href="#" id="unfollowBtn"
-                               onclick="removeFollowingAUserFromHisProfile(login, '${user.login}')"
-                               class="btn btn-info"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
-                               onclick="followUserFromHisProfile(login, '${user.login}')"
-                               class="btn btn-success hide"
+                               onclick="followUser(userLogin)"
+                               class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                     code="tatami.user.follow"/></a>
                         </c:otherwise>
                     </c:choose>
                 </div>
 
-                <div class="span2">
+                <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbTweets}"
                                                           pattern="# ### ###"/></span><br/><spring:message
                         code="tatami.user.nbTweets"/>
                 </div>
-                <div class="span2">
+                <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbFollowed}"
                                                           pattern="# ### ###"/></span><br/><spring:message
                         code="tatami.user.nbFollowedUsers"/>
                 </div>
-                <div class="span2">
+                <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbFollowers}"
                                                           pattern="# ### ###"/></span><br/><spring:message
                         code="tatami.user.nbFollowers"/>
@@ -107,10 +96,9 @@
             <div class="row-fluid">
                 <div id="profilemenuleft" class="span4">
                     <div class="alert alert-info">
-                        <h4><spring:message code="tatami.user.tweettohim"/>@${user.login}</h4>
-
+                        <h4><spring:message code="tatami.user.tweettohim"/>@${user.login}</h4><br/>
                         <div id="tweetToHim" class="row-fluid">
-                            <form class="form-inline" onsubmit="return tweet();">
+                            <form class="form-inline" onsubmit="return tweetToUser();">
                                 <textarea id="tweetContent" rel="popover" class="focused"
                                           maxlength="140">@${user.login} </textarea>
                                 <button type="submit" class="btn btn-primary"><spring:message
@@ -143,10 +131,10 @@
 
 <jsp:include page="includes/footer.jsp"/>
 <script type="text/javascript">
+    var login = "<sec:authentication property="principal.username"/>";
+    var userLogin = "${user.login}";
     $(document).ready(function() {
-        $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
-            listUserTweets('${user.login}');
-        });
+        initProfile();
     });
 </script>
 </body>

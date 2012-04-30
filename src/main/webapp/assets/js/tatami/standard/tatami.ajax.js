@@ -63,8 +63,31 @@ function tweet() {
                 tweet.val("");
                 setTimeout(function() {
                     refreshProfile();
-                    listTweets(true);
+                    $('#refreshTweets').click();
                 }, 500);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                tweet.parent().parent().find("div.error").empty().append(errorThrown);
+            }
+        });
+    }
+    return false;
+}
+
+//Create a Tweet sent to a user (from the "profile" page).
+function tweetToUser() {
+    var tweet = $('#tweetContent');
+    if (tweet.val() != "") {
+        $.ajax({
+            type: 'POST',
+            url: "/tatami/rest/statuses/update",
+            contentType: 'application/json; charset=UTF-8',
+            data: tweet.val(),
+            dataType: 'json',
+            success: function(data) {
+                tweet.slideUp().empty().slideDown('FAST');
+                tweet.parent().parent().find("div.error").empty();
+                tweet.val("@" + userLogin + " ");
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 tweet.parent().parent().find("div.error").empty().append(errorThrown);
@@ -85,7 +108,7 @@ function removeTweet(tweetId) {
         success: function(data) {
             setTimeout(function() {
                 refreshProfile();
-                listTweets(true);
+                $('#refreshTweets').click();
             }, 500); //DEBUG wait for persistence consistency
         }
     });
@@ -107,7 +130,7 @@ function listTweets(reset) {
         url: url,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#tweetsList'), true, false, true, login);
+            makeTweetsList(data, $('#tweetsList'), true);
             $('#mainTab').tab('show');
         }
     });
@@ -122,7 +145,7 @@ function listUserTweets(userLogin) {
         url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#tweetsList'), false, true, true);
+            makeTweetsList(data, $('#tweetsList'), true);
         }
     });
 }
@@ -211,7 +234,7 @@ function favoriteTweets() {
         url: "/tatami/rest/favorites",
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#favTweetsList'), true, true, false, login);
+            makeTweetsList(data, $('#favTweetsList'), false);
         }
     });
 }
@@ -299,7 +322,7 @@ function listTagTweets(tag) {
         dataType: 'json',
         success: function(data) {
             //TODO refesh title's tag name
-            makeTweetsList(data, $('#tagTweetsList'), true, true, true);
+            makeTweetsList(data, $('#tagTweetsList'), true);
             $('#tagTab').tab('show');
         }
     });
@@ -314,7 +337,7 @@ function searchTweets(query) {
         url: "/tatami/rest/search?" + query,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#searchTweetsList'), true, true, true);
+            makeTweetsList(data, $('#searchTweetsList'), true);
             $('#searchTab').tab('show');
         }
     });
