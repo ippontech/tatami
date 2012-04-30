@@ -2,6 +2,7 @@
 * Manage the tweet list.
 */
 
+//Create a Tweet
 function tweet() {
     postTweet(function(data) {
         var tweet = $('#tweetContent');
@@ -26,6 +27,38 @@ function tweetToUser() {
     });
     return false;
 }
+
+// Get the favorites, on the home page.
+function favoriteTweets() {
+    getFavoriteTweets(function(data) {
+        makeTweetsList(data, $('#favTweetsList'));
+    });
+    return false;
+}
+
+// Decorate the tweets, depending if they are favorites or not.
+function decorateFavoriteTweets() {
+    getFavoriteTweets(function(data) {
+        var favorites = [];
+        $.each(data, function(entryIndex, entry) {
+            favorites.push(entry.tweetId);
+        });
+        $('.tweet').each(function(index) {
+            var tweetId = $(this).attr('id');
+            entity = $('#' + tweetId + '-favorite');
+            entity.empty();
+            if ($.inArray(tweetId, favorites) >= 0) {
+                entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
+                entity.append('<i class="icon-star-empty" />');
+            } else {
+                entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
+                entity.append('<i class="icon-star" />');
+            }
+        });
+    });
+    return false;
+}
+
 
 function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
     // identification de l'émetteur du message

@@ -198,38 +198,13 @@ function getUser(userLogin, callback) {
 /**
  * GET  /favorites -> get the favorite tweets of the current user
  */
-function favoriteTweets() {
+function getFavoriteTweets(callback) {
     $.ajax({
         type: 'GET',
         url: "/tatami/rest/favorites",
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#favTweetsList'));
-        }
-    });
-}
-
-function decorateFavoriteTweets() {
-    $.ajax({
-        type: 'GET',
-        url: "/tatami/rest/favorites",
-        dataType: 'json',
-        success: function(data) {
-            var favorites = [];
-            $.each(data, function(entryIndex, entry) {
-                favorites.push(entry.tweetId);
-            });
-            $('.tweet').each(function(index) {
-                var tweetId = $(this).attr('id');
-                entity = $('#' + tweetId + '-favorite');
-                entity.empty();
-                if ($.inArray(tweetId, favorites) >= 0) {
-                    entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
-                    entity.append('<i class="icon-star-empty" />');
-                } else {
-                    entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
-                    entity.append('<i class="icon-star" />');                }
-            });
+            callback(data);
         }
     });
 }
