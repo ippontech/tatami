@@ -78,7 +78,7 @@ function removeTweet(tweetId) {
         success: function(data) {
             setTimeout(function() {
                 refreshProfile();
-                $('#refreshTweets').click();
+                $('.id-' + tweetId).fadeOut();
             }, 500); //DEBUG wait for persistence consistency
         }
     });

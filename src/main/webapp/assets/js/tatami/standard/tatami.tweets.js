@@ -44,7 +44,7 @@ function decorateFavoriteTweets() {
             favorites.push(entry.tweetId);
         });
         $('.tweet').each(function(index) {
-            var tweetId = $(this).attr('id');
+            var tweetId = $(this).attr('tweetId');
             entity = $('#' + tweetId + '-favorite');
             entity.empty();
             if ($.inArray(tweetId, favorites) >= 0) {
@@ -101,7 +101,7 @@ function buildHtmlAreaForTheActions(tweetId){
     html += '<a id="' + tweetId + '-favorite" href="#"></a>';
 
     // Remove Tweet
-    html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>&nbsp;';
+    html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>';
     
     html += '</td>';
     return html;
@@ -113,7 +113,7 @@ function makeTweetsList(data, dest) {
         $.each(data, function(entryIndex, entry) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
 
-            var html = '<tr id="' + entry['tweetId'] + '" class="tweet">';
+            var html = '<tr tweetId="' + entry['tweetId'] + '" class="tweet id-' + entry['tweetId'] + '\">';
 
             html += buildHtmlAreaForTheAvatar(
                 userlineLink,
