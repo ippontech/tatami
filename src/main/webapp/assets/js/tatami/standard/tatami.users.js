@@ -25,13 +25,14 @@ function displayProfile() {
 
 function refreshProfile() {
 	getUser(login, function(data) {
-			$("#picture").parent().css('width', '68px');	// optional
-            $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-            $("#firstName").html(data.firstName);
-			$("#lastName").html(data.lastName);
-			$("#tweetCount").text(data.tweetCount);
-			$("#friendsCount").text(data.friendsCount);
-			$("#followersCount").text(data.followersCount);
+        $("#picture").parent().css('width', '68px');	// optional
+        $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
+        $("#profile_view").html("<a href='/tatami/profile/" + login + "'><h3>" +
+            data.firstName + " " + data.lastName + "</h3>@" +
+            login + "</a>");
+        $("#tweetCount").text(data.tweetCount);
+        $("#friendsCount").text(data.friendsCount);
+        $("#followersCount").text(data.followersCount);
 		});
 }
 

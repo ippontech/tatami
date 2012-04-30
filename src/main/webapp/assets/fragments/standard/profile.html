@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span3"><img id="picture"/></div>
-        <div class="span9">
-            <h2><span id="firstName"></span> <span id="lastName"></span></h2>
+        <div class="span4"><img id="picture"/></div>
+        <div class="span8">
+            <span id="profile_view"></span>
         </div>
     </div>
-    <div class="well well-small row-fluid">
+    <div id="badges" class="well well-small row-fluid">
         <div class="span4">
             <span id="tweetCount" class="badge"></span><br/>TWEETS
         </div>
@@ -21,7 +21,7 @@
             <form class="form-inline" onsubmit="return tweet();">
                 <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
                           placeholder="Type a new tweet..."></textarea>
-                <button type="submit" class="btn btn-primary">Tweet !</button>
+                <button type="submit" class="btn btn-primary">Tweet</button>
             </form>
             <div class="error"></div>
         </div>

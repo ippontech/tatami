@@ -64,7 +64,7 @@ function makeTweetsList(data, dest, linkLogins, followUsers, likeTweets, login) 
             if (linkLogins) {
                 var userlineLink = userlineURL.replace(userlineREG, entry['login']);
             }
-            var html = '<tr class="alignVerticalContentOfAHtmlTweetLine">';
+            var html = '<tr class="tweet">';
 
             html += buildHtmlAreaForTheAvatar(
                 userlineLink,

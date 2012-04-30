@@ -11,14 +11,14 @@ body {
 }
 
 .tweetFriend {
-    width: 24;
+    width: 48px;
 }
 
 .tweetDate {
-    width: 68;
+    width: 68px;
 }
 
-section#timeline table tbody#tweetsList tr.alignVerticalContentOfAHtmlTweetLine {
+section#timeline table tbody#tweetsList tr.tweet {
     vertical-align: top;
 }
 
@@ -60,8 +60,9 @@ section#followline ul#usersSuggestions li:hover {
 }
 
 div#userProfile {
-    margin: 10px 80px 0px 0px;
+    margin: 0px auto;
     position: relative;
+    width: 837px;
 }
 
 div#userProfileDesc {
@@ -69,31 +70,32 @@ div#userProfileDesc {
     border: 1px solid #DDDDDD;
     border-radius: 5px;
     padding: 5px;
+    width: 822px;
+}
+
+#badges {
+    width: 220px;
+    font-size: 10px;
 }
 
 #profilemenuleft {
-    margin: 10px 0px 0px 20px;
+    margin: 10px 0px 0px 0px;
 }
 
 #profilemain {
     margin: 10px 0px 0px 20px;
 }
 
-#tweetToHim {
-    padding: 2px;
+#home {
+    margin: 0px auto;
+    border: 10px;
+    position: relative;
+    width: 937px;
 }
 
-#tweetToHim form {
-    margin: 5px 0px;
-}
-
-#tweetToHim form textarea {
-    width: 180px;
-    margin: 5px 0px;
-}
-
-#tweetToHim form button {
-    float: right;
+#tweetContent {
+    width: 230px;
+    height: 80px;
 }
 
 #home div.profileview {
