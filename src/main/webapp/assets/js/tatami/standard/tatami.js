@@ -42,7 +42,7 @@ function initHome() {
     $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
         listTweets(true);
         $('#refreshTweets').click(function() {
-            listUserTweets(login);
+            listTweets(true);
         });
     });
 

@@ -21,6 +21,45 @@ function refreshProfile() {
 		});
 }
 
+// Follow a user from the home page
+function followUserHome(loginToFollow) {
+    postFollowUser(loginToFollow, function(data) {
+            $("#followUserInput").val("");
+            setTimeout(function() {
+                refreshProfile();
+                suggestUsersToFollow();
+                listTweets(true);
+            }, 500);	//DEBUG wait for persistence consistency
+        });
+    return false;
+}
+
+// Follow a user from the profile page
+function followUserProfile(loginToFollow) {
+    postFollowUser(loginToFollow, function(data) {
+        $('#followBtn').slideUp();
+        $('#unfollowBtn').slideDown();
+    });
+    return false;
+}
+
+// Unfollow a user from the home page
+function unfollowUserHome(loginToFollow) {
+    postUnfollowUser(loginToFollow, function(data) {
+        setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+    });
+    return false;
+}
+
+// Unfollow a user from the profile page
+function unfollowUserProfile(loginToFollow) {
+    postUnfollowUser(loginToFollow, function(data) {
+        $('#unfollowBtn').slideUp();
+        $('#followBtn').slideDown();
+    });
+    return false;
+}
+
 function makeWhoToFollowList(data) {
     dest = $('#suggestions');
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page

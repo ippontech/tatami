@@ -142,7 +142,7 @@ function updateProfile() {
 /**
  * POST /friendships/create -> follow user
  */
-function followUser(loginToFollow) {
+function postFollowUser(loginToFollow, callback) {
     $.ajax({
         type: 'POST',
         url: "/tatami/rest/friendships/create",
@@ -150,12 +150,7 @@ function followUser(loginToFollow) {
         data: '{"login":"' + loginToFollow + '"}',
         dataType: 'json',
         success: function(data) {
-            $("#followUserInput").val("");
-            setTimeout(function() {
-                refreshProfile();
-                suggestUsersToFollow();
-                listTweets(true);
-            }, 500);	//DEBUG wait for persistence consistency
+            callback(data);
         },
         error: function(xhr, ajaxOptions, thrownError) {
             $('#followStatus').fadeIn('fast').text(thrownError);
@@ -168,7 +163,7 @@ function followUser(loginToFollow) {
 /**
  * POST /friendships/destroy -> unfollow user
  */
-function unfollowUser(loginToUnfollow) {
+function postUnfollowUser(loginToUnfollow, callback) {
     $.ajax({
         type: 'POST',
         url: "/tatami/rest/friendships/destroy",
@@ -176,7 +171,7 @@ function unfollowUser(loginToUnfollow) {
         data: '{"login":"' + loginToUnfollow + '"}',
         dataType: 'json',
         success: function(data) {
-            setTimeout(refreshProfile(), 500);	//DEBUG wait for persistence consistency
+            callback(data);
         }
     });
 }

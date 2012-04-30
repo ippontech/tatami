@@ -61,14 +61,24 @@
                         </c:when>
                         <c:when test="${not empty followed && followed}">
                             <a href="#" id="unfollowBtn"
-                               onclick="unfollowUser(userLogin)"
+                               onclick="unfollowUserProfile(userLogin)"
                                class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                     code="tatami.user.followed"/></a>
+                            <a href="#" id="followBtn"
+                               onclick="followUserProfile(userLogin)"
+                               class="btn btn-info hide"
+                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
+                                    code="tatami.user.follow"/></a>
                         </c:when>
                         <c:otherwise>
+                            <a href="#" id="unfollowBtn"
+                               onclick="unfollowUserProfile(userLogin)"
+                               class="btn btn-info hide"
+                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
+                                    code="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
-                               onclick="followUser(userLogin)"
+                               onclick="followUserProfile(userLogin)"
                                class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><spring:message
                                     code="tatami.user.follow"/></a>
