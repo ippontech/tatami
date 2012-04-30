@@ -94,15 +94,17 @@ function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, las
     return html;
 }
 
-function buildHtmlAreaForTheActions(tweetId){
+function buildHtmlAreaForTheActions(tweetId, userLogin){
     var html = '<td class="tweetActions">';
 
     // Favorite tweet
     html += '<a id="' + tweetId + '-favorite" href="#"></a>';
 
     // Remove Tweet
-    html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>';
-    
+    if (login == userLogin) {
+        html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>';
+    }
+
     html += '</td>';
     return html;
 }
@@ -127,7 +129,8 @@ function makeTweetsList(data, dest) {
                 entry['content']);
 
             html += buildHtmlAreaForTheActions(
-                entry['tweetId']);
+                entry['tweetId'],
+                entry['login']);
 
             html +=
                 "<td class=\"tweetDate\"><aside>" + entry['prettyPrintTweetDate']+ "</aside></td>";
