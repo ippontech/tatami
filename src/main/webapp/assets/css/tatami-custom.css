@@ -99,3 +99,37 @@ div#userProfileDesc {
 #home div.profileview {
     padding: 0px;
 }
+
+footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dotted #cccccc;
+}
+
+#footer_ippon {
+    background-image: url(../img/ippon-logo-small.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_github {
+    background-image: url(../img/github.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_blog {
+    background-image: url(../img/blog.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_twitter {
+    background-image: url(../img/twitter.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}

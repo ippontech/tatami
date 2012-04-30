@@ -2,11 +2,10 @@
 
 <footer>
     <div style="text-align: center;">
-        <spring:message code="tatami.copyright"/>
-        <a href="http://www.ippon.fr"><spring:message code="tatami.ippon.technologies"/></a> |
-        <a href="https://github.com/ippontech/tatami"><spring:message code="tatami.github.fork"/></a> |
-        <a href="http://blog.ippon.fr"><spring:message code="tatami.ippon.blog"/></a> |
-        <a href="https://twitter.com/#!/ippontech"><spring:message code="tatami.ippon.twitter.follow"/></a>
+        <a href="http://www.ippon.fr" id="footer_ippon"><spring:message code="tatami.copyright"/> <spring:message code="tatami.ippon.technologies"/></a> |
+        <a href="https://github.com/ippontech/tatami" id="footer_github"><spring:message code="tatami.github.fork"/></a> |
+        <a href="http://blog.ippon.fr" id="footer_blog"><spring:message code="tatami.ippon.blog"/></a> |
+        <a href="https://twitter.com/#!/ippontech" id="footer_twitter"><spring:message code="tatami.ippon.twitter.follow"/></a>
     </div>
 </footer>
 
