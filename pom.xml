@@ -5,17 +5,70 @@
     <artifactId>tatami</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+
     <description>Tatami is a private Tweeter clone</description>
     <inceptionYear>2012</inceptionYear>
+    <url>https://github.com/ippontech/tatami</url>
+    <organization>
+        <name>Ippon Technologies</name>
+        <url>http://www.ippon.fr</url>
+    </organization>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>  
+	</licenses>
+    <issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ippontech/tatami/issues</url>
+	</issueManagement>
+	<scm>
+		<url>http://github.com/ippontech/tatami</url>
+		<connection>scm:git:git@github.com:ippontech/tatami.git</connection>
+		<!-- <developerConnection>scm:git:git@github.com:ippontech/tatami.git</developerConnection> -->
+	</scm>
+
     <properties>
+        <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.6</java.version>
+
+        <!-- Dependencies -->
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
         <spring.mobile.version>1.0.0.RC2</spring.mobile.version>
-        <elasticsearch.version>0.19.2</elasticsearch.version>
+        <elasticsearch.version>0.19.3</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
+        <httpclient.core.version>4.1</httpclient.core.version>
+        <hector.version>1.0-3</hector.version>
+        <hector.mapper.version>1.1-01</hector.mapper.version>
+        <persistence.api.version>1.0.2</persistence.api.version>
+        <ehcache.version>2.5.1</ehcache.version>
+        <javax.inject.version>1</javax.inject.version>
+        <cglib.version>2.2.2</cglib.version>
+        <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
+        <javax.validation.api.version>1.0.0.GA</javax.validation.api.version>
+        <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+        <jstl.version>1.2</jstl.version>
+        <jackson.version>1.9.5</jackson.version>
+        <jodatime.version>2.1</jodatime.version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <tiles.version>2.2.2</tiles.version>
+        <junit.version>4.9</junit.version>
+        <cassandra.unit.version>1.0.3.1</cassandra.unit.version>
+        <mockito.version>1.9.0</mockito.version>
+
+        <!-- Maven plugins -->
+        <maven.compiler.version>2.4</maven.compiler.version>
+        <maven.enforcer.version>1.0.1</maven.enforcer.version>
+        <maven.surefire.version>2.12</maven.surefire.version>
+        <maven.war.version>2.2</maven.war.version>
+        <maven.jetty.version>8.1.3.v20120416</maven.jetty.version>
+        <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
     </properties>
     <repositories>
         <repository>
@@ -29,7 +82,11 @@
             <url>http://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
     </repositories>
-    <dependencies>
+    <prerequisites>
+        <maven>3.0.0</maven>
+    </prerequisites>
+
+	<dependencies>
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
@@ -38,12 +95,12 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.1</version>
+            <version>${httpclient.core.version}</version>
         </dependency>
         <dependency>
             <groupId>me.prettyprint</groupId>
             <artifactId>hector-core</artifactId>
-            <version>1.0-3</version>
+            <version>${hector.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>servlet-api</artifactId>
@@ -54,22 +111,22 @@
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <version>${javax.inject.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
+            <version>${persistence.api.version}</version>
         </dependency>
         <dependency>
             <groupId>me.prettyprint</groupId>
             <artifactId>hector-object-mapper</artifactId>
-            <version>1.1-01</version>
+            <version>${hector.mapper.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.5.1</version>
+            <version>${ehcache.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -89,28 +146,28 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
+            <version>${cglib.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>${javax.servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
+            <version>${javax.validation.api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.2.0.Final</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <version>${jstl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -129,17 +186,17 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.5</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>1.9.5</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.1</version>
+            <version>${jodatime.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -155,12 +212,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -185,36 +236,18 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.9</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.cassandraunit</groupId>
-            <artifactId>cassandra-unit</artifactId>
-            <version>1.0.3.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.0</version>
-            <scope>test</scope>
+            <version>${commons.lang.version}</version>
         </dependency>
         <!-- Apache Tiles -->
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
-            <version>2.2.2</version>
+            <version>${tiles.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-el</artifactId>
-            <version>2.2.2</version>
+            <version>${tiles.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-api</artifactId>
@@ -227,6 +260,32 @@
             <artifactId>spring-mobile-device</artifactId>
             <version>${spring.mobile.version}</version>
         </dependency>
+
+		<!-- Test dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cassandraunit</groupId>
+            <artifactId>cassandra-unit</artifactId>
+            <version>${cassandra.unit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>tatami</finalName>
@@ -234,16 +293,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.0.1</version>
+                <version>${maven.enforcer.version}</version>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -266,19 +325,30 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.2</version>
+                <version>${maven.surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
+                <version>${maven.war.version}</version>
+			    <configuration>
+			        <archive>
+			            <manifest>
+			                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+			            </manifest>
+			            <manifestEntries>
+			                <Implementation-Version>${project.version}</Implementation-Version>
+			                <Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
+			            </manifestEntries>
+			        </archive>
+			    </configuration>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.1.v20120215</version>
+                <version>${maven.jetty.version}</version>
                 <configuration>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                    <!-- <scanIntervalSeconds>1</scanIntervalSeconds> -->
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
                 </configuration>
@@ -286,7 +356,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cassandra-maven-plugin</artifactId>
-                <version>1.0.0-1</version>
+                <version>${maven.cassandra.version}</version>
             </plugin>
         </plugins>
     </build>
