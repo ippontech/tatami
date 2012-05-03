@@ -57,6 +57,7 @@
         <jackson.version>1.9.5</jackson.version>
         <jodatime.version>2.1</jodatime.version>
         <commons.lang.version>2.6</commons.lang.version>
+        <commons.io.version>2.3</commons.io.version>
         <tiles.version>2.2.2</tiles.version>
         <junit.version>4.9</junit.version>
         <cassandra.unit.version>1.0.3.1</cassandra.unit.version>
@@ -237,6 +238,11 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
         <!-- Apache Tiles -->
         <dependency>
