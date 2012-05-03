@@ -249,6 +249,7 @@ function favoriteTweet(tweetId) {
             entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
             entity.empty();
             entity.append('<i class="icon-star-empty" />');
+            $(".id-" + tweetId + " .tweetDate").addClass("favorite");
         }
     });
     return false;
@@ -267,6 +268,7 @@ function unfavoriteTweet(tweetId) {
                 entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
                 entity.empty();
                 entity.append('<i class="icon-star" />');
+                $(".id-" + tweetId + " .tweetDate").removeClass("favorite");
         }
     });
     return false;

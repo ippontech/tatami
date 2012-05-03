@@ -50,6 +50,7 @@ function decorateFavoriteTweets() {
             if ($.inArray(tweetId, favorites) >= 0) {
                 entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
                 entity.append('<i class="icon-star-empty" />');
+                $(this).children(".tweetDate").addClass("favorite");
             } else {
                 entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
                 entity.append('<i class="icon-star" />');

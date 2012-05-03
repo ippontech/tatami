@@ -96,6 +96,13 @@ div#userProfileDesc {
     height: 80px;
 }
 
+.favorite {
+    background-image: url(../img/favorite.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+    padding-left: 0px;
+}
+
 footer {
     margin-top: 10px;
     padding-top: 10px;

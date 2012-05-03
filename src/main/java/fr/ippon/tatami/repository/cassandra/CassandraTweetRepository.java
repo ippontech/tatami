@@ -188,7 +188,6 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getTagline(String tag, int size) {
-        assert tag != null && !tag.isEmpty() && !tag.contains("#");
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
@@ -206,17 +205,17 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getFavoritesline(String login) {
-        SliceQuery<String, String, String> sq = createSliceQuery(keyspaceOperator,
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
                 .setKey(login)
-                .setRange(null, null, false, 50);
+                .setRange(null, null, true, 50)
+                .execute()
+                .get();
 
         Collection<String> tweetIds = new ArrayList<String>();
-        ColumnSliceIterator<String, String, String> csi =
-                new ColumnSliceIterator<String, String, String>(sq, null, "", true);
-        while (csi.hasNext()) {
-            tweetIds.add(csi.next().getName());
+        for (HColumn<String, String> column : result.getColumns()) {
+            tweetIds.add(column.getName());
         }
         return tweetIds;
     }
