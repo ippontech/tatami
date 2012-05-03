@@ -162,11 +162,38 @@ public class UserService {
         }
     }
 
-    public Collection<String> getFriendsForUser(String login) {
+    public Collection<String> getFriendIdsForUser(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Retrieving followed users : " + login);
         }
         return friendRepository.findFriendsForUser(login);
+    }
+
+    public Collection<String> getFollowerIdsForUser(String login) {
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving followed users : " + login);
+        }
+        return followerRepository.findFollowersForUser(login);
+    }
+
+    public Collection<User> getFriendsForUser(String login) {
+        Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
+        Collection<User> friends = new ArrayList<User>();
+        for (String friendLogin : friendLogins) {
+            User friend = userRepository.findUserByLogin(friendLogin);
+            friends.add(friend);
+        }
+        return friends;
+    }
+
+    public Collection<User> getFollowersForUser(String login) {
+        Collection<String> followersLogins = friendRepository.findFollowersForUser(login);
+        Collection<User> followers = new ArrayList<User>();
+        for (String followerLogin : followersLogins) {
+            User follower = userRepository.findUserByLogin(followerLogin);
+            followers.add(follower);
+        }
+        return followers;
     }
 
     public User getCurrentUser() {
@@ -191,7 +218,7 @@ public class UserService {
         boolean isFollowed = false;
         User user = getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {
-            Collection<String> users = findFollowersForUser(userLogin);
+            Collection<String> users = getFollowerIdsForUser(userLogin);
             if (null != users && users.size() > 0) {
                 for (String follower : users) {
                     if (follower.equals(user.getLogin())) {
@@ -202,12 +229,5 @@ public class UserService {
             }
         }
         return isFollowed;
-    }
-
-    public Collection<String> findFollowersForUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving followed users : " + login);
-        }
-        return followerRepository.findFollowersForUser(login);
     }
 }

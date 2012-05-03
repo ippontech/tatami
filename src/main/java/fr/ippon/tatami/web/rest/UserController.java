@@ -67,7 +67,7 @@ public class UserController {
             log.debug("REST request to get the last active tweeters list (except " + login + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendsForUser(login);
+        Collection<String> exceptions = userService.getFriendIdsForUser(login);
         exceptions.add(login);
 
         Collection<Tweet> tweets = timelineService.getDayline("");

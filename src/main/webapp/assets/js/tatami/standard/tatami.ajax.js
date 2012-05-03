@@ -21,6 +21,8 @@
  * -------
  * POST /friendships/create -> follow user
  * POST /friendships/destroy -> unfollow user
+ * GET  /friends/lookup -> return extended data about the user's friends
+ * GET  /followers/lookup -> return extended data about the user's followers
  *
  * Account
  * --------
@@ -174,6 +176,36 @@ function postUnfollowUser(loginToUnfollow, callback) {
             callback(data);
         }
     });
+}
+
+/**
+ * GET  /friends/lookup -> return extended data about the user's friends
+ */
+function lookupFriends(userLogin, callback) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/friends/lookup?screen_name=" + userLogin,
+        dataType: 'json',
+        success: function(data) {
+            callback(data);
+        }
+    });
+    return false;
+}
+
+/**
+ * GET  /followers/lookup -> return extended data about the user's followers
+ */
+function lookupFollowers(userLogin, callback) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/followers/lookup?screen_name=" + userLogin,
+        dataType: 'json',
+        success: function(data) {
+            callback(data);
+        }
+    });
+    return false;
 }
 
 /**

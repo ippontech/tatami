@@ -5,12 +5,10 @@ import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * REST controller for managing frienships.
@@ -51,5 +49,27 @@ public class FriendshipController {
             log.debug("REST request to unfollow user login  : " + user.getLogin());
         }
         userService.unfollowUser(user.getLogin());
+    }
+
+    /**
+     * GET  /friends/lookup -> return extended data about the user's friends
+     */
+    @RequestMapping(value = "/rest/friends/lookup",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<User> getFriends(@RequestParam("screen_name") String login) {
+        return userService.getFriendsForUser(login);
+    }
+
+    /**
+     * GET  /followers/lookup -> return extended data about the user's followers
+     */
+    @RequestMapping(value = "/rest/followers/lookup",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<User> getFollowers(@RequestParam("screen_name") String login) {
+        return userService.getFollowersForUser(login);
     }
 }

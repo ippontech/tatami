@@ -8,55 +8,94 @@
 
 <body>
 
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="/tatami/"><img
-                    src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<spring:message
-                    code="tatami.title"/></a>
+<jsp:include page="includes/topmenu.jsp"/>
 
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="active"><a href="/tatami/"><i class="icon-home icon-white"></i>&nbsp;<spring:message
-                            code="tatami.home"/></a></li>
-                    <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
-                            code="tatami.about"/></a></li>
-                </ul>
-                <ul class="nav pull-right">
-                    <li class="divider-vertical"></li>
-                    <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message
-                            code="tatami.logout"/></a></li>
-                </ul>
-                <ul class="nav pull-right">
-					<form id="global-tweet-search" class="well form-search" style="padding:4px 2px 4px 2px;margin:3px 0px;background-color:#2C2C2C;" action="/tatami/rest/search" method="post">
-					  <input type="hidden" name="page" value="0" />
-					  <input type="hidden" name="rpp" value="20" />
-					  <input type="text" name="q" class="input-medium search-query" placeholder="<spring:message code="tatami.search.placeholder"/>">
-					  <button type="submit" class="btn" style="margin-top:0px;"><spring:message code="tatami.search.button"/></button>
-					</form>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="home" class="container-fluid">
+<div class="container-fluid mainPanel">
     <div class="row-fluid">
-        <div class="span4">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a id="profileTab" href="#profileTabContent" data-toggle="pill">
-                        &nbsp;<spring:message code="tatami.show.profile"/></a></li>
-                    <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i class="icon-edit"></i>&nbsp;
-                        <spring:message code="tatami.update.profile"/></a></li>
-                </ul>
-                <div class="tab-content alert alert-info profileview">
-                    <div class="tab-pane active" id="profileTabContent"></div>
-                    <div class="tab-pane" id="updateProfileTabContent"></div>
+        <div id="menuContent" class="span4">
+            <ul class="nav nav-tabs">
+                <li class="active"><a id="profileTab" href="#profileTabContent" data-toggle="pill">
+                    &nbsp;<spring:message code="tatami.show.profile"/></a></li>
+                <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i
+                        class="icon-edit"></i>&nbsp;
+                    <spring:message code="tatami.update.profile"/></a></li>
+            </ul>
+            <div class="alert alert-info">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profileTabContent">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span4"><img id="picture"/></div>
+                                <div class="span8">
+                                    <span id="profile_view"></span>
+                                </div>
+                            </div>
+                            <div id="badges" class="well well-small row-fluid">
+                                <div class="span4">
+                                    <span id="tweetCount" class="badge"></span><br/><spring:message
+                                        code="tatami.badge.tweets"/>
+                                </div>
+                                <div class="span4">
+                                    <span id="friendsCount" class="badge"></span><br/><spring:message
+                                        code="tatami.badge.followed"/>
+                                </div>
+                                <div class="span4">
+                                    <span id="followersCount" class="badge"></span><br/><spring:message
+                                        code="tatami.badge.followers"/>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <form class="form-inline" onsubmit="return tweet();">
+                                        <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
+                                                  placeholder="Type a new tweet..."></textarea>
+                                        <button type="submit" class="btn btn-primary">Tweet</button>
+                                    </form>
+                                    <div class="error"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="updateProfileTabContent">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form id="updateUserForm" onsubmit="return updateProfile();">
+                                    <fieldset>
+                                        <label><spring:message
+                                                code="tatami.user.email"/> :</label>
+                                        <input id="emailInput"
+                                               name="email"
+                                               type="email"
+                                               required="required"
+                                               size="15"
+                                               maxlength="60"
+                                               placeholder="Enter e-mail..."/>
+
+                                        <label><spring:message
+                                                code="tatami.user.firstName"/> :</label>
+                                        <input
+                                                id="firstNameInput" name="firstName"
+                                                type="text"
+                                                required="required"
+                                                size="15" maxlength="40"
+                                                placeholder="Enter first name..."/>
+                                        <label><spring:message
+                                                code="tatami.user.lastName"/> :</label>
+                                        <input id="lastNameInput"
+                                               name="lastName"
+                                               type="text"
+                                               required="required"
+                                               size="15"
+                                               maxlength="40"
+                                               placeholder="Enter last name..."/>
+                                    </fieldset>
+
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div>
@@ -64,7 +103,7 @@
             </div>
         </div>
 
-        <div class="span8">
+        <div id="mainContent" class="span8">
             <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i

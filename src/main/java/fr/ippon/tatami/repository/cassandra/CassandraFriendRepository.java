@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 
 /**
@@ -31,15 +32,22 @@ public class CassandraFriendRepository implements FriendRepository {
 
     private final Log log = LogFactory.getLog(CassandraFriendRepository.class);
 
-    ColumnFamilyTemplate<String, String> template;
+    ColumnFamilyTemplate<String, String> friendsTemplate;
+
+    ColumnFamilyTemplate<String, String> followersTemplate;
 
     @Inject
     private Keyspace keyspaceOperator;
 
     @PostConstruct
     public void init() {
-        template = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator,
+        friendsTemplate = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator,
                 FRIENDS_CF,
+                StringSerializer.get(),
+                StringSerializer.get());
+
+        followersTemplate = new ThriftColumnFamilyTemplate<String, String>(keyspaceOperator,
+                FOLLOWERS_CF,
                 StringSerializer.get(),
                 StringSerializer.get());
     }
@@ -59,11 +67,21 @@ public class CassandraFriendRepository implements FriendRepository {
 
     @Override
     public Collection<String> findFriendsForUser(String login) {
-        ColumnFamilyResult<String, String> result = template.queryColumns(login);
+        ColumnFamilyResult<String, String> result = friendsTemplate.queryColumns(login);
         Collection<String> friends = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
             friends.add(columnName);
         }
         return friends;
+    }
+
+    @Override
+    public Collection<String> findFollowersForUser(String login) {
+        ColumnFamilyResult<String, String> result = followersTemplate.queryColumns(login);
+        Collection<String> followers = new ArrayList<String>();
+        for (String columnName : result.getColumnNames()) {
+            followers.add(columnName);
+        }
+        return followers;
     }
 }

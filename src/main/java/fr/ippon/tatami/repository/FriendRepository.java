@@ -14,4 +14,6 @@ public interface FriendRepository {
     void removeFriend(String login, String friendLogin);
 
     Collection<String> findFriendsForUser(String login);
+
+    Collection<String> findFollowersForUser(String login);
 }

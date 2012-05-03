@@ -1,9 +1,9 @@
 /* Functions called by jsp/html/etc.. */
 
 // Constants
-var DURATION_OF_FADE_TO 				= 400;
-var DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY	= 20;
-var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY	= 10;
+var DURATION_OF_FADE_TO = 400;
+var DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY = 20;
+var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY = 10;
 
 var nbTweetsToDisplay;
 
@@ -18,16 +18,13 @@ var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets
 
 function initHome() {
     // left panel
-    $('#profileTabContent').load('/assets/fragments/standard/profile.html', function () {
-        refreshProfile();
-        $('#tweetContent').popover({
-            trigger: 'manual',
-            placement: 'bottom',
-            title: 'Error',
-            content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
-        });
+    refreshProfile();
+    $('#tweetContent').popover({
+        trigger: 'manual',
+        placement: 'bottom',
+        title: 'Error',
+        content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to tweet.'
     });
-    $('#updateProfileTabContent').load('/assets/fragments/standard/updateProfile.html');
     $('#followUserContent').load('/assets/fragments/standard/followUser.html', suggestUsersToFollow());
     // auto-refresh
     $('a[data-toggle="pill"]').on('show', function(e) {
@@ -76,9 +73,9 @@ function initHome() {
 
     // search form binding
     $('#global-tweet-search').submit(function() {
-    	  var query = $(this).serialize();
-    	  searchTweets(query);
-          return false;
+        var query = $(this).serialize();
+        searchTweets(query);
+        return false;
     });
 
     if (tag != "") {
@@ -87,7 +84,7 @@ function initHome() {
 }
 
 function initProfile() {
-    $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
+    $('#tweetsPanel').load('/assets/fragments/standard/timeline.html', function() {
         listUserTweets(userLogin);
         $('#refreshTweets').click(function() {
             listUserTweets(userLogin);
@@ -96,5 +93,12 @@ function initProfile() {
     // browser's refresh shortcut override
     shortcut.add("Ctrl+R", function() {
         listUserTweets(userLogin);
+    });
+    $('a[data-toggle="tab"]').on('show', function(e) {
+        if (e.target.hash == '#followingPanel') {
+            makeFollowingList();
+        } else if (e.target.hash == '#followersPanel') {
+            makeFollowersList();
+        }
     });
 }
