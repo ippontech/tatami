@@ -54,14 +54,14 @@ public class CassandraConfiguration {
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
+            addColumnFamily(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USER_CF);
             addColumnFamily(cluster, FRIENDS_CF);
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);
             addColumnFamily(cluster, DAYLINE_CF);
-            addColumnFamily(cluster, FAVLINE_CF);
+            addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
             addColumnFamily(cluster, TAGLINE_CF);
-            addColumnFamily(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USERLINE_CF);
 
             ThriftCfDef cfDef =
@@ -80,6 +80,18 @@ public class CassandraConfiguration {
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
+
+        cluster.addColumnFamily(cfd);
+    }
+
+    private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName) {
+
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+
+        ColumnFamilyDefinition cfd =
+                HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
+
+        cfd.setComparatorType(ComparatorType.UUIDTYPE);
         cluster.addColumnFamily(cfd);
     }
 
