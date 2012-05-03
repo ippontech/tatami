@@ -82,7 +82,7 @@ function makeWhoToFollowList(data) {
             }
             html += '</td><td class="tweetFriend">';
             if (userline) {
-                html += '<a href="#" onclick="followUser(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
+                html += '<a href="#" onclick="followUserHome(\'' + entry['login'] + '\')" title="Follow"><i class="icon-star" /></a>';
             } else {
                 html += '&nbsp;';
             }
