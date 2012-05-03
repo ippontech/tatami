@@ -239,15 +239,16 @@ function getFavoriteTweets(callback) {
 /**
  * POST /favorites/create/:id -> Favorites the tweet
  */
-function favoriteTweet(tweet) {
+function favoriteTweet(tweetId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/create/" + tweet,
+        url: "/tatami/rest/favorites/create/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            setTimeout(function() {
-                $('#refreshTweets').click();
-            }, 500);	//DEBUG wait for persistence consistency
+            entity = $('#' + tweetId + '-favorite');
+            entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
+            entity.empty();
+            entity.append('<i class="icon-star-empty" />');
         }
     });
     return false;
@@ -256,15 +257,16 @@ function favoriteTweet(tweet) {
 /**
  * POST /favorites/destroy/:id -> Unfavorites the tweet
  */
-function unfavoriteTweet(tweet) {
+function unfavoriteTweet(tweetId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/destroy/" + tweet,
+        url: "/tatami/rest/favorites/destroy/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            setTimeout(function() {
-                $('#refreshTweets').click();
-            }, 500);	//DEBUG wait for persistence consistency
+            entity = $('#' + tweetId + '-favorite');
+                entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
+                entity.empty();
+                entity.append('<i class="icon-star" />');
         }
     });
     return false;
