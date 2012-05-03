@@ -66,11 +66,12 @@ function makeTweetsList(data, dest) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
             
         	var template = $('#template_tweets').html();
+            var content = entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
         	var data = {'userlineLink' : userlineLink,
         				'login' : entry['login'],
         				'firstName':entry['firstName'],
         				'lastName':entry['lastName'],
-        				'content':entry['content'],
+        				'content':content,
         				'tweetId':entry['tweetId'],
         				'gravatar':entry['gravatar'],
         				'prettyPrintTweetDate':entry['prettyPrintTweetDate'],
