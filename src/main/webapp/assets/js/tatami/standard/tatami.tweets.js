@@ -45,7 +45,7 @@ function decorateFavoriteTweets() {
         });
         $('.tweet').each(function(index) {
             var tweetId = $(this).attr('tweetId');
-            entity = $('#' + tweetId + '-favorite');
+            entity = $('.' + tweetId + '-favorite');
             entity.empty();
             if ($.inArray(tweetId, favorites) >= 0) {
                 entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
