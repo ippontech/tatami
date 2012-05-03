@@ -75,11 +75,11 @@ div#userProfileDesc {
     padding-left: 0px;
 }
 
-footer {
-    margin-top: 10px;
-    padding-top: 10px;
-    padding-bottom: 20px;
+#footer {
+    text-align: center;
+    padding-top: 5px;
     border-top: 1px dotted #cccccc;
+    background-color: #ffffff;
 }
 
 #footer_ippon {

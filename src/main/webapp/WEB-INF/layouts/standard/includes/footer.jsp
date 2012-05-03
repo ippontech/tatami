@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <footer>
-    <div style="text-align: center;">
+    <div id="footer" class="navbar navbar-fixed-bottom">
         <a href="http://www.ippon.fr" id="footer_ippon"><spring:message code="tatami.copyright"/> <spring:message code="tatami.ippon.technologies"/></a> |
         <a href="https://github.com/ippontech/tatami" id="footer_github"><spring:message code="tatami.github.fork"/></a> |
         <a href="http://blog.ippon.fr" id="footer_blog"><spring:message code="tatami.ippon.blog"/></a> |
