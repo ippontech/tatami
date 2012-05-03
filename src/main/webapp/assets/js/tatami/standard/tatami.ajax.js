@@ -21,6 +21,8 @@
  * -------
  * POST /friendships/create -> follow user
  * POST /friendships/destroy -> unfollow user
+ * GET  /friends/lookup -> return extended data about the user's friends
+ * GET  /followers/lookup -> return extended data about the user's followers
  *
  * Account
  * --------
@@ -177,6 +179,36 @@ function postUnfollowUser(loginToUnfollow, callback) {
 }
 
 /**
+ * GET  /friends/lookup -> return extended data about the user's friends
+ */
+function lookupFriends(userLogin, callback) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/friends/lookup?screen_name=" + userLogin,
+        dataType: 'json',
+        success: function(data) {
+            callback(data);
+        }
+    });
+    return false;
+}
+
+/**
+ * GET  /followers/lookup -> return extended data about the user's followers
+ */
+function lookupFollowers(userLogin, callback) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/followers/lookup?screen_name=" + userLogin,
+        dataType: 'json',
+        success: function(data) {
+            callback(data);
+        }
+    });
+    return false;
+}
+
+/**
  * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
  */
 function getUser(userLogin, callback) {
@@ -207,15 +239,16 @@ function getFavoriteTweets(callback) {
 /**
  * POST /favorites/create/:id -> Favorites the tweet
  */
-function favoriteTweet(tweet) {
+function favoriteTweet(tweetId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/create/" + tweet,
+        url: "/tatami/rest/favorites/create/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            setTimeout(function() {
-                $('#refreshTweets').click();
-            }, 500);	//DEBUG wait for persistence consistency
+            entity = $('#' + tweetId + '-favorite');
+            entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
+            entity.empty();
+            entity.append('<i class="icon-star-empty" />');
         }
     });
     return false;
@@ -224,15 +257,16 @@ function favoriteTweet(tweet) {
 /**
  * POST /favorites/destroy/:id -> Unfavorites the tweet
  */
-function unfavoriteTweet(tweet) {
+function unfavoriteTweet(tweetId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/destroy/" + tweet,
+        url: "/tatami/rest/favorites/destroy/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            setTimeout(function() {
-                $('#refreshTweets').click();
-            }, 500);	//DEBUG wait for persistence consistency
+            entity = $('#' + tweetId + '-favorite');
+                entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
+                entity.empty();
+                entity.append('<i class="icon-star" />');
         }
     });
     return false;
@@ -257,7 +291,7 @@ function searchUser(userLoginStartWith) {
                 suggest.empty();
                 if (null != data && data.length > 0) {
                     $.each(data, function(i, user){
-                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">&nbsp;' + user.login + '</li>');
+                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">' + user.login + '</li>');
                     });
                     suggest.show();
                 }

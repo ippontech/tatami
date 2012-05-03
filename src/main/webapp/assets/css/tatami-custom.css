@@ -2,6 +2,11 @@ body {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
+#topmenu {
+    margin: 0px auto;
+    width: 937px;
+}
+
 #tweetsList {
     color: #000000;
 }
@@ -59,34 +64,27 @@ section#followline ul#usersSuggestions li:hover {
     color: #555555;
 }
 
-div#userProfile {
-    margin: 0px auto;
-    position: relative;
-    width: 837px;
-}
-
 div#userProfileDesc {
     background-color: #F9F9F9;
     border: 1px solid #DDDDDD;
     border-radius: 5px;
     padding: 5px;
-    width: 822px;
+    width: 920px;
+}
+
+#menuContent {
+    margin: 10px 0px 0px 0px;
+}
+
+#mainContent {
+    margin: 10px 0px 0px 20px;
 }
 
 #badges {
     width: 220px;
-    font-size: 10px;
 }
 
-#profilemenuleft {
-    margin: 10px 0px 0px 0px;
-}
-
-#profilemain {
-    margin: 10px 0px 0px 20px;
-}
-
-#home {
+.mainPanel {
     margin: 0px auto;
     border: 10px;
     position: relative;
@@ -96,10 +94,6 @@ div#userProfileDesc {
 #tweetContent {
     width: 230px;
     height: 80px;
-}
-
-#home div.profileview {
-    padding: 0px;
 }
 
 footer {

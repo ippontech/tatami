@@ -2,6 +2,7 @@ package fr.ippon.tatami.config.elasticsearch;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest;
@@ -27,7 +28,15 @@ public class ElasticSearchConfiguration {
 
     @Bean
     public ElasticSearchSettings esSettings() {
-        return new ElasticSearchSettings(configurationPath());
+        String configPath = configurationPath();
+        ElasticSearchSettings settings = null;
+        if (StringUtils.isBlank(configPath)) {
+            settings = new ElasticSearchSettings();
+        } else {
+            settings = new ElasticSearchSettings(configPath);
+        }
+
+        return settings;
     }
 
     @Bean(name = "nodeFactory")
@@ -47,7 +56,7 @@ public class ElasticSearchConfiguration {
     @DependsOn("nodeFactory")
     public Client client() {
         if (indexActivated()) {
-            this.log.info("Elastic Search is activated, initializing client connection...");
+            this.log.info("Elasticsearch is activated, initializing client connection...");
             final Client client = nodeFactory().getServerNode().client();
 
             if (this.log.isDebugEnabled()) {
