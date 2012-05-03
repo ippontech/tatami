@@ -66,7 +66,11 @@ function makeTweetsList(data, dest) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
             
         	var template = $('#template_tweets').html();
-            var content = entry['content'].replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
+            var content = entry['content']
+            		.replace(userrefREG, userrefURL)
+            		.replace(tagrefREG, tagrefURL)
+            		.replace(url1REG, url1URL)
+            		.replace(url2REG, url2URL);
         	var data = {'userlineLink' : userlineLink,
         				'login' : entry['login'],
         				'firstName':entry['firstName'],

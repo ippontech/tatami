@@ -1,10 +1,13 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.IndexService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.UserService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -13,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import java.util.*;
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * REST controller for managing users.
@@ -46,10 +52,10 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public User getUser(@RequestParam("screen_name") String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get Profile : " + login);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to get Profile : " + login);
         }
-        User user = userService.getUserProfileByLogin(login);
+        User user = this.userService.getUserProfileByLogin(login);
         return user;
     }
 
@@ -61,21 +67,21 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
-        User currentUser = userService.getCurrentUser();
+        User currentUser = this.userService.getCurrentUser();
         final String login = currentUser.getLogin();
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the last active tweeters list (except " + login + ").");
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to get the last active tweeters list (except " + login + ").");
         }
 
         Collection<String> exceptions = userService.getFriendIdsForUser(login);
         exceptions.add(login);
 
-        Collection<Tweet> tweets = timelineService.getDayline("");
+        Collection<Tweet> tweets = this.timelineService.getDayline("");
         Map<String, User> users = new HashMap<String, User>();
         for (Tweet tweet : tweets) {
             if (exceptions.contains(tweet.getLogin())) continue;
 
-            users.put(tweet.getLogin(), userService.getUserProfileByLogin(tweet.getLogin()));
+            users.put(tweet.getLogin(), this.userService.getUserProfileByLogin(tweet.getLogin()));
             if (users.size() == 3) break;    // suggestions list limit
         }
         return users.values();
@@ -94,13 +100,13 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> searchUsers(@RequestParam("q") String query) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to find users starting with : " + query);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to find users starting with : " + query);
         }
-        if (indexActivated) {
-            final List<String> logins = indexService.searchPrefix(User.class, "login", query, 0, 20);
-            final Collection<User> users = userService.getUsersByLogin(logins);
-            final User currentUser = userService.getCurrentUser();
+        if (this.indexActivated) {
+            final List<String> logins = this.indexService.searchPrefix(User.class, null, "login", query, 0, 20);
+            final Collection<User> users = this.userService.getUsersByLogin(logins);
+            final User currentUser = this.userService.getCurrentUser();
             users.remove(currentUser);
             return users;
         } else {

@@ -1,6 +1,7 @@
 {
-	"tweets" : {
-		"_source" : { "enabled" : false },
+	"tweet" : {
+		"_source" : { "enabled" : true },
+		"_all" : { "analyzer": "francais" },
 		"properties" : {
 			"login" : {
 				"type" : "string",
@@ -16,11 +17,10 @@
 			},
 			"content" : {
 				"type" : "string",
-				"analyzer" : "default"
+				"analyzer" : "francais"
 			},
 			"tweetDate" : {
-				"type" : "date",
-				"index" : "not_analyzed"
+				"type" : "date"
 			}
 		}
 	}
