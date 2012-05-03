@@ -59,86 +59,26 @@ function decorateFavoriteTweets() {
     return false;
 }
 
-
-function buildHtmlAreaForTheAvatar(userlineLink, gravatar){
-    // identification de l'émetteur du message
-    var html = '<td class="avatar">';
-    
-    if (userlineLink){
-        html += userlineLink;
-    }
-    
-    html += '<img src="http://www.gravatar.com/avatar/' + gravatar + '?s=32" />'
-    
-    if (userlineLink){
-	html += '</a>';
-    }
-    html += '</td>';
-    
-    return html;
-}
-
-function buildHtmlAreaForTheTweetContent(userlineLink, userLogin, firstName, lastName, content) {
-    var html = '<td><article>';
-    if (userlineLink) {
-        html += userlineLink;
-    }
-    html += firstName + ' ' + lastName;
-    if (userlineLink) {
-        html += '</a>';
-    }
-    html += ' <em>@' + userLogin + '</em><br/>';
-    // tweet content
-    html += content.replace(userrefREG, userrefURL).replace(tagrefREG, tagrefURL);
-    html += '</article></td>';
-    return html;
-}
-
-function buildHtmlAreaForTheActions(tweetId, userLogin){
-    var html = '<td class="tweetActions"><div class="hide ' + tweetId + '-actions">';
-
-    // Favorite tweet
-    html += '<a id="' + tweetId + '-favorite" href="#" title="Favorite"></a>';
-
-    // Remove Tweet
-    if (login == userLogin) {
-        html += '<a href="#" onclick="removeTweet(\'' + tweetId + '\')" title="Remove"><i class="icon-remove" /></a>';
-    }
-
-    html += '</div></td>';
-    return html;
-}
-
 function makeTweetsList(data, dest) {
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
         $.each(data, function(entryIndex, entry) {
             var userlineLink = userlineURL.replace(userlineREG, entry['login']);
+            
+        	var template = $('#template_tweets').html();
+        	var data = {'userlineLink' : userlineLink,
+        				'login' : entry['login'],
+        				'firstName':entry['firstName'],
+        				'lastName':entry['lastName'],
+        				'content':entry['content'],
+        				'tweetId':entry['tweetId'],
+        				'gravatar':entry['gravatar'],
+        				'prettyPrintTweetDate':entry['prettyPrintTweetDate'],
+        				'isUserLogin' : login == entry['login']
+        	};
+        	
+            var html = Mustache.render(template, data);
 
-            var html = '<tr tweetId="' + entry['tweetId'] + '" ' +
-                'class="tweet id-' + entry['tweetId'] + '" ' +
-                'onmouseover="showActions(\'' + entry['tweetId'] + '\')" '+
-                'onmouseout="hideActions(\'' + entry['tweetId'] + '\')">';
-
-            html += buildHtmlAreaForTheAvatar(
-                userlineLink,
-                entry['gravatar']);
-
-            html += buildHtmlAreaForTheTweetContent(
-                userlineLink,
-                entry['login'],
-                entry['firstName'],
-                entry['lastName'],
-                entry['content']);
-
-            html += buildHtmlAreaForTheActions(
-                entry['tweetId'],
-                entry['login']);
-
-            html +=
-                "<td class=\"tweetDate\"><aside>" + entry['prettyPrintTweetDate']+ "</aside></td>";
-
-            html += '</tr>';
             dest.append(html);
         });
         decorateFavoriteTweets();
