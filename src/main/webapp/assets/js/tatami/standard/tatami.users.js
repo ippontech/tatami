@@ -2,6 +2,7 @@
 
 function displayProfile() {
     getUser(login, function(data) {
+        $("#pictureInput").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
         $("#emailInput").val(data.email);
         $("#firstNameInput").val(htmlDecode(data.firstName));
         $("#lastNameInput").val(htmlDecode(data.lastName));
