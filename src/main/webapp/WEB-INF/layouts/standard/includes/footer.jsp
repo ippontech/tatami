@@ -29,6 +29,5 @@
 <script src="/assets/js/tatami/standard/tatami.ajax.js"></script>
 <script src="/assets/js/tatami/standard/tatami.js"></script>
 
-<!-- Mustache templates
-    ================================================== -->
-<%@include file="/assets/templates_mustache/templates.jsp" %>
+<!-- Mustache templates -->
+<div id="mustache"></div>

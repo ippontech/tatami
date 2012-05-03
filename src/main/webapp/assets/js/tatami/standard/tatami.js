@@ -81,6 +81,9 @@ function initHome() {
     if (tag != "") {
         listTagTweets(tag);
     }
+
+    //Mustache.js templates
+    $('#mustache').load('/assets/templates_mustache/templates.html');
 }
 
 function initProfile() {
@@ -101,4 +104,7 @@ function initProfile() {
             makeFollowersList();
         }
     });
+
+    //Mustache.js templates
+    $('#mustache').load('/assets/templates_mustache/templates.html');
 }
