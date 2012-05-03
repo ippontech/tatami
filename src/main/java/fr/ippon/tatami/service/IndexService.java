@@ -31,6 +31,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -53,7 +55,7 @@ public class IndexService {
     @Inject
     private String indexName;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Add an item to the index.
@@ -76,7 +78,7 @@ public class IndexService {
         }
 
         final String dataType = clazz.getSimpleName().toLowerCase();
-        IndexResponse response = client.prepareIndex(indexName, dataType, uid)
+        IndexResponse response = this.client.prepareIndex(this.indexName, dataType, uid)
                 .setSource(jsonifiedObject)
                 .execute()
                 .actionGet();
@@ -100,7 +102,7 @@ public class IndexService {
         if (log.isDebugEnabled()) {
             log.debug("Removing a " + dataType + " item from the index : #" + uid);
         }
-        final DeleteResponse response = client.delete(new DeleteRequest(indexName, dataType, uid)).actionGet();
+        final DeleteResponse response = this.client.delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
         return response.getId();
     }
 
@@ -176,17 +178,16 @@ public class IndexService {
 
         SearchResponse searchResponse = null;
         try {
-            SearchRequestBuilder builder = client.prepareSearch(indexName)
+            SearchRequestBuilder builder = this.client.prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false);
-            if (StringUtils.isNotBlank(sortField)) {// TODO Bad implementation...
-//                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
+            if (StringUtils.isNotBlank(sortField)) {
+                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
             }
 
-            searchResponse = builder.execute()
-                                    .actionGet();
+            searchResponse = builder.execute().actionGet();
         } catch (IndexMissingException e) {
             log.warn("The index was not found in the cluster.");
             return new ArrayList<String>(0);
@@ -211,27 +212,28 @@ public class IndexService {
      * Search an item in the index.
      *
      * @param clazz the item type
-     * @param field a particular field to search into
+     * @param searchField a particular field to search into, if null, "_all" field is used
+     * @param uidField : the filed to return in the results collection
      * @param query the query
      * @param page  the page to return
      * @param size  the size of a page
      * @return a list of uid
      */
     @SuppressWarnings("unchecked")
-    public <T> List<String> searchPrefix(final Class<T> clazz, final String field, final String query, int page, int size) {
+    public <T> List<String> searchPrefix(final Class<T> clazz, final String searchField, final String uidField, final String query, int page, int size) {
 
-        final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
+        final String name = (StringUtils.isBlank(searchField) ? ALL_FIELDS : searchField);
         final QueryBuilder qb = QueryBuilders.prefixQuery(name, query);
         final String dataType = clazz.getSimpleName().toLowerCase();
 
         SearchResponse searchResponse = null;
         try {
-            searchResponse = client.prepareSearch(indexName)
+            searchResponse = this.client.prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false)
-//                    .addSort(SortBuilders.fieldSort(field).order(SortOrder.ASC))
+                    .addSort(SortBuilders.fieldSort(uidField).order(SortOrder.ASC))
                     .execute()
                     .actionGet();
         } catch (IndexMissingException e) {
@@ -250,8 +252,8 @@ public class IndexService {
         Map<String, Object> item = null;
         try {
             for (int i = 0; i < searchHitsArray.length; i++) {
-                item = mapper.readValue(searchHitsArray[i].source(), Map.class);
-                items.add((String) item.get(field));
+                item = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
+                items.add((String) item.get(uidField));
             }
         } catch (JsonParseException e) {
             e.printStackTrace();

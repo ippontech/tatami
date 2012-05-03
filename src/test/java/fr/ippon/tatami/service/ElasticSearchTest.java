@@ -22,7 +22,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
 import fr.ippon.tatami.domain.Tweet;
 
 /**
@@ -39,16 +38,21 @@ public class ElasticSearchTest {
     @Inject
     private IndexService service;
 
+    @Inject
     private ElasticSearchServerNodeFactory factory;
 
     @Before
-    public void initElasticSearch() throws IOException {
-        factory = new ElasticSearchServerNodeFactory();
-        factory.setIndexActivated(true);
-        factory.setIndexName("tatami");
-        factory.setEsSettings(new ElasticSearchSettings());
-        factory.buildServerNodes();
-        factory.getServerNodes().get(0).client().admin().indices().delete(deleteIndexRequest("tatami")).actionGet();
+    public void initElasticSearch() {
+        //        factory = new ElasticSearchServerNodeFactory();
+        //        factory.setIndexActivated(true);
+        //        factory.setIndexName("tatami");
+        //        factory.setEsSettings(new ElasticSearchSettings());
+        //        factory.buildServerNodes();
+        try {
+            this.factory.getServerNode().client().admin().indices().delete(deleteIndexRequest("tatami")).actionGet();
+        } catch (ElasticSearchException e) {
+            // do nothing
+        }
     }
 
     @Test
@@ -65,16 +69,16 @@ public class ElasticSearchTest {
         tweet2.setTweetId("1234-4567-8988");
         tweet2.setLogin("dmartinpro");
 
-        final List<String> ids0 = service.search(Tweet.class, null, "trying", 0, 50, null, null);
+        final List<String> ids0 = this.service.search(Tweet.class, null, "trying", 0, 50, null, null);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
-        service.addTweet(tweet1);
-        service.addTweet(tweet2);
-        factory.getServerNodes().get(0).client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
+        this.service.addTweet(tweet1);
+        this.service.addTweet(tweet2);
+        this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final List<String> ids1 = service.search(Tweet.class, null, "trying", 0, 50, null, null);
-        final List<String> ids2 = service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final List<String> ids1 = this.service.search(Tweet.class, null, "trying", 0, 50, null, null);
+        final List<String> ids2 = this.service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

@@ -291,7 +291,7 @@ function searchUser(userLoginStartWith) {
                 suggest.empty();
                 if (null != data && data.length > 0) {
                     $.each(data, function(i, user){
-                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">&nbsp;' + user.login + '</li>');
+                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">' + user.login + '</li>');
                     });
                     suggest.show();
                 }
