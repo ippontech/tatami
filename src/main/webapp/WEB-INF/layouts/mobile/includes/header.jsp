@@ -1,5 +1,4 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <head>
     <meta charset="utf-8">
     <title><spring:message code="tatami.title"/></title>
@@ -15,7 +14,4 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
- 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/assets/img/ippon.ico">
 </head>

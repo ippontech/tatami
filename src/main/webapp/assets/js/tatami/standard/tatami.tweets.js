@@ -70,8 +70,8 @@ function makeTweetsList(data, dest) {
             var content = entry['content']
             		.replace(userrefREG, userrefURL)
             		.replace(tagrefREG, tagrefURL)
-            		.replace(url1REG, url1URL)
-            		.replace(url2REG, url2URL);
+            		.replace(URL1_REG, URL1_LINK)
+            		.replace(URL2_REG, URL2_LINK);
         	var data = {'userlineLink' : userlineLink,
         				'login' : entry['login'],
         				'firstName':entry['firstName'],

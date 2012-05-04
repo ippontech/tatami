@@ -152,6 +152,7 @@
     <spring:param name="applicationVersion" value="${applicationVersion}"/>
 </spring:url>
 
+<script src="/assets/js/tatami/constants.js"></script>
 <script src="/assets/js/tatami/standard/tatami.js"></script>
 <script src="/assets/js/tatami/standard/tatami.charts.js"></script>
 <script type="text/javascript">
