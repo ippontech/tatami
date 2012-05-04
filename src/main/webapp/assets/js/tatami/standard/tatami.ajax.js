@@ -245,10 +245,11 @@ function favoriteTweet(tweetId) {
         url: "/tatami/rest/favorites/create/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            entity = $('#' + tweetId + '-favorite');
+            var entity = $("." + tweetId + "-favorite");
             entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
             entity.empty();
             entity.append('<i class="icon-star-empty" />');
+            $(".id-" + tweetId + " .tweetDate").addClass("favorite");
         }
     });
     return false;
@@ -263,10 +264,11 @@ function unfavoriteTweet(tweetId) {
         url: "/tatami/rest/favorites/destroy/" + tweetId,
         dataType: 'json',
         success: function(data) {
-            entity = $('#' + tweetId + '-favorite');
-                entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
-                entity.empty();
-                entity.append('<i class="icon-star" />');
+            var entity = $("." + tweetId + "-favorite");
+            entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
+            entity.empty();
+            entity.append('<i class="icon-star" />');
+            $(".id-" + tweetId + " .tweetDate").removeClass("favorite");
         }
     });
     return false;
@@ -290,7 +292,7 @@ function searchUser(userLoginStartWith) {
             success: function(data) {
                 suggest.empty();
                 if (null != data && data.length > 0) {
-                    $.each(data, function(i, user){
+                    $.each(data, function(i, user) {
                         suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">' + user.login + '</li>');
                     });
                     suggest.show();

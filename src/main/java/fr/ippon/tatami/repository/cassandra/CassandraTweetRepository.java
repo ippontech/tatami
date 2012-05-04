@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.repository.TweetRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
@@ -86,24 +87,11 @@ public class CassandraTweetRepository implements TweetRepository {
         em.persist(tweet);
     }
 
-
     @Override
-    public void addTweetToDayline(Tweet tweet, String key) {
+    public void addTweetToTimeline(String login, Tweet tweet) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
-    }
-
-    @Override
-    public void addTweetToFavoritesline(Tweet tweet, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createStringColumn(tweet.getTweetId(), ""));
-    }
-    
-    @Override
-    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, tweet.getTweetId(), StringSerializer.get());
     }
 
     @Override
@@ -114,9 +102,22 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    public void addTweetToTimeline(String login, Tweet tweet) {
+    public void addTweetToFavoritesline(Tweet tweet, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()), "",
+                UUIDSerializer.get(), StringSerializer.get()));
+    }
+    
+    @Override
+    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.delete(login, FAVLINE_CF, UUID.fromString(tweet.getTweetId()), UUIDSerializer.get());
+    }
+
+    @Override
+    public void addTweetToDayline(Tweet tweet, String key) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
                 tweet.getTweetId(), LongSerializer.get(), StringSerializer.get()));
     }
 
@@ -188,7 +189,6 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getTagline(String tag, int size) {
-        assert tag != null && !tag.isEmpty() && !tag.contains("#");
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
@@ -206,17 +206,17 @@ public class CassandraTweetRepository implements TweetRepository {
 
     @Override
     public Collection<String> getFavoritesline(String login) {
-        SliceQuery<String, String, String> sq = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
                 .setKey(login)
-                .setRange(null, null, false, 50);
+                .setRange(null, null, true, 50)
+                .execute()
+                .get();
 
         Collection<String> tweetIds = new ArrayList<String>();
-        ColumnSliceIterator<String, String, String> csi =
-                new ColumnSliceIterator<String, String, String>(sq, null, "", true);
-        while (csi.hasNext()) {
-            tweetIds.add(csi.next().getName());
+        for (HColumn<UUID, String> column : result.getColumns()) {
+            tweetIds.add(column.getName().toString());
         }
         return tweetIds;
     }

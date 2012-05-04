@@ -115,7 +115,7 @@
                                             code="tatami.badge.followed"/></h2></th>
                                 </tr>
                                 </thead>
-                                <tbody id="followingList"></tbody>
+                                <tbody id="followingList" class="tweetsList"></tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="followersPanel">
@@ -126,7 +126,7 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody id="followersList"></tbody>
+                                <tbody id="followersList" class="tweetsList"></tbody>
                             </table>
                         </div>
                     </div>

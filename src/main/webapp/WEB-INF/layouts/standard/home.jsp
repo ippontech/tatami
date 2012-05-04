@@ -21,7 +21,7 @@
                     <spring:message code="tatami.update.profile"/></a></li>
             </ul>
             <div class="alert alert-info">
-                <div class="tab-content">
+                <div class="tab-content" style="margin-left: -10px;">
                     <div class="tab-pane active" id="profileTabContent">
                         <div class="container-fluid">
                             <div class="row-fluid">
@@ -61,6 +61,10 @@
                             <div class="row-fluid">
                                 <form id="updateUserForm" onsubmit="return updateProfile();">
                                     <fieldset>
+                                        <img id="pictureInput"/>
+                                        <label><spring:message
+                                                code="tatami.user.picture"/> <a href="http://www.gravatar.com" target="_blank">http://www.gravatar.com</a>
+                                        </label>
                                         <label><spring:message
                                                 code="tatami.user.email"/> :</label>
                                         <input id="emailInput"
