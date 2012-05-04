@@ -67,6 +67,12 @@ public class TimelineService {
     private final String hashtagDefault = "---";
 
 
+    /**
+     * Return a new content with every URL replaced with a shorten one
+     * @param content the content to filter
+     * @param urls the short/long URL used in the replacement
+     * @return a shorten content
+     */
     private String shortenContent(final String content, final Map<String, String> urls) {
         String shortenContent = content;
         for (Map.Entry<String, String> entry : urls.entrySet()) {
@@ -77,35 +83,7 @@ public class TimelineService {
     }
 
     /**
-     * Return a new content with every URL replaced with a shorten one
-     * @param content the content to filter
-     * @return a shorten content
-     */
-    private String shortenContent(final String content) {
-        StringBuffer shortenContent = new StringBuffer();
-        String input = content;
-        Matcher matcher = null;
-
-        matcher = this.urlPattern1.matcher(input);
-        while (matcher.find()) {
-            matcher.appendReplacement(shortenContent, this.urlShortener.shorten(matcher.group(0)));
-        }
-        matcher.appendTail(shortenContent);
-
-        input = shortenContent.toString();
-        shortenContent = new StringBuffer();
-
-        matcher = this.urlPattern2.matcher(input);
-        while (matcher.find()) {
-            matcher.appendReplacement(shortenContent, this.urlShortener.shorten(matcher.group(2)));
-        }
-        matcher.appendTail(shortenContent);
-
-        return shortenContent.toString();
-    }
-
-    /**
-     * Return a Map of all the URLs shortened in the content
+     * Return a Map of all the URLs shortened in the content provided
      * @param content the content to analyze
      * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
      */
@@ -138,13 +116,23 @@ public class TimelineService {
         return shortenURLs;
     }
 
-    public void postTweet(final String content) {
+    /**
+     * Post a tweet :<br>
+     * <ul>
+     * <li>save it in the datastore</li>
+     * <li>update all the related application states</li>
+     * </ul>
+     * @param content the content to save as a tweet
+     * @return the tweet object created on the basis of the content provided
+     */
+    public Tweet postTweet(final String content) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("Creating new tweet : " + content);
         }
 
         Map<String, String> map = getShortenURLs(content);
-        String shortenContent = shortenContent(content, map);
+        // Map can be persisted
+        String shortenContent = content; //shortenContent(content, map); // enable the content processing to reduce the URLs length
 
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         Tweet tweet = this.tweetRepository.createTweet(currentLogin, shortenContent);
@@ -180,6 +168,7 @@ public class TimelineService {
         if (this.indexActivated) {
             this.indexService.addTweet(tweet);
         }
+        return tweet;
     }
 
     public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
@@ -343,4 +332,5 @@ public class TimelineService {
     private String extractLoginWithoutAt(String dest) {
         return dest.substring(1, dest.length());
     }
+
 }
