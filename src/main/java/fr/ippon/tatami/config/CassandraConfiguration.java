@@ -1,5 +1,20 @@
 package fr.ippon.tatami.config;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TWEET_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.URLS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_CF;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -12,16 +27,12 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
 /**
  * Cassandra configuration file.
@@ -39,9 +50,9 @@ public class CassandraConfiguration {
     @Bean
     public Keyspace keyspaceOperator() {
 
-        String cassandraHost = env.getProperty("cassandra.host");
-        String cassandraClusterName = env.getProperty("cassandra.clusterName");
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraHost = this.env.getProperty("cassandra.host");
+        String cassandraClusterName = this.env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
@@ -50,7 +61,7 @@ public class CassandraConfiguration {
 
         KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
         if (keyspaceDef == null) {
-            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+            this.log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
@@ -63,6 +74,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
             addColumnFamily(cluster, TAGLINE_CF);
             addColumnFamily(cluster, USERLINE_CF);
+            addColumnFamily(cluster, URLS_CF);
 
             ThriftCfDef cfDef =
                     new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
@@ -76,7 +88,7 @@ public class CassandraConfiguration {
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
 
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
@@ -86,7 +98,7 @@ public class CassandraConfiguration {
 
     private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName) {
 
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);

@@ -16,9 +16,9 @@ var userrefURL = '<a href="/tatami/profile/$1" style="text-decoration:none" titl
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagTweets(\'$1\')" title="Show $1 related tweets"><em>#$1</em></a>';
 
-var url1REG = new RegExp("(ftp|http|https|file):\\/\\/[a-zA-Z0-9-_\\/.\\?=\\&]+(\\b|$)", "gim"); // URL starting with a protocol among these : ftp, http, https, file
+var url1REG = new RegExp("(ftp|http|https|file):\\/\\/[a-zA-Z0-9-_\\/.\\:\\?=\\&]+(\\b|$)", "gim"); // URL starting with a protocol among these : ftp, http, https, file
 var url1URL = '<a href="$&" style="text-decoration:none" title="Open $& link" target="_blank"><em>$&</em></a>';
-var url2REG = new RegExp("(^|[^\\/])(www[a-zA-Z0-9-_\\/.\\?=\\&]+(\\b|$))", "gim"); // URL without protocol, starting with www. http is set as the default protocol
+var url2REG = new RegExp("(^|[^\\/])(www[a-zA-Z0-9-_\\/.\\:\\?=\\&]+(\\b|$))", "gim"); // URL without protocol, starting with www. http is set as the default protocol
 var url2URL = '$1<a href="http://$2" style="text-decoration:none" title="Open http://$2 link" target="_blank"><em>$2</em></a>';
 
 function initHome() {

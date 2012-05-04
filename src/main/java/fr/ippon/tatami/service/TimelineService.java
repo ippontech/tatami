@@ -19,6 +19,7 @@ import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.ShortURLRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.UrlShortener;
@@ -33,8 +34,8 @@ public class TimelineService {
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
-    private final Pattern urlPattern1 = Pattern.compile("(ftp|http|https|file):\\/\\/[a-zA-Z0-9-\\/_.\\?=\\&]+(\\b|$)");
-    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/])(w{3}[a-zA-Z0-9-_\\/.\\?=\\&]+(\\b|$))");
+    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_.\\:\\?=\\&]+(\\b|$)");
+    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/])(w{3}[a-zA-Z0-9-_\\/.\\:\\?=\\&]+(\\b|$))");
 
     private final Log log = LogFactory.getLog(TimelineService.class);
 
@@ -51,6 +52,9 @@ public class TimelineService {
 
     @Inject
     private FollowerRepository followerRepository;
+
+    @Inject
+    private ShortURLRepository shortURLRepository;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -83,7 +87,7 @@ public class TimelineService {
     }
 
     /**
-     * Return a Map of all the URLs shortened in the content provided
+     * Return a Map of all the URLs shortened in the content provided, only if shorten URL are effectively shorter than original URL
      * @param content the content to analyze
      * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
      */
@@ -93,13 +97,16 @@ public class TimelineService {
         StringBuffer shortenContent = new StringBuffer();
         String input = content;
         Matcher matcher = null;
-        String matchUrl = null;
+        String matchUrl, shortenUrl = null;
 
         matcher = this.urlPattern1.matcher(input);
 
         while (matcher.find()) {
             matchUrl = matcher.group(0);
-            shortenURLs.put(this.urlShortener.shorten(matchUrl), matchUrl);
+            shortenUrl = this.urlShortener.shorten(matchUrl);
+            if (shortenUrl.length() < matchUrl.length()) {
+                shortenURLs.put(this.urlShortener.shorten(matchUrl), matchUrl);
+            }
         }
         matcher.appendTail(shortenContent);
 
@@ -132,7 +139,7 @@ public class TimelineService {
 
         Map<String, String> map = getShortenURLs(content);
         // Map can be persisted
-        String shortenContent = content; //shortenContent(content, map); // enable the content processing to reduce the URLs length
+        String shortenContent = shortenContent(content, map); // enable the content processing to reduce the URLs length
 
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         Tweet tweet = this.tweetRepository.createTweet(currentLogin, shortenContent);
@@ -142,6 +149,9 @@ public class TimelineService {
         this.tweetRepository.addTweetToUserline(tweet);
         this.tweetRepository.addTweetToTimeline(currentLogin, tweet);
         this.tweetRepository.addTweetToTagline(tweet);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            this.shortURLRepository.addURLPair(entry.getKey(), entry.getValue());
+        }
 
         // add tweet to the follower's timelines
         Collection<String> followersForUser = this.followerRepository.findFollowersForUser(currentLogin);

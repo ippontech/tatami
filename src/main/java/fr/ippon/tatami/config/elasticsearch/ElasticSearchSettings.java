@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
 @Component
 public class ElasticSearchSettings {
 
-    private static final Log LOG = LogFactory.getLog(ElasticSearchSettings.class);
+    private final Log log = LogFactory.getLog(ElasticSearchSettings.class);
 
     public static final String DEFAULT_SETTINGS_RESOURCE_PATH = "META-INF/elasticsearch/elasticsearch.yml";
     public static final String DEFAULT_TYPES_DEFINITION_RESOURCE_PATH = "META-INF/elasticsearch/types/";
@@ -70,7 +70,7 @@ public class ElasticSearchSettings {
             throw new IllegalArgumentException("Last character must be '/'");
         }
 
-        LOG.debug("Elastic Search settings are read from: " + settingsResourcePath + ", types mapping from: " + typesResourcePath);
+        this.log.debug("Elastic Search settings are read from: " + settingsResourcePath + ", types mapping from: " + typesResourcePath);
         this.settings = settingsBuilder()
                 .loadFromClasspath(settingsResourcePath)
                 .build();
@@ -96,9 +96,9 @@ public class ElasticSearchSettings {
         try {
             typesMappingDef = getResourceListing(this.typesMappingResourcePath);
         } catch (URISyntaxException e) {
-            LOG.error("Unable to load types mapping from the path: " + this.typesMappingResourcePath, e);
+            this.log.error("Unable to load types mapping from the path: " + this.typesMappingResourcePath, e);
         } catch (IOException e) {
-            LOG.error("Can't read types mapping from this location: " + this.typesMappingResourcePath, e);
+            this.log.error("Can't read types mapping from this location: " + this.typesMappingResourcePath, e);
         }
 
         if (typesMappingDef != null) {
@@ -113,9 +113,9 @@ public class ElasticSearchSettings {
                     dataType = jsonNode.getFields().next().getKey();
                     typesMapping.put(dataType, resourceContent);
                 } catch (JsonProcessingException e) {
-                    LOG.warn("Resource " + resource + " may not be a valid JSON file : ignored", e);
+                    this.log.warn("Resource " + resource + " may not be a valid JSON file : ignored", e);
                 } catch (IOException e) {
-                    LOG.warn("Error while accessing to resource " + resource, e);
+                    this.log.warn("Error while accessing to resource " + resource, e);
                 }
             }
         }
@@ -187,7 +187,7 @@ public class ElasticSearchSettings {
         try {
             source = IOUtils.toString(is);
         } catch (IOException e) {
-            LOG.warn("Unable to load content of the resource: " + resourceName, e);
+            this.log.warn("Unable to load content of the resource: " + resourceName, e);
         } finally {
             IOUtils.closeQuietly(is);
         }

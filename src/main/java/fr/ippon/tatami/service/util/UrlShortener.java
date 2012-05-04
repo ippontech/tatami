@@ -21,8 +21,8 @@ public class UrlShortener {
 
     /**
      * Shorten the URL : a short URL should be provided to be used instead of the real long one.<br>
-     * Note: The mapping between the two is not part of the responsability of this method and
-     * should be managde elsewhere.
+     * Note: The mapping between the two is not part of the responsibility of this method and
+     * should be managed elsewhere.
      * @param longUrl the URL to shorten
      * @return a short URL that can replace the long version
      */

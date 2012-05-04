@@ -47,7 +47,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Bean
     public Properties applicationProps() {
         Properties props = new Properties();
-        props.put("tatami.version", env.getProperty("tatami.version"));
+        props.put("tatami.version", this.env.getProperty("tatami.version"));
         return props;
     }
 
@@ -129,9 +129,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/" + env.getProperty("tatami.version") + "/**")
-            .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
-            .setCachePeriod(31556926);
+        registry.addResourceHandler("/resources/" + this.env.getProperty("tatami.version") + "/**")
+        .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
+        .setCachePeriod(31556926);
     }
 
 }
