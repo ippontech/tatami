@@ -89,6 +89,13 @@ function initHome() {
 
     //Mustache.js templates
     $('#mustache').load('/assets/templates_mustache/templates.html');
+
+    if (searchQuery != "") {
+        $("#searchQuery").val(searchQuery);
+        var query = $('#global-tweet-search').serialize();
+        searchTweets(query);
+        return false;
+    }
 }
 
 function initProfile() {
@@ -108,6 +115,13 @@ function initProfile() {
         } else if (e.target.hash == '#followersPanel') {
             makeFollowersList();
         }
+    });
+
+    // search form binding
+    $('#global-tweet-search').submit(function() {
+        var searchQuery = $("#searchQuery").val();
+        window.location = "/tatami/?search=" + searchQuery;
+        return false;
     });
 
     //Mustache.js templates

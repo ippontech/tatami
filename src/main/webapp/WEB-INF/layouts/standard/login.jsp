@@ -8,28 +8,7 @@
 
 <body>
 
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#"><img src="../assets/img/ippon-logo.png">&nbsp;<spring:message
-                    code="tatami.title"/></a>
-
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#"><i class="icon-lock icon-white"></i>&nbsp;<spring:message
-                            code="tatami.authentification"/></a></li>
-                    <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
-                            code="tatami.about"/></a></li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </div>
-</div>
+<jsp:include page="includes/topmenu.jsp"/>
 
 <div class="container">
     <div class="span4 offset4">

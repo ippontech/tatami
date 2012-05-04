@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="navbar navbar-fixed-top">
@@ -18,19 +19,24 @@
                     <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
                             code="tatami.about"/></a></li>
                 </ul>
-                <ul class="nav pull-right">
-                    <li class="divider-vertical"></li>
-                    <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message
-                            code="tatami.logout"/></a></li>
-                </ul>
-                <ul class="nav pull-right">
-					<form id="global-tweet-search" class="well form-search" style="padding:4px 2px 4px 2px;margin:3px 0px;background-color:#2C2C2C;" action="/tatami/rest/search" method="post">
-					  <input type="hidden" name="page" value="0" />
-					  <input type="hidden" name="rpp" value="20" />
-					  <input type="text" name="q" class="input-medium search-query" placeholder="<spring:message code="tatami.search.placeholder"/>">
-					  <button type="submit" class="btn" style="margin-top:0px;"><spring:message code="tatami.search.button"/></button>
-					</form>
-                </ul>
+                <sec:authorize access="hasRole('ROLE_USER')" >
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                        <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message
+                                code="tatami.logout"/></a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <form id="global-tweet-search" class="well form-search" action="/tatami/rest/search"
+                              method="post">
+                            <input type="hidden" name="page" value="0"/>
+                            <input type="hidden" name="rpp" value="20"/>
+                            <input type="text" id="searchQuery" name="q" class="input-medium search-query"
+                                   placeholder="<spring:message code="tatami.search.placeholder"/>">
+                            <button type="submit" class="btn" style="margin-top:0px;"><spring:message
+                                    code="tatami.search.button"/></button>
+                        </form>
+                    </ul>
+                </sec:authorize>
             </div>
         </div>
     </div>

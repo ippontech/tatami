@@ -7,6 +7,12 @@ body {
     width: 937px;
 }
 
+#global-tweet-search {
+    padding:4px 2px 4px 2px;
+    margin:3px 0px;
+    background-color:#2C2C2C;
+}
+
 .tweetsList {
     color: #000000;
 }

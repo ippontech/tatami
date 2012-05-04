@@ -158,6 +158,7 @@
     google.load("visualization", "1", {packages:["corechart"]});
     var login = "<sec:authentication property="principal.username"/>";
     var tag = "${tag}";
+    var searchQuery = "${search}";
     var page = "home";
 
     $(document).ready(function() {

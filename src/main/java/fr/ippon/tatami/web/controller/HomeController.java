@@ -21,11 +21,12 @@ public class HomeController {
     private UserService userService;
     
     @RequestMapping(value="/")
-    public ModelAndView home(@RequestParam(required = false) String tag) {
+    public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
         ModelAndView mv = new ModelAndView("home");
         User currentUser = userService.getCurrentUser();
         mv.addObject("user", currentUser);
         mv.addObject("tag", tag);
+        mv.addObject("search", search);
         return mv;
     }
 }
