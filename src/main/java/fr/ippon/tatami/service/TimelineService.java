@@ -96,12 +96,19 @@ public class TimelineService {
     }
 
     public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+        String login = authenticationService.getCurrentUser().getLogin();
+        Collection<String> favoriteIds = tweetRepository.getFavoritesline(login);
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweetId : tweetIds) {
             Tweet tweet = tweetRepository.findTweetById(tweetId);
             if (tweet == null) {
                 log.debug("Invisible tweet : " + tweetId);
                 continue;
+            }
+            if (favoriteIds.contains(tweetId)) {
+                tweet.setFavorite(true);
+            } else {
+                tweet.setFavorite(false);
             }
             User tweetUser = userService.getUserByLogin(tweet.getLogin());
             tweet.setFirstName(tweetUser.getFirstName());
@@ -232,8 +239,6 @@ public class TimelineService {
             log.debug("Unmarking tweet : " + tweetId);
         }
         Tweet tweet = tweetRepository.findTweetById(tweetId);
-
-        // registering
         User currentUser = authenticationService.getCurrentUser();
         tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
     }

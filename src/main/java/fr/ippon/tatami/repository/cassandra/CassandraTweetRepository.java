@@ -102,19 +102,6 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    public void addTweetToFavoritesline(Tweet tweet, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()), "",
-                UUIDSerializer.get(), StringSerializer.get()));
-    }
-    
-    @Override
-    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, UUID.fromString(tweet.getTweetId()), UUIDSerializer.get());
-    }
-
-    @Override
     public void addTweetToDayline(Tweet tweet, String key) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, DAYLINE_CF, HFactory.createColumn(Calendar.getInstance().getTimeInMillis(),
@@ -205,6 +192,22 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
+    @CacheEvict(value = "favorites-cache", key = "#login")
+    public void addTweetToFavoritesline(Tweet tweet, String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()), "",
+                UUIDSerializer.get(), StringSerializer.get()));
+    }
+
+    @Override
+    @CacheEvict(value = "favorites-cache", key = "#login")
+    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.delete(login, FAVLINE_CF, UUID.fromString(tweet.getTweetId()), UUIDSerializer.get());
+    }
+
+    @Override
+    @Cacheable("favorites-cache")
     public Collection<String> getFavoritesline(String login) {
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())

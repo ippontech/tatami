@@ -36,30 +36,6 @@ function favoriteTweets() {
     return false;
 }
 
-// Decorate the tweets, depending if they are favorites or not.
-function decorateFavoriteTweets() {
-    getFavoriteTweets(function(data) {
-        var favorites = [];
-        $.each(data, function(entryIndex, entry) {
-            favorites.push(entry.tweetId);
-        });
-        $('.tweet').each(function(index) {
-            var tweetId = $(this).attr('tweetId');
-            entity = $('.' + tweetId + '-favorite');
-            entity.empty();
-            if ($.inArray(tweetId, favorites) >= 0) {
-                entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
-                entity.append('<i class="icon-star-empty" />');
-                $(this).children(".tweetDate").addClass("favorite");
-            } else {
-                entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
-                entity.append('<i class="icon-star" />');
-            }
-        });
-    });
-    return false;
-}
-
 function makeTweetsList(data, dest) {
     dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
         dest.empty();
@@ -80,6 +56,7 @@ function makeTweetsList(data, dest) {
         				'tweetId':entry['tweetId'],
         				'gravatar':entry['gravatar'],
         				'prettyPrintTweetDate':entry['prettyPrintTweetDate'],
+                        'favorite':entry['favorite'],
         				'isUserLogin' : login == entry['login']
         	};
         	
@@ -87,7 +64,6 @@ function makeTweetsList(data, dest) {
 
             dest.append(html);
         });
-        decorateFavoriteTweets();
         dest.fadeTo(DURATION_OF_FADE_TO, 1);
     });
 }
