@@ -431,6 +431,15 @@
        	}]
     },
     {
+        "name" : "Favline",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UUIDType",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "userWhoPostTweet"
+        }]
+    },
+    {
         "name" : "Dayline",
         "keyType" : "UTF8Type",
         "comparatorType" : "LongType",

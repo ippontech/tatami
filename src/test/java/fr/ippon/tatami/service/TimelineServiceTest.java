@@ -23,6 +23,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldGetUserline() throws Exception {
         String login = "userWithTweets";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
         Collection<Tweet> tweets = timelineService.getUserline(login, 10);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
