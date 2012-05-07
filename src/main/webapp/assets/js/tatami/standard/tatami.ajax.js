@@ -115,12 +115,21 @@ function listTweets(reset) {
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  */
 function listUserTweets(userLogin) {
+    var url = "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin;
+    if (bottomTweetId != undefined) {
+        url += "&max_id=" + bottomTweetId;
+    }
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
+        url: url,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#tweetsList'));
+            if (data.length > 0) {
+                makeTweetsList(data, $('#tweetsList'));
+                scrollLock = false;
+            } else {
+                $('#tweetsList').append('<tr class="tweet"><td colspan="4" style="text-align: center;">No more tweets...</td></tr>');
+            }
         }
     });
 }

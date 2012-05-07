@@ -111,6 +111,17 @@ function initProfile() {
     shortcut.add("Ctrl+R", function() {
         listUserTweets(userLogin);
     });
+
+    // infinite scroll
+    $(window).scroll(function() {
+        if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+            if (scrollLock == false) {
+                scrollLock = true;
+                listUserTweets(userLogin);
+            }
+        }
+    });
+
     $('a[data-toggle="tab"]').on('show', function(e) {
         if (e.target.hash == '#followingPanel') {
             makeFollowingList();
