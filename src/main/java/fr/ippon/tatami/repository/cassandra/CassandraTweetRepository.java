@@ -224,7 +224,7 @@ public class CassandraTweetRepository implements TweetRepository {
                     .execute()
                     .get();
 
-            for (HColumn<UUID, String> column : result.getColumns().subList(1, result.getColumns().size())) {
+            for (HColumn<UUID, String> column : result.getColumns().subList(0, result.getColumns().size() - 1)) {
                 tweetIds.add(column.getName().toString());
             }
         } else {

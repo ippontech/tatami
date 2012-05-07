@@ -111,6 +111,23 @@ function listTweets(reset) {
     });
 }
 
+function updateTweetsList(firstTweetId) {
+    var url = "/tatami/rest/statuses/home_timeline?since_id=" + firstTweetId;
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+            $('#updateTweetsList').remove();
+            if (data.length == 1) {
+                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">1 new tweet</td></tr>');
+            } else if (data.length > 1) {
+                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">' + data.length + ' new tweets</td></tr>');
+            }
+        }
+    });
+}
+
 /**
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  */

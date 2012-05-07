@@ -98,6 +98,15 @@ function initHome() {
         searchTweets(query);
         return false;
     }
+    autoUpdateTweetsList();
+}
+
+function autoUpdateTweetsList() {
+    var topTweetId = $("#tweetsList .tweet:first").attr("tweetId");
+    if (topTweetId != undefined) {
+        updateTweetsList(topTweetId);
+    }
+    setTimeout("autoUpdateTweetsList()", 20000);
 }
 
 function initProfile() {
