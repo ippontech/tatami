@@ -136,7 +136,4 @@ function initProfile() {
         window.location = "/tatami/?search=" + searchQuery;
         return false;
     });
-
-    //Mustache.js templates
-    $('#mustache').load('/assets/templates_mustache/templates.html');
 }
