@@ -31,40 +31,40 @@ function tweetToUser() {
 // Get the favorites, on the home page.
 function favoriteTweets() {
     getFavoriteTweets(function(data) {
+        $('#favTweetsList').empty();
         makeTweetsList(data, $('#favTweetsList'));
     });
     return false;
 }
 
-function makeTweetsList(data, dest) {
-    dest.fadeTo(DURATION_OF_FADE_TO, 0, function() {    //DEBUG do NOT use fadeIn/fadeOut which would scroll up the page
-        dest.empty();
-        $.each(data, function(entryIndex, entry) {
-            var userlineLink = userlineURL.replace(userlineREG, entry['login']);
-            
-        	var template = $('#template_tweets').html();
-            var content = entry['content']
-            		.replace(userrefREG, userrefURL)
-            		.replace(tagrefREG, tagrefURL)
-            		.replace(url1REG, url1URL)
-            		.replace(url2REG, url2URL);
-        	var data = {'userlineLink' : userlineLink,
-        				'login' : entry['login'],
-        				'firstName':entry['firstName'],
-        				'lastName':entry['lastName'],
-        				'content':content,
-        				'tweetId':entry['tweetId'],
-        				'gravatar':entry['gravatar'],
-        				'prettyPrintTweetDate':entry['prettyPrintTweetDate'],
-                        'favorite':entry['favorite'],
-        				'isUserLogin' : login == entry['login']
-        	};
-        	
-            var html = Mustache.render(template, data);
+var bottomTweetId;
 
-            dest.append(html);
-        });
-        dest.fadeTo(DURATION_OF_FADE_TO, 1);
+function makeTweetsList(data, dest) {
+    $.each(data, function(entryIndex, entry) {
+        var userlineLink = userlineURL.replace(userlineREG, entry['login']);
+
+        var template = $('#template_tweets').html();
+        var content = entry['content']
+            .replace(userrefREG, userrefURL)
+            .replace(tagrefREG, tagrefURL)
+            .replace(url1REG, url1URL)
+            .replace(url2REG, url2URL);
+        var data = {'userlineLink' : userlineLink,
+            'login' : entry['login'],
+            'firstName':entry['firstName'],
+            'lastName':entry['lastName'],
+            'content':content,
+            'tweetId':entry['tweetId'],
+            'gravatar':entry['gravatar'],
+            'prettyPrintTweetDate':entry['prettyPrintTweetDate'],
+            'favorite':entry['favorite'],
+            'isUserLogin' : login == entry['login']
+        };
+
+        var html = Mustache.render(template, data);
+
+        dest.append(html);
+        bottomTweetId = entry['tweetId'];
     });
 }
 

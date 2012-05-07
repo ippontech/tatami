@@ -442,68 +442,68 @@
     {
         "name" : "Dayline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "LongType",
+        "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "19042012",
         	"columns" : [{
-        		"name" : "1",
-        		"value" : "tweetId1"
+        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	},
         	{
-        		"name" : "0",
-        		"value" : "tweetId2"
+        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	}]
         }]
     },
     {
         "name" : "Tagline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "LongType",
+        "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "ippon",
         	"columns" : [{
-        		"name" : "0",
-        		"value" : "tweetId1"
+        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	},
         	{
-        		"name" : "1",
-        		"value" : "tweetId2"
+        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	}]
         }]
     },
     {
         "name" : "Timeline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "LongType",
+        "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "userWithTweets",
         	"columns" : [{
-        		"name" : "0",
-        		"value" : "tweetId1"
+        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	},
         	{
-        		"name" : "1",
-        		"value" : "tweetId2"
+        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	}]
         }]
     },
     {
         "name" : "Userline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "LongType",
+        "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
         	"key" : "userWithTweets",
         	"columns" : [{
-        		"name" : "0",
-        		"value" : "tweetId1"
+        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	},
         	{
-        		"name" : "1",
-        		"value" : "tweetId2"
+        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
+        		"value" : ""
         	}]
         }]
     },
@@ -512,7 +512,7 @@
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
         "rows" : [{
-        	"key" : "tweetId1",
+        	"key" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
         		"value" : "utf8(userWithTweets)"
@@ -527,7 +527,7 @@
         	}]
         },
         {
-        	"key" : "tweetId2",
+        	"key" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
         		"value" : "utf8(userWithTweets)"

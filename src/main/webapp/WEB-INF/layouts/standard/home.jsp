@@ -131,7 +131,25 @@
                     </li>
                 </ul>
                 <div class="tab-content alert alert-success">
-                    <div class="tab-pane active" id="timeLinePanel"></div>
+                    <div class="tab-pane active" id="timeLinePanel">
+                        <section id="timeline">
+                            <header>
+                                <div class="alert" id="refreshStatus" hidden="hidden"></div>
+                            </header>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="3"><h2>Tweets</h2></th>
+                                    <th>
+                                        <a href="#" id="refreshTweets" title="Refresh - shortcut : ctrl+R"><i
+                                                class="icon-repeat icon-white"></i></a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="tweetsList" class="tweetsList"></tbody>
+                            </table>
+                        </section>
+                    </div>
                     <div class="tab-pane" id="favLinePanel"></div>
                     <div class="tab-pane" id="tagLinePanel"></div>
                     <div class="tab-pane" id="searchLinePanel"></div>
@@ -160,6 +178,9 @@
     var tag = "${tag}";
     var searchQuery = "${search}";
     var page = "home";
+
+    //Mustache.js templates
+    $('#mustache').load('/assets/templates_mustache/templates.html');
 
     $(document).ready(function() {
         initHome();

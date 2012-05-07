@@ -152,6 +152,9 @@
     var userLogin = "${user.login}";
     var page = "profile";
 
+    //Mustache.js templates
+    $('#mustache').load('/assets/templates_mustache/templates.html');
+
     $(document).ready(function() {
         initProfile();
     });

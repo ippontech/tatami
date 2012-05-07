@@ -166,12 +166,14 @@ public class TimelineService {
     /**
      * The timeline contains the user's tweets merged with his friends tweets
      *
+     *
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param since_id
+     *@param max_id @return a tweets list
      */
-    public Collection<Tweet> getTimeline(int nbTweets) {
+    public Collection<Tweet> getTimeline(int nbTweets, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets);
+        Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets, since_id, max_id);
         return this.buildTweetsList(tweetIds);
     }
 
@@ -182,12 +184,12 @@ public class TimelineService {
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
-    public Collection<Tweet> getUserline(String login, int nbTweets) {
+    public Collection<Tweet> getUserline(String login,int nbTweets, String since_id, String max_id) {
         if (login == null || login.isEmpty()) {
             User currentUser = authenticationService.getCurrentUser();
             login = currentUser.getLogin();
         }
-        Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets);
+        Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets, since_id, max_id);
 
         return this.buildTweetsList(tweetIds);
     }
