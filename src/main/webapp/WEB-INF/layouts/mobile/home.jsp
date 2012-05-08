@@ -1,4 +1,4 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en"
@@ -10,18 +10,18 @@
 		<div id="topbar-home" class="navbar navbar-fixed-top topbar" >
 			<div class="navbar-inner">
 				<div class="container">
-					<a class="brand" href="#"><img src="/assets/img/ippon-logo.png"></img><spring:message
-                    code="tatami.title"/></a>
+					<a class="brand" href="#"><img src="/assets/img/ippon-logo.png"></img><fmt:message
+                    key="tatami.title"/></a>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li class="active"><a href="/tatami/"><i class="icon-home icon-white"></i>&nbsp;<spring:message
-                            code="tatami.home"/></a></li>
-	                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<spring:message
-                            code="tatami.about"/></a></li>
+							<li class="active"><a href="/tatami/"><i class="icon-home icon-white"></i>&nbsp;<fmt:message
+                            key="tatami.home"/></a></li>
+	                        <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<fmt:message
+                            key="tatami.about"/></a></li>
 						</ul>
 						<ul class="nav pull-right">
-							<li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<spring:message
-                            code="tatami.logout"/></a></li>
+							<li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<fmt:message
+                            key="tatami.logout"/></a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
@@ -32,35 +32,35 @@
            <ul class="nav nav-tabs">
            		<li class="dropdown">
             		<a id="defaultTab" href="#homePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<spring:message code="tatami.new.tweet"/></a>
+            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<fmt:message key="tatami.new.tweet"/></a>
 				</li>
 				<li class="dropdown">
             		<a id="timelineTab" href="#timelinePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<spring:message code="tatami.tweets"/></a>
+            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<fmt:message key="tatami.tweets"/></a>
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="/assets/img/glyphicons_153_more_windows.png"></img>&nbsp;<spring:message code="tatami.more"/><b class="caret"></b></a>
+						<img src="/assets/img/glyphicons_153_more_windows.png"></img>&nbsp;<fmt:message key="tatami.more"/><b class="caret"></b></a>
 		            <ul class="dropdown-menu">
 		            	<li>
 		            		<a id="profileTab" href="#profilePanel"  data-toggle="tab">
-		            			<i class="icon-edit"></i>&nbsp;<spring:message code="tatami.update.profile.mobile" /></a>
+		            			<i class="icon-edit"></i>&nbsp;<fmt:message key="tatami.update.profile.mobile" /></a>
 		            	</li>
 		            	<li>
 		            		<a id="favoriteTab" href="#favlinePanel"  data-toggle="tab">
-		            			<i class="icon-star"></i>&nbsp;<spring:message code="tatami.favorites.mobile" /></a>
+		            			<i class="icon-star"></i>&nbsp;<fmt:message key="tatami.favorites.mobile" /></a>
 		            	</li>
 		            	<li>
 		            		<a id="userlineTab" href="#userlinePanel" data-toggle="tab">
-		            			<img src="/assets/img/glyphicons_024_parents.png"></img>&nbsp;<spring:message code="tatami.userline.mobile" /></a>
+		            			<img src="/assets/img/glyphicons_024_parents.png"></img>&nbsp;<fmt:message key="tatami.userline.mobile" /></a>
 		            	</li>
 						<li>
 		            		<a id="taglineTab" href="#taglinePanel" data-toggle="tab">
-		            			<i class="icon-tags"></i>&nbsp;<spring:message code="tatami.tagline.mobile" /></a>
+		            			<i class="icon-tags"></i>&nbsp;<fmt:message key="tatami.tagline.mobile" /></a>
 		            	</li>
 		            	<li>
 		            		<a id="followTab" href="#followPanel"  data-toggle="tab">
-		            			<i class="icon-random"></i>&nbsp;<spring:message code="tatami.user.suggestions.mobile" /></a>
+		            			<i class="icon-random"></i>&nbsp;<fmt:message key="tatami.user.suggestions.mobile" /></a>
 		            	</li>
 		            </ul>
 				</li>
@@ -108,7 +108,7 @@
 							</tr>
 							<tr>
 								<td>
-									<button id="tweetButton" type="button" class="btn btn-primary"><spring:message code="tatami.user.tweet" /></button>
+									<button id="tweetButton" type="button" class="btn btn-primary"><fmt:message key="tatami.user.tweet" /></button>
 								</td>
 							</tr>
 						</table>			
