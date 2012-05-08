@@ -1,6 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -29,50 +28,50 @@
                     <c:choose>
                         <c:when test="${not empty user && user.login eq login}">
                             <div class="btn btn-info"
-                                 title="It s you"><spring:message code="tatami.user.yourself"/>
+                                 title="It s you"><fmt:message key="tatami.user.yourself"/>
                             </div>
                         </c:when>
                         <c:when test="${not empty followed && followed}">
                             <a href="#" id="unfollowBtn"
                                onclick="unfollowUserProfile(userLogin)"
                                class="btn btn-info"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.followed"/></a>
+                               title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
+                                    key="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
                                onclick="followUserProfile(userLogin)"
                                class="btn btn-info hide"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.follow"/></a>
+                               title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
+                                    key="tatami.user.follow"/></a>
                         </c:when>
                         <c:otherwise>
                             <a href="#" id="unfollowBtn"
                                onclick="unfollowUserProfile(userLogin)"
                                class="btn btn-info hide"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.followed"/></a>
+                               title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
+                                    key="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
                                onclick="followUserProfile(userLogin)"
                                class="btn btn-info"
-                               title="${user.firstName}&nbsp;${user.lastName}"><spring:message
-                                    code="tatami.user.follow"/></a>
+                               title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
+                                    key="tatami.user.follow"/></a>
                         </c:otherwise>
                     </c:choose>
                 </div>
 
                 <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbTweets}"
-                                                          pattern="# ### ###"/></span><br/><spring:message
-                        code="tatami.badge.tweets"/>
+                                                          pattern="# ### ###"/></span><br/><fmt:message
+                        key="tatami.badge.tweets"/>
                 </div>
                 <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbFollowed}"
-                                                          pattern="# ### ###"/></span><br/><spring:message
-                        code="tatami.badge.followed"/>
+                                                          pattern="# ### ###"/></span><br/><fmt:message
+                        key="tatami.badge.followed"/>
                 </div>
                 <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbFollowers}"
-                                                          pattern="# ### ###"/></span><br/><spring:message
-                        code="tatami.badge.followers"/>
+                                                          pattern="# ### ###"/></span><br/><fmt:message
+                        key="tatami.badge.followers"/>
                 </div>
             </div>
 
@@ -81,24 +80,24 @@
                     <div class="alert alert-info">
                         <ul class="nav nav-pills nav-stacked">
                             <li class="active">
-                                <a id="tweetsTab" href="#tweetsPanel" data-toggle="tab"><spring:message
-                                        code="tatami.badge.tweets"/></a>
+                                <a id="tweetsTab" href="#tweetsPanel" data-toggle="tab"><fmt:message
+                                        key="tatami.badge.tweets"/></a>
                             </li>
-                            <li><a id="followingTab" href="#followingPanel" data-toggle="tab"><spring:message
-                                    code="tatami.badge.followed"/></a></li>
-                            <li><a id="followersTab" href="#followersPanel" data-toggle="tab"><spring:message
-                                    code="tatami.badge.followers"/></a></li>
+                            <li><a id="followingTab" href="#followingPanel" data-toggle="tab"><fmt:message
+                                    key="tatami.badge.followed"/></a></li>
+                            <li><a id="followersTab" href="#followersPanel" data-toggle="tab"><fmt:message
+                                    key="tatami.badge.followers"/></a></li>
                         </ul>
                     </div>
                     <div class="alert alert-info">
-                        <h4><spring:message code="tatami.user.tweettohim"/>@${user.login}</h4><br/>
+                        <h4><fmt:message key="tatami.user.tweettohim"/>@${user.login}</h4><br/>
 
                         <div id="tweetToHim" class="row-fluid">
                             <form class="form-inline" onsubmit="return tweetToUser();">
                                 <textarea id="tweetContent" rel="popover" class="focused"
                                           maxlength="140">@${user.login} </textarea>
-                                <button type="submit" class="btn btn-primary"><spring:message
-                                        code="tatami.user.tweet"/></button>
+                                <button type="submit" class="btn btn-primary"><fmt:message
+                                        key="tatami.user.tweet"/></button>
                             </form>
                             <div class="error"></div>
                         </div>
@@ -111,8 +110,8 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th><h2><spring:message
-                                            code="tatami.badge.followed"/></h2></th>
+                                    <th><h2><fmt:message
+                                            key="tatami.badge.followed"/></h2></th>
                                 </tr>
                                 </thead>
                                 <tbody id="followingList" class="tweetsList"></tbody>
@@ -122,7 +121,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th><h2><spring:message code="tatami.badge.followers"/></h2>
+                                    <th><h2><fmt:message key="tatami.badge.followers"/></h2>
                                     </th>
                                 </tr>
                                 </thead>
@@ -138,7 +137,7 @@
         <c:otherwise>
 
             <div class="row-fluid">
-                <spring:message code="tatami.user.undefined"/>
+                <fmt:message key="tatami.user.undefined"/>
             </div>
 
         </c:otherwise>

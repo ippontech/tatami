@@ -1,5 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,15 +12,15 @@
 
 <div class="container">
     <div class="span4 offset4">
-        <h1><spring:message code="tatami.authentification"/></h1>
+        <h1><fmt:message key="tatami.authentification"/></h1>
 
         <form action="/tatami/authentication" method="post" class="well">
             <fieldset>
-                <label><spring:message code="tatami.login"/>&nbsp;:</label> <input id="j_username" name="j_username"
+                <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input id="j_username" name="j_username"
                                                                                    type="text" required="required"
                                                                                    autofocus class="input-xlarge"
                                                                                    placeholder="Your login..."/>
-                <label><spring:message code="tatami.password"/>&nbsp;:</label> <input id="j_password" name="j_password"
+                <label><fmt:message key="tatami.password"/>&nbsp;:</label> <input id="j_password" name="j_password"
                                                                                       type="password"
                                                                                       required="required"
                                                                                       class="input-xlarge"
@@ -29,10 +29,10 @@
             <label class="checkbox">
                 <input type='checkbox'
                        name='_spring_security_remember_me' id="_spring_security_remember_me"
-                       value="true" checked="true"/>&nbsp;<spring:message code="tatami.remember.password.time"/>
+                       value="true" checked="true"/>&nbsp;<fmt:message key="tatami.remember.password.time"/>
             </label>
 
-            <button type="submit" class="btn btn-success"><spring:message code="tatami.authentificate"/></button>
+            <button type="submit" class="btn btn-success"><fmt:message key="tatami.authentificate"/></button>
         </form>
     </div>
 </div>
