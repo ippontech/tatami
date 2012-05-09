@@ -400,7 +400,8 @@ function fillTweetTemplate(a, b) {
 				a.firstName + " " + a.lastName + "<br/>")
 	}
 	var enhancedContent = a.content.replace(URL1_REG, URL1_LINK)
-							.replace(URL2_REG, URL2_LINK);
+							.replace(URL2_REG, URL2_LINK)
+							.replace(URL3_REG, URL3_LINK);
 
 	$newTweetLine.find("article span").html(enhancedContent);
 	if (b != "timeline" && a.authorFollow) {

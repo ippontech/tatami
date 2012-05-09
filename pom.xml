@@ -354,7 +354,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${maven.jetty.version}</version>
                 <configuration>
-                    <!-- <scanIntervalSeconds>1</scanIntervalSeconds> -->
+                    <scanIntervalSeconds>1</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
                 </configuration>

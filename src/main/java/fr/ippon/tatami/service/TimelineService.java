@@ -34,8 +34,8 @@ public class TimelineService {
 
     private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
-    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_.\\:\\?=\\&]+(\\b|$)");
-    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/])(w{3}[a-zA-Z0-9-_\\/.\\:\\?=\\&]+(\\b|$))");
+    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$)");
+    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/{2}])(w{3}[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$))");
 
     private final Log log = LogFactory.getLog(TimelineService.class);
 
@@ -104,8 +104,8 @@ public class TimelineService {
         while (matcher.find()) {
             matchUrl = matcher.group(0);
             shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl.length() < matchUrl.length()) {
-                shortenURLs.put(this.urlShortener.shorten(matchUrl), matchUrl);
+            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
+                shortenURLs.put(shortenUrl, matchUrl);
             }
         }
         matcher.appendTail(shortenContent);
@@ -116,7 +116,10 @@ public class TimelineService {
         matcher = this.urlPattern2.matcher(input);
         while (matcher.find()) {
             matchUrl = matcher.group(2);
-            shortenURLs.put(this.urlShortener.shorten(matchUrl), matchUrl);
+            shortenUrl = this.urlShortener.shorten(matchUrl);
+            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
+                shortenURLs.put(shortenUrl, matchUrl);
+            }
         }
         matcher.appendTail(shortenContent);
 

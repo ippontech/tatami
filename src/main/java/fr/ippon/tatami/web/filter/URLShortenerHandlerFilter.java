@@ -4,6 +4,8 @@
 package fr.ippon.tatami.web.filter;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,10 +30,12 @@ import fr.ippon.tatami.repository.ShortURLRepository;
  */
 public class URLShortenerHandlerFilter extends GenericFilterBean {
 
-    private static final String DOUBLE_SLASH = "//";
+    private final Pattern p = Pattern.compile("([a-zA-Z]+:\\/\\/)(.+)");
+    private static final String DEFAULT_PROTOCOL = "http://";
 
     private ApplicationContext parent;
     private Environment env;
+
 
     public void setParent(ApplicationContext parent) {
         this.parent = parent;
@@ -50,43 +54,57 @@ public class URLShortenerHandlerFilter extends GenericFilterBean {
         return this.env.getProperty("tatami.short.url.prefix");
     }
 
-    /**
-     * Based on the short URL prefix, rebuild what was the initial short URL
-     * (in the particular case of the short domain name is not configured for
-     * the application and the normal domain name is used instead)<br>
-     * Because of the possible overlap between the short URL and the servlet path (due to the servlet context name),
-     * this method helps rebuilding the original short URL
-     * @param requestServletPath the request ServletPath received
-     * @return what was the original short URL
-     */
-    private String rebuildShortURL(String requestServletPath) {
-        String shortUrlPrefix = getShortURLPrefix();
-        int doubleSlashIndex = shortUrlPrefix.indexOf(DOUBLE_SLASH);
-        int nextSlashIndex = shortUrlPrefix.indexOf("/", doubleSlashIndex+DOUBLE_SLASH.length());
-        String url = requestServletPath;
-        if (nextSlashIndex != shortUrlPrefix.length()) {
-            String servletContextPath = shortUrlPrefix.substring(nextSlashIndex);
-            if (url.startsWith(servletContextPath)) {
-                url = url.replace(servletContextPath, "");
+    public String getShortURLPrefixWithoutProtocol() {
+
+        String shortURL = getShortURLPrefix();
+        Matcher m = this.p.matcher(shortURL);
+        String shortURLWithoutProtocol = null;
+        if (m.matches() && m.groupCount() == 2) {
+            try {
+                shortURLWithoutProtocol = m.group(2);
+            } catch (IllegalStateException e) {
+                shortURLWithoutProtocol = shortURL;
+            } catch (IndexOutOfBoundsException e) {
+                shortURLWithoutProtocol = shortURL;
             }
         }
-
-        return shortUrlPrefix + url;
+        return shortURLWithoutProtocol;
     }
 
-    /* (non-Javadoc)
+    public String getShortURLPrefixProtocol() {
+
+        String shortURL = getShortURLPrefix();
+        Matcher m = this.p.matcher(shortURL);
+        String shortURLProtocol = "";
+        if (m.matches() && m.groupCount() == 2) {
+            try {
+                shortURLProtocol = m.group(1);
+            } catch (IllegalStateException e) {
+                shortURLProtocol = "";
+            } catch (IndexOutOfBoundsException e) {
+                shortURLProtocol = "";
+            }
+        }
+        return shortURLProtocol;
+    }
+
+    /**
      * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (getShortURLPrefix() == null) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
-        getServletContext().getFilterRegistration(getFilterName()).getUrlPatternMappings();
         String shortUrl = req.getRequestURL().toString();
-        if (shortUrl.indexOf(getShortURLPrefix()) == -1) { // DNS should not be set on the environment : should concatenate the URL random key with shortURLPrefix
-            String servletPath = req.getServletPath();
-            shortUrl = rebuildShortURL(servletPath);
+        // Request URL and shortURLPrefix don't start the same.
+        // In this case, short URL should be relative : have to rebuild what was the relative shorten URL :
+        if (shortUrl.indexOf(getShortURLPrefixWithoutProtocol()) != 1) {
+            shortUrl = getShortURLPrefixProtocol() + req.getServletPath();
         }
 
         ShortURLRepository repository = this.parent.getBean(ShortURLRepository.class);
@@ -96,6 +114,10 @@ public class URLShortenerHandlerFilter extends GenericFilterBean {
         if (redirectURL == null) {
             res.sendError(HttpServletResponse.SC_NOT_FOUND);
         } else {
+            // check if redirectURL doesn't start with 'zzzz' if DEFAULT_PROTOCOL is 'zzzz://'. If not, concatenate the DEFAULT_PROTOCOL
+            if (!redirectURL.startsWith(DEFAULT_PROTOCOL.substring(0, DEFAULT_PROTOCOL.length()-3))) {
+                redirectURL = DEFAULT_PROTOCOL + redirectURL;
+            }
             res.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             res.setHeader("Location", redirectURL);
             res.setHeader("Connection", "close" );
