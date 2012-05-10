@@ -1,14 +1,9 @@
 package fr.ippon.tatami.web.init;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
-
+import fr.ippon.tatami.config.ApplicationConfiguration;
+import fr.ippon.tatami.config.DispatcherServletConfig;
+import fr.ippon.tatami.web.filter.URLShortenerHandlerFilter;
+import fr.ippon.tatami.web.monitoring.MonitoringFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.mobile.device.DeviceResolverHandlerFilter;
@@ -17,9 +12,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import fr.ippon.tatami.config.ApplicationConfiguration;
-import fr.ippon.tatami.config.DispatcherServletConfig;
-import fr.ippon.tatami.web.monitoring.MonitoringFilter;
+import javax.servlet.*;
+import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.<br>
@@ -70,7 +64,7 @@ public class WebConfigurer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-        log.info("Configuring servlets and filters from a ServletContextListener referenced by web.xml");
+        this.log.info("Configuring servlets and filters from a ServletContextListener referenced by web.xml");
 
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(ApplicationConfiguration.class);
@@ -78,14 +72,23 @@ public class WebConfigurer implements ServletContextListener {
 
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
+        //        AnnotationConfigWebApplicationContext shortenerServletConfig = new AnnotationConfigWebApplicationContext();
+        //        shortenerServletConfig.setParent(rootContext);
+        //        shortenerServletConfig.register(DispatcherServletConfig.class);
+
         AnnotationConfigWebApplicationContext dispatcherServletConfig = new AnnotationConfigWebApplicationContext();
         dispatcherServletConfig.setParent(rootContext);
         dispatcherServletConfig.register(DispatcherServletConfig.class);
 
+        //        ServletRegistration.Dynamic shortLinksServlet = servletContext.addServlet("shortener", new DispatcherServlet(
+        //                shortenerServletConfig));
+        //        shortLinksServlet.addMapping("/s/*");
+        //        shortLinksServlet.setLoadOnStartup(1);
+
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcher", new DispatcherServlet(
                 dispatcherServletConfig));
         dispatcherServlet.addMapping("/tatami/*");
-        dispatcherServlet.setLoadOnStartup(1);
+        dispatcherServlet.setLoadOnStartup(2);
 
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
                 new DelegatingFilterProxy());
@@ -100,7 +103,13 @@ public class WebConfigurer implements ServletContextListener {
                 new DeviceResolverHandlerFilter());
         deviceResolverHandlerFilter.addMappingForUrlPatterns(disps, true, "/*");
 
-   }
+        final URLShortenerHandlerFilter shortenerFilter = new URLShortenerHandlerFilter();
+        shortenerFilter.setParent(rootContext);
+        FilterRegistration.Dynamic urlShortenerHandlerFilter = servletContext.addFilter("urlShortenerHandlerFilter",
+                shortenerFilter);
+        urlShortenerHandlerFilter.addMappingForUrlPatterns(disps, true, "/s/*");
+
+    }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {

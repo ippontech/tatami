@@ -12,7 +12,7 @@ import java.io.IOException;
 @Configuration
 @PropertySource("classpath:/META-INF/tatami/tatami.properties")
 @ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
-@Import(value = {CacheConfiguration.class, CassandraConfiguration.class, ElasticSearchConfiguration.class})
+@Import(value = {MiscBeanConfiguration.class, CacheConfiguration.class, CassandraConfiguration.class, ElasticSearchConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationConfiguration {
 
@@ -20,7 +20,7 @@ public class ApplicationConfiguration {
 
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
-        log.info("Tatami started!");
+        this.log.info("Tatami started!");
     }
 
 }

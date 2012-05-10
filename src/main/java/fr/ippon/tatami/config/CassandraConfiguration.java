@@ -39,9 +39,9 @@ public class CassandraConfiguration {
     @Bean
     public Keyspace keyspaceOperator() {
 
-        String cassandraHost = env.getProperty("cassandra.host");
-        String cassandraClusterName = env.getProperty("cassandra.clusterName");
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraHost = this.env.getProperty("cassandra.host");
+        String cassandraClusterName = this.env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
@@ -50,7 +50,7 @@ public class CassandraConfiguration {
 
         KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
         if (keyspaceDef == null) {
-            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+            this.log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
@@ -63,6 +63,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
             addColumnFamilySortedbyUUID(cluster, TAGLINE_CF);
             addColumnFamilySortedbyUUID(cluster, USERLINE_CF);
+            addColumnFamily(cluster, URLS_CF);
 
             ThriftCfDef cfDef =
                     new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
@@ -76,7 +77,7 @@ public class CassandraConfiguration {
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
 
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
@@ -86,7 +87,7 @@ public class CassandraConfiguration {
 
     private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName) {
 
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);

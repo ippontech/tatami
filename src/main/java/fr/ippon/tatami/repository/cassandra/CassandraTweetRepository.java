@@ -2,17 +2,14 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.repository.TweetRepository;
-import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.SliceQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -122,7 +119,7 @@ public class CassandraTweetRepository implements TweetRepository {
             assert tag != null && !tag.isEmpty() && !tag.contains("#");
             log.debug("tag list augmented : " + tag);
             mutator.insert(tag.toLowerCase(), TAGLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()),
-                "", UUIDSerializer.get(), StringSerializer.get()));
+                    "", UUIDSerializer.get(), StringSerializer.get()));
         }
     }
 

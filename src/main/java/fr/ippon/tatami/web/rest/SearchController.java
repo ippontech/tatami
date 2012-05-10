@@ -42,9 +42,9 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweetsForUser(@RequestParam(value = "q", required = false, defaultValue="") String q,
-                                               @RequestParam(value = "page", required = false, defaultValue="0") Integer page,
-                                               @RequestParam(value = "rpp", required = false, defaultValue="20") Integer rpp) {
+    public Collection<Tweet> listTweetsForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
+                                               @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                               @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to search tweets containing these words (" + q + ").");

@@ -23,7 +23,7 @@
 							<li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<fmt:message
                             key="tatami.logout"/></a></li>
 						</ul>
-					</div><!--/.nav-collapse -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -217,26 +217,23 @@
 			<span id="userProfileLogin">@login</span>
 			<a class="close userProfileClose" data-dismiss="modal">&times;</a>
 	    </div>
-
 	    <div class="modal-body row-fluid noMargin noPadding">
 			<div id="userProfileGravatar" class="span3">
 				<img class="tweetGravatar"
 							data-user="" src="http://www.gravatar.com/avatar/?s=32"></img>
 			</div>
-	    	
 	    	<div id="userProfileInfo" class="span9 noMargin">
 	    		<div id="userProfileName" class="row-fluid noMargin">Name</div>
-	    		<div id="userProfileLocation" class="row-fluid noMargin">
+	    		<div id="userProfileLocation" class="row-fluid noMargin" style="display:none;">
 	    			<span class="span3 userProfileLabel">Location:&nbsp;</span><span>Somewhere</span>
 				</div>
-    			<div id="userProfileWebsite" class="row-fluid noMargin">
+    			<div id="userProfileWebsite" class="row-fluid noMargin" style="display:none;">
 	    			<span class="span3  userProfileLabel">Website:&nbsp;</span><a href="" target="_blank">http://www.ippon.fr</a> 
     			</div>
 	    		<div id="userProfileBio" class="row-fluid noMargin">
 	    		</div>
 	    	</div>
 	    </div>
-	    
 	    <div id="userProfileFooter" class="modal-footer row-fluid noMargin">
 			<div class="span4 center">
 				<span id="userProfileTweetsCount" class="badge" data-modal-hide="#userProfileModal">1</span><br/>TWEETS
@@ -314,7 +311,8 @@
 			var JSON_CONTENT = 'application/json; charset=UTF-8';
            	/*]]>*/
        	</script>
-
+		
+		<script src="/assets/js/tatami/constants.js"></script>
 		<script src="/assets/js/tatami/mobile/tatami-mobile.js"></script>        	 
 	</div>
   </body>

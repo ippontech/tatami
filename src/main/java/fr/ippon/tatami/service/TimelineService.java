@@ -4,17 +4,17 @@ import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.ShortURLRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.util.UrlShortener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +25,15 @@ import java.util.regex.Pattern;
  */
 @Service
 public class TimelineService {
+
+    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
+
+    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$)");
+    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/{2}])(w{3}[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$))");
+
+    private final Log log = LogFactory.getLog(TimelineService.class);
+
+    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
     @Inject
     private UserService userService;
@@ -39,39 +48,115 @@ public class TimelineService {
     private FollowerRepository followerRepository;
 
     @Inject
+    private ShortURLRepository shortURLRepository;
+
+    @Inject
     private AuthenticationService authenticationService;
 
     @Inject
     private IndexService indexService;
 
     @Inject
+    private UrlShortener urlShortener;
+
+    @Inject
     private boolean indexActivated;
 
-    private String hashtagDefault = "---";
+    private final String hashtagDefault = "---";
 
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
-    private final Log log = LogFactory.getLog(TimelineService.class);
-
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
-
-    public void postTweet(String content) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating new tweet : " + content);
+    /**
+     * Return a new content with every URL replaced with a shorten one
+     *
+     * @param content the content to filter
+     * @param urls    the short/long URL used in the replacement
+     * @return a shorten content
+     */
+    private String shortenContent(final String content, final Map<String, String> urls) {
+        String shortenContent = content;
+        for (Map.Entry<String, String> entry : urls.entrySet()) {
+            shortenContent = shortenContent.replace(entry.getValue(), entry.getKey());
         }
-        String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Tweet tweet = tweetRepository.createTweet(currentLogin, content);
+
+        return shortenContent.toString();
+    }
+
+    /**
+     * Return a Map of all the URLs shortened in the content provided, only if shorten URL are effectively shorter than original URL
+     *
+     * @param content the content to analyze
+     * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
+     */
+    private Map<String, String> getShortenURLs(final String content) {
+        final Map<String, String> shortenURLs = new HashMap<String, String>();
+
+        StringBuffer shortenContent = new StringBuffer();
+        String input = content;
+        Matcher matcher = null;
+        String matchUrl, shortenUrl = null;
+
+        matcher = this.urlPattern1.matcher(input);
+
+        while (matcher.find()) {
+            matchUrl = matcher.group(0);
+            shortenUrl = this.urlShortener.shorten(matchUrl);
+            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
+                shortenURLs.put(shortenUrl, matchUrl);
+            }
+        }
+        matcher.appendTail(shortenContent);
+
+        input = shortenContent.toString();
+        shortenContent = new StringBuffer();
+
+        matcher = this.urlPattern2.matcher(input);
+        while (matcher.find()) {
+            matchUrl = matcher.group(2);
+            shortenUrl = this.urlShortener.shorten(matchUrl);
+            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
+                shortenURLs.put(shortenUrl, matchUrl);
+            }
+        }
+        matcher.appendTail(shortenContent);
+
+        return shortenURLs;
+    }
+
+    /**
+     * Post a tweet :<br>
+     * <ul>
+     * <li>save it in the datastore</li>
+     * <li>update all the related application states</li>
+     * </ul>
+     *
+     * @param content the content to save as a tweet
+     * @return the tweet object created on the basis of the content provided
+     */
+    public Tweet postTweet(final String content) {
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Creating new tweet : " + content);
+        }
+
+        Map<String, String> map = getShortenURLs(content);
+        // Map can be persisted
+        String shortenContent = shortenContent(content, map); // enable the content processing to reduce the URLs length
+
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        Tweet tweet = this.tweetRepository.createTweet(currentLogin, shortenContent);
 
         // add tweet to the dayline, userline, timeline, tagline
-        tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(currentLogin, tweet);
-        tweetRepository.addTweetToTagline(tweet);
+        this.tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        this.tweetRepository.addTweetToUserline(tweet);
+        this.tweetRepository.addTweetToTimeline(currentLogin, tweet);
+        this.tweetRepository.addTweetToTagline(tweet);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            this.shortURLRepository.addURLPair(entry.getKey(), entry.getValue());
+        }
 
         // add tweet to the follower's timelines
-        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        Collection<String> followersForUser = this.followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            tweetRepository.addTweetToTimeline(followerLogin, tweet);
+            this.tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
 
         // add tweet to the mentioned users' timeline
@@ -82,17 +167,18 @@ public class TimelineService {
                     !mentionedLogin.equals(currentLogin) &&
                     !followersForUser.contains(mentionedLogin)) {
 
-                tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
+                this.tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
             }
         }
 
         // Increment tweet count for the current user
-        counterRepository.incrementTweetCounter(currentLogin);
+        this.counterRepository.incrementTweetCounter(currentLogin);
 
         // Add to Elastic Search index if it is activated
-        if (indexActivated) {
-            indexService.addTweet(tweet);
+        if (this.indexActivated) {
+            this.indexService.addTweet(tweet);
         }
+        return tweet;
     }
 
     public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
@@ -100,9 +186,9 @@ public class TimelineService {
         Collection<String> favoriteIds = tweetRepository.getFavoritesline(login);
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweetId : tweetIds) {
-            Tweet tweet = tweetRepository.findTweetById(tweetId);
+            Tweet tweet = this.tweetRepository.findTweetById(tweetId);
             if (tweet == null) {
-                log.debug("Invisible tweet : " + tweetId);
+                this.log.debug("Invisible tweet : " + tweetId);
                 continue;
             }
             if (favoriteIds.contains(tweetId)) {
@@ -129,7 +215,7 @@ public class TimelineService {
         if (date == null || date.isEmpty() || !date.matches("^\\d{8}$")) {
             date = DAYLINE_KEY_FORMAT.format(new Date());
         }
-        Collection<String> tweetIds = tweetRepository.getDayline(date);
+        Collection<String> tweetIds = this.tweetRepository.getDayline(date);
 
         return this.buildTweetsList(tweetIds);
     }
@@ -142,7 +228,7 @@ public class TimelineService {
      */
     public Collection<Tweet> getDayline(Date date) {
         if (date == null) date = new Date();
-        Collection<String> tweetIds = tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
+        Collection<String> tweetIds = this.tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
 
         return this.buildTweetsList(tweetIds);
     }
@@ -156,9 +242,9 @@ public class TimelineService {
      */
     public Collection<Tweet> getTagline(String tag, int nbTweets) {
         if (tag == null || tag.isEmpty()) {
-            tag = hashtagDefault;
+            tag = this.hashtagDefault;
         }
-        Collection<String> tweetIds = tweetRepository.getTagline(tag, nbTweets);
+        Collection<String> tweetIds = this.tweetRepository.getTagline(tag, nbTweets);
 
         return this.buildTweetsList(tweetIds);
     }
@@ -166,10 +252,9 @@ public class TimelineService {
     /**
      * The timeline contains the user's tweets merged with his friends tweets
      *
-     *
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @param since_id
-     *@param max_id @return a tweets list
+     * @param max_id   @return a tweets list
      */
     public Collection<Tweet> getTimeline(int nbTweets, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
@@ -184,42 +269,41 @@ public class TimelineService {
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
-    public Collection<Tweet> getUserline(String login,int nbTweets, String since_id, String max_id) {
+    public Collection<Tweet> getUserline(String login, int nbTweets, String since_id, String max_id) {
         if (login == null || login.isEmpty()) {
-            User currentUser = authenticationService.getCurrentUser();
+            User currentUser = this.authenticationService.getCurrentUser();
             login = currentUser.getLogin();
         }
         Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets, since_id, max_id);
-
         return this.buildTweetsList(tweetIds);
     }
 
     public void removeTweet(String tweetId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing tweet : " + tweetId);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Removing tweet : " + tweetId);
         }
-        final Tweet tweet = tweetRepository.findTweetById(tweetId);
+        final Tweet tweet = this.tweetRepository.findTweetById(tweetId);
 
-        final User currentUser = authenticationService.getCurrentUser();
+        final User currentUser = this.authenticationService.getCurrentUser();
         if (tweet.getLogin().equals(currentUser.getLogin())
                 && !Boolean.TRUE.equals(tweet.getRemoved())) {
-            tweetRepository.removeTweet(tweet);
-            counterRepository.decrementTweetCounter(currentUser.getLogin());
-            if (indexActivated) {
-                indexService.removeTweet(tweet);
+            this.tweetRepository.removeTweet(tweet);
+            this.counterRepository.decrementTweetCounter(currentUser.getLogin());
+            if (this.indexActivated) {
+                this.indexService.removeTweet(tweet);
             }
         }
     }
 
     public void addFavoriteTweet(String tweetId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Marking tweet : " + tweetId);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Marking tweet : " + tweetId);
         }
-        Tweet tweet = tweetRepository.findTweetById(tweetId);
+        Tweet tweet = this.tweetRepository.findTweetById(tweetId);
 
         // registering
-        User currentUser = authenticationService.getCurrentUser();
-        tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
+        User currentUser = this.authenticationService.getCurrentUser();
+        this.tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
 
         // alerting
         if (!currentUser.getLogin().equals(tweet.getLogin())) {
@@ -231,28 +315,28 @@ public class TimelineService {
                 content = content.replace("_PH_", tweet.getContent());
             }
 
-            Tweet helloTweet = tweetRepository.createTweet(tweet.getLogin(), content); // removable
-            tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
+            Tweet helloTweet = this.tweetRepository.createTweet(tweet.getLogin(), content); // removable
+            this.tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
         }
     }
 
     public void removeFavoriteTweet(String tweetId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Unmarking tweet : " + tweetId);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Unmarking tweet : " + tweetId);
         }
         Tweet tweet = tweetRepository.findTweetById(tweetId);
         User currentUser = authenticationService.getCurrentUser();
         tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
     }
-    
+
     /**
      * The favline contains the user's favorites tweets
      *
      * @return a tweets list
      */
     public Collection<Tweet> getFavoritesline() {
-        String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = tweetRepository.getFavoritesline(login);
+        String login = this.authenticationService.getCurrentUser().getLogin();
+        Collection<String> tweetIds = this.tweetRepository.getFavoritesline(login);
         return this.buildTweetsList(tweetIds);
     }
 
@@ -263,4 +347,5 @@ public class TimelineService {
     private String extractLoginWithoutAt(String dest) {
         return dest.substring(1, dest.length());
     }
+
 }

@@ -3,13 +3,8 @@
  */
 package fr.ippon.tatami.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -36,8 +31,11 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author dmartinpro
@@ -149,17 +147,17 @@ public class IndexService {
     /**
      * Search an item in the index.
      *
-     * @param clazz the item type : mandatory
-     * @param field a particular field to search into
-     * @param query the query : mandatory
-     * @param page  the page to return
-     * @param size  the size of a page
+     * @param clazz     the item type : mandatory
+     * @param field     a particular field to search into
+     * @param query     the query : mandatory
+     * @param page      the page to return
+     * @param size      the size of a page
      * @param sortField which field should be used to sort the results
      * @param sortOrder which order to apply, ASC if not provided
      * @return a list of uid
      */
     public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field,
-            final String query, int page, int size, final String sortField, final String sortOrder) {
+                               final String query, int page, int size, final String sortField, final String sortOrder) {
 
         Assert.notNull(clazz);
         Assert.notNull(query);
@@ -211,12 +209,12 @@ public class IndexService {
     /**
      * Search an item in the index.
      *
-     * @param clazz the item type
+     * @param clazz       the item type
      * @param searchField a particular field to search into, if null, "_all" field is used
-     * @param uidField : the filed to return in the results collection
-     * @param query the query
-     * @param page  the page to return
-     * @param size  the size of a page
+     * @param uidField    : the filed to return in the results collection
+     * @param query       the query
+     * @param page        the page to return
+     * @param size        the size of a page
      * @return a list of uid
      */
     @SuppressWarnings("unchecked")

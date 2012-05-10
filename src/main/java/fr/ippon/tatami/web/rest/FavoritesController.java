@@ -52,7 +52,7 @@ public class FavoritesController {
         }
         timelineService.addFavoriteTweet(tweetId);
     }
-    
+
     /**
      * POST /favorites/destroy/:id -> Unfavorites the tweet
      */

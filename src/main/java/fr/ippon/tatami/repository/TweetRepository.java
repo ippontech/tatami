@@ -27,7 +27,7 @@ public interface TweetRepository {
     void addTweetToDayline(Tweet tweet, String key);
 
     void addTweetToFavoritesline(Tweet tweet, String login);
-    
+
     void removeTweetFromFavoritesline(Tweet tweet, String login);
 
     void addTweetToUserline(Tweet tweet);

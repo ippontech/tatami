@@ -16,19 +16,18 @@ import javax.inject.Inject;
 
 /**
  * @author Julien Dubois
- *
  */
 @Controller
 public class ProfileController {
-    
+
     private final Log log = LogFactory.getLog(ProfileController.class);
 
     @Inject
     private UserService userService;
-    
+
     @Inject
     private CounterService counterService;
-    
+
     @RequestMapping(value = "/profile/{login}",
             method = RequestMethod.GET)
     @ResponseBody

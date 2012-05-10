@@ -1,7 +1,5 @@
 package fr.ippon.tatami.config.elasticsearch;
 
-import javax.inject.Inject;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
+
+import javax.inject.Inject;
 
 /**
  * Elastic Search configuration file.
