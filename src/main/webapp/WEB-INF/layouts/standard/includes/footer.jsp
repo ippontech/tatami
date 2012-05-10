@@ -1,11 +1,11 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <footer>
     <div id="footer" class="navbar navbar-fixed-bottom">
-        <a href="http://www.ippon.fr" id="footer_ippon"><spring:message code="tatami.copyright"/> <spring:message code="tatami.ippon.technologies"/></a> |
-        <a href="https://github.com/ippontech/tatami" id="footer_github"><spring:message code="tatami.github.fork"/></a> |
-        <a href="http://blog.ippon.fr" id="footer_blog"><spring:message code="tatami.ippon.blog"/></a> |
-        <a href="https://twitter.com/#!/ippontech" id="footer_twitter"><spring:message code="tatami.ippon.twitter.follow"/></a>
+        <a href="http://www.ippon.fr" id="footer_ippon"><fmt:message key="tatami.copyright"/> <fmt:message key="tatami.ippon.technologies"/></a> |
+        <a href="https://github.com/ippontech/tatami" id="footer_github"><fmt:message key="tatami.github.fork"/></a> |
+        <a href="http://blog.ippon.fr" id="footer_blog"><fmt:message key="tatami.ippon.blog"/></a> |
+        <a href="https://twitter.com/#!/ippontech" id="footer_twitter"><fmt:message key="tatami.ippon.twitter.follow"/></a>
     </div>
 </footer>
 

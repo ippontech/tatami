@@ -1,5 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,10 +15,10 @@
         <div id="menuContent" class="span4">
             <ul class="nav nav-tabs">
                 <li class="active"><a id="profileTab" href="#profileTabContent" data-toggle="pill">
-                    &nbsp;<spring:message code="tatami.show.profile"/></a></li>
+                    &nbsp;<fmt:message key="tatami.show.profile"/></a></li>
                 <li><a id="updateProfileTab" href="#updateProfileTabContent" data-toggle="pill"><i
                         class="icon-edit"></i>&nbsp;
-                    <spring:message code="tatami.update.profile"/></a></li>
+                    <fmt:message key="tatami.update.profile"/></a></li>
             </ul>
             <div class="alert alert-info">
                 <div class="tab-content" style="margin-left: -10px;">
@@ -32,16 +32,16 @@
                             </div>
                             <div id="badges" class="well well-small row-fluid">
                                 <div class="span4">
-                                    <span id="tweetCount" class="badge"></span><br/><spring:message
-                                        code="tatami.badge.tweets"/>
+                                    <span id="tweetCount" class="badge"></span><br/><fmt:message
+                                        key="tatami.badge.tweets"/>
                                 </div>
                                 <div class="span4">
-                                    <span id="friendsCount" class="badge"></span><br/><spring:message
-                                        code="tatami.badge.followed"/>
+                                    <span id="friendsCount" class="badge"></span><br/><fmt:message
+                                        key="tatami.badge.followed"/>
                                 </div>
                                 <div class="span4">
-                                    <span id="followersCount" class="badge"></span><br/><spring:message
-                                        code="tatami.badge.followers"/>
+                                    <span id="followersCount" class="badge"></span><br/><fmt:message
+                                        key="tatami.badge.followers"/>
                                 </div>
                             </div>
                             <div class="row-fluid">
@@ -62,11 +62,11 @@
                                 <form id="updateUserForm" onsubmit="return updateProfile();">
                                     <fieldset>
                                         <img id="pictureInput"/>
-                                        <label><spring:message
-                                                code="tatami.user.picture"/> <a href="http://www.gravatar.com" target="_blank">http://www.gravatar.com</a>
+                                        <label><fmt:message
+                                                key="tatami.user.picture"/> <a href="http://www.gravatar.com" target="_blank">http://www.gravatar.com</a>
                                         </label>
-                                        <label><spring:message
-                                                code="tatami.user.email"/> :</label>
+                                        <label><fmt:message
+                                                key="tatami.user.email"/> :</label>
                                         <input id="emailInput"
                                                name="email"
                                                type="email"
@@ -75,16 +75,16 @@
                                                maxlength="60"
                                                placeholder="Enter e-mail..."/>
 
-                                        <label><spring:message
-                                                code="tatami.user.firstName"/> :</label>
+                                        <label><fmt:message
+                                                key="tatami.user.firstName"/> :</label>
                                         <input
                                                 id="firstNameInput" name="firstName"
                                                 type="text"
                                                 required="required"
                                                 size="15" maxlength="40"
                                                 placeholder="Enter first name..."/>
-                                        <label><spring:message
-                                                code="tatami.user.lastName"/> :</label>
+                                        <label><fmt:message
+                                                key="tatami.user.lastName"/> :</label>
                                         <input id="lastNameInput"
                                                name="lastName"
                                                type="text"
@@ -111,22 +111,22 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i
-                            class="icon-th-list"></i>&nbsp;<spring:message code="tatami.tweets"/></a></li>
+                            class="icon-th-list"></i>&nbsp;<fmt:message key="tatami.tweets"/></a></li>
                     <li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i
-                            class="icon-star"></i>&nbsp;<spring:message code="tatami.user.favoritetweets"/></a></li>
+                            class="icon-star"></i>&nbsp;<fmt:message key="tatami.user.favoritetweets"/></a></li>
                     <li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i
-                            class="icon-tag"></i>&nbsp;<spring:message code="tatami.tags"/></a></li>
+                            class="icon-tag"></i>&nbsp;<fmt:message key="tatami.tags"/></a></li>
                     <li><a id="searchTab" href="#searchLinePanel" data-toggle="tab"><i
-                            class="icon-search"></i>&nbsp;<spring:message code="tatami.search"/></a></li>
+                            class="icon-search"></i>&nbsp;<fmt:message key="tatami.search"/></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="icon-signal"></i>&nbsp;<spring:message code="tatami.tweets.stats"/>&nbsp;<b
+                                class="icon-signal"></i>&nbsp;<fmt:message key="tatami.tweets.stats"/>&nbsp;<b
                                 class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a id="piechartTab" href="#piechartPanel" data-toggle="tab"><spring:message
-                                    code="tatami.stats.tweets.piechart"/></a></li>
-                            <li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab"><spring:message
-                                    code="tatami.stats.tweets.punchchart"/></a></li>
+                            <li><a id="piechartTab" href="#piechartPanel" data-toggle="tab"><fmt:message
+                                    key="tatami.stats.tweets.piechart"/></a></li>
+                            <li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab"><fmt:message
+                                    key="tatami.stats.tweets.punchchart"/></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -164,11 +164,6 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<spring:eval expression="@applicationProps['tatami.version']" var="applicationVersion"/>
-
-<spring:url value="resources/{applicationVersion}" var="resourceUrl">
-    <spring:param name="applicationVersion" value="${applicationVersion}"/>
-</spring:url>
 
 <script src="/assets/js/tatami/standard/tatami.js"></script>
 <script src="/assets/js/tatami/standard/tatami.charts.js"></script>
