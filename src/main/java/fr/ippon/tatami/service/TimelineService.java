@@ -191,16 +191,24 @@ public class TimelineService {
                 this.log.debug("Invisible tweet : " + tweetId);
                 continue;
             }
+            // if the Tweet comes from ehcache, it has to be cloned to another instance
+            // in order to be thread-safe.
+            // ehcache shares the Tweet instances per tweetId, but favorites are per user.
+            Tweet tweetCopy = new Tweet();
+            tweetCopy.setTweetId(tweet.getTweetId());
+            tweetCopy.setContent(tweet.getContent());
+            tweetCopy.setLogin(tweet.getLogin());
+            tweetCopy.setTweetDate(tweet.getTweetDate());
             if (favoriteIds.contains(tweetId)) {
-                tweet.setFavorite(true);
+                tweetCopy.setFavorite(true);
             } else {
-                tweet.setFavorite(false);
+                tweetCopy.setFavorite(false);
             }
             User tweetUser = userService.getUserByLogin(tweet.getLogin());
-            tweet.setFirstName(tweetUser.getFirstName());
-            tweet.setLastName(tweetUser.getLastName());
-            tweet.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweet);
+            tweetCopy.setFirstName(tweetUser.getFirstName());
+            tweetCopy.setLastName(tweetUser.getLastName());
+            tweetCopy.setGravatar(tweetUser.getGravatar());
+            tweets.add(tweetCopy);
         }
         return tweets;
     }
