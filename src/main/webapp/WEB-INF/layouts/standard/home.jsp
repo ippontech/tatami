@@ -165,8 +165,6 @@
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-<script src="/assets/js/tatami/constants.js"></script>
-<script src="/assets/js/tatami/standard/tatami.js"></script>
 <script src="/assets/js/tatami/standard/tatami.charts.js"></script>
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"]});

@@ -146,6 +146,9 @@
 
 
 <jsp:include page="includes/footer.jsp"/>
+
+<script src="/assets/js/tatami/constants.js"></script>
+
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var userLogin = "${user.login}";
