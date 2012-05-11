@@ -1,15 +1,5 @@
 package fr.ippon.tatami.config.elasticsearch;
 
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +9,15 @@ import org.elasticsearch.action.admin.indices.exists.IndicesExistsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * Create some Elastic Search nodes.
@@ -71,7 +70,7 @@ public class ElasticSearchServerNodeFactory {
 
             this.serverNode = nodeBuilder().settings(settingsBuilder()
                     .put(settings)
-                    ).node();
+            ).node();
             log.debug("  -> node \"" + this.serverNode.settings().get("name") + "\" instantiated.");
 
             // Prepare the index, if not found
@@ -115,6 +114,7 @@ public class ElasticSearchServerNodeFactory {
 
     /**
      * Return the content of a resource in the classpath
+     *
      * @param resourceName the resource name (and path)
      * @return the resource's content as a string
      */

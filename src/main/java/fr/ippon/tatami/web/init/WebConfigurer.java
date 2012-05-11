@@ -1,14 +1,9 @@
 package fr.ippon.tatami.web.init;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
-
+import fr.ippon.tatami.config.ApplicationConfiguration;
+import fr.ippon.tatami.config.DispatcherServletConfig;
+import fr.ippon.tatami.web.filter.URLShortenerHandlerFilter;
+import fr.ippon.tatami.web.monitoring.MonitoringFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.mobile.device.DeviceResolverHandlerFilter;
@@ -17,10 +12,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import fr.ippon.tatami.config.ApplicationConfiguration;
-import fr.ippon.tatami.config.DispatcherServletConfig;
-import fr.ippon.tatami.web.filter.URLShortenerHandlerFilter;
-import fr.ippon.tatami.web.monitoring.MonitoringFilter;
+import javax.servlet.*;
+import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.<br>

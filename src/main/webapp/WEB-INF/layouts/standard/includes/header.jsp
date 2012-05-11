@@ -1,8 +1,9 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <head>
     <meta charset="utf-8">
-    <title><spring:message code="tatami.title"/></title>
+    <title><fmt:message key="tatami.title"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">

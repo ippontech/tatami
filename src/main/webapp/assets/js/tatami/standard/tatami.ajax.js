@@ -91,19 +91,39 @@ function removeTweet(tweetId) {
  */
 function listTweets(reset) {
     var url = "/tatami/rest/statuses/home_timeline";
-    if (reset) {
-        nbTweetsToDisplay = DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY;
+    if (!reset && bottomTweetId != undefined) {
+        url += "?max_id=" + bottomTweetId;
     } else {
-        nbTweetsToDisplay += DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY;
-        url += "?count=" + nbTweetsToDisplay;
+        $('#tweetsList').empty();
     }
     $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#tweetsList'));
-            $('#mainTab').tab('show');
+            if (data.length > 0) {
+                makeTweetsList(data, $('#tweetsList'));
+                scrollLock = false;
+            } else {
+                $('#tweetsList').append('<tr class="tweet"><td colspan="4" style="text-align: center;">No more tweets...</td></tr>');
+            }
+        }
+    });
+}
+
+function updateTweetsList(firstTweetId) {
+    var url = "/tatami/rest/statuses/home_timeline?since_id=" + firstTweetId;
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+            $('#updateTweetsList').remove();
+            if (data.length == 1) {
+                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">1 new tweet</td></tr>');
+            } else if (data.length > 1) {
+                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">' + data.length + ' new tweets</td></tr>');
+            }
         }
     });
 }
@@ -112,12 +132,21 @@ function listTweets(reset) {
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
  */
 function listUserTweets(userLogin) {
+    var url = "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin;
+    if (bottomTweetId != undefined) {
+        url += "&max_id=" + bottomTweetId;
+    }
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin,
+        url: url,
         dataType: 'json',
         success: function(data) {
-            makeTweetsList(data, $('#tweetsList'));
+            if (data.length > 0) {
+                makeTweetsList(data, $('#tweetsList'));
+                scrollLock = false;
+            } else {
+                $('#tweetsList').append('<tr class="tweet"><td colspan="4" style="text-align: center;">No more tweets...</td></tr>');
+            }
         }
     });
 }
@@ -327,6 +356,7 @@ function listTagTweets(tag) {
             url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
             dataType: 'json',
             success: function(data) {
+                $('#tagTweetsList').empty();
                 makeTweetsList(data, $('#tagTweetsList'));
                 $('#tagTab').tab('show');
             }
@@ -346,6 +376,7 @@ function searchTweets(query) {
         url: "/tatami/rest/search?" + query,
         dataType: 'json',
         success: function(data) {
+            $('#searchTweetsList').empty();
             makeTweetsList(data, $('#searchTweetsList'));
             $('#searchTab').tab('show');
         }

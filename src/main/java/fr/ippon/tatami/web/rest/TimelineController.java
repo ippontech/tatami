@@ -57,14 +57,16 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweets(@RequestParam(required = false) Integer count) {
+    public Collection<Tweet> listTweets(@RequestParam(required = false) Integer count,
+                                        @RequestParam(required = false) String since_id,
+                                        @RequestParam(required = false) String max_id) {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
             log.debug("REST request to get the tweet list (" + count + " sized).");
         }
-        return timelineService.getTimeline(count);
+        return timelineService.getTimeline(count, since_id, max_id);
     }
 
     /**
@@ -75,7 +77,9 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public Collection<Tweet> listTweetsForUser(@RequestParam("screen_name") String login,
-                                               @RequestParam(required = false) Integer count) {
+                                               @RequestParam(required = false) Integer count,
+                                               @RequestParam(required = false) String since_id,
+                                               @RequestParam(required = false) String max_id) {
 
         if (count == null || count == 0) {
             count = 20; //Default value
@@ -83,6 +87,6 @@ public class TimelineController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get someone's tweets (" + login + ").");
         }
-        return timelineService.getUserline(login, count);
+        return timelineService.getUserline(login, count, since_id, max_id);
     }
 }

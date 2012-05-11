@@ -73,8 +73,9 @@ public class TimelineService {
 
     /**
      * Return a new content with every URL replaced with a shorten one
+     *
      * @param content the content to filter
-     * @param urls the short/long URL used in the replacement
+     * @param urls    the short/long URL used in the replacement
      * @return a shorten content
      */
     private String shortenContent(final String content, final Map<String, String> urls) {
@@ -88,6 +89,7 @@ public class TimelineService {
 
     /**
      * Return a Map of all the URLs shortened in the content provided, only if shorten URL are effectively shorter than original URL
+     *
      * @param content the content to analyze
      * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
      */
@@ -104,7 +106,7 @@ public class TimelineService {
         while (matcher.find()) {
             matchUrl = matcher.group(0);
             shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
+            if (shortenUrl != null) {
                 shortenURLs.put(shortenUrl, matchUrl);
             }
         }
@@ -132,6 +134,7 @@ public class TimelineService {
      * <li>save it in the datastore</li>
      * <li>update all the related application states</li>
      * </ul>
+     *
      * @param content the content to save as a tweet
      * @return the tweet object created on the basis of the content provided
      */
@@ -185,12 +188,19 @@ public class TimelineService {
     }
 
     public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+        String login = this.authenticationService.getCurrentUser().getLogin();
+        Collection<String> favoriteIds = this.tweetRepository.getFavoritesline(login);
         Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
         for (String tweetId : tweetIds) {
             Tweet tweet = this.tweetRepository.findTweetById(tweetId);
             if (tweet == null) {
                 this.log.debug("Invisible tweet : " + tweetId);
                 continue;
+            }
+            if (favoriteIds.contains(tweetId)) {
+                tweet.setFavorite(true);
+            } else {
+                tweet.setFavorite(false);
             }
             User tweetUser = this.userService.getUserByLogin(tweet.getLogin());
             tweet.setFirstName(tweetUser.getFirstName());
@@ -249,11 +259,12 @@ public class TimelineService {
      * The timeline contains the user's tweets merged with his friends tweets
      *
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param since_id
+     * @param max_id   @return a tweets list
      */
-    public Collection<Tweet> getTimeline(int nbTweets) {
+    public Collection<Tweet> getTimeline(int nbTweets, String since_id, String max_id) {
         String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = this.tweetRepository.getTimeline(login, nbTweets);
+        Collection<String> tweetIds = this.tweetRepository.getTimeline(login, nbTweets, since_id, max_id);
         return this.buildTweetsList(tweetIds);
     }
 
@@ -264,13 +275,12 @@ public class TimelineService {
      * @param nbTweets the number of tweets to retrieve, starting from most recent ones
      * @return a tweets list
      */
-    public Collection<Tweet> getUserline(String login, int nbTweets) {
+    public Collection<Tweet> getUserline(String login, int nbTweets, String since_id, String max_id) {
         if (login == null || login.isEmpty()) {
             User currentUser = this.authenticationService.getCurrentUser();
             login = currentUser.getLogin();
         }
-        Collection<String> tweetIds = this.tweetRepository.getUserline(login, nbTweets);
-
+        Collection<String> tweetIds = this.tweetRepository.getUserline(login, nbTweets, since_id, max_id);
         return this.buildTweetsList(tweetIds);
     }
 
@@ -321,8 +331,6 @@ public class TimelineService {
             this.log.debug("Unmarking tweet : " + tweetId);
         }
         Tweet tweet = this.tweetRepository.findTweetById(tweetId);
-
-        // registering
         User currentUser = this.authenticationService.getCurrentUser();
         this.tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
     }

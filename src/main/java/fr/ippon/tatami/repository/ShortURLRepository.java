@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package fr.ippon.tatami.repository;
 
 /**
  * @author dmartin
- *
  */
 public interface ShortURLRepository {
 

@@ -1,7 +1,6 @@
 package fr.ippon.tatami.service.util;
 
 /**
- * 
  * @author DuyHai DOAN
  */
 public class TatamiConstants {

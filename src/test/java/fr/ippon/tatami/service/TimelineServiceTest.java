@@ -23,7 +23,8 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldGetUserline() throws Exception {
         String login = "userWithTweets";
-        Collection<Tweet> tweets = timelineService.getUserline(login, 10);
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
+        Collection<Tweet> tweets = timelineService.getUserline(login, 10, null, null);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
@@ -31,7 +32,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetAuthenticateUserUserlineWithNullLoginSet() throws Exception {
         String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getUserline(null, 10);
+        Collection<Tweet> tweets = timelineService.getUserline(null, 10, null, null);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
@@ -39,7 +40,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetAuthenticateUserUserlineWithEmptyLoginSet() throws Exception {
         String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getUserline("", 10);
+        Collection<Tweet> tweets = timelineService.getUserline("", 10, null, null);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
@@ -47,7 +48,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetTimeline() throws Exception {
         String login = "userWithTweets";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getTimeline(10);
+        Collection<Tweet> tweets = timelineService.getTimeline(10, null, null);
         assertThatLineForUserWithTweetsIsOk(login, tweets);
     }
 
@@ -74,13 +75,13 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         timelineService.postTweet(content);
 
         /* verify */
-        Collection<Tweet> tweetsFromUserline = timelineService.getUserline(login, 10);
+        Collection<Tweet> tweetsFromUserline = timelineService.getUserline(login, 10, null, null);
         assertThatNewTestIsPosted(login, content, tweetsFromUserline);
 
-        Collection<Tweet> tweetsFromTimeline = timelineService.getTimeline(10);
+        Collection<Tweet> tweetsFromTimeline = timelineService.getTimeline(10, null, null);
         assertThatNewTestIsPosted(login, content, tweetsFromTimeline);
 
-        Collection<Tweet> tweetsFromUserlineOfAFollower = timelineService.getUserline("userWhoReadTweet", 10);
+        Collection<Tweet> tweetsFromUserlineOfAFollower = timelineService.getUserline("userWhoReadTweet", 10, null, null);
         assertThat(tweetsFromUserlineOfAFollower.isEmpty(), is(true));
 
     }
@@ -104,15 +105,15 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         assertThat(tweets, notNullValue());
         assertThat(tweets.size(), is(2));
 
-        Tweet secondTweet = (Tweet) tweets.toArray()[0];
-        assertThat(secondTweet.getTweetId(), is("tweetId2"));
+        Tweet firstTweet = (Tweet) tweets.toArray()[0];
+        assertThat(firstTweet.getTweetId(), is("fa2bd770-9848-11e1-a6ca-e0f847068d52"));
+        assertThat(firstTweet.getLogin(), is(login));
+        assertThat(firstTweet.getContent(), is("Devoxx, c'est nowwwwww"));
+
+        Tweet secondTweet = (Tweet) tweets.toArray()[1];
+        assertThat(secondTweet.getTweetId(), is("f97d6470-9847-11e1-a6ca-e0f847068d52"));
         assertThat(secondTweet.getLogin(), is(login));
         assertThat(secondTweet.getContent(), is("Devoxx, ça va déchirer"));
 
-        Tweet firstTweet = (Tweet) tweets.toArray()[1];
-        assertThat(firstTweet.getTweetId(), is("tweetId1"));
-        assertThat(firstTweet.getLogin(), is(login));
-        assertThat(firstTweet.getContent(), is("Devoxx, c'est nowwwwww"));
     }
-
 }

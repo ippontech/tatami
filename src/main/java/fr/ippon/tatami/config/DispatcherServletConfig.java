@@ -1,14 +1,5 @@
 package fr.ippon.tatami.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.inject.Inject;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +10,7 @@ import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
@@ -34,10 +21,13 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
 
+import javax.inject.Inject;
+import java.util.*;
+
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
-@PropertySource(value="classpath:/META-INF/tatami/tatami.properties")
+@PropertySource(value = "classpath:/META-INF/tatami/tatami.properties")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Inject
@@ -130,8 +120,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/" + this.env.getProperty("tatami.version") + "/**")
-        .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
-        .setCachePeriod(31556926);
+                .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
+                .setCachePeriod(31556926);
     }
 
 }

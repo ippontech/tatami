@@ -16,7 +16,7 @@ function makePieChartsList(data, dest) {
 
 	google.visualization.events.addListener(chart, 'select', function() {
 		  var login = dt.getValue(chart.getSelection()[0].row, 0).substring(1);
-		  listUserTweets(login);
+          window.location = "/tatami/profile/" + login;
 	});
 }
 
@@ -50,7 +50,7 @@ function makePunchChartsList(data, dest) {
 		r.text(leftgutter, Y * (j + .5), '@' + axisy[j]).attr(txt)
 		// Make Y labels interactive
 			.data('login', axisy[j]).click(function () {
-				listUserTweets(this.data('login'));
+				window.location = "/tatami/profile/" + this.data('login');
 			})
 		// Add help tooltip
 			.attr({title: 'Show ' + axisy[j] + ' tweets'});

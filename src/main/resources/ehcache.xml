@@ -18,9 +18,16 @@
     </cache>
 
     <cache name="user-cache"
-           maxElementsInMemory="10000"
+           maxElementsInMemory="5000"
            eternal="false"
-           timeToLiveSeconds="600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false">
+    </cache>
+
+    <cache name="favorites-cache"
+           maxElementsInMemory="50000"
+           eternal="false"
+           timeToLiveSeconds="3600"
            overflowToDisk="false">
     </cache>
 

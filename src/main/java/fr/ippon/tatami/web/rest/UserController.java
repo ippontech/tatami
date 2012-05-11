@@ -1,13 +1,10 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -16,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.IndexService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
+import java.util.*;
 
 /**
  * REST controller for managing users.
@@ -92,6 +86,7 @@ public class UserController {
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
+     *
      * @param query the query
      * @return a Collection of User
      */

@@ -65,15 +65,15 @@ public class CassandraConfiguration {
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
-            addColumnFamily(cluster, TIMELINE_CF);
+            addColumnFamilySortedbyUUID(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USER_CF);
             addColumnFamily(cluster, FRIENDS_CF);
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);
-            addColumnFamily(cluster, DAYLINE_CF);
+            addColumnFamilySortedbyUUID(cluster, DAYLINE_CF);
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
-            addColumnFamily(cluster, TAGLINE_CF);
-            addColumnFamily(cluster, USERLINE_CF);
+            addColumnFamilySortedbyUUID(cluster, TAGLINE_CF);
+            addColumnFamilySortedbyUUID(cluster, USERLINE_CF);
             addColumnFamily(cluster, URLS_CF);
 
             ThriftCfDef cfDef =

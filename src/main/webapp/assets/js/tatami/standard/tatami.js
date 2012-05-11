@@ -6,6 +6,7 @@ var DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY = 20;
 var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY = 10;
 
 var nbTweetsToDisplay;
+var scrollLock = false;
 
 var userlineURL = '<a href="/tatami/profile/LOGIN" style="text-decoration:none" title="Show LOGIN tweets">';
 var userlineREG = new RegExp("LOGIN", "g");
@@ -45,12 +46,16 @@ function initHome() {
 
     // browser's refresh shortcut override
     shortcut.add("Ctrl+R", function() {
-        listTweets(true);
+        listTweets();
     });
+
     // infinite scroll
     $(window).scroll(function() {
-        if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-            listTweets(false);
+        if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+            if (scrollLock == false) {
+                scrollLock = true;
+                listTweets(false);
+            }
         }
     });
 
@@ -82,8 +87,21 @@ function initHome() {
         listTagTweets(tag);
     }
 
-    //Mustache.js templates
-    $('#mustache').load('/assets/templates_mustache/templates.html');
+    if (searchQuery != "") {
+        $("#searchQuery").val(searchQuery);
+        var query = $('#global-tweet-search').serialize();
+        searchTweets(query);
+        return false;
+    }
+    autoUpdateTweetsList();
+}
+
+function autoUpdateTweetsList() {
+    var topTweetId = $("#tweetsList .tweet:first").attr("tweetId");
+    if (topTweetId != undefined) {
+        updateTweetsList(topTweetId);
+    }
+    setTimeout("autoUpdateTweetsList()", 20000);
 }
 
 function initProfile() {
@@ -97,6 +115,17 @@ function initProfile() {
     shortcut.add("Ctrl+R", function() {
         listUserTweets(userLogin);
     });
+
+    // infinite scroll
+    $(window).scroll(function() {
+        if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+            if (scrollLock == false) {
+                scrollLock = true;
+                listUserTweets(userLogin);
+            }
+        }
+    });
+
     $('a[data-toggle="tab"]').on('show', function(e) {
         if (e.target.hash == '#followingPanel') {
             makeFollowingList();
@@ -105,6 +134,10 @@ function initProfile() {
         }
     });
 
-    //Mustache.js templates
-    $('#mustache').load('/assets/templates_mustache/templates.html');
+    // search form binding
+    $('#global-tweet-search').submit(function() {
+        var searchQuery = $("#searchQuery").val();
+        window.location = "/tatami/?search=" + searchQuery;
+        return false;
+    });
 }

@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package fr.ippon.tatami.repository.cassandra;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import fr.ippon.tatami.config.ColumnFamilyKeys;
+import fr.ippon.tatami.repository.ShortURLRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
@@ -13,17 +12,15 @@ import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import fr.ippon.tatami.config.ColumnFamilyKeys;
-import fr.ippon.tatami.repository.ShortURLRepository;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 /**
  * @author dmartin
- *
  */
 @Repository
 public class CassandraShortURLRepository implements ShortURLRepository {

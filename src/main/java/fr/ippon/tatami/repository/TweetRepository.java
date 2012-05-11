@@ -27,7 +27,7 @@ public interface TweetRepository {
     void addTweetToDayline(Tweet tweet, String key);
 
     void addTweetToFavoritesline(Tweet tweet, String login);
-    
+
     void removeTweetFromFavoritesline(Tweet tweet, String login);
 
     void addTweetToUserline(Tweet tweet);
@@ -49,12 +49,12 @@ public interface TweetRepository {
     /**
      * a user's and his followed users tweets
      */
-    Collection<String> getTimeline(String login, int size);
+    Collection<String> getTimeline(String login, int size, String since_id, String max_id);
 
     /**
      * a user's own tweets
      */
-    Collection<String> getUserline(String login, int size);
+    Collection<String> getUserline(String login, int size, String since_id, String max_id);
 
     /**
      * a tag's tweets

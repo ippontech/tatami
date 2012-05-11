@@ -1,22 +1,5 @@
 package fr.ippon.tatami.config.elasticsearch;
 
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +10,21 @@ import org.elasticsearch.common.settings.Settings;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+
 /**
  * Tatami ElasticSearch configuration wrapper.
+ *
  * @author dmartin
  */
 @Component
@@ -52,6 +48,7 @@ public class ElasticSearchSettings {
 
     /**
      * You can only provide a path for ES settings.
+     *
      * @param settingsResourcePath a valid path in the classpath or null (in this case, the default value is used)
      */
     public ElasticSearchSettings(final String settingsResourcePath) {
@@ -60,8 +57,9 @@ public class ElasticSearchSettings {
 
     /**
      * Initialize the settings wrapper with two resources paths : main configuration and optional types mappings definition.<br>
+     *
      * @param settingsResourcePath
-     * @param typesResourcePath : must ends with a slash '/' character.
+     * @param typesResourcePath    : must ends with a slash '/' character.
      */
     public ElasticSearchSettings(final String settingsResourcePath, final String typesResourcePath) {
         Assert.notNull(settingsResourcePath, "Mandatory parameter");
@@ -79,6 +77,7 @@ public class ElasticSearchSettings {
 
     /**
      * Return ElasticSearch settings, read from either the default or a specified location
+     *
      * @return the settings
      */
     public Settings getSettings() {
@@ -87,6 +86,7 @@ public class ElasticSearchSettings {
 
     /**
      * Return some types mapping, if any from a specified (or the default) location
+     *
      * @return a Map containing the type as the key and its definition as the value, or an empty map if any
      */
     public Map<String, String> getTypesMapping() {
@@ -126,7 +126,7 @@ public class ElasticSearchSettings {
      * List directory content for a resource folder.<br>
      * Note : This is not recursive<br>
      * Should work for regular files and also JARs.
-     * 
+     *
      * @param path to look into. Please note it must end with "/", but not start with one.
      * @return the name of each child item.
      * @throws URISyntaxException
@@ -172,11 +172,12 @@ public class ElasticSearchSettings {
             return result;
         }
 
-        throw new UnsupportedOperationException("Cannot list files for URL "  + dirURL);
+        throw new UnsupportedOperationException("Cannot list files for URL " + dirURL);
     }
 
     /**
      * Return the content of a resource in the classpath
+     *
      * @param resourceName the resource name (and path)
      * @return the resource's content as a string
      */

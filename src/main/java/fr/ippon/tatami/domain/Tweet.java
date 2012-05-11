@@ -62,6 +62,8 @@ public class Tweet {
 
     private String gravatar;
 
+    private boolean favorite;
+
     @Column(name = "removed")
     private Boolean removed;
 
@@ -148,6 +150,14 @@ public class Tweet {
         this.removed = removed;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,7 +185,8 @@ public class Tweet {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +
-                ", removed='" + Boolean.TRUE.equals(removed) + '\'' +
+                ", favorite=" + favorite +
+                ", removed=" + removed +
                 '}';
     }
 }
