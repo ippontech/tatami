@@ -186,7 +186,7 @@ public class UserService {
     }
 
     public Collection<User> getFollowersForUser(String login) {
-        Collection<String> followersLogins = friendRepository.findFollowersForUser(login);
+        Collection<String> followersLogins = followerRepository.findFollowersForUser(login);
         Collection<User> followers = new ArrayList<User>();
         for (String followerLogin : followersLogins) {
             User follower = userRepository.findUserByLogin(followerLogin);

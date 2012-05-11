@@ -74,14 +74,4 @@ public class CassandraFriendRepository implements FriendRepository {
         }
         return friends;
     }
-
-    @Override
-    public Collection<String> findFollowersForUser(String login) {
-        ColumnFamilyResult<String, String> result = followersTemplate.queryColumns(login);
-        Collection<String> followers = new ArrayList<String>();
-        for (String columnName : result.getColumnNames()) {
-            followers.add(columnName);
-        }
-        return followers;
-    }
 }
