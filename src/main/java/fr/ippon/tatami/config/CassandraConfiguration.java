@@ -1,5 +1,20 @@
 package fr.ippon.tatami.config;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TWEET_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.URLS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_CF;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -12,16 +27,12 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hom.EntityManagerImpl;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
 /**
  * Cassandra configuration file.
