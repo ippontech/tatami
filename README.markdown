@@ -47,10 +47,16 @@ git submodule init
 # and fetch the submodule
 git submodule update
 
-# otherwise, if you don't have clone the repository, you can setup and fetch directly during the clone
+# otherwise, if you don't have cloned the repository yet, you can setup and fetch directly during the clone
 git clone --recursive ${tatami_git_repository}
 ```
 Credits : https://github.com/mobz/elasticsearch-head
+
+Thanks
+------
+
+Many thanks to Jetbrains for the free [Intellij IDEA](http://www.jetbrains.com/idea/) licenses, 
+which definitely allows us to be more productive and have more fun on the project!
 
 License
 -------
