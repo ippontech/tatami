@@ -55,8 +55,14 @@ Credits : https://github.com/mobz/elasticsearch-head
 Thanks
 ------
 
-Many thanks to Jetbrains for the free [Intellij IDEA](http://www.jetbrains.com/idea/) licenses, 
+Jetbrains is providing us free [Intellij IDEA](http://www.jetbrains.com/idea/) licenses, 
 which definitely allows us to be more productive and have more fun on the project!
+
+YourKit is kindly supporting open source projects with its full-featured Java Profiler.
+YourKit, LLC is the creator of innovative and intelligent tools for profiling
+Java and .NET applications. Take a look at YourKit's leading software products:
+[YourKit Java Profiler](http://www.yourkit.com/java/profiler/index.jsp) and
+[YourKit .NET Profiler](http://www.yourkit.com/.net/profiler/index.jsp).
 
 License
 -------
