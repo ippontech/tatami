@@ -15,31 +15,33 @@ Tatami is made with the following technologies :
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
-Installation
-------------
+Installation (simple, for normal users)
+---------------------------------------
 
 - Install [Maven 3](http://maven.apache.org/)
 - Run Cassandra from Maven : `mvn cassandra:run`
 - Run Jetty from Maven : `mvn jetty:run`
-- Optional : if you want to activate ElasticSearch, just add `-Delasticsearch.activated=true`
 - Connect to the application at http://127.0.0.1:8080
 
 The default users are "jdubois/password" and "tescolan/password", you can check or modify the
 Spring Security configuration at `/META-INF/spring/applicationContext-security.xml`
 
-If you want to remote debug, don't forget to set MAVEN_OPTS accordingly :
+Installation (advanced, for developers)
+---------------------------------------
+
+If you want to remote debug, don't forget to set up your MAVEN_OPTS accordingly :
 ```
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 ```
 And remote debug under your IDE on port 8000
 
-Note 1 : if you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize. For instance : 
+If you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize. For instance : 
 ```
 -XX:PermSize=256m -XX:MaxPermSize=256m
 ```
 Adding this to MAVEN_OPTS is the simplest solution
 
-Note 2 : if you want to look inside ElasticSearch index, feel free to use [elasticsearch-head](https://github.com/Aconex/elasticsearch-head), by @mobz, under /tatami/etc/ as a submodule of tatami. 
+If you want to look inside the ElasticSearch index, feel free to use [elasticsearch-head](https://github.com/Aconex/elasticsearch-head), by @mobz, under /tatami/etc/ as a submodule of tatami. 
 ```
 # to setup the submodule 
 git submodule init 
