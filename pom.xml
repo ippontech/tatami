@@ -46,7 +46,7 @@
             <id>ippon</id>
             <properties>
                 <spring.profiles.active>ippon</spring.profiles.active>
-                <jetty.port>8080</jetty.port>
+                <jetty.port>80</jetty.port>
                 <!-- Jetty must run in forked mode to use this parameter : mvn jetty:run-forked -->
                 <jetty.jvmArgs>-XX:MaxPermSize=64m -Xms128m -Xmx1024m</jetty.jvmArgs>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
