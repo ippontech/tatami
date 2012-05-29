@@ -3,6 +3,7 @@ package fr.ippon.tatami.security;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -34,9 +35,9 @@ public class TatamiAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         if (userService.getUserByLogin(login) == null) {
             User user = new User();
             user.setLogin(login);
-            user.setFirstName(login);
-            user.setLastName(login);
-            user.setEmail(login + "@ippon.fr");
+            user.setEmail("");
+            user.setFirstName("");
+            user.setLastName("");
             userService.createUser(user);
         }
     }

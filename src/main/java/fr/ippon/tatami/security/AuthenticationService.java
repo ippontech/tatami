@@ -18,7 +18,8 @@ public class AuthenticationService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         org.springframework.security.core.userdetails.UserDetails springSecurityUser =
                 (org.springframework.security.core.userdetails.UserDetails) securityContext
-                .getAuthentication().getPrincipal();
+                        .getAuthentication().getPrincipal();
+
         return userRepository.findUserByLogin(springSecurityUser.getUsername());
     }
 }

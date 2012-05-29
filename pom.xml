@@ -37,12 +37,19 @@
             </activation>
             <properties>
                 <spring.profiles.active>default</spring.profiles.active>
+                <jetty.port>8080</jetty.port>
+                <jetty.jvmArgs>-XX:MaxPermSize=32m -Xms64m -Xmx128m</jetty.jvmArgs>
+                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
             </properties>
         </profile>
         <profile>
             <id>ippon</id>
             <properties>
                 <spring.profiles.active>ippon</spring.profiles.active>
+                <jetty.port>8080</jetty.port>
+                <!-- Jetty must run in forked mode to use this parameter : mvn jetty:run-forked -->
+                <jetty.jvmArgs>-XX:MaxPermSize=64m -Xms128m -Xmx1024m</jetty.jvmArgs>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
             </properties>
         </profile>
     </profiles>
@@ -376,13 +383,18 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${maven.jetty.version}</version>
                 <configuration>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                    <scanIntervalSeconds>${jetty.scanIntervalSeconds}</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
+                    <jvmArgs>${jetty.jvmArgs}</jvmArgs>
                     <systemProperties>
                         <systemProperty>
                             <name>spring.profiles.active</name>
                             <value>${spring.profiles.active}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>jetty.port</name>
+                            <value>${jetty.port}</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>

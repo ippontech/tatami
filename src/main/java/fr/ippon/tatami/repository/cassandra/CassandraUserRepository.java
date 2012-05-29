@@ -36,10 +36,6 @@ public class CassandraUserRepository implements UserRepository {
         if (log.isDebugEnabled()) {
             log.debug("Creating user : " + user);
         }
-        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
-        if (!constraintViolations.isEmpty()) {
-            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
-        }
         em.persist(user);
     }
 
