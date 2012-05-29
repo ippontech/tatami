@@ -1,6 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import fr.ippon.tatami.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,10 @@ public class CassandraUserRepository implements UserRepository {
     public void createUser(User user) {
         if (log.isDebugEnabled()) {
             log.debug("Creating user : " + user);
+        }
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user, ContraintsUserCreation.class);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
         em.persist(user);
     }

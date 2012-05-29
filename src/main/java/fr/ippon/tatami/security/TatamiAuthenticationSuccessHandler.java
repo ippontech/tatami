@@ -3,7 +3,6 @@ package fr.ippon.tatami.security;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 

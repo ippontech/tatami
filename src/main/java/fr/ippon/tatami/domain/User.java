@@ -1,5 +1,6 @@
 package fr.ippon.tatami.domain;
 
+import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 /**
  * A user.
@@ -19,8 +21,8 @@ import javax.validation.constraints.Size;
 @Table(name = "User")
 public class User {
 
-    @NotEmpty(message = "Login is mandatory.")
-    @NotNull(message = "Login is mandatory.")
+    @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
+    @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @Id
     private String login;
 
