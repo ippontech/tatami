@@ -4,10 +4,8 @@ import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.ShortURLRepository;
 import fr.ippon.tatami.repository.TweetRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.UrlShortener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -26,15 +24,6 @@ import java.util.regex.Pattern;
 @Service
 public class TimelineService {
 
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
-
-    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$)");
-    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/{2}])(w{3}[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$))");
-
-    private final Log log = LogFactory.getLog(TimelineService.class);
-
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
-
     @Inject
     private UserService userService;
 
@@ -48,115 +37,39 @@ public class TimelineService {
     private FollowerRepository followerRepository;
 
     @Inject
-    private ShortURLRepository shortURLRepository;
-
-    @Inject
     private AuthenticationService authenticationService;
 
     @Inject
     private IndexService indexService;
 
     @Inject
-    private UrlShortener urlShortener;
-
-    @Inject
     private boolean indexActivated;
 
-    private final String hashtagDefault = "---";
+    private String hashtagDefault = "---";
 
+    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
-    /**
-     * Return a new content with every URL replaced with a shorten one
-     *
-     * @param content the content to filter
-     * @param urls    the short/long URL used in the replacement
-     * @return a shorten content
-     */
-    private String shortenContent(final String content, final Map<String, String> urls) {
-        String shortenContent = content;
-        for (Map.Entry<String, String> entry : urls.entrySet()) {
-            shortenContent = shortenContent.replace(entry.getValue(), entry.getKey());
+    private final Log log = LogFactory.getLog(TimelineService.class);
+
+    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
+
+    public void postTweet(String content) {
+        if (log.isDebugEnabled()) {
+            log.debug("Creating new tweet : " + content);
         }
-
-        return shortenContent.toString();
-    }
-
-    /**
-     * Return a Map of all the URLs shortened in the content provided, only if shorten URL are effectively shorter than original URL
-     *
-     * @param content the content to analyze
-     * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
-     */
-    private Map<String, String> getShortenURLs(final String content) {
-        final Map<String, String> shortenURLs = new HashMap<String, String>();
-
-        StringBuffer shortenContent = new StringBuffer();
-        String input = content;
-        Matcher matcher = null;
-        String matchUrl, shortenUrl = null;
-
-        matcher = this.urlPattern1.matcher(input);
-
-        while (matcher.find()) {
-            matchUrl = matcher.group(0);
-            shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
-                shortenURLs.put(shortenUrl, matchUrl);
-            }
-        }
-        matcher.appendTail(shortenContent);
-
-        input = shortenContent.toString();
-        shortenContent = new StringBuffer();
-
-        matcher = this.urlPattern2.matcher(input);
-        while (matcher.find()) {
-            matchUrl = matcher.group(2);
-            shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
-                shortenURLs.put(shortenUrl, matchUrl);
-            }
-        }
-        matcher.appendTail(shortenContent);
-
-        return shortenURLs;
-    }
-
-    /**
-     * Post a tweet :<br>
-     * <ul>
-     * <li>save it in the datastore</li>
-     * <li>update all the related application states</li>
-     * </ul>
-     *
-     * @param content the content to save as a tweet
-     * @return the tweet object created on the basis of the content provided
-     */
-    public Tweet postTweet(final String content) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Creating new tweet : " + content);
-        }
-
-        Map<String, String> map = getShortenURLs(content);
-        // Map can be persisted
-        String shortenContent = shortenContent(content, map); // enable the content processing to reduce the URLs length
-
-        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
-        Tweet tweet = this.tweetRepository.createTweet(currentLogin, shortenContent);
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        Tweet tweet = tweetRepository.createTweet(currentLogin, content);
 
         // add tweet to the dayline, userline, timeline, tagline
-        this.tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        this.tweetRepository.addTweetToUserline(tweet);
-        this.tweetRepository.addTweetToTimeline(currentLogin, tweet);
-        this.tweetRepository.addTweetToTagline(tweet);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            this.shortURLRepository.addURLPair(entry.getKey(), entry.getValue());
-        }
+        tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
+        tweetRepository.addTweetToUserline(tweet);
+        tweetRepository.addTweetToTimeline(currentLogin, tweet);
+        tweetRepository.addTweetToTagline(tweet);
 
         // add tweet to the follower's timelines
-        Collection<String> followersForUser = this.followerRepository.findFollowersForUser(currentLogin);
+        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            this.tweetRepository.addTweetToTimeline(followerLogin, tweet);
+            tweetRepository.addTweetToTimeline(followerLogin, tweet);
         }
 
         // add tweet to the mentioned users' timeline
@@ -167,18 +80,17 @@ public class TimelineService {
                     !mentionedLogin.equals(currentLogin) &&
                     !followersForUser.contains(mentionedLogin)) {
 
-                this.tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
+                tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
             }
         }
 
         // Increment tweet count for the current user
-        this.counterRepository.incrementTweetCounter(currentLogin);
+        counterRepository.incrementTweetCounter(currentLogin);
 
         // Add to Elastic Search index if it is activated
-        if (this.indexActivated) {
-            this.indexService.addTweet(tweet);
+        if (indexActivated) {
+            indexService.addTweet(tweet);
         }
-        return tweet;
     }
 
     public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {

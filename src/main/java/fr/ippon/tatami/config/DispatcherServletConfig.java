@@ -107,7 +107,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MessageSource messageSource() {
-    	ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
         messageSource.setCacheSeconds(1);
         return messageSource;

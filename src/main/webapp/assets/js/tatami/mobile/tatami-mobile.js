@@ -228,9 +228,8 @@ function refreshLine(a, b, c, d, e, f) {
 					"tr.data").filter(":last").find("a[data-tag]").attr(
 					"data-tag")
 		}
-		g = g.replace(START_TWEET_INDEX_REGEXP, b)
-			.replace(END_TWEET_INDEX_REGEXP, c)
-			.replace(TAG_REGEXP, k)
+		g = g.replace(START_TWEET_INDEX_REGEXP, b).replace(
+				END_TWEET_INDEX_REGEXP, c).replace(TAG_REGEXP, k)
 	}
 	$.ajax({
 		type : HTTP_GET,
@@ -399,11 +398,7 @@ function fillTweetTemplate(a, b) {
 		$newTweetLine.find("article strong").empty().html(
 				a.firstName + " " + a.lastName + "<br/>")
 	}
-	var enhancedContent = a.content.replace(URL1_REG, URL1_LINK)
-							.replace(URL2_REG, URL2_LINK)
-							.replace(URL3_REG, URL3_LINK);
-
-	$newTweetLine.find("article span").html(enhancedContent);
+	$newTweetLine.find("article span").html(a.content);
 	if (b != "timeline" && a.authorFollow) {
 		$newTweetLine.find(".tweetFriend").append(
 				'<a href="#" title="Follow" data-follow="' + a.login

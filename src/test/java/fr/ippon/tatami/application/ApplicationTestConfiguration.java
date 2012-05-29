@@ -14,13 +14,12 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
 import fr.ippon.tatami.config.CassandraConfiguration;
-import fr.ippon.tatami.config.MiscBeanConfiguration;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
 
 @Configuration
 @PropertySource("classpath:/tatami/tatami-test.properties")
 @ComponentScan(basePackages = {"fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
-@Import(value = {MiscBeanConfiguration.class, CassandraConfiguration.class, ElasticSearchConfiguration.class})
+@Import(value = {CassandraConfiguration.class, ElasticSearchConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationTestConfiguration {
 

@@ -2,7 +2,6 @@ package fr.ippon.tatami.web.init;
 
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.DispatcherServletConfig;
-import fr.ippon.tatami.web.filter.URLShortenerHandlerFilter;
 import fr.ippon.tatami.web.monitoring.MonitoringFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,18 +71,9 @@ public class WebConfigurer implements ServletContextListener {
 
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
-        //        AnnotationConfigWebApplicationContext shortenerServletConfig = new AnnotationConfigWebApplicationContext();
-        //        shortenerServletConfig.setParent(rootContext);
-        //        shortenerServletConfig.register(DispatcherServletConfig.class);
-
         AnnotationConfigWebApplicationContext dispatcherServletConfig = new AnnotationConfigWebApplicationContext();
         dispatcherServletConfig.setParent(rootContext);
         dispatcherServletConfig.register(DispatcherServletConfig.class);
-
-        //        ServletRegistration.Dynamic shortLinksServlet = servletContext.addServlet("shortener", new DispatcherServlet(
-        //                shortenerServletConfig));
-        //        shortLinksServlet.addMapping("/s/*");
-        //        shortLinksServlet.setLoadOnStartup(1);
 
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcher", new DispatcherServlet(
                 dispatcherServletConfig));
@@ -102,13 +92,6 @@ public class WebConfigurer implements ServletContextListener {
         FilterRegistration.Dynamic deviceResolverHandlerFilter = servletContext.addFilter("deviceResolverHandlerFilter",
                 new DeviceResolverHandlerFilter());
         deviceResolverHandlerFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-        final URLShortenerHandlerFilter shortenerFilter = new URLShortenerHandlerFilter();
-        shortenerFilter.setParent(rootContext);
-        FilterRegistration.Dynamic urlShortenerHandlerFilter = servletContext.addFilter("urlShortenerHandlerFilter",
-                shortenerFilter);
-        urlShortenerHandlerFilter.addMappingForUrlPatterns(disps, true, "/s/*");
-
     }
 
     @Override

@@ -211,7 +211,7 @@ public class IndexService {
      *
      * @param clazz       the item type
      * @param searchField a particular field to search into, if null, "_all" field is used
-     * @param uidField    : the filed to return in the results collection
+     * @param uidField    : the field to return in the results collection
      * @param query       the query
      * @param page        the page to return
      * @param size        the size of a page

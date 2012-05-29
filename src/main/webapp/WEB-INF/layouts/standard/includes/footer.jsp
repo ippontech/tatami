@@ -23,7 +23,6 @@
 <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
 <script src="/assets/js/mustache/mustache.js"></script>
 
-<script src="/assets/js/tatami/constants.js"></script>
 <script src="/assets/js/tatami/standard/tatami.utils.js"></script>
 <script src="/assets/js/tatami/standard/tatami.tweets.js"></script>
 <script src="/assets/js/tatami/standard/tatami.users.js"></script>

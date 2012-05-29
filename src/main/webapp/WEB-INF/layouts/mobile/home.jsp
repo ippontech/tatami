@@ -311,8 +311,7 @@
 			var JSON_CONTENT = 'application/json; charset=UTF-8';
            	/*]]>*/
        	</script>
-		
-		<script src="/assets/js/tatami/constants.js"></script>
+
 		<script src="/assets/js/tatami/mobile/tatami-mobile.js"></script>        	 
 	</div>
   </body>
