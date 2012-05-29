@@ -38,17 +38,17 @@
             <properties>
                 <spring.profiles.active>default</spring.profiles.active>
                 <jetty.port>8080</jetty.port>
-                <jetty.jvmArgs>-XX:MaxPermSize=32m -Xms64m -Xmx128m</jetty.jvmArgs>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <jetty.jvmArgs>-XX:MaxPermSize=32m -Xms64m -Xmx128m</jetty.jvmArgs>
             </properties>
         </profile>
         <profile>
             <id>ippon</id>
             <properties>
                 <spring.profiles.active>ippon</spring.profiles.active>
+                <!-- Jetty must run in forked mode to use this parameter : mvn:jetty-forked -->
+                <jetty.jvmArgs>-Djetty.port=80 -Dspring.profiles.active=ippon -XX:MaxPermSize=64m -Xms128m -Xmx1024m</jetty.jvmArgs>
                 <jetty.port>80</jetty.port>
-                <!-- Jetty must run in forked mode to use this parameter : mvn jetty:run-forked -->
-                <jetty.jvmArgs>-XX:MaxPermSize=64m -Xms128m -Xmx1024m</jetty.jvmArgs>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
             </properties>
         </profile>
