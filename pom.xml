@@ -44,8 +44,8 @@
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.0-3</hector.version>
-        <hector.mapper.version>1.1-01</hector.mapper.version>
+        <hector.version>1.0-5</hector.version>
+        <hector.mapper.version>1.1-03</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <ehcache.version>2.5.1</ehcache.version>
         <javax.inject.version>1</javax.inject.version>
