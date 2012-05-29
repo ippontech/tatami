@@ -19,7 +19,7 @@
                     <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<fmt:message
                             key="tatami.about"/></a></li>
                 </ul>
-                <sec:authorize access="hasRole('ROLE_USER')" >
+                <sec:authorize access="isAuthenticated()" >
                     <ul class="nav pull-right">
                         <li class="divider-vertical"></li>
                         <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<fmt:message

@@ -27,8 +27,25 @@
     <scm>
         <url>http://github.com/ippontech/tatami</url>
         <connection>scm:git:git@github.com:ippontech/tatami.git</connection>
-        <!-- <developerConnection>scm:git:git@github.com:ippontech/tatami.git</developerConnection> -->
     </scm>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>default</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>ippon</id>
+            <properties>
+                <spring.profiles.active>ippon</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
     <properties>
         <!-- Configuration -->
@@ -235,6 +252,11 @@
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
@@ -357,6 +379,12 @@
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>${spring.profiles.active}</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>

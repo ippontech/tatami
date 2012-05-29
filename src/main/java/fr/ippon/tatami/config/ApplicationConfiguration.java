@@ -20,7 +20,6 @@ public class ApplicationConfiguration {
 
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
-        this.log.info("Tatami started!");
+        log.info("Tatami started!");
     }
-
 }

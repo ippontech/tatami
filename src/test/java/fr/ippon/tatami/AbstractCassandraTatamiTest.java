@@ -12,6 +12,7 @@ import org.elasticsearch.node.NodeBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -20,6 +21,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @ContextConfiguration(
         classes = ApplicationTestConfiguration.class,
         loader = AnnotationConfigContextLoader.class)
+@ActiveProfiles("default")
 public abstract class AbstractCassandraTatamiTest {
 
     private static boolean isInitialized = false;
