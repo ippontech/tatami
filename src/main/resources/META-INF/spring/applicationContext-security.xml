@@ -16,6 +16,7 @@
 
     <http pattern="/tatami/login" security="none"/>
     <http pattern="/tatami/about" security="none"/>
+    <http pattern="/tatami/register/**" security="none"/>
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/**" access="isAuthenticated()"/>

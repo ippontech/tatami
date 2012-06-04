@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Manages the application's users.
@@ -44,6 +45,9 @@ public class UserService {
 
     @Inject
     private AuthenticationService authenticationService;
+
+    @Inject
+    private MailService mailService;
 
     @Inject
     private IndexService indexService;
@@ -85,7 +89,7 @@ public class UserService {
     public void updateUser(User user) {
         User currentUser = authenticationService.getCurrentUser();
         user.setLogin(currentUser.getLogin());
-        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+        user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         try {
             userRepository.updateUser(user);
             // Add to Elastic Search index if it is activated
@@ -99,7 +103,13 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        user.setGravatar(GravatarUtil.getHash(user.getEmail()));
+        String login = user.getLogin();
+        user.setGravatar(GravatarUtil.getHash(login));
+
+        user.setUsername(login.substring(0, login.indexOf("@")));
+        user.setDomain(login.substring(login.indexOf("@") + 1, login.length()));
+        user.setValidated(false);
+
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
@@ -109,6 +119,17 @@ public class UserService {
         if (indexActivated) {
             indexService.addUser(user);
         }
+
+    }
+
+    public void registerEmail(String email) {
+        User user = new User();
+        user.setLogin(email);
+        this.createUser(user);
+
+        //Send confirmation e-mail
+        String token = UUID.randomUUID().toString();
+        mailService.sendRegistrationEmail(email, token);
     }
 
     public void followUser(String loginToFollow) {

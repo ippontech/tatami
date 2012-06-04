@@ -1,6 +1,3 @@
-/**
- *
- */
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Status;
@@ -278,7 +275,8 @@ public class IndexService {
             jsonifiedObject = XContentFactory.jsonBuilder()
                     .startObject()
                     .field("login", user.getLogin())
-                    .field("email", user.getEmail())
+                    .field("username", user.getUsername())
+                    .field("domain", user.getDomain())
                     .field("firstName", user.getFirstName())
                     .field("lastName", user.getLastName())
                     .endObject();

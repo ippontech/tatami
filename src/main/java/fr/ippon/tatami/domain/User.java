@@ -23,12 +23,18 @@ public class User {
 
     @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
+    @Email(message = "Email is invalid.")
     @Id
     private String login;
 
-    @Email(message = "Email is invalid.")
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "domain")
+    private String domain;
+
+    @Column(name = "validated")
+    private boolean validated;
 
     @Column(name = "gravatar")
     private String gravatar;
@@ -59,12 +65,28 @@ public class User {
         this.login = login;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 
     public String getGravatar() {
@@ -136,7 +158,9 @@ public class User {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
-                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", domain='" + domain + '\'' +
+                ", validated=" + validated +
                 ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

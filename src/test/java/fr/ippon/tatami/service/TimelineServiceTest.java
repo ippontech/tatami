@@ -22,32 +22,32 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetUserline() throws Exception {
-        String login = "userWithStatus";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        String login = "userWithStatus@ippon.fr";
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<Status> status = timelineService.getUserline(login, 10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetAuthenticateUserUserlineWithNullLoginSet() throws Exception {
-        String login = "userWithStatus";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        String login = "userWithStatus@ippon.fr";
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<Status> status = timelineService.getUserline(null, 10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetAuthenticateUserUserlineWithEmptyLoginSet() throws Exception {
-        String login = "userWithStatus";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        String login = "userWithStatus@ippon.fr";
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<Status> status = timelineService.getUserline("", 10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetTimeline() throws Exception {
-        String login = "userWithStatus";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        String login = "userWithStatus@ippon.fr";
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<Status> status = timelineService.getTimeline(10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
     }
@@ -56,20 +56,20 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetDayline() throws Exception {
         String date = "19042012";
         Collection<Status> status = timelineService.getDayline(date);
-        assertThatLineForUserWithStatusIsOk("userWithStatus", status);
+        assertThatLineForUserWithStatusIsOk("userWithStatus@ippon.fr", status);
     }
 
     @Test
     public void shouldGetTagline() throws Exception {
         String hashtag = "ippon";
         Collection<Status> status = timelineService.getTagline(hashtag, 10);
-        assertThatLineForUserWithStatusIsOk("userWithStatus", status);
+        assertThatLineForUserWithStatusIsOk("userWithStatus@ippon.fr", status);
     }
 
     @Test
     public void shouldPostStatus() throws Exception {
-        String login = "userWhoPostStatus";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWhoPostStatus@ippon.fr");
+        String login = "userWhoPostStatus@ippon.fr";
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
         timelineService.postStatus(content);
@@ -81,7 +81,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         Collection<Status> statusFromTimeline = timelineService.getTimeline(10, null, null);
         assertThatNewTestIsPosted(login, content, statusFromTimeline);
 
-        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
+        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus@ippon.fr", 10, null, null);
         assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
 
     }
@@ -94,8 +94,8 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         assertThat(status.getContent(), is(content));
     }
 
-    private void mockAuthenticationOnTimelineServiceWithACurrentUser(String login, String email) {
-        User authenticateUser = constructAUser(login, email);
+    private void mockAuthenticationOnTimelineServiceWithACurrentUser(String login) {
+        User authenticateUser = constructAUser(login);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
         timelineService.setAuthenticationService(mockAuthenticationService);

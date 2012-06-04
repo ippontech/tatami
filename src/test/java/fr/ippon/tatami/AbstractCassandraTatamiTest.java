@@ -55,17 +55,16 @@ public abstract class AbstractCassandraTatamiTest {
         }
     }
 
-    protected User constructAUser(String login, String email, String firstName, String lastName) {
+    protected User constructAUser(String login, String firstName, String lastName) {
         User user = new User();
         user.setLogin(login);
-        user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         return user;
     }
 
-    protected User constructAUser(String login, String email) {
-        return constructAUser(login, email, null, null);
+    protected User constructAUser(String login) {
+        return constructAUser(login, null, null);
     }
 
 }
