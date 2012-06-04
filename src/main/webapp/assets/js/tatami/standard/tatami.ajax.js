@@ -7,6 +7,7 @@
  * --------
  * POST /statuses/update -> create a new Status
  * POST /statuses/destroy/:id -> delete Status
+ * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
  * GET  /statuses/home_timeline -> get the latest status from the current user
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
  * GET  /search?q=keywords&page=m&rpp=n -> get the status matching the keywords, from the page m, containing n status
@@ -87,6 +88,25 @@ function removeStatus(statusId) {
 }
 
 /**
+ * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
+ */
+function getStatus(statusId) {
+    $.ajax({
+        type: 'GET',
+        url: "/tatami/rest/statuses/show/" + statusId,
+        dataType: "json",
+        success: function(data) {
+            if (data != null) {
+                makeStatusList([data], $('#statusList'));
+                scrollLock = false;
+            } else {
+                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">No status found !</td></tr>');
+            }
+        }
+    });
+}
+
+/**
  * GET  /statuses/home_timeline -> get the latest status from the current user
  */
 function listStatus(reset) {
@@ -105,7 +125,7 @@ function listStatus(reset) {
                 makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">No more status...</td></tr>');
+                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
             }
         }
     });
@@ -145,7 +165,7 @@ function listUserStatus(userLogin) {
                 makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">No more status...</td></tr>');
+                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
             }
         }
     });

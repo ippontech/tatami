@@ -17,15 +17,16 @@ body {
     color: #000000;
 }
 
-.statusActions {
-    width: 48px;
+.statusDisplay {
+    width: 452px;
 }
 
 .statusDate {
     width: 48px;
+    height: 48px;
 }
 
-section#timeline table tbody#statusList tr.status {
+section#timeline table tbody.statusList tr.status {
     vertical-align: top;
 }
 

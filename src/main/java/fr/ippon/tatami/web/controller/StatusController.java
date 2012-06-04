@@ -8,8 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
@@ -18,9 +17,9 @@ import javax.inject.Inject;
  * @author Julien Dubois
  */
 @Controller
-public class ProfileController {
+public class StatusController {
 
-    private final Log log = LogFactory.getLog(ProfileController.class);
+    private final Log log = LogFactory.getLog(StatusController.class);
 
     @Inject
     private UserService userService;
@@ -28,16 +27,16 @@ public class ProfileController {
     @Inject
     private CounterService counterService;
 
-    @RequestMapping(value = "/profile/{login}",
-            method = RequestMethod.GET)
-    public ModelAndView getUserProfile(@PathVariable("login") String login) {
+    @RequestMapping(value = "/{login}/status/{statusId}")
+    public ModelAndView displayStatus(@PathVariable("login") String login, @PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("Request to get Profile : " + login);
+            log.debug("Request to get Status ID : " + statusId);
         }
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("profile");
+        mv.setViewName("status");
         User user = userService.getUserProfileByLogin(login);
         if (null != user) {
+            mv.addObject("statusId", statusId);
             mv.addObject("user", user);
             mv.addObject("followed", userService.isFollowed(login));
             mv.addObject("nbStatus", counterService.getNbStatus(login));

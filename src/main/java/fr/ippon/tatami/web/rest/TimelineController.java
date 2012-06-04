@@ -51,6 +51,20 @@ public class TimelineController {
     }
 
     /**
+     * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
+     */
+    @RequestMapping(value = "/rest/statuses/show/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Status getStatus(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status Id : " + statusId);
+        }
+        return timelineService.getStatus(statusId);
+    }
+
+    /**
      * GET  /statuses/home_timeline -> get the latest status from the current user
      */
     @RequestMapping(value = "/rest/statuses/home_timeline",

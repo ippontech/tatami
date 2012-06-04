@@ -95,6 +95,10 @@ public class TimelineService {
         }
     }
 
+    public Status getStatus(String statusId) {
+        return this.statusRepository.findStatusById(statusId);
+    }
+
     public Collection<Status> buildStatusList(Collection<String> statusIds) {
         String login = authenticationService.getCurrentUser().getLogin();
         Collection<String> favoriteIds = statusRepository.getFavoritesline(login);

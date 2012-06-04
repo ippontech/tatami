@@ -147,3 +147,17 @@ function initProfile() {
         return false;
     });
 }
+
+function initStatus() {
+    $('#statusPanel').load('/assets/fragments/standard/timeline.html', function() {
+        getStatus(statusId);
+    });
+
+    // search form binding
+    $('#global-status-search').submit(function() {
+        var searchQuery = $("#searchQuery").val();
+        window.location = "/tatami/?search=" + searchQuery;
+        return false;
+    });
+}
+
