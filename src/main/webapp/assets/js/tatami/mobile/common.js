@@ -17,14 +17,14 @@ function bindListeners($target)
 	$target.find('a[data-like]').click(function(e)
 	{
 		var target = $(e.currentTarget).attr('data-like');
-		addFavoriteTweet(target);
+		addFavoriteStatus(target);
 		return false;
 	});
 
 	$target.find('a[data-unlike]').click(function(e)
 	{
 		var target = $(e.currentTarget).attr('data-unlike');
-		removeFavoriteTweet(target);
+		removeFavoriteStatus(target);
 		return false;
 	});
 
@@ -53,7 +53,7 @@ function bindListeners($target)
 	});
 	
 	//Bind click on gravatar to display user profile modal
-	$target.find('img.tweetGravatar[data-user],#picture').click(function(e)
+	$target.find('img.statusGravatar[data-user],#picture').click(function(e)
 	{
 		//First hide popover
 		if($(e.currentTarget).data('popover') != null)
@@ -93,70 +93,70 @@ function registerRefreshLineListeners($target)
 	$target.find('.refreshLineIcon').click(refreshCurrentLine);
 }
 
-function registerFetchTweetHandlers($target)
+function registerFetchStatusHandlers($target)
 {
-	$target.find('.tweetPagingButton').click(function(event)
+	$target.find('.statusPagingButton').click(function(event)
 	{
-		var tweetsNb = $(event.target).closest('footer').find('.pageSelector option').filter(':selected').val(); 
-		var currentTweetsNb = $(event.target).closest('footer').closest('div').find('.lineContent tr.data').size();
+		var statusNb = $(event.target).closest('footer').find('.pageSelector option').filter(':selected').val();
+		var currentStatusNb = $(event.target).closest('footer').closest('div').find('.lineContent tr.data').size();
 		var targetLine =  $(event.target).closest('div.tab-pane.active').attr('id');
 		
-		refreshLine(targetLine,currentTweetsNb+1,parseInt(currentTweetsNb)+parseInt(tweetsNb),false);
+		refreshLine(targetLine,currentStatusNb+1,parseInt(currentStatusNb)+parseInt(statusNb),false);
 				
 		return false;
 	});
 }
 
-function fillTweetTemplate(tweet,data_line_type)
+function fillStatusTemplate(status,data_line_type)
 {
-	$newTweetLine = $('#tweetTemplate').clone().attr('id','');
+	$newStatusLine = $('#statusTemplate').clone().attr('id','');
 	
-	$newTweetLine.find('.tweetGravatar').attr('data-user',tweet.login).attr('src','http://www.gravatar.com/avatar/'+tweet.gravatar+'?s=32');
+	$newStatusLine.find('.statusGravatar').attr('data-user',status.login).attr('src','http://www.gravatar.com/avatar/'+status.gravatar+'?s=32');
 	
 	if(data_line_type != 'userline')
 	{
-		if(login != tweet.login)
+		if(login != status.login)
 		{
-			$newTweetLine.find('article strong').empty().html(tweet.firstName+' '+tweet.lastName+' &nbsp;')
-			.after('<a class="tweetAuthor" href="#" data-user="'+tweet.login+'" title="Show '+tweet.login+' tweets"><em>@'+tweet.login+'</em></a><br/>');
+			$newStatusLine.find('article strong').empty().html(status.firstName+' '+status.lastName+' &nbsp;')
+			.after('<a class="statusAuthor" href="#" data-user="'+status.login+'" title="Show '+status.login+' status"><em>@'+status.login+'</em></a><br/>');
 		}
 	}	
 	else
 	{
-		$newTweetLine.find('article strong').empty().html(tweet.firstName+' '+tweet.lastName+'<br/>');
+		$newStatusLine.find('article strong').empty().html(status.firstName+' '+status.lastName+'<br/>');
 	}
 	
-	$newTweetLine.find('article span').html(tweet.content);
+	$newStatusLine.find('article span').html(status.content);
 	
 	// Conditional rendering of Follow icon
-	if(data_line_type != 'timeline' && tweet.authorFollow)
+	if(data_line_type != 'timeline' && status.authorFollow)
 	{	
-		$newTweetLine.find('.tweetFriend').append('<a href="#" title="Follow" data-follow="'+tweet.login+'"><i class="frame icon-eye-open"></i></a>&nbsp;&nbsp;');
+		$newStatusLine.find('.statusFriend').append('<a href="#" title="Follow" data-follow="'+status.login+'"><i class="frame icon-eye-open"></i></a>&nbsp;&nbsp;');
 	}
 	
 	// Conditional rendering of unfollow icon
-	if(tweet.authorForget)
+	if(status.authorForget)
 	{
-		$newTweetLine.find('.tweetFriend').append('<a href="#" title="Stop following" data-unfollow="'+tweet.login+'"><i class="frame icon-eye-close"></i></a>&nbsp;&nbsp;');
+		$newStatusLine.find('.statusFriend').append('<a href="#" title="Stop following" data-unfollow="'+status.login+'"><i class="frame icon-eye-close"></i></a>&nbsp;&nbsp;');
 	}	
 	
 	// Conditional rendering for like icon
-	if(data_line_type != 'favoriteline' && tweet.addToFavorite)
+	if(data_line_type != 'favoriteline' && status.addToFavorite)
 	{
-		$newTweetLine.find('.tweetFriend').append('<a href="#" title="Like" data-like="'+tweet.tweetId+'"><i class="frame icon-star"></i></a>&nbsp;&nbsp;');
+		$newStatusLine.find('.statusFriend').append('<a href="#" title="Like" data-like="'+status.statusId+'"><i class="frame icon-star"></i></a>&nbsp;&nbsp;');
 	}
 
 	// Conditional rendering for unlike icon
-	if(data_line_type == 'favoriteline' && !tweet.addToFavorite)
+	if(data_line_type == 'favoriteline' && !status.addToFavorite)
 	{
-		$newTweetLine.find('.tweetFriend').append('<a href="#" title="Stop liking" data-unlike="'+tweet.tweetId+'"><i class="frame icon-star-empty"></i></a>&nbsp;&nbsp;');
+		$newStatusLine.find('.statusFriend').append('<a href="#" title="Stop liking" data-unlike="'+status.statusId+'"><i class="frame icon-star-empty"></i></a>&nbsp;&nbsp;');
 	}	
 	
 	
-	$newTweetLine.find('.tweetDate aside').empty().html(tweet.prettyPrintTweetDate);
+	$newStatusLine.find('.statusDate aside').empty().html(status.prettyPrintStatusDate);
 
-	bindListeners($newTweetLine);
-	return $newTweetLine.find('tr');
+	bindListeners($newStatusLine);
+	return $newStatusLine.find('tr');
 }
 
 function fillUserTemplate(user)
@@ -164,19 +164,19 @@ function fillUserTemplate(user)
 	$newUserLine = $('#fullUserTemplate').clone().attr('id','');
 	
 	$newUserLine
-	.find('.tweetGravatar').attr('data-user',user.login).attr('src','http://www.gravatar.com/avatar/'+user.gravatar+'?s=32').attr('data-modal-highlight','#userProfileModal').end()
-	.find('.userLink').attr('data-user',user.login).attr('title','Show '+user.login+' tweets').end()
+	.find('.statusGravatar').attr('data-user',user.login).attr('src','http://www.gravatar.com/avatar/'+user.gravatar+'?s=32').attr('data-modal-highlight','#userProfileModal').end()
+	.find('.userLink').attr('data-user',user.login).attr('title','Show '+user.login+' status').end()
 	.find('em').html('@'+user.login).end()
 	.find('.userDetailsName').html(user.firstName+' '+user.lastName).end()
-	.find('.badge').html(user.tweetCount);
+	.find('.badge').html(user.statusCount);
 	
 	if(user.follow)
 	{
-		$newUserLine.find('.tweetFriend a').attr('data-follow',user.login).attr('title','Follow '+user.login).end();
+		$newUserLine.find('.statusFriend a').attr('data-follow',user.login).attr('title','Follow '+user.login).end();
 	}
 	else
 	{
-		$newUserLine.find('.tweetFriend a').removeAttr('data-follow').attr('data-unfollow',user.login)
+		$newUserLine.find('.statusFriend a').removeAttr('data-follow').attr('data-unfollow',user.login)
 		.attr('title','Stop following '+user.login).find('i').removeClass().addClass('icon-eye-close');
 	}	
 	bindListeners($newUserLine);

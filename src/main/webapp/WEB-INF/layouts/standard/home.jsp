@@ -32,8 +32,8 @@
                             </div>
                             <div id="badges" class="well well-small row-fluid">
                                 <div class="span4">
-                                    <span id="tweetCount" class="badge"></span><br/><fmt:message
-                                        key="tatami.badge.tweets"/>
+                                    <span id="statusCount" class="badge"></span><br/><fmt:message
+                                        key="tatami.badge.status"/>
                                 </div>
                                 <div class="span4">
                                     <span id="friendsCount" class="badge"></span><br/><fmt:message
@@ -46,10 +46,10 @@
                             </div>
                             <div class="row-fluid">
                                 <div class="span12">
-                                    <form class="form-inline" onsubmit="return tweet();">
-                                        <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
-                                                  placeholder="Type a new tweet..."></textarea>
-                                        <button type="submit" class="btn btn-primary">Tweet</button>
+                                    <form class="form-inline" onsubmit="return status();">
+                                        <textarea id="statusContent" rel="popover" class="focused" maxlength="140"
+                                                  placeholder="<fmt:message key="tatami.status.update"/>..."></textarea>
+                                        <button type="submit" class="btn btn-primary"><fmt:message key="tatami.status.update"/></button>
                                     </form>
                                     <div class="error"></div>
                                 </div>
@@ -111,42 +111,38 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="active"><a id="mainTab" href="#timeLinePanel" data-toggle="tab"><i
-                            class="icon-th-list"></i>&nbsp;<fmt:message key="tatami.tweets"/></a></li>
+                            class="icon-th-list"></i>&nbsp;<fmt:message key="tatami.status"/></a></li>
                     <li><a id="favTab" href="#favLinePanel" data-toggle="tab"><i
-                            class="icon-star"></i>&nbsp;<fmt:message key="tatami.user.favoritetweets"/></a></li>
+                            class="icon-star"></i>&nbsp;<fmt:message key="tatami.user.favoritestatus"/></a></li>
                     <li><a id="tagTab" href="#tagLinePanel" data-toggle="tab"><i
                             class="icon-tag"></i>&nbsp;<fmt:message key="tatami.tags"/></a></li>
                     <li><a id="searchTab" href="#searchLinePanel" data-toggle="tab"><i
                             class="icon-search"></i>&nbsp;<fmt:message key="tatami.search"/></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="icon-signal"></i>&nbsp;<fmt:message key="tatami.tweets.stats"/>&nbsp;<b
+                                class="icon-signal"></i>&nbsp;<fmt:message key="tatami.status.stats"/>&nbsp;<b
                                 class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a id="piechartTab" href="#piechartPanel" data-toggle="tab"><fmt:message
-                                    key="tatami.stats.tweets.piechart"/></a></li>
+                                    key="tatami.stats.status.piechart"/></a></li>
                             <li><a id="punchchartTab" href="#punchchartPanel" data-toggle="tab"><fmt:message
-                                    key="tatami.stats.tweets.punchchart"/></a></li>
+                                    key="tatami.stats.status.punchchart"/></a></li>
                         </ul>
                     </li>
                 </ul>
                 <div class="tab-content alert alert-success">
                     <div class="tab-pane active" id="timeLinePanel">
                         <section id="timeline">
-                            <header>
-                                <div class="alert" id="refreshStatus" hidden="hidden"></div>
-                            </header>
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th colspan="3"><h2>Tweets</h2></th>
                                     <th>
-                                        <a href="#" id="refreshTweets" title="Refresh - shortcut : ctrl+R"><i
+                                        <a href="#" id="refreshStatus" title="Refresh - shortcut : ctrl+R"><i
                                                 class="icon-repeat icon-white"></i></a>
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody id="tweetsList" class="tweetsList"></tbody>
+                                <tbody id="statusList" class="statusList"></tbody>
                             </table>
                         </section>
                     </div>

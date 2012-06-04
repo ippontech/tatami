@@ -46,7 +46,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    public void incrementTweetCounter(String login) {
+    public void incrementStatusCounter(String login) {
         incrementCounter(TWEET_COUNTER, login);
     }
 
@@ -61,7 +61,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    public void decrementTweetCounter(String login) {
+    public void decrementStatusCounter(String login) {
         decrementCounter(TWEET_COUNTER, login);
     }
 
@@ -76,7 +76,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    public long getTweetCounter(String login) {
+    public long getStatusCounter(String login) {
         return getCounter(TWEET_COUNTER, login);
     }
 
@@ -91,7 +91,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    public void createTweetCounter(String login) {
+    public void createStatusCounter(String login) {
         createCounter(TWEET_COUNTER, login);
     }
 

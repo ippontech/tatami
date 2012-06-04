@@ -32,11 +32,11 @@
            <ul class="nav nav-tabs">
            		<li class="dropdown">
             		<a id="defaultTab" href="#homePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<fmt:message key="tatami.new.tweet"/></a>
+            			<img src="/assets/img/glyphicons_322_twitter.png"></img>&nbsp;<fmt:message key="tatami.new.status"/></a>
 				</li>
 				<li class="dropdown">
             		<a id="timelineTab" href="#timelinePanel" data-toggle="tab">
-            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<fmt:message key="tatami.tweets"/></a>
+            			<img src="/assets/img/glyphicons_309_comments.png"></img>&nbsp;<fmt:message key="tatami.status"/></a>
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -82,7 +82,7 @@
 					</div>
 					<div id="homePanelUserStats" class="well well-small row-fluid noMargin noPadding">
 						<div class="span4 noMargin noPadding center">
-							<span id="tweetCount" class="badge" data-user="${user.login}">${user.tweetCount}</span><br/>TWEETS
+							<span id="statusCount" class="badge" data-user="${user.login}">${user.statusCount}</span><br/>TWEETS
 						</div>
 						<div class="span4 noMargin noPadding center">
 							<span id="friendsCount" class="badge">${user.friendsCount}</span><br/>FOLLOWING
@@ -91,24 +91,24 @@
 							<span id="followersCount" class="badge">${user.followersCount}</span><br/>FOLLOWERS
 						</div>
 					</div>
-					<div id="homePanelTweet" class="row-fluid noMargin center">
-						<div id="tweetErrorPanel" class="alert alert-error noPadding" style="display: none;">
+					<div id="homePanelStatus" class="row-fluid noMargin center">
+						<div id="statusErrorPanel" class="alert alert-error noPadding" style="display: none;">
 							<h4 class="alert-heading">Error!</h4>
 							<span class="errorMessage"></span>
 						</div>
 
-						<table id="tweetForm" class="center row-fluid noMargin noPadding">
+						<table id="statusForm" class="center row-fluid noMargin noPadding">
 							<tr>
 								<td class="center">
-									<textarea id="tweetContent" class="focused"  
+									<textarea id="statusContent" class="focused"
 										maxlength="140" 
 										name="content" 
-										placeholder="Type a new tweet..."></textarea>
+										placeholder="Type a new status..."></textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<button id="tweetButton" type="button" class="btn btn-primary"><fmt:message key="tatami.user.tweet" /></button>
+									<button id="statusButton" type="button" class="btn btn-primary"><fmt:message key="tatami.user.status" /></button>
 								</td>
 							</tr>
 						</table>			
@@ -153,7 +153,7 @@
             		<td style="width: 90%;">
             			<table class="internalUserTemplateTable" style="border: none; width: 100%;">
             				<td>
-            					<img class="tweetGravatar" 
+            					<img class="statusGravatar"
 									src="http://www.gravatar.com/avatar/?s=32"
 									data-user="">
 								</img>
@@ -171,7 +171,7 @@
             				</td>
             			</table>
             		</td>
-            		<td class="tweetFriend">
+            		<td class="statusFriend">
             			<a href="#" data-follow="" title="Follow">
             				<i class="icon-eye-open"></i>
             			</a>&nbsp;
@@ -181,29 +181,29 @@
 		</table>
 	</div>
 
-	<div id="tweetTemplateContainer" style="display: none;">
-		<table id="tweetTemplate">
+	<div id="statusTemplateContainer" style="display: none;">
+		<table id="statusTemplate">
 			<tbody>
 				<tr class="data">
-					<td class="tweetGravatarColumn">
-						<img class="tweetGravatar"
+					<td class="statusGravatarColumn">
+						<img class="statusGravatar"
 							data-user="" src="http://www.gravatar.com/avatar/?s=32"></img>
 					</td>
 					<td>
 						<article>
-							<strong class="tweetAuthor"></strong>					
-							<span class="tweetText"></span> 
+							<strong class="statusAuthor"></strong>
+							<span class="statusText"></span>
 						</article>
 					</td>
-					<td class="tweetFriend">
+					<td class="statusFriend">
 					</td>
-					<td class="tweetDate">
-						<aside>tweet.prettyPrintTweetDate</aside>
+					<td class="statusDate">
+						<aside>status.prettyPrintStatusDate</aside>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<table id="tweetPaddingTemplate">
+		<table id="statusPaddingTemplate">
 			<tbody>
 				<tr style="display: none;">
 					<td colspan="4"></td>
@@ -219,7 +219,7 @@
 	    </div>
 	    <div class="modal-body row-fluid noMargin noPadding">
 			<div id="userProfileGravatar" class="span3">
-				<img class="tweetGravatar"
+				<img class="statusGravatar"
 							data-user="" src="http://www.gravatar.com/avatar/?s=32"></img>
 			</div>
 	    	<div id="userProfileInfo" class="span9 noMargin">
@@ -236,7 +236,7 @@
 	    </div>
 	    <div id="userProfileFooter" class="modal-footer row-fluid noMargin">
 			<div class="span4 center">
-				<span id="userProfileTweetsCount" class="badge" data-modal-hide="#userProfileModal">1</span><br/>TWEETS
+				<span id="userProfileStatusCount" class="badge" data-modal-hide="#userProfileModal">1</span><br/>TWEETS
 			</div>
 			<div class="span4 center">
 				<span id="userProfileFriendsCount" class="badge">0</span><br/>FOLLOWING
@@ -269,7 +269,7 @@
 			
        		var login =  "<sec:authentication property="principal.username"/>";
            	
-			// Retrieve the default Nb Tweets value from the server				           
+			// Retrieve the default Nb Status value from the server
 			var DEFAULT_TWEET_LIST_SIZE = /*[[${DEFAULT_TWEET_LIST_SIZE}]]*/ 10;
 			
 			// Retrieve the default Nb Favorite value from the server				           
@@ -278,13 +278,13 @@
 			// Retrieve the default Nb Tag value from the server				           
 			var DEFAULT_TAG_LIST_SIZE = /*[[${DEFAULT_TAG_LIST_SIZE}]]*/ 10;
 
-			// Retrieve the default tweet first fetch size value from the server				           
+			// Retrieve the default status first fetch size value from the server
 			var TWEET_FIRST_FETCH_SIZE = /*[[${TWEET_FIRST_FETCH_SIZE}]]*/ 5;
 			
-			// Retrieve the default tweet second fetch size value from the server				           
+			// Retrieve the default status second fetch size value from the server
 			var TWEET_SECOND_FETCH_SIZE = /*[[${TWEET_SECOND_FETCH_SIZE}]]*/ 10;
 			
-			// Retrieve the default tweet third fetch size value from the server				           
+			// Retrieve the default status third fetch size value from the server
 			var TWEET_THIRD_FETCH_SIZE = /*[[${TWEET_THIRD_FETCH_SIZE}]]*/ 20;
 			
 			var TWEET_NB_PATTERN = /*[[${TWEET_NB_PATTERN}]]*/ "__TWEET-NB__";

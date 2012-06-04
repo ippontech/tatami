@@ -1,15 +1,15 @@
 package fr.ippon.tatami.domain;
 
-public class UserTweetStat implements Comparable<UserTweetStat> {
+public class UserStatusStat implements Comparable<UserStatusStat> {
 
     private String login;
 
-    private Integer tweetsCount;
+    private Integer statusCount;
 
-    public UserTweetStat(String login, Integer count) {
+    public UserStatusStat(String login, Integer count) {
         assert login != null && count != null;
         this.login = login;
-        this.tweetsCount = count;
+        this.statusCount = count;
     }
 
     /*
@@ -17,13 +17,13 @@ public class UserTweetStat implements Comparable<UserTweetStat> {
      * so two elements that are deemed equal by this method are, from the standpoint of the set, equal"
      */
     @Override
-    public int compareTo(UserTweetStat o) {
+    public int compareTo(UserStatusStat o) {
         return this.login.compareToIgnoreCase(o.login);
     }
 
     @Override
     public String toString() {
-        return "UserTweetStat{login='" + this.login + "', tweetsCount=" + this.tweetsCount + "}";
+        return "UserStatusStat{login='" + this.login + "', statusCount=" + this.statusCount + "}";
     }
 
     public String getLogin() {
@@ -34,11 +34,11 @@ public class UserTweetStat implements Comparable<UserTweetStat> {
         this.login = login;
     }
 
-    public Integer getTweetsCount() {
-        return tweetsCount;
+    public Integer getStatusCount() {
+        return statusCount;
     }
 
-    public void setTweetsCount(Integer count) {
-        this.tweetsCount = count;
+    public void setStatusCount(Integer count) {
+        this.statusCount = count;
     }
 }

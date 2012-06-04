@@ -7,25 +7,25 @@ body {
     width: 937px;
 }
 
-#global-tweet-search {
+#global-status-search {
     padding:4px 2px 4px 2px;
     margin:3px 0px;
     background-color:#2C2C2C;
 }
 
-.tweetsList {
+.statusList {
     color: #000000;
 }
 
-.tweetActions {
+.statusActions {
     width: 48px;
 }
 
-.tweetDate {
+.statusDate {
     width: 48px;
 }
 
-section#timeline table tbody#tweetsList tr.tweet {
+section#timeline table tbody#statusList tr.status {
     vertical-align: top;
 }
 
@@ -69,7 +69,7 @@ div#userProfileDesc {
     width: 937px;
 }
 
-#tweetContent {
+#statusContent {
     width: 230px;
     height: 80px;
 }

@@ -10,7 +10,7 @@
     </div>
     <div class="well well-small row-fluid">
         <div class="span4">
-            <span id="tweetCount" class="badge"></span><br/>TWEETS
+            <span id="statusCount" class="badge"></span><br/>TWEETS
         </div>
         <div class="span4">
             <span id="friendsCount" class="badge"></span><br/>FOLLOWING
@@ -21,10 +21,10 @@
     </div>
     <div class="row-fluid">
         <div class="span12">
-            <form class="form-inline" onsubmit="return tweet();">
-                <textarea id="tweetContent" rel="popover" class="focused" maxlength="140"
-                          placeholder="Type a new tweet..."></textarea>
-                <button type="submit" class="btn btn-primary">Tweet !</button>
+            <form class="form-inline" onsubmit="return status();">
+                <textarea id="statusContent" rel="popover" class="focused" maxlength="140"
+                          placeholder="Type a new status..."></textarea>
+                <button type="submit" class="btn btn-primary">Status !</button>
             </form>
             <div class="error"></div>
         </div>

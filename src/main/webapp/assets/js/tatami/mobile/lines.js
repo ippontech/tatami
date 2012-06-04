@@ -13,30 +13,30 @@ function loadEmptyLines()
 	$('#timelinePanel').load('fragments/mobile/timeline.html #timeline',function()
 	{
 		initTimeline();
-		bindListeners($('#tweetsList'));
+		bindListeners($('#statusList'));
 		registerRefreshLineListeners($('#timelinePanel'));
-		registerFetchTweetHandlers($('#timelinePanel'));
+		registerFetchStatusHandlers($('#timelinePanel'));
 	});
 	
 	
 	$('#favlinePanel').load('fragments/mobile/favline.html #favline',function()
 	{
 		initFavoritesline();
-		bindListeners($('#favTweetsList'));
+		bindListeners($('#favStatusList'));
 		registerRefreshLineListeners($('#favlinePanel'));
-		registerFetchTweetHandlers($('#favlinePanel'));
+		registerFetchStatusHandlers($('#favlinePanel'));
 	});
 
 	$('#userlinePanel').load('fragments/mobile/userline.html #userline',function()
 	{
 		registerRefreshLineListeners($('#userlinePanel'));
-		registerFetchTweetHandlers($('#userlinePanel'));
+		registerFetchStatusHandlers($('#userlinePanel'));
 	});	
 
 	$('#taglinePanel').load('fragments/mobile/tagline.html #tagline',function()
 	{
 		registerRefreshLineListeners($('#taglinePanel'));
-		registerFetchTweetHandlers($('#taglinePanel'));
+		registerFetchStatusHandlers($('#taglinePanel'));
 	});	
 }
 
@@ -48,10 +48,10 @@ function refreshTimeline()
 
 function refreshCurrentLine()
 {
-	var tweetsNb = $('#dataContentPanel div.tab-pane.active tbody tr.data').size();
+	var statusNb = $('#dataContentPanel div.tab-pane.active tbody tr.data').size();
 	var targetLine = $('#dataContentPanel div.tab-pane.active').attr('id');
 	
-	refreshLine(targetLine,1,tweetsNb,true,null,null);	
+	refreshLine(targetLine,1,statusNb,true,null,null);
 
 	return false;
 }	
@@ -115,20 +115,20 @@ function refreshLine(targetLine,start,end,clearAll,userLogin,tagWord)
         		if(clearAll)
         		{
         			$tableBody.empty();
-            		$('#tweetPaddingTemplate tr').clone().appendTo($tableBody);
-            		$('#tweetPaddingTemplate tr').clone().appendTo($tableBody);
+            		$('#statusPaddingTemplate tr').clone().appendTo($tableBody);
+            		$('#statusPaddingTemplate tr').clone().appendTo($tableBody);
         		}
         		else
         		{
         			$tableBody.find('tr:last-child').remove();
         		}
         		
-	        	$.each(data,function(index, tweet)
+	        	$.each(data,function(index, status)
 	        	{        		
-	        		$tableBody.append(fillTweetTemplate(tweet,data_line_type));
+	        		$tableBody.append(fillStatusTemplate(status,data_line_type));
 	        	});
 	        	
-	        	$('#tweetPaddingTemplate tr').clone().css('display', '').appendTo($tableBody);
+	        	$('#statusPaddingTemplate tr').clone().css('display', '').appendTo($tableBody);
     		}
         	else if(clearAll)
     		{
@@ -139,11 +139,11 @@ function refreshLine(targetLine,start,end,clearAll,userLogin,tagWord)
 }
 
 
-function addFavoriteTweet(tweet) {
+function addFavoriteStatus(status) {
 	
 	$.ajax({
 		type: HTTP_GET,
-		url: "rest/likeTweet/" + tweet,
+		url: "rest/likeStatus/" + status,
 		dataType: JSON_DATA,
         success: function()
         {
@@ -160,10 +160,10 @@ function addFavoriteTweet(tweet) {
 }
 
 
-function removeFavoriteTweet(tweet) {
+function removeFavoriteStatus(status) {
 	$.ajax({
 		type: HTTP_GET,
-		url: "rest/unlikeTweet/" + tweet,
+		url: "rest/unlikeStatus/" + status,
 		dataType: JSON_DATA,
         success: function()
         {
@@ -183,7 +183,7 @@ function loadUserline(targetUserLogin)
 {
 	if(targetUserLogin != null)
 	{
-		$('#userTweetsList').empty();
+		$('#userStatusList').empty();
 		clickFromLink = true;
 		$('#userlineTab').tab('show');
 		jQuery.ajaxSetup({async:false});
@@ -198,7 +198,7 @@ function loadTagsline(tag)
 {
 	if(tag != null)
 	{
-		$('#tagTweetsList').empty();
+		$('#tagStatusList').empty();
 		clickFromLink = true;
 		$('#taglineTab').tab('show');
 		jQuery.ajaxSetup({async:false});

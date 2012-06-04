@@ -8,7 +8,7 @@ function refreshHome()
 			$('#homePanel').find('#picture').attr('src','http://www.gravatar.com/avatar/'+user.gravatar+'?s=64').end()
 			.find('#firstName').html(user.firstName).end()
 			.find('#latName').html(user.lastName).end()
-			.find('#tweetCount').html(user.tweetCount).end()
+			.find('#statusCount').html(user.statusCount).end()
 			.find('#friendsCount').html(user.friendsCount).end()
 			.find('#followersCount').html(user.followersCount).end();
 			
@@ -59,7 +59,7 @@ function updateUserCounters()
 		url: "rest/usersStats/" + login,
 		dataType: JSON_DATA,
 		success: function(data) {
-			$("#tweetCount").text(data.tweetCount);
+			$("#statusCount").text(data.statusCount);
 			$("#friendsCount").text(data.friendsCount);
 			$("#followersCount").text(data.followersCount);
 			
@@ -67,26 +67,26 @@ function updateUserCounters()
 	});
 }
 
-function tweet() {
+function status() {
 
-	$('#tweetErrorPanel').hide();
+	$('#statusErrorPanel').hide();
 	$.ajax({
         type: HTTP_POST,
-        url: "rest/tweets",
+        url: "rest/status",
         async: false,
         contentType: "application/json;  charset=UTF-8",
-        data:  JSON.stringify({content: $.trim($("#tweetContent").val())}),
+        data:  JSON.stringify({content: $.trim($("#statusContent").val())}),
         dataType: JSON_DATA,
         success: function(data) {
 			setTimeout(function()
 			{
-				$("#tweetContent").slideUp().val("").slideDown('fast');
+				$("#statusContent").slideUp().val("").slideDown('fast');
 				updateUserCounters();
 				refreshTimeline();
 				refreshUserSuggestions();
 			},300);	
         },
-        error: errorHandler($('#tweetErrorPanel'))
+        error: errorHandler($('#statusErrorPanel'))
     });
 		
 	return false;
@@ -117,12 +117,12 @@ function updateUserProfileModal(data)
 	
 	$('#userProfileModal')
 	.find('#userProfileLogin').html('@'+data.login).end()
-	.find('#userProfileGravatar .tweetGravatar').attr('src','http://www.gravatar.com/avatar/'+data.gravatar+'?s=64').end()
+	.find('#userProfileGravatar .statusGravatar').attr('src','http://www.gravatar.com/avatar/'+data.gravatar+'?s=64').end()
 	.find('#userProfileName').html(data.firstName+'&nbsp;'+data.lastName).end()
 	.find('#userProfileLocation span:nth-child(2)').html(data.location).end()
 	.find('#userProfileWebsite a').html(data.website).attr('href',data.website).end()
 	.find('#userProfileBio').html(data.biography).end()
-	.find('#userProfileTweetsCount').html(data.tweetCount).end()
+	.find('#userProfileStatusCount').html(data.statusCount).end()
 	.find('#userProfileFriendsCount').html(data.friendsCount).end()
 	.find('#userProfileFollowersCount').html(data.followersCount);
 	

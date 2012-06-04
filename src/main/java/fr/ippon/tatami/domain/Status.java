@@ -21,8 +21,8 @@ import java.util.Date;
  * @author Julien Dubois
  */
 @Entity
-@Table(name = "Tweet")
-public class Tweet {
+@Table(name = "Status")
+public class Status {
 
     private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder()
             .appendDays()
@@ -41,7 +41,7 @@ public class Tweet {
             .appendSuffix("s").toFormatter();
 
     @Id
-    private String tweetId;
+    private String statusId;
 
     @NotNull
     @Column(name = "login")
@@ -53,8 +53,8 @@ public class Tweet {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "tweetDate")
-    private Date tweetDate;
+    @Column(name = "statusDate")
+    private Date statusDate;
 
     private String firstName;
 
@@ -67,9 +67,9 @@ public class Tweet {
     @Column(name = "removed")
     private Boolean removed;
 
-    public String getPrettyPrintTweetDate() {
+    public String getPrettyPrintStatusDate() {
         Period period =
-                new Period(tweetDate.getTime(),
+                new Period(statusDate.getTime(),
                         Calendar.getInstance().getTimeInMillis(),
                         PeriodType.dayTime());
 
@@ -86,12 +86,12 @@ public class Tweet {
         }
     }
 
-    public String getTweetId() {
-        return tweetId;
+    public String getStatusId() {
+        return statusId;
     }
 
-    public void setTweetId(String tweetId) {
-        this.tweetId = tweetId;
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
     }
 
     public String getLogin() {
@@ -110,12 +110,12 @@ public class Tweet {
         this.content = content;
     }
 
-    public Date getTweetDate() {
-        return tweetDate;
+    public Date getStatusDate() {
+        return statusDate;
     }
 
-    public void setTweetDate(Date tweetDate) {
-        this.tweetDate = tweetDate;
+    public void setStatusDate(Date statusDate) {
+        this.statusDate = statusDate;
     }
 
     public String getFirstName() {
@@ -163,25 +163,25 @@ public class Tweet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tweet tweet = (Tweet) o;
+        Status status = (Status) o;
 
-        if (tweetId != null ? !tweetId.equals(tweet.tweetId) : tweet.tweetId != null) return false;
+        if (statusId != null ? !statusId.equals(status.statusId) : status.statusId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return tweetId != null ? tweetId.hashCode() : 0;
+        return statusId != null ? statusId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Tweet{" +
-                "tweetId='" + tweetId + '\'' +
+        return "Status{" +
+                "statusId='" + statusId + '\'' +
                 ", login='" + login + '\'' +
                 ", content='" + content + '\'' +
-                ", tweetDate=" + tweetDate +
+                ", statusDate=" + statusDate +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +

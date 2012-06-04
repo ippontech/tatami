@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import fr.ippon.tatami.domain.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
@@ -22,7 +23,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.domain.Tweet;
 
 /**
  * @author dmartinpro
@@ -59,34 +59,34 @@ public class ElasticSearchTest {
     public void testSingleMatch() throws ElasticSearchException, IOException {
         log.debug(ElasticSearchTest.class.getSimpleName() + ": testing...");
 
-        final Tweet tweet1 = new Tweet();
-        tweet1.setContent("trying out Elastic Search");
-        tweet1.setTweetId("3333g-gggg-gggg-gggg");
-        tweet1.setLogin("dmartinpro");
+        final Status status1 = new Status();
+        status1.setContent("trying out Elastic Search");
+        status1.setStatusId("3333g-gggg-gggg-gggg");
+        status1.setLogin("dmartinpro");
 
-        final Tweet tweet2 = new Tweet();
-        tweet2.setContent("Recherche dans du texte riche écrit en français avec un #hashtag caché dedans");
-        tweet2.setTweetId("1234-4567-8988");
-        tweet2.setLogin("dmartinpro");
+        final Status status2 = new Status();
+        status2.setContent("Recherche dans du texte riche écrit en français avec un #hashtag caché dedans");
+        status2.setStatusId("1234-4567-8988");
+        status2.setLogin("dmartinpro");
 
-        final List<String> ids0 = this.service.search(Tweet.class, null, "trying", 0, 50, null, null);
+        final List<String> ids0 = this.service.search(Status.class, null, "trying", 0, 50, null, null);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
-        this.service.addTweet(tweet1);
-        this.service.addTweet(tweet2);
+        this.service.addStatus(status1);
+        this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final List<String> ids1 = this.service.search(Tweet.class, null, "trying", 0, 50, null, null);
-        final List<String> ids2 = this.service.search(Tweet.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final List<String> ids1 = this.service.search(Status.class, null, "trying", 0, 50, null, null);
+        final List<String> ids2 = this.service.search(Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok
-        assertEquals(tweet1.getTweetId(), ids1.get(0)); // should be the first tweet
+        assertEquals(status1.getStatusId(), ids1.get(0)); // should be the first status
 
         assertNotNull(ids2); // not null
         assertEquals(1, ids2.size()); // only one match if everything is ok
-        assertEquals(tweet2.getTweetId(), ids2.get(0)); // should be the second tweet
+        assertEquals(status2.getStatusId(), ids2.get(0)); // should be the second status
     }
 
 }

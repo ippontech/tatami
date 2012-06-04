@@ -24,7 +24,7 @@
 <script src="/assets/js/mustache/mustache.js"></script>
 
 <script src="/assets/js/tatami/standard/tatami.utils.js"></script>
-<script src="/assets/js/tatami/standard/tatami.tweets.js"></script>
+<script src="/assets/js/tatami/standard/tatami.status.js"></script>
 <script src="/assets/js/tatami/standard/tatami.users.js"></script>
 <script src="/assets/js/tatami/standard/tatami.ajax.js"></script>
 <script src="/assets/js/tatami/standard/tatami.js"></script>

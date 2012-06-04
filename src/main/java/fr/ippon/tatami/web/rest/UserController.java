@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
@@ -64,18 +64,18 @@ public class UserController {
         User currentUser = this.userService.getCurrentUser();
         final String login = currentUser.getLogin();
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get the last active tweeters list (except " + login + ").");
+            this.log.debug("REST request to get the last active statusers list (except " + login + ").");
         }
 
         Collection<String> exceptions = userService.getFriendIdsForUser(login);
         exceptions.add(login);
 
-        Collection<Tweet> tweets = this.timelineService.getDayline("");
+        Collection<Status> statuses = this.timelineService.getDayline("");
         Map<String, User> users = new HashMap<String, User>();
-        for (Tweet tweet : tweets) {
-            if (exceptions.contains(tweet.getLogin())) continue;
+        for (Status status : statuses) {
+            if (exceptions.contains(status.getLogin())) continue;
 
-            users.put(tweet.getLogin(), this.userService.getUserProfileByLogin(tweet.getLogin()));
+            users.put(status.getLogin(), this.userService.getUserProfileByLogin(status.getLogin()));
             if (users.size() == 3) break;    // suggestions list limit
         }
         return users.values();

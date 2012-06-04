@@ -45,7 +45,7 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
-    private long tweetCount;
+    private long statusCount;
 
     private long friendsCount;
 
@@ -91,12 +91,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public long getTweetCount() {
-        return tweetCount;
+    public long getStatusCount() {
+        return statusCount;
     }
 
-    public void setTweetCount(long tweetCount) {
-        this.tweetCount = tweetCount;
+    public void setStatusCount(long statusCount) {
+        this.statusCount = statusCount;
     }
 
     public long getFriendsCount() {
@@ -140,7 +140,7 @@ public class User {
                 ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", tweetCount=" + tweetCount +
+                ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';

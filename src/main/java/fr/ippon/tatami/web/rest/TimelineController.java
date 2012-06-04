@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 
 /**
- * REST controller for managing tweets.
+ * REST controller for managing status.
  *
  * @author Julien Dubois
  */
@@ -25,58 +25,58 @@ public class TimelineController {
     private TimelineService timelineService;
 
     /**
-     * POST /statuses/update -> create a new Tweet
+     * POST /statuses/update -> create a new Status
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postTweet(@RequestBody String content) {
+    public void postStatus(@RequestBody String content) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to add tweet : " + content);
+            log.debug("REST request to add status : " + content);
         }
         String escapedContent = StringEscapeUtils.escapeHtml(content);
-        timelineService.postTweet(escapedContent);
+        timelineService.postStatus(escapedContent);
     }
 
     /**
-     * POST /statuses/destroy/:id -> delete Tweet
+     * POST /statuses/destroy/:id -> delete Status
      */
-    @RequestMapping(value = "/rest/statuses/destroy/{tweetId}",
+    @RequestMapping(value = "/rest/statuses/destroy/{statusId}",
             method = RequestMethod.POST)
     @ResponseBody
-    public void removeTweet(@PathVariable("tweetId") String tweetId) {
+    public void removeStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to remove tweet : " + tweetId);
+            log.debug("REST request to remove status : " + statusId);
         }
-        timelineService.removeTweet(tweetId);
+        timelineService.removeStatus(statusId);
     }
 
     /**
-     * GET  /statuses/home_timeline -> get the latest tweets from the current user
+     * GET  /statuses/home_timeline -> get the latest status from the current user
      */
     @RequestMapping(value = "/rest/statuses/home_timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweets(@RequestParam(required = false) Integer count,
+    public Collection<Status> listStatus(@RequestParam(required = false) Integer count,
                                         @RequestParam(required = false) String since_id,
                                         @RequestParam(required = false) String max_id) {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get the tweet list (" + count + " sized).");
+            log.debug("REST request to get the status list (" + count + " sized).");
         }
         return timelineService.getTimeline(count, since_id, max_id);
     }
 
     /**
-     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
+     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
      */
     @RequestMapping(value = "/rest/statuses/user_timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweetsForUser(@RequestParam("screen_name") String login,
+    public Collection<Status> listStatusForUser(@RequestParam("screen_name") String login,
                                                @RequestParam(required = false) Integer count,
                                                @RequestParam(required = false) String since_id,
                                                @RequestParam(required = false) String max_id) {
@@ -85,7 +85,7 @@ public class TimelineController {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's tweets (" + login + ").");
+            log.debug("REST request to get someone's status (" + login + ").");
         }
         return timelineService.getUserline(login, count, since_id, max_id);
     }

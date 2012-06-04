@@ -5,14 +5,14 @@
 function makePieChartsList(data, dest) {
 	var dt = new google.visualization.DataTable();
 	dt.addColumn('string', 'Login');
-	dt.addColumn('number', 'Tweets per Day');
+	dt.addColumn('number', 'Status per Day');
 
 	$.each(data, function(entryIndex, entry) {
-		dt.addRow(['@' + entry['login'], entry['tweetsCount']]);
+		dt.addRow(['@' + entry['login'], entry['statusCount']]);
 	});
 
 	var chart = new google.visualization.PieChart(document.getElementById(dest.attr('id')));
-	chart.draw(dt, { 'title': "Today's tweets sharing", 'width':dest.width(), 'height':dest.height() });
+	chart.draw(dt, { 'title': "Today's status sharing", 'width':dest.width(), 'height':dest.height() });
 
 	google.visualization.events.addListener(chart, 'select', function() {
 		  var login = dt.getValue(chart.getSelection()[0].row, 0).substring(1);
@@ -30,7 +30,7 @@ function makePunchChartsList(data, dest) {
 		dt[i] = new Array();
 		$.each(entry['stats'], function(j, value) {
 			if (i == 0)	axisy.push(value['login']);
-			dt[i][j] = parseFloat(value['tweetsCount'], 10);
+			dt[i][j] = parseFloat(value['statusCount'], 10);
 		});
 	});
 
@@ -53,7 +53,7 @@ function makePunchChartsList(data, dest) {
 				window.location = "/tatami/profile/" + this.data('login');
 			})
 		// Add help tooltip
-			.attr({title: 'Show ' + axisy[j] + ' tweets'});
+			.attr({title: 'Show ' + axisy[j] + ' status'});
 	}
 
 	for (var i = 0; i < axisx.length; i++) {

@@ -81,7 +81,7 @@ public class ElasticSearchServerNodeFactory {
             } else {
 
                 CreateIndexRequestBuilder builder = client.admin().indices().prepareCreate(this.indexName);
-                // Get tweets mapping :
+                // Get status mapping :
                 final Map<String, String> typesMapping = this.esSettings.getTypesMapping();
 
                 for (Map.Entry<String, String> entry : typesMapping.entrySet()) {

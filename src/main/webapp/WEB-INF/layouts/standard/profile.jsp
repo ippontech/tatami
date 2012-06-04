@@ -59,9 +59,9 @@
                 </div>
 
                 <div class="span1" style="width: 70px">
-                    <span class="badge"><fmt:formatNumber value="${nbTweets}"
+                    <span class="badge"><fmt:formatNumber value="${nbStatus}"
                                                           pattern="# ### ###"/></span><br/><fmt:message
-                        key="tatami.badge.tweets"/>
+                        key="tatami.badge.status"/>
                 </div>
                 <div class="span1" style="width: 70px">
                     <span class="badge"><fmt:formatNumber value="${nbFollowed}"
@@ -80,8 +80,8 @@
                     <div class="alert alert-info">
                         <ul class="nav nav-pills nav-stacked">
                             <li class="active">
-                                <a id="tweetsTab" href="#tweetsPanel" data-toggle="tab"><fmt:message
-                                        key="tatami.badge.tweets"/></a>
+                                <a id="statusTab" href="#statusPanel" data-toggle="tab"><fmt:message
+                                        key="tatami.badge.status"/></a>
                             </li>
                             <li><a id="followingTab" href="#followingPanel" data-toggle="tab"><fmt:message
                                     key="tatami.badge.followed"/></a></li>
@@ -90,14 +90,14 @@
                         </ul>
                     </div>
                     <div class="alert alert-info">
-                        <h4><fmt:message key="tatami.user.tweettohim"/>@${user.login}</h4><br/>
+                        <h4><fmt:message key="tatami.user.statustohim"/> @${user.login}</h4><br/>
 
-                        <div id="tweetToHim" class="row-fluid">
-                            <form class="form-inline" onsubmit="return tweetToUser();">
-                                <textarea id="tweetContent" rel="popover" class="focused"
+                        <div id="statusToHim" class="row-fluid">
+                            <form class="form-inline" onsubmit="return statusToUser();">
+                                <textarea id="statusContent" rel="popover" class="focused"
                                           maxlength="140">@${user.login} </textarea>
                                 <button type="submit" class="btn btn-primary"><fmt:message
-                                        key="tatami.user.tweet"/></button>
+                                        key="tatami.user.status"/></button>
                             </form>
                             <div class="error"></div>
                         </div>
@@ -105,7 +105,7 @@
                 </div>
                 <div id="mainContent" class="span8">
                     <div class="tab-content alert alert-success">
-                        <div class="tab-pane active" id="tweetsPanel"></div>
+                        <div class="tab-pane active" id="statusPanel"></div>
                         <div class="tab-pane" id="followingPanel">
                             <table class="table table-striped">
                                 <thead>
@@ -114,7 +114,7 @@
                                             key="tatami.badge.followed"/></h2></th>
                                 </tr>
                                 </thead>
-                                <tbody id="followingList" class="tweetsList"></tbody>
+                                <tbody id="followingList" class="statusList"></tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="followersPanel">
@@ -125,7 +125,7 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody id="followersList" class="tweetsList"></tbody>
+                                <tbody id="followersList" class="statusList"></tbody>
                             </table>
                         </div>
                     </div>

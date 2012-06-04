@@ -11,23 +11,23 @@ public interface CounterRepository {
 
     void incrementFriendsCounter(String login);
 
-    void incrementTweetCounter(String login);
+    void incrementStatusCounter(String login);
 
     void decrementFollowersCounter(String login);
 
     void decrementFriendsCounter(String login);
 
-    void decrementTweetCounter(String login);
+    void decrementStatusCounter(String login);
 
     long getFollowersCounter(String login);
 
     long getFriendsCounter(String login);
 
-    long getTweetCounter(String login);
+    long getStatusCounter(String login);
 
     void createFollowersCounter(String login);
 
     void createFriendsCounter(String login);
 
-    void createTweetCounter(String login);
+    void createStatusCounter(String login);
 }

@@ -41,7 +41,7 @@ public class ProfileController {
         if (null != user) {
             mv.addObject("user", user);
             mv.addObject("followed", userService.isFollowed(login));
-            mv.addObject("nbTweets", counterService.getNbTweets(login));
+            mv.addObject("nbStatus", counterService.getNbStatus(login));
             mv.addObject("nbFollowed", counterService.getNbFollowed(login));
             mv.addObject("nbFollowers", counterService.getNbFollowers(login));
         }

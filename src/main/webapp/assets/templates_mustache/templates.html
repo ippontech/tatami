@@ -1,8 +1,8 @@
-<script id='template_tweets' type='text/template'>
-    <tr tweetId='{{tweetId}}'
-        class='tweet id-{{tweetId}}'
-        onmouseover='showActions("{{tweetId}}")'
-        onmouseout='hideActions("{{tweetId}}")'>
+<script id='template_status' type='text/template'>
+    <tr statusId='{{statusId}}'
+        class='status id-{{statusId}}'
+        onmouseover='showActions("{{statusId}}")'
+        onmouseout='hideActions("{{statusId}}")'>
 
         <!-- avatar -->
         <td class='avatar'>
@@ -13,7 +13,7 @@
         </td>
         {{/userlineLink}}
 
-        <!-- tweet content -->
+        <!-- status content -->
         <td>
             <article>
                 {{&userlineLink}}
@@ -24,44 +24,44 @@
         </td>
 
         <!-- actions -->
-        <td class='tweetActions'>
-            <div class='hide {{tweetId}}-actions'>
+        <td class='statusActions'>
+            <div class='hide {{statusId}}-actions'>
                 {{#favorite}}
-                <a href='#' class='{{tweetId}}-favorite'
+                <a href='#' class='{{statusId}}-favorite'
                    title='Favorite'
-                   onclick='unfavoriteTweet("{{tweetId}}")'>
+                   onclick='unfavoriteStatus("{{statusId}}")'>
 
                     <i class='icon-star-empty'/>
                 </a>
                 {{/favorite}}
                 {{^favorite}}
-                <a href='#' class='{{tweetId}}-favorite'
+                <a href='#' class='{{statusId}}-favorite'
                    title='Unfavorite'
-                   onclick='favoriteTweet("{{tweetId}}")'>
+                   onclick='favoriteStatus("{{statusId}}")'>
 
                     <i class='icon-star'/>
                 </a>
                 {{/favorite}}
                 {{#isUserLogin}}
-                <a href='#' onclick='removeTweet("{{tweetId}}")' title='Remove'>
+                <a href='#' onclick='removeStatus("{{statusId}}")' title='Remove'>
                     <i class='icon-remove'/>
                 </a>
                 {{/isUserLogin}}
             </div>
         </td>
 
-        <!-- tweet date -->
+        <!-- status date -->
         {{#favorite}}
-        <td class='tweetDate favorite'>
+        <td class='statusDate favorite'>
             <aside>
-                {{prettyPrintTweetDate}}
+                {{prettyPrintStatusDate}}
             </aside>
         </td>
         {{/favorite}}
         {{^favorite}}
-        <td class='tweetDate'>
+        <td class='statusDate'>
             <aside>
-                {{prettyPrintTweetDate}}
+                {{prettyPrintStatusDate}}
             </aside>
         </td>
         {{/favorite}}

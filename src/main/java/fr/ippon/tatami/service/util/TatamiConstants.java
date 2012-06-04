@@ -36,14 +36,14 @@ public class TatamiConstants {
 
     public static final String HASHTAG = "&#x23;";
 
-    public static final String TAG_LINK_PATTERN = "<a href='#' data-tag='$1' title='Show $1 related tweets'><em>#$1</em></a>";
+    public static final String TAG_LINK_PATTERN = "<a href='#' data-tag='$1' title='Show $1 related status'><em>#$1</em></a>";
 
     // &#x40; is the HTML encoded version of the @ character
     public static final String USER_REGEXP = "&#x40;(\\w+)";
 
     public static final String USERTAG = "&#x40;";
 
-    public static final String USER_LINK_PATTERN = "<a href='#' data-user='$1' title='Show $1 tweets'><em>@$1</em></a>";
+    public static final String USER_LINK_PATTERN = "<a href='#' data-user='$1' title='Show $1 status'><em>@$1</em></a>";
 
     public static final String TWEET_NB_PATTERN = "__TWEET-NB__";
 

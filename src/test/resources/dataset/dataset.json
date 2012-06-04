@@ -158,7 +158,7 @@
             }]
         },
         {
-            "key" : "userWithTweets",
+            "key" : "userWithStatus",
             "columns" : [{
                 "name" : "email",
                 "value" : "userWithUserlinet@ippon.fr"
@@ -177,10 +177,10 @@
             }]
         },
         {
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus",
             "columns" : [{
                 "name" : "email",
-                "value" : "userWhoPostTweet@ippon.fr"
+                "value" : "userWhoPostStatus@ippon.fr"
             },
             {
                 "name" : "gravatar",
@@ -192,14 +192,14 @@
             },
             {
                 "name" : "lastName",
-                "value" : "WhoPostTweet"
+                "value" : "WhoPostStatus"
             }]
         },
         {
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus",
             "columns" : [{
                 "name" : "email",
-                "value" : "userWhoReadTweet@ippon.fr"
+                "value" : "userWhoReadStatus@ippon.fr"
             },
             {
                 "name" : "gravatar",
@@ -211,7 +211,7 @@
             },
             {
                 "name" : "lastName",
-                "value" : "WhoReadTweet"
+                "value" : "WhoReadStatus"
             }]
         },
         {
@@ -345,7 +345,7 @@
             }]
     	},
     	{
-            "key" : "userWithTweets",
+            "key" : "userWithStatus",
             "columns" : [{
                 "name" : "TWEET_COUNTER",
                 "value" : "2"
@@ -360,7 +360,7 @@
             }]
     	},
     	{
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus",
             "columns" : [{
                 "name" : "TWEET_COUNTER",
                 "value" : "0"
@@ -375,7 +375,7 @@
             }]
     	},
     	{
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus",
             "columns" : [{
                 "name" : "TWEET_COUNTER",
                 "value" : "0"
@@ -410,9 +410,9 @@
             }]
        	},
        	{
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus",
             "columns" : [{
-                "name" : "userWhoPostTweet",
+                "name" : "userWhoPostStatus",
                 "value" : "0"
             }]
        	}]
@@ -423,9 +423,9 @@
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "LongType",
         "rows" : [{
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus",
             "columns" : [{
-                "name" : "userWhoReadTweet",
+                "name" : "userWhoReadStatus",
                 "value" : "0"
             }]
        	}]
@@ -436,7 +436,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWhoPostTweet"
+        	"key" : "userWhoPostStatus"
         }]
     },
     {
@@ -479,7 +479,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWithTweets",
+        	"key" : "userWithStatus",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -496,7 +496,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWithTweets",
+        	"key" : "userWithStatus",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -508,21 +508,21 @@
         }]
     },
     {
-        "name" : "Tweet",
+        "name" : "Status",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
         "rows" : [{
         	"key" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
-        		"value" : "utf8(userWithTweets)"
+        		"value" : "utf8(userWithStatus)"
         	},
         	{
         		"name" : "content",
         		"value" : "utf8(Devoxx, c'est nowwwwww)"
         	},
         	{
-        		"name" : "tweetDate",
+        		"name" : "statusDate",
         		"value" : "utf8(10/03/2012)"
         	}]
         },
@@ -530,14 +530,14 @@
         	"key" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
-        		"value" : "utf8(userWithTweets)"
+        		"value" : "utf8(userWithStatus)"
         	},
         	{
         		"name" : "content",
         		"value" : "utf8(Devoxx, ça va déchirer)"
         	},
         	{
-        		"name" : "tweetDate",
+        		"name" : "statusDate",
         		"value" : "utf8(11/03/2012)"
         	}]
         }]

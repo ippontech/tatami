@@ -42,7 +42,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetAUserProfileByLogin() {
         User user = userService.getUserProfileByLogin("jdubois");
         assertThat(user.getEmail(), is("jdubois@ippon.fr"));
-        assertThat(user.getTweetCount(), is(2L));
+        assertThat(user.getStatusCount(), is(2L));
         assertThat(user.getFollowersCount(), is(3L));
         assertThat(user.getFriendsCount(), is(4L));
     }
@@ -95,7 +95,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userToBeTheSame.getFirstName(), is(user.getFirstName()));
         assertThat(userToBeTheSame.getLastName(), is(user.getLastName()));
         assertThat(userToBeTheSame.getGravatar(), is(user.getGravatar()));
-        assertThat(userToBeTheSame.getTweetCount(), is(0L));
+        assertThat(userToBeTheSame.getStatusCount(), is(0L));
         assertThat(userToBeTheSame.getFollowersCount(), is(0L));
         assertThat(userToBeTheSame.getFriendsCount(), is(0L));
     }

@@ -25,8 +25,8 @@ var clickFromLink = false;
 				901 : sessionTimeOutPopup
 			}
 		});
-		// Bind click handler for "Tweet" button
-		$('#tweetButton').click(tweet);
+		// Bind click handler for "Status" button
+		$('#statusButton').click(status);
 		
 		//Right panel
 		loadEmptyLines();

@@ -34,14 +34,14 @@ function updateUserProfileModal(a) {
 	console.log("currentWidth = " + b);
 	console.log("currentHeight = " + c);
 	$("#userProfileModal").find("#userProfileLogin").html("@" + a.login).end()
-			.find("#userProfileGravatar .tweetGravatar").attr("src",
+			.find("#userProfileGravatar .statusGravatar").attr("src",
 					"http://www.gravatar.com/avatar/" + a.gravatar + "?s=64")
 			.end().find("#userProfileName")
 			.html(a.firstName + " " + a.lastName).end().find(
 					"#userProfileLocation span:nth-child(2)").html(a.location)
 			.end().find("#userProfileWebsite a").html(a.website).attr("href",
 					a.website).end().find("#userProfileBio").html(a.biography)
-			.end().find("#userProfileTweetsCount").html(a.tweetCount).end()
+			.end().find("#userProfileStatusCount").html(a.statusCount).end()
 			.find("#userProfileFriendsCount").html(a.friendsCount).end().find(
 					"#userProfileFollowersCount").html(a.followersCount);
 	$("#userProfileFooter").unbind("click");
@@ -58,24 +58,24 @@ function showUserProfile(a) {
 		}
 	})
 }
-function tweet() {
-	$("#tweetErrorPanel").hide();
+function status() {
+	$("#statusErrorPanel").hide();
 	$.ajax({
 		type : HTTP_POST,
 		url : "/tatami/rest/statuses/update",
 		async : false,
 		contentType : "application/json;  charset=UTF-8",
-		data : $.trim($("#tweetContent").val()),
+		data : $.trim($("#statusContent").val()),
 		dataType : JSON_DATA,
 		success : function(a) {
 			setTimeout(function() {
-				$("#tweetContent").slideUp().val("").slideDown("fast");
+				$("#statusContent").slideUp().val("").slideDown("fast");
 				updateUserCounters();
 				refreshTimeline();
 				refreshUserSuggestions()
 			}, 300)
 		},
-		error : errorHandler($("#tweetErrorPanel"))
+		error : errorHandler($("#statusErrorPanel"))
 	});
 	return false
 }
@@ -85,7 +85,7 @@ function updateUserCounters() {
 		url: "/tatami/rest/users/show?screen_name=" + login,
 		dataType : JSON_DATA,
 		success : function(a) {
-			$("#tweetCount").text(a.tweetCount);
+			$("#statusCount").text(a.statusCount);
 			$("#friendsCount").text(a.friendsCount);
 			$("#followersCount").text(a.followersCount)
 		}
@@ -129,7 +129,7 @@ function refreshHome() {
 					"http://www.gravatar.com/avatar/" + a.gravatar + "?s=64")
 					.end().find("#firstName").html(a.firstName).end().find(
 							"#latName").html(a.lastName).end().find(
-							"#tweetCount").html(a.tweetCount).end().find(
+							"#statusCount").html(a.statusCount).end().find(
 							"#friendsCount").html(a.friendsCount).end().find(
 							"#followersCount").html(a.followersCount).end();
 			bindListeners($("#homePanel"))
@@ -138,7 +138,7 @@ function refreshHome() {
 }
 function loadTagsline(a) {
 	if (a != null) {
-		$("#tagTweetsList").empty();
+		$("#tagStatusList").empty();
 		clickFromLink = true;
 		$("#taglineTab").tab("show");
 		jQuery.ajaxSetup({
@@ -153,7 +153,7 @@ function loadTagsline(a) {
 }
 function loadUserline(a) {
 	if (a != null) {
-		$("#userTweetsList").empty();
+		$("#userStatusList").empty();
 		clickFromLink = true;
 		$("#userlineTab").tab("show");
 		jQuery.ajaxSetup({
@@ -166,14 +166,14 @@ function loadUserline(a) {
 		})
 	}
 }
-function removeFavoriteTweet(a) {
+function removeFavoriteStatus(a) {
     if (true) {
     	alert('To be implemented');
     	return;
     }
 	$.ajax({
 		type : HTTP_GET,
-		url : "rest/unlikeTweet/" + a,
+		url : "rest/unlikeStatus/" + a,
 		dataType : JSON_DATA,
 		success : function() {
 			setTimeout(function() {
@@ -184,7 +184,7 @@ function removeFavoriteTweet(a) {
 	});
 	return false
 }
-function addFavoriteTweet(a) {
+function addFavoriteStatus(a) {
 	$.ajax({
 		type : HTTP_GET,
 		url: "/tatami/rest/favorites/create/" + a,
@@ -239,15 +239,15 @@ function refreshLine(a, b, c, d, e, f) {
 			if (a.length > 0) {
 				if (d) {
 					i.empty();
-					$("#tweetPaddingTemplate tr").clone().appendTo(i);
-					$("#tweetPaddingTemplate tr").clone().appendTo(i)
+					$("#statusPaddingTemplate tr").clone().appendTo(i);
+					$("#statusPaddingTemplate tr").clone().appendTo(i)
 				} else {
 					i.find("tr:last-child").remove()
 				}
 				$.each(a, function(a, b) {
-					i.append(fillTweetTemplate(b, h))
+					i.append(fillStatusTemplate(b, h))
 				});
-				$("#tweetPaddingTemplate tr").clone().css("display", "")
+				$("#statusPaddingTemplate tr").clone().css("display", "")
 						.appendTo(i)
 			} else if (d) {
 				i.empty()
@@ -269,26 +269,26 @@ function loadEmptyLines() {
 	$("#timelinePanel").load("/assets/fragments/mobile/timeline.html #timeline",
 			function() {
 				initTimeline();
-				bindListeners($("#tweetsList"));
+				bindListeners($("#statusList"));
 				registerRefreshLineListeners($("#timelinePanel"));
-				registerFetchTweetHandlers($("#timelinePanel"))
+				registerFetchStatusHandlers($("#timelinePanel"))
 			});
 	$("#favlinePanel").load("/assets/fragments/mobile/favline.html #favline",
 			function() {
 				initFavoritesline();
-				bindListeners($("#favTweetsList"));
+				bindListeners($("#favStatusList"));
 				registerRefreshLineListeners($("#favlinePanel"));
-				registerFetchTweetHandlers($("#favlinePanel"))
+				registerFetchStatusHandlers($("#favlinePanel"))
 			});
 	$("#userlinePanel").load("/assets/fragments/mobile/userline.html #userline",
 			function() {
 				registerRefreshLineListeners($("#userlinePanel"));
-				registerFetchTweetHandlers($("#userlinePanel"))
+				registerFetchStatusHandlers($("#userlinePanel"))
 			});
 	$("#taglinePanel").load("/assets/fragments/mobile/tagline.html #tagline",
 			function() {
 				registerRefreshLineListeners($("#taglinePanel"));
-				registerFetchTweetHandlers($("#taglinePanel"))
+				registerFetchStatusHandlers($("#taglinePanel"))
 			})
 }
 function initFavoritesline() {
@@ -362,19 +362,19 @@ function loadWhoToFollow() {
 }
 function fillUserTemplate(a) {
 	$newUserLine = $("#fullUserTemplate").clone().attr("id", "");
-	$newUserLine.find(".tweetGravatar").attr("data-user", a.login).attr("src",
+	$newUserLine.find(".statusGravatar").attr("data-user", a.login).attr("src",
 			"http://www.gravatar.com/avatar/" + a.gravatar + "?s=32").attr(
 			"data-modal-highlight", "#userProfileModal").end()
 			.find(".userLink").attr("data-user", a.login).attr("title",
-					"Show " + a.login + " tweets").end().find("em").html(
+					"Show " + a.login + " status").end().find("em").html(
 					"@" + a.login).end().find(".userDetailsName").html(
 					a.firstName + " " + a.lastName).end().find(".badge").html(
-					a.tweetCount);
+					a.statusCount);
 	if (a.follow) {
-		$newUserLine.find(".tweetFriend a").attr("data-follow", a.login).attr(
+		$newUserLine.find(".statusFriend a").attr("data-follow", a.login).attr(
 				"title", "Follow " + a.login).end()
 	} else {
-		$newUserLine.find(".tweetFriend a").removeAttr("data-follow").attr(
+		$newUserLine.find(".statusFriend a").removeAttr("data-follow").attr(
 				"data-unfollow", a.login).attr("title",
 				"Stop following " + a.login).find("i").removeClass().addClass(
 				"icon-eye-close")
@@ -382,49 +382,49 @@ function fillUserTemplate(a) {
 	bindListeners($newUserLine);
 	return $newUserLine
 }
-function fillTweetTemplate(a, b) {
-	$newTweetLine = $("#tweetTemplate").clone().attr("id", "");
-	$newTweetLine.find(".tweetGravatar").attr("data-user", a.login).attr("src",
+function fillStatusTemplate(a, b) {
+	$newStatusLine = $("#statusTemplate").clone().attr("id", "");
+	$newStatusLine.find(".statusGravatar").attr("data-user", a.login).attr("src",
 			"http://www.gravatar.com/avatar/" + a.gravatar + "?s=32");
 	if (b != "userline") {
 		if (login != a.login) {
-			$newTweetLine.find("article strong").empty().html(
+			$newStatusLine.find("article strong").empty().html(
 					a.firstName + " " + a.lastName + "  ").after(
-					'<a class="tweetAuthor" href="#" data-user="' + a.login
-							+ '" title="Show ' + a.login + ' tweets"><em>@'
+					'<a class="statusAuthor" href="#" data-user="' + a.login
+							+ '" title="Show ' + a.login + ' status"><em>@'
 							+ a.login + "</em></a><br/>")
 		}
 	} else {
-		$newTweetLine.find("article strong").empty().html(
+		$newStatusLine.find("article strong").empty().html(
 				a.firstName + " " + a.lastName + "<br/>")
 	}
-	$newTweetLine.find("article span").html(a.content);
+	$newStatusLine.find("article span").html(a.content);
 	if (b != "timeline" && a.authorFollow) {
-		$newTweetLine.find(".tweetFriend").append(
+		$newStatusLine.find(".statusFriend").append(
 				'<a href="#" title="Follow" data-follow="' + a.login
 						+ '"><i class="frame icon-eye-open"></i></a>  ')
 	}
 	if (a.authorForget) {
-		$newTweetLine.find(".tweetFriend").append(
+		$newStatusLine.find(".statusFriend").append(
 				'<a href="#" title="Stop following" data-unfollow="' + a.login
 						+ '"><i class="frame icon-eye-close"></i></a>  ')
 	}
 	if (b != "favoriteline" && a.addToFavorite) {
-		$newTweetLine.find(".tweetFriend").append(
-				'<a href="#" title="Like" data-like="' + a.tweetId
+		$newStatusLine.find(".statusFriend").append(
+				'<a href="#" title="Like" data-like="' + a.statusId
 						+ '"><i class="frame icon-star"></i></a>  ')
 	}
 	if (b == "favoriteline" && !a.addToFavorite) {
-		$newTweetLine.find(".tweetFriend").append(
-				'<a href="#" title="Stop liking" data-unlike="' + a.tweetId
+		$newStatusLine.find(".statusFriend").append(
+				'<a href="#" title="Stop liking" data-unlike="' + a.statusId
 						+ '"><i class="frame icon-star-empty"></i></a>  ')
 	}
-	$newTweetLine.find(".tweetDate aside").empty().html(a.prettyPrintTweetDate);
-	bindListeners($newTweetLine);
-	return $newTweetLine.find("tr")
+	$newStatusLine.find(".statusDate aside").empty().html(a.prettyPrintStatusDate);
+	bindListeners($newStatusLine);
+	return $newStatusLine.find("tr")
 }
-function registerFetchTweetHandlers(a) {
-	a.find(".tweetPagingButton").click(
+function registerFetchStatusHandlers(a) {
+	a.find(".statusPagingButton").click(
 			function(a) {
 				var b = $(a.target).closest("footer").find(
 						".pageSelector option").filter(":selected").val();
@@ -460,12 +460,12 @@ function bindListeners(a) {
 	});
 	a.find("a[data-like]").click(function(a) {
 		var b = $(a.currentTarget).attr("data-like");
-		addFavoriteTweet(b);
+		addFavoriteStatus(b);
 		return false
 	});
 	a.find("a[data-unlike]").click(function(a) {
 		var b = $(a.currentTarget).attr("data-unlike");
-		removeFavoriteTweet(b);
+		removeFavoriteStatus(b);
 		return false
 	});
 	a.find("a[data-user],span[data-user]").click(function(a) {
@@ -484,7 +484,7 @@ function bindListeners(a) {
 			$("" + b).modal("hide")
 		}
 	});
-	a.find("img.tweetGravatar[data-user],#picture").click(function(a) {
+	a.find("img.statusGravatar[data-user],#picture").click(function(a) {
 		if ($(a.currentTarget).data("popover") != null) {
 			$(a.currentTarget).popover("hide")
 		}
@@ -518,7 +518,7 @@ var clickFromLink = false;
 				901 : sessionTimeOutPopup
 			}
 		});
-		a("#tweetButton").click(tweet);
+		a("#statusButton").click(status);
 		loadEmptyLines();
 		a("#picture").click(function() {
 			var b = a("#picture").attr("data-user");

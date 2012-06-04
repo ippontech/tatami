@@ -3,20 +3,20 @@ package fr.ippon.tatami.domain;
 import java.util.Collection;
 import java.util.TreeSet;
 
-public class DayTweetStat {
+public class DayStatusStat {
 
     private String day;
 
-    private Collection<UserTweetStat> stats = new TreeSet<UserTweetStat>();
+    private Collection<UserStatusStat> stats = new TreeSet<UserStatusStat>();
 
-    public DayTweetStat(String day) {
+    public DayStatusStat(String day) {
         super();
         this.day = day;
     }
 
     @Override
     public String toString() {
-        return "DayTweetStat{day='" + this.day + "', stats=" + this.stats + "}";
+        return "DayStatusStat{day='" + this.day + "', stats=" + this.stats + "}";
     }
 
     public String getDay() {
@@ -27,11 +27,11 @@ public class DayTweetStat {
         this.day = day;
     }
 
-    public Collection<UserTweetStat> getStats() {
+    public Collection<UserStatusStat> getStats() {
         return stats;
     }
 
-    public void setStats(Collection<UserTweetStat> stats) {
+    public void setStats(Collection<UserStatusStat> stats) {
         this.stats = stats;
     }
 }

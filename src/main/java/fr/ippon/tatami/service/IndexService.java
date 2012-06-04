@@ -3,7 +3,7 @@
  */
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -105,43 +105,43 @@ public class IndexService {
     }
 
     /**
-     * Add a tweet to the index.
+     * Add a status to the index.
      *
-     * @param tweet the tweet to add : can't be null
+     * @param status the status to add : can't be null
      * @return the response's Id
      */
-    public String addTweet(final Tweet tweet) {
-        Assert.notNull(tweet, "tweet can't be null");
+    public String addStatus(final Status status) {
+        Assert.notNull(status, "status can't be null");
 
         XContentBuilder jsonifiedObject = null;
         try {
             jsonifiedObject = XContentFactory.jsonBuilder()
                     .startObject()
-                    .field("login", tweet.getLogin())
-                    .field("postDate", tweet.getTweetDate())
-                    .field("message", StringEscapeUtils.unescapeHtml(tweet.getContent()))
+                    .field("login", status.getLogin())
+                    .field("postDate", status.getStatusDate())
+                    .field("message", StringEscapeUtils.unescapeHtml(status.getContent()))
                     .endObject();
         } catch (IOException e) {
             log.error("The message wasn't added to the index: "
-                    + tweet.getTweetId()
+                    + status.getStatusId()
                     + " ["
-                    + tweet.toString()
+                    + status.toString()
                     + "]", e);
             return null;
         }
 
-        return addObject(tweet.getClass(), tweet.getTweetId(), jsonifiedObject);
+        return addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
     }
 
     /**
-     * Delete a tweet from the index.
+     * Delete a status from the index.
      *
-     * @param tweet the tweet to delete
+     * @param status the status to delete
      * @return the response's Id
      */
-    public String removeTweet(final Tweet tweet) {
-        Assert.notNull(tweet, "tweet can't be null");
-        return removeObject(tweet.getClass(), tweet.getTweetId());
+    public String removeStatus(final Status status) {
+        Assert.notNull(status, "status can't be null");
+        return removeObject(status.getClass(), status.getStatusId());
     }
 
     /**

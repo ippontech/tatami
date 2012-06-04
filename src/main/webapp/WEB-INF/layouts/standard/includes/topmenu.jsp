@@ -26,7 +26,7 @@
                                 key="tatami.logout"/></a></li>
                     </ul>
                     <ul class="nav pull-right">
-                        <form id="global-tweet-search" class="well form-search" action="/tatami/rest/search"
+                        <form id="global-status-search" class="well form-search" action="/tatami/rest/search"
                               method="post">
                             <input type="hidden" name="page" value="0"/>
                             <input type="hidden" name="rpp" value="20"/>

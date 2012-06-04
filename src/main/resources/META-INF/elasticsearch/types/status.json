@@ -1,5 +1,5 @@
 {
-	"tweet" : {
+	"status" : {
 		"_source" : { "enabled" : true },
 		"_all" : { "analyzer": "francais" },
 		"properties" : {
@@ -19,7 +19,7 @@
 				"type" : "string",
 				"analyzer" : "francais"
 			},
-			"tweetDate" : {
+			"statusDate" : {
 				"type" : "date"
 			}
 		}

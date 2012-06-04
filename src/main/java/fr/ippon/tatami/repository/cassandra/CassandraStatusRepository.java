@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.repository.StatusRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
@@ -32,9 +32,9 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTweetRepository implements TweetRepository {
+public class CassandraStatusRepository implements StatusRepository {
 
-    private final Log log = LogFactory.getLog(CassandraTweetRepository.class);
+    private final Log log = LogFactory.getLog(CassandraStatusRepository.class);
 
     @Inject
     private EntityManager em;
@@ -46,48 +46,48 @@ public class CassandraTweetRepository implements TweetRepository {
     private static Validator validator = factory.getValidator();
 
     @Override
-    public Tweet createTweet(String login, String content) throws ConstraintViolationException {
-        Tweet tweet = new Tweet();
-        tweet.setTweetId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
-        tweet.setLogin(login);
-        tweet.setContent(content);
-        tweet.setTweetDate(Calendar.getInstance().getTime());
-        tweet.setRemoved(false);
+    public Status createStatus(String login, String content) throws ConstraintViolationException {
+        Status status = new Status();
+        status.setStatusId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
+        status.setLogin(login);
+        status.setContent(content);
+        status.setStatusDate(Calendar.getInstance().getTime());
+        status.setRemoved(false);
         if (log.isDebugEnabled()) {
-            log.debug("Persisting Tweet : " + tweet);
+            log.debug("Persisting Status : " + status);
         }
-        Set<ConstraintViolation<Tweet>> constraintViolations = validator.validate(tweet);
+        Set<ConstraintViolation<Status>> constraintViolations = validator.validate(status);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
-        em.persist(tweet);
-        return tweet;
+        em.persist(status);
+        return status;
     }
 
     @Override
-    @Cacheable("tweet-cache")
-    public Tweet findTweetById(String tweetId) {
+    @Cacheable("status-cache")
+    public Status findStatusById(String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("Finding tweet : " + tweetId);
+            log.debug("Finding status : " + statusId);
         }
-        Tweet tweet = em.find(Tweet.class, tweetId);
-        return Boolean.TRUE.equals(tweet.getRemoved()) ? null : tweet;
+        Status status = em.find(Status.class, statusId);
+        return Boolean.TRUE.equals(status.getRemoved()) ? null : status;
     }
 
     @Override
-    @CacheEvict(value = "tweet-cache", key = "#tweet.tweetId")
-    public void removeTweet(Tweet tweet) {
-        tweet.setRemoved(true);
+    @CacheEvict(value = "status-cache", key = "#status.statusId")
+    public void removeStatus(Status status) {
+        status.setRemoved(true);
         if (log.isDebugEnabled()) {
-            log.debug("Updating Tweet : " + tweet);
+            log.debug("Updating Status : " + status);
         }
-        em.persist(tweet);
+        em.persist(status);
     }
 
     @Override
-    public void addTweetToTimeline(String login, Tweet tweet) {
+    public void addStatusToTimeline(String login, Status status) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()),
+        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                 "", UUIDSerializer.get(), StringSerializer.get()));
     }
 
@@ -97,9 +97,9 @@ public class CassandraTweetRepository implements TweetRepository {
     }
 
     @Override
-    public void addTweetToUserline(Tweet tweet) {
+    public void addStatusToUserline(Status status) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(tweet.getLogin(), USERLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()),
+        mutator.insert(status.getLogin(), USERLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                 "", UUIDSerializer.get(), StringSerializer.get()));
     }
 
@@ -111,14 +111,14 @@ public class CassandraTweetRepository implements TweetRepository {
     private static final Pattern HASHTAG_PATTERN = Pattern.compile("#(\\w+)");
 
     @Override
-    public void addTweetToTagline(Tweet tweet) {
+    public void addStatusToTagline(Status status) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        Matcher m = HASHTAG_PATTERN.matcher(tweet.getContent());
+        Matcher m = HASHTAG_PATTERN.matcher(status.getContent());
         while (m.find()) {
             String tag = m.group(1);
             assert tag != null && !tag.isEmpty() && !tag.contains("#");
             log.debug("tag list augmented : " + tag);
-            mutator.insert(tag.toLowerCase(), TAGLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()),
+            mutator.insert(tag.toLowerCase(), TAGLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                     "", UUIDSerializer.get(), StringSerializer.get()));
         }
     }
@@ -133,17 +133,17 @@ public class CassandraTweetRepository implements TweetRepository {
                 .execute()
                 .get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        Collection<String> statusIds = new ArrayList<String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
-            tweetIds.add(column.getName().toString());
+            statusIds.add(column.getName().toString());
         }
-        return tweetIds;
+        return statusIds;
     }
 
     @Override
-    public void addTweetToDayline(Tweet tweet, String key) {
+    public void addStatusToDayline(Status status, String key) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()),
+        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                 "", UUIDSerializer.get(), StringSerializer.get()));
     }
 
@@ -157,26 +157,26 @@ public class CassandraTweetRepository implements TweetRepository {
                 .execute()
                 .get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        Collection<String> statusIds = new ArrayList<String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
-            tweetIds.add(column.getName().toString());
+            statusIds.add(column.getName().toString());
         }
-        return tweetIds;
+        return statusIds;
     }
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addTweetToFavoritesline(Tweet tweet, String login) {
+    public void addStatusToFavoritesline(Status status, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(tweet.getTweetId()), "",
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()), "",
                 UUIDSerializer.get(), StringSerializer.get()));
     }
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeTweetFromFavoritesline(Tweet tweet, String login) {
+    public void removeStatusFromFavoritesline(Status status, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, UUID.fromString(tweet.getTweetId()), UUIDSerializer.get());
+        mutator.delete(login, FAVLINE_CF, UUID.fromString(status.getStatusId()), UUIDSerializer.get());
     }
 
     @Override
@@ -190,15 +190,15 @@ public class CassandraTweetRepository implements TweetRepository {
                 .execute()
                 .get();
 
-        Collection<String> tweetIds = new ArrayList<String>();
+        Collection<String> statusIds = new ArrayList<String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
-            tweetIds.add(column.getName().toString());
+            statusIds.add(column.getName().toString());
         }
-        return tweetIds;
+        return statusIds;
     }
 
     private Collection<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
-        Collection<String> tweetIds = new ArrayList<String>();
+        Collection<String> statusIds = new ArrayList<String>();
         ColumnSlice<UUID, String> result;
         if (max_id != null) {
             result = createSliceQuery(keyspaceOperator,
@@ -210,7 +210,7 @@ public class CassandraTweetRepository implements TweetRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns().subList(1, result.getColumns().size())) {
-                tweetIds.add(column.getName().toString());
+                statusIds.add(column.getName().toString());
             }
         } else if (since_id != null) {
             result = createSliceQuery(keyspaceOperator,
@@ -222,7 +222,7 @@ public class CassandraTweetRepository implements TweetRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns().subList(0, result.getColumns().size() - 1)) {
-                tweetIds.add(column.getName().toString());
+                statusIds.add(column.getName().toString());
             }
         } else {
             result = createSliceQuery(keyspaceOperator,
@@ -234,9 +234,9 @@ public class CassandraTweetRepository implements TweetRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns()) {
-                tweetIds.add(column.getName().toString());
+                statusIds.add(column.getName().toString());
             }
         }
-        return tweetIds;
+        return statusIds;
     }
 }

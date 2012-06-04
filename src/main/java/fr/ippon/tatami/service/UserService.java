@@ -75,7 +75,7 @@ public class UserService {
     public User getUserProfileByLogin(String login) {
         User user = getUserByLogin(login);
         if (user != null) {
-            user.setTweetCount(counterRepository.getTweetCounter(login));
+            user.setStatusCount(counterRepository.getStatusCounter(login));
             user.setFollowersCount(counterRepository.getFollowersCounter(login));
             user.setFriendsCount(counterRepository.getFriendsCounter(login));
         }
@@ -100,7 +100,7 @@ public class UserService {
 
     public void createUser(User user) {
         user.setGravatar(GravatarUtil.getHash(user.getEmail()));
-        counterRepository.createTweetCounter(user.getLogin());
+        counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);

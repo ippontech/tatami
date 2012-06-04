@@ -1,10 +1,10 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.TweetRepository;
+import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +30,7 @@ public class TimelineService {
     private UserService userService;
 
     @Inject
-    private TweetRepository tweetRepository;
+    private StatusRepository statusRepository;
 
     @Inject
     private CounterRepository counterRepository;
@@ -55,211 +55,211 @@ public class TimelineService {
 
     private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
-    public void postTweet(String content) {
+    public void postStatus(String content) {
         if (log.isDebugEnabled()) {
-            log.debug("Creating new tweet : " + content);
+            log.debug("Creating new status : " + content);
         }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Tweet tweet = tweetRepository.createTweet(currentLogin, content);
+        Status status = statusRepository.createStatus(currentLogin, content);
 
-        // add tweet to the dayline, userline, timeline, tagline
-        tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        tweetRepository.addTweetToUserline(tweet);
-        tweetRepository.addTweetToTimeline(currentLogin, tweet);
-        tweetRepository.addTweetToTagline(tweet);
+        // add status to the dayline, userline, timeline, tagline
+        statusRepository.addStatusToDayline(status, DAYLINE_KEY_FORMAT.format(status.getStatusDate()));
+        statusRepository.addStatusToUserline(status);
+        statusRepository.addStatusToTimeline(currentLogin, status);
+        statusRepository.addStatusToTagline(status);
 
-        // add tweet to the follower's timelines
+        // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            tweetRepository.addTweetToTimeline(followerLogin, tweet);
+            statusRepository.addStatusToTimeline(followerLogin, status);
         }
 
-        // add tweet to the mentioned users' timeline
-        Matcher m = PATTERN_LOGIN.matcher(tweet.getContent());
+        // add status to the mentioned users' timeline
+        Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
             String mentionedLogin = extractLoginWithoutAt(m.group());
             if (mentionedLogin != null &&
                     !mentionedLogin.equals(currentLogin) &&
                     !followersForUser.contains(mentionedLogin)) {
 
-                tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
+                statusRepository.addStatusToTimeline(mentionedLogin, status);
             }
         }
 
-        // Increment tweet count for the current user
-        counterRepository.incrementTweetCounter(currentLogin);
+        // Increment status count for the current user
+        counterRepository.incrementStatusCounter(currentLogin);
 
         // Add to Elastic Search index if it is activated
         if (indexActivated) {
-            indexService.addTweet(tweet);
+            indexService.addStatus(status);
         }
     }
 
-    public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
+    public Collection<Status> buildStatusList(Collection<String> statusIds) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> favoriteIds = tweetRepository.getFavoritesline(login);
-        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweetId : tweetIds) {
-            Tweet tweet = this.tweetRepository.findTweetById(tweetId);
-            if (tweet == null) {
-                this.log.debug("Invisible tweet : " + tweetId);
+        Collection<String> favoriteIds = statusRepository.getFavoritesline(login);
+        Collection<Status> statuses = new ArrayList<Status>(statusIds.size());
+        for (String statusId : statusIds) {
+            Status status = this.statusRepository.findStatusById(statusId);
+            if (status == null) {
+                this.log.debug("Invisible status : " + statusId);
                 continue;
             }
-            // if the Tweet comes from ehcache, it has to be cloned to another instance
+            // if the Status comes from ehcache, it has to be cloned to another instance
             // in order to be thread-safe.
-            // ehcache shares the Tweet instances per tweetId, but favorites are per user.
-            Tweet tweetCopy = new Tweet();
-            tweetCopy.setTweetId(tweet.getTweetId());
-            tweetCopy.setContent(tweet.getContent());
-            tweetCopy.setLogin(tweet.getLogin());
-            tweetCopy.setTweetDate(tweet.getTweetDate());
-            if (favoriteIds.contains(tweetId)) {
-                tweetCopy.setFavorite(true);
+            // ehcache shares the Status instances per statusId, but favorites are per user.
+            Status statusCopy = new Status();
+            statusCopy.setStatusId(status.getStatusId());
+            statusCopy.setContent(status.getContent());
+            statusCopy.setLogin(status.getLogin());
+            statusCopy.setStatusDate(status.getStatusDate());
+            if (favoriteIds.contains(statusId)) {
+                statusCopy.setFavorite(true);
             } else {
-                tweetCopy.setFavorite(false);
+                statusCopy.setFavorite(false);
             }
-            User tweetUser = userService.getUserByLogin(tweet.getLogin());
-            tweetCopy.setFirstName(tweetUser.getFirstName());
-            tweetCopy.setLastName(tweetUser.getLastName());
-            tweetCopy.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweetCopy);
+            User statusUser = userService.getUserByLogin(status.getLogin());
+            statusCopy.setFirstName(statusUser.getFirstName());
+            statusCopy.setLastName(statusUser.getLastName());
+            statusCopy.setGravatar(statusUser.getGravatar());
+            statuses.add(statusCopy);
         }
-        return tweets;
+        return statuses;
     }
 
     /**
-     * The dayline contains a day's tweets
+     * The dayline contains a day's status
      *
-     * @param date the day's name to retrieve the tweets of
-     * @return a tweets list
+     * @param date the day's name to retrieve the status of
+     * @return a status list
      */
-    public Collection<Tweet> getDayline(String date) {
+    public Collection<Status> getDayline(String date) {
         if (date == null || date.isEmpty() || !date.matches("^\\d{8}$")) {
             date = DAYLINE_KEY_FORMAT.format(new Date());
         }
-        Collection<String> tweetIds = this.tweetRepository.getDayline(date);
+        Collection<String> statusIds = this.statusRepository.getDayline(date);
 
-        return this.buildTweetsList(tweetIds);
+        return this.buildStatusList(statusIds);
     }
 
     /**
-     * The dayline contains a day's tweets
+     * The dayline contains a day's status
      *
-     * @param date the day to retrieve the tweets of
-     * @return a tweets list
+     * @param date the day to retrieve the status of
+     * @return a status list
      */
-    public Collection<Tweet> getDayline(Date date) {
+    public Collection<Status> getDayline(Date date) {
         if (date == null) date = new Date();
-        Collection<String> tweetIds = this.tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
+        Collection<String> statusIds = this.statusRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
 
-        return this.buildTweetsList(tweetIds);
+        return this.buildStatusList(statusIds);
     }
 
     /**
-     * The tagline contains a tag's tweets
+     * The tagline contains a tag's status
      *
      * @param tag      the tag to retrieve the timeline of
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
      */
-    public Collection<Tweet> getTagline(String tag, int nbTweets) {
+    public Collection<Status> getTagline(String tag, int nbStatus) {
         if (tag == null || tag.isEmpty()) {
             tag = this.hashtagDefault;
         }
-        Collection<String> tweetIds = this.tweetRepository.getTagline(tag, nbTweets);
+        Collection<String> statusIds = this.statusRepository.getTagline(tag, nbStatus);
 
-        return this.buildTweetsList(tweetIds);
+        return this.buildStatusList(statusIds);
     }
 
     /**
-     * The timeline contains the user's tweets merged with his friends tweets
+     * The timeline contains the user's status merged with his friends status
      *
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @param since_id
-     * @param max_id   @return a tweets list
+     * @param max_id   @return a status list
      */
-    public Collection<Tweet> getTimeline(int nbTweets, String since_id, String max_id) {
+    public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = tweetRepository.getTimeline(login, nbTweets, since_id, max_id);
-        return this.buildTweetsList(tweetIds);
+        Collection<String> statusIds = statusRepository.getTimeline(login, nbStatus, since_id, max_id);
+        return this.buildStatusList(statusIds);
     }
 
     /**
-     * The userline contains the user's own tweets
+     * The userline contains the user's own status
      *
      * @param login    the user to retrieve the userline of
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
      */
-    public Collection<Tweet> getUserline(String login, int nbTweets, String since_id, String max_id) {
+    public Collection<Status> getUserline(String login, int nbStatus, String since_id, String max_id) {
         if (login == null || login.isEmpty()) {
             User currentUser = this.authenticationService.getCurrentUser();
             login = currentUser.getLogin();
         }
-        Collection<String> tweetIds = tweetRepository.getUserline(login, nbTweets, since_id, max_id);
-        return this.buildTweetsList(tweetIds);
+        Collection<String> statusIds = statusRepository.getUserline(login, nbStatus, since_id, max_id);
+        return this.buildStatusList(statusIds);
     }
 
-    public void removeTweet(String tweetId) {
+    public void removeStatus(String statusId) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("Removing tweet : " + tweetId);
+            this.log.debug("Removing status : " + statusId);
         }
-        final Tweet tweet = this.tweetRepository.findTweetById(tweetId);
+        final Status status = this.statusRepository.findStatusById(statusId);
 
         final User currentUser = this.authenticationService.getCurrentUser();
-        if (tweet.getLogin().equals(currentUser.getLogin())
-                && !Boolean.TRUE.equals(tweet.getRemoved())) {
-            this.tweetRepository.removeTweet(tweet);
-            this.counterRepository.decrementTweetCounter(currentUser.getLogin());
+        if (status.getLogin().equals(currentUser.getLogin())
+                && !Boolean.TRUE.equals(status.getRemoved())) {
+            this.statusRepository.removeStatus(status);
+            this.counterRepository.decrementStatusCounter(currentUser.getLogin());
             if (this.indexActivated) {
-                this.indexService.removeTweet(tweet);
+                this.indexService.removeStatus(status);
             }
         }
     }
 
-    public void addFavoriteTweet(String tweetId) {
+    public void addFavoriteStatus(String statusId) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("Marking tweet : " + tweetId);
+            this.log.debug("Marking status : " + statusId);
         }
-        Tweet tweet = this.tweetRepository.findTweetById(tweetId);
+        Status status = this.statusRepository.findStatusById(statusId);
 
         // registering
         User currentUser = this.authenticationService.getCurrentUser();
-        this.tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
+        this.statusRepository.addStatusToFavoritesline(status, currentUser.getLogin());
 
         // alerting
-        if (!currentUser.getLogin().equals(tweet.getLogin())) {
-            String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
+        if (!currentUser.getLogin().equals(status.getLogin())) {
+            String content = '@' + currentUser.getLogin() + " liked your status<br/><em>_PH_...</em>";
             int maxLength = 140 - content.length() + 4;
-            if (tweet.getContent().length() > maxLength) {
-                content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
+            if (status.getContent().length() > maxLength) {
+                content = content.replace("_PH_", status.getContent().substring(0, maxLength));
             } else {
-                content = content.replace("_PH_", tweet.getContent());
+                content = content.replace("_PH_", status.getContent());
             }
 
-            Tweet helloTweet = this.tweetRepository.createTweet(tweet.getLogin(), content); // removable
-            this.tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
+            Status helloStatus = this.statusRepository.createStatus(status.getLogin(), content); // removable
+            this.statusRepository.addStatusToTimeline(status.getLogin(), helloStatus);
         }
     }
 
-    public void removeFavoriteTweet(String tweetId) {
+    public void removeFavoriteStatus(String statusId) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("Unmarking tweet : " + tweetId);
+            this.log.debug("Unmarking status : " + statusId);
         }
-        Tweet tweet = tweetRepository.findTweetById(tweetId);
+        Status status = statusRepository.findStatusById(statusId);
         User currentUser = authenticationService.getCurrentUser();
-        tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
+        statusRepository.removeStatusFromFavoritesline(status, currentUser.getLogin());
     }
 
     /**
-     * The favline contains the user's favorites tweets
+     * The favline contains the user's favorites status
      *
-     * @return a tweets list
+     * @return a status list
      */
-    public Collection<Tweet> getFavoritesline() {
+    public Collection<Status> getFavoritesline() {
         String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = this.tweetRepository.getFavoritesline(login);
-        return this.buildTweetsList(tweetIds);
+        Collection<String> statusIds = this.statusRepository.getFavoritesline(login);
+        return this.buildStatusList(statusIds);
     }
 
     public void setAuthenticationService(AuthenticationService authenticationService) {

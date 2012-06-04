@@ -10,7 +10,7 @@
             overflowToDisk="true"
             />
 
-    <cache name="tweet-cache"
+    <cache name="status-cache"
            maxElementsInMemory="100000"
            eternal="false"
            timeToLiveSeconds="3600"

@@ -16,7 +16,7 @@ function refreshProfile() {
         $("#profile_view").html("<a href='/tatami/profile/" + login + "'><h3>" +
             data.firstName + " " + data.lastName + "</h3>@" +
             login + "</a>");
-        $("#tweetCount").text(data.tweetCount);
+        $("#statusCount").text(data.statusCount);
         $("#friendsCount").text(data.friendsCount);
         $("#followersCount").text(data.followersCount);
     });
@@ -29,7 +29,7 @@ function followUserHome(loginToFollow) {
         setTimeout(function() {
             refreshProfile();
             suggestUsersToFollow();
-            listTweets(true);
+            listStatus(true);
         }, 500);	//DEBUG wait for persistence consistency
     });
     return false;

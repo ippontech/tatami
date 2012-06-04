@@ -1,7 +1,7 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Test;
@@ -22,76 +22,76 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetUserline() throws Exception {
-        String login = "userWithTweets";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getUserline(login, 10, null, null);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
+        String login = "userWithStatus";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        Collection<Status> status = timelineService.getUserline(login, 10, null, null);
+        assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetAuthenticateUserUserlineWithNullLoginSet() throws Exception {
-        String login = "userWithTweets";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getUserline(null, 10, null, null);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
+        String login = "userWithStatus";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        Collection<Status> status = timelineService.getUserline(null, 10, null, null);
+        assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetAuthenticateUserUserlineWithEmptyLoginSet() throws Exception {
-        String login = "userWithTweets";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getUserline("", 10, null, null);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
+        String login = "userWithStatus";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        Collection<Status> status = timelineService.getUserline("", 10, null, null);
+        assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetTimeline() throws Exception {
-        String login = "userWithTweets";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithTweets@ippon.fr");
-        Collection<Tweet> tweets = timelineService.getTimeline(10, null, null);
-        assertThatLineForUserWithTweetsIsOk(login, tweets);
+        String login = "userWithStatus";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWithStatus@ippon.fr");
+        Collection<Status> status = timelineService.getTimeline(10, null, null);
+        assertThatLineForUserWithStatusIsOk(login, status);
     }
 
     @Test
     public void shouldGetDayline() throws Exception {
         String date = "19042012";
-        Collection<Tweet> tweets = timelineService.getDayline(date);
-        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+        Collection<Status> status = timelineService.getDayline(date);
+        assertThatLineForUserWithStatusIsOk("userWithStatus", status);
     }
 
     @Test
     public void shouldGetTagline() throws Exception {
         String hashtag = "ippon";
-        Collection<Tweet> tweets = timelineService.getTagline(hashtag, 10);
-        assertThatLineForUserWithTweetsIsOk("userWithTweets", tweets);
+        Collection<Status> status = timelineService.getTagline(hashtag, 10);
+        assertThatLineForUserWithStatusIsOk("userWithStatus", status);
     }
 
     @Test
-    public void shouldPostTweet() throws Exception {
-        String login = "userWhoPostTweet";
-        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWhoPostTweet@ippon.fr");
+    public void shouldPostStatus() throws Exception {
+        String login = "userWhoPostStatus";
+        mockAuthenticationOnTimelineServiceWithACurrentUser(login, "userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
-        timelineService.postTweet(content);
+        timelineService.postStatus(content);
 
         /* verify */
-        Collection<Tweet> tweetsFromUserline = timelineService.getUserline(login, 10, null, null);
-        assertThatNewTestIsPosted(login, content, tweetsFromUserline);
+        Collection<Status> statusFromUserline = timelineService.getUserline(login, 10, null, null);
+        assertThatNewTestIsPosted(login, content, statusFromUserline);
 
-        Collection<Tweet> tweetsFromTimeline = timelineService.getTimeline(10, null, null);
-        assertThatNewTestIsPosted(login, content, tweetsFromTimeline);
+        Collection<Status> statusFromTimeline = timelineService.getTimeline(10, null, null);
+        assertThatNewTestIsPosted(login, content, statusFromTimeline);
 
-        Collection<Tweet> tweetsFromUserlineOfAFollower = timelineService.getUserline("userWhoReadTweet", 10, null, null);
-        assertThat(tweetsFromUserlineOfAFollower.isEmpty(), is(true));
+        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
+        assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
 
     }
 
-    private void assertThatNewTestIsPosted(String login, String content, Collection<Tweet> tweets) {
-        assertThat(tweets, notNullValue());
-        assertThat(tweets.size(), is(1));
-        Tweet tweet = (Tweet) tweets.toArray()[0];
-        assertThat(tweet.getLogin(), is(login));
-        assertThat(tweet.getContent(), is(content));
+    private void assertThatNewTestIsPosted(String login, String content, Collection<Status> statuses) {
+        assertThat(statuses, notNullValue());
+        assertThat(statuses.size(), is(1));
+        Status status = (Status) statuses.toArray()[0];
+        assertThat(status.getLogin(), is(login));
+        assertThat(status.getContent(), is(content));
     }
 
     private void mockAuthenticationOnTimelineServiceWithACurrentUser(String login, String email) {
@@ -101,19 +101,19 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         timelineService.setAuthenticationService(mockAuthenticationService);
     }
 
-    private void assertThatLineForUserWithTweetsIsOk(String login, Collection<Tweet> tweets) {
-        assertThat(tweets, notNullValue());
-        assertThat(tweets.size(), is(2));
+    private void assertThatLineForUserWithStatusIsOk(String login, Collection<Status> status) {
+        assertThat(status, notNullValue());
+        assertThat(status.size(), is(2));
 
-        Tweet firstTweet = (Tweet) tweets.toArray()[0];
-        assertThat(firstTweet.getTweetId(), is("fa2bd770-9848-11e1-a6ca-e0f847068d52"));
-        assertThat(firstTweet.getLogin(), is(login));
-        assertThat(firstTweet.getContent(), is("Devoxx, c'est nowwwwww"));
+        Status firstStatus = (Status) status.toArray()[0];
+        assertThat(firstStatus.getStatusId(), is("fa2bd770-9848-11e1-a6ca-e0f847068d52"));
+        assertThat(firstStatus.getLogin(), is(login));
+        assertThat(firstStatus.getContent(), is("Devoxx, c'est nowwwwww"));
 
-        Tweet secondTweet = (Tweet) tweets.toArray()[1];
-        assertThat(secondTweet.getTweetId(), is("f97d6470-9847-11e1-a6ca-e0f847068d52"));
-        assertThat(secondTweet.getLogin(), is(login));
-        assertThat(secondTweet.getContent(), is("Devoxx, ça va déchirer"));
+        Status secondStatus = (Status) status.toArray()[1];
+        assertThat(secondStatus.getStatusId(), is("f97d6470-9847-11e1-a6ca-e0f847068d52"));
+        assertThat(secondStatus.getLogin(), is(login));
+        assertThat(secondStatus.getContent(), is("Devoxx, ça va déchirer"));
 
     }
 }

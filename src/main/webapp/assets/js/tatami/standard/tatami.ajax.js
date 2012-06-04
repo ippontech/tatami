@@ -5,11 +5,11 @@
  *
  * Timelines
  * --------
- * POST /statuses/update -> create a new Tweet
- * POST /statuses/destroy/:id -> delete Tweet
- * GET  /statuses/home_timeline -> get the latest tweets from the current user
- * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
- * GET  /search?q=keywords&page=m&rpp=n -> get the tweets matching the keywords, from the page m, containing n tweets
+ * POST /statuses/update -> create a new Status
+ * POST /statuses/destroy/:id -> delete Status
+ * GET  /statuses/home_timeline -> get the latest status from the current user
+ * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
+ * GET  /search?q=keywords&page=m&rpp=n -> get the status matching the keywords, from the page m, containing n status
  *
  * Users
  * --------
@@ -30,15 +30,15 @@
  *
  * Favorites
  * --------
- * GET  /favorites -> get the favorite tweets of the current user
- * POST /favorites/create/:id -> Favorites the tweet
- * POST /favorites/destroy/:id -> Unfavorites the tweet
+ * GET  /favorites -> get the favorite status of the current user
+ * POST /favorites/create/:id -> Favorites the status
+ * POST /favorites/destroy/:id -> Unfavorites the status
  *
  *
  * Tags (does not exist in Twitter)
  * --------
- * GET  /tags -> get the latest tweets with no tags
- * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
+ * GET  /tags -> get the latest status with no tags
+ * GET  /tags/ippon -> get the latest status tagged with "ippon"
  *
  * Stats (does not exist in Twitter)
  * --------
@@ -48,53 +48,53 @@
  */
 
 /**
- * POST /statuses/update -> create a new Tweet
+ * POST /statuses/update -> create a new Status
  */
-function postTweet(callback) {
-    var tweet = $('#tweetContent');
-    if (tweet.val() != "") {
+function postStatus(callback) {
+    var status = $('#statusContent');
+    if (status.val() != "") {
         $.ajax({
             type: 'POST',
             url: "/tatami/rest/statuses/update",
             contentType: 'application/json; charset=UTF-8',
-            data: tweet.val(),
+            data: status.val(),
             dataType: 'json',
             success: function(data) {
                 callback(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                tweet.parent().parent().find("div.error").empty().append(errorThrown);
+                status.parent().parent().find("div.error").empty().append(errorThrown);
             }
         });
     }
 }
 
 /**
- * POST /statuses/destroy/:id -> delete Tweet
+ * POST /statuses/destroy/:id -> delete Status
  */
-function removeTweet(tweetId) {
+function removeStatus(statusId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/statuses/destroy/" + tweetId,
+        url: "/tatami/rest/statuses/destroy/" + statusId,
         dataType: "json",
         success: function(data) {
             setTimeout(function() {
                 refreshProfile();
-                $('.id-' + tweetId).fadeOut();
+                $('.id-' + statusId).fadeOut();
             }, 500); //DEBUG wait for persistence consistency
         }
     });
 }
 
 /**
- * GET  /statuses/home_timeline -> get the latest tweets from the current user
+ * GET  /statuses/home_timeline -> get the latest status from the current user
  */
-function listTweets(reset) {
+function listStatus(reset) {
     var url = "/tatami/rest/statuses/home_timeline";
-    if (!reset && bottomTweetId != undefined) {
-        url += "?max_id=" + bottomTweetId;
+    if (!reset && bottomStatusId != undefined) {
+        url += "?max_id=" + bottomStatusId;
     } else {
-        $('#tweetsList').empty();
+        $('#statusList').empty();
     }
     $.ajax({
         type: 'GET',
@@ -102,39 +102,39 @@ function listTweets(reset) {
         dataType: 'json',
         success: function(data) {
             if (data.length > 0) {
-                makeTweetsList(data, $('#tweetsList'));
+                makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#tweetsList').append('<tr class="tweet"><td colspan="4" style="text-align: center;">No more tweets...</td></tr>');
+                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">No more status...</td></tr>');
             }
         }
     });
 }
 
-function updateTweetsList(firstTweetId) {
-    var url = "/tatami/rest/statuses/home_timeline?since_id=" + firstTweetId;
+function updateStatusList(firstStatusId) {
+    var url = "/tatami/rest/statuses/home_timeline?since_id=" + firstStatusId;
     $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
         success: function(data) {
-            $('#updateTweetsList').remove();
+            $('#updateStatusList').remove();
             if (data.length == 1) {
-                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">1 new tweet</td></tr>');
+                $('#statusList').prepend('<tr id="updateStatusList" onclick="listStatus(true);"><td colspan="4" style="text-align: center;">1 new status</td></tr>');
             } else if (data.length > 1) {
-                $('#tweetsList').prepend('<tr id="updateTweetsList" onclick="listTweets(true);"><td colspan="4" style="text-align: center;">' + data.length + ' new tweets</td></tr>');
+                $('#statusList').prepend('<tr id="updateStatusList" onclick="listStatus(true);"><td colspan="4" style="text-align: center;">' + data.length + ' new status</td></tr>');
             }
         }
     });
 }
 
 /**
- * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest tweets from user "jdubois"
+ * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
  */
-function listUserTweets(userLogin) {
+function listUserStatus(userLogin) {
     var url = "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin;
-    if (bottomTweetId != undefined) {
-        url += "&max_id=" + bottomTweetId;
+    if (bottomStatusId != undefined) {
+        url += "&max_id=" + bottomStatusId;
     }
     $.ajax({
         type: 'GET',
@@ -142,10 +142,10 @@ function listUserTweets(userLogin) {
         dataType: 'json',
         success: function(data) {
             if (data.length > 0) {
-                makeTweetsList(data, $('#tweetsList'));
+                makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#tweetsList').append('<tr class="tweet"><td colspan="4" style="text-align: center;">No more tweets...</td></tr>');
+                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">No more status...</td></tr>');
             }
         }
     });
@@ -252,9 +252,9 @@ function getUser(userLogin, callback) {
 }
 
 /**
- * GET  /favorites -> get the favorite tweets of the current user
+ * GET  /favorites -> get the favorite status of the current user
  */
-function getFavoriteTweets(callback) {
+function getFavoriteStatus(callback) {
     $.ajax({
         type: 'GET',
         url: "/tatami/rest/favorites",
@@ -266,38 +266,38 @@ function getFavoriteTweets(callback) {
 }
 
 /**
- * POST /favorites/create/:id -> Favorites the tweet
+ * POST /favorites/create/:id -> Favorites the status
  */
-function favoriteTweet(tweetId) {
+function favoriteStatus(statusId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/create/" + tweetId,
+        url: "/tatami/rest/favorites/create/" + statusId,
         dataType: 'json',
         success: function(data) {
-            var entity = $("." + tweetId + "-favorite");
-            entity.attr("onclick", "unfavoriteTweet(\"" + tweetId + "\")");
+            var entity = $("." + statusId + "-favorite");
+            entity.attr("onclick", "unfavoriteStatus(\"" + statusId + "\")");
             entity.empty();
             entity.append('<i class="icon-star-empty" />');
-            $(".id-" + tweetId + " .tweetDate").addClass("favorite");
+            $(".id-" + statusId + " .statusDate").addClass("favorite");
         }
     });
     return false;
 }
 
 /**
- * POST /favorites/destroy/:id -> Unfavorites the tweet
+ * POST /favorites/destroy/:id -> Unfavorites the status
  */
-function unfavoriteTweet(tweetId) {
+function unfavoriteStatus(statusId) {
     $.ajax({
         type: 'POST',
-        url: "/tatami/rest/favorites/destroy/" + tweetId,
+        url: "/tatami/rest/favorites/destroy/" + statusId,
         dataType: 'json',
         success: function(data) {
-            var entity = $("." + tweetId + "-favorite");
-            entity.attr("onclick", "favoriteTweet(\"" + tweetId + "\")");
+            var entity = $("." + statusId + "-favorite");
+            entity.attr("onclick", "favoriteStatus(\"" + statusId + "\")");
             entity.empty();
             entity.append('<i class="icon-star" />');
-            $(".id-" + tweetId + " .tweetDate").removeClass("favorite");
+            $(".id-" + statusId + " .statusDate").removeClass("favorite");
         }
     });
     return false;
@@ -346,18 +346,18 @@ function suggestUsersToFollow() {
 }
 
 /**
- * GET  /tags -> get the latest tweets with no tags
- * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
+ * GET  /tags -> get the latest status with no tags
+ * GET  /tags/ippon -> get the latest status tagged with "ippon"
  */
-function listTagTweets(tag) {
+function listTagStatus(tag) {
     if (page == "home") {  // home page
         $.ajax({
             type: 'GET',
             url: "/tatami/rest/tags" + (tag ? '/' + tag : '') + "/30",
             dataType: 'json',
             success: function(data) {
-                $('#tagTweetsList').empty();
-                makeTweetsList(data, $('#tagTweetsList'));
+                $('#tagStatusList').empty();
+                makeStatusList(data, $('#tagStatusList'));
                 $('#tagTab').tab('show');
             }
         });
@@ -368,16 +368,16 @@ function listTagTweets(tag) {
 }
 
 /**
- * GET  /search?q=keywords&page=m&rpp=n -> get the tweets matching the keywords, from the page m, containing n tweets
+ * GET  /search?q=keywords&page=m&rpp=n -> get the status matching the keywords, from the page m, containing n status
  */
-function searchTweets(query) {
+function searchStatus(query) {
     $.ajax({
         type: 'GET',
         url: "/tatami/rest/search?" + query,
         dataType: 'json',
         success: function(data) {
-            $('#searchTweetsList').empty();
-            makeTweetsList(data, $('#searchTweetsList'));
+            $('#searchStatusList').empty();
+            makeStatusList(data, $('#searchStatusList'));
             $('#searchTab').tab('show');
         }
     });

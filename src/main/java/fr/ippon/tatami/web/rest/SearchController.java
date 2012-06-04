@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
@@ -36,26 +36,26 @@ public class SearchController {
     private TimelineService timelineService;
 
     /**
-     * GET  /search/?q=jdubois -> get the tweets where "jdubois" appears
+     * GET  /search/?q=jdubois -> get the status where "jdubois" appears
      */
     @RequestMapping(value = "/rest/search",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweetsForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
+    public Collection<Status> listStatusForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
                                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
         if (log.isDebugEnabled()) {
-            log.debug("REST request to search tweets containing these words (" + q + ").");
+            log.debug("REST request to search status containing these words (" + q + ").");
         }
 
         if (!indexActivated) {
-            return new ArrayList<Tweet>();
+            return new ArrayList<Status>();
         }
 
-        final List<String> ids = indexService.search(Tweet.class, null, q, page, rpp, "tweetDate", "desc");
-        return timelineService.buildTweetsList(ids);
+        final List<String> ids = indexService.search(Status.class, null, q, page, rpp, "statusDate", "desc");
+        return timelineService.buildStatusList(ids);
     }
 
 }
