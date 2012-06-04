@@ -90,14 +90,14 @@
                         </ul>
                     </div>
                     <div class="alert alert-info">
-                        <h4><fmt:message key="tatami.user.statustohim"/> @${user.login}</h4><br/>
+                        <h4><fmt:message key="tatami.user.sendmessageto"/> @${user.login}</h4><br/>
 
                         <div id="statusToHim" class="row-fluid">
                             <form class="form-inline" onsubmit="return statusToUser();">
                                 <textarea id="statusContent" rel="popover" class="focused"
                                           maxlength="140">@${user.login} </textarea>
                                 <button type="submit" class="btn btn-primary"><fmt:message
-                                        key="tatami.user.status"/></button>
+                                        key="tatami.user.send"/></button>
                             </form>
                             <div class="error"></div>
                         </div>
