@@ -1,15 +1,7 @@
 package fr.ippon.tatami.service;
 
-import static org.elasticsearch.client.Requests.deleteIndexRequest;
-import static org.elasticsearch.client.Requests.refreshRequest;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
 import fr.ippon.tatami.domain.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,8 +13,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.List;
+
+import static org.elasticsearch.client.Requests.deleteIndexRequest;
+import static org.elasticsearch.client.Requests.refreshRequest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author dmartinpro

@@ -3,6 +3,7 @@ package fr.ippon.tatami.security;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -62,9 +63,9 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
             throw new BadCredentialsException(messages.getMessage(
                     "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
         }
-        String username = DomainServiceImpl.getUsernameFromLogin(login);
+        String username = DomainUtil.getUsernameFromLogin(login);
 
-        // Use temporarliy the username, and the login, to authenticate
+        // Use temporarily the username, and the login, to authenticate
         org.springframework.security.core.userdetails.User tmpUser =
                 new org.springframework.security.core.userdetails.User(username, (String) authentication.getCredentials(),
                         grantedAuthorities);

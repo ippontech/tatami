@@ -1,9 +1,6 @@
 package fr.ippon.tatami.application;
 
-import java.io.IOException;
-
-import javax.annotation.PostConstruct;
-
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
@@ -11,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 @Configuration
 @PropertySource({"classpath:/tatami/tatami-test.properties", "classpath:/tatami/tatami-es-test.properties"})
@@ -24,5 +22,5 @@ public class ApplicationElasticSearchTestConfiguration {
     public void initTatami() throws IOException, TTransportException {
         log.info("Tatami test context started!");
     }
-    
+
 }

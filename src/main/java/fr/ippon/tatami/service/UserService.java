@@ -3,7 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.DomainService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.GravatarUtil;
 import fr.ippon.tatami.service.util.PasswordUtil;
 import org.apache.commons.logging.Log;
@@ -50,9 +50,6 @@ public class UserService {
     private MailService mailService;
 
     @Inject
-    private DomainService domainService;
-
-    @Inject
     private IndexService indexService;
 
     @Inject
@@ -85,7 +82,9 @@ public class UserService {
     }
 
     public User getUserProfileByUsername(String username) {
-        String login = domainService.getLoginFromUsername(username);
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         User user = getUserByLogin(login);
         if (user != null) {
             user.setStatusCount(counterRepository.getStatusCounter(login));
@@ -115,8 +114,8 @@ public class UserService {
 
     public void createUser(User user) {
         String login = user.getLogin();
-        String username = login.substring(0, login.indexOf("@"));
-        String domain = login.substring(login.indexOf("@") + 1, login.length());
+        String username = DomainUtil.getUsernameFromLogin(login);
+        String domain = DomainUtil.getDomainFromLogin(login);
 
         domainRepository.addUserInDomain(domain, login);
 

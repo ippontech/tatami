@@ -1,13 +1,11 @@
 package fr.ippon.tatami.application;
 
+import fr.ippon.tatami.service.IndexService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import fr.ippon.tatami.service.IndexService;
-
 /**
  * @author dmartin
- *
  */
 @Configuration
 public class ElasticSearchTestConfiguration {

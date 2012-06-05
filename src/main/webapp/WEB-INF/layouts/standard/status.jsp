@@ -20,7 +20,7 @@
                     <img id="userPicture" src="http://www.gravatar.com/avatar/${user.gravatar}/>?s=64"/>
                 </div>
                 <div class="span7" style="width: 250px">
-                    <a href="/tatami/profile/${user.username}"><h3>${user.firstName}&nbsp;${user.lastName}</h3>
+                    <a href="/tatami/profile/${user.username}/"><h3>${user.firstName}&nbsp;${user.lastName}</h3>
                         @${user.username}</a>
                 </div>
                 <div class="span1" style="width: 80px">

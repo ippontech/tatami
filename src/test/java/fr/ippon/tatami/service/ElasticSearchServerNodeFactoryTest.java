@@ -1,15 +1,14 @@
 package fr.ippon.tatami.service;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
+import java.io.IOException;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author dmartin

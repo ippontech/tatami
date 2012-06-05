@@ -13,7 +13,7 @@ function refreshProfile() {
     getUser(username, function(data) {
         $("#picture").parent().css('width', '68px');	// optional
         $("#picture").attr('src', 'http://www.gravatar.com/avatar/' + data.gravatar + '?s=64');
-        $("#profile_view").html("<a href='/tatami/profile/" + username + "'><h3>" +
+        $("#profile_view").html("<a href='/tatami/profile/" + username + "/'><h3>" +
             data.firstName + " " + data.lastName + "</h3>@" +
             username + "</a>");
         $("#statusCount").text(data.statusCount);

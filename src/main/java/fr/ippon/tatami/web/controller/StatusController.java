@@ -27,11 +27,11 @@ public class StatusController {
     @Inject
     private CounterService counterService;
 
-    @RequestMapping(value = "/profile/{username}",
+    @RequestMapping(value = "/profile/{username}/",
             method = RequestMethod.GET)
     public ModelAndView getUserProfile(@PathVariable("username") String username) {
         if (log.isDebugEnabled()) {
-            log.debug("Request to get Profile : " + username);
+            log.debug("Request to get username : " + username);
         }
         ModelAndView mv = new ModelAndView();
         mv.setViewName("profile");
@@ -42,7 +42,7 @@ public class StatusController {
     @RequestMapping(value = "/{username}/status/{statusId}")
     public ModelAndView displayStatus(@PathVariable("username") String username, @PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("Request to get Status ID : " + statusId);
+            log.debug("Request to get username : " + username + " / statusID : " + statusId);
         }
         ModelAndView mv = new ModelAndView();
         mv.setViewName("status");

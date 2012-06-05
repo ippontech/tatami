@@ -5,11 +5,11 @@ var DURATION_OF_FADE_TO = 400;
 
 var scrollLock = false;
 
-var userlineURL = '<a href="/tatami/profile/LOGIN" style="text-decoration:none" title="Show LOGIN status">';
+var userlineURL = '<a href="/tatami/profile/LOGIN/" style="text-decoration:none" title="Show LOGIN status">';
 var userlineREG = new RegExp("LOGIN", "g");
 
 var userrefREG = new RegExp("@(\\w+)", "g");
-var userrefURL = '<a href="/tatami/profile/$1" style="text-decoration:none" title="Show $1 status"><em>@$1</em></a>';
+var userrefURL = '<a href="/tatami/profile/$1/" style="text-decoration:none" title="Show $1 status"><em>@$1</em></a>';
 
 var tagrefREG = new RegExp("#(\\w+)", "g");
 var tagrefURL = '<a href="#" style="text-decoration:none" onclick="listTagStatus(\'$1\')" title="Show $1 related status"><em>#$1</em></a>';

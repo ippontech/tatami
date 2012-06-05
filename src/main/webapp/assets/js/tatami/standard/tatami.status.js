@@ -41,7 +41,7 @@ var bottomStatusId;
 
 function makeStatusList(data, dest) {
     $.each(data, function(entryIndex, entry) {
-        var userlineLink = userlineURL.replace(userlineREG, entry['username']);
+        var userlineLink = userlineURL.replace(userlineREG, encodeURI(entry['username']));
 
         var template = $('#template_status').html();
         var content = entry['content']

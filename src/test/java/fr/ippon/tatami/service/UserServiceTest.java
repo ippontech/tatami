@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
