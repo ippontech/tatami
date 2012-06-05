@@ -67,14 +67,8 @@
                                         </label>
                                         <label><fmt:message
                                                 key="tatami.user.email"/> :</label>
-                                        <input id="emailInput"
-                                               name="email"
-                                               type="email"
-                                               required="required"
-                                               size="15"
-                                               maxlength="60"
-                                               placeholder="Enter e-mail..."/>
-
+                                        ${user.login}
+                                        <br/><br/>
                                         <label><fmt:message
                                                 key="tatami.user.firstName"/> :</label>
                                         <input

@@ -98,6 +98,8 @@ public class UserService {
     public void updateUser(User user) {
         User currentUser = authenticationService.getCurrentUser();
         user.setLogin(currentUser.getLogin());
+        user.setUsername(currentUser.getUsername());
+        user.setDomain(currentUser.getDomain());
         user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         try {
             userRepository.updateUser(user);
