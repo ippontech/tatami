@@ -43,8 +43,8 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     public Collection<Status> listStatusForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
-                                               @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                               @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
+                                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to search status containing these words (" + q + ").");

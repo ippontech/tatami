@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
@@ -34,7 +33,7 @@ public class StatusController {
         }
         ModelAndView mv = new ModelAndView();
         mv.setViewName("status");
-        User user = userService.getUserProfileByLogin(login);
+        User user = userService.getUserProfileByUsername(login);
         if (null != user) {
             mv.addObject("statusId", statusId);
             mv.addObject("user", user);

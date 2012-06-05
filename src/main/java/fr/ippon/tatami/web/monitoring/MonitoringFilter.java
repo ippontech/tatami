@@ -50,17 +50,17 @@ public class MonitoringFilter implements Filter {
             sb.append(" | ");
             sb.append(time);
             sb.append(" | ");
-            String userName;
+            String username;
             Authentication authent = SecurityContextHolder.getContext().getAuthentication();
             if (authent != null) {
                 Object principal = authent.getPrincipal();
                 if (principal instanceof String) {
-                    userName = "anonymous";
+                    username = "anonymous";
                 } else {
                     User springSecurityUser = (User) principal;
-                    userName = springSecurityUser.getUsername();
+                    username = springSecurityUser.getUsername();
                 }
-                sb.append(userName);
+                sb.append(username);
             }
             sb.append(" | ");
             sb.append(req.getRemoteAddr());

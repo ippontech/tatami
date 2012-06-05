@@ -114,7 +114,8 @@ public class IndexService {
         try {
             jsonifiedObject = XContentFactory.jsonBuilder()
                     .startObject()
-                    .field("login", status.getLogin())
+                    .field("username", status.getUsername())
+                    .field("domain", status.getDomain())
                     .field("postDate", status.getStatusDate())
                     .field("message", StringEscapeUtils.unescapeHtml(status.getContent()))
                     .endObject();

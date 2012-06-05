@@ -36,7 +36,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>default</spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
             </properties>
@@ -44,7 +43,6 @@
         <profile>
             <id>ippon</id>
             <properties>
-                <spring.profiles.active>ippon</spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
             </properties>

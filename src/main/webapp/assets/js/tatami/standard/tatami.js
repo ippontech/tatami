@@ -2,10 +2,7 @@
 
 // Constants
 var DURATION_OF_FADE_TO = 400;
-var DEFAULT_NUMBER_OF_TWEETS_TO_DISPLAY = 20;
-var DEFAULT_NUMBER_INCREMENTATION_OF_TWEETS_TO_DISPLAY = 10;
 
-var nbStatusToDisplay;
 var scrollLock = false;
 
 var userlineURL = '<a href="/tatami/profile/LOGIN" style="text-decoration:none" title="Show LOGIN status">';
@@ -112,14 +109,14 @@ function autoUpdateStatusList() {
 
 function initProfile() {
     $('#statusPanel').load('/assets/fragments/standard/timeline.html', function() {
-        listUserStatus(userLogin);
+        listUserStatus(username);
         $('#refreshStatus').click(function() {
-            listUserStatus(userLogin);
+            listUserStatus(username);
         });
     });
     // browser's refresh shortcut override
     shortcut.add("Ctrl+R", function() {
-        listUserStatus(userLogin);
+        listUserStatus(username);
     });
 
     // infinite scroll
@@ -127,7 +124,7 @@ function initProfile() {
         if ($('#timeline').is(':visible') && $(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
             if (scrollLock == false) {
                 scrollLock = true;
-                listUserStatus(userLogin);
+                listUserStatus(username);
             }
         }
     });

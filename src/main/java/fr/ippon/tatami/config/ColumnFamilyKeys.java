@@ -24,4 +24,6 @@ public class ColumnFamilyKeys {
     public final static String USERLINE_CF = "Userline";
 
     public final static String COUNTER_CF = "Counter";
+
+    public final static String DOMAIN_CF = "Domain";
 }

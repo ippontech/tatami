@@ -151,8 +151,8 @@ function updateStatusList(firstStatusId) {
 /**
  * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
  */
-function listUserStatus(userLogin) {
-    var url = "/tatami/rest/statuses/user_timeline?screen_name=" + userLogin;
+function listUserStatus(username) {
+    var url = "/tatami/rest/statuses/user_timeline?screen_name=" + username;
     if (bottomStatusId != undefined) {
         url += "&max_id=" + bottomStatusId;
     }
@@ -193,12 +193,12 @@ function updateProfile() {
 /**
  * POST /friendships/create -> follow user
  */
-function postFollowUser(loginToFollow, callback) {
+function postFollowUser(usernameToFollow, callback) {
     $.ajax({
         type: 'POST',
         url: "/tatami/rest/friendships/create",
         contentType: 'application/json; charset=UTF-8',
-        data: '{"login":"' + loginToFollow + '"}',
+        data: '{"username":"' + usernameToFollow + '"}',
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -214,12 +214,12 @@ function postFollowUser(loginToFollow, callback) {
 /**
  * POST /friendships/destroy -> unfollow user
  */
-function postUnfollowUser(loginToUnfollow, callback) {
+function postUnfollowUser(usernameToUnfollow, callback) {
     $.ajax({
         type: 'POST',
         url: "/tatami/rest/friendships/destroy",
         contentType: 'application/json; charset=UTF-8',
-        data: '{"login":"' + loginToUnfollow + '"}',
+        data: '{"username":"' + usernameToUnfollow + '"}',
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -230,10 +230,10 @@ function postUnfollowUser(loginToUnfollow, callback) {
 /**
  * GET  /friends/lookup -> return extended data about the user's friends
  */
-function lookupFriends(userLogin, callback) {
+function lookupFriends(username, callback) {
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/friends/lookup?screen_name=" + userLogin,
+        url: "/tatami/rest/friends/lookup?screen_name=" + username,
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -245,10 +245,10 @@ function lookupFriends(userLogin, callback) {
 /**
  * GET  /followers/lookup -> return extended data about the user's followers
  */
-function lookupFollowers(userLogin, callback) {
+function lookupFollowers(username, callback) {
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/followers/lookup?screen_name=" + userLogin,
+        url: "/tatami/rest/followers/lookup?screen_name=" + username,
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -260,10 +260,10 @@ function lookupFollowers(userLogin, callback) {
 /**
  * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
  */
-function getUser(userLogin, callback) {
+function getUser(username, callback) {
     $.ajax({
         type: 'GET',
-        url: "/tatami/rest/users/show?screen_name=" + userLogin,
+        url: "/tatami/rest/users/show?screen_name=" + username,
         dataType: 'json',
         success: function(data) {
             callback(data);
@@ -324,11 +324,11 @@ function unfavoriteStatus(statusId) {
 }
 
 /**
- * GET  /users/search -> search user by login
+ * GET  /users/search -> search user by username
  */
-function searchUser(userLoginStartWith) {
+function searchUser(usernameStartWith) {
     var suggest = $('#usersSuggestions');
-    var searchTerm = userLoginStartWith;
+    var searchTerm = usernameStartWith;
     searchTerm = (searchTerm.indexOf('@') == 0) ? searchTerm.substring(1, searchTerm.length) : searchTerm;
 
     if (searchTerm.length < 3) {
@@ -342,7 +342,7 @@ function searchUser(userLoginStartWith) {
                 suggest.empty();
                 if (null != data && data.length > 0) {
                     $.each(data, function(i, user) {
-                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">' + user.login + '</li>');
+                        suggest.append('<li><img src="http://www.gravatar.com/avatar/' + user.gravatar + '?s=16">' + user.username + '</li>');
                     });
                     suggest.show();
                 }

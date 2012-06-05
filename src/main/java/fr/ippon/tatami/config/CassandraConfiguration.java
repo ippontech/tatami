@@ -63,6 +63,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
             addColumnFamilySortedbyUUID(cluster, TAGLINE_CF);
             addColumnFamilySortedbyUUID(cluster, USERLINE_CF);
+            addColumnFamily(cluster, DOMAIN_CF);
 
             ThriftCfDef cfDef =
                     new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);

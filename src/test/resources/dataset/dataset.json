@@ -187,6 +187,11 @@
         }]
     },
     {
+        "name" : "Domain",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type"
+    },
+    {
         "name" : "Counter",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",

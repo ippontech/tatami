@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.controller;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.inject.Inject;
 
 /**
- * @author dmartin
+ * @author Julien Dubois
  */
 @Controller
 public class HomeController {
@@ -19,10 +20,13 @@ public class HomeController {
     @Inject
     private UserService userService;
 
+    @Inject
+    private AuthenticationService authenticationService;
+
     @RequestMapping(value = "/")
     public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
         ModelAndView mv = new ModelAndView("home");
-        User currentUser = userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
         mv.addObject("tag", tag);
         mv.addObject("search", search);
@@ -36,8 +40,10 @@ public class HomeController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
-
-        userService.registerEmail(email);
+        // TODO validate email
+        User user = new User();
+        user.setLogin(email);
+        userService.registerUser(user);
         return "redirect:/tatami/login";
     }
 }

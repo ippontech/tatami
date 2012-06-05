@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +46,7 @@ public class TimelineService {
     private IndexService indexService;
 
     @Inject
+    @Named("indexActivated")
     private boolean indexActivated;
 
     private String hashtagDefault = "---";
@@ -115,7 +117,8 @@ public class TimelineService {
             Status statusCopy = new Status();
             statusCopy.setStatusId(status.getStatusId());
             statusCopy.setContent(status.getContent());
-            statusCopy.setLogin(status.getLogin());
+            statusCopy.setUsername(status.getUsername());
+            statusCopy.setDomain(status.getDomain());
             statusCopy.setStatusDate(status.getStatusDate());
             if (favoriteIds.contains(statusId)) {
                 statusCopy.setFavorite(true);
@@ -233,7 +236,7 @@ public class TimelineService {
 
         // alerting
         if (!currentUser.getLogin().equals(status.getLogin())) {
-            String content = '@' + currentUser.getLogin() + " liked your status<br/><em>_PH_...</em>";
+            String content = '@' + currentUser.getUsername() + " liked your status<br/><em>_PH_...</em>";
             int maxLength = 140 - content.length() + 4;
             if (status.getContent().length() > maxLength) {
                 content = content.replace("_PH_", status.getContent().substring(0, maxLength));
@@ -264,10 +267,6 @@ public class TimelineService {
         String login = this.authenticationService.getCurrentUser().getLogin();
         Collection<String> statusIds = this.statusRepository.getFavoritesline(login);
         return this.buildStatusList(statusIds);
-    }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
     }
 
     private String extractLoginWithoutAt(String dest) {

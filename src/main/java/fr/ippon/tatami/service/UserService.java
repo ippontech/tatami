@@ -1,25 +1,22 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.DomainService;
 import fr.ippon.tatami.service.util.GravatarUtil;
+import fr.ippon.tatami.service.util.PasswordUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Manages the application's users.
@@ -33,6 +30,9 @@ public class UserService {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private DomainRepository domainRepository;
 
     @Inject
     private FollowerRepository followerRepository;
@@ -50,17 +50,25 @@ public class UserService {
     private MailService mailService;
 
     @Inject
+    private DomainService domainService;
+
+    @Inject
     private IndexService indexService;
 
     @Inject
+    @Named("indexActivated")
     private boolean indexActivated;
 
     public User getUserByLogin(String login) {
-        return userRepository.findUserByLogin(login);
+        User user = userRepository.findUserByLogin(login);
+        if (log.isDebugEnabled()) {
+            log.debug("Found user : " + user);
+        }
+        return user;
     }
 
     /**
-     * Return a collection of Users based on their login (ie : uid)
+     * Return a collection of Users based on their username (ie : uid)
      *
      * @param logins the collection : must not be null
      * @return a Collection of User
@@ -76,7 +84,8 @@ public class UserService {
         return users;
     }
 
-    public User getUserProfileByLogin(String login) {
+    public User getUserProfileByUsername(String username) {
+        String login = domainService.getLoginFromUsername(username);
         User user = getUserByLogin(login);
         if (user != null) {
             user.setStatusCount(counterRepository.getStatusCounter(login));
@@ -104,11 +113,17 @@ public class UserService {
 
     public void createUser(User user) {
         String login = user.getLogin();
-        user.setGravatar(GravatarUtil.getHash(login));
+        String username = login.substring(0, login.indexOf("@"));
+        String domain = login.substring(login.indexOf("@") + 1, login.length());
 
-        user.setUsername(login.substring(0, login.indexOf("@")));
-        user.setDomain(login.substring(login.indexOf("@") + 1, login.length()));
-        user.setValidated(false);
+        domainRepository.addUserInDomain(domain, login);
+
+        user.setPassword(PasswordUtil.generatePassword());
+        user.setGravatar(GravatarUtil.getHash(login));
+        user.setUsername(username);
+        user.setDomain(domain);
+        user.setFirstName("");
+        user.setLastName("");
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
@@ -120,16 +135,17 @@ public class UserService {
             indexService.addUser(user);
         }
 
+        if (log.isDebugEnabled()) {
+            log.debug("Created User : " + user.toString());
+        }
     }
 
-    public void registerEmail(String email) {
-        User user = new User();
-        user.setLogin(email);
+    /**
+     * Creates a User and sends a registration e-mail.
+     */
+    public void registerUser(User user) {
         this.createUser(user);
-
-        //Send confirmation e-mail
-        String token = UUID.randomUUID().toString();
-        mailService.sendRegistrationEmail(email, token);
+        mailService.sendRegistrationEmail(user);
     }
 
     public void followUser(String loginToFollow) {
@@ -216,14 +232,6 @@ public class UserService {
         return followers;
     }
 
-    public User getCurrentUser() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        org.springframework.security.core.userdetails.UserDetails springSecurityUser = (org.springframework.security.core.userdetails.UserDetails) securityContext
-                .getAuthentication().getPrincipal();
-
-        return getUserByLogin(springSecurityUser.getUsername());
-    }
-
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
@@ -236,7 +244,7 @@ public class UserService {
             log.debug("Retrieving if you follow this user : " + userLogin);
         }
         boolean isFollowed = false;
-        User user = getCurrentUser();
+        User user = authenticationService.getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {
             Collection<String> users = getFollowerIdsForUser(userLogin);
             if (null != users && users.size() > 0) {

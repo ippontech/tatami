@@ -48,6 +48,14 @@ public class Status {
     private String login;
 
     @NotNull
+    @Column(name = "username")
+    private String username;
+
+    @NotNull
+    @Column(name = "domain")
+    private String domain;
+
+    @NotNull
     @NotEmpty(message = "Content field is mandatory.")
     @Size(min = 1, max = 140)
     @Column(name = "content")
@@ -100,6 +108,22 @@ public class Status {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {
@@ -179,7 +203,8 @@ public class Status {
     public String toString() {
         return "Status{" +
                 "statusId='" + statusId + '\'' +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
+                ", domain='" + domain + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", firstName='" + firstName + '\'' +

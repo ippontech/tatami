@@ -35,7 +35,6 @@ public class ElasticSearchConfiguration {
         } else {
             settings = new ElasticSearchSettings(configPath);
         }
-
         return settings;
     }
 
@@ -83,9 +82,8 @@ public class ElasticSearchConfiguration {
         return this.env.getRequiredProperty("elasticsearch.path.conf");
     }
 
-    @Bean
+    @Bean(name = "indexActivated")
     public boolean indexActivated() {
         return this.env.getProperty("elasticsearch.activated", Boolean.class);
     }
-
 }

@@ -54,20 +54,20 @@
             <form action="/tatami/authentication" method="post" class="well">
                 <fieldset>
                     <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input id="j_username" name="j_username"
-                                                                                   type="text" required="required"
+                                                                                   type="email" required="required"
                                                                                    autofocus class="input-xlarge"
-                                                                                   placeholder="Your login..."/>
+                                                                                   placeholder="Your e-mail..."/>
                     <label><fmt:message key="tatami.password"/>&nbsp;:</label> <input id="j_password" name="j_password"
                                                                                       type="password"
                                                                                       required="required"
                                                                                       class="input-xlarge"
                                                                                       placeholder="Your password..."/>
                 </fieldset>
-                <label class="checkbox">
+                <%--<label class="checkbox">
                     <input type='checkbox'
                            name='_spring_security_remember_me' id="_spring_security_remember_me"
                            value="true" checked="true"/>&nbsp;<fmt:message key="tatami.remember.password.time"/>
-                </label>
+                </label>--%>
 
                 <button type="submit" class="btn btn-success"><fmt:message key="tatami.authentificate"/></button>
             </form>

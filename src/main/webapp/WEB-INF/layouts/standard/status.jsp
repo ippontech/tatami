@@ -20,8 +20,8 @@
                     <img id="userPicture" src="http://www.gravatar.com/avatar/${user.gravatar}/>?s=64"/>
                 </div>
                 <div class="span7" style="width: 250px">
-                    <a href="/tatami/profile/${user.login}"><h3>${user.firstName}&nbsp;${user.lastName}</h3>
-                        @${user.login}</a>
+                    <a href="/tatami/profile/${user.username}"><h3>${user.firstName}&nbsp;${user.lastName}</h3>
+                        @${user.username}</a>
                 </div>
                 <div class="span1" style="width: 80px">
                     <sec:authentication property='principal.username' var="login"/>
@@ -33,24 +33,24 @@
                         </c:when>
                         <c:when test="${not empty followed && followed}">
                             <a href="#" id="unfollowBtn"
-                               onclick="unfollowUserProfile(userLogin)"
+                               onclick="unfollowUserProfile(username)"
                                class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
                                     key="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
-                               onclick="followUserProfile(userLogin)"
+                               onclick="followUserProfile(username)"
                                class="btn btn-info hide"
                                title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
                                     key="tatami.user.follow"/></a>
                         </c:when>
                         <c:otherwise>
                             <a href="#" id="unfollowBtn"
-                               onclick="unfollowUserProfile(userLogin)"
+                               onclick="unfollowUserProfile(username)"
                                class="btn btn-info hide"
                                title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
                                     key="tatami.user.followed"/></a>
                             <a href="#" id="followBtn"
-                               onclick="followUserProfile(userLogin)"
+                               onclick="followUserProfile(username)"
                                class="btn btn-info"
                                title="${user.firstName}&nbsp;${user.lastName}"><fmt:message
                                     key="tatami.user.follow"/></a>
@@ -78,12 +78,12 @@
             <div class="row-fluid">
                 <div id="menuContent" class="span4">
                     <div class="alert alert-info">
-                        <h4><fmt:message key="tatami.user.sendmessageto"/> @${user.login}</h4><br/>
+                        <h4><fmt:message key="tatami.user.sendmessageto"/> @${user.username}</h4><br/>
 
                         <div id="statusToHim" class="row-fluid">
                             <form class="form-inline" onsubmit="return statusToUser();">
                                 <textarea id="statusContent" rel="popover" class="focused"
-                                          maxlength="140">@${user.login} </textarea>
+                                          maxlength="140">@${user.username} </textarea>
                                 <button type="submit" class="btn btn-primary"><fmt:message
                                         key="tatami.user.send"/></button>
                             </form>
@@ -115,7 +115,7 @@
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
-    var userLogin = "${user.login}";
+    var username = "${user.username}";
     var statusId = "${statusId}";
     var page = "status";
 

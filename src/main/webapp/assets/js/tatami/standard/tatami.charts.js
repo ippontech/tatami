@@ -4,19 +4,19 @@
 
 function makePieChartsList(data, dest) {
 	var dt = new google.visualization.DataTable();
-	dt.addColumn('string', 'Login');
+	dt.addColumn('string', 'User name');
 	dt.addColumn('number', 'Status per Day');
 
 	$.each(data, function(entryIndex, entry) {
-		dt.addRow(['@' + entry['login'], entry['statusCount']]);
+		dt.addRow(['@' + entry['username'], entry['statusCount']]);
 	});
 
 	var chart = new google.visualization.PieChart(document.getElementById(dest.attr('id')));
 	chart.draw(dt, { 'title': "Today's status sharing", 'width':dest.width(), 'height':dest.height() });
 
 	google.visualization.events.addListener(chart, 'select', function() {
-		  var login = dt.getValue(chart.getSelection()[0].row, 0).substring(1);
-          window.location = "/tatami/profile/" + login;
+		  var username = dt.getValue(chart.getSelection()[0].row, 0).substring(1);
+          window.location = "/tatami/profile/" + username;
 	});
 }
 
@@ -29,7 +29,7 @@ function makePunchChartsList(data, dest) {
 		axisx.push(entry['day']);
 		dt[i] = new Array();
 		$.each(entry['stats'], function(j, value) {
-			if (i == 0)	axisy.push(value['login']);
+			if (i == 0)	axisy.push(value['username']);
 			dt[i][j] = parseFloat(value['statusCount'], 10);
 		});
 	});
@@ -49,8 +49,8 @@ function makePunchChartsList(data, dest) {
 	for (var j=0; j < axisy.length; j++) {
 		r.text(leftgutter, Y * (j + .5), '@' + axisy[j]).attr(txt)
 		// Make Y labels interactive
-			.data('login', axisy[j]).click(function () {
-				window.location = "/tatami/profile/" + this.data('login');
+			.data('username', axisy[j]).click(function () {
+				window.location = "/tatami/profile/" + this.data('username');
 			})
 		// Add help tooltip
 			.attr({title: 'Show ' + axisy[j] + ' status'});

@@ -27,14 +27,14 @@ public class User {
     @Id
     private String login;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "username")
     private String username;
 
     @Column(name = "domain")
     private String domain;
-
-    @Column(name = "validated")
-    private boolean validated;
 
     @Column(name = "gravatar")
     private String gravatar;
@@ -65,6 +65,14 @@ public class User {
         this.login = login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -79,14 +87,6 @@ public class User {
 
     public void setDomain(String domain) {
         this.domain = domain;
-    }
-
-    public boolean isValidated() {
-        return validated;
-    }
-
-    public void setValidated(boolean validated) {
-        this.validated = validated;
     }
 
     public String getGravatar() {
@@ -158,9 +158,9 @@ public class User {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
-                ", validated=" + validated +
                 ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

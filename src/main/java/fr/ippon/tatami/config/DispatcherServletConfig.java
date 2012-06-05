@@ -44,7 +44,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/username").setViewName("username");
         registry.addViewController("/about").setViewName("about");
         registry.addViewController("/404-error").setViewName("404-error");
         registry.addViewController("/500-error").setViewName("500-error");

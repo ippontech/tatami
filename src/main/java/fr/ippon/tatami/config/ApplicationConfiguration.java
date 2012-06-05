@@ -1,6 +1,8 @@
 package fr.ippon.tatami.config;
 
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
+import fr.ippon.tatami.security.DomainService;
+import fr.ippon.tatami.security.DomainServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
@@ -23,5 +25,11 @@ public class ApplicationConfiguration {
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
         log.info("Tatami started!");
+    }
+
+    @Bean
+    @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+    public DomainService domainService() {
+        return new DomainServiceImpl();
     }
 }

@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.*;
 
 /**
@@ -33,9 +35,13 @@ public class UserController {
     private UserService userService;
 
     @Inject
+    private AuthenticationService authenticationService;
+
+    @Inject
     private IndexService indexService;
 
     @Inject
+    @Named("indexActivated")
     private boolean indexActivated;
 
     /**
@@ -45,11 +51,11 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public User getUser(@RequestParam("screen_name") String login) {
+    public User getUser(@RequestParam("screen_name") String username) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get Profile : " + login);
+            this.log.debug("REST request to get Profile : " + username);
         }
-        User user = this.userService.getUserProfileByLogin(login);
+        User user = this.userService.getUserProfileByUsername(username);
         return user;
     }
 
@@ -61,7 +67,7 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
-        User currentUser = this.userService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         final String login = currentUser.getLogin();
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get the last active statusers list (except " + login + ").");
@@ -75,14 +81,14 @@ public class UserController {
         for (Status status : statuses) {
             if (exceptions.contains(status.getLogin())) continue;
 
-            users.put(status.getLogin(), this.userService.getUserProfileByLogin(status.getLogin()));
+            users.put(status.getLogin(), this.userService.getUserProfileByUsername(status.getLogin()));
             if (users.size() == 3) break;    // suggestions list limit
         }
         return users.values();
     }
 
     /**
-     * GET  /users/search -> search user by login<br>
+     * GET  /users/search -> search user by username<br>
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
@@ -101,7 +107,7 @@ public class UserController {
         if (this.indexActivated) {
             final List<String> logins = this.indexService.searchPrefix(User.class, null, "login", query, 0, 20);
             final Collection<User> users = this.userService.getUsersByLogin(logins);
-            final User currentUser = this.userService.getCurrentUser();
+            final User currentUser = authenticationService.getCurrentUser();
             users.remove(currentUser);
             return users;
         } else {

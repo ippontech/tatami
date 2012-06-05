@@ -23,7 +23,7 @@ function statusToUser() {
         var status = $('#statusContent');
         status.slideUp().empty().slideDown('fast');
         status.parent().parent().find("div.error").empty();
-        status.val("@" + userLogin + " ");
+        status.val("@" + username + " ");
     });
     return false;
 }
@@ -41,7 +41,7 @@ var bottomStatusId;
 
 function makeStatusList(data, dest) {
     $.each(data, function(entryIndex, entry) {
-        var userlineLink = userlineURL.replace(userlineREG, entry['login']);
+        var userlineLink = userlineURL.replace(userlineREG, entry['username']);
 
         var template = $('#template_status').html();
         var content = entry['content']
@@ -50,7 +50,7 @@ function makeStatusList(data, dest) {
             .replace(url1REG, url1URL)
             .replace(url2REG, url2URL);
         var data = {'userlineLink' : userlineLink,
-            'login' : entry['login'],
+            'username' : entry['username'],
             'firstName':entry['firstName'],
             'lastName':entry['lastName'],
             'content':content,
@@ -58,7 +58,7 @@ function makeStatusList(data, dest) {
             'gravatar':entry['gravatar'],
             'prettyPrintStatusDate':entry['prettyPrintStatusDate'],
             'favorite':entry['favorite'],
-            'isUserLogin' : login == entry['login']
+            'isUserName' : username == entry['username']
         };
 
         var html = Mustache.render(template, data);
