@@ -6,6 +6,8 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.DomainService;
+import fr.ippon.tatami.security.DomainServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,9 @@ public class TimelineService {
     private AuthenticationService authenticationService;
 
     @Inject
+    private DomainService domainService;
+
+    @Inject
     private IndexService indexService;
 
     @Inject
@@ -62,7 +67,9 @@ public class TimelineService {
             log.debug("Creating new status : " + content);
         }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Status status = statusRepository.createStatus(currentLogin, content);
+        String username = DomainServiceImpl.getUsernameFromLogin(currentLogin);
+        String domain = domainService.getDomain();
+        Status status = statusRepository.createStatus(currentLogin, username, domain, content);
 
         // add status to the dayline, userline, timeline, tagline
         statusRepository.addStatusToDayline(status, DAYLINE_KEY_FORMAT.format(status.getStatusDate()));
@@ -244,7 +251,9 @@ public class TimelineService {
                 content = content.replace("_PH_", status.getContent());
             }
 
-            Status helloStatus = this.statusRepository.createStatus(status.getLogin(), content); // removable
+            String statusUsername = DomainServiceImpl.getUsernameFromLogin(status.getLogin());
+            String domain = domainService.getDomain();
+            Status helloStatus = this.statusRepository.createStatus(status.getLogin(), statusUsername, domain, content);
             this.statusRepository.addStatusToTimeline(status.getLogin(), helloStatus);
         }
     }

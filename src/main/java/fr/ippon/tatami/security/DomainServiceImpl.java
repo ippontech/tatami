@@ -39,4 +39,8 @@ public class DomainServiceImpl implements DomainService {
     public String getLoginFromUsername(String username) {
         return username + "@" + domain;
     }
+
+    public static String getUsernameFromLogin(String login) {
+        return login.substring(0, login.indexOf("@"));
+    }
 }

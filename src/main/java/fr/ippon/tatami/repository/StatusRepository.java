@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public interface StatusRepository {
 
-    Status createStatus(String login, String content) throws ConstraintViolationException;
+    Status createStatus(String login, String username, String domain, String content) throws ConstraintViolationException;
 
     void removeStatus(Status status);
 

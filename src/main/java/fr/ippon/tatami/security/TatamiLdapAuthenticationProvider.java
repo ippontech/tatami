@@ -62,7 +62,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
             throw new BadCredentialsException(messages.getMessage(
                     "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
         }
-        String username = login.substring(0, login.indexOf("@"));
+        String username = DomainServiceImpl.getUsernameFromLogin(login);
 
         // Use temporarliy the username, and the login, to authenticate
         org.springframework.security.core.userdetails.User tmpUser =

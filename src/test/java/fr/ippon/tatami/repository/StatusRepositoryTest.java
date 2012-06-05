@@ -25,61 +25,70 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldCreateAStatus() {
-        String login = "jdubois";
+        String login = "jdubois@ippon.fr";
+        String username = "jdubois";
+        String domain = "ippon.fr";
         String content = "content";
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        assertThat(statusRepository.createStatus(login, content), notNullValue());
+        assertThat(statusRepository.createStatus(login, username, domain, content), notNullValue());
     }
 
     @Test(expected = ValidationException.class)
     public void shouldNotCreateAStatusBecauseLoginNull() {
         String login = null;
+        String username = "jdubois";
+        String domain = "ippon.fr";
         String content = "content";
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, content);
+        statusRepository.createStatus(login, username, domain, content);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentNull() {
-        String login = "login";
+        String login = "jdubois@ippon.fr";
+        String username = "jdubois";
+        String domain = "ippon.fr";
         String content = null;
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, content);
+        statusRepository.createStatus(login, username, domain, content);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentEmpty() {
-        String login = "login";
+        String login = "jdubois@ippon.fr";
+        String username = "jdubois";
+        String domain = "ippon.fr";
         String content = "";
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, content);
+        statusRepository.createStatus(login, username, domain, content);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentTooLarge() {
-        String login = "login";
         String content = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789+";
 
         Status status = new Status();
         status.setContent(content);
-        status.setLogin(login);
+        String login = "jdubois@ippon.fr";
+        String username = "jdubois";
+        String domain = "ippon.fr";
 
-        statusRepository.createStatus(login, content);
+        statusRepository.createStatus(login, username, domain, content);
     }
 }
