@@ -197,14 +197,18 @@ public class TimelineService {
     /**
      * The userline contains the user's own status
      *
-     * @param login    the user to retrieve the userline of
+     * @param username    the user to retrieve the userline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getUserline(String login, int nbStatus, String since_id, String max_id) {
-        if (login == null || login.isEmpty()) {
-            User currentUser = this.authenticationService.getCurrentUser();
+    public Collection<Status> getUserline(String username, int nbStatus, String since_id, String max_id) {
+        String login = null;
+        User currentUser = this.authenticationService.getCurrentUser();
+        if (username == null || username.isEmpty()) { // current user
             login = currentUser.getLogin();
+        } else {  // another user, in the same domain
+            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+            login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
         Collection<String> statusIds = statusRepository.getUserline(login, nbStatus, since_id, max_id);
         return this.buildStatusList(statusIds);

@@ -90,7 +90,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusForUser(@RequestParam("screen_name") String login,
+    public Collection<Status> listStatusForUser(@RequestParam("screen_name") String username,
                                                 @RequestParam(required = false) Integer count,
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {
@@ -99,8 +99,8 @@ public class TimelineController {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's status (" + login + ").");
+            log.debug("REST request to get someone's status (username=" + username + ").");
         }
-        return timelineService.getUserline(login, count, since_id, max_id);
+        return timelineService.getUserline(username, count, since_id, max_id);
     }
 }
