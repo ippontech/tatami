@@ -12,16 +12,6 @@ public class UserStatusStat implements Comparable<UserStatusStat> {
         this.statusCount = count;
     }
 
-    @Override
-    public int compareTo(UserStatusStat o) {
-        return this.username.compareToIgnoreCase(o.username);
-    }
-
-    @Override
-    public String toString() {
-        return "UserStatusStat{username='" + this.username + "', statusCount=" + this.statusCount + "}";
-    }
-
     public String getUsername() {
         return username;
     }
@@ -36,5 +26,35 @@ public class UserStatusStat implements Comparable<UserStatusStat> {
 
     public void setStatusCount(Long count) {
         this.statusCount = count;
+    }
+
+    @Override
+    public int compareTo(UserStatusStat o) {
+        return this.username.compareTo(o.username);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserStatusStat that = (UserStatusStat) o;
+
+        if (!username.equals(that.username)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "UserStatusStat{" +
+                "username='" + username + '\'' +
+                ", statusCount=" + statusCount +
+                '}';
     }
 }

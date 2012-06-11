@@ -65,7 +65,6 @@ public class CassandraDaylineRepository implements DaylineRepository {
         for (HCounterColumn<String> column : queryResult.getColumns()) {
             UserStatusStat stat = new UserStatusStat(column.getName().toString(), column.getValue());
             results.add(stat);
-
         }
         return results;
     }

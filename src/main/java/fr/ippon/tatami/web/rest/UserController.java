@@ -69,21 +69,23 @@ public class UserController {
     @ResponseBody
     public Collection<User> suggestions() {
         User currentUser = authenticationService.getCurrentUser();
-        final String login = currentUser.getLogin();
+        String currentLogin = currentUser.getLogin();
+        String currentUsername = DomainUtil.getUsernameFromLogin(currentLogin);
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get the last active statusers list (except " + login + ").");
+            this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendIdsForUser(login);
-        exceptions.add(login);
+        Collection<String> exceptions = userService.getFriendIdsForUser(currentUsername);
+        exceptions.add(currentLogin);
 
-        Collection<UserStatusStat> stats = this.timelineService.getDayline();
+        Collection<UserStatusStat> stats = timelineService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
         for (UserStatusStat stat : stats) {
-            if (exceptions.contains(stat.getUsername())) {
+            User potentialFriend = userService.getUserProfileByUsername(stat.getUsername());
+            if (exceptions.contains(potentialFriend.getLogin())) {
                 continue;
             }
-            users.put(stat.getUsername(), this.userService.getUserProfileByUsername(stat.getUsername()));
+            users.put(potentialFriend.getUsername(), potentialFriend);
             if (users.size() == 3) {
                 break;    // suggestions list limit
             }
