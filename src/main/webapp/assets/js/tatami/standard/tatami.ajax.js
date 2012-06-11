@@ -96,6 +96,7 @@ function getStatus(statusId) {
         url: "/tatami/rest/statuses/show/" + statusId,
         dataType: "json",
         success: function(data) {
+            $('#statusList').children().remove();
             if (data != null) {
                 makeStatusList([data], $('#statusList'));
                 scrollLock = false;

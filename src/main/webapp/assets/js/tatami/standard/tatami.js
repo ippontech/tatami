@@ -148,6 +148,13 @@ function initProfile() {
 function initStatus() {
     $('#statusPanel').load('/assets/fragments/standard/timeline.html', function() {
         getStatus(statusId);
+        $('#refreshStatus').click(function() {
+            getStatus(statusId);
+        });
+    });
+    // browser's refresh shortcut override
+    shortcut.add("Ctrl+R", function() {
+        getStatus(statusId);
     });
 
     // search form binding

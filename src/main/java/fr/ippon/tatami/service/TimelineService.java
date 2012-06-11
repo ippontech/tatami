@@ -6,6 +6,7 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -101,15 +102,29 @@ public class TimelineService {
     }
 
     public Status getStatus(String statusId) {
-        return this.statusRepository.findStatusById(statusId);
+        Collection<String> statusIds = new ArrayList<String>();
+        statusIds.add(statusId);
+        Collection<Status> statusCollection = this.buildStatusList(statusIds);
+        if (statusCollection.isEmpty()) {
+            return null;
+        } else {
+            return statusCollection.iterator().next();
+        }
     }
 
     public Collection<Status> buildStatusList(Collection<String> statusIds) {
-        String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> favoriteIds = statusRepository.getFavoritesline(login);
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> favoriteIds = statusRepository.getFavoritesline(currentUser.getLogin());
         Collection<Status> statuses = new ArrayList<Status>(statusIds.size());
         for (String statusId : statusIds) {
             Status status = this.statusRepository.findStatusById(statusId);
+            User statusUser = userService.getUserByLogin(status.getLogin());
+            // Security check
+            if (!statusUser.getDomain().equals(currentUser.getDomain())) {
+                throw new DomainViolationException("User " + currentUser + " tried to access "+
+                    " status : " + status);
+
+            }
             if (status == null) {
                 this.log.debug("Invisible status : " + statusId);
                 continue;
@@ -118,6 +133,7 @@ public class TimelineService {
             // in order to be thread-safe.
             // ehcache shares the Status instances per statusId, but favorites are per user.
             Status statusCopy = new Status();
+            statusCopy.setLogin(status.getLogin());
             statusCopy.setStatusId(status.getStatusId());
             statusCopy.setContent(status.getContent());
             statusCopy.setUsername(status.getUsername());
@@ -128,7 +144,6 @@ public class TimelineService {
             } else {
                 statusCopy.setFavorite(false);
             }
-            User statusUser = userService.getUserByLogin(status.getLogin());
             statusCopy.setFirstName(statusUser.getFirstName());
             statusCopy.setLastName(statusUser.getLastName());
             statusCopy.setGravatar(statusUser.getGravatar());
