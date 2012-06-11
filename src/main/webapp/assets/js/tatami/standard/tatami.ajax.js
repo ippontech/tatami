@@ -121,11 +121,12 @@ function listStatus(reset) {
         url: url,
         dataType: 'json',
         success: function(data) {
+            $('.status-nothing').remove();
             if (data.length > 0) {
                 makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
+                $('#statusList').append('<tr class="status status-nothing"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
             }
         }
     });
@@ -161,11 +162,12 @@ function listUserStatus(username) {
         url: url,
         dataType: 'json',
         success: function(data) {
+            $('.status-nothing').remove();
             if (data.length > 0) {
                 makeStatusList(data, $('#statusList'));
                 scrollLock = false;
             } else {
-                $('#statusList').append('<tr class="status"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
+                $('#statusList').append('<tr class="status status-nothing"><td colspan="4" style="text-align: center;">Nothing more to display...</td></tr>');
             }
         }
     });
