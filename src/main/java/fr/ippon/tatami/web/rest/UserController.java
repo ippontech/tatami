@@ -6,6 +6,7 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -108,9 +109,10 @@ public class UserController {
             this.log.debug("REST request to find users starting with : " + query);
         }
         if (this.indexActivated) {
-            final List<String> logins = this.indexService.searchPrefix(User.class, null, "login", query, 0, 20);
-            final Collection<User> users = this.userService.getUsersByLogin(logins);
             final User currentUser = authenticationService.getCurrentUser();
+            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+            final List<String> logins = this.indexService.searchPrefix(domain, User.class, null, "login", query, 0, 20);
+            final Collection<User> users = this.userService.getUsersByLogin(logins);
             users.remove(currentUser);
             return users;
         } else {

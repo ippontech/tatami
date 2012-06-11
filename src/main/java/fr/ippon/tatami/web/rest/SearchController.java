@@ -1,8 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,9 @@ import java.util.List;
 public class SearchController {
 
     private final Log log = LogFactory.getLog(SearchController.class);
+
+    @Inject
+    private AuthenticationService authenticationService;
 
     @Inject
     private IndexService indexService;
@@ -54,7 +60,9 @@ public class SearchController {
             return new ArrayList<Status>();
         }
 
-        final List<String> ids = indexService.search(Status.class, null, q, page, rpp, "statusDate", "desc");
+        final User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        final List<String> ids = indexService.search(domain, Status.class, null, q, page, rpp, "statusDate", "desc");
         return timelineService.buildStatusList(ids);
     }
 

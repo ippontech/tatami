@@ -60,14 +60,19 @@ public class ElasticSearchTest {
         final Status status1 = new Status();
         status1.setContent("trying out Elastic Search");
         status1.setStatusId("3333g-gggg-gggg-gggg");
-        status1.setLogin("dmartinpro");
+        status1.setLogin("dmartinpro@ippon.fr");
+        status1.setUsername("dmartinpro");
+        status1.setDomain("ippon.fr");
 
         final Status status2 = new Status();
         status2.setContent("Recherche dans du texte riche écrit en français avec un #hashtag caché dedans");
         status2.setStatusId("1234-4567-8988");
-        status2.setLogin("dmartinpro");
+        status2.setLogin("dmartinpro@ippon.fr");
+        status2.setUsername("dmartinpro");
+        status2.setDomain("ippon.fr");
 
-        final List<String> ids0 = this.service.search(Status.class, null, "trying", 0, 50, null, null);
+
+        final List<String> ids0 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -75,8 +80,8 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final List<String> ids1 = this.service.search(Status.class, null, "trying", 0, 50, null, null);
-        final List<String> ids2 = this.service.search(Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final List<String> ids1 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
+        final List<String> ids2 = this.service.search("ippon.fr", Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

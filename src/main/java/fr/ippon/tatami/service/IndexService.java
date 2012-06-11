@@ -18,8 +18,10 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermFilterBuilder;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -154,11 +156,12 @@ public class IndexService {
      * @param sortOrder which order to apply, ASC if not provided
      * @return a list of uid
      */
-    public List<String> search(@SuppressWarnings("rawtypes") final Class clazz, final String field,
+    public List<String> search(@SuppressWarnings("rawtypes") final String domain, final Class clazz, final String field,
                                final String query, int page, int size, final String sortField, final String sortOrder) {
 
         Assert.notNull(clazz);
         Assert.notNull(query);
+        Assert.notNull(domain);
 
         if (page < 0) {
             page = 0; //Default value
@@ -171,12 +174,14 @@ public class IndexService {
         final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
         final QueryBuilder qb = QueryBuilders.textQuery(name, query);
         final String dataType = clazz.getSimpleName().toLowerCase();
+        final FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
 
         SearchResponse searchResponse = null;
         try {
             SearchRequestBuilder builder = this.client.prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
+                    .setFilter(domainFilter)
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false);
             if (StringUtils.isNotBlank(sortField)) {
@@ -216,17 +221,22 @@ public class IndexService {
      * @return a list of uid
      */
     @SuppressWarnings("unchecked")
-    public <T> List<String> searchPrefix(final Class<T> clazz, final String searchField, final String uidField, final String query, int page, int size) {
+    public <T> List<String> searchPrefix(final String domain, final Class<T> clazz, final String searchField, final String uidField, final String query, int page, int size) {
+
+        Assert.notNull(clazz);
+        Assert.notNull(domain);
 
         final String name = (StringUtils.isBlank(searchField) ? ALL_FIELDS : searchField);
         final QueryBuilder qb = QueryBuilders.prefixQuery(name, query);
         final String dataType = clazz.getSimpleName().toLowerCase();
+        final FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
 
         SearchResponse searchResponse = null;
         try {
             searchResponse = this.client.prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
+                    .setFilter(domainFilter)
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false)
                     .addSort(SortBuilders.fieldSort(uidField).order(SortOrder.ASC))

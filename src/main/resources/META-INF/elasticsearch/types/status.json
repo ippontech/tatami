@@ -3,10 +3,14 @@
 		"_source" : { "enabled" : true },
 		"_all" : { "analyzer": "francais" },
 		"properties" : {
-			"login" : {
+			"username" : {
 				"type" : "string",
 				"index" : "not_analyzed"
 			},
+            "domain" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
 			"firstName" : {
 				"type" : "string",
 				"index" : "not_analyzed"
