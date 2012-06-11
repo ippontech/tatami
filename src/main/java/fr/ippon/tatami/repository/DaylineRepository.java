@@ -16,10 +16,10 @@ public interface DaylineRepository {
     /**
      * Add a status to the repository.
      */
-    void addStatusToDayline(Status status, String domain, Date date);
+    void addStatusToDayline(Status status, String domain, String day);
 
     /**
      * Get the statistics for one day, in the form &lt;login, number of tweets&gt;.
      */
-    Collection<UserStatusStat> getDayline(String domain, Date date);
+    Collection<UserStatusStat> getDayline(String domain, String day);
 }

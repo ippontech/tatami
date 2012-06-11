@@ -31,5 +31,12 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="dayline-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="60"
+           overflowToDisk="false">
+    </cache>
+
 </ehcache>
 

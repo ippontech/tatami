@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -55,6 +56,8 @@ public class TimelineService {
     @Named("indexActivated")
     private boolean indexActivated;
 
+    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
+
     private String hashtagDefault = "---";
 
     private final Log log = LogFactory.getLog(TimelineService.class);
@@ -71,7 +74,8 @@ public class TimelineService {
         Status status = statusRepository.createStatus(currentLogin, username, domain, content);
 
         // add status to the dayline, userline, timeline, tagline
-        daylineRepository.addStatusToDayline(status, domain, status.getStatusDate());
+        String day = DAYLINE_KEY_FORMAT.format(status.getStatusDate());
+        daylineRepository.addStatusToDayline(status, domain, day);
         statusRepository.addStatusToUserline(status);
         statusRepository.addStatusToTimeline(currentLogin, status);
         taglineRepository.addStatusToTagline(status, domain);
@@ -176,7 +180,8 @@ public class TimelineService {
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Collection<UserStatusStat> stats = daylineRepository.getDayline(domain, date);
+        String day = DAYLINE_KEY_FORMAT.format(date);
+        Collection<UserStatusStat> stats = daylineRepository.getDayline(domain, day);
         return stats;
     }
 

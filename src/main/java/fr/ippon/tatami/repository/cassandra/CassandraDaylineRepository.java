@@ -12,6 +12,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -34,8 +35,6 @@ public class CassandraDaylineRepository implements DaylineRepository {
 
     private final Log log = LogFactory.getLog(CassandraDaylineRepository.class);
 
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
-
     @Inject
     private EntityManager em;
 
@@ -43,15 +42,16 @@ public class CassandraDaylineRepository implements DaylineRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToDayline(Status status, String domain, Date date) {
-        String key = getKey(domain, date);
+    public void addStatusToDayline(Status status, String domain, String day) {
+        String key = getKey(domain, day);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.incrementCounter(key, DAYLINE_CF, status.getUsername(), 1);
     }
 
     @Override
-    public Collection<UserStatusStat> getDayline(String domain, Date date) {
-        String key = getKey(domain, date);
+    @Cacheable("dayline-cache")
+    public Collection<UserStatusStat> getDayline(String domain, String day) {
+        String key = getKey(domain, day);
         Collection<UserStatusStat> results = new TreeSet<UserStatusStat>();
 
         SliceCounterQuery<String, String> query = createCounterSliceQuery(keyspaceOperator,
@@ -72,7 +72,7 @@ public class CassandraDaylineRepository implements DaylineRepository {
     /**
      * Generates the key for this column family.
      */
-    private String getKey(String domain, Date date) {
-        return DAYLINE_KEY_FORMAT.format(date) + "-" + domain;
+    private String getKey(String domain, String day) {
+        return day + "-" + domain;
     }
 }
