@@ -3,10 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.DaylineRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.StatusRepository;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -45,6 +42,9 @@ public class TimelineService {
     private DaylineRepository daylineRepository;
 
     @Inject
+    private TaglineRepository taglineRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -76,7 +76,7 @@ public class TimelineService {
         daylineRepository.addStatusToDayline(status, domain, status.getStatusDate());
         statusRepository.addStatusToUserline(status);
         statusRepository.addStatusToTimeline(currentLogin, status);
-        statusRepository.addStatusToTagline(status);
+        taglineRepository.addStatusToTagline(status, domain);
 
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
@@ -193,7 +193,9 @@ public class TimelineService {
         if (tag == null || tag.isEmpty()) {
             tag = this.hashtagDefault;
         }
-        Collection<String> statusIds = this.statusRepository.getTagline(tag, nbStatus);
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> statusIds = this.taglineRepository.getTagline(domain, tag, nbStatus);
 
         return this.buildStatusList(statusIds);
     }

@@ -111,38 +111,6 @@ public class CassandraStatusRepository implements StatusRepository {
         return getLineFromCF(USERLINE_CF, login, size, since_id, max_id);
     }
 
-    private static final Pattern HASHTAG_PATTERN = Pattern.compile("#(\\w+)");
-
-    @Override
-    public void addStatusToTagline(Status status) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        Matcher m = HASHTAG_PATTERN.matcher(status.getContent());
-        while (m.find()) {
-            String tag = m.group(1);
-            assert tag != null && !tag.isEmpty() && !tag.contains("#");
-            log.debug("tag list augmented : " + tag);
-            mutator.insert(tag.toLowerCase(), TAGLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
-                    "", UUIDSerializer.get(), StringSerializer.get()));
-        }
-    }
-
-    @Override
-    public Collection<String> getTagline(String tag, int size) {
-        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-                .setColumnFamily(TAGLINE_CF)
-                .setKey(tag.toLowerCase())
-                .setRange(null, null, true, size)
-                .execute()
-                .get();
-
-        Collection<String> statusIds = new ArrayList<String>();
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            statusIds.add(column.getName().toString());
-        }
-        return statusIds;
-    }
-
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
     public void addStatusToFavoritesline(Status status, String login) {

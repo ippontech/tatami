@@ -34,13 +34,6 @@ public interface StatusRepository {
     void addStatusToTimeline(String login, Status status);
 
     /**
-     * analyze a message in order to extract and reference eventual hashtags
-     *
-     * @param status
-     */
-    void addStatusToTagline(Status status);
-
-    /**
      * a user's and his followed users status
      */
     Collection<String> getTimeline(String login, int size, String since_id, String max_id);
@@ -49,13 +42,6 @@ public interface StatusRepository {
      * a user's own status
      */
     Collection<String> getUserline(String login, int size, String since_id, String max_id);
-
-    /**
-     * a tag's status
-     *
-     * @param tag cannot be null, empty, nor contain a sharp character (#)
-     */
-    Collection<String> getTagline(String tag, int size);
 
     /**
      * a user's favorite status
