@@ -113,6 +113,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
+        user.setLogin(user.getLogin().toLowerCase());
         String login = user.getLogin();
         String username = DomainUtil.getUsernameFromLogin(login);
         String domain = DomainUtil.getDomainFromLogin(login);
