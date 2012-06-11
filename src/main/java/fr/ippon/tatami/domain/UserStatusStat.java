@@ -2,43 +2,39 @@ package fr.ippon.tatami.domain;
 
 public class UserStatusStat implements Comparable<UserStatusStat> {
 
-    private String login;
+    private String username;
 
-    private Integer statusCount;
+    private Long statusCount;
 
-    public UserStatusStat(String login, Integer count) {
-        assert login != null && count != null;
-        this.login = login;
+    public UserStatusStat(String username, Long count) {
+        assert username != null && count != null;
+        this.username = username;
         this.statusCount = count;
     }
 
-    /*
-     * NB: "a TreeSet instance performs all element comparisons using its compareTo (or compare) method,
-     * so two elements that are deemed equal by this method are, from the standpoint of the set, equal"
-     */
     @Override
     public int compareTo(UserStatusStat o) {
-        return this.login.compareToIgnoreCase(o.login);
+        return this.username.compareToIgnoreCase(o.username);
     }
 
     @Override
     public String toString() {
-        return "UserStatusStat{login='" + this.login + "', statusCount=" + this.statusCount + "}";
+        return "UserStatusStat{username='" + this.username + "', statusCount=" + this.statusCount + "}";
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Integer getStatusCount() {
+    public Long getStatusCount() {
         return statusCount;
     }
 
-    public void setStatusCount(Integer count) {
+    public void setStatusCount(Long count) {
         this.statusCount = count;
     }
 }

@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.IndexService;
 import fr.ippon.tatami.service.TimelineService;
@@ -76,13 +77,16 @@ public class UserController {
         Collection<String> exceptions = userService.getFriendIdsForUser(login);
         exceptions.add(login);
 
-        Collection<Status> statuses = this.timelineService.getDayline("");
+        Collection<UserStatusStat> stats = this.timelineService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
-        for (Status status : statuses) {
-            if (exceptions.contains(status.getLogin())) continue;
-
-            users.put(status.getLogin(), this.userService.getUserProfileByUsername(status.getLogin()));
-            if (users.size() == 3) break;    // suggestions list limit
+        for (UserStatusStat stat : stats) {
+            if (exceptions.contains(stat.getUsername())) {
+                continue;
+            }
+            users.put(stat.getUsername(), this.userService.getUserProfileByUsername(stat.getUsername()));
+            if (users.size() == 3) {
+                break;    // suggestions list limit
+            }
         }
         return users.values();
     }

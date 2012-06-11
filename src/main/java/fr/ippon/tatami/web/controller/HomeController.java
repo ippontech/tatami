@@ -3,6 +3,8 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +19,8 @@ import javax.inject.Inject;
 @Controller
 public class HomeController {
 
+    private final Log log = LogFactory.getLog(HomeController.class);
+
     @Inject
     private UserService userService;
 
@@ -25,6 +29,7 @@ public class HomeController {
 
     @RequestMapping(value = "/")
     public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
+        log.debug("Home page");
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
@@ -35,11 +40,13 @@ public class HomeController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
+        log.debug("Login page");
         return "login";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
+        log.debug("Registration page");
         // TODO validate email
         User user = new User();
         user.setLogin(email);

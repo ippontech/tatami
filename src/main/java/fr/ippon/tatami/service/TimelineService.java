@@ -2,7 +2,9 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.DaylineRepository;
 import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -18,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +42,9 @@ public class TimelineService {
     private CounterRepository counterRepository;
 
     @Inject
+    private DaylineRepository daylineRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -52,8 +58,6 @@ public class TimelineService {
     private boolean indexActivated;
 
     private String hashtagDefault = "---";
-
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
     private final Log log = LogFactory.getLog(TimelineService.class);
 
@@ -69,7 +73,7 @@ public class TimelineService {
         Status status = statusRepository.createStatus(currentLogin, username, domain, content);
 
         // add status to the dayline, userline, timeline, tagline
-        statusRepository.addStatusToDayline(status, DAYLINE_KEY_FORMAT.format(status.getStatusDate()));
+        daylineRepository.addStatusToDayline(status, domain, status.getStatusDate());
         statusRepository.addStatusToUserline(status);
         statusRepository.addStatusToTimeline(currentLogin, status);
         statusRepository.addStatusToTagline(status);
@@ -153,31 +157,29 @@ public class TimelineService {
     }
 
     /**
-     * The dayline contains a day's status
+     * The dayline contains a day's status.
      *
-     * @param date the day's name to retrieve the status of
      * @return a status list
      */
-    public Collection<Status> getDayline(String date) {
-        if (date == null || date.isEmpty() || !date.matches("^\\d{8}$")) {
-            date = DAYLINE_KEY_FORMAT.format(new Date());
-        }
-        Collection<String> statusIds = this.statusRepository.getDayline(date);
-
-        return this.buildStatusList(statusIds);
+    public Collection<UserStatusStat> getDayline() {
+        Date today = new Date();
+        return this.getDayline(today);
     }
 
     /**
-     * The dayline contains a day's status
+     * The dayline contains a day's status.
      *
      * @param date the day to retrieve the status of
      * @return a status list
      */
-    public Collection<Status> getDayline(Date date) {
-        if (date == null) date = new Date();
-        Collection<String> statusIds = this.statusRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
-
-        return this.buildStatusList(statusIds);
+    public Collection<UserStatusStat> getDayline(Date date) {
+        if (date == null) {
+            date = new Date();
+        }
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<UserStatusStat> stats = daylineRepository.getDayline(domain, date);
+        return stats;
     }
 
     /**

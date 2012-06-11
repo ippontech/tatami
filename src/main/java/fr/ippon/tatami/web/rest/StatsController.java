@@ -37,36 +37,8 @@ public class StatsController {
     @ResponseBody
     public Collection<UserStatusStat> listDayStatusStats() {
         log.debug("REST request to get the users stats.");
-
-        String date = null;    //TODO parameterized version
-        Collection<Status> statuses = timelineService.getDayline(date);
-        return this.extractUsersStatusStats(statuses, null);
-    }
-
-    private Collection<UserStatusStat> extractUsersStatusStats(Collection<Status> statuses, Set<String> usersCollector) {
-        if (log.isDebugEnabled()) {
-            log.debug("analysing " + statuses.size() + " items...");
-        }
-        Map<String, Integer> users = new HashMap<String, Integer>();
-        for (Status status : statuses) {
-            Integer count = users.get(status.getLogin());
-            if (count != null) {
-                count = count.intValue() + 1;
-            } else {
-                if (usersCollector != null) usersCollector.add(status.getLogin());
-                count = 1;
-            }
-            users.put(status.getLogin(), count);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("fetched total of " + users.size() + " stats.");
-        }
-
-        Collection<UserStatusStat> stats = new TreeSet<UserStatusStat>();    // cf. UserStatusStat#compareTo
-        for (Entry<String, Integer> entry : users.entrySet()) {
-            stats.add(new UserStatusStat(entry.getKey(), entry.getValue()));
-        }
-        return stats;
+        Collection<UserStatusStat> statuses = timelineService.getDayline();
+        return statuses;
     }
 
     /**
@@ -87,21 +59,20 @@ public class StatsController {
 
             DayStatusStat dayStat = new DayStatusStat(date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH));
             log.debug("Scanning " + dayStat.getDay() + "...");
-            Collection<Status> statuses = timelineService.getDayline(date.getTime());
-            dayStat.setStats(this.extractUsersStatusStats(statuses, users));
+            Collection<UserStatusStat> statuses = timelineService.getDayline(date.getTime());
+            dayStat.setStats(statuses);
 
             stats[i - 1] = dayStat;    // oldest first
         }
         this.enforceUsers(stats, users);    // each day's users list has to be identical to the others
-
         return Arrays.asList(stats);
     }
 
     private void enforceUsers(DayStatusStat stats[], Set<String> allUsers) {
         for (DayStatusStat stat : stats) {
             for (String login : allUsers) {
-                if (!stat.getStats().contains(new UserStatusStat(login, 0))) {    // cf. UserStatusStat#compareTo
-                    stat.getStats().add(new UserStatusStat(login, 0));
+                if (!stat.getStats().contains(new UserStatusStat(login, 0L))) {
+                    stat.getStats().add(new UserStatusStat(login, 0L));
                 }
             }
         }

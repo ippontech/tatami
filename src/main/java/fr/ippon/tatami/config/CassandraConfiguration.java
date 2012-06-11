@@ -54,26 +54,22 @@ public class CassandraConfiguration {
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
-            addColumnFamilySortedbyUUID(cluster, TIMELINE_CF);
             addColumnFamily(cluster, USER_CF);
             addColumnFamily(cluster, FRIENDS_CF);
             addColumnFamily(cluster, FOLLOWERS_CF);
             addColumnFamily(cluster, TWEET_CF);
-            addColumnFamilySortedbyUUID(cluster, DAYLINE_CF);
+            addColumnFamily(cluster, DOMAIN_CF);
+
+            addColumnFamilySortedbyUUID(cluster, TIMELINE_CF);
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
             addColumnFamilySortedbyUUID(cluster, TAGLINE_CF);
             addColumnFamilySortedbyUUID(cluster, USERLINE_CF);
-            addColumnFamily(cluster, DOMAIN_CF);
 
-            ThriftCfDef cfDef =
-                    new ThriftCfDef(cassandraKeyspace, COUNTER_CF, ComparatorType.UTF8TYPE);
-
-            cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
-            cluster.addColumnFamily(cfDef);
+            addColumnFamilyCounter(cluster, COUNTER_CF);
+            addColumnFamilyCounter(cluster, DAYLINE_CF);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
-
 
     private void addColumnFamily(ThriftCluster cluster, String cfName) {
 
@@ -94,6 +90,17 @@ public class CassandraConfiguration {
 
         cfd.setComparatorType(ComparatorType.UUIDTYPE);
         cluster.addColumnFamily(cfd);
+    }
+
+
+    private void addColumnFamilyCounter(ThriftCluster cluster, String cfName) {
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
+
+        ThriftCfDef cfDef =
+                new ThriftCfDef(cassandraKeyspace, cfName, ComparatorType.UTF8TYPE);
+
+        cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
+        cluster.addColumnFamily(cfDef);
     }
 
     @Bean

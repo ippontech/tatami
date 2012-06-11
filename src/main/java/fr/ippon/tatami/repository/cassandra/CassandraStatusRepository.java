@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.validation.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +28,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
- * Cassandra implementation of the user repository.
+ * Cassandra implementation of the status repository.
  *
  * @author Julien Dubois
  */
@@ -132,30 +133,6 @@ public class CassandraStatusRepository implements StatusRepository {
                 .setColumnFamily(TAGLINE_CF)
                 .setKey(tag.toLowerCase())
                 .setRange(null, null, true, size)
-                .execute()
-                .get();
-
-        Collection<String> statusIds = new ArrayList<String>();
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            statusIds.add(column.getName().toString());
-        }
-        return statusIds;
-    }
-
-    @Override
-    public void addStatusToDayline(Status status, String key) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(key, DAYLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
-                "", UUIDSerializer.get(), StringSerializer.get()));
-    }
-
-    @Override
-    public Collection<String> getDayline(String date) {
-        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-                .setColumnFamily(DAYLINE_CF)
-                .setKey(date)
-                .setRange(null, null, true, 100)
                 .execute()
                 .get();
 

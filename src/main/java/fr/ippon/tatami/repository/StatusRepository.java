@@ -4,9 +4,10 @@ import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collection;
+import java.util.Date;
 
 /**
- * The User Respository.
+ * The Status Respository.
  *
  * @author Julien Dubois
  */
@@ -24,8 +25,6 @@ public interface StatusRepository {
      */
     Status findStatusById(String statusId);
 
-    void addStatusToDayline(Status status, String key);
-
     void addStatusToFavoritesline(Status status, String login);
 
     void removeStatusFromFavoritesline(Status status, String login);
@@ -40,11 +39,6 @@ public interface StatusRepository {
      * @param status
      */
     void addStatusToTagline(Status status);
-
-    /**
-     * a day's status
-     */
-    Collection<String> getDayline(String date);
 
     /**
      * a user's and his followed users status
