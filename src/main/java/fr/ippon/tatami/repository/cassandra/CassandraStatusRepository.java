@@ -19,10 +19,7 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.validation.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;

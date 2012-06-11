@@ -3,10 +3,8 @@ package fr.ippon.tatami.repository;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * The Dayline Respository, which stores statistics per day.

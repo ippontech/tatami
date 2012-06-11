@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * The Status Respository.

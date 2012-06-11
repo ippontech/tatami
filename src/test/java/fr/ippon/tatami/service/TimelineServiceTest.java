@@ -10,10 +10,8 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;

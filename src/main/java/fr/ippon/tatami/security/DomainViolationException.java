@@ -5,7 +5,7 @@ package fr.ippon.tatami.security;
  *
  * @author Julien Dubois
  */
-public class DomainViolationException  extends RuntimeException {
+public class DomainViolationException extends RuntimeException {
 
     public DomainViolationException() {
     }

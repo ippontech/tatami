@@ -3,17 +3,12 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.repository.DaylineRepository;
-import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.CounterSlice;
-import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.CounterQuery;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,11 +17,12 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.TreeSet;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
-import static me.prettyprint.hector.api.factory.HFactory.*;
+import static me.prettyprint.hector.api.factory.HFactory.createCounterSliceQuery;
 
 /**
  * Cassandra implementation of the user repository.

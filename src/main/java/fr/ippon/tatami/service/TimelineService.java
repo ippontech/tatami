@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -125,8 +123,8 @@ public class TimelineService {
             User statusUser = userService.getUserByLogin(status.getLogin());
             // Security check
             if (!statusUser.getDomain().equals(currentUser.getDomain())) {
-                throw new DomainViolationException("User " + currentUser + " tried to access "+
-                    " status : " + status);
+                throw new DomainViolationException("User " + currentUser + " tried to access " +
+                        " status : " + status);
 
             }
             if (status == null) {
@@ -216,7 +214,7 @@ public class TimelineService {
     /**
      * The userline contains the user's own status
      *
-     * @param username    the user to retrieve the userline of
+     * @param username the user to retrieve the userline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */

@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Status;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 /**

@@ -1,7 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.DayStatusStat;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * REST controller for managing stats.

@@ -1,11 +1,9 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.repository.TaglineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -13,18 +11,16 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.validation.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**

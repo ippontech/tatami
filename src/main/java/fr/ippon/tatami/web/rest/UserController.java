@@ -1,6 +1,5 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
