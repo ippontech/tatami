@@ -94,8 +94,8 @@ function makeFollowingList() {
                 userline +
                 '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ' +
                 entry['firstName'] + ' ' +
-                entry['lastName'] + '</a> ' +
-                '<em>@' + entry['username'] + '</em>' +
+                entry['lastName'] +
+                '<em>@' + entry['username'] + '</em></a>' +
                 '</td></tr>';
 
             dest.append(html);
@@ -113,8 +113,8 @@ function makeFollowersList() {
                 userline +
                 '<img src="http://www.gravatar.com/avatar/' + entry['gravatar'] + '?s=32" /> ' +
                 entry['firstName'] + ' ' +
-                entry['lastName'] + '</a> ' +
-                '<em>@' + entry['username'] + '</em>' +
+                entry['lastName'] +
+                '<em>@' + entry['username'] + '</em></a>' +
                 '</td></tr>';
 
             dest.append(html);

@@ -149,11 +149,13 @@ public class UserService {
         mailService.sendRegistrationEmail(user);
     }
 
-    public void followUser(String loginToFollow) {
+    public void followUser(String usernameToFollow) {
         if (log.isDebugEnabled()) {
-            log.debug("Adding friend : " + loginToFollow);
+            log.debug("Adding friend : " + usernameToFollow);
         }
         User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
         User followedUser = getUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
             boolean userAlreadyFollowed = false;
@@ -161,6 +163,10 @@ public class UserService {
                 for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(loginToFollow)) {
                         userAlreadyFollowed = true;
+                        if (log.isDebugEnabled()) {
+                            log.debug("User " + currentUser.getLogin() +
+                                    " already follows user " + followedUser.getLogin());
+                        }
                     }
                 }
             }
@@ -169,33 +175,38 @@ public class UserService {
                 counterRepository.incrementFriendsCounter(currentUser.getLogin());
                 followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
                 counterRepository.incrementFollowersCounter(followedUser.getLogin());
+                log.debug("User " + currentUser.getLogin() +
+                        " now follows user " + followedUser.getLogin());
             }
         } else {
             log.debug("Followed user does not exist : " + loginToFollow);
         }
     }
 
-    public void unfollowUser(String login) {
+    public void unfollowUser(String usernameToUnfollow) {
         if (log.isDebugEnabled()) {
-            log.debug("Removing followed user : " + login);
+            log.debug("Removing followed user : " + usernameToUnfollow);
         }
         User currentUser = authenticationService.getCurrentUser();
-        User followedUser = getUserByLogin(login);
-        if (followedUser != null) {
+        String loginToUnfollow = authenticationService.getLoginFromUsername(usernameToUnfollow);
+        User userToUnfollow = getUserByLogin(loginToUnfollow);
+        if (userToUnfollow != null) {
             boolean userAlreadyFollowed = false;
             for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
-                if (alreadyFollowingTest.equals(login)) {
+                if (alreadyFollowingTest.equals(loginToUnfollow)) {
                     userAlreadyFollowed = true;
                 }
             }
             if (userAlreadyFollowed) {
-                friendRepository.removeFriend(currentUser.getLogin(), followedUser.getLogin());
+                friendRepository.removeFriend(currentUser.getLogin(), loginToUnfollow);
                 counterRepository.decrementFriendsCounter(currentUser.getLogin());
-                followerRepository.removeFollower(followedUser.getLogin(), currentUser.getLogin());
-                counterRepository.decrementFollowersCounter(followedUser.getLogin());
+                followerRepository.removeFollower(loginToUnfollow, currentUser.getLogin());
+                counterRepository.decrementFollowersCounter(loginToUnfollow);
+                log.debug("User " + currentUser.getLogin() +
+                        " has stopped following user " + loginToUnfollow);
             }
         } else {
-            log.debug("Followed user does not exist : " + login);
+            log.debug("Followed user does not exist : " + loginToUnfollow);
         }
     }
 
@@ -213,7 +224,8 @@ public class UserService {
         return followerRepository.findFollowersForUser(login);
     }
 
-    public Collection<User> getFriendsForUser(String login) {
+    public Collection<User> getFriendsForUser(String username) {
+        String login = authenticationService.getLoginFromUsername(username);
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<User> friends = new ArrayList<User>();
         for (String friendLogin : friendLogins) {
@@ -223,7 +235,8 @@ public class UserService {
         return friends;
     }
 
-    public Collection<User> getFollowersForUser(String login) {
+    public Collection<User> getFollowersForUser(String username) {
+        String login = authenticationService.getLoginFromUsername(username);
         Collection<String> followersLogins = followerRepository.findFollowersForUser(login);
         Collection<User> followers = new ArrayList<User>();
         for (String followerLogin : followersLogins) {
