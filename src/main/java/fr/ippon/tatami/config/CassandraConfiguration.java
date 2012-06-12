@@ -54,53 +54,56 @@ public class CassandraConfiguration {
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
-            addColumnFamily(cluster, USER_CF);
-            addColumnFamily(cluster, FRIENDS_CF);
-            addColumnFamily(cluster, FOLLOWERS_CF);
-            addColumnFamily(cluster, TWEET_CF);
-            addColumnFamily(cluster, DOMAIN_CF);
+            addColumnFamily(cluster, USER_CF, 0);
+            addColumnFamily(cluster, FRIENDS_CF, 0);
+            addColumnFamily(cluster, FOLLOWERS_CF, 0);
+            addColumnFamily(cluster, TWEET_CF, 0);
+            addColumnFamily(cluster, DOMAIN_CF, 0);
 
-            addColumnFamilySortedbyUUID(cluster, TIMELINE_CF);
-            addColumnFamilySortedbyUUID(cluster, FAVLINE_CF);
-            addColumnFamilySortedbyUUID(cluster, TAGLINE_CF);
-            addColumnFamilySortedbyUUID(cluster, USERLINE_CF);
+            addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, FAVLINE_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, TAGLINE_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, USERLINE_CF, 0);
 
-            addColumnFamilyCounter(cluster, COUNTER_CF);
-            addColumnFamilyCounter(cluster, DAYLINE_CF);
+            addColumnFamilyCounter(cluster, COUNTER_CF, 0);
+            addColumnFamilyCounter(cluster, DAYLINE_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
 
-    private void addColumnFamily(ThriftCluster cluster, String cfName) {
+    private void addColumnFamily(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
 
         String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
 
+        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
         cluster.addColumnFamily(cfd);
     }
 
-    private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName) {
+    private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
 
         String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
 
+        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
         cfd.setComparatorType(ComparatorType.UUIDTYPE);
         cluster.addColumnFamily(cfd);
     }
 
 
-    private void addColumnFamilyCounter(ThriftCluster cluster, String cfName) {
+    private void addColumnFamilyCounter(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
         String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
-        ThriftCfDef cfDef =
+        ThriftCfDef cfd =
                 new ThriftCfDef(cassandraKeyspace, cfName, ComparatorType.UTF8TYPE);
 
-        cfDef.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
-        cluster.addColumnFamily(cfDef);
+        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
+        cfd.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
+        cluster.addColumnFamily(cfd);
     }
 
     @Bean
