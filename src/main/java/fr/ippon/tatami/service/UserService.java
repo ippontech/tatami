@@ -164,16 +164,22 @@ public class UserService {
         if (log.isDebugEnabled()) {
             log.debug("Adding friend : " + usernameToFollow);
         }
+        User followedUser=null;
+        String loginToFollow;
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        // String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
-        //   User followedUser = getUserByLogin(loginToFollow);
-        User followedUser = getUserByLogin(usernameToFollow);
+        if(usernameToFollow.contains("@")){   //it is a login
+            followedUser = getUserByLogin(usernameToFollow);
+            loginToFollow=usernameToFollow;
+        } else{          //it is a username
+            loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
+            followedUser = getUserByLogin(loginToFollow);
+        }
         if (followedUser != null && !followedUser.equals(currentUser)) {
             boolean userAlreadyFollowed = false;
             if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
                 for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
-                    if (alreadyFollowingTest.equals(usernameToFollow)) {     //FIXME
+                    if (alreadyFollowingTest.equals(loginToFollow)) {
                         userAlreadyFollowed = true;
                         if (log.isDebugEnabled()) {
                             log.debug("User " + currentUser.getLogin() +
