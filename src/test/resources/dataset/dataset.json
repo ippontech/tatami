@@ -128,6 +128,12 @@
         {
             "key" : "userWithStatus@ippon.fr",
             "columns" : [{
+                "name" : "username",
+                "value" : "userWithStatus"
+            },{
+                "name" : "domain",
+                "value" : "ippon.fr"
+            },{
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -143,6 +149,12 @@
         {
             "key" : "userWhoPostStatus@ippon.fr",
             "columns" : [{
+                "name" : "username",
+                "value" : "userWhoPostStatus"
+            },{
+                "name" : "domain",
+                "value" : "ippon.fr"
+            },{
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -399,17 +411,13 @@
     {
         "name" : "Dayline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "UUIDType",
-        "defaultColumnValueType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "CounterColumnType",
         "rows" : [{
-        	"key" : "19042012",
+        	"key" : "19052012-ippon.fr",
         	"columns" : [{
-        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
-        		"value" : ""
-        	},
-        	{
-        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
-        		"value" : ""
+        		"name" : "userWithStatus",
+        		"value" : "1"
         	}]
         }]
     },
@@ -419,7 +427,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "ippon",
+        	"key" : "ippon-ippon.fr",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -474,6 +482,10 @@
         		"name" : "login",
         		"value" : "utf8(userWithStatus@ippon.fr)"
         	},
+            {
+                "name" : "domain",
+                "value" : "utf8(ippon.fr)"
+            },
         	{
         		"name" : "content",
         		"value" : "utf8(Devoxx, c'est nowwwwww)"

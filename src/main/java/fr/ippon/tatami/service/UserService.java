@@ -189,7 +189,7 @@ public class UserService {
             log.debug("Removing followed user : " + usernameToUnfollow);
         }
         User currentUser = authenticationService.getCurrentUser();
-        String loginToUnfollow = authenticationService.getLoginFromUsername(usernameToUnfollow);
+        String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = getUserByLogin(loginToUnfollow);
         if (userToUnfollow != null) {
             boolean userAlreadyFollowed = false;
@@ -226,7 +226,7 @@ public class UserService {
     }
 
     public Collection<User> getFriendsForUser(String username) {
-        String login = authenticationService.getLoginFromUsername(username);
+        String login = this.getLoginFromUsername(username);
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<User> friends = new ArrayList<User>();
         for (String friendLogin : friendLogins) {
@@ -237,7 +237,7 @@ public class UserService {
     }
 
     public Collection<User> getFollowersForUser(String username) {
-        String login = authenticationService.getLoginFromUsername(username);
+        String login = this.getLoginFromUsername(username);
         Collection<String> followersLogins = followerRepository.findFollowersForUser(login);
         Collection<User> followers = new ArrayList<User>();
         for (String followerLogin : followersLogins) {
@@ -272,5 +272,11 @@ public class UserService {
             }
         }
         return isFollowed;
+    }
+
+    private String getLoginFromUsername(String username) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
     }
 }

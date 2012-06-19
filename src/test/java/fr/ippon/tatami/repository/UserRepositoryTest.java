@@ -12,7 +12,6 @@ import javax.validation.ValidationException;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@Ignore
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Inject

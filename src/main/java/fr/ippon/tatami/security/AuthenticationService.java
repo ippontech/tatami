@@ -32,10 +32,4 @@ public class AuthenticationService {
 
         return userRepository.findUserByLogin(springSecurityUser.getUsername());
     }
-
-    public String getLoginFromUsername(String username) {
-        User currentUser = this.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
-    }
 }

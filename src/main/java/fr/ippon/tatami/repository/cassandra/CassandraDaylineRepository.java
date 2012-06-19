@@ -53,7 +53,6 @@ public class CassandraDaylineRepository implements DaylineRepository {
     public Collection<UserStatusStat> getDayline(String domain, String day) {
         String key = getKey(domain, day);
         Collection<UserStatusStat> results = new TreeSet<UserStatusStat>();
-
         SliceCounterQuery<String, String> query = createCounterSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DAYLINE_CF)

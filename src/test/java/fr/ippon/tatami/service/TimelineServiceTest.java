@@ -19,7 +19,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore
 public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
     @Inject
@@ -29,7 +28,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetUserline() throws Exception {
         String login = "userWithStatus@ippon.fr";
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
-        Collection<Status> status = timelineService.getUserline(login, 10, null, null);
+        Collection<Status> status = timelineService.getUserline("userWithStatus", 10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
     }
 
@@ -59,6 +58,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetDayline() throws Exception {
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Calendar cal = Calendar.getInstance();
         cal.set(2012, 04, 19);
         Collection<UserStatusStat> stats = timelineService.getDayline(cal.getTime());
@@ -67,11 +67,12 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
         UserStatusStat userStat = (UserStatusStat) stats.toArray()[0];
         assertThat(userStat.getUsername(), is("userWithStatus"));
-        assertThat(userStat.getStatusCount(), is(2L));
+        assertThat(userStat.getStatusCount(), is(1L));
     }
 
     @Test
     public void shouldGetTagline() throws Exception {
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         String hashtag = "ippon";
         Collection<Status> status = timelineService.getTagline(hashtag, 10);
         assertThatLineForUserWithStatusIsOk("userWithStatus@ippon.fr", status);
@@ -86,13 +87,13 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         timelineService.postStatus(content);
 
         /* verify */
-        Collection<Status> statusFromUserline = timelineService.getUserline(login, 10, null, null);
+        Collection<Status> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
         assertThatNewTestIsPosted(login, content, statusFromUserline);
 
         Collection<Status> statusFromTimeline = timelineService.getTimeline(10, null, null);
         assertThatNewTestIsPosted(login, content, statusFromTimeline);
 
-        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus@ippon.fr", 10, null, null);
+        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
         assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
 
     }
