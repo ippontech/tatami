@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
 
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * The Dayline Respository, which stores statistics per day.

@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;

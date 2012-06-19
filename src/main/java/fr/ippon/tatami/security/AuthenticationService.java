@@ -2,7 +2,6 @@ package fr.ippon.tatami.security;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;

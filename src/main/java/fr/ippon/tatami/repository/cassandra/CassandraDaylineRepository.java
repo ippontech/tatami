@@ -17,9 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.TreeSet;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DAYLINE_CF;
