@@ -17,7 +17,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
     public StatusRepository statusRepository;
 
     @Test
-    public void shouldGetATwitterRepositoryInjected() {
+    public void shouldGetAStatusRepositoryInjected() {
         assertThat(statusRepository, notNullValue());
     }
 
