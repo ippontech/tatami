@@ -211,7 +211,7 @@
         "rows" : [{
             "key" : "jdubois@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "2"
             },
             {
@@ -226,7 +226,7 @@
         {
             "key" : "userWhoWantToFollow@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -241,7 +241,7 @@
     	{
             "key" : "userWhoWillBeFollowed@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -256,7 +256,7 @@
     	{
             "key" : "userWhoFollow@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -271,7 +271,7 @@
     	{
             "key" : "userWhoIsFollowed@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -286,7 +286,7 @@
     	{
             "key" : "userWhoWantToForget@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -301,7 +301,7 @@
     	{
             "key" : "userToForget@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -316,7 +316,7 @@
     	{
             "key" : "userWithStatus@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "2"
             },
             {
@@ -331,7 +331,7 @@
     	{
             "key" : "userWhoPostStatus@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -346,7 +346,7 @@
     	{
             "key" : "userWhoReadStatus@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {

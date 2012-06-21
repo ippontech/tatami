@@ -82,13 +82,13 @@
 					</div>
 					<div id="homePanelUserStats" class="well well-small row-fluid noMargin noPadding">
 						<div class="span4 noMargin noPadding center">
-							<span id="statusCount" class="badge" data-user="${user.login}">${user.statusCount}</span><br/>TWEETS
+							<span id="statusCount" class="badge" data-user="${user.login}">${user.statusCount}</span><br/>Status
 						</div>
 						<div class="span4 noMargin noPadding center">
-							<span id="friendsCount" class="badge">${user.friendsCount}</span><br/>FOLLOWING
+							<span id="friendsCount" class="badge">${user.friendsCount}</span><br/>Followed
 						</div>
 						<div class="span4 noMargin noPadding center">
-							<span id="followersCount" class="badge">${user.followersCount}</span><br/>FOLLOWERS
+							<span id="followersCount" class="badge">${user.followersCount}</span><br/>Followers
 						</div>
 					</div>
 					<div id="homePanelStatus" class="row-fluid noMargin center">
@@ -167,7 +167,7 @@
             					<span class="userDetailsName">name</span>
             				</td>
             				<td>
-            					TWEETS<br/><span class="badge">1</span>
+            					Status<br/><span class="badge">1</span>
             				</td>
             			</table>
             		</td>
@@ -236,13 +236,13 @@
 	    </div>
 	    <div id="userProfileFooter" class="modal-footer row-fluid noMargin">
 			<div class="span4 center">
-				<span id="userProfileStatusCount" class="badge" data-modal-hide="#userProfileModal">1</span><br/>TWEETS
+				<span id="userProfileStatusCount" class="badge" data-modal-hide="#userProfileModal">1</span><br/>Status
 			</div>
 			<div class="span4 center">
-				<span id="userProfileFriendsCount" class="badge">0</span><br/>FOLLOWING
+				<span id="userProfileFriendsCount" class="badge">0</span><br/>Followed
 			</div>
 			<div class="span4 center">
-				<span id="userProfileFollowersCount" class="badge">0</span><br/>FOLLOWERS
+				<span id="userProfileFollowersCount" class="badge">0</span><br/>Followers
 			</div>
 	    </div>
     </div>
