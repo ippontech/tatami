@@ -57,7 +57,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, USER_CF, 0);
             addColumnFamily(cluster, FRIENDS_CF, 0);
             addColumnFamily(cluster, FOLLOWERS_CF, 0);
-            addColumnFamily(cluster, TWEET_CF, 0);
+            addColumnFamily(cluster, STATUS_CF, 0);
             addColumnFamily(cluster, DOMAIN_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
