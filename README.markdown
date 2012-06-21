@@ -4,7 +4,7 @@ Tatami
 Presentation
 ------------------
 
-Tatami is a twitter-like application, for internal use inside a company.
+Tatami is a micro-blogging platform, for internal use inside a company.
 
 Tatami is made with the following technologies :
 
