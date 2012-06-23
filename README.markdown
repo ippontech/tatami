@@ -23,8 +23,7 @@ Installation (simple, for normal users)
 - Run Jetty from Maven : `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
 
-The default users are "jdubois/password" and "tescolan/password", you can check or modify the
-Spring Security configuration at `/META-INF/spring/applicationContext-security.xml`
+To create a username/password, use the registration form. As we have not configured a SMTP server (you can configure it in src/main/resources/META-INF/tatami/tatami.properties), your password will not be mailed to you, but you can see it in the log (look at the Jetty console output).
 
 Installation (advanced, for developers)
 ---------------------------------------
