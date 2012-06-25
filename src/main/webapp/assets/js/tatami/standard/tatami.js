@@ -8,7 +8,7 @@ var scrollLock = false;
 var userlineURL = '<a href="/tatami/profile/LOGIN/" style="text-decoration:none" title="Show LOGIN status">';
 var userlineREG = new RegExp("LOGIN", "g");
 
-var userrefREG = new RegExp("@(\\w+)", "g");
+var userrefREG = new RegExp("@(\\S+)", "g");
 var userrefURL = '<a href="/tatami/profile/$1/" style="text-decoration:none" title="Show $1 status"><em>@$1</em></a>';
 
 var tagrefREG = new RegExp("#(\\w+)", "g");
