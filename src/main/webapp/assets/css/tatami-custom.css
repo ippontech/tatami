@@ -30,6 +30,14 @@ section#timeline table tbody.statusList tr.status {
     vertical-align: top;
 }
 
+.status td {
+    padding: 2px 8px 2px 2px;
+}
+
+.status td {
+    padding: 2px 8px 2px 2px;
+}
+
 .avatar {
     width: 34px;
 }
@@ -71,7 +79,7 @@ div#userProfileDesc {
 }
 
 #statusContent {
-    width: 230px;
+    width: 210px;
     height: 80px;
 }
 

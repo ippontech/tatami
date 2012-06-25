@@ -21,7 +21,7 @@
                     <fmt:message key="tatami.update.profile"/></a></li>
             </ul>
             <div class="alert alert-info">
-                <div class="tab-content" style="margin-left: -10px;">
+                <div class="tab-content">
                     <div class="tab-pane active" id="profileTabContent">
                         <div class="container-fluid">
                             <div class="row-fluid">
@@ -30,18 +30,20 @@
                                     <span id="profile_view"></span>
                                 </div>
                             </div>
-                            <div id="badges" class="well well-small row-fluid">
-                                <div class="span4">
-                                    <span id="statusCount" class="badge"></span><br/><fmt:message
-                                        key="tatami.badge.status"/>
-                                </div>
-                                <div class="span4">
-                                    <span id="friendsCount" class="badge"></span><br/><fmt:message
-                                        key="tatami.badge.followed"/>
-                                </div>
-                                <div class="span4">
-                                    <span id="followersCount" class="badge"></span><br/><fmt:message
-                                        key="tatami.badge.followers"/>
+                            <div id="badges" class="row-fluid">
+                                <div class="well well-small">
+                                    <div class="span4">
+                                        <span id="statusCount" class="badge"></span><br/><fmt:message
+                                            key="tatami.badge.status"/>
+                                    </div>
+                                    <div class="span4">
+                                        <span id="friendsCount" class="badge"></span><br/><fmt:message
+                                            key="tatami.badge.followed"/>
+                                    </div>
+                                    <div class="span4">
+                                        <span id="followersCount" class="badge"></span><br/><fmt:message
+                                            key="tatami.badge.followers"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row-fluid">
@@ -49,7 +51,8 @@
                                     <form class="form-inline" onsubmit="return status();">
                                         <textarea id="statusContent" rel="popover" class="focused" maxlength="140"
                                                   placeholder="<fmt:message key="tatami.status.update"/>..."></textarea>
-                                        <button type="submit" class="btn btn-primary"><fmt:message key="tatami.status.update"/></button>
+                                        <button type="submit" class="btn btn-primary"><fmt:message
+                                                key="tatami.status.update"/></button>
                                     </form>
                                     <div class="error"></div>
                                 </div>

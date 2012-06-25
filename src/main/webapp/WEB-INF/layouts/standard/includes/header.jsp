@@ -9,8 +9,8 @@
     <meta name="author" content="Ippon Technologies">
 
     <!-- Le style -->
-    <link href="/assets/css/bootstrap/2.0.2/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap/2.0.2/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap/2.0.4/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap/2.0.4/bootstrap-responsive.css" rel="stylesheet">
     <link href="/assets/css/tatami-custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
