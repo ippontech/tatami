@@ -14,20 +14,24 @@ body {
 }
 
 .statusList {
-    color: #000000;
+    color: #333;
 }
 
 .statusDisplay {
-    width: 452px;
+    width: 552px;
+}
+
+.statusDisplay div.row-fluid .span8 {
+    min-height: 0px;
+}
+
+.statusDisplay div.row-fluid .span4 {
+    min-height: 0px;
 }
 
 .statusDate {
     width: 48px;
     height: 48px;
-}
-
-section#timeline table tbody.statusList tr.status {
-    vertical-align: top;
 }
 
 .status td {
@@ -56,31 +60,45 @@ div#userProfileDesc {
     border: 1px solid #DDDDDD;
     border-radius: 5px;
     padding: 5px;
-    width: 920px;
+    width: 927px;
 }
 
 #menuContent {
     margin: 10px 0px 0px 0px;
+    width: 260px;
 }
 
 #mainContent {
     margin: 10px 0px 0px 20px;
-}
-
-#badges {
-    width: 220px;
+    width: 657px;
 }
 
 .mainPanel {
     margin: 0px auto;
-    border: 10px;
     position: relative;
     width: 937px;
 }
 
 #statusContent {
-    width: 210px;
+    width: 220px;
     height: 80px;
+}
+
+.userStatus {
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 110%;
+}
+.userStatus:hover {
+    text-decoration: none;
+    color: #08C;
+}
+
+.userStatus em {
+    font-size: 90%;
+    color: #808080;
+    font-weight: normal;
 }
 
 .favorite {

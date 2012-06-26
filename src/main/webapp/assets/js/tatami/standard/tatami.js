@@ -5,7 +5,7 @@ var DURATION_OF_FADE_TO = 400;
 
 var scrollLock = false;
 
-var userlineURL = '<a href="/tatami/profile/LOGIN/" style="text-decoration:none" title="Show LOGIN status">';
+var userlineURL = '<a href="/tatami/profile/LOGIN/" class="userStatus" title="Show LOGIN status">';
 var userlineREG = new RegExp("LOGIN", "g");
 
 var userrefREG = new RegExp("@(\\S+)", "g");
