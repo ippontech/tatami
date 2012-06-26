@@ -25,10 +25,6 @@
  * GET  /friends/lookup -> return extended data about the user's friends
  * GET  /followers/lookup -> return extended data about the user's followers
  *
- * Account
- * --------
- * POST /account/update_profile -> update the current user
- *
  * Favorites
  * --------
  * GET  /favorites -> get the favorite status of the current user
@@ -172,25 +168,6 @@ function listUserStatus(username) {
             }
         }
     });
-}
-
-/**
- * POST /account/update_profile -> update the current user
- */
-function updateProfile() {
-    $profileFormErrors = $("#updateUserForm").parent().find("div.error");
-    $.ajax({
-        type: 'POST',
-        url: "/tatami/rest/account/update_profile",
-        contentType: "application/json",
-        data: JSON.stringify($("#updateUserForm").serializeObject()),
-        dataType: "json",
-        success: setTimeout(function() {
-            $profileFormErrors.empty();
-            $('#profileTab').tab('show');
-        }, 500)    //DEBUG wait for persistence consistency
-    });
-    return false;	// no page refresh
 }
 
 /**

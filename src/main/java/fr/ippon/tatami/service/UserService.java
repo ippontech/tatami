@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Manages the application's users.
@@ -50,6 +51,9 @@ public class UserService {
     private MailService mailService;
 
     @Inject
+    private StatusRepository statusRepository;
+
+    @Inject
     private IndexService indexService;
 
     @Inject
@@ -81,6 +85,18 @@ public class UserService {
         return users;
     }
 
+    public Collection<User> getUsersForCurrentDomain() {
+        User currentUSer = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUSer.getLogin());
+        Collection<String> logins = domainRepository.getLoginsInDomain(domain, Integer.MAX_VALUE, null, null);
+        Collection<User> users = new TreeSet<User>();
+        for (String login : logins) {
+            User user = getUserByLogin(login);
+            users.add(user);
+        }
+        return users;
+    }
+
     public User getUserProfileByUsername(String username) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -108,6 +124,7 @@ public class UserService {
             }
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating user " + user);
+            throw cve;
         }
 
     }
@@ -140,6 +157,48 @@ public class UserService {
         if (log.isDebugEnabled()) {
             log.debug("Created User : " + user.toString());
         }
+    }
+
+    public void deleteUser(User user) {
+        // Unfollow this user
+        Collection<String> followersIds = getFollowerIdsForUser(user.getLogin());
+        for (String followerId : followersIds) {
+            User follower = getUserByLogin(followerId);
+            unfollowUser(follower, user);
+        }
+        log.debug("Delete user step 1 : Unfollowed user " + user.getLogin());
+
+        // Unfollow friends
+        Collection<String> friendsIds = getFriendIdsForUser(user.getLogin());
+        for (String friendId : friendsIds) {
+            User friend = getUserByLogin(friendId);
+            unfollowUser(user, friend);
+        }
+        log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
+
+        // Delete userline, tagLine, dayLine...
+        statusRepository.deleteFavoritesline(user.getLogin());
+        statusRepository.deleteTimeline(user.getLogin());
+        statusRepository.deleteUserline(user.getLogin());
+        log.debug("Delete user step 3 : user " + user.getLogin() + " has no more lines.");
+
+        // Remove from domain
+        String domain = DomainUtil.getDomainFromLogin(user.getLogin());
+        domainRepository.deleteUserInDomain(domain, user.getLogin());
+        log.debug("Delete user step 4 : user " + user.getLogin() + " has no domain.");
+
+        // Delete counters
+        counterRepository.deleteCounters(user.getLogin());
+        log.debug("Delete user step 5 : user " + user.getLogin() + " has no counter.");
+
+        // Delete user
+        userRepository.deleteUser(user);
+        log.debug("Delete user step 6 : user " + user.getLogin() + " is deleted.");
+
+        // TODO : Tweets are not deleted, but are not available to users anymore (unless the same user is created again)
+        // TODO : when the user is created again, we have the status count = old tweets + new tweets (is counter deletion working OK?)
+
+        log.debug("User " + user.getLogin() + "has been successfully deleted !");
     }
 
     /**
@@ -191,7 +250,12 @@ public class UserService {
         User currentUser = authenticationService.getCurrentUser();
         String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = getUserByLogin(loginToUnfollow);
+        unfollowUser(currentUser, userToUnfollow);
+    }
+
+    private void unfollowUser(User currentUser, User userToUnfollow) {
         if (userToUnfollow != null) {
+            String loginToUnfollow = userToUnfollow.getLogin();
             boolean userAlreadyFollowed = false;
             for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                 if (alreadyFollowingTest.equals(loginToUnfollow)) {
@@ -207,7 +271,7 @@ public class UserService {
                         " has stopped following user " + loginToUnfollow);
             }
         } else {
-            log.debug("Followed user does not exist : " + loginToUnfollow);
+            log.debug("Followed user does not exist.");
         }
     }
 

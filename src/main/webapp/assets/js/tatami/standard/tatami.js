@@ -30,14 +30,6 @@ function initHome() {
         content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to status.'
     });
     $('#followUserContent').load('/assets/fragments/standard/followUser.html', suggestUsersToFollow());
-    // auto-refresh
-    $('a[data-toggle="pill"]').on('show', function(e) {
-        if (e.target.hash == '#profileTabContent') {
-            refreshProfile();
-        } else if (e.target.hash == '#updateProfileTabContent') {
-            displayProfile();
-        }
-    });
 
     // right panel
     $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
@@ -156,6 +148,16 @@ function initStatus() {
     shortcut.add("Ctrl+R", function() {
         getStatus(statusId);
     });
+
+    // search form binding
+    $('#global-status-search').submit(function() {
+        var searchQuery = $("#searchQuery").val();
+        window.location = "/tatami/?search=" + searchQuery;
+        return false;
+    });
+}
+
+function initAccount() {
 
     // search form binding
     $('#global-status-search').submit(function() {

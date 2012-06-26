@@ -141,6 +141,27 @@ public class CassandraStatusRepository implements StatusRepository {
         return statusIds;
     }
 
+    @Override
+    public void deleteFavoritesline(String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.addDeletion(login, FAVLINE_CF);
+        mutator.execute();
+    }
+
+    @Override
+    public void deleteUserline(String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.addDeletion(login, USERLINE_CF);
+        mutator.execute();
+    }
+
+    @Override
+    public void deleteTimeline(String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.addDeletion(login, TIMELINE_CF);
+        mutator.execute();
+    }
+
     private Collection<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         Collection<String> statusIds = new ArrayList<String>();
         ColumnSlice<UUID, String> result;

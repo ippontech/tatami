@@ -126,31 +126,37 @@ public class TimelineService {
             Status status = this.statusRepository.findStatusById(statusId);
             if (status != null) {
                 User statusUser = userService.getUserByLogin(status.getLogin());
-                // Security check
-                if (!statusUser.getDomain().equals(currentUser.getDomain())) {
-                    throw new DomainViolationException("User " + currentUser + " tried to access " +
-                            " status : " + status);
+                if (statusUser != null) {
+                    // Security check
+                    if (!statusUser.getDomain().equals(currentUser.getDomain())) {
+                        throw new DomainViolationException("User " + currentUser + " tried to access " +
+                                " status : " + status);
 
-                }
-                // if the Status comes from ehcache, it has to be cloned to another instance
-                // in order to be thread-safe.
-                // ehcache shares the Status instances per statusId, but favorites are per user.
-                Status statusCopy = new Status();
-                statusCopy.setLogin(status.getLogin());
-                statusCopy.setStatusId(status.getStatusId());
-                statusCopy.setContent(status.getContent());
-                statusCopy.setUsername(status.getUsername());
-                statusCopy.setDomain(status.getDomain());
-                statusCopy.setStatusDate(status.getStatusDate());
-                if (favoriteIds.contains(statusId)) {
-                    statusCopy.setFavorite(true);
+                    }
+                    // if the Status comes from ehcache, it has to be cloned to another instance
+                    // in order to be thread-safe.
+                    // ehcache shares the Status instances per statusId, but favorites are per user.
+                    Status statusCopy = new Status();
+                    statusCopy.setLogin(status.getLogin());
+                    statusCopy.setStatusId(status.getStatusId());
+                    statusCopy.setContent(status.getContent());
+                    statusCopy.setUsername(status.getUsername());
+                    statusCopy.setDomain(status.getDomain());
+                    statusCopy.setStatusDate(status.getStatusDate());
+                    if (favoriteIds.contains(statusId)) {
+                        statusCopy.setFavorite(true);
+                    } else {
+                        statusCopy.setFavorite(false);
+                    }
+                    statusCopy.setFirstName(statusUser.getFirstName());
+                    statusCopy.setLastName(statusUser.getLastName());
+                    statusCopy.setGravatar(statusUser.getGravatar());
+                    statuses.add(statusCopy);
                 } else {
-                    statusCopy.setFavorite(false);
+                    if (log.isDebugEnabled()) {
+                        log.debug("Deleted user : " + status.getLogin());
+                    }
                 }
-                statusCopy.setFirstName(statusUser.getFirstName());
-                statusCopy.setLastName(statusUser.getLastName());
-                statusCopy.setGravatar(statusUser.getGravatar());
-                statuses.add(statusCopy);
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("Invisible status : " + statusId);

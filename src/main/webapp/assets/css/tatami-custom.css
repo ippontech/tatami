@@ -8,9 +8,21 @@ body {
 }
 
 #global-status-search {
-    padding:4px 2px 4px 2px;
-    margin:3px 0px;
+    padding: 0px;
+    margin: 0px;
     background-color:#2C2C2C;
+}
+
+#global-status-search .btn {
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 11px;
+}
+
+#searchQuery {
+    margin-top: 7px;
+    font-size: 11px;
+    height: 13px;
 }
 
 .statusList {

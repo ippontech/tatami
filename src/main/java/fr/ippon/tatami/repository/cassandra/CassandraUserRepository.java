@@ -3,6 +3,10 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import fr.ippon.tatami.repository.UserRepository;
+import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +18,8 @@ import javax.persistence.EntityManager;
 import javax.validation.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_CF;
 
 /**
  * Cassandra implementation of the user repository.
@@ -27,6 +33,9 @@ public class CassandraUserRepository implements UserRepository {
 
     @Inject
     private EntityManager em;
+
+    @Inject
+    private Keyspace keyspaceOperator;
 
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
@@ -55,6 +64,17 @@ public class CassandraUserRepository implements UserRepository {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
         em.persist(user);
+    }
+
+    @Override
+    @CacheEvict(value = "user-cache", key = "#user.login")
+    public void deleteUser(User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Deleting user : " + user);
+        }
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.addDeletion(user.getLogin(), USER_CF);
+        mutator.execute();
     }
 
     @Override
