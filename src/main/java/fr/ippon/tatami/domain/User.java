@@ -1,6 +1,7 @@
 package fr.ippon.tatami.domain;
 
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -25,15 +26,18 @@ public class User {
     @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @Email(message = "Email is invalid.")
     @Id
+    @JsonIgnore
     private String login;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "username")
     private String username;
 
     @Column(name = "domain")
+    @JsonIgnore
     private String domain;
 
     @Column(name = "gravatar")
