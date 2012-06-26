@@ -30,25 +30,19 @@ public class AccountEnterpriseController {
     @Inject
     private AuthenticationService authenticationService;
 
-    @RequestMapping(value = "/account/enterprise",
-            method = RequestMethod.GET)
-    public ModelAndView getEnterprise(@RequestParam(required = false) boolean success) {
-
-        ModelAndView mv = basicModelAndView(success);
-        mv.setViewName("account/enterprise");
-        mv.addObject("users", userService.getUsersForCurrentDomain());
-        return mv;
+    @ModelAttribute("user")
+    public User initUser() {
+        User currentUser = authenticationService.getCurrentUser();
+        return userService.getUserByLogin(currentUser.getLogin());
     }
 
-    /**
-     * Common code for all "GET" requests.
-     */
-    private ModelAndView basicModelAndView(boolean success) {
+    @RequestMapping(value = "/account/enterprise",
+            method = RequestMethod.GET)
+    public ModelAndView getEnterprise() {
+
         ModelAndView mv = new ModelAndView();
-        User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
-        mv.addObject("user", user);
-        mv.addObject("success", success);
+        mv.setViewName("account/enterprise");
+        mv.addObject("users", userService.getUsersForCurrentDomain());
         return mv;
     }
 }

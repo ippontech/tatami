@@ -118,8 +118,6 @@
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary"><fmt:message
                                         key="tatami.form.save"/></button>
-                                <button class="btn" onclick="window.location='/tatami/account'"><fmt:message
-                                        key="tatami.form.cancel"/></button>
                             </div>
 
                         </fieldset>
@@ -132,7 +130,7 @@
                                     key="tatami.user.suppress"/></button>
                         </div>
                     </form>
-
+                    <br/><br/>
                 </div>
                 <div class="tab-pane" id="password">
 

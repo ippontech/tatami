@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,6 +47,11 @@ public class AccountPasswordController {
     @RequestMapping(value = "/account/password",
             method = RequestMethod.GET)
     public ModelAndView getUpdatePassword(@RequestParam(required = false) boolean success) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        if (domain.equals("ippon.fr")) {
+            return new ModelAndView("account/password_ldap");
+        }
         ModelAndView mv = new ModelAndView("account/password");
         mv.addObject("success", success);
         return mv;

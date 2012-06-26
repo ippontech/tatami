@@ -17,7 +17,6 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * Manages the application's users.
@@ -89,7 +88,7 @@ public class UserService {
         User currentUSer = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUSer.getLogin());
         Collection<String> logins = domainRepository.getLoginsInDomain(domain, Integer.MAX_VALUE, null, null);
-        Collection<User> users = new TreeSet<User>();
+        Collection<User> users = new ArrayList<User>();
         for (String login : logins) {
             User user = getUserByLogin(login);
             users.add(user);

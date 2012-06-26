@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +37,10 @@
                                         class="icon-user"></i>&nbsp;<fmt:message
                                         key="tatami.menu.profile"/></a>
                             </li>
-                            <li><a id="passwordTab" href="/tatami/account/password"><i
+                            <li class="active"><a id="passwordTab" href="#"><i
                                     class="icon-lock"></i>&nbsp;<fmt:message
                                     key="tatami.menu.password"/></a></li>
-                            <li class="active"><a id="enterpriseTab" href="#"><i
+                            <li><a id="enterpriseTab" href="/tatami/account/enterprise"><i
                                     class="icon-globe"></i>&nbsp;<fmt:message
                                     key="tatami.menu.enterprise"/></a>
                             </li>
@@ -49,45 +51,25 @@
                     <div class="tab-content">
                         <div class="tab-pane" id="profile">
 
-
                         </div>
-                        <div class="tab-pane" id="password">
+                        <div class="tab-pane active" id="password">
 
+                            <c:if test="${success == 'true'}">
+                                <div class="alert alert-success">
+                                    <fmt:message
+                                            key="tatami.user.password.success"/>
+                                </div>
+                            </c:if>
 
-                        </div>
-                        <div class="tab-pane active" id="enterprise">
                             <h2><fmt:message
-                                    key="tatami.menu.enterprise"/></h2>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><fmt:message
-                                            key="tatami.username"/></th>
-                                    <th><fmt:message
-                                            key="tatami.user.firstName"/></th>
-                                    <th><fmt:message
-                                            key="tatami.user.lastName"/></th>
-                                    <th><fmt:message
-                                            key="tatami.badge.status"/></th>
-                                    <th><fmt:message
-                                            key="tatami.badge.followed"/></th>
-                                    <th><fmt:message
-                                            key="tatami.badge.followers"/></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${users}" var="u">
-                                    <tr>
-                                        <td><a href="/tatami/profile/${u.username}/">${u.username}</a></td>
-                                        <td>${u.firstName}</td>
-                                        <td>${u.lastName}</td>
-                                        <td>${u.statusCount}</td>
-                                        <td>${u.friendsCount}</td>
-                                        <td>${u.followersCount}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                    key="tatami.menu.password"/></h2>
+
+                            <fmt:message
+                                    key="tatami.user.password.ldap"/>
+
+                        </div>
+                        <div class="tab-pane" id="enterprise">
+
                         </div>
                     </div>
                 </div>
@@ -104,7 +86,6 @@
         </c:otherwise>
     </c:choose>
 </div>
-
 
 <jsp:include page="includes/footer.jsp"/>
 

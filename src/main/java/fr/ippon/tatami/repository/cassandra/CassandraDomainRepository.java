@@ -56,17 +56,17 @@ public class CassandraDomainRepository implements DomainRepository {
     @Override
     public Collection<String> getLoginsInDomain(String domain, int size, String since_id, String max_id) {
         Collection<String> logins = new ArrayList<String>();
-        ColumnSlice<UUID, String> result;
+        ColumnSlice<String, String> result;
         result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
                 .setKey(domain)
                 .setRange(null, null, true, size)
                 .execute()
                 .get();
 
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            logins.add(column.getName().toString());
+        for (HColumn<String, String> column : result.getColumns()) {
+            logins.add(column.getName());
         }
         return logins;
     }
