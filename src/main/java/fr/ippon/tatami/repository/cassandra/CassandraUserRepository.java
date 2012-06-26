@@ -54,7 +54,7 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
-    @CacheEvict(value = "user-cache", key = "#user.login")
+    @CacheEvict(value = "user-cache", key = "#user.login", beforeInvocation = true)
     public void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException {
         if (log.isDebugEnabled()) {
             log.debug("Updating user : " + user);

@@ -44,14 +44,12 @@ public class User {
     private String gravatar;
 
     @NotNull
-    @NotEmpty(message = "First Name field is mandatory.")
-    @Size(min = 1, max = 50)
+    @Size(min = 0, max = 50)
     @Column(name = "firstName")
     private String firstName;
 
     @NotNull
-    @NotEmpty(message = "Last field is mandatory.")
-    @Size(min = 1, max = 50)
+    @Size(min = 0, max = 50)
     @Column(name = "lastName")
     private String lastName;
 

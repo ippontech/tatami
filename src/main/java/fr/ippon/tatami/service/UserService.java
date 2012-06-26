@@ -123,7 +123,7 @@ public class UserService {
                 indexService.addUser(user);
             }
         } catch (ConstraintViolationException cve) {
-            log.info("Constraint violated while updating user " + user);
+            log.info("Constraint violated while updating user " + user + " : " + cve);
             throw cve;
         }
 
