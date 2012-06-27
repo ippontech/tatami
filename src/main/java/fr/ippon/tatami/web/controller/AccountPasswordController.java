@@ -83,7 +83,6 @@ public class AccountPasswordController {
             }
             ModelAndView mv = new ModelAndView("account/password");
             mv.addAllObjects(result.getModel());
-            log.debug("mv:="+mv);
             return mv;
         }
 
