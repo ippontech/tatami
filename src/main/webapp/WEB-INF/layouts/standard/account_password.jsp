@@ -64,7 +64,7 @@
                             <h2><fmt:message
                                     key="tatami.menu.password"/></h2>
 
-                            <form:form class="form-horizontal" commandName="userPassword" method="post">
+                            <form:form class="form-horizontal" commandName="userPassword" method="post" acceptCharset="utf-8">
 
                                 <spring:bind path="*">
                                     <c:if test="${fn:length(status.errorMessages) > 0}">

@@ -62,7 +62,7 @@
                     </c:if>
                     <h2><fmt:message key="tatami.account.update.title"/></h2>
 
-                    <form:form class="form-horizontal" commandName="user" method="post">
+                    <form:form class="form-horizontal" commandName="user" method="post" acceptCharset="utf-8">
                         <fieldset>
                             <legend><fmt:message key="tatami.account.update.legend"/></legend>
 

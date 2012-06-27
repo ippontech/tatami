@@ -35,7 +35,7 @@
                 <li><fmt:message key="tatami.register.text.4"/></li>
             </ul>
             </p>
-            <form action="/tatami/register" method="post" class="well">
+            <form action="/tatami/register" method="post" class="well" acceptCharset="utf-8">
                 <fieldset>
                     <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input id="email" name="email"
                                                                                    type="email" required="required"
@@ -51,7 +51,7 @@
         <div class="span4">
             <h1><fmt:message key="tatami.authentification"/></h1>
 
-            <form action="/tatami/authentication" method="post" class="well">
+            <form action="/tatami/authentication" method="post" class="well" acceptCharset="utf-8">
                 <fieldset>
                     <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input id="j_username" name="j_username"
                                                                                    type="email" required="required"
