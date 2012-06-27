@@ -5,7 +5,7 @@ import fr.ippon.tatami.config.DispatcherServletConfig;
 import fr.ippon.tatami.web.monitoring.MonitoringFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.mobile.device.DeviceResolverHandlerFilter;
+import org.springframework.mobile.device.DeviceResolverRequestFilter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -89,8 +89,8 @@ public class WebConfigurer implements ServletContextListener {
                 new MonitoringFilter());
         monitoringFilter.addMappingForUrlPatterns(disps, true, "/*");
 
-        FilterRegistration.Dynamic deviceResolverHandlerFilter = servletContext.addFilter("deviceResolverHandlerFilter",
-                new DeviceResolverHandlerFilter());
+        FilterRegistration.Dynamic deviceResolverHandlerFilter = servletContext.addFilter("deviceResolverRequestFilter",
+                new DeviceResolverRequestFilter());
         deviceResolverHandlerFilter.addMappingForUrlPatterns(disps, true, "/*");
     }
 
