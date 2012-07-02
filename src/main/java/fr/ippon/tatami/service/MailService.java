@@ -52,16 +52,18 @@ public class MailService {
 
     @Async
     public void sendRegistrationEmail(String registrationKey, User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("Sending registration e-mail to User '" + user.getLogin() + "'...");
-        }
         String subject = "Tatami activation";
+        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+        if (log.isDebugEnabled()) {
+            log.debug("Sending registration e-mail to User '" + user.getLogin() +
+                    "', Url='" + url + "'");
+        }
         String text = "Dear "
                 + user.getLogin()
                 + ",\n\n"
                 + "Your Tatami account has been created, please click on the URL below to activate it : "
                 + "\n\n"
-                + tatamiUrl + "/tatami/register?key=" + registrationKey
+                + url
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
@@ -70,10 +72,12 @@ public class MailService {
 
     @Async
     public void sendLostPasswordEmail(String registrationKey, User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("Sending lost password e-mail to User '" + user.getLogin() + "'...");
-        }
         String subject = "Tatami lost password";
+        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+        if (log.isDebugEnabled()) {
+            log.debug("Sending lost password e-mail to User '" + user.getLogin() +
+                    "', Url='" + url + "'");
+        }
         String text = "Dear "
                 + user.getLogin()
                 + ",\n\n"
@@ -81,7 +85,7 @@ public class MailService {
                 + "\n\n"
                 + "If you want to re-initialize your password, please click on the link below : "
                 + "\n\n"
-                + tatamiUrl + "/tatami/register?key=" + registrationKey
+                + url
                 + "\n\n"
                 + "If you do not want to re-initialize your password, you can safely ignore this message "
                 + "\n\n"
@@ -93,7 +97,8 @@ public class MailService {
     @Async
     public void sendValidationEmail(User user) {
         if (log.isDebugEnabled()) {
-            log.debug("Sending validation e-mail to User '" + user.getLogin() + "'...");
+            log.debug("Sending validation e-mail to User '" + user.getLogin() +
+                    "', Password='" + user.getPassword() + "'");
         }
         String subject = "Tatami account validated";
         String text = "Dear "
@@ -111,7 +116,8 @@ public class MailService {
     @Async
     public void sendPasswordReinitializedEmail(User user) {
         if (log.isDebugEnabled()) {
-            log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() + "'...");
+            log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
+                    "', Password='" + user.getPassword() + "'");
         }
         String subject = "Tatami password re-initialized";
         String text = "Dear "

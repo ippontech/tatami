@@ -98,7 +98,9 @@ public class CassandraCounterRepository implements CounterRepository {
     @Override
     public void deleteCounters(String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addCounterDeletion(login, COUNTER_CF);
+        mutator.addCounterDeletion(login, COUNTER_CF, STATUS_COUNTER, StringSerializer.get());
+        mutator.addCounterDeletion(login, COUNTER_CF, FOLLOWERS_COUNTER, StringSerializer.get());
+        mutator.addCounterDeletion(login, COUNTER_CF, FRIENDS_COUNTER, StringSerializer.get());
         mutator.execute();
     }
 

@@ -178,7 +178,7 @@ public class UserService {
         }
         log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
 
-        // Delete userline, tagLine, dayLine...
+        // Delete userline, tagLine...
         statusRepository.deleteFavoritesline(user.getLogin());
         statusRepository.deleteTimeline(user.getLogin());
         statusRepository.deleteUserline(user.getLogin());
@@ -197,8 +197,7 @@ public class UserService {
         userRepository.deleteUser(user);
         log.debug("Delete user step 6 : user " + user.getLogin() + " is deleted.");
 
-        // TODO : Tweets are not deleted, but are not available to users anymore (unless the same user is created again)
-        // TODO : when the user is created again, we have the status count = old tweets + new tweets (is counter deletion working OK?)
+        // Tweets are not deleted, but are not available to users anymore (unless the same user is created again)
 
         log.debug("User " + user.getLogin() + "has been successfully deleted !");
     }
