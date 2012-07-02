@@ -1,6 +1,6 @@
 package fr.ippon.tatami;
 
-import fr.ippon.tatami.application.ApplicationTestConfiguration;
+import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.cassandraunit.DataLoader;

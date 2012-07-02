@@ -1,4 +1,4 @@
-package fr.ippon.tatami.application;
+package fr.ippon.tatami.test.application;
 
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
 import org.apache.commons.logging.Log;
