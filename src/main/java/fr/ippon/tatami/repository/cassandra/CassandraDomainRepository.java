@@ -1,9 +1,9 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.repository.DomainRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -16,8 +16,7 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.List;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAIN_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -54,19 +53,27 @@ public class CassandraDomainRepository implements DomainRepository {
     }
 
     @Override
-    public Collection<String> getLoginsInDomain(String domain, int size, String since_id, String max_id) {
-        Collection<String> logins = new ArrayList<String>();
+    public List<String> getLoginsInDomain(String domain, int pagination) {
+        List<String> logins = new ArrayList<String>();
         ColumnSlice<String, String> result;
         result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
                 .setKey(domain)
-                .setRange(null, null, false, size)
+                .setRange(null, null, false, Integer.MAX_VALUE)
                 .execute()
                 .get();
 
+        int index = 0;
         for (HColumn<String, String> column : result.getColumns()) {
-            logins.add(column.getName());
+            // We take one more item, to display (or not) the "next" button if there is an item after the displayed list.
+            if (index > pagination + Constants.PAGINATION_SIZE) {
+                break;
+            }
+            if (index >= pagination) {
+                logins.add(column.getName());
+            }
+            index++;
         }
         return logins;
     }

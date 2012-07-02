@@ -84,11 +84,11 @@ public class UserService {
         return users;
     }
 
-    public Collection<User> getUsersForCurrentDomain() {
+    public List<User> getUsersForCurrentDomain(int pagination) {
         User currentUSer = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUSer.getLogin());
-        Collection<String> logins = domainRepository.getLoginsInDomain(domain, Integer.MAX_VALUE, null, null);
-        Collection<User> users = new ArrayList<User>();
+        List<String> logins = domainRepository.getLoginsInDomain(domain, pagination);
+        List<User> users = new ArrayList<User>();
         for (String login : logins) {
             User user = getUserByLogin(login);
             users.add(user);

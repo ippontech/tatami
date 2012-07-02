@@ -88,6 +88,20 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <ul class="pager">
+                                <c:if test="${paginationPrevious != null}">
+                                    <li>
+                                        <a href="/tatami/account/enterprise?pagination=${paginationPrevious}"><fmt:message
+                                                key="tatami.form.previous"/></a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${paginationNext != null}">
+                                    <li>
+                                        <a href="/tatami/account/enterprise?pagination=${paginationNext}"><fmt:message
+                                                key="tatami.form.next"/></a>
+                                    </li>
+                                </c:if>
+                            </ul>
                         </div>
                     </div>
                 </div>
