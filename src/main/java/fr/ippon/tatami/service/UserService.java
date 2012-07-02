@@ -5,7 +5,7 @@ import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.GravatarUtil;
-import fr.ippon.tatami.service.util.PasswordUtil;
+import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -51,6 +51,9 @@ public class UserService {
 
     @Inject
     private StatusRepository statusRepository;
+
+    @Inject
+    private RegistrationRepository registrationRepository;
 
     @Inject
     private IndexService indexService;
@@ -136,7 +139,7 @@ public class UserService {
 
         domainRepository.addUserInDomain(domain, login);
 
-        user.setPassword(PasswordUtil.generatePassword());
+        user.setPassword(RandomUtil.generatePassword());
         user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
@@ -204,8 +207,22 @@ public class UserService {
      * Creates a User and sends a registration e-mail.
      */
     public void registerUser(User user) {
-        this.createUser(user);
-        mailService.sendRegistrationEmail(user);
+        String registrationKey = registrationRepository.generateRegistrationKey(user.getLogin());
+        mailService.sendRegistrationEmail(registrationKey, user);
+    }
+
+    public String validateRegistration(String key) {
+        if (log.isDebugEnabled()) {
+            log.debug("Validating registration for key " + key);
+        }
+        String login = registrationRepository.getLoginByRegistrationKey(key);
+        if (login != null) {
+            User user = new User();
+            user.setLogin(login);
+            createUser(user);
+            mailService.sendValidationEmail(user);
+        }
+        return login;
     }
 
     public void followUser(String usernameToFollow) {

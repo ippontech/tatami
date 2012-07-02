@@ -47,10 +47,17 @@ public class HomeController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
         log.debug("Registration page");
-        // TODO validate email
         User user = new User();
         user.setLogin(email);
         userService.registerUser(user);
         return "redirect:/tatami/login";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView validateRegistration(@RequestParam String key) {
+        ModelAndView mv = new ModelAndView("register");
+        String login = userService.validateRegistration(key);
+        mv.addObject("login", login);
+        return mv;
     }
 }
