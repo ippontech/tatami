@@ -61,7 +61,7 @@ public class CassandraDomainRepository implements DomainRepository {
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
                 .setKey(domain)
-                .setRange(null, null, true, size)
+                .setRange(null, null, false, size)
                 .execute()
                 .get();
 
