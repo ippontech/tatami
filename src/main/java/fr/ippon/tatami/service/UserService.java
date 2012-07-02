@@ -211,16 +211,34 @@ public class UserService {
         mailService.sendRegistrationEmail(registrationKey, user);
     }
 
+    public void lostPassword(User user) {
+        String registrationKey = registrationRepository.generateRegistrationKey(user.getLogin());
+        mailService.sendLostPasswordEmail(registrationKey, user);
+    }
+
     public String validateRegistration(String key) {
         if (log.isDebugEnabled()) {
             log.debug("Validating registration for key " + key);
         }
         String login = registrationRepository.getLoginByRegistrationKey(key);
         if (login != null) {
-            User user = new User();
-            user.setLogin(login);
-            createUser(user);
-            mailService.sendValidationEmail(user);
+            User existingUser = getUserByLogin(login);
+            if (existingUser != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Reinitializing password for user " + login);
+                }
+                existingUser.setPassword(RandomUtil.generatePassword());
+                userRepository.updateUser(existingUser);
+                mailService.sendPasswordReinitializedEmail(existingUser);
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("Validating user " + login);
+                }
+                User user = new User();
+                user.setLogin(login);
+                createUser(user);
+                mailService.sendValidationEmail(user);
+            }
         }
         return login;
     }

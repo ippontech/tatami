@@ -68,7 +68,29 @@ public class MailService {
         sendEmail(user, subject, text);
     }
 
+    @Async
+    public void sendLostPasswordEmail(String registrationKey, User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending lost password e-mail to User '" + user.getLogin() + "'...");
+        }
+        String subject = "Tatami lost password";
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Someone asked to re-initialize your password."
+                + "\n\n"
+                + "If you want to re-initialize your password, please click on the link below : "
+                + "\n\n"
+                + tatamiUrl + "/tatami/register?key=" + registrationKey
+                + "\n\n"
+                + "If you do not want to re-initialize your password, you can safely ignore this message "
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
 
+        sendEmail(user, subject, text);
+    }
+
+    @Async
     public void sendValidationEmail(User user) {
         if (log.isDebugEnabled()) {
             log.debug("Sending validation e-mail to User '" + user.getLogin() + "'...");
@@ -78,6 +100,24 @@ public class MailService {
                 + user.getLogin()
                 + ",\n\n"
                 + "Your Tatami account has been validated, here is your password : "
+                + "\n\n"
+                + user.getPassword()
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(user, subject, text);
+    }
+
+    @Async
+    public void sendPasswordReinitializedEmail(User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() + "'...");
+        }
+        String subject = "Tatami password re-initialized";
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Your Tatami password has been re-initialized, here is your new password : "
                 + "\n\n"
                 + user.getPassword()
                 + "\n\n"

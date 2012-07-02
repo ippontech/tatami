@@ -15,6 +15,7 @@
     <http pattern="/tatami/login" security="none"/>
     <http pattern="/tatami/about" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
+    <http pattern="/tatami/lostpassword/**" security="none"/>
     <http pattern="/tatami/404-error" security="none"/>
     <http pattern="/tatami/500-error" security="none"/>
 
@@ -23,7 +24,7 @@
         <form-login
                 login-processing-url="/tatami/authentication"
                 login-page="/tatami/login"
-                authentication-failure-url="/tatami/login?error=true"
+                authentication-failure-url="/tatami/login?action=loginFailure"
                 default-target-url="/tatami/"
                 always-use-default-target="true"/>
         <logout logout-url="/tatami/logout"

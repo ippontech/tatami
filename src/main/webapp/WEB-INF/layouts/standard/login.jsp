@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -11,6 +12,31 @@
 <jsp:include page="includes/topmenu.jsp"/>
 
 <div class="container mainPanel">
+    <c:if test="${action eq 'register'}">
+        <div class="alert alert-info">
+            <fmt:message key="tatami.register.msg"/>
+        </div>
+    </c:if>
+    <c:if test="${action eq 'registerFailure'}">
+        <div class="alert alert-error">
+            <fmt:message key="tatami.register.msg.error"/>
+        </div>
+    </c:if>
+    <c:if test="${action eq 'loginFailure'}">
+        <div class="alert alert-error">
+            <fmt:message key="tatami.authentification.error"/>
+        </div>
+    </c:if>
+    <c:if test="${action eq 'lostPassword'}">
+        <div class="alert alert-info">
+            <fmt:message key="tatami.lost.password.msg"/>
+        </div>
+    </c:if>
+    <c:if test="${action eq 'lostPasswordFailure'}">
+        <div class="alert alert-error">
+            <fmt:message key="tatami.lost.password.msg.error"/>
+        </div>
+    </c:if>
     <div class="row">
         <div class="span5 offset2">
             <h1><fmt:message key="tatami.presentation"/></h1>
@@ -37,7 +63,7 @@
             </p>
             <form action="/tatami/register" method="post" class="well" accept-charset="utf-8">
                 <fieldset>
-                    <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input id="email" name="email"
+                    <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input name="email"
                                                                                    type="email" required="required"
                                                                                    autofocus class="input-xlarge"
                                                                                    placeholder="Your e-mail..."/>
@@ -71,6 +97,24 @@
 
                 <button type="submit" class="btn btn-success"><fmt:message key="tatami.authentificate"/></button>
             </form>
+
+            <button class="btn btn-info" data-toggle="collapse" data-target="#lostPasswordDiv">
+                <fmt:message key="tatami.lost.password.title"/>
+            </button>
+            <div id="lostPasswordDiv" class="collapse">
+                <form action="/tatami/lostpassword" method="post" class="well" accept-charset="utf-8">
+                    <fieldset>
+                        <label><fmt:message key="tatami.login"/>&nbsp;:</label> <input name="email"
+                                                                                       type="email" required="required"
+                                                                                       autofocus class="input-xlarge"
+                                                                                       placeholder="Your e-mail..."/>
+                    </fieldset>
+                    </label>
+
+                    <button type="submit" class="btn btn-success"><fmt:message
+                            key="tatami.lost.password.button"/></button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

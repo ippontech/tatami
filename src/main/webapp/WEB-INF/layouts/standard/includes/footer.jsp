@@ -19,6 +19,7 @@
 <script src="/assets/js/bootstrap/2.0.4/bootstrap-tooltip.js"></script>
 <script src="/assets/js/bootstrap/2.0.4/bootstrap-popover.js"></script>
 <script src="/assets/js/bootstrap/2.0.4/bootstrap-typeahead.js"></script>
+<script src="/assets/js/bootstrap/2.0.4/bootstrap-collapse.js"></script>
 <script src="/assets/js/tatami/standard/shortcut.js"></script>
 <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
 <script src="/assets/js/mustache/mustache.js"></script>
