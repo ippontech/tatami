@@ -5,10 +5,14 @@ import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 /**
@@ -23,6 +27,16 @@ public class TimelineController {
 
     @Inject
     private TimelineService timelineService;
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public void handleConstraintViolationException(ConstraintViolationException cve, HttpServletResponse response) {
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        if (log.isDebugEnabled()) {
+            for (ConstraintViolation cv : cve.getConstraintViolations()) {
+                log.debug("Violation : " + cv.getMessage());
+            }
+        }
+    }
 
     /**
      * POST /statuses/update -> create a new Status

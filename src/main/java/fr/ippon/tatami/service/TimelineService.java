@@ -274,7 +274,7 @@ public class TimelineService {
         // alerting
         if (!currentUser.getLogin().equals(status.getLogin())) {
             String content = '@' + currentUser.getUsername() + " liked your status<br/><em>_PH_...</em>";
-            int maxLength = 140 - content.length() + 4;
+            int maxLength = 500 - content.length() + 4;
             if (status.getContent().length() > maxLength) {
                 content = content.replace("_PH_", status.getContent().substring(0, maxLength));
             } else {

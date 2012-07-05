@@ -36,7 +36,7 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <form class="form-inline" onsubmit="return status();">
-                            <textarea id="statusContent" rel="popover" class="focused" maxlength="140"
+                            <textarea id="statusContent" rel="popover" class="focused" maxlength="500"
                                       placeholder="<fmt:message key="tatami.status.update"/>..."></textarea>
                             <br/><br/>
                             <button type="submit" class="btn btn-primary"><fmt:message

@@ -60,7 +60,7 @@ function postStatus(callback) {
                 callback(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                status.parent().parent().find("div.error").empty().append(errorThrown);
+                status.parent().parent().find("div.error").empty().append("Your update could not be saved.");
             }
         });
     }

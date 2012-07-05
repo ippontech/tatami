@@ -101,7 +101,7 @@
 							<tr>
 								<td class="center">
 									<textarea id="statusContent" class="focused"
-										maxlength="140" 
+										maxlength="500"
 										name="content" 
 										placeholder="Type a new status..."></textarea>
 								</td>
