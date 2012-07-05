@@ -38,6 +38,15 @@
             <properties>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
             </properties>
         </profile>
         <profile>
@@ -45,6 +54,15 @@
             <properties>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
             </properties>
         </profile>
     </profiles>
@@ -319,6 +337,16 @@
     </dependencies>
     <build>
         <finalName>tatami</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log4j.xml</include>
+                    <include>META-INF/tatami/tatami.properties</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
