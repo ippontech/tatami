@@ -79,7 +79,11 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentTooLarge() {
-        String content = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789+";
+        String tmp = "0123456789";
+        String content = "";
+        for (int i = 0; i < 410; i++) {
+            content += tmp;
+        }
 
         Status status = new Status();
         status.setContent(content);
