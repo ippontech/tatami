@@ -342,8 +342,7 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>log4j.xml</include>
-                    <include>META-INF/tatami/tatami.properties</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
         </resources>
