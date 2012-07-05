@@ -1,8 +1,13 @@
+<%@ page import="fr.ippon.tatami.config.Constants" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    String googleAnalyticsKey = fr.ippon.tatami.config.Constants.GOOGLE_ANALYTICS_KEY;
+    String version = Constants.VERSION;
+    request.setAttribute("version", version);
+    String googleAnalyticsKey = Constants.GOOGLE_ANALYTICS_KEY;
     request.setAttribute("googleAnalyticsKey", googleAnalyticsKey);
+    boolean wro4jEnabled = Constants.WRO4J_ENABLED;
+    request.setAttribute("wro4jEnabled", wro4jEnabled);
 %>
 
 <head>
@@ -12,10 +17,14 @@
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 
-    <!-- Le style -->
-    <link href="/assets/css/bootstrap/2.0.4/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap/2.0.4/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/assets/css/tatami-custom.css" rel="stylesheet">
+    <c:if test="${wro4jEnabled eq false}">
+        <link href="/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="/assets/css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/assets/css/tatami-custom.css" rel="stylesheet">
+    </c:if>
+    <c:if test="${wro4jEnabled eq true}">
+        <link href="/tatami/static/${version}/all.css" rel="stylesheet">
+    </c:if>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -35,5 +44,5 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
         </script>
-        </c:if>
+    </c:if>
 </head>

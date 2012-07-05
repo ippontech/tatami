@@ -21,8 +21,8 @@
                 </ul>
                 <sec:authorize access="isAuthenticated()" >
                     <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="path/to/page.html">
+                        <li id="dropdownMenu" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#dropdownMenu">
                                 <i class="icon-user icon-white"></i>&nbsp;Compte
                                 <b class="caret"></b>
                             </a>

@@ -7,3 +7,4 @@ tatami.iws
 .project
 .settings
 target
+src/main/webapp/WEB-INF/generated-wro4j

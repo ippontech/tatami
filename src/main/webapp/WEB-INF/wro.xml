@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+    <group name='all'>
+        <css>/css/bootstrap/bootstrap.css</css>
+        <css>/css/bootstrap/bootstrap-responsive.css</css>
+        <css>/css/tatami-custom.css</css>
+        <js>/js/bootstrap/2.0.4/bootstrap.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-tab.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-tooltip.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-popover.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-typeahead.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-collapse.js</js>
+        <js>/js/bootstrap/2.0.4/bootstrap-dropdown.js</js>
+        <js>/js/tatami/standard/shortcut.js</js>
+        <js>/js/mustache/mustache.js</js>
+        <js>/js/tatami/standard/tatami.utils.js</js>
+        <js>/js/tatami/standard/tatami.status.js</js>
+        <js>/js/tatami/standard/tatami.users.js</js>
+        <js>/js/tatami/standard/tatami.ajax.js</js>
+        <js>/js/tatami/standard/tatami.js</js>
+    </group>
+</groups>
