@@ -1,0 +1,111 @@
+/*
+  Fix Navbar
+*/
+
+.navbar .brand {
+  padding: 8px 20px 8px;
+}
+
+.navbar-search .search-query {
+  margin-bottom: 0px;
+}
+
+/*
+  Profile Stats table
+*/
+
+.nopadding {
+  padding: 5px;
+}
+
+.nomargin {
+  margin: 5px;
+}
+
+/*
+  Profile Stats table desktop
+*/
+
+.text-center {
+  text-align: center
+}
+
+.table-center td, .table-center th {
+  text-align: center
+}
+
+/*
+  Profile Stats table tablet
+*/
+
+.table-right th {
+  text-align: left;
+  width: 100px;
+}
+.table-right td {
+  text-align: right;
+}
+
+.alert-info {
+  padding-right: 14px;
+}
+
+
+.userStatus {
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 110%;
+}
+.userStatus:hover {
+    text-decoration: none;
+    color: #08C;
+}
+
+.userStatus em {
+    font-size: 90%;
+    color: #808080;
+    font-weight: normal;
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+}
+
+
+/*
+  Responsive design
+*/
+
+/*
+  Fix input width on phone
+*/
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+  [class*="span"], .row-fluid [class*="span"] {
+    width: 100%;
+  }
+
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+}
+ 
+/* Large desktop */
+@media (min-width: 1200px) {
+}
+
+

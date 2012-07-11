@@ -9,26 +9,11 @@
     </div>
 </footer>
 
+
 <!-- Le javascript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-dropdown.js"></script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-tab.js"></script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-tooltip.js"></script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-popover.js"></script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-typeahead.js"></script>
-<script src="/assets/js/bootstrap/2.0.4/bootstrap-collapse.js"></script>
-<script src="/assets/js/tatami/standard/shortcut.js"></script>
-<script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
-<script src="/assets/js/mustache/mustache.js"></script>
+================================================== -->
 
-<script src="/assets/js/tatami/standard/tatami.utils.js"></script>
-<script src="/assets/js/tatami/standard/tatami.status.js"></script>
-<script src="/assets/js/tatami/standard/tatami.users.js"></script>
-<script src="/assets/js/tatami/standard/tatami.ajax.js"></script>
-<script src="/assets/js/tatami/standard/tatami.js"></script>
-
-<!-- Mustache templates -->
-<div id="mustache"></div>
+<script src="/assets/js/jquery-min.js"></script>
+<script src="/assets/js/bootstrap-min.js"></script>
+<script src="/assets/js/underscore-min.js"></script>
+<script src="/assets/js/backbone-min.js"></script>

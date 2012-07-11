@@ -3,56 +3,69 @@
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-        <div id="topmenu" class="container">
+        <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/tatami/"><img
-                    src="${request.getContextPath}/assets/img/ippon-logo.png">&nbsp;<fmt:message
-                    key="tatami.title"/></a>
-
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="active"><a href="/tatami/"><i class="icon-home icon-white"></i>&nbsp;<fmt:message
-                            key="tatami.home"/></a></li>
-                    <li><a href="/tatami/about"><i class="icon-info-sign icon-white"></i>&nbsp;<fmt:message
-                            key="tatami.about"/></a></li>
+            <a class="brand" href="#"><img src="/assets/img/ippon-logo.png" alt="Ippon Technologies Logo"><fmt:message
+                    key="tatami.title"/></a> <div class="nav-collapse">
+            <ul class="nav">
+                <li class="active">
+                    <a href="/tatami/">
+                        <i class="icon-home icon-white"></i> <fmt:message
+                            key="tatami.home"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="/tatami/about">
+                        <i class="icon-info-sign icon-white"></i> <fmt:message
+                            key="tatami.about"/>
+                    </a>
+                </li>
+            </ul>
+            <sec:authorize access="isAuthenticated()" >
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-user icon-white"></i> Account
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/tatami/account">
+                                    <i class="icon-user"></i> <fmt:message
+                                        key="tatami.menu.profile"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/password">
+                                    <i class="icon-lock"></i> <fmt:message
+                                        key="tatami.menu.password"/>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/tatami/account/enterprise">
+                                    <i class="icon-globe"></i> <fmt:message
+                                        key="tatami.menu.enterprise"/></a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/tatami/logout">
+                                    <i class="icon-off"></i> <fmt:message
+                                        key="tatami.logout"/>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-                <sec:authorize access="isAuthenticated()" >
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="path/to/page.html">
-                                <i class="icon-user icon-white"></i>&nbsp;Compte
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/tatami/account"><i class="icon-user"></i>&nbsp;<fmt:message
-                                        key="tatami.menu.profile"/></a></li>
-                                <li><a href="/tatami/account/password"><i class="icon-lock"></i>&nbsp;<fmt:message
-                                        key="tatami.menu.password"/></a></li>
-                                <li class="divider"></li>
-                                <li><a href="/tatami/account/enterprise"><i class="icon-globe"></i>&nbsp;<fmt:message
-                                        key="tatami.menu.enterprise"/></a></li>
-                                <li class="divider"></li>
-                                <li><a href="/tatami/logout"><i class="icon-off"></i>&nbsp;<fmt:message
-                                        key="tatami.logout"/></a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav pull-right">
-                        <form id="global-status-search" class="well form-search" action="/tatami/rest/search"
-                              method="post">
-                            <input type="hidden" name="page" value="0"/>
-                            <input type="hidden" name="rpp" value="20"/>
-                            <input type="text" id="searchQuery" name="q" class="input-medium search-query"
-                                   placeholder="<fmt:message key="tatami.search.placeholder"/>">
-                            <button type="submit" class="btn"><fmt:message
-                                    key="tatami.search.button"/></button>
-                        </form>
-                    </ul>
-                </sec:authorize>
-            </div>
+                <form class="navbar-search pull-right" action="">
+                    <input class="search-query span2" placeholder="Search" type="text">
+                </form>
+            </sec:authorize>
+        </div>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 data
 .idea
+*.iml
 tatami.iml
 tatami.ipr
 tatami.iws
