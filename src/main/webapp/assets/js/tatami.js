@@ -1,7 +1,10 @@
 
 $(function() {
 
-  _.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
+  _.templateSettings = {
+      interpolate: /\<\@\=(.+?)\@\>/gim,
+      evaluate: /\<\@(.+?)\@\>/gim
+  };
 
   var app = window.app = _.extend({
     views: {}
@@ -158,7 +161,6 @@ $(function() {
 
     initialize: function() {
       $(this.el).addClass('row-fluid');
-
     },
 
     events: {
@@ -192,15 +194,77 @@ $(function() {
     }
   });
 
+  var SuggestCollection = Backbone.Collection.extend({
+    url : function(){
+      return '/tatami/rest/users/suggestions';
+    }
+  });
+
+  var SuggestView = Backbone.View.extend({
+    template: _.template($('#profile-follow-suggest-empty').html()),
+
+    initialize: function() {
+      var self = this;
+
+      this.model = new SuggestCollection();
+
+      this.model.bind('reset', this.render, this);
+      this.model.bind('add', function(model, collection, options) {
+        self.addItem(model, options.index);
+      }, this);
+
+      this.model.fetch();
+    },
+
+    render: function() {
+      $(this.el).empty();
+      if(this.model.length > 0)
+        _.each(this.model.models, this.addItem, this);
+      else
+        $(this.el).html(this.template());
+      return $(this.el);
+    },
+
+    addItem: function(item, index) {
+      var el = new TimeLineItemView({
+        model: item
+      }).render();
+      if(index === 0)
+        $(this.el).prepend(el);
+      else
+        $(this.el).append(el);
+    }
+  });
+
+  var SuggestItemView = Backbone.View.extend({
+    tagName: 'td',
+    template: _.template($('#profile-follow-suggest-item').html()),
+
+
+    initialize: function() {
+    },
+
+    render: function() {
+      var $el = $(this.el);
+      $el.html(this.template({follow:this.model.toJSON()}));
+      return $(this.el);
+    }
+  });
+
   var FollowView = Backbone.View.extend({
+    template: _.template($('#profile-follow-suggest').html()),
+
     initialize: function() {
       this.views = {};
       this.views.form = new FollowFormView();
+      this.views.suggest = new SuggestView();
     },
 
     render: function() {
       $(this.el).empty();
       $(this.el).append(this.views.form.render());
+      $(this.el).append(this.template());
+      $(this.el).find('#follow-suggest').html(this.views.suggest.render());
 
       return $(this.el);
     }
@@ -286,11 +350,73 @@ $(function() {
     }
   });
 
+  var StatusDelete = Backbone.Model.extend({
+    url: function(){
+      return '/tatami/rest/statuses/destroy/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+      this.model = model;
+    }
+  });
+
+  var StatusAddFavorite = Backbone.Model.extend({
+    url: function(){
+      return '/tatami/rest/favorites/create/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+      this.model = model;
+    }
+  });
+
+  var StatusRemoveFavorite = Backbone.Model.extend({
+    url: function(){
+      return '/tatami/rest/favorites/destroy/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+      this.model = model;
+    }
+  });
+
   var TimeLineItemView = Backbone.View.extend({
     template: _.template($('#timeline-item').html()),
 
     initialize: function() {
       $(this.el).addClass('alert alert-info');
+
+      this.model.bind('destroy', this.remove, this);
+    },
+
+    events: {
+      'click .status-action-favoris': 'favorisAction',
+      'click .status-action-remove': 'removeAction',
+    },
+
+    favorisAction: function() {
+      var self = this;
+      var sd;
+      if(this.model.get('favorite') === true)
+        sd = new StatusRemoveFavorite(this.model);
+      else
+        sd = new StatusAddFavorite(this.model);
+
+      sd.save(null, {
+        success: function(){
+          self.model.set('favorite', !self.model.get('favorite'));
+          self.render();
+        }
+      });
+    },
+
+    removeAction: function() {
+      var self = this;
+      var sd = new StatusDelete(this.model);
+
+      sd.save(null, {
+        success: function(){
+          app.trigger('refreshProfile');
+          self.model.destroy();
+        }
+      });
     },
 
     render: function() {
@@ -451,12 +577,12 @@ $(function() {
   $('#timeline').html($(timeline.render()));
   app.on('refreshTimeline', function(){timeline.trigger('new');});
 
-  var favoriscollection = new StatusCollection();
+  /*var favoriscollection = new StatusCollection();
   favoriscollection.url = '/tatami/rest/favorites';
   var favoris = app.views.favoris = new TimeLinePanelView({
     model: favoriscollection
   });
-  $('#favoris').html($(favoris.render()));
+  $('#favoris').html($(favoris.render()));*/
 
 
 });

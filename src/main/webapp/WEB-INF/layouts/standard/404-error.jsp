@@ -13,16 +13,10 @@
 
 <div class="container-fluid mainPanel">
     <div class="row">
-        <div class="span2">&nbsp;</div>
-        <div class="span8">
-            <table>
-                <tr>
-                    <td><h1><fmt:message key="tatami.404"/></h1></td>
-                    <td><img src="/assets/img/404-error.jpg" width="500" height="570"/></td>
-                </tr>
-            </table>
-        </div>
-        <div class="span2">&nbsp;</div>
+        <div class="offset2 span8 text-center">
+            <h1><fmt:message key="tatami.404"/></h1>
+           <img src="/assets/img/404.jpg">
+       </div>
     </div>
 </div>
 

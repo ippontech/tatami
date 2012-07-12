@@ -79,6 +79,10 @@
     height: 32px;
 }
 
+.status-actions {
+  padding-right: 10px;
+}
+
 
 /*
   Responsive design
@@ -109,3 +113,40 @@
 }
 
 
+
+
+
+#footer {
+    text-align: center;
+    padding-top: 5px;
+    border-top: 1px dotted #cccccc;
+    background-color: #ffffff;
+}
+
+#footer_ippon {
+    background-image: url(../img/ippon-logo-small.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_github {
+    background-image: url(../img/github.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_blog {
+    background-image: url(../img/blog.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+#footer_twitter {
+    background-image: url(../img/twitter.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}

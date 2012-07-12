@@ -4,11 +4,11 @@
 
 <script type="text/template" id="profile-infos">
   <div class="span12 text-center">
-    <a href="/tatami/profile/{{profile.username}}" title="<fmt:message key="tatami.user.profile.show"/> {{profile.firstName}} {{profile.lastName}}">
-      <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/{{ profile.gravatar }}?s=64" alt="{{ profile.firstName }} {{ profile.lastName }}"/>
-      {{profile.firstName}} {{profile.lastName}}
+    <a href="/tatami/profile/<@= profile.username @>" title="<fmt:message key="tatami.user.profile.show"/> <@= profile.firstName @> <@= profile.lastName @>">
+      <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
+      <@=profile.firstName@> <@=profile.lastName@>
       <br/>
-      @{{profile.username}}
+      @<@=profile.username@>
     </a>
   </div>
 </script>
@@ -26,9 +26,9 @@
   </thead>
   <tbody>
   <tr>
-  <td><span class="badge badge-info">{{ profile.statusCount }}</span></td>
-  <td><span class="badge badge-info">{{ profile.friendsCount }}</span></td>
-  <td><span class="badge badge-info">{{ profile.followersCount }}</span></td>
+  <td><span class="badge badge-info"><@= profile.statusCount @></span></td>
+  <td><span class="badge badge-info"><@= profile.friendsCount @></span></td>
+  <td><span class="badge badge-info"><@= profile.followersCount @></span></td>
   </tr>
   </tbody>
   </table>
@@ -37,16 +37,16 @@
     <thead>
       <tr>
         <th><fmt:message key="tatami.badge.status"/></th>
-        <td><span class="badge badge-info">{{ profile.statusCount }}</span></td>
+        <td><span class="badge badge-info"><@= profile.statusCount @></span></td>
       </tr>
     </thead>
     <tr>
       <th><fmt:message key="tatami.badge.followed"/></th>
-      <td><span class="badge badge-info">{{ profile.friendsCount }}</span></td>
+      <td><span class="badge badge-info"><@= profile.friendsCount @></span></td>
     </tr>
     <tr>
       <th><fmt:message key="tatami.badge.followers"/></th>
-      <td><span class="badge badge-info">{{ profile.followersCount }}</span></td>
+      <td><span class="badge badge-info"><@= profile.followersCount @></span></td>
     </tr>
   </table>
 </div>
@@ -65,12 +65,23 @@
 
 <script type="text/template" id="timeline-item">
   <div class="nopadding nomargin">
-    <a href="/tatami/profile/{{status.username}}" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> {{status.firstName}} {{status.lastName}}"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/{{status.gravatar}}?s=64" alt="{{status.firstName}} {{status.lastName}}"/>
-      {{status.firstName}} {{status.lastName}}<em>@{{status.username}}</em>
+    <a href="/tatami/profile/<@=status.username@>" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> <@=status.firstName@> <@=status.lastName@>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>"/>
+      <@=status.firstName@> <@=status.lastName@><em>@<@=status.username@></em>
     </a>
-    <p class="pull-right">{{status.prettyPrintStatusDate}}</p>
+    <p class="pull-right"><@=status.prettyPrintStatusDate@></p>
+    <div class="pull-right status-actions">
+      <a href="/tatami/<@=status.username@>/status/<@= status.statusId @>">
+        <i class="icon-eye-open"></i>
+      </a>
+      <a href="#" class="status-action-favoris">
+      <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
+      </a>
+      <a href="#" class="status-action-remove">
+      <i class="icon-remove"></i>
+      </a>
+    </div>
   </div>
-  <div class="well nopadding nomargin">{{status.content}}</div>
+  <div class="well nopadding nomargin"><@=status.content@></div>
 </script>
 
 <script type="text/template" id="profile-follow-form">
@@ -86,6 +97,32 @@
       <input type='submit' class="span12 btn btn-primary" value="Follow" />
     </div>
   </fieldset>
+</script>
+<script type="text/template" id="profile-follow-suggest">
+  <!-- Follow another user -->
+  <div class="row-fluid">
+      <div class="well nopadding">
+          <table class="table nomargin">
+              <thead>
+                  <tr>
+                      <th>
+                          <i class="icon-random icon-white"></i> <strong>Who to follow</strong>
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="follow-suggest">
+              </tbody>
+          </table>
+      </div>
+  </div>
+</script>
+
+<script type="text/template" id="profile-follow-suggest-empty">
+  <td>No new user to follow today.</td>
+</script>
+
+<script type="text/template" id="profile-follow-suggest-item">
+  <@=follow.username@>
 </script>
 
 <script type="text/template" id="timeline-new">
