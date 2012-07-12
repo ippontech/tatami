@@ -1,4 +1,5 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <footer>
     <div id="footer" class="navbar navbar-fixed-bottom">
@@ -9,11 +10,18 @@
     </div>
 </footer>
 
+<!-- Le javascript -->
 
-<!-- Le javascript
-================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
 
-<script src="/assets/js/jquery-min.js"></script>
-<script src="/assets/js/bootstrap-min.js"></script>
-<script src="/assets/js/underscore-min.js"></script>
-<script src="/assets/js/backbone-min.js"></script>
+<c:if test="${wro4jEnabled eq false}">
+    <script src="/assets/js/jquery-min.js"></script>
+    <script src="/assets/js/bootstrap-min.js"></script>
+    <script src="/assets/js/underscore-min.js"></script>
+    <script src="/assets/js/backbone-min.js"></script>
+</c:if>
+<c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static/${version}/all.js"></script>
+</c:if>

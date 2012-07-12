@@ -96,12 +96,13 @@
     <script src="/assets/js/tatami.js"></script>
 
     <script type="text/javascript">
-    google.load("visualization", "1", {packages:["corechart"]});
-    var login = "<sec:authentication property="principal.username"/>";
-    var username = "${user.username}";
-    var tag = "${tag}";
-    var searchQuery = "${search}";
-    var page = "home";
+
+        google.load("visualization", "1", {packages:["corechart"]});
+        var login = "<sec:authentication property="principal.username"/>";
+        var username = "${user.username}";
+        var tag = "${tag}";
+        var searchQuery = "${search}";
+        var page = "home";
 
     </script>
 

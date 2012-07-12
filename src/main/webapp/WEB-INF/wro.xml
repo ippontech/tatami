@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+    <group name='all'>
+        <css>/css/bootstrap-min.css</css>
+        <css>/css/bootstrap-responsive-min.css</css>
+        <css>/css/tatami.css</css>
+
+        <js>/js/bootstrap-min.js</js>
+        <js>/js/underscore-min.js</js>
+        <js>/js/backbone-min.js</js>
+        <js>/js/jquery-min.js</js>
+        <js>/js/tatami.js</js>
+    </group>
+</groups>

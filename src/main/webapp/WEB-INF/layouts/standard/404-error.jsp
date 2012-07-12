@@ -11,11 +11,11 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container-fluid mainPanel">
+<div class="container mainPanel">
     <div class="row">
         <div class="offset2 span8 text-center">
             <h1><fmt:message key="tatami.404"/></h1>
-           <img src="/assets/img/404.jpg">
+           <img src="/assets/img/404-error.jpg">
        </div>
     </div>
 </div>

@@ -47,6 +47,8 @@
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
             </properties>
         </profile>
         <profile>
@@ -63,6 +65,8 @@
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
             </properties>
         </profile>
     </profiles>
@@ -383,6 +387,32 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>1.4.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <targetGroups>all</targetGroups>
+                    <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                    <contextFolder>${basedir}/src/main/webapp/assets</contextFolder>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-extensions</artifactId>
+                        <version>1.4.7</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
