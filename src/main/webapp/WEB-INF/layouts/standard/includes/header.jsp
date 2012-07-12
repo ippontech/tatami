@@ -22,6 +22,7 @@
         <style type="text/css">
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+                padding-bottom: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
         </style>
         <link href="/assets/css/bootstrap-responsive-min.css" rel="stylesheet">

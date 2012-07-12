@@ -93,7 +93,6 @@
     <jsp:include page="includes/footer.jsp"/>
 
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script src="/assets/js/tatami.js"></script>
 
     <script type="text/javascript">
 
@@ -105,6 +104,8 @@
         var page = "home";
 
     </script>
+    
+    <script src="/assets/js/tatami-home.js"></script>
 
 </body>
 </html>
