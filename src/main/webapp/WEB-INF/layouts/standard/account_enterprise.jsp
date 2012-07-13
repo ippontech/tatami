@@ -76,12 +76,27 @@
                                     <tbody>
                                     <c:forEach items="${users}" var="u">
                                         <tr>
-                                            <td><a href="/tatami/profile/${u.username}/">${u.username}</a></td>
-                                            <td class="hidden-phone">${u.firstName}</td>
-                                            <td class="hidden-phone">${u.lastName}</td>
-                                            <td>${u.statusCount}</td>
-                                            <td class="hidden-phone">${u.friendsCount}</td>
-                                            <td>${u.followersCount}</td>
+                                            <td>
+                                                <a href="/tatami/profile/${u.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${u.username} ${u.firstName} ${u.lastName}">
+                                                    <img class="pull-left nomargin avatar avatar-small" src="http://www.gravatar.com/avatar/${u.gravatar}?s=64" alt="${u.firstName} ${u.lastName}"/>
+                                                    @${u.username}
+                                                </a>
+                                            </td>
+                                            <td class="hidden-phone">
+                                                ${u.firstName}
+                                            </td>
+                                            <td class="hidden-phone">
+                                                ${u.lastName}
+                                            </td>
+                                            <td>
+                                                ${u.statusCount}
+                                            </td>
+                                            <td class="hidden-phone">
+                                                ${u.friendsCount}
+                                            </td>
+                                            <td>
+                                                ${u.followersCount}
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

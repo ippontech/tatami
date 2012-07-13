@@ -226,7 +226,7 @@ $(function() {
     },
 
     addItem: function(item, index) {
-      var el = new TimeLineItemView({
+      var el = new SuggestItemView({
         model: item
       }).render();
       if(index === 0)
