@@ -134,9 +134,9 @@ $(function() {
     render: function() {
       $(this.el).empty();
 
-      $(this.el).append($(this.views.info.render()));
-      $(this.el).append($(this.views.stats.render()));
-      $(this.el).append($(this.views.update.render()));
+      $(this.el).append(this.views.info.render());
+      $(this.el).append(this.views.stats.render());
+      $(this.el).append(this.views.update.render());
 
       return $(this.el);
     }
@@ -280,74 +280,6 @@ $(function() {
   */
 
   var StatusCollection = Backbone.Collection.extend({
-    newStatus: function(done, context){
-      if(this.models.length === 0)
-        this.fetch({
-          success: function(){
-            done.call(context);
-          },
-          error: function() {
-            done.call(context);
-          }
-        });
-      else{
-        var self = this;
-
-        var sc = _.clone(this);
-        sc.fetch({
-          data: {
-            since_id: _.first(self.models).get('statusId')
-          },
-          success: function(){
-            sc.models.reverse()
-            _.each(sc.models, function(model, key) {
-              self.unshift(model);
-            });
-            done.call(context);
-          },
-          error: function() {
-            done.call(context);
-          }
-        });
-      }
-    },
-
-    nextStatus: function(done, context){
-      var self = this;
-      if(this.models.length === 0)
-        this.fetch({
-          success: function(){
-            if(self.models.length > 0)
-              done.call(context);
-            else
-              context.remove();
-          },
-          error: function() {
-            done.call(context);
-          }
-        });
-      else{
-        var self = this;
-        var sc = _.clone(this);
-        sc.fetch({
-          data: {
-            max_id: _.last(self.models).get('statusId')
-          },
-          success: function(){
-            _.each(sc.models, function(model, key) {
-              self.push(model);
-            });
-            if(sc.length > 0)
-              done.call(context);
-            else
-              context.remove();
-          },
-          error: function() {
-            done.call(context);
-          }
-        });
-      }
-    }
   });
 
   var StatusDelete = Backbone.Model.extend({
@@ -422,6 +354,7 @@ $(function() {
     render: function() {
       var $el = $(this.el);
       $el.html(this.template({status:this.model.toJSON()}));
+      $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
       return $(this.el);
     }
   });
@@ -464,9 +397,36 @@ $(function() {
       'click': 'newStatus'
     },
 
-    newStatus: function(){
+    newStatus: function(done, context){
       this.progress();
-      this.model.newStatus(this.render, this);
+      var self = this;
+      if(this.model.models.length === 0)
+        this.model.fetch({
+          success: function(){
+            self.render();
+          },
+          error: function() {
+            self.render();
+          }
+        });
+      else{
+        var sc = _.clone(this.model);
+        sc.fetch({
+          data: {
+            since_id: _.first(self.model.models).get('statusId')
+          },
+          success: function(){
+            sc.models.reverse()
+            _.each(sc.models, function(model, key) {
+              self.model.unshift(model);
+            });
+            self.render();
+          },
+          error: function() {
+            self.render();
+          }
+        });
+      }
     },
 
     render: function() {
@@ -498,6 +458,43 @@ $(function() {
     nextStatus: function(){
       this.progress();
       this.model.nextStatus(this.render, this);
+    },
+
+    nextStatus: function(done, context){
+      this.progress();
+      var self = this;
+      if(this.model.models.length === 0)
+        this.model.fetch({
+          success: function(){
+            if(self.model.models.length > 0)
+              self.render();
+            else
+              self.remove();
+          },
+          error: function() {
+            self.render();
+          }
+        });
+      else{
+        var sc = _.clone(this.model);
+        sc.fetch({
+          data: {
+            max_id: _.last(self.model.models).get('statusId')
+          },
+          success: function(){
+            _.each(sc.models, function(model, key) {
+              self.model.push(model);
+            });
+            if(sc.length > 0)
+              self.render();
+            else
+              self.remove();
+          },
+          error: function() {
+            self.render();
+          }
+        });
+      }
     },
 
     render: function() {
@@ -546,43 +543,426 @@ $(function() {
 
   });
 
+  /*
+    Favoris
+  */
+
+  var FavorisRefreshView = Backbone.View.extend({
+    template: _.template($('#favoris-refresh').html()),
+    progressTemplate: _.template($('#timeline-progress').html()),
+
+    initialize: function(){
+    },
+
+    events: {
+      'click': 'refreshStatus'
+    },
+
+    refreshStatus: function(done, context){
+      this.progress();
+      var self = this;
+      this.model.fetch({
+        success: function(){
+          self.render();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+    },
+
+    render: function() {
+      var $el = $(this.el);
+      $el.html(this.template());
+      this.delegateEvents();
+      return $(this.el);
+    },
+
+    progress: function() {
+      $(this.el).html(this.progressTemplate());
+      this.undelegateEvents();
+      return $(this.el);
+    }
+
+  });
+
+  var FavorisPanelView = Backbone.View.extend({
+
+    initialize: function(){
+      this.views = {};
+      this.views.timeline = new TimeLineView({
+        model : this.model
+      });
+      this.views.refresh = new FavorisRefreshView({
+        model : this.model
+      });
+
+      var self = this;
+      this.on('refresh', function() {
+        self.views.refresh.newStatus();
+      });
+
+      this.views.refresh.refreshStatus();
+
+      /*this.views.next = new TimeLineNextView({
+        model : this.model
+      });
+      this.views.next.nextStatus();
+      this.on('next', this.views.next.nextStatus, this.views.next);*/
+
+
+      app.on('refreshFavoris', this.views.refresh.refreshStatus, this.views.refresh);
+    },
+
+    render: function() {
+      $(this.el).empty();
+      $(this.el).append(this.views.refresh.render());
+      $(this.el).append(this.views.timeline.$el);
+      //$(this.el).append(this.views.next.render());
+
+      return $(this.el);
+    }
+
+  });
 
 
 
+/*
+  Tags
+*/
+
+  var TagsSearchView = Backbone.View.extend({
+    template: _.template($('#tag-search-form').html()),
+
+    tagName: 'form',
+
+    events: {
+      'submit': 'submit'
+    },
+
+    initialize: function(){
+
+      $(this.el).addClass('alert alert-info');
+
+      this.nbStatus = 20;
+      var self = this;
+      this.model.url = function() {
+        if(self.options.tag && self.options.tag !== '')
+          return '/tatami/rest/tags/' + self.options.tag + '/' + self.nbStatus;
+        else
+          return '/tatami/rest/tags/' + self.nbStatus;
+      };
+    },
+
+    submit: function(e) {
+      e.preventDefault();
+
+      var self = this;
+
+      _.each($(this.el).serializeArray(), function(input){
+        if(input.name === 'search')
+          self.options.tag =input.value;
+      });
+
+      this.search();
+    },
+
+    search: function () {
+      app.router.navigate('//tags/' + this.options.tag, {trigger: false,replace:false});
+      this.fetch();
+    },
+
+    fetch : function() {
+      this.model.fetch();
+    },
+
+    render: function () {
+      var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
+      $(this.el).html(this.template({tag: tag}));
+      return $(this.el);
+    }
+
+  });
+
+  var TagsView = Backbone.View.extend({
+    initialize: function(){
+      this.views = {};
+
+      this.model = new StatusCollection();
+
+      this.views.search = new TagsSearchView({
+        tag: this.options.tag,
+        model: this.model
+      });
+
+      this.views.list = new TimeLineView({
+        model : this.model
+      });
+
+
+      this.views.search.fetch();
+    },
+
+    render: function () {
+      $(this.el).append(this.views.search.render());
+      $(this.el).append(this.views.list.render());
+      return $(this.el);
+    }
+
+  });
 
 
 
+/*
+  Search
+*/
 
+  var SearchSearchView = Backbone.View.extend({
+    template: _.template($('#search-search-form').html()),
 
+    tagName: 'form',
 
+    events: {
+      'submit': 'submit'
+    },
 
+    initialize: function(){
 
+      $(this.el).addClass('alert alert-info');
 
+      this.nbStatus = 20;
+      var self = this;
+    },
+
+    submit: function(e) {
+      e.preventDefault();
+
+      var self = this;
+
+      _.each($(this.el).serializeArray(), function(input){
+        if(input.name === 'search')
+          self.model.options.search = input.value;
+      });
+
+      this.search();
+    },
+
+    search: function () {
+      app.router.navigate('//search/' + this.model.options.search, {trigger: false,replace:false});
+      this.fetch();
+    },
+
+    fetch : function() {
+      var self = this;
+      if(typeof this.model.options.search !== 'undefined'){
+        this.model.fetch({
+          data: {
+            q: this.model.options.search,
+            page: this.model.options.page,
+            rpp: this.model.options.rpp
+          },
+          success: function(){
+            self.model.options.page++;
+          }
+        });
+      }
+    },
+
+    render: function () {
+      var search = (typeof this.model.options.search === 'undefined')? '':this.model.options.search;
+      $(this.el).html(this.template({search: search}));
+      return $(this.el);
+    }
+
+  });
+
+  var SearchNextView = Backbone.View.extend({
+    template: _.template($('#timeline-next').html()),
+    progressTemplate: _.template($('#timeline-progress').html()),
+
+    initialize: function(){
+    },
+
+    events: {
+      'click': 'nextStatus'
+    },
+
+    nextStatus: function(){
+      this.progress();
+      this.model.nextStatus(this.render, this);
+    },
+
+    nextStatus: function(done, context){
+      this.progress();
+      var self = this;
+
+      var sc = _.clone(this.model);
+
+      var sc = new StatusCollection();
+      sc.url = '/tatami/rest/search';
+
+      sc.fetch({
+        data: {
+          q: this.model.options.search,
+          page: this.model.options.page,
+          rpp: this.model.options.rpp
+        },
+        success: function(){
+          self.model.options.page++;
+          _.each(sc.models, function(model, key) {
+            self.model.push(model);
+          });
+          if(sc.length > 0 && sc.length%self.model.options.rpp === 0)
+            self.render();
+          else
+            self.remove();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+
+    },
+
+    render: function() {
+      var $el = $(this.el);
+      $el.html(this.template());
+      this.delegateEvents();
+      return $(this.el);
+    },
+
+    progress: function() {
+      $(this.el).html(this.progressTemplate());
+      this.undelegateEvents();
+      return $(this.el);
+    }
+
+  });
+
+  var SearchView = Backbone.View.extend({
+    initialize: function(){
+      var self = this;
+
+      this.model = new StatusCollection();
+      this.model.options = {
+        search: this.options.search,
+        rpp: 2,
+        page: 0
+      };
+
+      this.model.url = '/tatami/rest/search';
+      this.model.bind('reset', function(){
+        this.options.page = 0;
+      }, this.model);
+
+      this.views = {};
+
+      this.views.search = new SearchSearchView({
+        model: this.model
+      });
+
+      this.views.list = new TimeLineView({
+        model : this.model
+      });
+
+      this.views.next = new SearchNextView({
+        model : this.model,
+
+      });
+
+      this.views.search.fetch();
+    },
+
+    render: function () {
+      $(this.el).append(this.views.search.render());
+      $(this.el).append(this.views.list.render());
+      $(this.el).append(this.views.next.render());
+      return $(this.el);
+    }
+
+  });
 
 
 /*
   Initialisation
 */
 
-  var profile = app.views.profile = new ProfileView({
-    model : new ProfileModel()
-  });
-  $('#profileContent').html($(profile.render()));
+  var Router = Backbone.Router.extend({
 
-  var timelinecollection = new StatusCollection();
-  timelinecollection.url = '/tatami/rest/statuses/home_timeline';
-  var timeline = app.views.timeline = new TimeLinePanelView({
-    model: timelinecollection
-  });
-  $('#timeline').html($(timeline.render()));
-  app.on('refreshTimeline', function(){timeline.trigger('new');});
+    initialize: function() {
+      var profile = app.views.profile = new ProfileView({
+        model : new ProfileModel()
+      });
+      $('#profileContent').html(profile.render());
+    },
 
-  /*var favoriscollection = new StatusCollection();
-  favoriscollection.url = '/tatami/rest/favorites';
-  var favoris = app.views.favoris = new TimeLinePanelView({
-    model: favoriscollection
+    selectMenu: function(menu) {
+      $('.homeMenu a').parent().removeClass('active');
+      $('.homeMenu a[href="#/' + menu + '"]').parent().addClass('active');
+    },
+
+    routes: {
+      "timeline": "timeline",
+      "favoris": "favoris",
+      "tags": "tags",
+      "tags/*tag": "tags",
+      "search": "search",
+      "search/*search": "search",
+      "*action": "timeline"
+    },
+
+    timeline: function(action) {
+      console.log(action);
+      this.selectMenu('timeline');
+      if(!app.views.timeline) {
+        var timelinecollection = new StatusCollection();
+        timelinecollection.url = '/tatami/rest/statuses/home_timeline';
+        var timeline = app.views.timeline = new TimeLinePanelView({
+          model: timelinecollection
+        });
+        app.on('refreshTimeline', function(){timeline.trigger('new');});
+      }
+      $('#tab-content').html(app.views.timeline.render());
+    },
+
+    favoris: function() {
+      this.selectMenu('favoris');
+      if(!app.views.favoris) {
+        var favoriscollection = new StatusCollection();
+        favoriscollection.url = '/tatami/rest/favorites';
+        var favoris = app.views.favoris = new FavorisPanelView({
+          model: favoriscollection
+        });
+      }
+      $('#tab-content').html(app.views.favoris.render());
+    },
+
+    tags: function(tag) {
+      this.selectMenu('tags');
+      var tags = app.views.tags = new TagsView({
+        tag: tag
+      });
+      $('#tab-content').html(app.views.tags.render());
+    },
+
+    search: function(search) {
+      if(search && search.match(/^#[a-zA-Z0-9]*$/)){
+        this.tags(search.substr(1));
+        app.router.navigate('//tags/' + search.substr(1), {trigger: true,replace:true});
+      }
+      else {
+        this.selectMenu('search');
+        var search = app.views.search = new SearchView({
+          search: search
+        });
+        $('#tab-content').html(app.views.search.render());
+      }
+    }
+
   });
-  $('#favoris').html($(favoris.render()));*/
+
+  app.router = new Router();
+  Backbone.history.start();
 
 
 });

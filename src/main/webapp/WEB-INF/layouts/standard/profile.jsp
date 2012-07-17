@@ -151,13 +151,6 @@
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "profile";
-
-    //Mustache.js templates
-    $('#mustache').load('/assets/templates_mustache/templates.html');
-
-    $(document).ready(function() {
-        initProfile();
-    });
 </script>
 </body>
 </html>

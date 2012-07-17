@@ -29,24 +29,24 @@
 
             <div class="span8">
                 <div class="tabbable">
-                    <ul class="nav nav-tabs hidden-phone">
+                    <ul class="nav nav-tabs hidden-phone homeMenu">
                         <li class="active">
-                            <a href="#timeline" data-toggle="tab">
+                            <a href="#/timeline">
                                 <i class="icon-th-list"></i> <fmt:message key="tatami.status"/>
                             </a>
                         </li>
                         <li>
-                            <a href="#favoris" data-toggle="tab">
+                            <a href="#/favoris">
                                 <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
                             </a>
                         </li>
                         <li>
-                            <a href="#tags" data-toggle="tab">
+                            <a href="#/tags">
                                 <i class="icon-tag"></i> <fmt:message key="tatami.tags"/>
                             </a>
                         </li>
                         <li>
-                            <a href="#search" data-toggle="tab">
+                            <a href="#/search">
                                 <i class="icon-search"></i> <fmt:message key="tatami.search"/>
                             </a>
                         </li>
@@ -56,32 +56,19 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#daily" data-toggle="tab"><fmt:message key="tatami.stats.status.piechart"/></a>
+                                    <a href="#/daily">
+                                        <fmt:message key="tatami.stats.status.piechart"/>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#weekly" data-toggle="tab"><fmt:message key="tatami.stats.status.punchchart"/></a>
+                                    <a href="#/weekly">
+                                        <fmt:message key="tatami.stats.status.punchchart"/>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-                    <div class="tab-content">
-                        <div id="timeline" class="tab-pane active">
-                        </div>
-                        <div id="favoris" class="tab-pane">
-                            <img src="http://pilouite.p.i.pic.centerblog.net/kbwglrnk.jpg" alt="Canard">
-                        </div>
-                        <div id="tags" class="tab-pane">
-                            <img src="http://ocean7.oiseaux.net/images/canard.colvert.phco.2g.jpg" alt="Canard">
-                        </div>
-                        <div id="search" class="tab-pane">
-                            <img src="http://sebastienpokemon.s.e.pic.centerblog.net/g1f5xk7o.jpg" alt="Canard">
-                        </div>
-                        <div id="daily" class="tab-pane">
-                            <img src="http://img25.imageshack.us/img25/4873/canardcarolinaixsponsa.jpg" alt="Canard">
-                        </div>
-                        <div id="weekly" class="tab-pane">
-                            <img src="http://arpit.oiseaux.net/images/canard.siffleur.arde.3g.jpg" alt="Canard">
-                        </div>
+                    <div id="tab-content">
                     </div>
                 </div>
             </div>
@@ -102,6 +89,12 @@
         var tag = "${tag}";
         var searchQuery = "${search}";
         var page = "home";
+
+
+        if(tag !== '')
+            $('a[href="#tags"]').tab('show');
+        else if(searchQuery !== '')
+            $('a[href="#search"]').tab('show');
 
     </script>
     

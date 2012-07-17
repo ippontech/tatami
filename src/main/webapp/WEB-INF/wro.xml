@@ -10,6 +10,7 @@
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
         <js>/js/jquery-min.js</js>
+        <js>/js/nv.d3-min.js</js>
         <js>/js/tatami-home.js</js>
     </group>
 </groups>

@@ -18,9 +18,15 @@
 
 <c:if test="${wro4jEnabled eq false}">
     <script src="/assets/js/jquery-min.js"></script>
+    <script src="/assets/js/jquery-tagLinker.js"></script>
+    <script src="/assets/js/jquery-usernameLinker.js"></script>
     <script src="/assets/js/bootstrap-min.js"></script>
     <script src="/assets/js/underscore-min.js"></script>
     <script src="/assets/js/backbone-min.js"></script>
+
+    <sec:authorize access="isAuthenticated()" >
+        <script src="/assets/js/tatami-commun.js"></script>
+    </sec:authorize>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>

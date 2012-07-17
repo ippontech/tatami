@@ -9,13 +9,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">
+            <a class="brand" href="/tatami/">
                 <img src="/assets/img/ippon-logo.png" alt="Ippon Technologies Logo">
                 <fmt:message key="tatami.title"/>
             </a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active">
+                    <li>
                         <a href="/tatami/">
                             <i class="icon-home icon-white"></i> <fmt:message
                                 key="tatami.home"/>
@@ -64,8 +64,8 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-search pull-right" action="">
-                        <input class="search-query span2" placeholder="Search" type="text">
+                    <form class="navbar-search pull-right" id="searchHeader">
+                        <input class="search-query span2" placeholder="Search" name="search" type="text">
                     </form>
                 </sec:authorize>
             </div>

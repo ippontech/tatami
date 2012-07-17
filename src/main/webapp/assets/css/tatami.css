@@ -150,3 +150,7 @@
     background-repeat: no-repeat;
     padding-left: 20px;
 }
+
+.status-content a {
+  font-weight: bold;
+}

@@ -102,14 +102,14 @@
 
 <script type="text/template" id="profile-follow-suggest-item">
   <a href="/tatami/profile/<@= follow.username @>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
-    <@= follow.firstName @> <@= follow.lastName @><em>@<@= follow.username @></em>
+    <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
   </a>
 </script>
 
 <script type="text/template" id="timeline-item">
   <div class="nopadding nomargin">
     <a href="/tatami/profile/<@=status.username@>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= status.username @> <@=status.firstName@> <@=status.lastName@>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>"/>
-      <@=status.firstName@> <@=status.lastName@><em>@<@=status.username@></em>
+      <@=status.firstName@> <@=status.lastName@> <em>@<@=status.username@></em>
     </a>
     <p class="pull-right"><@=status.prettyPrintStatusDate@></p>
     <div class="pull-right status-actions">
@@ -124,11 +124,15 @@
       </a>
     </div>
   </div>
-  <div class="well nopadding nomargin"><@=status.content@></div>
+  <div class="well nopadding nomargin status-content"><@=status.content@></div>
 </script>
 
 <script type="text/template" id="timeline-new">
   <div class="text-center alert alert-info">New</div>
+</script>
+
+<script type="text/template" id="favoris-refresh">
+  <div class="text-center alert alert-info">Refresh</div>
 </script>
 
 <script type="text/template" id="timeline-next">
@@ -140,5 +144,17 @@
     <div class="progress progress-striped active">
       <div class="bar" style="width: 100%;"></div>
     </div>
+  </div>
+</script>
+
+<script type="text/template" id="tag-search-form">
+  <div class="row-fluid">
+    <input class="span12" name="search" value="<@= tag @>" type="text" placeholder="tag">
+  </div>
+</script>
+
+<script type="text/template" id="search-search-form">
+  <div class="row-fluid">
+    <input class="span12" name="search" value="<@= search @>" type="text" placeholder="search">
   </div>
 </script>
