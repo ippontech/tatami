@@ -29,7 +29,7 @@
 
             <div class="span8">
                 <div class="tabbable">
-                    <ul class="nav nav-tabs hidden-phone homeMenu">
+                    <ul class="nav nav-tabs homeMenu">
                         <li class="active">
                             <a href="#/timeline">
                                 <i class="icon-th-list"></i> <fmt:message key="tatami.status"/>

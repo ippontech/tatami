@@ -6,9 +6,20 @@ $(function() {
       evaluate: /\<\@(.+?)\@\>/gim
   };
 
-  var app = window.app = _.extend({
-    views: {}
-  }, Backbone.Events);
+  var app;
+
+  if(!window.app){
+    var app = window.app = _.extend({
+      views: {},
+      View: {},
+      Collection: {},
+      Model: {},
+      Router: {}
+    }, Backbone.Events);
+  }
+  else {
+    app = window.app;
+  }
 
 
 
@@ -18,7 +29,7 @@ $(function() {
     Profile
   */
 
-  var ProfileModel = Backbone.Model.extend({
+  var ProfileModel = app.Model.ProfileModel = Backbone.Model.extend({
     defaults: {
       'gravatar': '',
       'firstName': '',
@@ -29,11 +40,11 @@ $(function() {
     }
   });
 
-  var StatusUpdateModel = Backbone.Model.extend({
+  var StatusUpdateModel = app.Model.StatusUpdateModel = Backbone.Model.extend({
     url : '/tatami/rest/statuses/update'
   });
 
-  var ProfileInfoView = Backbone.View.extend({
+  var ProfileInfoView = app.View.ProfileInfoView = Backbone.View.extend({
     template: _.template($('#profile-infos').html()),
 
     initialize: function() {
@@ -49,7 +60,7 @@ $(function() {
     }
   });
 
-  var ProfileStatsView = Backbone.View.extend({
+  var ProfileStatsView = app.View.ProfileStatsView = Backbone.View.extend({
     template: _.template($('#profile-stats').html()),
 
     initialize: function() {
@@ -65,7 +76,7 @@ $(function() {
     }
   });
 
-  var ProfileUpdateView = Backbone.View.extend({
+  var ProfileUpdateView = app.View.ProfileUpdateView = Backbone.View.extend({
     tagName: 'form',
     template: _.template($('#profile-update').html()),
 
@@ -108,7 +119,7 @@ $(function() {
     }
   });
 
-  var ProfileView = app.views.profile = Backbone.View.extend({
+  var ProfileView = app.View.profile = Backbone.View.extend({
     initialize: function() {
       $(this.el).addClass('row-fluid');
 
@@ -149,13 +160,9 @@ $(function() {
   /*
     Profile Follow
   */
-  var FollowModel = Backbone.Model.extend({
-    url : function(){
-      return '/tatami/rest/friendships/create';
-    }
-  });
+  var FollowModel = app.Model.FollowModel;
 
-  var FollowFormView = Backbone.View.extend({
+  var FollowFormView = app.View.FollowFormView = Backbone.View.extend({
     tagName: 'form',
     template: _.template($('#profile-follow-form').html()),
 
@@ -194,13 +201,13 @@ $(function() {
     }
   });
 
-  var SuggestCollection = Backbone.Collection.extend({
+  var SuggestCollection = app.Collection.SuggestCollection = Backbone.Collection.extend({
     url : function(){
       return '/tatami/rest/users/suggestions';
     }
   });
 
-  var SuggestView = Backbone.View.extend({
+  var SuggestView = app.View.SuggestView = Backbone.View.extend({
     template: _.template($('#profile-follow-suggest-empty').html()),
 
     initialize: function() {
@@ -236,7 +243,7 @@ $(function() {
     }
   });
 
-  var SuggestItemView = Backbone.View.extend({
+  var SuggestItemView = app.View.SuggestItemView = Backbone.View.extend({
     tagName: 'td',
     template: _.template($('#profile-follow-suggest-item').html()),
 
@@ -251,7 +258,7 @@ $(function() {
     }
   });
 
-  var FollowView = Backbone.View.extend({
+  var FollowView = app.View.FollowView = Backbone.View.extend({
     template: _.template($('#profile-follow-suggest').html()),
 
     initialize: function() {
@@ -270,123 +277,25 @@ $(function() {
     }
   });
 
-  var follow = app.views.follow = new FollowView();
-  $('#profileFollow').html(follow.render());
-
 
 
   /*
     Timeline
   */
 
-  var StatusCollection = Backbone.Collection.extend({
-  });
+  var StatusCollection = app.Collection.StatusCollection;
 
-  var StatusDelete = Backbone.Model.extend({
-    url: function(){
-      return '/tatami/rest/statuses/destroy/' + this.model.get('statusId');
-    },
-    initialize: function(model) {
-      this.model = model;
-    }
-  });
+  var StatusDelete = app.Model.StatusDelete;
 
-  var StatusAddFavorite = Backbone.Model.extend({
-    url: function(){
-      return '/tatami/rest/favorites/create/' + this.model.get('statusId');
-    },
-    initialize: function(model) {
-      this.model = model;
-    }
-  });
+  var StatusAddFavorite = app.Model.StatusAddFavorite;
 
-  var StatusRemoveFavorite = Backbone.Model.extend({
-    url: function(){
-      return '/tatami/rest/favorites/destroy/' + this.model.get('statusId');
-    },
-    initialize: function(model) {
-      this.model = model;
-    }
-  });
+  var StatusRemoveFavorite = app.Model.StatusRemoveFavorite;
 
-  var TimeLineItemView = Backbone.View.extend({
-    template: _.template($('#timeline-item').html()),
+  var TimeLineItemView = app.View.TimeLineItemView;
 
-    initialize: function() {
-      $(this.el).addClass('alert alert-info');
+  var TimeLineView = app.View.TimeLineView;
 
-      this.model.bind('destroy', this.remove, this);
-    },
-
-    events: {
-      'click .status-action-favoris': 'favorisAction',
-      'click .status-action-remove': 'removeAction',
-    },
-
-    favorisAction: function() {
-      var self = this;
-      var sd;
-      if(this.model.get('favorite') === true)
-        sd = new StatusRemoveFavorite(this.model);
-      else
-        sd = new StatusAddFavorite(this.model);
-
-      sd.save(null, {
-        success: function(){
-          self.model.set('favorite', !self.model.get('favorite'));
-          self.render();
-        }
-      });
-    },
-
-    removeAction: function() {
-      var self = this;
-      var sd = new StatusDelete(this.model);
-
-      sd.save(null, {
-        success: function(){
-          app.trigger('refreshProfile');
-          self.model.destroy();
-        }
-      });
-    },
-
-    render: function() {
-      var $el = $(this.el);
-      $el.html(this.template({status:this.model.toJSON()}));
-      $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
-      return $(this.el);
-    }
-  });
-
-  var TimeLineView = Backbone.View.extend({
-    initialize: function() {
-      var self = this;
-
-      this.model.bind('reset', this.render, this);
-      this.model.bind('add', function(model, collection, options) {
-        self.addItem(model, options.index);
-      }, this);
-    },
-
-    render: function() {
-      $(this.el).empty();
-      _.each(this.model.models, this.addItem, this);
-      return $(this.el);
-    },
-
-    addItem: function(item, index) {
-      var el = new TimeLineItemView({
-        model: item
-      }).render();
-      if(index === 0)
-        $(this.el).prepend(el);
-      else
-        $(this.el).append(el);
-    }
-  });
-
-  var TimeLineNewView = Backbone.View.extend({
+  var TimeLineNewView = app.View.TimeLineNewView = Backbone.View.extend({
     template: _.template($('#timeline-new').html()),
     progressTemplate: _.template($('#timeline-progress').html()),
 
@@ -444,7 +353,7 @@ $(function() {
 
   });
 
-  var TimeLineNextView = Backbone.View.extend({
+  var TimeLineNextView = app.View.TimeLineNextView = Backbone.View.extend({
     template: _.template($('#timeline-next').html()),
     progressTemplate: _.template($('#timeline-progress').html()),
 
@@ -453,11 +362,6 @@ $(function() {
 
     events: {
       'click': 'nextStatus'
-    },
-
-    nextStatus: function(){
-      this.progress();
-      this.model.nextStatus(this.render, this);
     },
 
     nextStatus: function(done, context){
@@ -512,7 +416,7 @@ $(function() {
 
   });
 
-  var TimeLinePanelView = Backbone.View.extend({
+  var TimeLinePanelView = app.View.TimeLinePanelView = Backbone.View.extend({
 
     initialize: function(){
       this.views = {};
@@ -547,7 +451,7 @@ $(function() {
     Favoris
   */
 
-  var FavorisRefreshView = Backbone.View.extend({
+  var FavorisRefreshView = app.View.FavorisRefreshView = Backbone.View.extend({
     template: _.template($('#favoris-refresh').html()),
     progressTemplate: _.template($('#timeline-progress').html()),
 
@@ -586,7 +490,7 @@ $(function() {
 
   });
 
-  var FavorisPanelView = Backbone.View.extend({
+  var FavorisPanelView = app.View.FavorisPanelView = Backbone.View.extend({
 
     initialize: function(){
       this.views = {};
@@ -631,7 +535,7 @@ $(function() {
   Tags
 */
 
-  var TagsSearchView = Backbone.View.extend({
+  var TagsSearchView = app.View.TagsSearchView = Backbone.View.extend({
     template: _.template($('#tag-search-form').html()),
 
     tagName: 'form',
@@ -684,7 +588,7 @@ $(function() {
 
   });
 
-  var TagsView = Backbone.View.extend({
+  var TagsView = app.View.TagsView = Backbone.View.extend({
     initialize: function(){
       this.views = {};
 
@@ -717,7 +621,7 @@ $(function() {
   Search
 */
 
-  var SearchSearchView = Backbone.View.extend({
+  var SearchSearchView = app.View.SearchSearchView = Backbone.View.extend({
     template: _.template($('#search-search-form').html()),
 
     tagName: 'form',
@@ -776,7 +680,7 @@ $(function() {
 
   });
 
-  var SearchNextView = Backbone.View.extend({
+  var SearchNextView = app.View.SearchNextView = Backbone.View.extend({
     template: _.template($('#timeline-next').html()),
     progressTemplate: _.template($('#timeline-progress').html()),
 
@@ -839,7 +743,7 @@ $(function() {
 
   });
 
-  var SearchView = Backbone.View.extend({
+  var SearchView = app.View.SearchView = Backbone.View.extend({
     initialize: function(){
       var self = this;
 
@@ -887,13 +791,16 @@ $(function() {
   Initialisation
 */
 
-  var Router = Backbone.Router.extend({
+  var HomeRouter = app.Router.HomeRouter = Backbone.Router.extend({
 
     initialize: function() {
       var profile = app.views.profile = new ProfileView({
         model : new ProfileModel()
       });
       $('#profileContent').html(profile.render());
+
+      var follow = app.views.follow = new FollowView();
+      $('#profileFollow').html(follow.render());
     },
 
     selectMenu: function(menu) {
@@ -961,8 +868,7 @@ $(function() {
 
   });
 
-  app.router = new Router();
+  app.router = new HomeRouter();
   Backbone.history.start();
-
 
 });

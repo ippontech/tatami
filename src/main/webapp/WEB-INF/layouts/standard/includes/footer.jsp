@@ -1,6 +1,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="templates-commun.jsp"/>
+
 <footer>
     <div id="footer" class="navbar navbar-fixed-bottom">
         <a href="http://www.ippon.fr" id="footer_ippon"><fmt:message key="tatami.copyright"/> <fmt:message key="tatami.ippon.technologies"/></a> |
@@ -31,3 +33,5 @@
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>
 </c:if>
+
+<script src="/assets/js/tatami-commun.js"></script>
