@@ -21,7 +21,6 @@
 <script src="/assets/js/bootstrap/2.0.2/bootstrap-typeahead.js"></script>
 <script src="/assets/js/tatami/standard/shortcut.js"></script>
 <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
-<script src="/assets/js/raphael/2.1.0/pie.js"></script>
 <script src="/assets/js/mustache/mustache.js"></script>
 
 <script src="/assets/js/tatami/standard/tatami.utils.js"></script>
