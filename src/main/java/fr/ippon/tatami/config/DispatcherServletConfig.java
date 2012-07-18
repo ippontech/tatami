@@ -8,21 +8,21 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
-import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
-import org.springframework.web.servlet.view.*;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles2.TilesView;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Configuration
@@ -62,19 +62,30 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
         viewResolvers.add(new BeanNameViewResolver());
 
-        //UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-           CustomViewResolver customViewResolver=new CustomViewResolver();
+        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setViewClass(TilesView.class);
+        viewResolvers.add(urlBasedViewResolver);
 
-        customViewResolver.setViewClass(JstlView.class);
-
-        viewResolvers.add(customViewResolver);
-         viewResolver.setViewResolvers(viewResolvers);
+        viewResolver.setViewResolvers(viewResolvers);
 
         List<View> defaultViews = new ArrayList<View>();
         defaultViews.add(new MappingJacksonJsonView());
         viewResolver.setDefaultViews(defaultViews);
 
         return viewResolver;
+    }
+
+    /**
+     * Configures Tiles at application startup.
+     */
+    @Bean
+    public TilesConfigurer tilesConfigurer() {
+        TilesConfigurer configurer = new TilesConfigurer();
+        configurer.setDefinitions(new String[]{
+                "/WEB-INF/layouts/tiles.xml"
+        });
+        configurer.setCheckRefresh(true);
+        return configurer;
     }
 
     @Bean
