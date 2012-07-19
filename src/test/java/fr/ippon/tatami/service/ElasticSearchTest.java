@@ -1,6 +1,6 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.application.ApplicationElasticSearchTestConfiguration;
+import fr.ippon.tatami.test.application.ApplicationElasticSearchTestConfiguration;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
 import fr.ippon.tatami.domain.Status;
 import org.apache.commons.logging.Log;

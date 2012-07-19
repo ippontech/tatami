@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <description>Tatami is a private Twitter clone</description>
+    <description>Tatami is an enterprise micro-blogging platform</description>
     <inceptionYear>2012</inceptionYear>
     <url>https://github.com/ippontech/tatami</url>
     <organization>
@@ -38,6 +38,17 @@
             <properties>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
             </properties>
         </profile>
         <profile>
@@ -45,6 +56,17 @@
             <properties>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
             </properties>
         </profile>
     </profiles>
@@ -58,7 +80,7 @@
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
-        <spring.mobile.version>1.0.0.RC2</spring.mobile.version>
+        <spring.mobile.version>1.0.0.RELEASE</spring.mobile.version>
         <elasticsearch.version>0.19.3</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
@@ -91,11 +113,6 @@
         <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
     </properties>
     <repositories>
-        <repository>
-            <id>org.springframework.maven.milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
@@ -324,6 +341,15 @@
     </dependencies>
     <build>
         <finalName>tatami</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -361,6 +387,32 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>1.4.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <targetGroups>all</targetGroups>
+                    <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                    <contextFolder>${basedir}/src/main/webapp/assets</contextFolder>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-extensions</artifactId>
+                        <version>1.4.7</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

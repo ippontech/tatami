@@ -13,8 +13,12 @@
     </definition>
 
     <definition name="status" templateExpression="/WEB-INF/layouts/standard/status.jsp"/>
-
+    <definition name="account" templateExpression="/WEB-INF/layouts/standard/account.jsp"/>
+    <definition name="account/password" templateExpression="/WEB-INF/layouts/standard/account_password.jsp"/>
+    <definition name="account/password_ldap" templateExpression="/WEB-INF/layouts/standard/account_password_ldap.jsp"/>
+    <definition name="account/enterprise" templateExpression="/WEB-INF/layouts/standard/account_enterprise.jsp"/>
     <definition name="about" templateExpression="/WEB-INF/layouts/standard/about.jsp"/>
+    <definition name="register" templateExpression="/WEB-INF/layouts/standard/register.jsp"/>
     <definition name="404-error" templateExpression="/WEB-INF/layouts/standard/404-error.jsp"/>
     <definition name="500-error" templateExpression="/WEB-INF/layouts/standard/500-error.jsp"/>
 

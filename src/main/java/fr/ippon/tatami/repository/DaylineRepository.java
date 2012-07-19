@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
 
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * The Dayline Respository, which stores statistics per day.
@@ -19,7 +18,7 @@ public interface DaylineRepository {
     void addStatusToDayline(Status status, String domain, String day);
 
     /**
-     * Get the statistics for one day, in the form &lt;login, number of tweets&gt;.
+     * Get the statistics for one day, in the form &lt;username, number of status updates&gt;.
      */
     Collection<UserStatusStat> getDayline(String domain, String day);
 }

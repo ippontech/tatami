@@ -24,7 +24,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
 @Repository
 public class CassandraCounterRepository implements CounterRepository {
 
-    private static final String TWEET_COUNTER = "TWEET_COUNTER";
+    private static final String STATUS_COUNTER = "STATUS_COUNTER";
 
     private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
 
@@ -47,7 +47,7 @@ public class CassandraCounterRepository implements CounterRepository {
 
     @Override
     public void incrementStatusCounter(String login) {
-        incrementCounter(TWEET_COUNTER, login);
+        incrementCounter(STATUS_COUNTER, login);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class CassandraCounterRepository implements CounterRepository {
 
     @Override
     public void decrementStatusCounter(String login) {
-        decrementCounter(TWEET_COUNTER, login);
+        decrementCounter(STATUS_COUNTER, login);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class CassandraCounterRepository implements CounterRepository {
 
     @Override
     public long getStatusCounter(String login) {
-        return getCounter(TWEET_COUNTER, login);
+        return getCounter(STATUS_COUNTER, login);
     }
 
     @Override
@@ -92,7 +92,16 @@ public class CassandraCounterRepository implements CounterRepository {
 
     @Override
     public void createStatusCounter(String login) {
-        createCounter(TWEET_COUNTER, login);
+        createCounter(STATUS_COUNTER, login);
+    }
+
+    @Override
+    public void deleteCounters(String login) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.addCounterDeletion(login, COUNTER_CF, STATUS_COUNTER, StringSerializer.get());
+        mutator.addCounterDeletion(login, COUNTER_CF, FOLLOWERS_COUNTER, StringSerializer.get());
+        mutator.addCounterDeletion(login, COUNTER_CF, FRIENDS_COUNTER, StringSerializer.get());
+        mutator.execute();
     }
 
     private void createCounter(String counterName, String login) {

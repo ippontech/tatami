@@ -51,10 +51,88 @@ public class MailService {
     }
 
     @Async
-    public void sendRegistrationEmail(User user) {
+    public void sendRegistrationEmail(String registrationKey, User user) {
+        String subject = "Tatami activation";
+        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
         if (log.isDebugEnabled()) {
-            log.debug("Sending registration e-mail to User '" + user.getLogin() + "'...");
+            log.debug("Sending registration e-mail to User '" + user.getLogin() +
+                    "', Url='" + url + "'");
         }
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Your Tatami account has been created, please click on the URL below to activate it : "
+                + "\n\n"
+                + url
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(user, subject, text);
+    }
+
+    @Async
+    public void sendLostPasswordEmail(String registrationKey, User user) {
+        String subject = "Tatami lost password";
+        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+        if (log.isDebugEnabled()) {
+            log.debug("Sending lost password e-mail to User '" + user.getLogin() +
+                    "', Url='" + url + "'");
+        }
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Someone asked to re-initialize your password."
+                + "\n\n"
+                + "If you want to re-initialize your password, please click on the link below : "
+                + "\n\n"
+                + url
+                + "\n\n"
+                + "If you do not want to re-initialize your password, you can safely ignore this message "
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(user, subject, text);
+    }
+
+    @Async
+    public void sendValidationEmail(User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending validation e-mail to User '" + user.getLogin() +
+                    "', Password='" + user.getPassword() + "'");
+        }
+        String subject = "Tatami account validated";
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Your Tatami account has been validated, here is your password : "
+                + "\n\n"
+                + user.getPassword()
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(user, subject, text);
+    }
+
+    @Async
+    public void sendPasswordReinitializedEmail(User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
+                    "', Password='" + user.getPassword() + "'");
+        }
+        String subject = "Tatami password re-initialized";
+        String text = "Dear "
+                + user.getLogin()
+                + ",\n\n"
+                + "Your Tatami password has been re-initialized, here is your new password : "
+                + "\n\n"
+                + user.getPassword()
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(user, subject, text);
+    }
+
+    private void sendEmail(User user, String subject, String text) {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setHost(host);
         sender.setPort(port);
@@ -63,20 +141,12 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getLogin());
         message.setFrom(from);
-        message.setSubject("Tatami activation");
-        message
-                .setText("Dear "
-                        + user.getLogin()
-                        + ",\n\n"
-                        + "Your Tatami account has been created, your password is:\n\n"
-                        + user.getPassword()
-                        + "\n\n"
-                        + "Regards,\n\n" + "Ippon Technologies.");
-
+        message.setSubject(subject);
+        message.setText(text);
         try {
             sender.send(message);
             if (log.isDebugEnabled()) {
-                log.debug("Sent registration e-mail to User '" + user.getLogin() + "'!");
+                log.debug("Sent e-mail to User '" + user.getLogin() + "'!");
             }
         } catch (MailException e) {
             log.warn("Warning! SMTP server error, could not send e-mail.");

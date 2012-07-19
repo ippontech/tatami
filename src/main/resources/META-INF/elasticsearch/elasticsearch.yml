@@ -137,8 +137,8 @@ cluster.name: tatamiCluster
 
 
 index.refresh_interval: 1
-index.number_of_replica: 2
-index.number_of_shards: 2
+index.number_of_shards: 1
+index.number_of_replicas: 0
 
 #index.analysis.analyzer.default.type: snowball
 #index.analysis.analyzer.default.language: French

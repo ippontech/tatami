@@ -75,7 +75,7 @@ public class UserController {
             this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendIdsForUser(currentUsername);
+        Collection<String> exceptions = userService.getFriendIdsForUser(currentLogin);
         exceptions.add(currentLogin);
 
         Collection<UserStatusStat> stats = timelineService.getDayline();

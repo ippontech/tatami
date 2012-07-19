@@ -29,7 +29,6 @@ public class HomeController {
 
     @RequestMapping(value = "/")
     public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
-        log.debug("Home page");
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
@@ -39,18 +38,38 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        log.debug("Login page");
-        return "login";
+    public ModelAndView login(@RequestParam(required = false) String action) {
+        ModelAndView mv = new ModelAndView("login");
+        mv.addObject("action", action);
+        return mv;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
-        log.debug("Registration page");
-        // TODO validate email
+        if (userService.getUserByLogin(email) != null) {
+            return "redirect:/tatami/login?action=registerFailure";
+        }
         User user = new User();
         user.setLogin(email);
         userService.registerUser(user);
-        return "redirect:/tatami/login";
+        return "redirect:/tatami/login?action=register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView validateRegistration(@RequestParam String key) {
+        ModelAndView mv = new ModelAndView("register");
+        String login = userService.validateRegistration(key);
+        mv.addObject("login", login);
+        return mv;
+    }
+
+    @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
+    public String lostpassword(@RequestParam String email) {
+        User user = userService.getUserByLogin(email);
+        if (user == null) {
+            return "redirect:/tatami/login?action=lostPasswordFailure";
+        }
+        userService.lostPassword(user);
+        return "redirect:/tatami/login?action=lostPassword";
     }
 }

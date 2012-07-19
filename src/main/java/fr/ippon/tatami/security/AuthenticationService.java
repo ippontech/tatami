@@ -2,7 +2,6 @@ package fr.ippon.tatami.security;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -31,11 +30,5 @@ public class AuthenticationService {
                         .getAuthentication().getPrincipal();
 
         return userRepository.findUserByLogin(springSecurityUser.getUsername());
-    }
-
-    public String getLoginFromUsername(String username) {
-        User currentUser = this.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
     }
 }

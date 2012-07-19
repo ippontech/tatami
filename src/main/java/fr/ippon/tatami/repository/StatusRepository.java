@@ -32,6 +32,12 @@ public interface StatusRepository {
 
     void addStatusToTimeline(String login, Status status);
 
+    void deleteFavoritesline(String login);
+
+    void deleteUserline(String login);
+
+    void deleteTimeline(String login);
+
     /**
      * a user's and his followed users status
      */

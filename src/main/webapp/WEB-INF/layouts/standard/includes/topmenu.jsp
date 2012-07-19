@@ -21,9 +21,24 @@
                 </ul>
                 <sec:authorize access="isAuthenticated()" >
                     <ul class="nav pull-right">
-                        <li class="divider-vertical"></li>
-                        <li><a href="/tatami/logout"><i class="icon-user icon-white"></i>&nbsp;<fmt:message
-                                key="tatami.logout"/></a></li>
+                        <li id="dropdownMenu" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#dropdownMenu">
+                                <i class="icon-user icon-white"></i>&nbsp;Compte
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/tatami/account"><i class="icon-user"></i>&nbsp;<fmt:message
+                                        key="tatami.menu.profile"/></a></li>
+                                <li><a href="/tatami/account/password"><i class="icon-lock"></i>&nbsp;<fmt:message
+                                        key="tatami.menu.password"/></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/tatami/account/enterprise"><i class="icon-globe"></i>&nbsp;<fmt:message
+                                        key="tatami.menu.enterprise"/></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/tatami/logout"><i class="icon-off"></i>&nbsp;<fmt:message
+                                        key="tatami.logout"/></a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav pull-right">
                         <form id="global-status-search" class="well form-search" action="/tatami/rest/search"
@@ -32,7 +47,7 @@
                             <input type="hidden" name="rpp" value="20"/>
                             <input type="text" id="searchQuery" name="q" class="input-medium search-query"
                                    placeholder="<fmt:message key="tatami.search.placeholder"/>">
-                            <button type="submit" class="btn" style="margin-top:0px;"><fmt:message
+                            <button type="submit" class="btn"><fmt:message
                                     key="tatami.search.button"/></button>
                         </form>
                     </ul>

@@ -5,10 +5,10 @@ var DURATION_OF_FADE_TO = 400;
 
 var scrollLock = false;
 
-var userlineURL = '<a href="/tatami/profile/LOGIN/" style="text-decoration:none" title="Show LOGIN status">';
+var userlineURL = '<a href="/tatami/profile/LOGIN/" class="userStatus" title="Show LOGIN status">';
 var userlineREG = new RegExp("LOGIN", "g");
 
-var userrefREG = new RegExp("@(\\w+)", "g");
+var userrefREG = new RegExp("@(\\S+)", "g");
 var userrefURL = '<a href="/tatami/profile/$1/" style="text-decoration:none" title="Show $1 status"><em>@$1</em></a>';
 
 var tagrefREG = new RegExp("#(\\w+)", "g");
@@ -30,14 +30,6 @@ function initHome() {
         content: '<i class="icon-exclamation-sign"></i>&nbsp;Please type a message to status.'
     });
     $('#followUserContent').load('/assets/fragments/standard/followUser.html', suggestUsersToFollow());
-    // auto-refresh
-    $('a[data-toggle="pill"]').on('show', function(e) {
-        if (e.target.hash == '#profileTabContent') {
-            refreshProfile();
-        } else if (e.target.hash == '#updateProfileTabContent') {
-            displayProfile();
-        }
-    });
 
     // right panel
     $('#timeLinePanel').load('/assets/fragments/standard/timeline.html', function() {
@@ -156,6 +148,16 @@ function initStatus() {
     shortcut.add("Ctrl+R", function() {
         getStatus(statusId);
     });
+
+    // search form binding
+    $('#global-status-search').submit(function() {
+        var searchQuery = $("#searchQuery").val();
+        window.location = "/tatami/?search=" + searchQuery;
+        return false;
+    });
+}
+
+function initAccount() {
 
     // search form binding
     $('#global-status-search').submit(function() {

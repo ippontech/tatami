@@ -1,7 +1,8 @@
 package fr.ippon.tatami;
 
-import fr.ippon.tatami.application.ApplicationTestConfiguration;
+import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -58,6 +59,8 @@ public abstract class AbstractCassandraTatamiTest {
     protected User constructAUser(String login, String firstName, String lastName) {
         User user = new User();
         user.setLogin(login);
+        user.setUsername(DomainUtil.getUsernameFromLogin(login));
+        user.setDomain(DomainUtil.getDomainFromLogin(login));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         return user;

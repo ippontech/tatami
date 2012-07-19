@@ -1,5 +1,6 @@
 package fr.ippon.tatami.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -45,6 +46,7 @@ public class Status {
 
     @NotNull
     @Column(name = "login")
+    @JsonIgnore
     private String login;
 
     @NotNull
@@ -53,11 +55,12 @@ public class Status {
 
     @NotNull
     @Column(name = "domain")
+    @JsonIgnore
     private String domain;
 
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
-    @Size(min = 1, max = 140)
+    @Size(min = 1, max = 1024)
     @Column(name = "content")
     private String content;
 
@@ -73,6 +76,7 @@ public class Status {
     private boolean favorite;
 
     @Column(name = "removed")
+    @JsonIgnore
     private Boolean removed;
 
     public String getPrettyPrintStatusDate() {

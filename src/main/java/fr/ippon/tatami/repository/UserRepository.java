@@ -15,5 +15,7 @@ public interface UserRepository {
 
     void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException;
 
+    void deleteUser(User user);
+
     User findUserByLogin(String login);
 }

@@ -11,7 +11,7 @@ public class ColumnFamilyKeys {
 
     public final static String FOLLOWERS_CF = "Followers";
 
-    public final static String TWEET_CF = "Status";
+    public final static String STATUS_CF = "Status";
 
     public final static String DAYLINE_CF = "Dayline";
 
@@ -26,4 +26,6 @@ public class ColumnFamilyKeys {
     public final static String COUNTER_CF = "Counter";
 
     public final static String DOMAIN_CF = "Domain";
+
+    public final static String REGISTRATION_CF = "Registration";
 }

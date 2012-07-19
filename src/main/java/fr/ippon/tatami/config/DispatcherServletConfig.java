@@ -35,14 +35,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Inject
     private Environment env;
 
-    // Any other way to inject a Properties object containing all the properties?
-    @Bean
-    public Properties applicationProps() {
-        Properties props = new Properties();
-        props.put("tatami.version", this.env.getProperty("tatami.version"));
-        return props;
-    }
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/username").setViewName("username");
@@ -100,7 +92,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
-        messageSource.setCacheSeconds(1);
+        if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
+            messageSource.setCacheSeconds(1);
+        }
         return messageSource;
     }
 
@@ -112,8 +106,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/" + this.env.getProperty("tatami.version") + "/**")
-                .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
+        registry.addResourceHandler("/static/" + env.getProperty("tatami.version") + "/**")
+                .addResourceLocations("/WEB-INF/generated-wro4j/")
                 .setCachePeriod(31556926);
     }
 

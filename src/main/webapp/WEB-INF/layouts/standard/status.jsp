@@ -83,7 +83,7 @@
                         <div id="statusToHim" class="row-fluid">
                             <form class="form-inline" onsubmit="return statusToUser();">
                                 <textarea id="statusContent" rel="popover" class="focused"
-                                          maxlength="140">@${user.username} </textarea>
+                                          maxlength="500">@${user.username} </textarea>
                                 <button type="submit" class="btn btn-primary"><fmt:message
                                         key="tatami.user.send"/></button>
                             </form>

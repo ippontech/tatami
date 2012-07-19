@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -12,7 +11,6 @@ import javax.validation.ValidationException;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@Ignore
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Inject
