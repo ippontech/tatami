@@ -17,6 +17,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
@@ -54,9 +55,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
         viewResolvers.add(new BeanNameViewResolver());
 
-        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-        urlBasedViewResolver.setViewClass(TilesView.class);
-        viewResolvers.add(urlBasedViewResolver);
+        CustomViewResolver customViewResolver = new CustomViewResolver();
+
+        customViewResolver.setViewClass(JstlView.class);
+
+        viewResolvers.add(customViewResolver);
 
         viewResolver.setViewResolvers(viewResolvers);
 
@@ -65,19 +68,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         viewResolver.setDefaultViews(defaultViews);
 
         return viewResolver;
-    }
-
-    /**
-     * Configures Tiles at application startup.
-     */
-    @Bean
-    public TilesConfigurer tilesConfigurer() {
-        TilesConfigurer configurer = new TilesConfigurer();
-        configurer.setDefinitions(new String[]{
-                "/WEB-INF/layouts/tiles.xml"
-        });
-        configurer.setCheckRefresh(true);
-        return configurer;
     }
 
     @Bean
