@@ -32,7 +32,6 @@ public class CustomViewResolver extends InternalResourceViewResolver {
             subUrl="/WEB-INF/layouts/mobile/";
         }
         JstlView view =new JstlView(subUrl+viewName+".jsp");
-
         return view;
     }
 

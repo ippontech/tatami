@@ -55,12 +55,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
         viewResolvers.add(new BeanNameViewResolver());
 
-        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-        urlBasedViewResolver.setPrefix("/WEB-INF/layouts/standard/");
-        urlBasedViewResolver.setSuffix(".jsp");
-        urlBasedViewResolver.setViewClass(JstlView.class);
+        CustomViewResolver customViewResolver = new CustomViewResolver();
 
-        viewResolvers.add(urlBasedViewResolver);
+        customViewResolver.setViewClass(JstlView.class);
+
+        viewResolvers.add(customViewResolver);
 
         viewResolver.setViewResolvers(viewResolvers);
 
