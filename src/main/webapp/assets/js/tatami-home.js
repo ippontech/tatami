@@ -432,8 +432,10 @@ $(function() {
 
       this.views.next.nextStatus();
 
-      this.on('new', this.views.new.newStatus, this.views.new);
+      this.on('refresh', this.views.new.newStatus, this.views.new);
       this.on('next', this.views.next.nextStatus, this.views.next);
+      
+      app.on('refreshTimeline', this.views.new.newStatus, this.views.new);
     },
 
     render: function() {
@@ -441,6 +443,8 @@ $(function() {
       $(this.el).append(this.views.new.render());
       $(this.el).append(this.views.timeline.$el);
       $(this.el).append(this.views.next.render());
+
+      this.views.new.newStatus();
 
       return $(this.el);
     }
@@ -501,12 +505,8 @@ $(function() {
         model : this.model
       });
 
-      var self = this;
-      this.on('refresh', function() {
-        self.views.refresh.newStatus();
-      });
+      this.on('refresh', this.views.refresh.newStatus, this.views.refresh);
 
-      this.views.refresh.refreshStatus();
 
       /*this.views.next = new TimeLineNextView({
         model : this.model
@@ -523,6 +523,8 @@ $(function() {
       $(this.el).append(this.views.refresh.render());
       $(this.el).append(this.views.timeline.$el);
       //$(this.el).append(this.views.next.render());
+
+      this.views.refresh.refreshStatus();
 
       return $(this.el);
     }
@@ -819,7 +821,6 @@ $(function() {
     },
 
     timeline: function(action) {
-      console.log(action);
       this.selectMenu('timeline');
       if(!app.views.timeline) {
         var timelinecollection = new StatusCollection();
@@ -827,9 +828,11 @@ $(function() {
         var timeline = app.views.timeline = new TimeLinePanelView({
           model: timelinecollection
         });
-        app.on('refreshTimeline', function(){timeline.trigger('new');});
       }
-      $('#tab-content').html(app.views.timeline.render());
+      else
+        app.views.timeline.trigger('new');
+      $('#tab-content').empty();
+      $('#tab-content').append(app.views.timeline.render());
     },
 
     favoris: function() {
@@ -841,7 +844,9 @@ $(function() {
           model: favoriscollection
         });
       }
-      $('#tab-content').html(app.views.favoris.render());
+        app.views.favoris.trigger('refresh');
+      $('#tab-content').empty();
+      $('#tab-content').append(app.views.favoris.render());
     },
 
     tags: function(tag) {
@@ -849,7 +854,8 @@ $(function() {
       var tags = app.views.tags = new TagsView({
         tag: tag
       });
-      $('#tab-content').html(app.views.tags.render());
+      $('#tab-content').empty();
+      $('#tab-content').append(app.views.tags.render());
     },
 
     search: function(search) {
@@ -862,7 +868,8 @@ $(function() {
         var search = app.views.search = new SearchView({
           search: search
         });
-        $('#tab-content').html(app.views.search.render());
+        $('#tab-content').empty();
+        $('#tab-content').append(app.views.search.render());
       }
     }
 
