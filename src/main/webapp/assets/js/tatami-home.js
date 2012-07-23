@@ -441,10 +441,8 @@ $(function() {
     render: function() {
       $(this.el).empty();
       $(this.el).append(this.views.new.render());
-      $(this.el).append(this.views.timeline.$el);
+      $(this.el).append(this.views.timeline.render());
       $(this.el).append(this.views.next.render());
-
-      this.views.new.newStatus();
 
       return $(this.el);
     }
@@ -505,15 +503,9 @@ $(function() {
         model : this.model
       });
 
+      this.views.refresh.refreshStatus();
+
       this.on('refresh', this.views.refresh.newStatus, this.views.refresh);
-
-
-      /*this.views.next = new TimeLineNextView({
-        model : this.model
-      });
-      this.views.next.nextStatus();
-      this.on('next', this.views.next.nextStatus, this.views.next);*/
-
 
       app.on('refreshFavoris', this.views.refresh.refreshStatus, this.views.refresh);
     },
@@ -521,10 +513,7 @@ $(function() {
     render: function() {
       $(this.el).empty();
       $(this.el).append(this.views.refresh.render());
-      $(this.el).append(this.views.timeline.$el);
-      //$(this.el).append(this.views.next.render());
-
-      this.views.refresh.refreshStatus();
+      $(this.el).append(this.views.timeline.render());
 
       return $(this.el);
     }
