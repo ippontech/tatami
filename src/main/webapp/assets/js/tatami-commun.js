@@ -14,7 +14,25 @@ $(function() {
       View: {},
       Collection: {},
       Model: {},
-      Router: {}
+      Router: {},
+
+      Status: {
+        statuses: [],
+        favorite: function(id){
+          _.each(this.statuses,function(status){
+            if(status.get('statusId') === id){
+              status.set('favorite', !status.get('favorite'));
+            }
+          });
+        },
+        destroy: function(id){
+          _.each(this.statuses,function(status){
+            if(status.get('statusId') === id){
+              status.destroy();
+            }
+          });
+        }
+      }
     }, Backbone.Events);
   }
   else {
@@ -60,6 +78,8 @@ $(function() {
     template: _.template($('#timeline-item').html()),
 
     initialize: function() {
+      if(app.Status.statuses.indexOf(this.model) === -1)
+        app.Status.statuses.push(this.model);
       $(this.el).addClass('alert alert-info');
 
       this.model.bind('destroy', this.remove, this);
@@ -81,8 +101,7 @@ $(function() {
 
       sd.save(null, {
         success: function(){
-          self.model.set('favorite', !self.model.get('favorite'));
-          self.render();
+          app.Status.favorite(self.model.get('statusId'));
         }
       });
     },
@@ -94,14 +113,18 @@ $(function() {
       sd.save(null, {
         success: function(){
           app.trigger('refreshProfile');
-          self.model.destroy();
+          app.Status.destroy(self.model.get('statusId'));
         }
       });
     },
 
     render: function() {
-      var $el = $(this.el);
-      $el.html(this.template({status:this.model.toJSON()}));
+      if(this.model.get('favorite') === true)
+        $(this.el).addClass('favorite');
+      else
+        $(this.el).removeClass('favorite');
+
+      $(this.el).html(this.template({status:this.model.toJSON()}));
       $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
       return $(this.el);
     }
