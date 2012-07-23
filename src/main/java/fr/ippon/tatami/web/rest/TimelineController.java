@@ -43,11 +43,11 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postStatus(@RequestBody StatusUpdateForm tweet) {
+    public void postStatus(@RequestBody Status tweet) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to add status : " + tweet.content);
+            log.debug("REST request to add status : " + tweet.getContent());
         }
-        String escapedContent = StringEscapeUtils.escapeHtml(tweet.content);
+        String escapedContent = StringEscapeUtils.escapeHtml(tweet.getContent());
         timelineService.postStatus(escapedContent);
     }
 
@@ -117,8 +117,4 @@ public class TimelineController {
         }
         return timelineService.getUserline(username, count, since_id, max_id);
     }
-}
-
-class StatusUpdateForm {
-    public String content;
 }
