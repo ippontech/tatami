@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<jsp:include page="includes/header.jsp"/>
+<jsp:include page="../includes/header.jsp"/>
 
 <body>
 
-<jsp:include page="includes/topmenu.jsp"/>
+<jsp:include page="../includes/topmenu.jsp"/>
 
 <div class="container mainPanel">
     <div class="row">
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<jsp:include page="includes/footer.jsp"/>
+<jsp:include page="../includes/footer.jsp"/>
 
 </body>
 </html>

@@ -50,9 +50,9 @@ public class AccountPasswordController {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         if (domain.equals("ippon.fr")) {
-            return new ModelAndView("account/password_ldap");
+            return new ModelAndView("account_password_ldap");
         }
-        ModelAndView mv = new ModelAndView("account/password");
+        ModelAndView mv = new ModelAndView("account_password");
         mv.addObject("success", success);
         return mv;
     }
@@ -81,7 +81,7 @@ public class AccountPasswordController {
             for (ObjectError error : result.getAllErrors()) {
                 log.debug("Error=" + error.toString());
             }
-            ModelAndView mv = new ModelAndView("account/password");
+            ModelAndView mv = new ModelAndView("account_password");
             mv.addAllObjects(result.getModel());
             return mv;
         }

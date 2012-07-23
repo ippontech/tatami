@@ -11,16 +11,18 @@ import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
-import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles2.TilesView;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -34,14 +36,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Inject
     private Environment env;
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/username").setViewName("username");
-        registry.addViewController("/about").setViewName("about");
-        registry.addViewController("/404-error").setViewName("404-error");
-        registry.addViewController("/500-error").setViewName("500-error");
-    }
-
     @Bean
     public ViewResolver ContentNegotiatingViewResolver() {
         ContentNegotiatingViewResolver viewResolver = new ContentNegotiatingViewResolver();
@@ -52,10 +46,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         viewResolver.setMediaTypes(mediaTypes);
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
-        viewResolvers.add(new BeanNameViewResolver());
 
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-        urlBasedViewResolver.setViewClass(TilesView.class);
+        urlBasedViewResolver.setViewClass(JstlView.class);
+        urlBasedViewResolver.setPrefix("/WEB-INF/pages/");
+        urlBasedViewResolver.setSuffix(".jsp");
         viewResolvers.add(urlBasedViewResolver);
 
         viewResolver.setViewResolvers(viewResolvers);
@@ -65,19 +60,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         viewResolver.setDefaultViews(defaultViews);
 
         return viewResolver;
-    }
-
-    /**
-     * Configures Tiles at application startup.
-     */
-    @Bean
-    public TilesConfigurer tilesConfigurer() {
-        TilesConfigurer configurer = new TilesConfigurer();
-        configurer.setDefinitions(new String[]{
-                "/WEB-INF/layouts/tiles.xml"
-        });
-        configurer.setCheckRefresh(true);
-        return configurer;
     }
 
     @Bean
@@ -108,16 +90,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DeviceResolverHandlerInterceptor());
-        registry.addInterceptor(new SitePreferenceHandlerInterceptor());
-    }
-
-    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/" + env.getProperty("tatami.version") + "/**")
                 .addResourceLocations("/WEB-INF/generated-wro4j/")
                 .setCachePeriod(31556926);
     }
-
 }

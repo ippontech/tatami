@@ -72,4 +72,9 @@ public class HomeController {
         userService.lostPassword(user);
         return "redirect:/tatami/login?action=lostPassword";
     }
+
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
+    public String about() {
+        return "about";
+    }
 }

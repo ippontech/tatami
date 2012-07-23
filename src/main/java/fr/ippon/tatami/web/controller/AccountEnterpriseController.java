@@ -42,7 +42,7 @@ public class AccountEnterpriseController {
         if (pagination == null) {
             pagination = 0;
         }
-        ModelAndView mv = new ModelAndView("account/enterprise");
+        ModelAndView mv = new ModelAndView("account_enterprise");
         List<User> users = userService.getUsersForCurrentDomain(pagination);
         if (pagination > 0) {
             mv.addObject("paginationPrevious", pagination - Constants.PAGINATION_SIZE);
