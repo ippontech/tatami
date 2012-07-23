@@ -28,16 +28,16 @@ public class ErrorController {
     @RequestMapping(value = "/errors/404")
     public String pageNotFound(HttpServletRequest request) {
         if (log.isDebugEnabled()) {
-            log.debug("404 error : " + request.getRequestURI());
+            log.debug("404 error : " + request.getAttribute("javax.servlet.forward.request_uri"));
         }
-        return "/errors/404";
+        return "errors/404";
     }
 
     @RequestMapping(value = "/errors/500")
     public String internalServerError(HttpServletRequest request) {
         if (log.isDebugEnabled()) {
-            log.debug("500 error : " + request.getRequestURI());
+            log.debug("500 error !");
         }
-        return "/errors/500";
+        return "errors/500";
     }
 }
