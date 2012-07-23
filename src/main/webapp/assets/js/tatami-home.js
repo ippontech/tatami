@@ -64,7 +64,7 @@ $(function() {
     template: _.template($('#profile-stats').html()),
 
     initialize: function() {
-      $(this.el).addClass('row-fluid hidden-phone');
+      $(this.el).addClass('');
 
       this.model.bind('change', this.render, this);
     },

@@ -33,16 +33,40 @@
                         <table class="table table-center hidden-phone nomargin">
                           <thead>
                             <tr>
-                              <th><fmt:message key="tatami.badge.status"/></th>
-                              <th><fmt:message key="tatami.badge.followed"/></th>
-                              <th><fmt:message key="tatami.badge.followers"/></th>
+                              <th>
+                                <a href="/tatami/profile/${user.username}/#/status" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <fmt:message key="tatami.badge.status"/>
+                                </a>
+                              </th>
+                              <th>
+                                <a href="/tatami/profile/${user.username}/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <fmt:message key="tatami.badge.followed"/>
+                                </a>
+                              </th>
+                              <th>
+                                <a href="/tatami/profile/${user.username}/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <fmt:message key="tatami.badge.followers"/>
+                                </a>
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td><span class="badge badge-info">${nbStatus}</span></td>
-                              <td><span class="badge badge-info">${nbFollowed}</span></td>
-                              <td><span class="badge badge-info">${nbFollowers}</span></td>
+                              <td>
+                                <a href="/tatami/profile/${user.username}/#/status" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <span class="badge badge-info">${nbStatus}</span>
+                                </a>
+                              </td>
+                              <td>
+                                <a href="/tatami/profile/${user.username}/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <span class="badge badge-info">${nbFollowed}</span>
+                                </a>
+                              </td>
+                              <td>
+                                <a href="/tatami/profile/${user.username}/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                                  <span class="badge badge-info">${nbFollowers}</span>
+                                </a>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -58,8 +82,8 @@
                           <div class="span12">
                             <ul class="nav nav-pills nav-stacked profilMenu">
                               <li><a href="#/status"><fmt:message key="tatami.badge.status"/></a></li>
-                              <li><a href="#/followers"><fmt:message key="tatami.badge.followed"/></a></li>
-                              <li><a href="#/followed"><fmt:message key="tatami.badge.followers"/></a></li>
+                              <li><a href="#/followed"><fmt:message key="tatami.badge.followed"/></a></li>
+                              <li><a href="#/followers"><fmt:message key="tatami.badge.followers"/></a></li>
                             </ul>
                           </div>
                         </div>
@@ -67,20 +91,6 @@
                     </div>
                     <div class="span8">
                       <div id="tab-content"></div>
-                      <!-- <div class="row-fluid">
-                        <div class="span12">
-                          <div class="alert alert-info">
-                            <div class="row-fluid">
-                              <div class="span12">
-                                <a href="/tatami/profile/arthur.weber/" class="userStatus" title="Show profile of @arthur.weber Arthur Weber"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/e1ae9d08f38dcca2cee4a88c76d28706?s=64" alt="Arthur Weber">
-                                  Arthur Weber <em>@arthur.weber</em>
-                                </a>
-                                <p class="pull-right"><span class="btn btn-primary">Suivre</span></p>
-                              </div>    
-                            </div>
-                          </div>
-                        </div>
-                      </div> -->
                     </div>
                   </div>
                 </div>
