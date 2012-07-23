@@ -33,5 +33,3 @@
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>
 </c:if>
-
-<script src="/assets/js/tatami-commun.js"></script>
