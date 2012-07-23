@@ -154,3 +154,9 @@
 .status-content a {
   font-weight: bold;
 }
+
+.favorite {
+  background-image: url(../img/favorite.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+}
