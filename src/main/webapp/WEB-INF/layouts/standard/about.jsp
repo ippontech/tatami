@@ -10,8 +10,8 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container-fluid mainPanel">
-    <div class="span8">
+<div class="container mainPanel">
+    <div class="offset2 span8 ">
         <h1><fmt:message key="tatami.presentation"/></h1>
 
         <p><fmt:message key="tatami.presentation.text"/></p>
@@ -33,7 +33,6 @@
         <p><fmt:message key="tatami.cg"/></p>
     </div>
 </div>
-<br/><br/><br/><br/><br/><br/>
 
 <jsp:include page="includes/footer.jsp"/>
 
