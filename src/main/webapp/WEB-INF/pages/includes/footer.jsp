@@ -13,11 +13,6 @@
 </footer>
 
 <!-- Le javascript -->
-
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
-
 <c:if test="${wro4jEnabled eq false}">
     <script src="/assets/js/jquery-min.js"></script>
     <script src="/assets/js/jquery-tagLinker.js"></script>
