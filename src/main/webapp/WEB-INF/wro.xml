@@ -10,7 +10,10 @@
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
         <js>/js/jquery-min.js</js>
-        <js>/js/nv.d3-min.js</js>
+        <js>/js/jquery-tagLinker.js</js>
+        <js>/js/jquery-usernameLinker.js</js>
+        <js>/js/tatami-commun.js</js>
         <js>/js/tatami-home.js</js>
+        <js>/js/tatami-profile.js</js>
     </group>
 </groups>
