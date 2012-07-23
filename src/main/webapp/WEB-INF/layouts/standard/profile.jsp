@@ -67,20 +67,6 @@
                     </div>
                     <div class="span8">
                       <div id="tab-content"></div>
-                      <!-- <div class="row-fluid">
-                        <div class="span12">
-                          <div class="alert alert-info">
-                            <div class="row-fluid">
-                              <div class="span12">
-                                <a href="/tatami/profile/arthur.weber/" class="userStatus" title="Show profile of @arthur.weber Arthur Weber"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/e1ae9d08f38dcca2cee4a88c76d28706?s=64" alt="Arthur Weber">
-                                  Arthur Weber <em>@arthur.weber</em>
-                                </a>
-                                <p class="pull-right"><span class="btn btn-primary">Suivre</span></p>
-                              </div>    
-                            </div>
-                          </div>
-                        </div>
-                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -98,8 +84,6 @@
     </c:choose>
 </div>
 
-
-<jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <sec:authentication property="principal.username" var="login"/>
