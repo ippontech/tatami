@@ -14,41 +14,91 @@
 </script>
 
 <script type="text/template" id="profile-stats">
-<div class="well nopadding">
-  <!-- For desktop -->
-  <table class="table table-center visible-desktop nomargin">
-  <thead>
-  <tr>
-  <th><fmt:message key="tatami.badge.status"/></th>
-  <th><fmt:message key="tatami.badge.followed"/></th>
-  <th><fmt:message key="tatami.badge.followers"/></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td><span class="badge badge-info"><@= profile.statusCount @></span></td>
-  <td><span class="badge badge-info"><@= profile.friendsCount @></span></td>
-  <td><span class="badge badge-info"><@= profile.followersCount @></span></td>
-  </tr>
-  </tbody>
-  </table>
-  <!-- For tablet -->
-  <table class="table table-right hidden-desktop nomargin">
-    <thead>
+<div class="row-fluid hidden-phone">
+  <div class="well nopadding">
+    <!-- For desktop -->
+    <table class="table table-center visible-desktop nomargin">
+      <thead>
+        <tr>
+          <th>
+            <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <fmt:message key="tatami.badge.status"/>
+            <a>
+          </th>
+          <th>
+            <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <fmt:message key="tatami.badge.followed"/>
+            <a>
+            </th>
+          <th>
+            <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <fmt:message key="tatami.badge.followers"/>
+            <a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <span class="badge badge-info"><@= profile.statusCount @></span>
+            <a>
+          </td>
+          <td>
+            <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <span class="badge badge-info"><@= profile.friendsCount @></span>
+            </a>
+          </td>
+          <td>
+            <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <span class="badge badge-info"><@= profile.followersCount @></span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- For tablet -->
+    <table class="table table-right hidden-desktop nomargin">
+      <thead>
+        <tr>
+          <th>
+            <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <fmt:message key="tatami.badge.status"/>
+            </a>
+          </th>
+          <td>
+            <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <span class="badge badge-info"><@= profile.statusCount @></span>
+            </a>
+          </td>
+        </tr>
+      </thead>
       <tr>
-        <th><fmt:message key="tatami.badge.status"/></th>
-        <td><span class="badge badge-info"><@= profile.statusCount @></span></td>
+        <th>
+          <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+            <fmt:message key="tatami.badge.followed"/>
+          </a>
+        </th>
+        <td>
+          <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+            <span class="badge badge-info"><@= profile.friendsCount @></span>
+          </a>
+        </td>
       </tr>
-    </thead>
-    <tr>
-      <th><fmt:message key="tatami.badge.followed"/></th>
-      <td><span class="badge badge-info"><@= profile.friendsCount @></span></td>
-    </tr>
-    <tr>
-      <th><fmt:message key="tatami.badge.followers"/></th>
-      <td><span class="badge badge-info"><@= profile.followersCount @></span></td>
-    </tr>
-  </table>
+      <tr>
+        <th>
+          <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+            <fmt:message key="tatami.badge.followers"/>
+          </a>
+        </th>
+        <td>
+          <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+            <span class="badge badge-info"><@= profile.followersCount @></span>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 </script>
 
