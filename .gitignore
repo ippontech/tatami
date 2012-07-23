@@ -1,5 +1,6 @@
 data
 .idea
+*.iml
 tatami.iml
 tatami.ipr
 tatami.iws
@@ -8,3 +9,4 @@ tatami.iws
 .settings
 target
 src/main/webapp/WEB-INF/generated-wro4j
+.merge_file*

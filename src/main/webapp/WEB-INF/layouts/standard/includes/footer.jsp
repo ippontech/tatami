@@ -1,6 +1,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="templates-commun.jsp"/>
+
 <footer>
     <div id="footer" class="navbar navbar-fixed-bottom">
         <a href="http://www.ippon.fr" id="footer_ippon"><fmt:message key="tatami.copyright"/> <fmt:message key="tatami.ippon.technologies"/></a> |
@@ -17,25 +19,19 @@
 <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/jquery/jquery-1.7.2.min.js"%3E%3C/script%3E'))</script>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-dropdown.js"></script>
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-tab.js"></script>
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-tooltip.js"></script>
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-popover.js"></script>
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-typeahead.js"></script>
-    <script src="/assets/js/bootstrap/2.0.4/bootstrap-collapse.js"></script>
-    <script src="/assets/js/tatami/standard/shortcut.js"></script>
-    <script src="/assets/js/raphael/2.1.0/raphael-min.js"></script>
-    <script src="/assets/js/mustache/mustache.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.utils.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.status.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.users.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.ajax.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.charts.js"></script>
-    <script src="/assets/js/tatami/standard/tatami.js"></script>
+    <script src="/assets/js/jquery-min.js"></script>
+    <script src="/assets/js/jquery-tagLinker.js"></script>
+    <script src="/assets/js/jquery-usernameLinker.js"></script>
+    <script src="/assets/js/bootstrap-min.js"></script>
+    <script src="/assets/js/underscore-min.js"></script>
+    <script src="/assets/js/backbone-min.js"></script>
+
+    <sec:authorize access="isAuthenticated()" >
+        <script src="/assets/js/tatami-commun.js"></script>
+    </sec:authorize>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>
 </c:if>
 
-<!-- Mustache templates -->
-<div id="mustache"></div>
+<script src="/assets/js/tatami-commun.js"></script>

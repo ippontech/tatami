@@ -11,8 +11,8 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container-fluid mainPanel">
-    <div class="span8">
+<div class="container mainPanel">
+    <div class="offset2 span8">
         <h1><fmt:message key="tatami.register.validation.title"/></h1>
 
         <c:if test="${login eq null}">
@@ -23,7 +23,6 @@
         </c:if>
     </div>
 </div>
-<br/><br/><br/><br/><br/><br/>
 
 <jsp:include page="includes/footer.jsp"/>
 

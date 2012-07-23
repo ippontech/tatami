@@ -43,11 +43,11 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postStatus(@RequestBody String content) {
+    public void postStatus(@RequestBody Status tweet) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to add status : " + content);
+            log.debug("REST request to add status : " + tweet.getContent());
         }
-        String escapedContent = StringEscapeUtils.escapeHtml(content);
+        String escapedContent = StringEscapeUtils.escapeHtml(tweet.getContent());
         timelineService.postStatus(escapedContent);
     }
 
