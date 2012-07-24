@@ -119,9 +119,6 @@
     var statusId = "${statusId}";
     var page = "status";
 
-    //Mustache.js templates
-    $('#mustache').load('/assets/templates_mustache/templates.html');
-
     $(document).ready(function() {
         initStatus();
     });

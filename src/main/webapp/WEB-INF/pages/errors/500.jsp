@@ -15,7 +15,7 @@
     <div class="row">
         <div class="offset2 span8 text-center">
             <h1><fmt:message key="tatami.500"/></h1>
-           <img src="/assets/img/500-error.jpg">
+           <img src="/img/500-error.jpg">
        </div>
     </div>
 </div>

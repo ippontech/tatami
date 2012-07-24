@@ -13,17 +13,16 @@
 </footer>
 
 <!-- Le javascript -->
-<c:if test="${wro4jEnabled eq false}">
-    <script src="/assets/js/jquery-min.js"></script>
-    <script src="/assets/js/jquery-tagLinker.js"></script>
-    <script src="/assets/js/jquery-usernameLinker.js"></script>
-    <script src="/assets/js/bootstrap-min.js"></script>
-    <script src="/assets/js/underscore-min.js"></script>
-    <script src="/assets/js/backbone-min.js"></script>
 
-    <sec:authorize access="isAuthenticated()" >
-        <script src="/assets/js/tatami-commun.js"></script>
-    </sec:authorize>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<c:if test="${wro4jEnabled eq false}">
+    <script src="/js/bootstrap-min.js"></script>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/backbone-min.js"></script>
+    <script src="/js/jquery-tagLinker.js"></script>
+    <script src="/js/jquery-usernameLinker.js"></script>
+    <script src="/js/tatami-commun.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>

@@ -18,15 +18,9 @@
     <meta name="author" content="Ippon Technologies">
 
     <c:if test="${wro4jEnabled eq false}">
-        <link href="/assets/css/bootstrap-min.css" rel="stylesheet">
-        <style type="text/css">
-            body {
-                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-                padding-bottom: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
-            }
-        </style>
-        <link href="/assets/css/bootstrap-responsive-min.css" rel="stylesheet">
-        <link href="/assets/css/tatami.css" rel="stylesheet">
+        <link href="/css/bootstrap-min.css" rel="stylesheet">
+        <link href="/css/bootstrap-responsive-min.css" rel="stylesheet">
+        <link href="/css/tatami.css" rel="stylesheet">
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
         <link href="/tatami/static/${version}/all.css" rel="stylesheet">
@@ -37,7 +31,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/assets/img/ippon.ico">
+    <link rel="shortcut icon" href="/img/ippon.ico">
 
     <c:if test="${googleAnalyticsKey ne ''}">
         <script type="text/javascript">

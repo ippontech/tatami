@@ -119,7 +119,7 @@
     var owner = ${user.login eq login};
 </script>
 
-<script src="/assets/js/tatami-profile.js"></script>
+<script src="/js/tatami-profile.js"></script>
 
 </body>
 </html>

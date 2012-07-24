@@ -98,7 +98,7 @@
 
     </script>
     
-    <script src="/assets/js/tatami-home.js"></script>
+    <script src="/js/tatami-home.js"></script>
 
 </body>
 </html>

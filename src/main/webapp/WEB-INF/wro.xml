@@ -6,14 +6,11 @@
         <css>/css/bootstrap-responsive-min.css</css>
         <css>/css/tatami.css</css>
 
-        <js>/js/jquery-min.js</js>
-        <js>/js/jquery-tagLinker.js</js>
-        <js>/js/jquery-usernameLinker.js</js>
         <js>/js/bootstrap-min.js</js>
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
+        <js>/js/jquery-tagLinker.js</js>
+        <js>/js/jquery-usernameLinker.js</js>
         <js>/js/tatami-commun.js</js>
-        <js>/js/tatami-home.js</js>
-        <js>/js/tatami-profile.js</js>
     </group>
 </groups>

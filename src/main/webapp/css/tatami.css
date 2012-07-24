@@ -1,3 +1,8 @@
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    padding-bottom: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
 /*
   Fix Navbar
 */
@@ -124,28 +129,28 @@
 }
 
 #footer_ippon {
-    background-image: url(../img/ippon-logo-small.png);
+    background-image: url(/img/ippon-logo-small.png);
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
 }
 
 #footer_github {
-    background-image: url(../img/github.png);
+    background-image: url(/img/github.png);
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
 }
 
 #footer_blog {
-    background-image: url(../img/blog.png);
+    background-image: url(/img/blog.png);
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
 }
 
 #footer_twitter {
-    background-image: url(../img/twitter.png);
+    background-image: url(/img/twitter.png);
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
@@ -156,7 +161,7 @@
 }
 
 .favorite {
-  background-image: url(../img/favorite.png);
+  background-image: url(/img/favorite.png);
   background-repeat: no-repeat;
   background-position: right top;
 }

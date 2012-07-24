@@ -385,7 +385,7 @@
                 <configuration>
                     <targetGroups>all</targetGroups>
                     <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
-                    <contextFolder>${basedir}/src/main/webapp/assets</contextFolder>
+                    <contextFolder>${basedir}/src/main/webapp</contextFolder>
                     <ignoreMissingResources>false</ignoreMissingResources>
                 </configuration>
                 <dependencies>
