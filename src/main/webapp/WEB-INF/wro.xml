@@ -3,6 +3,7 @@
 <groups xmlns="http://www.isdc.ro/wro">
     <group name='all'>
         <css>/css/bootstrap-min.css</css>
+        <css>/css/reset.css</css>
         <css>/css/bootstrap-responsive-min.css</css>
         <css>/css/tatami.css</css>
 
