@@ -22,8 +22,7 @@
                       <div class="span4 text-center">
                         <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
                           <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="${user.firstName} ${user.lastName}">
-                          ${user.firstName} ${user.lastName}
-                          <br>
+                          <h3>${user.firstName} ${user.lastName}</h3>
                           @${user.username}
                         </a>
                         <br/>

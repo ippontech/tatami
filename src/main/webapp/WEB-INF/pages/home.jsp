@@ -21,9 +21,6 @@
 
                 <!-- Follow -->
                 <div id="profileFollow" class="alert alert-info hidden-phone">
-
-                    
-
                 </div>
             </div>
 

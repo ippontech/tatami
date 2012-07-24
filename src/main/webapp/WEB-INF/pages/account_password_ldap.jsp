@@ -17,9 +17,8 @@
 <div class="container mainPanel">
     <c:choose>
         <c:when test="${not empty user}">
-
-            <div class="well row nomargin nopadding">
-                <div class="offset4 span4 text-center">
+            <div class="nomargin well row">
+                <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="Arthur Weber">
                         <h3>${user.firstName} ${user.lastName}</h3>
@@ -27,9 +26,8 @@
                     </a>
                 </div>
             </div>
-
+            <br/>
             <div class="row">
-
                 <div class="span4">
                     <div class="tabbable alert alert-info">
                         <ul class="nav nav-pills nav-stacked nomargin">
@@ -51,7 +49,6 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
@@ -68,8 +65,6 @@
                     </div>
                 </div>
             </div>
-
-
         </c:when>
         <c:otherwise>
 
