@@ -54,6 +54,13 @@
                                         <i class="icon-globe"></i> <fmt:message
                                             key="tatami.menu.enterprise"/></a>
                                 </li>
+                                <sec:authorize access="hasRole('ROLE_ADMIN')" >
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="/tatami/admin">
+                                            <i class="icon-wrench"></i> Administration</a>
+                                    </li>
+                                </sec:authorize>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="/tatami/logout">

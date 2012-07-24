@@ -62,24 +62,24 @@ public class TatamiUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         if (log.isDebugEnabled()) {
-            log.debug("Authenticating " + username + " with Cassandra");
+            log.debug("Authenticating " + login + " with Cassandra");
         }
-        User userFromCassandra = userService.getUserByLogin(username);
+        User userFromCassandra = userService.getUserByLogin(login);
         if (userFromCassandra == null) {
-            throw new UsernameNotFoundException("User " + username + " was not found in Cassandra");
+            throw new UsernameNotFoundException("User " + login + " was not found in Cassandra");
         }
         org.springframework.security.core.userdetails.User springSecurityUser = null;
 
-        if (adminUsers.contains(username)) {
+        if (adminUsers.contains(login)) {
             if (log.isDebugEnabled()) {
-                log.debug("User \"" + username + "\" is an administrator.");
+                log.debug("User \"" + login + "\" is an administrator.");
             }
-            springSecurityUser = new org.springframework.security.core.userdetails.User(username, userFromCassandra.getPassword(),
+            springSecurityUser = new org.springframework.security.core.userdetails.User(login, userFromCassandra.getPassword(),
                     adminGrantedAuthorities);
         } else {
-            springSecurityUser = new org.springframework.security.core.userdetails.User(username, userFromCassandra.getPassword(),
+            springSecurityUser = new org.springframework.security.core.userdetails.User(login, userFromCassandra.getPassword(),
                         userGrantedAuthorities);
         }
         return springSecurityUser;
