@@ -14,6 +14,16 @@
 
 <div class="container mainPanel">
 
+    <c:if test="${message == 'reindex'}">
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-success">
+                ElasticSearch re-indexation has been triggered.
+            </div>
+        </div>
+    </div>
+    </c:if>
+
     <div class="row">
         <div class="span12">
             <h1>Administration dashboard</h1>
@@ -23,15 +33,15 @@
     <div class="row">
         <div class="span12">
             <h2>
-                Re-index ElasticPath
+                Re-index ElasticSearch
             </h2>
 
             <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
                 <fieldset>
                     <div class="form-actions">
                         <button type="submit" class="input-xlarge btn btn-danger"
-                                onclick="return(confirm('Are you sure you want to re-index ElasticPath?'));">
-                            Re-index ElasticPath
+                                onclick="return(confirm('Are you sure you want to re-index ElasticSearch?'));">
+                            Re-index ElasticSearch
                         </button>
                     </div>
                 </fieldset>

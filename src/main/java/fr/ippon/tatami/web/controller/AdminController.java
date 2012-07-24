@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
@@ -25,10 +26,18 @@ public class AdminController {
 
     @RequestMapping(value = "/admin",
             method = RequestMethod.GET)
-    public ModelAndView adminPage() {
+    public ModelAndView adminPage(@RequestParam(required = false) String message) {
         Collection<Domain> domains = adminService.getAllDomains();
         ModelAndView mv = new ModelAndView("admin");
         mv.addObject("domains", domains);
+        mv.addObject("message", message);
         return mv;
+    }
+
+    @RequestMapping(value = "/admin/reindex",
+            method = RequestMethod.POST)
+    public String reindexElasticSearch() {
+
+        return "redirect:/tatami/admin?message=reindex";
     }
 }
