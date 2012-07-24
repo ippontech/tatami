@@ -37,7 +37,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/reindex",
             method = RequestMethod.POST)
     public String reindexElasticSearch() {
-
+        adminService.rebuildIndex();
         return "redirect:/tatami/admin?message=reindex";
     }
 }

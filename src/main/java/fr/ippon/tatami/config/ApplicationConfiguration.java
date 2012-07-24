@@ -6,11 +6,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.concurrent.Executor;
 
 @Configuration
 @PropertySource("classpath:/META-INF/tatami/tatami.properties")
@@ -18,7 +21,7 @@ import java.io.IOException;
 @Import(value = {CacheConfiguration.class, CassandraConfiguration.class, ElasticSearchConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 @EnableAsync
-public class ApplicationConfiguration {
+public class ApplicationConfiguration implements AsyncConfigurer {
 
     private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
 
@@ -29,7 +32,7 @@ public class ApplicationConfiguration {
     public void initTatami() throws IOException, TTransportException {
         Constants.VERSION = env.getRequiredProperty("tatami.version");
         Constants.GOOGLE_ANALYTICS_KEY = env.getProperty("tatami.google.analytics.key");
-        if ("true".equals(env.getProperty("tatami.wro4j.enabled"))) {
+        if ("true" .equals(env.getProperty("tatami.wro4j.enabled"))) {
             Constants.WRO4J_ENABLED = true;
         }
         log.info("Tatami v. " + Constants.VERSION + " started!");
@@ -37,5 +40,16 @@ public class ApplicationConfiguration {
             log.debug("Google Analytics key : " + Constants.GOOGLE_ANALYTICS_KEY);
             log.debug("WRO4J enabled : " + Constants.WRO4J_ENABLED);
         }
+    }
+
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(10000);
+        executor.setThreadNamePrefix("TatamiExecutor-");
+        executor.initialize();
+        return executor;
     }
 }

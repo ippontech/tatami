@@ -27,6 +27,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -55,60 +56,12 @@ public class IndexService {
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Add an item to the index.
-     *
-     * @param clazz           the item class
-     * @param uid             the item identifier
-     * @param jsonifiedObject the item json representation
-     * @return the response's Id
-     */
-    private String addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
-
-        if (log.isDebugEnabled()) {
-            String itemAsString = null;
-            try {
-                itemAsString = jsonifiedObject.prettyPrint().string();
-            } catch (IOException e) {
-                itemAsString = clazz.getSimpleName() + "-" + uid;
-            }
-            log.debug("Ready to inject this json object into Elastic Search: " + itemAsString);
-        }
-
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        IndexResponse response = this.client.prepareIndex(this.indexName, dataType, uid)
-                .setSource(jsonifiedObject)
-                .execute()
-                .actionGet();
-
-        // Should we force the update ? Not sure... due to performance cost. "index.refresh_interval" properties may be adjusted if needed
-        // client.admin().indices().refresh(Requests.refreshRequest(indexName)).actionGet();
-
-        return (response == null) ? null : response.getId();
-    }
-
-    /**
-     * Delete a object from the index.
-     *
-     * @param clazz the item class
-     * @param uid   : the item identifier
-     * @return the response's Id
-     */
-    private String removeObject(@SuppressWarnings("rawtypes") final Class clazz, String uid) {
-
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        if (log.isDebugEnabled()) {
-            log.debug("Removing a " + dataType + " item from the index : #" + uid);
-        }
-        final DeleteResponse response = this.client.delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
-        return response.getId();
-    }
-
-    /**
      * Add a status to the index.
      *
      * @param status the status to add : can't be null
      * @return the response's Id
      */
+    @Async
     public String addStatus(final Status status) {
         Assert.notNull(status, "status can't be null");
 
@@ -118,11 +71,11 @@ public class IndexService {
                     .startObject()
                     .field("username", status.getUsername())
                     .field("domain", status.getDomain())
-                    .field("postDate", status.getStatusDate())
-                    .field("message", StringEscapeUtils.unescapeHtml(status.getContent()))
+                    .field("statusDate", status.getStatusDate())
+                    .field("content", StringEscapeUtils.unescapeHtml(status.getContent()))
                     .endObject();
         } catch (IOException e) {
-            log.error("The message wasn't added to the index: "
+            log.error("The status wasn't added to the index: "
                     + status.getStatusId()
                     + " ["
                     + status.toString()
@@ -185,7 +138,7 @@ public class IndexService {
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false);
             if (StringUtils.isNotBlank(sortField)) {
-                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
+                builder.addSort(sortField, ("desc" .equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
             }
 
             searchResponse = builder.execute().actionGet();
@@ -278,6 +231,7 @@ public class IndexService {
      * @param user the user to add : can't be null
      * @return the response's Id
      */
+    @Async
     public String addUser(final User user) {
         Assert.notNull(user, "user can't be null");
 
@@ -304,14 +258,51 @@ public class IndexService {
     }
 
     /**
-     * Delete a user from the index (based on his login, as it's his primary key).
+     * Add an item to the index.
      *
-     * @param user the user to delete
+     * @param clazz           the item class
+     * @param uid             the item identifier
+     * @param jsonifiedObject the item json representation
      * @return the response's Id
      */
-    public String removeUser(final User user) {
-        Assert.notNull(user, "user can't be null");
-        return removeObject(user.getClass(), user.getLogin());
+    private String addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
+
+        if (log.isDebugEnabled()) {
+            String itemAsString = null;
+            try {
+                itemAsString = jsonifiedObject.prettyPrint().string();
+            } catch (IOException e) {
+                itemAsString = clazz.getSimpleName() + "-" + uid;
+            }
+            log.debug("Ready to inject this json object into Elastic Search: " + itemAsString);
+        }
+
+        final String dataType = clazz.getSimpleName().toLowerCase();
+        IndexResponse response = this.client.prepareIndex(this.indexName, dataType, uid)
+                .setSource(jsonifiedObject)
+                .execute()
+                .actionGet();
+
+        // Should we force the update ? Not sure... due to performance cost. "index.refresh_interval" properties may be adjusted if needed
+        // client.admin().indices().refresh(Requests.refreshRequest(indexName)).actionGet();
+
+        return (response == null) ? null : response.getId();
     }
 
+    /**
+     * Delete a object from the index.
+     *
+     * @param clazz the item class
+     * @param uid   : the item identifier
+     * @return the response's Id
+     */
+    private String removeObject(@SuppressWarnings("rawtypes") final Class clazz, String uid) {
+
+        final String dataType = clazz.getSimpleName().toLowerCase();
+        if (log.isDebugEnabled()) {
+            log.debug("Removing a " + dataType + " item from the index : #" + uid);
+        }
+        final DeleteResponse response = this.client.delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
+        return response.getId();
+    }
 }

@@ -7,18 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
-import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
-import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
@@ -83,7 +79,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
-        if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
+        if ("true" .equals(env.getProperty("tatami.message.reloading.enabled"))) {
             messageSource.setCacheSeconds(1);
         }
         return messageSource;
@@ -93,6 +89,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/" + env.getProperty("tatami.version") + "/**")
                 .addResourceLocations("/WEB-INF/generated-wro4j/")
-                .setCachePeriod(60*60*24*30);
+                .setCachePeriod(60 * 60 * 24 * 30);
     }
 }

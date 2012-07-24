@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import java.util.*;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAIN_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * Cassandra implementation of the Follower repository.

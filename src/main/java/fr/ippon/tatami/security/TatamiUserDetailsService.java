@@ -80,7 +80,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
                     adminGrantedAuthorities);
         } else {
             springSecurityUser = new org.springframework.security.core.userdetails.User(login, userFromCassandra.getPassword(),
-                        userGrantedAuthorities);
+                    userGrantedAuthorities);
         }
         return springSecurityUser;
     }
