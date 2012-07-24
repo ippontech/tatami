@@ -92,6 +92,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/" + env.getProperty("tatami.version") + "/**")
-                .addResourceLocations("/WEB-INF/generated-wro4j/");
+                .addResourceLocations("/WEB-INF/generated-wro4j/")
+                .setCachePeriod(60*60*24*30);
     }
 }
