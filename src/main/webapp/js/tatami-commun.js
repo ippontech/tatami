@@ -80,7 +80,7 @@ $(function() {
     initialize: function() {
       if(app.Status.statuses.indexOf(this.model) === -1)
         app.Status.statuses.push(this.model);
-      $(this.el).addClass('alert alert-info');
+      $(this.el).addClass('status alert alert-info');
 
       this.model.bind('destroy', this.remove, this);
       this.model.bind('change', this.render, this);

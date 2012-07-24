@@ -156,19 +156,19 @@
 </script>
 
 <script type="text/template" id="timeline-new">
-  <div class="text-center alert alert-info">New</div>
+  <div class="status text-center alert alert-info">New</div>
 </script>
 
 <script type="text/template" id="favoris-refresh">
-  <div class="text-center alert alert-info">Refresh</div>
+  <div class="status text-center alert alert-info">Refresh</div>
 </script>
 
 <script type="text/template" id="timeline-next">
-  <div class="text-center alert alert-info">Next</div>
+  <div class="status text-center alert alert-info">Next</div>
 </script>
 
 <script type="text/template" id="timeline-progress">
-  <div class="text-center alert alert-info">
+  <div class="status text-center alert alert-info">
     <div class="progress progress-striped active">
       <div class="bar" style="width: 100%;"></div>
     </div>

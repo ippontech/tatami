@@ -160,3 +160,7 @@
   background-repeat: no-repeat;
   background-position: right top;
 }
+
+.status {
+  margin-bottom: 5px;
+}
