@@ -20,8 +20,9 @@
     <script src="/js/bootstrap-min.js"></script>
     <script src="/js/underscore-min.js"></script>
     <script src="/js/backbone-min.js"></script>
-    <script src="/js/jquery-tagLinker.js"></script>
-    <script src="/js/jquery-usernameLinker.js"></script>
+    <script src="/js/jquery-tatami-tagLinker.js"></script>
+    <script src="/js/jquery-tatami-usernameLinker.js"></script>
+    <script src="/js/jquery-tatami-infinitiScroll.js"></script>
     <script src="/js/tatami-commun.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">

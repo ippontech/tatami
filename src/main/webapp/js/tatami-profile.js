@@ -153,6 +153,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {

@@ -20,13 +20,13 @@
               </a>
               <p class="pull-right"><@=status.prettyPrintStatusDate@></p>
               <div class="pull-right status-actions">
-                <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
+                <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>" title="<fmt:message key="tatami.user.status.show"/>">
                   <i class="icon-eye-open"></i>
                 </a>
-                <a class="status-action-favoris">
+                <a class="status-action-favoris" title="<fmt:message key="tatami.user.status.favorite"/>">
                   <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
                 </a>
-                <a class="status-action-remove">
+                <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">
                   <i class="icon-remove"></i>
                 </a>
               </div>

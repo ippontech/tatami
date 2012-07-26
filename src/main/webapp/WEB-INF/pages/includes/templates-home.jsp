@@ -118,15 +118,15 @@
 </script>
 
 <script type="text/template" id="timeline-new">
-  <div class="status text-center alert alert-info">New</div>
+  <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>
 
 <script type="text/template" id="favoris-refresh">
-  <div class="status text-center alert alert-info">Refresh</div>
+  <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>
 
 <script type="text/template" id="timeline-next">
-  <div class="status text-center alert alert-info">Next</div>
+  <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.next"/></div>
 </script>
 
 <script type="text/template" id="timeline-progress">

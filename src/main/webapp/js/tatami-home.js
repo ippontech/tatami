@@ -353,6 +353,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {
@@ -400,6 +401,7 @@ $(function() {
       var $el = $(this.el);
       $el.html(this.template());
       this.delegateEvents();
+
       return $(this.el);
     },
 
@@ -590,7 +592,7 @@ $(function() {
       });
 
 
-      this.views.search.fetch();
+      this.views.next.nextStatus();
     },
 
     render: function () {
@@ -671,6 +673,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {
@@ -760,7 +763,7 @@ $(function() {
 
       });
 
-      this.views.search.fetch();
+      this.views.next.nextStatus();
     },
 
     render: function () {
