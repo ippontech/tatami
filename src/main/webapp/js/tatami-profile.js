@@ -21,11 +21,14 @@ $(function() {
     app = window.app;
   }
 
+
   /*
     Timeline
   */
 
   var StatusCollection = app.Collection.StatusCollection;
+
+  var StatusUpdateModel = app.Model.StatusUpdateModel;
 
   var StatusDelete = app.Model.StatusDelete;
 
@@ -37,6 +40,49 @@ $(function() {
 
   var TimeLineView = app.View.TimeLineView;
 
+
+  var ProfileUpdateView = app.View.ProfileUpdateView = Backbone.View.extend({
+    tagName: 'form',
+    template: _.template($('#profile-update').html()),
+
+    initialize: function() {
+      $(this.el).addClass('row-fluid');
+    },
+
+    events: {
+      'submit': 'addStatus'
+    },
+
+    addStatus: function(e) {
+      var self = this;
+      e.preventDefault();
+
+      var status = new StatusUpdateModel();
+
+      _.each($(e.target).serializeArray(), function(value){
+        status.set(value.name, value.value);
+      });
+
+      status.save(null,{
+        success: function(model, response) {
+          e.target.reset();
+          $(self.el).find('.control-group').removeClass('error');
+
+          app.trigger('refreshProfile');
+          app.trigger('refreshTimeline');
+        },
+        error: function(model, response) {
+          $(self.el).find('.control-group').addClass('error');
+        }
+      });
+    },
+
+    render: function() {
+      var $el = $(this.el);
+      $el.html(this.template());
+      return $(this.el);
+    }
+  });
   /*
     Status
   */
@@ -107,6 +153,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {
@@ -319,7 +366,9 @@ $(function() {
         followed: followed,
         owner: owner
       });
+      app.views.update = new ProfileUpdateView();
       $('#follow-action').html(app.views.followButton.render());
+      $('#div-update').html(app.views.update.render());
     },
 
     selectMenu: function(menu) {

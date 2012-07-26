@@ -21,10 +21,6 @@ $(function() {
     app = window.app;
   }
 
-
-
-
-
   /*
     Profile
   */
@@ -40,9 +36,7 @@ $(function() {
     }
   });
 
-  var StatusUpdateModel = app.Model.StatusUpdateModel = Backbone.Model.extend({
-    url : '/tatami/rest/statuses/update'
-  });
+  var StatusUpdateModel = app.Model.StatusUpdateModel;
 
   var ProfileInfoView = app.View.ProfileInfoView = Backbone.View.extend({
     template: _.template($('#profile-infos').html()),
@@ -76,9 +70,9 @@ $(function() {
     }
   });
 
-  var ProfileUpdateView = app.View.ProfileUpdateView = Backbone.View.extend({
+  var UpdateView = app.View.UpdateView = Backbone.View.extend({
     tagName: 'form',
-    template: _.template($('#profile-update').html()),
+    template: _.template($('#update-template').html()),
 
     initialize: function() {
       $(this.el).addClass('row-fluid');
@@ -130,7 +124,7 @@ $(function() {
         stats: new ProfileStatsView({
           model : this.model
         }),
-        update: new ProfileUpdateView()
+        update: new UpdateView()
       };
 
       var self = this;
@@ -209,6 +203,7 @@ $(function() {
 
   var SuggestView = app.View.SuggestView = Backbone.View.extend({
     template: _.template($('#profile-follow-suggest-empty').html()),
+    tagName: 'tbody',
 
     initialize: function() {
       var self = this;
@@ -244,7 +239,7 @@ $(function() {
   });
 
   var SuggestItemView = app.View.SuggestItemView = Backbone.View.extend({
-    tagName: 'td',
+    tagName: 'tr',
     template: _.template($('#profile-follow-suggest-item').html()),
 
 
@@ -271,7 +266,7 @@ $(function() {
       $(this.el).empty();
       $(this.el).append(this.views.form.render());
       $(this.el).append(this.template());
-      $(this.el).find('#follow-suggest').html(this.views.suggest.render());
+      $(this.el).find('#follow-suggest').append(this.views.suggest.render());
 
       return $(this.el);
     }
@@ -300,47 +295,73 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      this.temp = new StatusCollection();
+
+      _.delay(_.bind(this.refresh, this), 20000);
     },
 
     events: {
       'click': 'newStatus'
     },
 
-    newStatus: function(done, context){
+    refresh: function(callback){
+      var self = this;
+
+      var sc = _.clone(this.model);
+
+      var last = (_.first(self.temp.models)) ? _.first(self.temp.models) : _.first(self.model.models);
+
+      sc.fetch({
+        data: {
+          since_id: last.get('statusId')
+        },
+        success: function(){
+          sc.models.reverse()
+          _.each(sc.models, function(model, key) {
+            self.temp.unshift(model);
+          });
+          self.render();
+          _.delay(_.bind(self.refresh, self), 20000);
+          if(typeof callback === 'function')
+            callback.call();
+        },
+        error: function() {
+          self.render();
+          _.delay(_.bind(self.refresh, self), 20000);
+          if(typeof callback === 'function')
+            callback.call();
+        }
+      });
+    },
+
+    newStatus: function() {
       this.progress();
       var self = this;
-      if(this.model.models.length === 0)
-        this.model.fetch({
-          success: function(){
-            self.render();
-          },
-          error: function() {
-            self.render();
-          }
-        });
-      else{
-        var sc = _.clone(this.model);
-        sc.fetch({
-          data: {
-            since_id: _.first(self.model.models).get('statusId')
-          },
-          success: function(){
-            sc.models.reverse()
-            _.each(sc.models, function(model, key) {
-              self.model.unshift(model);
-            });
-            self.render();
-          },
-          error: function() {
-            self.render();
-          }
-        });
-      }
+      this.refresh(function(){
+        if(self.model.models.length === 0)
+          self.model.fetch({
+            success: function(){
+              self.render();
+            },
+            error: function() {
+              self.render();
+            }
+          });
+        else{
+          self.temp.models.reverse()
+          _.each(self.temp.models, function(model, key) {
+            self.model.unshift(model);
+            self.temp.remove(model);
+          });
+
+          self.render();
+        }
+      })
     },
 
     render: function() {
       var $el = $(this.el);
-      $el.html(this.template());
+      $el.html(this.template({status: this.temp.length}));
       this.delegateEvents();
       return $(this.el);
     },
@@ -358,6 +379,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {
@@ -405,6 +427,7 @@ $(function() {
       var $el = $(this.el);
       $el.html(this.template());
       this.delegateEvents();
+
       return $(this.el);
     },
 
@@ -595,7 +618,7 @@ $(function() {
       });
 
 
-      this.views.search.fetch();
+      this.views.next.nextStatus();
     },
 
     render: function () {
@@ -676,6 +699,7 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      $(this.el).infinitiScroll();
     },
 
     events: {
@@ -765,7 +789,7 @@ $(function() {
 
       });
 
-      this.views.search.fetch();
+      this.views.next.nextStatus();
     },
 
     render: function () {

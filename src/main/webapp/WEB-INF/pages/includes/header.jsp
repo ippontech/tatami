@@ -19,6 +19,7 @@
 
     <c:if test="${wro4jEnabled eq false}">
         <link href="/css/bootstrap-min.css" rel="stylesheet">
+        <link href="/css/reset.css" rel="stylesheet">
         <link href="/css/bootstrap-responsive-min.css" rel="stylesheet">
         <link href="/css/tatami.css" rel="stylesheet">
     </c:if>
