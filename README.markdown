@@ -8,10 +8,10 @@ Tatami is a micro-blogging platform, for internal use inside a company.
 
 Tatami is made with the following technologies :
 
-- [Apache Cassandra](http://cassandra.apache.org/)
-- [Elastic Search](http://www.elasticsearch.org/) - version : 0.19.2
+- HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
-- HTML5 and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+- [Apache Cassandra](http://cassandra.apache.org/)
+- [Elastic Search](http://www.elasticsearch.org/)
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
