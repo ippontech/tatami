@@ -21,10 +21,6 @@ $(function() {
     app = window.app;
   }
 
-
-
-
-
   /*
     Profile
   */
@@ -40,9 +36,7 @@ $(function() {
     }
   });
 
-  var StatusUpdateModel = app.Model.StatusUpdateModel = Backbone.Model.extend({
-    url : '/tatami/rest/statuses/update'
-  });
+  var StatusUpdateModel = app.Model.StatusUpdateModel;
 
   var ProfileInfoView = app.View.ProfileInfoView = Backbone.View.extend({
     template: _.template($('#profile-infos').html()),
@@ -76,9 +70,9 @@ $(function() {
     }
   });
 
-  var ProfileUpdateView = app.View.ProfileUpdateView = Backbone.View.extend({
+  var UpdateView = app.View.UpdateView = Backbone.View.extend({
     tagName: 'form',
-    template: _.template($('#profile-update').html()),
+    template: _.template($('#update-template').html()),
 
     initialize: function() {
       $(this.el).addClass('row-fluid');
@@ -130,7 +124,7 @@ $(function() {
         stats: new ProfileStatsView({
           model : this.model
         }),
-        update: new ProfileUpdateView()
+        update: new UpdateView()
       };
 
       var self = this;

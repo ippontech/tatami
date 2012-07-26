@@ -46,6 +46,11 @@ $(function() {
 
   var StatusCollection = app.Collection.StatusCollection = Backbone.Collection.extend({
   });
+  
+
+  var StatusUpdateModel = app.Model.StatusUpdateModel = Backbone.Model.extend({
+    url : '/tatami/rest/statuses/update'
+  });
 
   var StatusDelete = app.Model.StatusDelete = Backbone.Model.extend({
     url: function(){

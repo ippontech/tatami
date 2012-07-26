@@ -61,7 +61,7 @@
 </div>
 </script>
 
-<script type="text/template" id="profile-update">
+<script type="text/template" id="update-template">
   <fieldset class="span12">
     <div class="control-group">
       <textarea class="span12" required="required" placeholder="Update your status..." maxlength="500" name="content"></textarea>

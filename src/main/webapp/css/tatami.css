@@ -46,6 +46,10 @@
   margin: 0px;
 }
 
+form {
+  margin-bottom: 8px;
+}
+
 .table-right th {
   text-align: left;
   width: 100px;
@@ -165,6 +169,10 @@
 .status td {
   padding-bottom: 0px;
   padding-right: 0px;
+}
+
+.profilMenu {
+  margin-bottom: 0px;
 }
 
 /*
