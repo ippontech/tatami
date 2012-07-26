@@ -87,6 +87,9 @@
                           </div>
                         </div>
                       </div>
+                      <div class="alert alert-info">
+                        <div id="div-update"></div>
+                      </div>
                     </div>
                     <div class="span8">
                       <div id="tab-content"></div>
@@ -107,6 +110,7 @@
     </c:choose>
 </div>
 
+<jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <sec:authentication property="principal.username" var="login"/>

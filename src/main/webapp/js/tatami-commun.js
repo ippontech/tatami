@@ -46,6 +46,11 @@ $(function() {
 
   var StatusCollection = app.Collection.StatusCollection = Backbone.Collection.extend({
   });
+  
+
+  var StatusUpdateModel = app.Model.StatusUpdateModel = Backbone.Model.extend({
+    url : '/tatami/rest/statuses/update'
+  });
 
   var StatusDelete = app.Model.StatusDelete = Backbone.Model.extend({
     url: function(){
@@ -80,7 +85,6 @@ $(function() {
     initialize: function() {
       if(app.Status.statuses.indexOf(this.model) === -1)
         app.Status.statuses.push(this.model);
-      $(this.el).addClass('alert alert-info');
 
       this.model.bind('destroy', this.remove, this);
       this.model.bind('change', this.render, this);
@@ -119,10 +123,6 @@ $(function() {
     },
 
     render: function() {
-      if(this.model.get('favorite') === true)
-        $(this.el).addClass('favorite');
-      else
-        $(this.el).removeClass('favorite');
 
       $(this.el).html(this.template({status:this.model.toJSON()}));
       $(this.el).tagLinker('.status-content').usernameLinker('.status-content');

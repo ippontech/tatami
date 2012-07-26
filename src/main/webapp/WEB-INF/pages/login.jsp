@@ -38,7 +38,7 @@
         </div>
     </c:if>
     <div class="row">
-        <div class="offset3 span6">
+        <div class="span12 text-center">
             <h1><fmt:message key="tatami.presentation"/></h1>
 
             <p><fmt:message key="tatami.presentation.text"/></p>
