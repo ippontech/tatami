@@ -8,7 +8,7 @@
   $.fn.usernameLinker = function(selector) {
     this.find(selector).each(function(){
       var content = $(this).html();
-      var matches = content.match(/@[a-zA-Z0-9]*/gi);
+      var matches = content.match(/@[^ ]*/gi);
       if(matches) {
         $.each(matches, function(index, value){
           var username = value.substr(1);
