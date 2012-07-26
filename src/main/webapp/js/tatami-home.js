@@ -295,47 +295,73 @@ $(function() {
     progressTemplate: _.template($('#timeline-progress').html()),
 
     initialize: function(){
+      this.temp = new StatusCollection();
+
+      _.delay(_.bind(this.refresh, this), 20000);
     },
 
     events: {
       'click': 'newStatus'
     },
 
-    newStatus: function(done, context){
+    refresh: function(callback){
+      var self = this;
+
+      var sc = _.clone(this.model);
+
+      var last = (_.first(self.temp.models)) ? _.first(self.temp.models) : _.first(self.model.models);
+
+      sc.fetch({
+        data: {
+          since_id: last.get('statusId')
+        },
+        success: function(){
+          sc.models.reverse()
+          _.each(sc.models, function(model, key) {
+            self.temp.unshift(model);
+          });
+          self.render();
+          _.delay(_.bind(self.refresh, self), 20000);
+          if(typeof callback === 'function')
+            callback.call();
+        },
+        error: function() {
+          self.render();
+          _.delay(_.bind(self.refresh, self), 20000);
+          if(typeof callback === 'function')
+            callback.call();
+        }
+      });
+    },
+
+    newStatus: function() {
       this.progress();
       var self = this;
-      if(this.model.models.length === 0)
-        this.model.fetch({
-          success: function(){
-            self.render();
-          },
-          error: function() {
-            self.render();
-          }
-        });
-      else{
-        var sc = _.clone(this.model);
-        sc.fetch({
-          data: {
-            since_id: _.first(self.model.models).get('statusId')
-          },
-          success: function(){
-            sc.models.reverse()
-            _.each(sc.models, function(model, key) {
-              self.model.unshift(model);
-            });
-            self.render();
-          },
-          error: function() {
-            self.render();
-          }
-        });
-      }
+      this.refresh(function(){
+        if(self.model.models.length === 0)
+          self.model.fetch({
+            success: function(){
+              self.render();
+            },
+            error: function() {
+              self.render();
+            }
+          });
+        else{
+          self.temp.models.reverse()
+          _.each(self.temp.models, function(model, key) {
+            self.model.unshift(model);
+            self.temp.remove(model);
+          });
+
+          self.render();
+        }
+      })
     },
 
     render: function() {
       var $el = $(this.el);
-      $el.html(this.template());
+      $el.html(this.template({status: this.temp.length}));
       this.delegateEvents();
       return $(this.el);
     },
