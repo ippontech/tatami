@@ -38,6 +38,14 @@
   Profile Stats table tablet
 */
 
+#profileContent .well, #profileFollow .well {
+  padding: 5px;
+}
+
+#profileContent table, #profileFollow table {
+  margin: 0px;
+}
+
 .table-right th {
   text-align: left;
   width: 100px;
@@ -46,10 +54,9 @@
   text-align: right;
 }
 
-.alert-info {
+.alert {
   padding-right: 14px;
 }
-
 
 .userStatus {
     color: #000000;
@@ -72,6 +79,8 @@
     width: 64px;
     height: 64px;
     border-radius: 5px 5px 5px 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 .avatar-small {
@@ -82,39 +91,6 @@
 .status-actions {
   padding-right: 10px;
 }
-
-
-/*
-  Responsive design
-*/
-
-/*
-  Fix input width on phone
-*/
-
-/* Landscape phones and down */
-@media (max-width: 480px) {
-}
- 
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) { 
-  [class*="span"], .row-fluid [class*="span"] {
-    width: 100%;
-  }
-
-}
- 
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-}
- 
-/* Large desktop */
-@media (min-width: 1200px) {
-}
-
-
-
-
 
 #footer {
     text-align: center;
@@ -155,6 +131,11 @@
   font-weight: bold;
 }
 
+.status .well {
+  padding: 5px;
+  margin-bottom: 0px;
+}
+
 .favorite {
   background-image: url(/img/favorite.png);
   background-repeat: no-repeat;
@@ -163,4 +144,79 @@
 
 .status {
   margin-bottom: 5px;
+}
+
+.status th:first-child {
+  vertical-align: top;
+  width: 64px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.status th:first-child {
+  vertical-align: top;
+  width: 64px;
+}
+
+.status table {
+  margin-bottom: 0px;
+}
+
+.status td {
+  padding-bottom: 0px;
+  padding-right: 0px;
+}
+
+/*
+  Responsive design
+*/
+
+/*
+  Fix input width on phone
+*/
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+  [class*="span"], .row-fluid [class*="span"] {
+    width: 100%;
+  }
+
+  .navbar-fixed-top, .navbar-fixed-bottom {
+    margin-right: -5px;
+    margin-left: -5px;
+    margin-bottom: 5px;
+  }
+
+  body {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+
+  .alert {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .status th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .alert {
+    margin-bottom: 5px;
+  }
+
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+}
+ 
+/* Large desktop */
+@media (min-width: 1200px) {
 }

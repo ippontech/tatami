@@ -209,6 +209,7 @@ $(function() {
 
   var SuggestView = app.View.SuggestView = Backbone.View.extend({
     template: _.template($('#profile-follow-suggest-empty').html()),
+    tagName: 'tbody',
 
     initialize: function() {
       var self = this;
@@ -244,7 +245,7 @@ $(function() {
   });
 
   var SuggestItemView = app.View.SuggestItemView = Backbone.View.extend({
-    tagName: 'td',
+    tagName: 'tr',
     template: _.template($('#profile-follow-suggest-item').html()),
 
 
@@ -271,7 +272,7 @@ $(function() {
       $(this.el).empty();
       $(this.el).append(this.views.form.render());
       $(this.el).append(this.template());
-      $(this.el).find('#follow-suggest').html(this.views.suggest.render());
+      $(this.el).find('#follow-suggest').append(this.views.suggest.render());
 
       return $(this.el);
     }
