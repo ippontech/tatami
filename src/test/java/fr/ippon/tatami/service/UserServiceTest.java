@@ -85,7 +85,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(createdUser.getUsername(), is("username"));
         assertThat(createdUser.getDomain(), is("domain.com"));
         assertNotNull(createdUser.getPassword());
-        assertThat(createdUser.getPassword().length(), is(20));
+        assertThat(createdUser.getPassword().length(), is(80)); //Encrypted password size
     }
 
     @Test

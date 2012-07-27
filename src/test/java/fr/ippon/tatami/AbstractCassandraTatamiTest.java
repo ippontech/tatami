@@ -59,6 +59,7 @@ public abstract class AbstractCassandraTatamiTest {
     protected User constructAUser(String login, String firstName, String lastName) {
         User user = new User();
         user.setLogin(login);
+        user.setPassword("");
         user.setUsername(DomainUtil.getUsernameFromLogin(login));
         user.setDomain(DomainUtil.getDomainFromLogin(login));
         user.setFirstName(firstName);

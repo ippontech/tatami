@@ -12,15 +12,24 @@
 <jsp:include page="includes/topmenu.jsp"/>
 
 <div class="container mainPanel">
-    <div class="offset2 span8">
-        <h1><fmt:message key="tatami.register.validation.title"/></h1>
+    <div class="row">
+        <div class="offset2 span8">
+            <h1><fmt:message key="tatami.register.validation.title"/></h1>
 
-        <c:if test="${login eq null}">
-            <p><fmt:message key="tatami.register.validation.error"/></p>
-        </c:if>
-        <c:if test="${login ne null}">
-            <p><fmt:message key="tatami.register.validation.ok"/></p>
-        </c:if>
+            <c:if test="${login eq null}">
+                <p><fmt:message key="tatami.register.validation.error"/></p>
+            </c:if>
+            <c:if test="${login ne null}">
+                <p><fmt:message key="tatami.register.validation.ok"/></p>
+            </c:if>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset4 span2">
+            <br>
+            <br>
+            <a href="/tatami/"><fmt:message key="tatami.register.home"/></a>
+        </div>
     </div>
 </div>
 

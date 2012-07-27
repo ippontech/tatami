@@ -31,6 +31,7 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
+        user.setPassword("");
         user.setLastName(lastName);
         user.setGravatar(gravatar);
 
