@@ -33,32 +33,16 @@ public class StatusController {
         if (log.isDebugEnabled()) {
             log.debug("Request to get username : " + username);
         }
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("profile");
-        populateModel(username, mv);
-        return mv;
-    }
-
-    @RequestMapping(value = "/{username}/status/{statusId}")
-    public ModelAndView displayStatus(@PathVariable("username") String username, @PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Request to get username : " + username + " / statusID : " + statusId);
-        }
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("status");
-        populateModel(username, mv);
-        return mv;
-    }
-
-    private void populateModel(String username, ModelAndView mv) {
+        ModelAndView mv = new ModelAndView("profile");
         User user = userService.getUserProfileByUsername(username);
-        String login = user.getLogin();
         if (null != user) {
             mv.addObject("user", user);
+            String login = user.getLogin();
             mv.addObject("followed", userService.isFollowed(login));
             mv.addObject("nbStatus", counterService.getNbStatus(login));
             mv.addObject("nbFollowed", counterService.getNbFollowed(login));
             mv.addObject("nbFollowers", counterService.getNbFollowers(login));
         }
+        return mv;
     }
 }
