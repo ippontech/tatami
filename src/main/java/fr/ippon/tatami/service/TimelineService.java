@@ -89,10 +89,16 @@ public class TimelineService {
         // add status to the mentioned users' timeline
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
-            String mentionedLogin = extractLoginWithoutAt(m.group());
-            if (mentionedLogin != null &&
-                    !mentionedLogin.equals(currentLogin) &&
-                    !followersForUser.contains(mentionedLogin)) {
+            String mentionedUsername = extractUsernameWithoutAt(m.group());
+            if (mentionedUsername != null &&
+                    !mentionedUsername.equals(currentLogin) &&
+                    !followersForUser.contains(mentionedUsername)) {
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Mentionning : " + mentionedUsername);
+                }
+                String mentionedLogin =
+                        DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
                 statusRepository.addStatusToTimeline(mentionedLogin, status);
             }
@@ -308,7 +314,7 @@ public class TimelineService {
         return this.buildStatusList(statusIds);
     }
 
-    private String extractLoginWithoutAt(String dest) {
+    private String extractUsernameWithoutAt(String dest) {
         return dest.substring(1, dest.length());
     }
 
