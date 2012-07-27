@@ -47,7 +47,7 @@
                                 <i class="icon-search"></i> <fmt:message key="tatami.search"/>
                             </a>
                         </li>
-                        <li class="dropdown">
+                        <!-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-signal"></i> <fmt:message key="tatami.status.stats"/> <b class="caret"></b>
                             </a>
@@ -63,7 +63,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                     <div id="tab-content">
                     </div>

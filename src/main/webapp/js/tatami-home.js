@@ -297,7 +297,7 @@ $(function() {
     initialize: function(){
       this.temp = new StatusCollection();
 
-      _.delay(_.bind(this.refresh, this), 20000);
+      _.delay(_.bind(this.refresh, this), this.options.interval);
     },
 
     events: {
@@ -309,54 +309,46 @@ $(function() {
 
       var sc = _.clone(this.model);
 
-      var last = (_.first(self.temp.models)) ? _.first(self.temp.models) : _.first(self.model.models);
+      var data = {};
+      if( typeof _.first(self.temp.models) !== 'undefined')
+        data.since_id = _.first(self.temp.models).get('statusId');
+      else if(typeof _.first(self.model.models) !== 'undefined')
+        data.since_id = _.first(self.model.models).get('statusId');
 
       sc.fetch({
-        data: {
-          since_id: last.get('statusId')
-        },
+        data: data,
         success: function(){
-          sc.models.reverse()
-          _.each(sc.models, function(model, key) {
-            self.temp.unshift(model);
-          });
+          while(sc.length > 0)
+            self.temp.unshift(sc.pop());
           self.render();
-          _.delay(_.bind(self.refresh, self), 20000);
-          if(typeof callback === 'function')
-            callback.call();
+          _.delay(_.bind(self.refresh, self), self.options.interval);
         },
         error: function() {
           self.render();
-          _.delay(_.bind(self.refresh, self), 20000);
-          if(typeof callback === 'function')
-            callback.call();
+          _.delay(_.bind(self.refresh, self), self.options.interval);
         }
       });
     },
 
     newStatus: function() {
+
       this.progress();
       var self = this;
-      this.refresh(function(){
-        if(self.model.models.length === 0)
-          self.model.fetch({
-            success: function(){
-              self.render();
-            },
-            error: function() {
-              self.render();
-            }
-          });
-        else{
-          self.temp.models.reverse()
-          _.each(self.temp.models, function(model, key) {
-            self.model.unshift(model);
-            self.temp.remove(model);
-          });
 
-          self.render();
-        }
-      })
+      if(this.model.models.length === 0)
+        this.model.fetch({
+          success: function(){
+            self.render();
+          },
+          error: function() {
+            self.render();
+          }
+        });
+      else{
+        while(self.temp.length > 0)
+          self.model.unshift(self.temp.pop());
+        self.render();
+      }
     },
 
     render: function() {
@@ -447,6 +439,7 @@ $(function() {
         model : this.model
       });
       this.views.new = new TimeLineNewView({
+        interval: 5000,
         model : this.model
       });
       this.views.next = new TimeLineNextView({
@@ -617,8 +610,7 @@ $(function() {
         model : this.model
       });
 
-
-      this.views.next.nextStatus();
+      this.views.search.fetch();
     },
 
     render: function () {
