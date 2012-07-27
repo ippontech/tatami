@@ -610,8 +610,7 @@ $(function() {
         model : this.model
       });
 
-
-      this.views.next.nextStatus();
+      this.views.search.fetch();
     },
 
     render: function () {
