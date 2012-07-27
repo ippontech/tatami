@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -70,13 +69,6 @@ public class TatamiUserDetailsService implements UserDetailsService {
         User userFromCassandra = userService.getUserByLogin(login);
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + login + " was not found in Cassandra");
-        }
-
-        // Hack to encrypt previously unencrytped passwords
-        if (userFromCassandra.getPassword().length() < 80) {
-            StandardPasswordEncoder encoder = new StandardPasswordEncoder();
-            userFromCassandra.setPassword(encoder.encode(userFromCassandra.getPassword()));
-            userService.updateUser(userFromCassandra);
         }
 
         org.springframework.security.core.userdetails.User springSecurityUser = null;

@@ -138,7 +138,7 @@ public class IndexService {
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false);
             if (StringUtils.isNotBlank(sortField)) {
-                builder.addSort(sortField, ("desc" .equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
+                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
             }
 
             searchResponse = builder.execute().actionGet();

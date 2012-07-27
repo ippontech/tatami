@@ -43,9 +43,6 @@
     <beans:bean id="daoAuthenticationProvider"
                 class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <beans:property name="userDetailsService" ref="userDetailsService"/>
-        <beans:property name="passwordEncoder">
-            <beans:bean class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
-        </beans:property>
     </beans:bean>
 
     <beans:bean id="ipponLdapContextSource"

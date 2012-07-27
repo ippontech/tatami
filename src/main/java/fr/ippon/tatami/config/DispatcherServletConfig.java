@@ -79,7 +79,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
-        if ("true" .equals(env.getProperty("tatami.message.reloading.enabled"))) {
+        if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
             messageSource.setCacheSeconds(1);
         }
         return messageSource;

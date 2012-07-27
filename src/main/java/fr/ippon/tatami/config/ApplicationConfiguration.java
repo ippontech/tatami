@@ -32,7 +32,7 @@ public class ApplicationConfiguration implements AsyncConfigurer {
     public void initTatami() throws IOException, TTransportException {
         Constants.VERSION = env.getRequiredProperty("tatami.version");
         Constants.GOOGLE_ANALYTICS_KEY = env.getProperty("tatami.google.analytics.key");
-        if ("true" .equals(env.getProperty("tatami.wro4j.enabled"))) {
+        if ("true".equals(env.getProperty("tatami.wro4j.enabled"))) {
             Constants.WRO4J_ENABLED = true;
         }
         log.info("Tatami v. " + Constants.VERSION + " started!");
