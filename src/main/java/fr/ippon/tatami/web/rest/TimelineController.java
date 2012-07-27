@@ -91,9 +91,6 @@ public class TimelineController {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the status list (" + count + " sized).");
-        }
         return timelineService.getTimeline(count, since_id, max_id);
     }
 
