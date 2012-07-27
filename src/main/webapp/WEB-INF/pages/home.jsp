@@ -47,6 +47,11 @@
                                 <i class="icon-search"></i> <fmt:message key="tatami.search"/>
                             </a>
                         </li>
+                        <li>
+                            <a href="#/daily">
+                                <i class="icon-signal"></i> <fmt:message key="tatami.stats.status.piechart"/>
+                            </a>
+                        </li>
                         <!-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-signal"></i> <fmt:message key="tatami.status.stats"/> <b class="caret"></b>
