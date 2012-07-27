@@ -95,6 +95,10 @@
                             <input id="j_password" name="j_password" type="password" required="required" class="span12" placeholder="Your password..."/>
                         </div>
                         <div class="controle-group">
+                            <fmt:message key="tatami.remember.password.time"/> :
+                            <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox"/>
+                        </div>
+                        <div class="controle-group">
                             <button type="submit" class="span12 btn btn-success">
                                 <fmt:message key="tatami.authentificate"/>
                             </button>
@@ -128,9 +132,6 @@
                 </form>
             </div>
             </div>
-
-
-            
         </div>
     </div>
 </div>

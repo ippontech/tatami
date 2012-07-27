@@ -23,6 +23,7 @@
     <http pattern="/tatami/500-error" security="none"/>
 
     <http auto-config="true" use-expressions="true">
+        <remember-me key="tatamiRememberKey"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <form-login
                 login-processing-url="/tatami/authentication"
