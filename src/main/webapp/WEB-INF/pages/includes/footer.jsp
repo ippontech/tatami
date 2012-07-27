@@ -16,11 +16,12 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
+<script src="/js/raphael-min.js"></script>
+
 <c:if test="${wro4jEnabled eq false}">
     <script src="/js/bootstrap-min.js"></script>
     <script src="/js/underscore-min.js"></script>
     <script src="/js/backbone-min.js"></script>
-    <script src="/js/raphael-min.js"></script>
     <script src="/js/jquery-tatami-tagLinker.js"></script>
     <script src="/js/jquery-tatami-usernameLinker.js"></script>
     <script src="/js/jquery-raphael-tatami-pie.js"></script>
