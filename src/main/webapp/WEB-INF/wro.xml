@@ -10,9 +10,11 @@
         <js>/js/bootstrap-min.js</js>
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
+        <js>/js/raphael-min.js</js>
         <js>/js/jquery-tatami-infinitiScroll.js</js>
         <js>/js/jquery-tatami-tagLinker.js</js>
         <js>/js/jquery-tatami-usernameLinker.js</js>
+        <js>/js/jquery-raphael-tatami-pie.js</js>
         <js>/js/tatami-commun.js</js>
     </group>
 </groups>

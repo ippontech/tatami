@@ -321,11 +321,17 @@ $(function() {
           while(sc.length > 0)
             self.temp.unshift(sc.pop());
           self.render();
-          _.delay(_.bind(self.refresh, self), self.options.interval);
+          if(typeof callback === 'undefined')
+            _.delay(_.bind(self.refresh, self), self.options.interval);
+          else
+            callback();
         },
         error: function() {
           self.render();
-          _.delay(_.bind(self.refresh, self), self.options.interval);
+          if(typeof callback === 'undefined')
+            _.delay(_.bind(self.refresh, self), self.options.interval);
+          else
+            callback();
         }
       });
     },
@@ -345,9 +351,11 @@ $(function() {
           }
         });
       else{
-        while(self.temp.length > 0)
-          self.model.unshift(self.temp.pop());
-        self.render();
+        this.refresh(function() {
+          while(self.temp.length > 0)
+            self.model.unshift(self.temp.pop());
+          self.render();
+        });
       }
     },
 
@@ -757,7 +765,7 @@ $(function() {
       this.model = new StatusCollection();
       this.model.options = {
         search: this.options.search,
-        rpp: 2,
+        rpp: this.options.rpp,
         page: 0
       };
 
@@ -793,6 +801,36 @@ $(function() {
 
   });
 
+  /*
+    Statistiques
+  */
+
+  var DailyStatCollection = window.app.Model.DailyStatCollection = Backbone.Collection.extend({
+    url: '/tatami/rest/stats/day'
+  });
+
+  var DailyStatsView = window.app.View.DailyStatsView = Backbone.View.extend({
+    initialize: function() {
+      this.model = new DailyStatCollection();
+      this.model.bind('reset', this.render, this);
+
+      this.model.fetch();
+    },
+
+    render: function() {
+      var values = [];
+      var labels = [];
+      this.model.each(function(model){
+        values.push(model.get('statusCount'));
+        labels.push(model.get('username'));
+      });
+      
+      $(this.el).pie(values, labels);
+
+      return $(this.el);
+    }
+  });
+
 
 /*
   Initialisation
@@ -822,6 +860,7 @@ $(function() {
       "tags/*tag": "tags",
       "search": "search",
       "search/*search": "search",
+      "daily": "daily",
       "*action": "timeline"
     },
 
@@ -876,8 +915,14 @@ $(function() {
         $('#tab-content').empty();
         $('#tab-content').append(app.views.search.render());
       }
-    }
+    },
 
+    daily: function() {
+      this.selectMenu('daily');
+      var daily = app.views.daily = new DailyStatsView();
+      $('#tab-content').empty();
+      $('#tab-content').append(app.views.daily.render());
+    }
   });
 
   app.router = new HomeRouter();
