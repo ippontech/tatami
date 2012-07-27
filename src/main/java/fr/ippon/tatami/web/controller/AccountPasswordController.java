@@ -7,6 +7,7 @@ import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -63,7 +64,9 @@ public class AccountPasswordController {
                                        UserPassword userPassword, BindingResult result) {
 
         User currentUser = authenticationService.getCurrentUser();
-        if (!currentUser.getPassword().equals(userPassword.getOldPassword())) {
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+
+        if (!encoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
             if (log.isDebugEnabled()) {
                 log.debug("The old password is incorrect : " + userPassword.getOldPassword());
             }

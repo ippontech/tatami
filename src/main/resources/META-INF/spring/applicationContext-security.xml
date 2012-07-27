@@ -12,7 +12,7 @@
 
     <context:component-scan base-package="fr.ippon.tatami.security"/>
 
-    <global-method-security pre-post-annotations="enabled" />
+    <global-method-security pre-post-annotations="enabled"/>
 
     <http pattern="/tatami/static/**" security="none"/>
     <http pattern="/tatami/login" security="none"/>
@@ -39,12 +39,16 @@
         <authentication-provider ref="ldapAuthenticationProvider"/>
     </authentication-manager>
 
-    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <beans:property name="userDetailsService" ref="userDetailsService"/>
+        <beans:property name="passwordEncoder">
+            <beans:bean class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+        </beans:property>
     </beans:bean>
 
     <beans:bean id="ipponLdapContextSource"
-            class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+                class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
         <beans:constructor-arg value="ldap://directory:389/dc=ippon,dc=fr"/>
     </beans:bean>
 
@@ -53,11 +57,11 @@
             <beans:bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
                 <beans:constructor-arg ref="ipponLdapContextSource"/>
                 <beans:property name="userSearch">
-                      <beans:bean class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
-                          <beans:constructor-arg  value=""/>
-                          <beans:constructor-arg  value="(uid={0})"/>
-                          <beans:constructor-arg ref="ipponLdapContextSource"/>
-                      </beans:bean>
+                    <beans:bean class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+                        <beans:constructor-arg value=""/>
+                        <beans:constructor-arg value="(uid={0})"/>
+                        <beans:constructor-arg ref="ipponLdapContextSource"/>
+                    </beans:bean>
                 </beans:property>
             </beans:bean>
         </beans:constructor-arg>

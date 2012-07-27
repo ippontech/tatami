@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -50,6 +51,10 @@ public class CassandraUserRepository implements UserRepository {
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
+        String password = user.getPassword();
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
+        user.setPassword(encryptedPassword);
         em.persist(user);
     }
 
@@ -63,6 +68,10 @@ public class CassandraUserRepository implements UserRepository {
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
+        String password = user.getPassword();
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
+        user.setPassword(encryptedPassword);
         em.persist(user);
     }
 
