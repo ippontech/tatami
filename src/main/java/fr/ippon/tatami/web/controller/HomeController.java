@@ -46,6 +46,7 @@ public class HomeController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
+        email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
             return "redirect:/tatami/login?action=registerFailure";
         }
@@ -65,6 +66,7 @@ public class HomeController {
 
     @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
     public String lostpassword(@RequestParam String email) {
+        email = email.toLowerCase();
         User user = userService.getUserByLogin(email);
         if (user == null) {
             return "redirect:/tatami/login?action=lostPasswordFailure";
