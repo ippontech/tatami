@@ -26,7 +26,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
- * Cassandra implementation of the Follower repository.
+ * Cassandra implementation of the Domain repository.
  *
  * @author Julien Dubois
  */

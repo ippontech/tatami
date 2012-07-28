@@ -1,23 +1,13 @@
 package fr.ippon.tatami.security;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityMessageSource;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,134 +18,109 @@ import org.springframework.stereotype.Component;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
 
 /**
- * 
- // TODO : code dupliqué de TatamiLdapAuthenticationProvider !!
+ * UserDetails Service to be use why OpenId authentication.
+ * It auto-registers the user based on its "email" OpenId attribute (that's must have been asked to the OpenId provider)
  * 
  * @author Fabien Arrault
- *
+ * 
  */
 @Component
-public class OpenIdAutoRegisteringUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
+public class OpenIdAutoRegisteringUserDetailsService implements
+		AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
+
+	private static final String EMAIL_ATTRIBUTE = "email";
+	private static final String FIRSTNAME_ATTRIBUTE = "firstname";
+	private static final String LASTNAME_ATTRIBUTE = "lastname";
+	private static final String FULLNAME_ATTRIBUTE = "fullname";
 	
-    private final Log log = LogFactory.getLog(OpenIdAutoRegisteringUserDetailsService.class);
+	private final Log log = LogFactory.getLog(OpenIdAutoRegisteringUserDetailsService.class);
 
-    private Collection<GrantedAuthority> userGrantedAuthorities = new ArrayList<GrantedAuthority>();
+	@Inject
+	private UserService userService;
 
-    private Collection<GrantedAuthority> adminGrantedAuthorities = new ArrayList<GrantedAuthority>();
+//	@Inject
+//	private DomainRepository domainRepository;
 
-    private Collection<String> adminUsers = null;
+	@Inject
+	private TatamiUserDetailsService delegate; // => handles grantedAuthorities
 
-    @Inject
-    private UserService userService;
+	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
-    @Inject
-    private DomainRepository domainRepository;
-
-    @Inject
-    Environment env;
-	
-    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
-    
- // TODO : code dupliqué de TatamiLdapAuthenticationProvider
-    @PostConstruct
-    public void init() {
-        //Roles for "normal" users
-        GrantedAuthority roleUser = new SimpleGrantedAuthority("ROLE_USER");
-        userGrantedAuthorities.add(roleUser);
-
-        //Roles for "admin" users, configured in tatami.properties
-        GrantedAuthority roleAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
-        adminGrantedAuthorities.add(roleUser);
-        adminGrantedAuthorities.add(roleAdmin);
-
-        String adminUsersList = this.env.getProperty("tatami.admin.users");
-        String[] adminUsersArray = adminUsersList.split(",");
-        adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
-        if (log.isDebugEnabled()) {
-            for (String admin : adminUsers) {
-                log.debug("User \"" + admin + "\" is an administrator.");
-            }
-        }
-    }
-    
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
 
-		String email = null;
-		String firstName = null;
-		String lastName = null;
-		
-		for (OpenIDAttribute attribute : token.getAttributes()) {
-			String attName = attribute.getName();
-			List<String> values = attribute.getValues();
-			String firstValue = values.isEmpty()?null:values.iterator().next();
-			if("email".equals(attName)) {
-				email = firstValue;
-			} else if("firstname".equals(attName)) {
-				firstName = firstValue;
-			} else if("lastname".equals(attName)) {
-				lastName = firstValue;
-			}
-		}
-		if(email == null) {
-            // TODO : use messages
-			String msg = "OpendId response did not contains the user email";
+		String email = getAttributeValue(token, EMAIL_ATTRIBUTE);
+		if (email == null) {
+			// TODO : use messages
+			String msg = "OpendId response did not contain the user email";
 			log.error(msg);
 			throw new UsernameNotFoundException(msg);
 		}
-		
-		// TODO : code dupliqué <<en partie>> de TatamiLdapAuthenticationProvider
-		
-        //Automatically create LDAP users in Tatami
-        User user = userService.getUserByLogin(email);
-        if (user == null) {
-            user = new User();
-            // Note : on perd l'identifiant openId là ...
-            // TODO : Est-ce grave ??
-            user.setLogin(email);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            userService.createUser(user);
-        }
-        
-        // TODO : création de l'espace entreprise ?? 
-        
-        domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
-        
-        // TODO : code dupliqué de TatamiLdapAuthenticationProvider
-            String login = email;
-            if (!login.contains("@")) {
-                if (log.isDebugEnabled()) {
-                    log.debug("User login " + login + " is incorrect.");
-                }
+		// TODO : est-ce nécessaire ? le createUser le test déjà non ?
+		if (!email.contains("@")) {
+			if (log.isDebugEnabled()) {
+				log.debug("User login " + email + " is incorrect.");
+			}
+			// throw new BadCredentialsException(messages.getMessage(
+			// "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
+			// TODO : use messages
+			String msg = "OpendId response did not contains a valid user email";
+			log.error(msg);
+			throw new UsernameNotFoundException(msg);
+		}
 
-//                throw new BadCredentialsException(messages.getMessage(
-//                        "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
-                // TODO : use messages
-                String msg = "OpendId response did not contains a valid the user email";
-                log.error(msg);
-				throw new UsernameNotFoundException(msg);
-            }
-//            String username = DomainUtil.getUsernameFromLogin(login);
+		// Automatically create OpenId users in Tatami :
+		UserDetails userDetails;
+		try {
+			userDetails = delegate.loadUserByUsername(email);
+		} catch (UsernameNotFoundException e) {
+			if(log.isInfoEnabled()) {
+				log.info("User with " + email + " doesn't exist yet in Tatami database - creating it...");
+			}
+			userDetails = getNewlyCreatedUserDetails(token);
+		}
+		return userDetails;
+	}
 
-            Collection<GrantedAuthority> grantedAuthorities = null;
-            if (adminUsers.contains(login)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("User \"" + login + "\" is an administrator.");
-                }
-                grantedAuthorities = adminGrantedAuthorities;
-            } else {
-                grantedAuthorities = userGrantedAuthorities;
-            }
-        
-        // The real autentication object uses the login, and not the username
-        org.springframework.security.core.userdetails.User realUser =
-                new org.springframework.security.core.userdetails.User(user.getLogin(), "", grantedAuthorities);
-        
-		return realUser;
+	private org.springframework.security.core.userdetails.User getNewlyCreatedUserDetails(OpenIDAuthenticationToken token) {
+		String login = getAttributeValue(token, EMAIL_ATTRIBUTE);
+		String firstName = getAttributeValue(token, FIRSTNAME_ATTRIBUTE);
+		String lastName = getAttributeValue(token, LASTNAME_ATTRIBUTE);
+		
+		String fullName = getAttributeValue(token, FULLNAME_ATTRIBUTE);
+		if(firstName == null && lastName == null) {
+			// if we haven't first nor last name, we use fullName as last name to begin with :
+			lastName = fullName;
+		}
+			
+		User user = new User();
+		// Note : we lost the OpenId id here... in token.getName() 
+		// I think that the email could changed ... and the OpenId not 
+		// TODO : store it in Cassandra ?
+		user.setLogin(login);
+		user.setFirstName(firstName); // can be null
+		user.setLastName(lastName);   // can be null
+		userService.createUser(user);
+		
+        // TODO : in TatamiLdapAuthenticationProvider there is the following line : why ?? user is already added to domain in createUser
+        // domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
+
+		return delegate.getTatamiUserDetails(login, "<NOT_USED>"); // TODO : Is it safe to use a dummy constant for password here ?
+	}
+	
+	private String getAttributeValue(OpenIDAuthenticationToken token, String name) {
+		String value = null;
+		for (OpenIDAttribute attribute : token.getAttributes()) {
+			if (name.equals(attribute.getName())) {
+				List<String> values = attribute.getValues();
+				String firstValue = values.isEmpty() ? null : values.iterator().next();
+				value = firstValue;
+				break;
+			}
+		}
+		return value;
 	}
 
 }

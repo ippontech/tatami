@@ -6,6 +6,8 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.GravatarUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -133,17 +135,21 @@ public class UserService {
 
     public void createUser(User user) {
         String login = user.getLogin();
+        
         String username = DomainUtil.getUsernameFromLogin(login);
         String domain = DomainUtil.getDomainFromLogin(login);
-
         domainRepository.addUserInDomain(domain, login);
 
-        user.setPassword(RandomUtil.generatePassword());
+        // Warning : in certain use case (ldap,openid,...), this password will never be used.
+        // But if someone tries to authenticate with user/password it will be tested ... So not putting it empty is always a good idea
+        // TODO : add a disabled password-authentication field ?
+        user.setPassword(RandomUtil.generatePassword()); 
+        
         user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
-        user.setFirstName("");
-        user.setLastName("");
+        user.setFirstName(StringUtils.defaultString(user.getFirstName()));
+        user.setLastName(StringUtils.defaultString(user.getLastName()));
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());

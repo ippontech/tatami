@@ -35,7 +35,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
     private Collection<String> adminUsers = null;
 
     @Inject
-    private UserService userService;
+    protected UserService userService;
 
     @Inject
     Environment env;
@@ -70,19 +70,23 @@ public class TatamiUserDetailsService implements UserDetailsService {
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + login + " was not found in Cassandra");
         }
+        return getTatamiUserDetails(login, userFromCassandra.getPassword());
+    }
 
-        org.springframework.security.core.userdetails.User springSecurityUser = null;
-
-        if (adminUsers.contains(login)) {
+	protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
+        Collection<GrantedAuthority> grantedAuthorities = null;
+		if (adminUsers.contains(login)) {
             if (log.isDebugEnabled()) {
                 log.debug("User \"" + login + "\" is an administrator.");
             }
-            springSecurityUser = new org.springframework.security.core.userdetails.User(login, userFromCassandra.getPassword(),
-                    adminGrantedAuthorities);
+            grantedAuthorities = adminGrantedAuthorities;
         } else {
-            springSecurityUser = new org.springframework.security.core.userdetails.User(login, userFromCassandra.getPassword(),
-                    userGrantedAuthorities);
+        	grantedAuthorities = userGrantedAuthorities;
         }
-        return springSecurityUser;
-    }
+		
+		org.springframework.security.core.userdetails.User springSecurityUser = null;
+		springSecurityUser = new org.springframework.security.core.userdetails.User(login, password,
+				grantedAuthorities);
+		return springSecurityUser;
+	}
 }
