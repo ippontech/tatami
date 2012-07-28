@@ -33,6 +33,25 @@
                 always-use-default-target="true"/>
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
+                
+        <openid-login authentication-failure-url="/tatami/login?action=loginFailure" user-service-ref="openIdAutoRegisteringUserDetailsService">
+        <!-- 
+         from https://github.com/SpringSource/spring-security/blob/master/samples/openid/src/main/webapp/WEB-INF/applicationContext-security.xml :
+        -->
+            <attribute-exchange identifier-match="https://www.google.com/.*">
+                <openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
+                <openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true" />
+                <openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true" />
+            </attribute-exchange>
+            <attribute-exchange identifier-match=".*yahoo.com.*">
+                <openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
+                <openid-attribute name="fullname" type="http://axschema.org/namePerson" required="true" />
+            </attribute-exchange>
+            <attribute-exchange identifier-match=".*myopenid.com.*">
+                <openid-attribute name="email" type="http://schema.openid.net/contact/email" required="true"/>
+                <openid-attribute name="fullname" type="http://schema.openid.net/namePerson" required="true" />
+            </attribute-exchange>
+         </openid-login>
     </http>
 
     <authentication-manager>

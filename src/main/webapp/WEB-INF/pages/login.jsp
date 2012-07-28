@@ -76,6 +76,7 @@
                 </form>
             </div>
         </div>
+
         <div class="offset2 span4">
             <div class="row-fluid">
             <h1><fmt:message key="tatami.authentification"/></h1>
@@ -134,6 +135,33 @@
             </div>
         </div>
     </div>
+        <div class="offset2 span4">
+            <div class="row-fluid">
+            <%-- TODO : messages bundle --%>
+            <%-- TODO : handle other OpenId provider ! --%>
+                <h1>Authentification Google</h1>
+                
+                <p>
+                    Que vous ayez déjà un compte Tatami ou non, vous pouvez-vous connecter avec votre compte Google.
+                </p>
+                <p>
+                    Votre email sera demandé à Google et son nom de domaine sera utilsié pour vous faire rejoindre l'espace privé de votre entreprise
+                </p>
+
+                <form action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
+			        <input name="openid_identifier" size="50"
+			               maxlength="100" type="hidden"
+			               value="https://www.google.com/accounts/o8/id"/>
+                    <fieldset class="span12">
+                        <div class="controle-group">
+                            <button id="proceed_google" type="submit" class="span12 btn btn-success">
+                                <%--<fmt:message key="tatami.authentificate"/> --%> Je me connecte avec Google
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
 </div>
 
 <jsp:include page="includes/footer.jsp"/>
