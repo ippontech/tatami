@@ -16,12 +16,11 @@ import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
 
 /**
- * UserDetails Service to be use why OpenId authentication.
- * It auto-registers the user based on its "email" OpenId attribute (that's must have been asked to the OpenId provider)
+ * UserDetails Service to be use with OpenId authentication.
+ * It auto-registers the user based on its "email" OpenId attribute (that must have been asked to the OpenId provider)
  * 
  * @author Fabien Arrault
  * 
@@ -52,8 +51,12 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
 
 		String email = getAttributeValue(token, EMAIL_ATTRIBUTE);
+		// Important security assumption : here we are trusting the OpenID provider 
+		// to give us an email that has already been verified to belongs to the user 
+		
 		if (email == null) {
-			// TODO : use messages
+			// TODO : handle this case differently ? ask the user for an email and send it an activation email ?  
+			
 			String msg = "OpendId response did not contain the user email";
 			log.error(msg);
 			throw new UsernameNotFoundException(msg);
@@ -61,19 +64,15 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 		// TODO : est-ce nécessaire ? le createUser le test déjà non ?
 		if (!email.contains("@")) {
 			if (log.isDebugEnabled()) {
-				log.debug("User login " + email + " is incorrect.");
+				log.debug("User login " + email + " from OpenId response is incorrect.");
 			}
-			// throw new BadCredentialsException(messages.getMessage(
-			// "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
-			// TODO : use messages
-			String msg = "OpendId response did not contains a valid user email";
-			log.error(msg);
-			throw new UsernameNotFoundException(msg);
+			throw new UsernameNotFoundException("OpendId response did not contains a valid user email");
 		}
 
 		// Automatically create OpenId users in Tatami :
 		UserDetails userDetails;
 		try {
+			// TODO : replace by "load by OpenId" and check coherence of email ?
 			userDetails = delegate.loadUserByUsername(email);
 		} catch (UsernameNotFoundException e) {
 			if(log.isInfoEnabled()) {
@@ -98,6 +97,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 		User user = new User();
 		// Note : we lost the OpenId id here... in token.getName() 
 		// I think that the email could changed ... and the OpenId not 
+		// moreover an OpenId account could potentially be associated with several email address
 		// TODO : store it in Cassandra ?
 		user.setLogin(login);
 		user.setFirstName(firstName); // can be null

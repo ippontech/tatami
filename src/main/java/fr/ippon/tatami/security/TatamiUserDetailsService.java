@@ -35,7 +35,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
     private Collection<String> adminUsers = null;
 
     @Inject
-    protected UserService userService;
+    private UserService userService;
 
     @Inject
     Environment env;
@@ -84,9 +84,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
         	grantedAuthorities = userGrantedAuthorities;
         }
 		
-		org.springframework.security.core.userdetails.User springSecurityUser = null;
-		springSecurityUser = new org.springframework.security.core.userdetails.User(login, password,
+		return new org.springframework.security.core.userdetails.User(login, password,
 				grantedAuthorities);
-		return springSecurityUser;
 	}
 }
