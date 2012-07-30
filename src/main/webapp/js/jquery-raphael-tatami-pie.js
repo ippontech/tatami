@@ -27,7 +27,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
             var value = values[j],
                 angleplus = 360 * value / total,
                 popangle = angle + (angleplus / 2),
-                color = Raphael.hsb(start, .75, 1),
+                color = Raphael.hsb(start, 0.75, 1),
                 ms = 500,
                 delta = 30,
                 bcolor = Raphael.hsb(start, 1, 1),
@@ -45,7 +45,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
             angle += angleplus;
             chart.push(p);
             chart.push(txt);
-            start += .1;
+            start += 0.1;
         };
     for (var i = 0, ii = values.length; i < ii; i++) {
         total += values[i];

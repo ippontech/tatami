@@ -78,3 +78,7 @@
     </div>
   </div>
 </script>
+
+<script type="text/template" id="status-delete-popup">
+  <fmt:message key="tatami.user.status.confirm.delete"/>
+</script>

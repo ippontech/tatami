@@ -2,14 +2,14 @@ $(function() {
 
 
   _.templateSettings = {
-      interpolate: /\<\@\=(.+?)\@\>/gim,
-      evaluate: /\<\@(.+?)\@\>/gim
+      interpolate: /<\@\=(.+?)\@\>/gim,
+      evaluate: /<\@(.+?)\@\>/gim
   };
 
   var app;
 
   if(!window.app){
-    var app = window.app = _.extend({
+    app = window.app = _.extend({
       views: {},
       View: {},
       Collection: {},
@@ -92,7 +92,7 @@ $(function() {
 
     events: {
       'click .status-action-favoris': 'favorisAction',
-      'click .status-action-remove': 'removeAction',
+      'click .status-action-remove': 'removeAction'
     },
 
     favorisAction: function() {
@@ -111,15 +111,17 @@ $(function() {
     },
 
     removeAction: function() {
-      var self = this;
-      var sd = new StatusDelete(this.model);
+      if(confirm($('#status-delete-popup').html().trim())){
+        var self = this;
+        var sd = new StatusDelete(this.model);
 
-      sd.save(null, {
-        success: function(){
-          app.trigger('refreshProfile');
-          app.Status.destroy(self.model.get('statusId'));
-        }
-      });
+        sd.save(null, {
+          success: function(){
+            app.trigger('refreshProfile');
+            app.Status.destroy(self.model.get('statusId'));
+          }
+        });
+      }
     },
 
     render: function() {
@@ -289,7 +291,7 @@ var FollowButtonView = app.View.FollowButtonView = Backbone.View.extend({
       Liaison de la vue avec le noeud
     */
 
-  var searchFromHearderView = app.views.searchFromHearderView = new SearchFormHeaderView({
+  app.views.searchFromHearderView = new SearchFormHeaderView({
     el: $('#searchHeader')
   });
 
