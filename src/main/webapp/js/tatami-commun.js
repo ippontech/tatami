@@ -111,15 +111,17 @@ $(function() {
     },
 
     removeAction: function() {
-      var self = this;
-      var sd = new StatusDelete(this.model);
+      if(confirm($('#status-delete-popup').html().trim())){
+        var self = this;
+        var sd = new StatusDelete(this.model);
 
-      sd.save(null, {
-        success: function(){
-          app.trigger('refreshProfile');
-          app.Status.destroy(self.model.get('statusId'));
-        }
-      });
+        sd.save(null, {
+          success: function(){
+            app.trigger('refreshProfile');
+            app.Status.destroy(self.model.get('statusId'));
+          }
+        });
+      }
     },
 
     render: function() {
