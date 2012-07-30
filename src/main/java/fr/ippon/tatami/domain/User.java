@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 
@@ -53,6 +54,9 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "openIdUrl")
+    private String openIdUrl;
+    
     private long statusCount;
 
     private long friendsCount;
@@ -115,6 +119,14 @@ public class User {
         this.lastName = lastName;
     }
 
+	public String getOpenIdUrl() {
+		return openIdUrl;
+	}
+
+	public void setOpenIdUrl(String openIdUrl) {
+		this.openIdUrl = openIdUrl;
+	}
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -169,6 +181,8 @@ public class User {
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
+                ", openIdUrl=" + openIdUrl +
                 '}';
     }
+
 }

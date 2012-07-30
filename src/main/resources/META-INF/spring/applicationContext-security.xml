@@ -11,6 +11,7 @@
 				http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <context:component-scan base-package="fr.ippon.tatami.security"/>
+    <context:property-placeholder location="classpath:/META-INF/tatami/tatami.properties"/>
 
     <global-method-security pre-post-annotations="enabled"/>
 
@@ -63,8 +64,8 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider ref="daoAuthenticationProvider"/>
         <authentication-provider ref="ldapAuthenticationProvider"/>
+        <authentication-provider ref="daoAuthenticationProvider"/>
     </authentication-manager>
 
     <beans:bean id="daoAuthenticationProvider"
@@ -72,24 +73,25 @@
         <beans:property name="userDetailsService" ref="userDetailsService"/>
     </beans:bean>
 
-    <beans:bean id="ipponLdapContextSource"
+    <beans:bean id="ldapContextSource"
                 class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
-        <beans:constructor-arg value="ldap://directory:389/dc=ippon,dc=fr"/>
+        <beans:constructor-arg value="${tatami.ldapauth.url}"/>
     </beans:bean>
 
     <beans:bean id="ldapAuthenticationProvider" class="fr.ippon.tatami.security.TatamiLdapAuthenticationProvider">
         <beans:constructor-arg>
             <beans:bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
-                <beans:constructor-arg ref="ipponLdapContextSource"/>
+                <beans:constructor-arg ref="ldapContextSource"/>
                 <beans:property name="userSearch">
                     <beans:bean class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
                         <beans:constructor-arg value=""/>
                         <beans:constructor-arg value="(uid={0})"/>
-                        <beans:constructor-arg ref="ipponLdapContextSource"/>
+                        <beans:constructor-arg ref="ldapContextSource"/>
                     </beans:bean>
                 </beans:property>
             </beans:bean>
         </beans:constructor-arg>
+        <beans:constructor-arg value="${tatami.ldapauth.domain}"/>
     </beans:bean>
 
 </beans:beans>

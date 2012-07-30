@@ -16,7 +16,9 @@ import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 
 /**
  * UserDetails Service to be use with OpenId authentication.
@@ -39,8 +41,8 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 	@Inject
 	private UserService userService;
 
-//	@Inject
-//	private DomainRepository domainRepository;
+	@Inject
+	private DomainRepository domainRepository;
 
 	@Inject
 	private TatamiUserDetailsService delegate; // => handles grantedAuthorities
@@ -74,6 +76,9 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 		try {
 			// TODO : replace by "load by OpenId" and check coherence of email ?
 			userDetails = delegate.loadUserByUsername(email);
+		    // ensure that this user has access to its domain if it has been created before
+	        domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(email),DomainUtil.getUsernameFromLogin(email));
+        
 		} catch (UsernameNotFoundException e) {
 			if(log.isInfoEnabled()) {
 				log.info("User with " + email + " doesn't exist yet in Tatami database - creating it...");
@@ -94,11 +99,12 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 			lastName = fullName;
 		}
 			
-		User user = new User();
-		// Note : we lost the OpenId id here... in token.getName() 
-		// I think that the email could changed ... and the OpenId not 
+		User user = new User(); 
+		// Note : The email could changed ... and the OpenId not 
 		// moreover an OpenId account could potentially be associated with several email address
-		// TODO : store it in Cassandra ?
+		// so we store it for future use case :
+		user.setOpenIdUrl(token.getName());
+		
 		user.setLogin(login);
 		user.setFirstName(firstName); // can be null
 		user.setLastName(lastName);   // can be null
