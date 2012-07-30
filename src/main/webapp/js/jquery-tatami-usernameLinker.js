@@ -8,7 +8,7 @@
   $.fn.usernameLinker = function(selector) {
     this.find(selector).each(function(){
       var content = $(this).html();
-      $(this).html(content.replace(/@[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*/gi, function(value){
+      $(this).html(content.replace(/@[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*/gi, function(value){
         var username = value.substr(1);
         var usernameHTML = '<a href="/tatami/profile/'+username+'/">'+value+'</a>';
         return usernameHTML;

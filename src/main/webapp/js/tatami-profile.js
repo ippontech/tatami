@@ -2,14 +2,14 @@
 $(function() {
 
   _.templateSettings = {
-      interpolate: /\<\@\=(.+?)\@\>/gim,
-      evaluate: /\<\@(.+?)\@\>/gim
+      interpolate: /<\@\=(.+?)\@\>/gim,
+      evaluate: /<\@(.+?)\@\>/gim
   };
 
   var app;
 
   if(!window.app){
-    var app = window.app = _.extend({
+    app = window.app = _.extend({
       views: {},
       View: {},
       Collection: {},
@@ -120,7 +120,7 @@ $(function() {
             screen_name: self.model.options.username
           },
           success: function(){
-            sc.models.reverse()
+            sc.models.reverse();
             _.each(sc.models, function(model, key) {
               self.model.unshift(model);
             });
@@ -221,7 +221,7 @@ $(function() {
       this.model.options = { username : this.options.username };
       this.views = {};
 
-      this.views.new = new StatusNewView({
+      this.views.news = new StatusNewView({
         model: this.model
       });
       this.views.list = new TimeLineView({
@@ -233,14 +233,14 @@ $(function() {
 
       this.views.next.nextStatus();
 
-      this.on('new', this.views.new.newStatus, this.views.new);
+      this.on('new', this.views.news.newStatus, this.views.news);
       this.on('next', this.views.next.nextStatus, this.views.next);
     },
 
     render: function() {
 
       $(this.el).empty();
-      $(this.el).append(this.views.new.render());
+      $(this.el).append(this.views.news.render());
       $(this.el).append(this.views.list.$el);
       $(this.el).append(this.views.next.render());
       return $(this.el);
@@ -391,7 +391,7 @@ $(function() {
       if(!app.views.status) {
         var statuscollection = new StatusCollection();
         statuscollection.url = '/tatami/rest/statuses/user_timeline';
-        var status = app.views.status = new StatusListView({
+        app.views.status = new StatusListView({
           model: statuscollection,
           username : username
         });
@@ -402,7 +402,7 @@ $(function() {
     followers: function() {
       this.selectMenu('followers');
       var followersCollection = new FollowersCollection();
-      var followers = app.views.followers = new UserListView({
+      app.views.followers = new UserListView({
         model: followersCollection,
         username : username
       });
@@ -413,7 +413,7 @@ $(function() {
       this.selectMenu('followed');
       $('#tab-content').empty();
       var followedCollection = new FollowedCollection();
-      var followed = app.views.followed = new UserListView({
+      app.views.followed = new UserListView({
         model: followedCollection,
         username : username
       });
@@ -423,7 +423,7 @@ $(function() {
     show: function(status) {
       this.selectMenu('show');
       $('#tab-content').empty();
-      var showStatus = app.views.showStatus = new StatusView({
+      app.views.showStatus = new StatusView({
         idstatus: status
       });
       $('#tab-content').html(app.views.showStatus.render());
