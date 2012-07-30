@@ -2,14 +2,14 @@
 $(function() {
 
   _.templateSettings = {
-      interpolate: /\<\@\=(.+?)\@\>/gim,
-      evaluate: /\<\@(.+?)\@\>/gim
+      interpolate: /<\@\=(.+?)\@\>/gim,
+      evaluate: /<\@(.+?)\@\>/gim
   };
 
   var app;
 
   if(!window.app){
-    var app = window.app = _.extend({
+    app = window.app = _.extend({
       views: {},
       View: {},
       Collection: {},
@@ -446,7 +446,7 @@ $(function() {
       this.views.timeline = new TimeLineView({
         model : this.model
       });
-      this.views.new = new TimeLineNewView({
+      this.views.news = new TimeLineNewView({
         interval: 5000,
         model : this.model
       });
@@ -456,15 +456,15 @@ $(function() {
 
       this.views.next.nextStatus();
 
-      this.on('refresh', this.views.new.newStatus, this.views.new);
+      this.on('refresh', this.views.news.newStatus, this.views.news);
       this.on('next', this.views.next.nextStatus, this.views.next);
       
-      app.on('refreshTimeline', this.views.new.newStatus, this.views.new);
+      app.on('refreshTimeline', this.views.news.newStatus, this.views.news);
     },
 
     render: function() {
       $(this.el).empty();
-      $(this.el).append(this.views.new.render());
+      $(this.el).append(this.views.news.render());
       $(this.el).append(this.views.timeline.render());
       $(this.el).append(this.views.next.render());
 
@@ -649,7 +649,6 @@ $(function() {
       $(this.el).addClass('alert alert-info');
 
       this.nbStatus = 20;
-      var self = this;
     },
 
     submit: function(e) {
@@ -706,16 +705,9 @@ $(function() {
       'click': 'nextStatus'
     },
 
-    nextStatus: function(){
-      this.progress();
-      this.model.nextStatus(this.render, this);
-    },
-
     nextStatus: function(done, context){
       this.progress();
       var self = this;
-
-      var sc = _.clone(this.model);
 
       var sc = new StatusCollection();
       sc.url = '/tatami/rest/search';
@@ -760,8 +752,6 @@ $(function() {
 
   var SearchView = app.View.SearchView = Backbone.View.extend({
     initialize: function(){
-      var self = this;
-
       this.model = new StatusCollection();
       this.model.options = {
         search: this.options.search,
@@ -785,8 +775,7 @@ $(function() {
       });
 
       this.views.next = new SearchNextView({
-        model : this.model,
-
+        model : this.model
       });
 
       this.views.next.nextStatus();
@@ -869,7 +858,7 @@ $(function() {
       if(!app.views.timeline) {
         var timelinecollection = new StatusCollection();
         timelinecollection.url = '/tatami/rest/statuses/home_timeline';
-        var timeline = app.views.timeline = new TimeLinePanelView({
+        app.views.timeline = new TimeLinePanelView({
           model: timelinecollection
         });
       }
@@ -884,7 +873,7 @@ $(function() {
       if(!app.views.favoris) {
         var favoriscollection = new StatusCollection();
         favoriscollection.url = '/tatami/rest/favorites';
-        var favoris = app.views.favoris = new FavorisPanelView({
+        app.views.favoris = new FavorisPanelView({
           model: favoriscollection
         });
       }
@@ -895,7 +884,7 @@ $(function() {
 
     tags: function(tag) {
       this.selectMenu('tags');
-      var tags = app.views.tags = new TagsView({
+      app.views.tags = new TagsView({
         tag: tag
       });
       $('#tab-content').empty();
@@ -909,7 +898,7 @@ $(function() {
       }
       else {
         this.selectMenu('search');
-        var search = app.views.search = new SearchView({
+        app.views.search = new SearchView({
           search: search
         });
         $('#tab-content').empty();
@@ -919,7 +908,7 @@ $(function() {
 
     daily: function() {
       this.selectMenu('daily');
-      var daily = app.views.daily = new DailyStatsView();
+      app.views.daily = new DailyStatsView();
       $('#tab-content').empty();
       $('#tab-content').append(app.views.daily.render());
     }
