@@ -54,7 +54,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 
 		String email = getAttributeValue(token, EMAIL_ATTRIBUTE);
 		// Important security assumption : here we are trusting the OpenID provider 
-		// to give us an email that has already been verified to belongs to the user 
+		// to give us an email that has already been verified to belong to the user 
 		
 		if (email == null) {
 			// TODO : handle this case differently ? ask the user for an email and send it an activation email ?  
@@ -110,9 +110,6 @@ public class OpenIdAutoRegisteringUserDetailsService implements
 		user.setLastName(lastName);   // can be null
 		userService.createUser(user);
 		
-        // TODO : in TatamiLdapAuthenticationProvider there is the following line : why ?? user is already added to domain in createUser
-        // domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
-
 		return delegate.getTatamiUserDetails(login, "<NOT_USED>"); // TODO : Is it safe to use a dummy constant for password here ?
 	}
 	
