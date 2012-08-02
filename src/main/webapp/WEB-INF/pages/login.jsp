@@ -89,7 +89,7 @@
                 <h1><fmt:message key="tatami.authentification"/></h1>
 
                 <div class="span12 well row-fluid">
-                    <form action="/tatami/authentication" method="post" accept-charset="utf-8">
+                    <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm">
                         <fieldset class="span12">
                             <div class="controle-group">
                                 <label>

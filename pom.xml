@@ -194,6 +194,8 @@
         <junit.version>4.9</junit.version>
         <cassandra.unit.version>1.0.3.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
+        
+        <selenium.version>2.25.0</selenium.version>
 
         <!-- Maven plugins -->
         <maven.compiler.version>2.4</maven.compiler.version>
@@ -432,6 +434,51 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- TODO extract versions as property -->
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+<!--           <version>1.7.10</version> -->
+          <version>1.8.1</version>
+        </dependency>
+        <dependency>
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-core</artifactId>
+          <!-- <version>0.5-groovy-1.7</version> -->
+          <version>0.6-groovy-1.8</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.geb</groupId>
+          <artifactId>geb-spock</artifactId>
+          <version>0.7.1</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-firefox-driver</artifactId>
+          <version>${selenium.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-htmlunit-driver</artifactId>
+          <version>${selenium.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-chrome-driver</artifactId>
+          <version>${selenium.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-support</artifactId>
+          <version>${selenium.version}</version>    
+          <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>root</finalName>
@@ -482,6 +529,39 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
             </plugin>
+<!-- 
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                  <includes>
+                    <include>*Spec.*</include>
+                  </includes>
+                  <systemPropertyVariables>
+                    <geb.build.baseUrl>http://localhost:8080/tatami</geb.build.baseUrl>
+                    <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
+                  </systemPropertyVariables>
+                </configuration>
+              </plugin>
+              <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.3</version>
+                <configuration>
+                  <providerSelection>1.7</providerSelection>
+                    => mettre 1.8 a priori ...
+                </configuration>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>testCompile</goal>
+                    </goals>
+                  </execution>
+                </executions>
+              </plugin>
+      -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
