@@ -55,6 +55,7 @@ public class User {
     private String lastName;
 
     @Column(name = "openIdUrl")
+    @JsonIgnore
     private String openIdUrl;
     
     private long statusCount;
