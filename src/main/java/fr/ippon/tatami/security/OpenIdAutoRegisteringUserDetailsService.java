@@ -45,8 +45,6 @@ public class OpenIdAutoRegisteringUserDetailsService implements
     @Inject
     private TatamiUserDetailsService delegate; // => handles grantedAuthorities
 
-    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
-
     @Override
     public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
 
