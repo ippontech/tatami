@@ -6,8 +6,6 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,26 +41,23 @@ public class OpenIdAutoRegisteringUserDetailsService implements
     private DomainRepository domainRepository;
 
     @Inject
-    private TatamiUserDetailsService delegate; // => handles grantedAuthorities
+    private TatamiUserDetailsService tatamiUserDetailsService; // => handles grantedAuthorities
 
     @Override
     public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
 
-        String email = getAttributeValue(token, EMAIL_ATTRIBUTE);
+        String login = getAttributeValue(token, EMAIL_ATTRIBUTE);
         // Important security assumption : here we are trusting the OpenID provider
         // to give us an email that has already been verified to belong to the user
 
-        if (email == null) {
-            // TODO : handle this case differently ? ask the user for an email and send it an activation email ?
-
+        if (login == null) {
             String msg = "OpendId response did not contain the user email";
             log.error(msg);
             throw new UsernameNotFoundException(msg);
         }
-        // TODO : est-ce nécessaire ? le createUser le test déjà non ?
-        if (!email.contains("@")) {
+        if (!login.contains("@")) {
             if (log.isDebugEnabled()) {
-                log.debug("User login " + email + " from OpenId response is incorrect.");
+                log.debug("User login " + login + " from OpenId response is incorrect.");
             }
             throw new UsernameNotFoundException("OpendId response did not contains a valid user email");
         }
@@ -70,14 +65,13 @@ public class OpenIdAutoRegisteringUserDetailsService implements
         // Automatically create OpenId users in Tatami :
         UserDetails userDetails;
         try {
-            // TODO : replace by "load by OpenId" and check coherence of email ?
-            userDetails = delegate.loadUserByUsername(email);
+            userDetails = tatamiUserDetailsService.loadUserByUsername(login);
             // ensure that this user has access to its domain if it has been created before
-            domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(email), DomainUtil.getUsernameFromLogin(email));
+            domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(login), login);
 
         } catch (UsernameNotFoundException e) {
             if (log.isInfoEnabled()) {
-                log.info("User with " + email + " doesn't exist yet in Tatami database - creating it...");
+                log.info("User with login : \"" + login + "\" doesn't exist yet in Tatami database - creating it...");
             }
             userDetails = getNewlyCreatedUserDetails(token);
         }
@@ -102,11 +96,11 @@ public class OpenIdAutoRegisteringUserDetailsService implements
         user.setOpenIdUrl(token.getName());
 
         user.setLogin(login);
-        user.setFirstName(firstName); // can be null
-        user.setLastName(lastName);   // can be null
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         userService.createUser(user);
 
-        return delegate.getTatamiUserDetails(login, "<NOT_USED>"); // TODO : Is it safe to use a dummy constant for password here ?
+        return tatamiUserDetailsService.getTatamiUserDetails(login, user.getPassword());
     }
 
     private String getAttributeValue(OpenIDAuthenticationToken token, String name) {

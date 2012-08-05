@@ -140,9 +140,9 @@ public class UserService {
         String domain = DomainUtil.getDomainFromLogin(login);
         domainRepository.addUserInDomain(domain, login);
 
-        // Warning : in certain use case (ldap,openid,...), this password will never be used.
-        // But if someone tries to authenticate with user/password it will be tested ... So not putting it empty is always a good idea
-        // TODO : add a disabled password-authentication field ?
+        // In certain use cases (ldap,openid,...), this password will not be used.
+        // Those users can still use a password by clicking on the "forgotten password" button (they will get a link
+        // to re-initialize their password)
         user.setPassword(RandomUtil.generatePassword()); 
         
         user.setGravatar(GravatarUtil.getHash(login));
