@@ -73,18 +73,18 @@ public class TatamiUserDetailsService implements UserDetailsService {
         return getTatamiUserDetails(login, userFromCassandra.getPassword());
     }
 
-	protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
+    protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
         Collection<GrantedAuthority> grantedAuthorities = null;
-		if (adminUsers.contains(login)) {
+        if (adminUsers.contains(login)) {
             if (log.isDebugEnabled()) {
                 log.debug("User \"" + login + "\" is an administrator.");
             }
             grantedAuthorities = adminGrantedAuthorities;
         } else {
-        	grantedAuthorities = userGrantedAuthorities;
+            grantedAuthorities = userGrantedAuthorities;
         }
-		
-		return new org.springframework.security.core.userdetails.User(login, password,
-				grantedAuthorities);
-	}
+
+        return new org.springframework.security.core.userdetails.User(login, password,
+                grantedAuthorities);
+    }
 }

@@ -1,7 +1,9 @@
 package fr.ippon.tatami.security;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.DomainRepository;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,10 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.authentication.LdapAuthenticator;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.DomainRepository;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
+import javax.inject.Inject;
 
 /**
  * Tatami specific LdapAuthenticationProvider.
@@ -32,23 +31,25 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
 
     @Inject
     private DomainRepository domainRepository;
-    
-	@Inject
-	private TatamiUserDetailsService userDetailsService; // => handles grantedAuthorities
 
-	/** The domain on which this provider is suitable to authenticate user */
-	private String managedDomain;
-    
-    public TatamiLdapAuthenticationProvider(LdapAuthenticator authenticator,String managedDomain) {
+    @Inject
+    private TatamiUserDetailsService userDetailsService; // => handles grantedAuthorities
+
+    /**
+     * The domain on which this provider is suitable to authenticate user
+     */
+    private String managedDomain;
+
+    public TatamiLdapAuthenticationProvider(LdapAuthenticator authenticator, String managedDomain) {
         super(authenticator);
-        if(StringUtils.isEmpty(managedDomain)) {
-        	throw new IllegalArgumentException("You must provide a managedDomain on this TatamiLdapAuthenticationProvider");
+        if (StringUtils.isEmpty(managedDomain)) {
+            throw new IllegalArgumentException("You must provide a managedDomain on this TatamiLdapAuthenticationProvider");
         }
-        this.managedDomain = managedDomain; 
+        this.managedDomain = managedDomain;
     }
 
-	private boolean canHandleAuthentication(Authentication authentication) {
-		String login = authentication.getName();
+    private boolean canHandleAuthentication(Authentication authentication) {
+        String login = authentication.getName();
         if (!login.contains("@")) {
             if (log.isDebugEnabled()) {
                 log.debug("User login " + login + " is incorrect.");
@@ -58,20 +59,20 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
                     "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
         }
         String domain = DomainUtil.getDomainFromLogin(login);
-        return domain.equalsIgnoreCase(managedDomain); 
-	}
-    
+        return domain.equalsIgnoreCase(managedDomain);
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(! canHandleAuthentication(authentication)) {
-        	return null; // this provider is not suitable for this domain
+        if (!canHandleAuthentication(authentication)) {
+            return null; // this provider is not suitable for this domain
         }
         String login = authentication.getName();
-		String username = DomainUtil.getUsernameFromLogin(login);
+        String username = DomainUtil.getUsernameFromLogin(login);
 
         // Use temporary token to use username, and not login to authenticate on ldap :
         UsernamePasswordAuthenticationToken tmpAuthentication =
-                new UsernamePasswordAuthenticationToken(username, authentication.getCredentials(),null);
+                new UsernamePasswordAuthenticationToken(username, authentication.getCredentials(), null);
         super.authenticate(tmpAuthentication);
 
         //Automatically create LDAP users in Tatami
@@ -80,9 +81,9 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
             user = new User();
             user.setLogin(login);
             userService.createUser(user);
-        } else { 
-        	// ensure that this user has access to its domain if it has been created before
-	        domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
+        } else {
+            // ensure that this user has access to its domain if it has been created before
+            domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
         }
 
         // The real authentication object uses the login, and not the username
@@ -90,9 +91,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
 
         UsernamePasswordAuthenticationToken realAuthentication =
                 new UsernamePasswordAuthenticationToken(realUser, authentication.getCredentials(),
-                		realUser.getAuthorities());
+                        realUser.getAuthorities());
         return realAuthentication;
     }
-
-
 }
