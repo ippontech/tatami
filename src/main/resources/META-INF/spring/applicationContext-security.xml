@@ -34,15 +34,16 @@
                 always-use-default-target="true"/>
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
-                
-        <openid-login authentication-failure-url="/tatami/login?action=loginFailure" user-service-ref="openIdAutoRegisteringUserDetailsService">
+
+        <openid-login authentication-failure-url="/tatami/login?action=loginFailure"
+                      user-service-ref="openIdAutoRegisteringUserDetailsService">
             <!-- Only Google Apps is supported -->
             <attribute-exchange identifier-match="https://www.google.com/.*">
                 <openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
-                <openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true" />
-                <openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true" />
+                <openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
+                <openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
             </attribute-exchange>
-         </openid-login>
+        </openid-login>
     </http>
 
     <authentication-manager>
@@ -53,6 +54,9 @@
     <beans:bean id="daoAuthenticationProvider"
                 class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <beans:property name="userDetailsService" ref="userDetailsService"/>
+        <beans:property name="passwordEncoder">
+            <beans:bean class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+        </beans:property>
     </beans:bean>
 
     <beans:bean id="ldapContextSource"

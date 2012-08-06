@@ -6,10 +6,10 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.GravatarUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -135,16 +135,21 @@ public class UserService {
 
     public void createUser(User user) {
         String login = user.getLogin();
-        
+
         String username = DomainUtil.getUsernameFromLogin(login);
         String domain = DomainUtil.getDomainFromLogin(login);
         domainRepository.addUserInDomain(domain, login);
 
-        // In certain use cases (ldap,openid,...), this password will not be used.
-        // Those users can still use a password by clicking on the "forgotten password" button (they will get a link
-        // to re-initialize their password)
-        user.setPassword(RandomUtil.generatePassword()); 
-        
+        // If the user is using OpenID or LDAP, the password is not set.
+        // In this case, we generate a random password as Spring Security requires the user
+        // to have a non-null password (and it is of course a better security than no password)
+        if (user.getPassword() == null) {
+            String password = RandomUtil.generatePassword();
+            StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+            String encryptedPassword = encoder.encode(password);
+            user.setPassword(encryptedPassword);
+        }
+
         user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
@@ -225,23 +230,27 @@ public class UserService {
             log.debug("Validating registration for key " + key);
         }
         String login = registrationRepository.getLoginByRegistrationKey(key);
+        String password = RandomUtil.generatePassword();
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
         if (login != null) {
             User existingUser = getUserByLogin(login);
             if (existingUser != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("Reinitializing password for user " + login);
                 }
-                existingUser.setPassword(RandomUtil.generatePassword());
+                existingUser.setPassword(encryptedPassword);
                 userRepository.updateUser(existingUser);
-                mailService.sendPasswordReinitializedEmail(existingUser);
+                mailService.sendPasswordReinitializedEmail(existingUser, password);
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("Validating user " + login);
                 }
                 User user = new User();
                 user.setLogin(login);
+                user.setPassword(encryptedPassword);
                 createUser(user);
-                mailService.sendValidationEmail(user);
+                mailService.sendValidationEmail(user, password);
             }
         }
         return login;

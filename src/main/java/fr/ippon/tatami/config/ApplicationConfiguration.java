@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
 
 @Configuration
 @PropertySource("classpath:/META-INF/tatami/tatami.properties")
-@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
+@ComponentScan(basePackages = {"fr.ippon.tatami.application", "fr.ippon.tatami.repository", "fr.ippon.tatami.service"})
 @Import(value = {CacheConfiguration.class, CassandraConfiguration.class, ElasticSearchConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 @EnableAsync

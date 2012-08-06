@@ -95,10 +95,10 @@ public class MailService {
     }
 
     @Async
-    public void sendValidationEmail(User user) {
+    public void sendValidationEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending validation e-mail to User '" + user.getLogin() +
-                    "', Password='" + user.getPassword() + "'");
+                    "', Password='" + password + "'");
         }
         String subject = "Tatami account validated";
         String text = "Dear "
@@ -106,7 +106,7 @@ public class MailService {
                 + ",\n\n"
                 + "Your Tatami account has been validated, here is your password : "
                 + "\n\n"
-                + user.getPassword()
+                + password
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
@@ -114,10 +114,10 @@ public class MailService {
     }
 
     @Async
-    public void sendPasswordReinitializedEmail(User user) {
+    public void sendPasswordReinitializedEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
-                    "', Password='" + user.getPassword() + "'");
+                    "', Password='" + password + "'");
         }
         String subject = "Tatami password re-initialized";
         String text = "Dear "
@@ -125,7 +125,7 @@ public class MailService {
                 + ",\n\n"
                 + "Your Tatami password has been re-initialized, here is your new password : "
                 + "\n\n"
-                + user.getPassword()
+                + password
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
