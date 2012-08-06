@@ -111,7 +111,7 @@
                                        type="checkbox"/>
                             </div>
                             <div class="controle-group">
-                                <button type="submit" class="span12 btn btn-success">
+                                <button type="submit" class="span12 btn btn-success" id="loginButton">
                                     <fmt:message key="tatami.authentificate"/>
                                 </button>
                             </div>
