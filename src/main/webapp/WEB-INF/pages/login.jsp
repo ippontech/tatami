@@ -64,7 +64,7 @@
                     <li><fmt:message key="tatami.register.text.4"/></li>
                 </ul>
                 </p>
-                <form action="/tatami/register" method="post" class="span12 well row-fluid" accept-charset="utf-8">
+                <form action="/tatami/register" method="post" class="span12 well row-fluid" accept-charset="utf-8" id="registrationForm">
                     <fieldset class="span12">
                         <div class="controle-group">
                             <label>
@@ -74,7 +74,7 @@
                                    placeholder="Your e-mail..."/>
                         </div>
                         <div class="controle-group">
-                            <button type="submit" class="span12 btn btn-success">
+                            <button type="submit" class="span12 btn btn-success" id="registrationButton">
                                 <fmt:message key="tatami.register"/>
                             </button>
                             <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>

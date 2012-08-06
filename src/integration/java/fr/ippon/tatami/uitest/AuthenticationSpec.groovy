@@ -1,27 +1,14 @@
 package fr.ippon.tatami.uitest
 
-import org.junit.Assume;
-
+import fr.ippon.tatami.uitest.support.TatamiBaseGebSpec;
 import geb.Page
 import geb.spock.GebSpec
 
 import pages.*
-import pages.google.GoogleAuthenticationPage;
-import pages.google.GoogleOpenIdPage;
+import pages.google.*;
 
 class AuthenticationSpec extends TatamiBaseGebSpec {
-		
-	static {
-		
-		// TODO : il doit y avoir un moyen plus simple/propre de choisir le driver : (cf GebConfig aussi)
-		// by default we use HtmlUnit (cf GebConfig.groovy )
-		
-		if(!System.getProperty('gev.env')) {
-//			System.setProperty('geb.env',"chrome")
-			System.setProperty('geb.env',"firefox")
-		}
-	}
-	
+			
     def "login as admin with ldap"() {
         given:
         to LoginPage
@@ -63,46 +50,47 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		then:
 		waitFor { at HomePage }
 		
-		and:
 		! adminLink.isPresent()
 		
-		and:
 		if(realBrowser()) {
 			// doesn't work with htmlDriver (when javascript is disabled at least) :
 			assert updateStatus !=null
 		}
 	}
 	
-	// TODO : test new openid user can login ... (auto-registration)
+	// TODO : should we explicitly test that new openid user can login (auto-registration) ?
 	
 	def "login as normal user with google"() {
 		given:
 		to LoginPage
 		verifyAt()
 		// and google account not accepting localhost ...
-		// assert user not in database ?
 				
-		when:
+		when: "click on goodle authentication button"
 		googleButton.click()
-	
-		// Login at google :
+		
+		then :
 		waitFor { at GoogleAuthenticationPage }
+		
+		when : "enter credentials on google"
 		loginForm.with {
 			Email = "farrault@ippon.fr"
 			Passwd = System.getProperty("mypassord");
 		}
 		loginButton.click()
 		
-		// Authorize localhost on google :
-		waitFor { at GoogleOpenIdPage } 
+		then:
+		waitFor { at GoogleOpenIdPage }
+		
+
+		when: "Authorize localhost to reveive openid authentication on google" 
 		rememberChoicesCB.value(false)
 		approveButton.click()
 		 
 		then:
-		at HomePage
-		
-		and:
+		waitFor { at HomePage }
 		! adminLink.isPresent()
 	
 	}
+	
 }

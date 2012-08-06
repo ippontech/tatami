@@ -7,13 +7,17 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.chrome.ChromeDriver
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+
 // TODO : faut-il laisser la baseUrl ici ?
 baseUrl = "http://localhost:8080/"
 
 // Use htmlunit as the default
 // See: http://code.google.com/p/selenium/wiki/HtmlUnitDriver
 driver = {
-	def driver = new HtmlUnitDriver()
+	def browserVersion = BrowserVersion.getDefault()
+	browserVersion.setBrowserLanguage("fr") // on force en Français
+	def driver = new HtmlUnitDriver(browserVersion)
 	// driver.javascriptEnabled = true // raphael.js fails to be executed by HtmlUnitDriver
 	driver
 }
