@@ -75,8 +75,18 @@ public class HomeController {
         return "redirect:/tatami/login?action=lostPassword";
     }
 
-    @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public String about() {
-        return "about";
+    @RequestMapping(value = "/presentation", method = RequestMethod.GET)
+    public String presentation() {
+        return "presentation";
+    }
+
+    @RequestMapping(value = "/license", method = RequestMethod.GET)
+    public String license() {
+        return "license";
+    }
+
+    @RequestMapping(value = "/tos", method = RequestMethod.GET)
+    public String termsOfService() {
+        return "terms_of_service";
     }
 }

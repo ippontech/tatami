@@ -12,13 +12,6 @@
 
 <div class="container mainPanel">
     <div class="offset2 span8 ">
-        <h1><fmt:message key="tatami.presentation"/></h1>
-
-        <p><fmt:message key="tatami.presentation.text"/></p>
-
-        <p>
-            <fmt:message key="tatami.presentation.moreinfo"/><a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a>
-        </p>
 
         <h1><fmt:message key="tatami.license"/></h1>
 

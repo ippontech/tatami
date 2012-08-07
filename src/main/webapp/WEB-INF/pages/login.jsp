@@ -75,6 +75,7 @@
                             <button type="submit" class="span12 btn btn-success">
                                 <fmt:message key="tatami.register"/>
                             </button>
+                            <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>
                         </div>
                     </fieldset>
                 </form>
@@ -175,6 +176,7 @@
                                 <button id="proceed_google" type="submit" class="span12 btn btn-success">
                                     <fmt:message key="tatami.authentication.google.submit"/>
                                 </button>
+                                <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>
                             </div>
                         </fieldset>
                     </form>

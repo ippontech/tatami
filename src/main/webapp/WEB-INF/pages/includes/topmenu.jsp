@@ -13,6 +13,7 @@
                 <img src="/img/ippon-logo.png" alt="Ippon Technologies Logo" width="22px" height="23px">
                 <fmt:message key="tatami.title"/>
             </a>
+
             <div class="nav-collapse">
                 <ul class="nav">
                     <li>
@@ -21,18 +22,39 @@
                                 key="tatami.home"/>
                         </a>
                     </li>
-                    <li>
-                        <a href="/tatami/about">
-                            <i class="icon-info-sign icon-white"></i> <fmt:message
-                                key="tatami.about"/>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-info-sign icon-white"></i> <fmt:message key="tatami.menu.about"/>
+                            <b class="caret"></b>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/tatami/presentation">
+                                    <i class="icon-eye-open"></i> <fmt:message
+                                        key="tatami.menu.presentation"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/tos">
+                                    <i class="icon-briefcase"></i> <fmt:message
+                                        key="tatami.menu.tos"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/license">
+                                    <i class="icon-info-sign"></i> <fmt:message
+                                        key="tatami.menu.license"/>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-                <sec:authorize access="isAuthenticated()" >
+                <sec:authorize access="isAuthenticated()">
                     <ul class="nav pull-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-user icon-white"></i> Account
+                                <i class="icon-user icon-white"></i> <fmt:message
+                                    key="tatami.menu.account"/>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
@@ -54,7 +76,7 @@
                                         <i class="icon-globe"></i> <fmt:message
                                             key="tatami.menu.enterprise"/></a>
                                 </li>
-                                <sec:authorize access="hasRole('ROLE_ADMIN')" >
+                                <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <li class="divider"></li>
                                     <li>
                                         <a href="/tatami/admin">
@@ -72,7 +94,7 @@
                         </li>
                     </ul>
                     <form class="navbar-search pull-right" id="searchHeader">
-                        <input class="search-query span2" placeholder="Search" name="search" type="text">
+                        <input class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>" name="search" type="text">
                     </form>
                 </sec:authorize>
             </div>
