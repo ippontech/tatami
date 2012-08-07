@@ -76,25 +76,24 @@
   <!-- Follow another user -->
   <fieldset class="span12">
     <div>
-      <label class="control-label"><i class="icon-zoom-in icon-white"></i>Follow another user...</label>
+      <label class="control-label"><i class="icon-zoom-in icon-white"></i><fmt:message key="tatami.follow.title"/>...</label>
     </div>
     <div class="control-group">
-      <input class="span12 input-xlarge" type="text" required="required" placeholder="Type the user name to follow..." name="username" />
+      <input class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.follow.username"/>..." name="username" />
     </div>
     <div>
-      <input type='submit' class="span12 btn btn-primary" value="Follow" />
+      <input type='submit' class="span12 btn btn-primary" value="<fmt:message key="tatami.follow.action"/>" />
     </div>
   </fieldset>
 </script>
 <script type="text/template" id="profile-follow-suggest">
-  <!-- Follow another user -->
   <div class="row-fluid">
       <div class="well">
           <table class="table table-center" id="follow-suggest">
               <thead>
                   <tr>
                       <th>
-                          <i class="icon-random icon-white"></i> <strong>Who to follow</strong>
+                          <i class="icon-random icon-white"></i> <strong><fmt:message key="tatami.follow.suggestions"/></strong>
                       </th>
                   </tr>
               </thead>
@@ -105,7 +104,7 @@
 
 <script type="text/template" id="profile-follow-suggest-empty">
   <tr>
-    <td>No new user to follow today.</td>
+    <td><fmt:message key="tatami.follow.nobody"/></td>
   </tr>
 </script>
 
