@@ -3,20 +3,26 @@
  See: http://www.gebish.org/manual/current/configuration.html
  */
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxProfile
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.BrowserVersion
 
 // TODO : faut-il laisser la baseUrl ici ?
 baseUrl = "http://localhost:8080/"
+
+forcedLocale = "en"
 
 // Use htmlunit as the default
 // See: http://code.google.com/p/selenium/wiki/HtmlUnitDriver
 driver = {
 	def browserVersion = BrowserVersion.getDefault()
-	browserVersion.setBrowserLanguage("fr") // on force en Français
+	browserVersion.setBrowserLanguage(forcedLocale)
 	def driver = new HtmlUnitDriver(browserVersion)
 	// driver.javascriptEnabled = true // raphael.js fails to be executed by HtmlUnitDriver
 	driver
@@ -29,14 +35,20 @@ environments {
 	chrome {
 		if(!System.getProperty('webdriver.chrome.driver')) {
 			System.setProperty('webdriver.chrome.driver',"C:\\products\\chromedriver_win_22_0_1203_0b\\chromedriver.exe")
-		}
-		driver = { new ChromeDriver() }
+		}		
+		DesiredCapabilities capabilities = new DesiredCapabilities()
+		// available capabilities can be find in %USER_HOME%\AppData\Local\Google\Chrome\User Data\default\preferences
+		def prefs = ["intl.accept_languages":forcedLocale] // Map
+		capabilities.setCapability("chrome.prefs",prefs);
+		driver = { new ChromeDriver(capabilities) }
 	}
 
 	// run as “mvn -Dgeb.env=firefox test”
 	// See: http://code.google.com/p/selenium/wiki/FirefoxDriver
 	firefox {
-		driver = { new FirefoxDriver() }
+		FirefoxProfile profile = new FirefoxProfile();
+		profile.setPreference( "intl.accept_languages", forcedLocale );
+		driver = { new FirefoxDriver(profile) }
 	}
 
 }
