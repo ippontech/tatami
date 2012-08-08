@@ -62,11 +62,16 @@ form {
   padding-right: 14px;
 }
 
+.statuses {
+    width: 100%;
+}
+
 .userStatus {
     color: #000000;
     text-decoration: none;
     font-weight: bold;
     font-size: 110%;
+    margin-left: 5px
 }
 .userStatus:hover {
     text-decoration: none;
@@ -84,7 +89,7 @@ form {
     height: 64px;
     border-radius: 5px 5px 5px 5px;
     margin-right: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 .avatar-small {

@@ -8,22 +8,28 @@
     <div class="status alert alert-info">
   <@ } @>
     <div class="row-fluid">
-      <table class="table">
+      <table class="statuses">
         <thead>
           <tr>
             <th rowspan="2">
                 <img class="span12 avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
             </th>
             <th>
-              <a href="/tatami/profile/<@= status.username @>/" class="userStatus" title="<fmt:message key="tatami.user.profile.show"/> @<@= status.username @> <@= status.firstName @> <@=status.lastName@>">
+              <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= status.username @> <@= status.firstName @> <@=status.lastName@>">
                 <@=status.firstName@> <@=status.lastName@> <em>@<@=status.username@></em>
               </a>
-              <p class="pull-right"><@=status.prettyPrintStatusDate@></p>
+              <p class="pull-right" style="width: 50px"><@=status.prettyPrintStatusDate@></p>
               <div class="pull-right status-actions">
                 <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>" title="<fmt:message key="tatami.user.status.show"/>">
                   <i class="icon-eye-open"></i>
                 </a>
-                <a class="status-action-favoris" title="<fmt:message key="tatami.user.status.favorite"/>">
+                <a class="status-action-reply" title="<fmt:message key="tatami.user.status.reply"/>">
+                      <i class="icon-pencil"></i>
+                </a>
+                <a class="status-action-share" title="<fmt:message key="tatami.user.status.share"/>">
+                      <i class="icon-retweet"></i>
+                </a>
+                <a class="status-action-favorite" title="<fmt:message key="tatami.user.status.favorite"/>">
                   <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
                 </a>
                 <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">

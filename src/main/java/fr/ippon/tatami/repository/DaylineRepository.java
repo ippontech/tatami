@@ -6,7 +6,7 @@ import fr.ippon.tatami.domain.UserStatusStat;
 import java.util.Collection;
 
 /**
- * The Dayline Respository, which stores statistics per day.
+ * The Dayline Repository, which stores statistics per day.
  *
  * @author Julien Dubois
  */

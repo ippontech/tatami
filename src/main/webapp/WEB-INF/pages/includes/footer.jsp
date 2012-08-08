@@ -1,7 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="templates-commun.jsp"/>
+<jsp:include page="templates-commons.jsp"/>
 
 <footer>
     <div id="footer" class="navbar navbar-fixed-bottom">
@@ -26,7 +26,7 @@
     <script src="/js/jquery-tatami-usernameLinker.js"></script>
     <script src="/js/jquery-raphael-tatami-pie.js"></script>
     <script src="/js/jquery-tatami-infinitiScroll.js"></script>
-    <script src="/js/tatami-commun.js"></script>
+    <script src="/js/tatami-commons.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>

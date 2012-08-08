@@ -88,11 +88,21 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   events: {
-    'click .status-action-favoris': 'favorisAction',
+    'click .status-action-reply': 'replyAction',
+    'click .status-action-share': 'shareAction',
+    'click .status-action-favorite': 'favoriteAction',
     'click .status-action-remove': 'removeAction'
   },
 
-  favorisAction: function() {
+  replyAction: function() {
+
+  },
+
+  shareAction: function() {
+
+  },
+
+  favoriteAction: function() {
     var self = this;
     var sd;
     if(this.model.get('favorite') === true)

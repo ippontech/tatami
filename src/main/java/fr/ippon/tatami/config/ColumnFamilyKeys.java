@@ -28,4 +28,6 @@ public class ColumnFamilyKeys {
     public final static String DOMAIN_CF = "Domain";
 
     public final static String REGISTRATION_CF = "Registration";
+
+    public final static String CONVERSATION_CF = "Conversation";
 }

@@ -5,7 +5,7 @@ import fr.ippon.tatami.domain.Status;
 import java.util.Collection;
 
 /**
- * The Tagline Respository.
+ * The Tagline Repository.
  *
  * @author Julien Dubois
  */

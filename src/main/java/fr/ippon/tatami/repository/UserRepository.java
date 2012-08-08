@@ -5,7 +5,7 @@ import fr.ippon.tatami.domain.User;
 import javax.validation.ConstraintViolationException;
 
 /**
- * The User Respository.
+ * The User Repository.
  *
  * @author Julien Dubois
  */

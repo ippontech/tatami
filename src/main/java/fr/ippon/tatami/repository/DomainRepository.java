@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The Domain Respository.
+ * The Domain Repository.
  *
  * @author Julien Dubois
  */

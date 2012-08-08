@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository;
 
 /**
- * The Registration Respository.
+ * The Registration Repository.
  *
  * @author Julien Dubois
  */

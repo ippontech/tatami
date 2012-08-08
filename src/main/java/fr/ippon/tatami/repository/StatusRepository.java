@@ -6,7 +6,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 /**
- * The Status Respository.
+ * The Status Repository.
  *
  * @author Julien Dubois
  */
