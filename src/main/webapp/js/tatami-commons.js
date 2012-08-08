@@ -269,7 +269,7 @@ Initialization
 */
 
   /*
-    Formulaire de recherche du header
+    Search form in the top menu.
   */
 
 app.View.SearchFormHeaderView = Backbone.View.extend({
@@ -294,12 +294,9 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
   }
 });
 
-    /*
-      Liaison de la vue avec le noeud
-    */
 $(function() {
 
-  app.views.searchFromHearderView = new app.View.SearchFormHeaderView({
+  app.views.searchFromHeaderView = new app.View.SearchFormHeaderView({
     el: $('#searchHeader')
   });
 
