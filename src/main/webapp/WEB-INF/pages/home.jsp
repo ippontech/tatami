@@ -64,11 +64,7 @@
     <jsp:include page="includes/templates-home.jsp"/>
     <jsp:include page="includes/footer.jsp"/>
 
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
     <script type="text/javascript">
-
-        google.load("visualization", "1", {packages:["corechart"]});
         var login = "<sec:authentication property="principal.username"/>";
         var username = "${user.username}";
         var tag = "${tag}";
@@ -81,7 +77,7 @@
             $('a[href="#search"]').tab('show');
 
     </script>
-    
+
     <script src="/js/tatami-home.js"></script>
 
 </body>
