@@ -34,6 +34,7 @@ if(!window.app){
           _.each(this.statuses,function(status){
               if(status.get('statusId') === id){
                   status.set('discuss', !status.get('discuss'));
+                  $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
               }
           });
       }
