@@ -52,6 +52,19 @@ public class TimelineController {
     }
 
     /**
+     * POST /statuses/discussion/:id -> reply to this Status
+     */
+    @RequestMapping(value = "/rest/statuses/discussion/{statusId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void replyToStatus(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to reply to status : " + statusId);
+        }
+        // TODO
+    }
+
+    /**
      * POST /statuses/destroy/:id -> delete Status
      */
     @RequestMapping(value = "/rest/statuses/destroy/{statusId}",

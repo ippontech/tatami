@@ -57,6 +57,15 @@ app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update'
 });
 
+app.Model.DiscussionModel = Backbone.Model.extend({
+    url: function(){
+        return '/tatami/rest/statuses/discussion/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+        this.model = model;
+    }
+});
+
 app.Model.StatusDelete = Backbone.Model.extend({
   url: function(){
     return '/tatami/rest/statuses/destroy/' + this.model.get('statusId');
@@ -99,7 +108,8 @@ app.View.TimeLineItemView = Backbone.View.extend({
     'click .status-action-reply': 'replyAction',
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
-    'click .status-action-remove': 'removeAction'
+    'click .status-action-remove': 'removeAction',
+    'click .discussion-reply-button': 'sendReply'
   },
 
   replyAction: function() {
@@ -139,6 +149,16 @@ app.View.TimeLineItemView = Backbone.View.extend({
         }
       });
     }
+  },
+
+  sendReply: function() {
+    var dm = new app.Model.DiscussionModel(this.model);
+    dm.save(null, {
+        success: function(){
+            //TODO refresh
+        }
+    });
+
   },
 
   render: function() {
