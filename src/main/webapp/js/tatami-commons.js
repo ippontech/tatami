@@ -29,6 +29,13 @@ if(!window.app){
             status.destroy();
           }
         });
+      },
+      discuss: function(id){
+          _.each(this.statuses,function(status){
+              if(status.get('statusId') === id){
+                  status.set('discuss', !status.get('discuss'));
+              }
+          });
       }
     }
   }, Backbone.Events);
@@ -95,11 +102,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   replyAction: function() {
-    var self = this;
-    var statusId = self.model.get('statusId');
-    var replyTemplate = _.template($('#status-reply').html(), {status: self.model.toJSON()});
-    replyNode = $("#status-reply-" + statusId);
-    replyNode.replaceWith(replyTemplate);
+    app.Status.discuss(this.model.get('statusId'));
   },
 
   shareAction: function() {

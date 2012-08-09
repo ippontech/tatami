@@ -44,7 +44,23 @@
           </tr>
           <tr>
               <td>
-                  <div id="status-reply-<@= status.statusId @>"></div>
+                  <@ if (status.discuss === true) { @>
+                  <div>
+                      <div><fmt:message key="tatami.status.reply"/></div>
+                      <fieldset>
+                          <div class="control-group">
+                              <textarea class="span12" required="required" maxlength="500"
+                                        name="content"><@= status.statusId @></textarea>
+                          </div>
+                          <div>
+                              <input type='submit' class="span12 btn btn-primary"
+                                     value="<fmt:message key="tatami.status.reply.action"/>"/>
+                          </div>
+                      </fieldset>
+                  </div>
+                  <@ } else { @>
+                  <div></div>
+                  <@ } @>
               </td>
           </tr>
       </table>
@@ -53,11 +69,11 @@
 </script>
 
 <script type="text/template" id="timeline-new">
-  <div class="status text-center alert alert-info">New</div>
+    <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></div>
 </script>
 
 <script type="text/template" id="timeline-next">
-  <div class="status text-center alert alert-info">Next</div>
+    <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.next"/></div>
 </script>
 
 <script type="text/template" id="timeline-progress">

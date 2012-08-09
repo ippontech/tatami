@@ -158,10 +158,6 @@
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "account";
-
-    $(document).ready(function () {
-        initAccount();
-    });
 </script>
 </body>
 </html>

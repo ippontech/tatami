@@ -521,8 +521,6 @@ app.View.FavoritePanelView = Backbone.View.extend({
 
 });
 
-
-
 /*
 Tags
 */

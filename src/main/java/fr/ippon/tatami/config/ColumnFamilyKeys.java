@@ -29,5 +29,5 @@ public class ColumnFamilyKeys {
 
     public final static String REGISTRATION_CF = "Registration";
 
-    public final static String CONVERSATION_CF = "Conversation";
+    public final static String DISCUSSION_CF = "Discussion";
 }
