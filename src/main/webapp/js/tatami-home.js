@@ -848,10 +848,10 @@ app.Router.HomeRouter = Backbone.Router.extend({
   favorite: function() {
     this.selectMenu('favorite');
     if(!app.views.favorite) {
-      var favoritecollection = new app.Collection.StatusCollection();
-      favoritecollection.url = '/tatami/rest/favorites';
+      var favoriteCollection = new app.Collection.StatusCollection();
+      favoriteCollection.url = '/tatami/rest/favorites';
       app.views.favorite = new app.View.FavoritePanelView({
-        model: favoritecollection
+        model: favoriteCollection
       });
     }
       app.views.favorite.trigger('refresh');
