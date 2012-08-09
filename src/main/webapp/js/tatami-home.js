@@ -768,7 +768,7 @@ app.View.SearchView = Backbone.View.extend({
 });
 
 /*
-  Statistiques
+  Statistics
 */
 
 app.Collection.DailyStatCollection = Backbone.Collection.extend({
