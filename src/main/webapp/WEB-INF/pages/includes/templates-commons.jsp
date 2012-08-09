@@ -3,9 +3,9 @@
 
 <script type="text/template" id="timeline-item">
   <@ if (status.favorite === true) { @>
-    <div class="status alert alert-info favorite">
+    <div class="status alert alert-info favorite status-<@= status.statusId @>">
   <@ } else { @> 
-    <div class="status alert alert-info">
+    <div class="status alert alert-info status-<@= status.statusId @>">
   <@ } @>
     <div class="row-fluid">
       <table class="statuses">
@@ -16,9 +16,9 @@
             </th>
             <th>
               <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= status.username @> <@= status.firstName @> <@=status.lastName@>">
-                <@=status.firstName@> <@=status.lastName@> <em>@<@=status.username@></em>
+                <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
               </a>
-              <p class="pull-right" style="width: 50px"><@=status.prettyPrintStatusDate@></p>
+              <p class="pull-right" style="width: 50px"><@= status.prettyPrintStatusDate @></p>
               <div class="pull-right status-actions">
                 <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>" title="<fmt:message key="tatami.user.status.show"/>">
                   <i class="icon-eye-open"></i>

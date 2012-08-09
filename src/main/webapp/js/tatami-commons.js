@@ -112,7 +112,9 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
     sd.save(null, {
       success: function(){
-        app.Status.favorite(self.model.get('statusId'));
+        var statusId = self.model.get('statusId');
+        app.Status.favorite(statusId);
+        $(".status-" + statusId).effect("highlight", {color: '#08C'}, 500);
       }
     });
   },
