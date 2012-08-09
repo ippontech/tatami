@@ -120,7 +120,7 @@
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></div>
 </script>
 
-<script type="text/template" id="favoris-refresh">
+<script type="text/template" id="favorite-refresh">
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>
 

@@ -33,7 +33,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#/favoris">
+                            <a href="#/favorite">
                                 <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
                             </a>
                         </li>

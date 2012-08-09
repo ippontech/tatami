@@ -143,10 +143,6 @@ app.View.ProfileView = Backbone.View.extend({
   }
 });
 
-
-
-
-
 /*
   Profile Follow
 */
@@ -266,8 +262,6 @@ app.View.FollowView = Backbone.View.extend({
     return $(this.el);
   }
 });
-
-
 
 /*
   Timeline
@@ -457,11 +451,11 @@ app.View.TimeLinePanelView = Backbone.View.extend({
 });
 
 /*
-  Favoris
+  Favorite
 */
 
-app.View.FavorisRefreshView = Backbone.View.extend({
-  template: _.template($('#favoris-refresh').html()),
+app.View.FavoriteRefreshView = Backbone.View.extend({
+  template: _.template($('#favorite-refresh').html()),
   progressTemplate: _.template($('#timeline-progress').html()),
 
   initialize: function(){
@@ -499,14 +493,14 @@ app.View.FavorisRefreshView = Backbone.View.extend({
 
 });
 
-app.View.FavorisPanelView = Backbone.View.extend({
+app.View.FavoritePanelView = Backbone.View.extend({
 
   initialize: function(){
     this.views = {};
     this.views.timeline = new app.View.TimeLineView({
       model : this.model
     });
-    this.views.refresh = new app.View.FavorisRefreshView({
+    this.views.refresh = new app.View.FavoriteRefreshView({
       model : this.model
     });
 
@@ -514,7 +508,7 @@ app.View.FavorisPanelView = Backbone.View.extend({
 
     this.on('refresh', this.views.refresh.newStatus, this.views.refresh);
 
-    app.on('refreshFavoris', this.views.refresh.refreshStatus, this.views.refresh);
+    app.on('refreshFavorite', this.views.refresh.refreshStatus, this.views.refresh);
   },
 
   render: function() {
@@ -827,7 +821,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
   routes: {
     "timeline": "timeline",
-    "favoris": "favoris",
+    "favorite": "favorite",
     "tags": "tags",
     "tags/*tag": "tags",
     "search": "search",
@@ -851,18 +845,18 @@ app.Router.HomeRouter = Backbone.Router.extend({
     $('#tab-content').append(app.views.timeline.render());
   },
 
-  favoris: function() {
-    this.selectMenu('favoris');
-    if(!app.views.favoris) {
-      var favoriscollection = new app.Collection.StatusCollection();
-      favoriscollection.url = '/tatami/rest/favorites';
-      app.views.favoris = new app.View.FavorisPanelView({
-        model: favoriscollection
+  favorite: function() {
+    this.selectMenu('favorite');
+    if(!app.views.favorite) {
+      var favoritecollection = new app.Collection.StatusCollection();
+      favoritecollection.url = '/tatami/rest/favorites';
+      app.views.favorite = new app.View.FavoritePanelView({
+        model: favoritecollection
       });
     }
-      app.views.favoris.trigger('refresh');
+      app.views.favorite.trigger('refresh');
     $('#tab-content').empty();
-    $('#tab-content').append(app.views.favoris.render());
+    $('#tab-content').append(app.views.favorite.render());
   },
 
   tags: function(tag) {
