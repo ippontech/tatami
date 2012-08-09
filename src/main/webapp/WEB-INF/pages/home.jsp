@@ -75,7 +75,6 @@
         var searchQuery = "${search}";
         var page = "home";
 
-
         if(tag !== '')
             $('a[href="#tags"]').tab('show');
         else if(searchQuery !== '')

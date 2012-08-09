@@ -95,7 +95,11 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   replyAction: function() {
-
+    var self = this;
+    var statusId = self.model.get('statusId');
+    var replyTemplate = _.template($('#status-reply').html(), {status: self.model.toJSON()});
+    replyNode = $("#status-reply-" + statusId);
+    replyNode.replaceWith(replyTemplate);
   },
 
   shareAction: function() {

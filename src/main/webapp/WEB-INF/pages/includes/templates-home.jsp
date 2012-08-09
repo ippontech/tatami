@@ -120,6 +120,20 @@
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></div>
 </script>
 
+<script type="text/template" id="status-reply">
+    <div id="status-reply-<@= status.statusId @>">
+        <div>Reply to this status</div>
+        <fieldset>
+            <div class="control-group">
+                <textarea class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content"><@= status.statusId @></textarea>
+            </div>
+            <div>
+                <input type='submit' class="span12 btn btn-primary" value="<fmt:message key="tatami.status.update"/>" />
+            </div>
+        </fieldset>
+    </div>
+</script>
+
 <script type="text/template" id="favorite-refresh">
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>

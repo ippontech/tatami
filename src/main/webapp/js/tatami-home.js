@@ -799,7 +799,7 @@ app.View.DailyStatsView = Backbone.View.extend({
 
 
 /*
-Initialisation
+Initialization
 */
 
 app.Router.HomeRouter = Backbone.Router.extend({

@@ -327,7 +327,7 @@ app.View.StatusView = Backbone.View.extend({
 
 
 /*
-  Initialisation
+  Initialization
 */
 app.Router.ProfileRouter = Backbone.Router.extend({
 
