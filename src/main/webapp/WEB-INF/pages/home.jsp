@@ -52,23 +52,6 @@
                                 <i class="icon-signal"></i> <fmt:message key="tatami.stats.status.piechart"/>
                             </a>
                         </li>
-                        <!-- <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-signal"></i> <fmt:message key="tatami.status.stats"/> <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#/daily">
-                                        <fmt:message key="tatami.stats.status.piechart"/>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#/weekly">
-                                        <fmt:message key="tatami.stats.status.punchchart"/>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
                     </ul>
                     <div id="tab-content">
                     </div>
