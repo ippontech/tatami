@@ -66,7 +66,7 @@ public class TimelineController {
             log.debug("REST request to reply to status : " + reply);
         }
         String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
-        //TODO
+        statusUpdateService.replyToStatus(escapedContent, reply.getStatusId());
     }
 
     /**
