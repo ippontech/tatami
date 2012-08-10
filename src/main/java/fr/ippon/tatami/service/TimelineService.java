@@ -244,22 +244,6 @@ public class TimelineService {
         // registering
         User currentUser = this.authenticationService.getCurrentUser();
         this.statusRepository.addStatusToFavoritesline(status, currentUser.getLogin());
-
-        // alerting
-        if (!currentUser.getLogin().equals(status.getLogin())) {
-            String content = '@' + currentUser.getUsername() + " liked your status<br/><em>_PH_...</em>";
-            int maxLength = 500 - content.length() + 4;
-            if (status.getContent().length() > maxLength) {
-                content = content.replace("_PH_", status.getContent().substring(0, maxLength));
-            } else {
-                content = content.replace("_PH_", status.getContent());
-            }
-
-            String statusUsername = DomainUtil.getUsernameFromLogin(status.getLogin());
-            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            Status helloStatus = this.statusRepository.createStatus(status.getLogin(), statusUsername, domain, content);
-            this.statusRepository.addStatusToTimeline(status.getLogin(), helloStatus);
-        }
     }
 
     public void removeFavoriteStatus(String statusId) {
