@@ -50,7 +50,7 @@
                       <fieldset>
                           <div class="control-group">
                               <textarea class="span12" required="required" maxlength="500"
-                                        name="content"></textarea>
+                                        name="reply-content"><@= status.replyContent @></textarea>
                           </div>
                           <div>
                               <input type='submit' class="span12 btn btn-primary discussion-reply-button"

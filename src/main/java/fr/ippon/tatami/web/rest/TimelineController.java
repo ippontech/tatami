@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,25 +44,24 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postStatus(@RequestBody Status tweet) {
+    public void postStatus(@RequestBody Status status) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to add status : " + tweet.getContent());
+            log.debug("REST request to add status : " + status.getContent());
         }
-        String escapedContent = StringEscapeUtils.escapeHtml(tweet.getContent());
+        String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
         timelineService.postStatus(escapedContent);
     }
 
     /**
      * POST /statuses/discussion/:id -> reply to this Status
      */
-    @RequestMapping(value = "/rest/statuses/discussion/{statusId}",
+    @RequestMapping(value = "/rest/statuses/discussion",
             method = RequestMethod.POST)
-    @ResponseBody
-    public void replyToStatus(@PathVariable("statusId") String statusId) {
+    public void replyToStatus(@RequestBody Reply reply) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to reply to status : " + statusId);
+            log.debug("REST request to reply to status : " + reply);
         }
-        // TODO
+        //String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
     }
 
     /**

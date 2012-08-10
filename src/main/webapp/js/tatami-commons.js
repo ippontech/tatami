@@ -34,9 +34,18 @@ if(!window.app){
           _.each(this.statuses,function(status){
               if(status.get('statusId') === id){
                   status.set('discuss', !status.get('discuss'));
+                  status.set('replyContent', '');
                   $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
               }
           });
+      },
+      share: function(id){
+            _.each(this.statuses,function(status){
+                if(status.get('statusId') === id){
+                    $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
+                    //TODO
+                }
+            });
       }
     }
   }, Backbone.Events);
@@ -44,7 +53,6 @@ if(!window.app){
 else {
   app = window.app;
 }
-
 
 /*
   Timeline
@@ -58,12 +66,7 @@ app.Model.StatusUpdateModel = Backbone.Model.extend({
 });
 
 app.Model.DiscussionModel = Backbone.Model.extend({
-    url: function(){
-        return '/tatami/rest/statuses/discussion/' + this.model.get('statusId');
-    },
-    initialize: function(model) {
-        this.model = model;
-    }
+    url:  '/tatami/rest/statuses/discussion/'
 });
 
 app.Model.StatusDelete = Backbone.Model.extend({
@@ -117,7 +120,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   shareAction: function() {
-
+    app.Status.share(this.model.get('statusId'));
   },
 
   favoriteAction: function() {
@@ -152,7 +155,10 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   sendReply: function() {
-    var dm = new app.Model.DiscussionModel(this.model);
+    var dm = new app.Model.DiscussionModel({
+        statusId: this.model.get('statusId'),
+        content: this.model.get('replyContent')
+    });
     dm.save(null, {
         success: function(){
             //TODO refresh

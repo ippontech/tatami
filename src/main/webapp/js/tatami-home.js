@@ -604,8 +604,6 @@ app.View.TagsView = Backbone.View.extend({
 
 });
 
-
-
 /*
 Search
 */
