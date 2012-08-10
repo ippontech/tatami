@@ -12,14 +12,13 @@ import java.util.Collection;
  */
 public interface StatusRepository {
 
-    Status createStatus(String login, String username, String domain, String content) throws ConstraintViolationException;
+    Status createStatus(String login, String username, String domain, String content, String replyTo) throws ConstraintViolationException;
 
     void removeStatus(Status status);
 
     /**
      * Retrieve a persisted status's informations
      *
-     * @param statusId
      * @return null if status was removed
      */
     Status findStatusById(String statusId);

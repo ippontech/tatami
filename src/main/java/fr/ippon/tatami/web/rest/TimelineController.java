@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -29,6 +30,9 @@ public class TimelineController {
     @Inject
     private TimelineService timelineService;
 
+    @Inject
+    private StatusUpdateService statusUpdateService;
+
     @ExceptionHandler(ConstraintViolationException.class)
     public void handleConstraintViolationException(ConstraintViolationException cve, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -49,7 +53,7 @@ public class TimelineController {
             log.debug("REST request to add status : " + status.getContent());
         }
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
-        timelineService.postStatus(escapedContent);
+        statusUpdateService.postStatus(escapedContent);
     }
 
     /**

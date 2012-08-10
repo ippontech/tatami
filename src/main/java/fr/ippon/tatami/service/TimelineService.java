@@ -2,7 +2,9 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.StatusRepository;
+import fr.ippon.tatami.repository.TaglineRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -14,8 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Manages the timeline.
@@ -35,13 +35,7 @@ public class TimelineService {
     private CounterRepository counterRepository;
 
     @Inject
-    private DaylineRepository daylineRepository;
-
-    @Inject
     private TaglineRepository taglineRepository;
-
-    @Inject
-    private FollowerRepository followerRepository;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -56,57 +50,6 @@ public class TimelineService {
     private String hashtagDefault = "---";
 
     private final Log log = LogFactory.getLog(TimelineService.class);
-
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
-
-    public void postStatus(String content) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating new status : " + content);
-        }
-        String currentLogin = authenticationService.getCurrentUser().getLogin();
-        String username = DomainUtil.getUsernameFromLogin(currentLogin);
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
-        Status status = statusRepository.createStatus(currentLogin, username, domain, content);
-
-        // add status to the dayline, userline, timeline, tagline
-        String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
-        daylineRepository.addStatusToDayline(status, domain, day);
-        statusRepository.addStatusToUserline(status);
-        statusRepository.addStatusToTimeline(currentLogin, status);
-        taglineRepository.addStatusToTagline(status, domain);
-
-        // add status to the follower's timelines
-        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
-        for (String followerLogin : followersForUser) {
-            statusRepository.addStatusToTimeline(followerLogin, status);
-        }
-
-        // add status to the mentioned users' timeline
-        Matcher m = PATTERN_LOGIN.matcher(status.getContent());
-        while (m.find()) {
-            String mentionedUsername = extractUsernameWithoutAt(m.group());
-            if (mentionedUsername != null &&
-                    !mentionedUsername.equals(currentLogin) &&
-                    !followersForUser.contains(mentionedUsername)) {
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Mentionning : " + mentionedUsername);
-                }
-                String mentionedLogin =
-                        DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
-
-                statusRepository.addStatusToTimeline(mentionedLogin, status);
-            }
-        }
-
-        // Increment status count for the current user
-        counterRepository.incrementStatusCounter(currentLogin);
-
-        // Add to Elastic Search index if it is activated
-        if (indexActivated) {
-            indexService.addStatus(status);
-        }
-    }
 
     public Status getStatus(String statusId) {
         Collection<String> statusIds = new ArrayList<String>();
@@ -265,9 +208,4 @@ public class TimelineService {
         Collection<String> statusIds = this.statusRepository.getFavoritesline(login);
         return this.buildStatusList(statusIds);
     }
-
-    private String extractUsernameWithoutAt(String dest) {
-        return dest.substring(1, dest.length());
-    }
-
 }

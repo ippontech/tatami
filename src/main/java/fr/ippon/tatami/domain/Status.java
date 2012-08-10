@@ -67,6 +67,12 @@ public class Status {
     @Column(name = "statusDate")
     private Date statusDate;
 
+    /**
+     * If this status is a reply, the statusId of the original status.
+     */
+    @Column(name = "replyTo")
+    private String replyTo;
+
     private String firstName;
 
     private String lastName;
@@ -146,6 +152,14 @@ public class Status {
         this.statusDate = statusDate;
     }
 
+    public String getReplyTo() {
+        return replyTo;
+    }
+
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -211,6 +225,7 @@ public class Status {
                 ", domain='" + domain + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
+                ", replyTo=" + replyTo +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +

@@ -61,34 +61,6 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         assertThatLineForUserWithStatusIsOk("userWithStatus@ippon.fr", status);
     }
 
-    @Test
-    public void shouldPostStatus() throws Exception {
-        String login = "userWhoPostStatus@ippon.fr";
-        mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
-        String content = "Longue vie au Ch'ti Jug";
-
-        timelineService.postStatus(content);
-
-        /* verify */
-        Collection<Status> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
-        assertThatNewTestIsPosted(login, content, statusFromUserline);
-
-        Collection<Status> statusFromTimeline = timelineService.getTimeline(10, null, null);
-        assertThatNewTestIsPosted(login, content, statusFromTimeline);
-
-        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
-        assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
-
-    }
-
-    private void assertThatNewTestIsPosted(String login, String content, Collection<Status> statuses) {
-        assertThat(statuses, notNullValue());
-        assertThat(statuses.size(), is(1));
-        Status status = (Status) statuses.toArray()[0];
-        assertThat(status.getLogin(), is(login));
-        assertThat(status.getContent(), is(content));
-    }
-
     private void mockAuthenticationOnTimelineServiceWithACurrentUser(String login) {
         User authenticateUser = constructAUser(login);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
