@@ -3,13 +3,11 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
-import java.util.Calendar;
 import java.util.Collection;
 
 import static org.hamcrest.Matchers.is;
@@ -53,20 +51,6 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<Status> status = timelineService.getTimeline(10, null, null);
         assertThatLineForUserWithStatusIsOk(login, status);
-    }
-
-    @Test
-    public void shouldGetDayline() throws Exception {
-        mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
-        Calendar cal = Calendar.getInstance();
-        cal.set(2012, 04, 19);
-        Collection<UserStatusStat> stats = timelineService.getDayline(cal.getTime());
-        assertThat(stats, notNullValue());
-        assertThat(stats.size(), is(1));
-
-        UserStatusStat userStat = (UserStatusStat) stats.toArray()[0];
-        assertThat(userStat.getUsername(), is("userWithStatus"));
-        assertThat(userStat.getStatusCount(), is(1L));
     }
 
     @Test

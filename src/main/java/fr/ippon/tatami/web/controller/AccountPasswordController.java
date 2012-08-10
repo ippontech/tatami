@@ -1,8 +1,10 @@
 package fr.ippon.tatami.web.controller;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.env.Environment;
@@ -16,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.controller.form.UserPassword;
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 /**
  * @author Julien Dubois
@@ -29,13 +28,13 @@ import fr.ippon.tatami.web.controller.form.UserPassword;
 public class AccountPasswordController {
 
     private final Log log = LogFactory.getLog(AccountPasswordController.class);
-        
+
     @Inject
     private UserService userService;
 
     @Inject
     private AuthenticationService authenticationService;
-    
+
     @Inject
     Environment env;
 
@@ -55,7 +54,7 @@ public class AccountPasswordController {
     public ModelAndView getUpdatePassword(@RequestParam(required = false) boolean success) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        
+
         if (isHandledByLDAP(domain)) {
             return new ModelAndView("account_password_ldap");
         }
@@ -64,10 +63,10 @@ public class AccountPasswordController {
         return mv;
     }
 
-	private boolean isHandledByLDAP(String domain) {
-		String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
-		return domain.equalsIgnoreCase(domainHandledByLdap);
-	}
+    private boolean isHandledByLDAP(String domain) {
+        String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
+        return domain.equalsIgnoreCase(domainHandledByLdap);
+    }
 
     @RequestMapping(value = "/account/password",
             method = RequestMethod.POST)

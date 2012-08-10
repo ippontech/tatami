@@ -1,5 +1,10 @@
 package fr.ippon.tatami.domain;
 
+import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,12 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 
 /**
  * A user.
@@ -57,7 +56,7 @@ public class User {
     @Column(name = "openIdUrl")
     @JsonIgnore
     private String openIdUrl;
-    
+
     private long statusCount;
 
     private long friendsCount;
@@ -120,13 +119,13 @@ public class User {
         this.lastName = lastName;
     }
 
-	public String getOpenIdUrl() {
-		return openIdUrl;
-	}
+    public String getOpenIdUrl() {
+        return openIdUrl;
+    }
 
-	public void setOpenIdUrl(String openIdUrl) {
-		this.openIdUrl = openIdUrl;
-	}
+    public void setOpenIdUrl(String openIdUrl) {
+        this.openIdUrl = openIdUrl;
+    }
 
     public long getStatusCount() {
         return statusCount;

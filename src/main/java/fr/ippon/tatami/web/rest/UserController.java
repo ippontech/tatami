@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -31,6 +32,9 @@ public class UserController {
 
     @Inject
     private TimelineService timelineService;
+
+    @Inject
+    private StatsService statsService;
 
     @Inject
     private UserService userService;
@@ -78,7 +82,7 @@ public class UserController {
         Collection<String> exceptions = userService.getFriendIdsForUser(currentLogin);
         exceptions.add(currentLogin);
 
-        Collection<UserStatusStat> stats = timelineService.getDayline();
+        Collection<UserStatusStat> stats = statsService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
         for (UserStatusStat stat : stats) {
             User potentialFriend = userService.getUserProfileByUsername(stat.getUsername());

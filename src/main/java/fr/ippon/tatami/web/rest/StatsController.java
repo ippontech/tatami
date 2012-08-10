@@ -1,7 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.UserStatusStat;
-import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.StatsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * REST controller for managing stats.
@@ -23,7 +23,7 @@ public class StatsController {
     private final Log log = LogFactory.getLog(StatsController.class);
 
     @Inject
-    private TimelineService timelineService;
+    private StatsService statsService;
 
     /**
      * GET  /stats/day -> statistics for today
@@ -34,7 +34,7 @@ public class StatsController {
     @ResponseBody
     public Collection<UserStatusStat> listDayStatusStats() {
         log.debug("REST request to get the users stats.");
-        Collection<UserStatusStat> statuses = timelineService.getDayline();
+        Collection<UserStatusStat> statuses = statsService.getDayline();
         return statuses;
     }
 }

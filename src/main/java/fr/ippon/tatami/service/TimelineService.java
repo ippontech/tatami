@@ -2,7 +2,6 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,8 +53,6 @@ public class TimelineService {
     @Named("indexActivated")
     private boolean indexActivated;
 
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
-
     private String hashtagDefault = "---";
 
     private final Log log = LogFactory.getLog(TimelineService.class);
@@ -74,7 +69,7 @@ public class TimelineService {
         Status status = statusRepository.createStatus(currentLogin, username, domain, content);
 
         // add status to the dayline, userline, timeline, tagline
-        String day = DAYLINE_KEY_FORMAT.format(status.getStatusDate());
+        String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
         daylineRepository.addStatusToDayline(status, domain, day);
         statusRepository.addStatusToUserline(status);
         statusRepository.addStatusToTimeline(currentLogin, status);
@@ -170,33 +165,6 @@ public class TimelineService {
             }
         }
         return statuses;
-    }
-
-    /**
-     * The dayline contains a day's status.
-     *
-     * @return a status list
-     */
-    public Collection<UserStatusStat> getDayline() {
-        Date today = new Date();
-        return this.getDayline(today);
-    }
-
-    /**
-     * The dayline contains a day's status.
-     *
-     * @param date the day to retrieve the status of
-     * @return a status list
-     */
-    public Collection<UserStatusStat> getDayline(Date date) {
-        if (date == null) {
-            date = new Date();
-        }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String day = DAYLINE_KEY_FORMAT.format(date);
-        Collection<UserStatusStat> stats = daylineRepository.getDayline(domain, day);
-        return stats;
     }
 
     /**
