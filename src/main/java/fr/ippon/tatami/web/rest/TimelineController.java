@@ -61,7 +61,8 @@ public class TimelineController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to reply to status : " + reply);
         }
-        //String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
+        String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
+        //TODO
     }
 
     /**

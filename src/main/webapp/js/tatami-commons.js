@@ -157,7 +157,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
   sendReply: function() {
     var dm = new app.Model.DiscussionModel({
         statusId: this.model.get('statusId'),
-        content: this.model.get('replyContent')
+        content: this.model.get('replyContent') //TODO get the reply content
     });
     dm.save(null, {
         success: function(){
