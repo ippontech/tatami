@@ -10,7 +10,7 @@
     <div class="row-fluid">
       <table class="statuses">
           <tr>
-            <th rowspan="3">
+            <th rowspan="4">
                 <img class="span12 avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
             </th>
             <th>
@@ -40,6 +40,18 @@
           <tr>
               <td>
                   <div class="well status-content"><@=status.content@></div>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <@ if (status.info === true) { @>
+                  <div>
+                      <div>Extended information</div>
+
+                  </div>
+                  <@ } else { @>
+                  <div></div>
+                  <@ } @>
               </td>
           </tr>
           <tr>

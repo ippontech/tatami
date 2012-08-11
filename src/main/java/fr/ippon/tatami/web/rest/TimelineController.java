@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.web.rest.dto.Reply;
@@ -97,7 +98,34 @@ public class TimelineController {
     }
 
     /**
-     * GET  /statuses/home_timeline -> get the latest status from the current user
+     * GET  /statuses/details/:id -> returns the details for a status, specified by the id parameter
+     */
+    @RequestMapping(value = "/rest/statuses/details/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public StatusDetails getStatusDetails(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status details Id : " + statusId);
+        }
+        return timelineService.getStatusDetails(statusId);
+    }
+
+    /**
+     * POST /statuses/share/:id -> Shares the status
+     */
+    @RequestMapping(value = "/rest/statuses/share/{statusId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void favoriteStatus(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to share status : " + statusId);
+        }
+        timelineService.shareStatus(statusId);
+    }
+
+    /**
+     * GET  /statuses/home_timeline -> get the latest statuses from the current user
      */
     @RequestMapping(value = "/rest/statuses/home_timeline",
             method = RequestMethod.GET,
@@ -113,7 +141,7 @@ public class TimelineController {
     }
 
     /**
-     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest status from user "jdubois"
+     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user "jdubois"
      */
     @RequestMapping(value = "/rest/statuses/user_timeline",
             method = RequestMethod.GET,

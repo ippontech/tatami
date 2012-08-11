@@ -13,6 +13,8 @@ public class ColumnFamilyKeys {
 
     public final static String STATUS_CF = "Status";
 
+    public final static String STATUS_DETAILS_CF = "StatusDetails";
+
     public final static String DAYLINE_CF = "Dayline";
 
     public final static String FAVLINE_CF = "Favline";
@@ -28,6 +30,4 @@ public class ColumnFamilyKeys {
     public final static String DOMAIN_CF = "Domain";
 
     public final static String REGISTRATION_CF = "Registration";
-
-    public final static String DISCUSSION_CF = "Discussion";
 }

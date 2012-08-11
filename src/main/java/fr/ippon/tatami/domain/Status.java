@@ -81,6 +81,11 @@ public class Status {
 
     private boolean favorite;
 
+    /**
+     * If this status was shared, login of the user who shared it.
+     */
+    private String sharedBy;
+
     @Column(name = "removed")
     @JsonIgnore
     private Boolean removed;
@@ -184,20 +189,28 @@ public class Status {
         this.gravatar = gravatar;
     }
 
-    public Boolean getRemoved() {
-        return removed;
-    }
-
-    public void setRemoved(Boolean removed) {
-        this.removed = removed;
-    }
-
     public boolean isFavorite() {
         return favorite;
     }
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public String getSharedBy() {
+        return sharedBy;
+    }
+
+    public void setSharedBy(String sharedBy) {
+        this.sharedBy = sharedBy;
+    }
+
+    public Boolean getRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
     }
 
     @Override
@@ -221,15 +234,17 @@ public class Status {
     public String toString() {
         return "Status{" +
                 "statusId='" + statusId + '\'' +
+                ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
-                ", replyTo=" + replyTo +
+                ", replyTo='" + replyTo + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +
                 ", favorite=" + favorite +
+                ", sharedBy='" + sharedBy + '\'' +
                 ", removed=" + removed +
                 '}';
     }

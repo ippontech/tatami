@@ -27,9 +27,13 @@ public interface StatusRepository {
 
     void removeStatusFromFavoritesline(Status status, String login);
 
+    void addStatusToTimeline(String login, Status status);
+
+    void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status);
+
     void addStatusToUserline(Status status);
 
-    void addStatusToTimeline(String login, Status status);
+    void shareStatusToUserline(String currentLogin, Status status);
 
     void deleteFavoritesline(String login);
 

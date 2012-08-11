@@ -59,8 +59,7 @@ public class CassandraDomainRepository implements DomainRepository {
     @Override
     public List<String> getLoginsInDomain(String domain, int pagination) {
         List<String> logins = new ArrayList<String>();
-        ColumnSlice<String, String> result;
-        result = createSliceQuery(keyspaceOperator,
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
                 .setKey(domain)

@@ -47,7 +47,16 @@ if(!window.app){
                 }
             });
       }
-    }
+    },
+      info: function(id){
+          _.each(this.statuses,function(status){
+              if(status.get('statusId') === id){
+                  status.set('info', !status.get('info'));
+                  status.set('statusDetails', '');
+                  $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
+              }
+          });
+      }
   }, Backbone.Events);
 }
 else {
@@ -95,6 +104,16 @@ app.Model.StatusRemoveFavorite = Backbone.Model.extend({
     this.model = model;
   }
 });
+
+app.Model.StatusDetails = Backbone.Model.extend({
+    url: function(){
+        return '/tatami/rest/statuses/details/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+        this.model = model;
+    }
+});
+
 
 app.View.TimeLineItemView = Backbone.View.extend({
   template: _.template($('#timeline-item').html()),

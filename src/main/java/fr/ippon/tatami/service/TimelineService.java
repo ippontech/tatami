@@ -1,10 +1,9 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.StatusRepository;
-import fr.ippon.tatami.repository.TaglineRepository;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -25,6 +24,10 @@ import java.util.Collection;
 @Service
 public class TimelineService {
 
+    private final Log log = LogFactory.getLog(TimelineService.class);
+
+    private final static String hashtagDefault = "---";
+
     @Inject
     private UserService userService;
 
@@ -32,10 +35,16 @@ public class TimelineService {
     private StatusRepository statusRepository;
 
     @Inject
+    private StatusDetailsRepository statusDetailsRepository;
+
+    @Inject
     private CounterRepository counterRepository;
 
     @Inject
     private TaglineRepository taglineRepository;
+
+    @Inject
+    private FollowerRepository followerRepository;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -47,10 +56,6 @@ public class TimelineService {
     @Named("indexActivated")
     private boolean indexActivated;
 
-    private String hashtagDefault = "---";
-
-    private final Log log = LogFactory.getLog(TimelineService.class);
-
     public Status getStatus(String statusId) {
         Collection<String> statusIds = new ArrayList<String>();
         statusIds.add(statusId);
@@ -60,6 +65,10 @@ public class TimelineService {
         } else {
             return statusCollection.iterator().next();
         }
+    }
+
+    public StatusDetails getStatusDetails(String statusId) {
+        return statusDetailsRepository.findStatusDetails(statusId);
     }
 
     public Collection<Status> buildStatusList(Collection<String> statusIds) {
@@ -119,7 +128,7 @@ public class TimelineService {
      */
     public Collection<Status> getTagline(String tag, int nbStatus) {
         if (tag == null || tag.isEmpty()) {
-            tag = this.hashtagDefault;
+            tag = hashtagDefault;
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -138,7 +147,7 @@ public class TimelineService {
     public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
         Collection<String> statusIds = statusRepository.getTimeline(login, nbStatus, since_id, max_id);
-        return this.buildStatusList(statusIds);
+        return buildStatusList(statusIds);
     }
 
     /**
@@ -150,7 +159,7 @@ public class TimelineService {
      */
     public Collection<Status> getUserline(String username, int nbStatus, String since_id, String max_id) {
         String login = null;
-        User currentUser = this.authenticationService.getCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
         if (username == null || username.isEmpty()) { // current user
             login = currentUser.getLogin();
         } else {  // another user, in the same domain
@@ -162,36 +171,48 @@ public class TimelineService {
     }
 
     public void removeStatus(String statusId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Removing status : " + statusId);
+        if (log.isDebugEnabled()) {
+            log.debug("Removing status : " + statusId);
         }
-        final Status status = this.statusRepository.findStatusById(statusId);
+        final Status status = statusRepository.findStatusById(statusId);
 
-        final User currentUser = this.authenticationService.getCurrentUser();
+        final User currentUser = authenticationService.getCurrentUser();
         if (status.getLogin().equals(currentUser.getLogin())
                 && !Boolean.TRUE.equals(status.getRemoved())) {
-            this.statusRepository.removeStatus(status);
-            this.counterRepository.decrementStatusCounter(currentUser.getLogin());
-            if (this.indexActivated) {
-                this.indexService.removeStatus(status);
+            statusRepository.removeStatus(status);
+            counterRepository.decrementStatusCounter(currentUser.getLogin());
+            if (indexActivated) {
+                indexService.removeStatus(status);
             }
         }
     }
 
-    public void addFavoriteStatus(String statusId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Marking status : " + statusId);
+    public void shareStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Share status : " + statusId);
         }
-        Status status = this.statusRepository.findStatusById(statusId);
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        Status status = statusRepository.findStatusById(statusId);
+        statusRepository.shareStatusToUserline(currentLogin, status);
+        // add status to the follower's timelines
+        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        for (String followerLogin : followersForUser) {
+            statusRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
+        }
+    }
 
-        // registering
-        User currentUser = this.authenticationService.getCurrentUser();
-        this.statusRepository.addStatusToFavoritesline(status, currentUser.getLogin());
+    public void addFavoriteStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Favorite status : " + statusId);
+        }
+        Status status = statusRepository.findStatusById(statusId);
+        String login = authenticationService.getCurrentUser().getLogin();
+        statusRepository.addStatusToFavoritesline(status, login);
     }
 
     public void removeFavoriteStatus(String statusId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Unmarking status : " + statusId);
+        if (log.isDebugEnabled()) {
+            log.debug("Un-favorite status : " + statusId);
         }
         Status status = statusRepository.findStatusById(statusId);
         User currentUser = authenticationService.getCurrentUser();
@@ -204,8 +225,8 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<Status> getFavoritesline() {
-        String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> statusIds = this.statusRepository.getFavoritesline(login);
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        Collection<String> statusIds = this.statusRepository.getFavoritesline(currentLogin);
         return this.buildStatusList(statusIds);
     }
 }

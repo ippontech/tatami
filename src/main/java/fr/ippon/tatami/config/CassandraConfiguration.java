@@ -60,7 +60,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, STATUS_CF, 0);
             addColumnFamily(cluster, DOMAIN_CF, 0);
             addColumnFamily(cluster, REGISTRATION_CF, 0);
-            addColumnFamily(cluster, DISCUSSION_CF, 0);
+            addColumnFamily(cluster, STATUS_DETAILS_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF, 0);

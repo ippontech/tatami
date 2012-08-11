@@ -10,6 +10,8 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import me.prettyprint.hector.api.query.ColumnQuery;
+import me.prettyprint.hector.api.query.QueryResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -95,6 +97,11 @@ public class CassandraStatusRepository implements StatusRepository {
     }
 
     @Override
+    public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status) {
+        shareStatus(timelineLogin, status, sharedByLogin, TIMELINE_CF);
+    }
+
+    @Override
     public Collection<String> getTimeline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(TIMELINE_CF, login, size, since_id, max_id);
     }
@@ -104,6 +111,11 @@ public class CassandraStatusRepository implements StatusRepository {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(status.getLogin(), USERLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                 "", UUIDSerializer.get(), StringSerializer.get()));
+    }
+
+    @Override
+    public void shareStatusToUserline(String currentLogin, Status status) {
+        shareStatus(currentLogin, status, currentLogin, USERLINE_CF);
     }
 
     @Override
@@ -206,5 +218,24 @@ public class CassandraStatusRepository implements StatusRepository {
             }
         }
         return statusIds;
+    }
+
+    private void shareStatus(String login, Status status, String sharedByLogin, String columnFamily) {
+        UUID name = UUID.fromString(status.getStatusId());
+        ColumnQuery<String, UUID, String> columnQuery =
+                HFactory.createColumnQuery(keyspaceOperator, StringSerializer.get(),
+                        UUIDSerializer.get(), StringSerializer.get());
+
+        columnQuery.setColumnFamily(columnFamily).setKey(login).setName(name);
+        QueryResult<HColumn<UUID, String>> result = columnQuery.execute();
+        if (result.get() == null) {
+            Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+            mutator.insert(login, columnFamily, HFactory.createColumn(UUID.fromString(status.getStatusId()),
+                    sharedByLogin, UUIDSerializer.get(), StringSerializer.get()));
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Shared status " + status.getStatusId() + " is already in " + columnFamily);
+            }
+        }
     }
 }

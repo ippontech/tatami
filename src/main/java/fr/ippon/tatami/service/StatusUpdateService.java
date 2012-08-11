@@ -37,6 +37,9 @@ public class StatusUpdateService {
     private TaglineRepository taglineRepository;
 
     @Inject
+    private StatusDetailsRepository statusDetailsRepository;
+
+    @Inject
     private CounterRepository counterRepository;
 
     @Inject
@@ -52,10 +55,11 @@ public class StatusUpdateService {
     }
 
     public void replyToStatus(String content, String replyTo) {
-        createStatus(content, replyTo);
+        Status status = createStatus(content, replyTo);
+        statusDetailsRepository.addDiscussionStatusId(replyTo, status.getStatusId());
     }
 
-    private void createStatus(String content, String replyTo) {
+    private Status createStatus(String content, String replyTo) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new status : " + content);
         }
@@ -102,6 +106,7 @@ public class StatusUpdateService {
         if (indexActivated) {
             indexService.addStatus(status);
         }
+        return status;
     }
 
     private String extractUsernameWithoutAt(String dest) {
