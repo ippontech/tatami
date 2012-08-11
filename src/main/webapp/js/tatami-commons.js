@@ -7,56 +7,54 @@ _.templateSettings = {
 var app;
 
 if(!window.app){
-  app = window.app = _.extend({
-    views: {},
-    View: {},
-    Collection: {},
-    Model: {},
-    Router: {},
+    app = window.app = _.extend({
+        views:{},
+        View:{},
+        Collection:{},
+        Model:{},
+        Router:{},
 
-    Status: {
-      statuses: [],
-      favorite: function(id){
-        _.each(this.statuses,function(status){
-          if(status.get('statusId') === id){
-            status.set('favorite', !status.get('favorite'));
-          }
-        });
-      },
-      destroy: function(id){
-        _.each(this.statuses,function(status){
-          if(status.get('statusId') === id){
-            status.destroy();
-          }
-        });
-      },
-      discuss: function(id){
-          _.each(this.statuses,function(status){
-              if(status.get('statusId') === id){
-                  status.set('discuss', !status.get('discuss'));
-                  status.set('replyContent', '');
-                  $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
-              }
-          });
-      },
-      share: function(id){
-            _.each(this.statuses,function(status){
-                if(status.get('statusId') === id){
-                    $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
-                    //TODO
-                }
-            });
-      }
+        Status:{
+            statuses:[],
+            details:function (id) {
+                _.each(this.statuses, function (status) {
+                    if (status.get('statusId') === id) {
+                        status.set('details', !status.get('details'));
+                    }
+                });
+            },
+            discuss:function (id) {
+                _.each(this.statuses, function (status) {
+                    if (status.get('statusId') === id) {
+                        status.set('discuss', !status.get('discuss'));
+                        status.set('replyContent', '');
+                    }
+                });
+            },
+            share:function (id) {
+                _.each(this.statuses, function (status) {
+                    if (status.get('statusId') === id) {
+                        status.set('share', !status.get('share'));
+                    }
+                });
+            },
+            favorite:function (id) {
+                _.each(this.statuses, function (status) {
+                    if (status.get('statusId') === id) {
+                        status.set('favorite', !status.get('favorite'));
+                    }
+                });
+            },
+            destroy:function (id) {
+                _.each(this.statuses, function (status) {
+                    if (status.get('statusId') === id) {
+                        status.destroy();
+                    }
+                });
+            },
+
     },
-      info: function(id){
-          _.each(this.statuses,function(status){
-              if(status.get('statusId') === id){
-                  status.set('info', !status.get('info'));
-                  status.set('statusDetails', '');
-                  $(".status-" + id).effect("highlight", {color: '#08C'}, 500);
-              }
-          });
-      }
+
   }, Backbone.Events);
 }
 else {
@@ -74,7 +72,16 @@ app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update'
 });
 
-app.Model.DiscussionModel = Backbone.Model.extend({
+app.Model.Share = Backbone.Model.extend({
+    url: function(){
+        return '/tatami/rest/statuses/share/' + this.model.get('statusId');
+    },
+    initialize: function(model) {
+        this.model = model;
+    }
+});
+
+app.Model.Discussion = Backbone.Model.extend({
     url:  '/tatami/rest/statuses/discussion/'
 });
 
@@ -114,6 +121,7 @@ app.Model.StatusDetails = Backbone.Model.extend({
     }
 });
 
+/* Views */
 
 app.View.TimeLineItemView = Backbone.View.extend({
   template: _.template($('#timeline-item').html()),
@@ -127,6 +135,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   events: {
+    'click .status-action-details': 'detailsAction',
     'click .status-action-reply': 'replyAction',
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
@@ -134,13 +143,33 @@ app.View.TimeLineItemView = Backbone.View.extend({
     'click .discussion-reply-button': 'sendReply'
   },
 
+    detailsAction:function () {
+        var statusId = this.model.get('statusId');
+        if (this.model.get('details') != true) {
+            var statusDetails = new app.Model.StatusDetails(this.model);
+            statusDetails.fetch();
+        }
+        app.Status.details(statusId);
+        $(".status-" + statusId).effect("highlight", {color:'#08C'}, 500);
+    },
+
   replyAction: function() {
-    app.Status.discuss(this.model.get('statusId'));
+      var statusId = this.model.get('statusId');
+      app.Status.discuss(statusId);
+      $(".status-" + statusId).effect("highlight", {color: '#08C'}, 500);
   },
 
-  shareAction: function() {
-    app.Status.share(this.model.get('statusId'));
-  },
+    shareAction:function () {
+        var shareModel = new app.Model.Share(this.model);
+        var self = this;
+        shareModel.save(null, {
+            success:function () {
+                var statusId = self.model.get('statusId');
+                app.Status.share(statusId);
+                $(".status-" + statusId).effect("highlight", {color:'#08C'}, 500);
+            }
+        });
+    },
 
   favoriteAction: function() {
     var self = this;
@@ -166,7 +195,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
       sd.save(null, {
         success: function(){
-          app.trigger('refreshProfile');
+              app.trigger('refreshProfile');
           app.Status.destroy(self.model.get('statusId'));
         }
       });
@@ -174,7 +203,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   sendReply: function() {
-    var dm = new app.Model.DiscussionModel({
+    var dm = new app.Model.Discussion({
         statusId: this.model.get('statusId'),
         content: this.model.get('replyContent') //TODO get the reply content
     });
@@ -187,7 +216,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   render: function() {
-
     $(this.el).html(this.template({status:this.model.toJSON()}));
     $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
     return $(this.el);

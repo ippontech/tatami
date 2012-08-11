@@ -193,12 +193,16 @@ public class TimelineService {
         }
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         Status status = statusRepository.findStatusById(statusId);
+        // add status to the user's userline and timeline
         statusRepository.shareStatusToUserline(currentLogin, status);
+        statusRepository.shareStatusToTimeline(currentLogin, currentLogin, status);
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
             statusRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
         }
+        // update the status details to add this share
+        statusDetailsRepository.addSharedByLogin(statusId, currentLogin);
     }
 
     public void addFavoriteStatus(String statusId) {

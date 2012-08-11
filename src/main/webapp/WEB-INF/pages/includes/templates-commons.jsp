@@ -22,6 +22,9 @@
                 <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>" title="<fmt:message key="tatami.user.status.show"/>">
                   <i class="icon-eye-open"></i>
                 </a>
+                <a class="status-action-details" title="<fmt:message key="tatami.user.status.details"/>">
+                   <i class="icon-search"></i>
+                </a>
                 <a class="status-action-reply" title="<fmt:message key="tatami.user.status.reply"/>">
                       <i class="icon-pencil"></i>
                 </a>
@@ -32,7 +35,7 @@
                   <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
                 </a>
                 <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">
-                  <i class="icon-remove"></i>
+                  <i class="icon-trash"></i>
                 </a>
               </div>
             </th>
@@ -44,9 +47,9 @@
           </tr>
           <tr>
               <td>
-                  <@ if (status.info === true) { @>
+                  <@ if (status.details === true) { @>
                   <div>
-                      <div>Extended information</div>
+                      <div><fmt:message key="tatami.user.status.details"/></div>
 
                   </div>
                   <@ } else { @>
