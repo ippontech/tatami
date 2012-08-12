@@ -34,6 +34,7 @@ import org.springframework.util.Assert;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,8 +110,8 @@ public class IndexService {
      * @param sortOrder which order to apply, ASC if not provided
      * @return a list of uid
      */
-    public List<String> search(@SuppressWarnings("rawtypes") final String domain, final Class clazz, final String field,
-                               final String query, int page, int size, final String sortField, final String sortOrder) {
+    public Map<String, String> search(@SuppressWarnings("rawtypes") final String domain, final Class clazz, final String field,
+                                      final String query, int page, int size, final String sortField, final String sortOrder) {
 
         Assert.notNull(clazz);
         Assert.notNull(query);
@@ -144,19 +145,19 @@ public class IndexService {
             searchResponse = builder.execute().actionGet();
         } catch (IndexMissingException e) {
             log.warn("The index was not found in the cluster.");
-            return new ArrayList<String>(0);
+            return new HashMap<String, String>(0);
         }
 
         final SearchHits searchHits = searchResponse.getHits();
         final Long hitsNumber = searchHits.getTotalHits();
         if (hitsNumber == 0) {
-            return new ArrayList<String>(0);
+            return new HashMap<String, String>(0);
         }
 
         final SearchHit[] searchHitsArray = searchHits.getHits();
-        final List<String> items = new ArrayList<String>(hitsNumber.intValue());
+        final Map<String, String> items = new HashMap<String, String>(hitsNumber.intValue());
         for (int i = 0; i < searchHitsArray.length; i++) {
-            items.add(searchHitsArray[i].getId());
+            items.put(searchHitsArray[i].getId(), null);
         }
 
         return items;

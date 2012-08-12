@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages the timeline.
@@ -57,9 +59,9 @@ public class TimelineService {
     private boolean indexActivated;
 
     public Status getStatus(String statusId) {
-        Collection<String> statusIds = new ArrayList<String>();
-        statusIds.add(statusId);
-        Collection<Status> statusCollection = this.buildStatusList(statusIds);
+        Map<String, String> line = new HashMap<String, String>();
+        line.put(statusId, null);
+        Collection<Status> statusCollection = buildStatusList(line);
         if (statusCollection.isEmpty()) {
             return null;
         } else {
@@ -71,12 +73,12 @@ public class TimelineService {
         return statusDetailsRepository.findStatusDetails(statusId);
     }
 
-    public Collection<Status> buildStatusList(Collection<String> statusIds) {
+    public Collection<Status> buildStatusList(Map<String, String> line) {
         User currentUser = authenticationService.getCurrentUser();
-        Collection<String> favoriteIds = statusRepository.getFavoritesline(currentUser.getLogin());
-        Collection<Status> statuses = new ArrayList<Status>(statusIds.size());
-        for (String statusId : statusIds) {
-            Status status = this.statusRepository.findStatusById(statusId);
+        Map<String, String> favoriteLine = statusRepository.getFavoritesline(currentUser.getLogin());
+        Collection<Status> statuses = new ArrayList<Status>(line.size());
+        for (String statusId : line.keySet()) {
+            Status status = statusRepository.findStatusById(statusId);
             if (status != null) {
                 User statusUser = userService.getUserByLogin(status.getLogin());
                 if (statusUser != null) {
@@ -96,7 +98,7 @@ public class TimelineService {
                     statusCopy.setUsername(status.getUsername());
                     statusCopy.setDomain(status.getDomain());
                     statusCopy.setStatusDate(status.getStatusDate());
-                    if (favoriteIds.contains(statusId)) {
+                    if (favoriteLine.containsKey(statusId)) {
                         statusCopy.setFavorite(true);
                     } else {
                         statusCopy.setFavorite(false);
@@ -104,6 +106,11 @@ public class TimelineService {
                     statusCopy.setFirstName(statusUser.getFirstName());
                     statusCopy.setLastName(statusUser.getLastName());
                     statusCopy.setGravatar(statusUser.getGravatar());
+                    String sharedByLogin = line.get(statusId);
+                    if (sharedByLogin != null && !sharedByLogin.equals("")) {
+                        String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
+                        statusCopy.setSharedByUsername(sharedByUsername);
+                    }
                     statuses.add(statusCopy);
                 } else {
                     if (log.isDebugEnabled()) {
@@ -132,9 +139,8 @@ public class TimelineService {
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Collection<String> statusIds = this.taglineRepository.getTagline(domain, tag, nbStatus);
-
-        return this.buildStatusList(statusIds);
+        Map<String, String> line = taglineRepository.getTagline(domain, tag, nbStatus);
+        return buildStatusList(line);
     }
 
     /**
@@ -146,8 +152,8 @@ public class TimelineService {
      */
     public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Collection<String> statusIds = statusRepository.getTimeline(login, nbStatus, since_id, max_id);
-        return buildStatusList(statusIds);
+        Map<String, String> line = statusRepository.getTimeline(login, nbStatus, since_id, max_id);
+        return buildStatusList(line);
     }
 
     /**
@@ -166,8 +172,8 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        Collection<String> statusIds = statusRepository.getUserline(login, nbStatus, since_id, max_id);
-        return this.buildStatusList(statusIds);
+        Map<String, String> line = statusRepository.getUserline(login, nbStatus, since_id, max_id);
+        return this.buildStatusList(line);
     }
 
     public void removeStatus(String statusId) {
@@ -229,8 +235,8 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<Status> getFavoritesline() {
-        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> statusIds = this.statusRepository.getFavoritesline(currentLogin);
-        return this.buildStatusList(statusIds);
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        Map<String, String> line = statusRepository.getFavoritesline(currentLogin);
+        return this.buildStatusList(line);
     }
 }

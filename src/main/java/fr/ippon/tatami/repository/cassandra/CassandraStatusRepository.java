@@ -102,7 +102,7 @@ public class CassandraStatusRepository implements StatusRepository {
     }
 
     @Override
-    public Collection<String> getTimeline(String login, int size, String since_id, String max_id) {
+    public Map<String, String> getTimeline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(TIMELINE_CF, login, size, since_id, max_id);
     }
 
@@ -119,7 +119,7 @@ public class CassandraStatusRepository implements StatusRepository {
     }
 
     @Override
-    public Collection<String> getUserline(String login, int size, String since_id, String max_id) {
+    public Map<String, String> getUserline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(USERLINE_CF, login, size, since_id, max_id);
     }
 
@@ -140,7 +140,8 @@ public class CassandraStatusRepository implements StatusRepository {
 
     @Override
     @Cacheable("favorites-cache")
-    public Collection<String> getFavoritesline(String login) {
+    public Map<String, String> getFavoritesline(String login) {
+        Map<String, String> line = new HashMap<String, String>();
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
@@ -149,11 +150,10 @@ public class CassandraStatusRepository implements StatusRepository {
                 .execute()
                 .get();
 
-        Collection<String> statusIds = new ArrayList<String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
-            statusIds.add(column.getName().toString());
+            line.put(column.getName().toString(), column.getValue());
         }
-        return statusIds;
+        return line;
     }
 
     @Override
@@ -177,8 +177,8 @@ public class CassandraStatusRepository implements StatusRepository {
         mutator.execute();
     }
 
-    private Collection<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
-        Collection<String> statusIds = new ArrayList<String>();
+    private Map<String, String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+        Map<String, String> line = new HashMap<String, String>();
         ColumnSlice<UUID, String> result;
         if (max_id != null) {
             result = createSliceQuery(keyspaceOperator,
@@ -190,7 +190,7 @@ public class CassandraStatusRepository implements StatusRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns().subList(1, result.getColumns().size())) {
-                statusIds.add(column.getName().toString());
+                line.put(column.getName().toString(), column.getValue());
             }
         } else if (since_id != null) {
             result = createSliceQuery(keyspaceOperator,
@@ -202,7 +202,7 @@ public class CassandraStatusRepository implements StatusRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns().subList(0, result.getColumns().size() - 1)) {
-                statusIds.add(column.getName().toString());
+                line.put(column.getName().toString(), column.getValue());
             }
         } else {
             result = createSliceQuery(keyspaceOperator,
@@ -214,10 +214,10 @@ public class CassandraStatusRepository implements StatusRepository {
                     .get();
 
             for (HColumn<UUID, String> column : result.getColumns()) {
-                statusIds.add(column.getName().toString());
+                line.put(column.getName().toString(), column.getValue());
             }
         }
-        return statusIds;
+        return line;
     }
 
     private void shareStatus(String login, Status status, String sharedByLogin, String columnFamily) {

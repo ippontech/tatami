@@ -15,7 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 import static org.elasticsearch.client.Requests.deleteIndexRequest;
 import static org.elasticsearch.client.Requests.refreshRequest;
@@ -72,7 +72,7 @@ public class ElasticSearchTest {
         status2.setDomain("ippon.fr");
 
 
-        final List<String> ids0 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
+        final Map<String, String> ids0 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -80,16 +80,16 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final List<String> ids1 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
-        final List<String> ids2 = this.service.search("ippon.fr", Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final Map<String, String> ids1 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
+        final Map<String, String> ids2 = this.service.search("ippon.fr", Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok
-        assertEquals(status1.getStatusId(), ids1.get(0)); // should be the first status
+        assertEquals(status1.getStatusId(), ids1.keySet().iterator().next()); // should be the first status
 
         assertNotNull(ids2); // not null
         assertEquals(1, ids2.size()); // only one match if everything is ok
-        assertEquals(status2.getStatusId(), ids2.get(0)); // should be the second status
+        assertEquals(status2.getStatusId(), ids2.keySet().iterator().next()); // should be the second status
     }
 
 }

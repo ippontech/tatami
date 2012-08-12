@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author dmartin
@@ -62,8 +62,8 @@ public class SearchController {
 
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        final List<String> ids = indexService.search(domain, Status.class, null, q, page, rpp, "statusDate", "desc");
-        return timelineService.buildStatusList(ids);
+        final Map<String, String> line = indexService.search(domain, Status.class, null, q, page, rpp, "statusDate", "desc");
+        return timelineService.buildStatusList(line);
     }
 
 }

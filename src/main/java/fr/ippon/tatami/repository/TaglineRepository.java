@@ -2,7 +2,7 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Status;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * The Tagline Repository.
@@ -19,9 +19,10 @@ public interface TaglineRepository {
     void addStatusToTagline(Status status, String domain);
 
     /**
-     * A tag's status.
-     *
-     * @param tag cannot be null, empty, nor contain a sharp character (#)
+     * The tagline : the statuses for a given tag.
+     * - The key is the statusId of the statuses
+     * - Value is always null : this is to be consistent with the Timeline & Userline API,
+     * which returns Map<String, String>
      */
-    Collection<String> getTagline(String domain, String tag, int size);
+    Map<String, String> getTagline(String domain, String tag, int size);
 }

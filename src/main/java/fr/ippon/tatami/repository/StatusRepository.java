@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository;
 import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * The Status Repository.
@@ -42,17 +42,23 @@ public interface StatusRepository {
     void deleteTimeline(String login);
 
     /**
-     * a user's and his followed users status
+     * The user timeline : the user's statuses, and statuses from users he follows.
+     * - The key is the statusId of the statuses
+     * - The value is who shared the statuses (or null if it wasn't shared)
      */
-    Collection<String> getTimeline(String login, int size, String since_id, String max_id);
+    Map<String, String> getTimeline(String login, int size, String since_id, String max_id);
 
     /**
-     * a user's own status
+     * The userline : the user's statuses.
+     * - The key is the statusId of the statuses
+     * - The value is who shared the statuses (or null if it wasn't shared)
      */
-    Collection<String> getUserline(String login, int size, String since_id, String max_id);
+    Map<String, String> getUserline(String login, int size, String since_id, String max_id);
 
     /**
-     * a user's favorite status
+     * The favoriteline : the statuses fovorited by the user.
+     * - The key is the statusId of the statuses
+     * - The value is who shared the statuses (or null if it wasn't shared)
      */
-    Collection<String> getFavoritesline(String login);
+    Map<String, String> getFavoritesline(String login);
 }

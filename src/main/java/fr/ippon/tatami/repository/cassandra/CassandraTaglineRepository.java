@@ -14,8 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +55,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
     }
 
     @Override
-    public Collection<String> getTagline(String domain, String tag, int size) {
+    public Map<String, String> getTagline(String domain, String tag, int size) {
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
@@ -64,11 +64,11 @@ public class CassandraTaglineRepository implements TaglineRepository {
                 .execute()
                 .get();
 
-        Collection<String> statusIds = new ArrayList<String>();
+        Map<String, String> line = new HashMap<String, String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
-            statusIds.add(column.getName().toString());
+            line.put(column.getName().toString(), null);
         }
-        return statusIds;
+        return line;
     }
 
     /**

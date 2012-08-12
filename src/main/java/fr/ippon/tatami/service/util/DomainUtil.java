@@ -21,6 +21,9 @@ public class DomainUtil {
     }
 
     public static String getUsernameFromLogin(String login) {
+        if (login == null) {
+            return null;
+        }
         return login.substring(0, login.indexOf("@"));
     }
 }

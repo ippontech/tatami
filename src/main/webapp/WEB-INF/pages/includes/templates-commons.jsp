@@ -10,7 +10,7 @@
     <div class="row-fluid">
       <table class="statuses">
           <tr>
-            <th rowspan="4">
+            <th rowspan="5">
                 <img class="span12 avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
             </th>
             <th>
@@ -43,6 +43,13 @@
           <tr>
               <td>
                   <div class="well status-content"><@=status.content@></div>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <@ if (status.sharedByUsername != null) { @>
+                    <div>Shared by <a href="/tatami/profile/<@= status.sharedByUsername @>/">@<@= status.sharedByUsername @></a></div>
+                  <@ } @>
               </td>
           </tr>
           <tr>
