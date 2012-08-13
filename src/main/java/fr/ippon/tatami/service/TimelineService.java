@@ -98,6 +98,7 @@ public class TimelineService {
                     statusCopy.setUsername(status.getUsername());
                     statusCopy.setDomain(status.getDomain());
                     statusCopy.setStatusDate(status.getStatusDate());
+                    statusCopy.setReplyTo(status.getReplyTo());
                     if (favoriteLine.containsKey(statusId)) {
                         statusCopy.setFavorite(true);
                     } else {
