@@ -67,19 +67,19 @@
           <tr>
               <td>
                   <@ if (status.discuss === true) { @>
-                  <div>
+                  <form class="reply-form">
                       <div><fmt:message key="tatami.status.reply"/></div>
                       <fieldset>
                           <div class="control-group">
                               <textarea class="span12" required="required" maxlength="500"
-                                        name="reply-content">@<@= status.username @> </textarea>
+                                        name="content">@<@= status.username @> </textarea>
                           </div>
                           <div>
-                              <input type='submit' class="span12 btn btn-primary discussion-reply-button"
+                              <input type='submit' class="span12 btn btn-primary"
                                      value="<fmt:message key="tatami.status.reply.action"/>"/>
                           </div>
                       </fieldset>
-                  </div>
+                  </form>
                   <@ } else { @>
                   <div></div>
                   <@ } @>
