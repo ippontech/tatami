@@ -65,11 +65,7 @@ public class UserService {
     private boolean indexActivated;
 
     public User getUserByLogin(String login) {
-        User user = userRepository.findUserByLogin(login);
-        if (log.isDebugEnabled()) {
-            log.debug("Found user : " + user);
-        }
-        return user;
+        return userRepository.findUserByLogin(login);
     }
 
     /**
