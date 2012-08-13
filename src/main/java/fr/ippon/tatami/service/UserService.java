@@ -130,7 +130,23 @@ public class UserService {
             log.info("Constraint violated while updating user " + user + " : " + cve);
             throw cve;
         }
+    }
 
+    public void updatePassword(User user) {
+        User currentUser = authenticationService.getCurrentUser();
+        String password = user.getPassword();
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
+        currentUser.setPassword(encryptedPassword);
+        if (log.isDebugEnabled()) {
+            log.debug("Password encrypted to : " + encryptedPassword);
+        }
+        try {
+            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating user " + user + " : " + cve);
+            throw cve;
+        }
     }
 
     public void createUser(User user) {

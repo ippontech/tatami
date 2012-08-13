@@ -101,7 +101,7 @@ public class AccountPasswordController {
 
         currentUser.setPassword(userPassword.getNewPassword());
         try {
-            userService.updateUser(currentUser);
+            userService.updatePassword(currentUser);
         } catch (ConstraintViolationException cve) {
             result.reject(cve.getMessage(), "The new password is not valid : " + cve.getMessage());
             return getUpdatePassword(false);
