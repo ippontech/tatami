@@ -141,7 +141,7 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     @Cacheable("favorites-cache")
     public Map<String, String> getFavoritesline(String login) {
-        Map<String, String> line = new HashMap<String, String>();
+        Map<String, String> line = new LinkedHashMap<String, String>();
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
@@ -178,7 +178,7 @@ public class CassandraStatusRepository implements StatusRepository {
     }
 
     private Map<String, String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
-        Map<String, String> line = new HashMap<String, String>();
+        Map<String, String> line = new LinkedHashMap<String, String>();
         ColumnSlice<UUID, String> result;
         if (max_id != null) {
             result = createSliceQuery(keyspaceOperator,

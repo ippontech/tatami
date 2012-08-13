@@ -33,10 +33,7 @@ import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author dmartinpro
@@ -155,7 +152,7 @@ public class IndexService {
         }
 
         final SearchHit[] searchHitsArray = searchHits.getHits();
-        final Map<String, String> items = new HashMap<String, String>(hitsNumber.intValue());
+        final Map<String, String> items = new LinkedHashMap<String, String>(hitsNumber.intValue());
         for (int i = 0; i < searchHitsArray.length; i++) {
             items.put(searchHitsArray[i].getId(), null);
         }

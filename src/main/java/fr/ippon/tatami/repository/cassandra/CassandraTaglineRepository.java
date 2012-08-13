@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -64,7 +64,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
                 .execute()
                 .get();
 
-        Map<String, String> line = new HashMap<String, String>();
+        Map<String, String> line = new LinkedHashMap<String, String>();
         for (HColumn<UUID, String> column : result.getColumns()) {
             line.put(column.getName().toString(), null);
         }
