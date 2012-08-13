@@ -285,6 +285,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
     var self = this;
 
     var sc = _.clone(this.model);
+    delete sc._callbacks;
 
     var data = {};
     if( typeof _.first(self.temp.models) !== 'undefined')
@@ -380,6 +381,8 @@ app.View.TimeLineNextView = Backbone.View.extend({
       });
     else{
       var sc = _.clone(this.model);
+      delete sc._callbacks;
+
       sc.fetch({
         data: {
           max_id: _.last(self.model.models).get('statusId')
@@ -831,6 +834,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
     if(!app.views.timeline) {
       var timelinecollection = new app.Collection.StatusCollection();
       timelinecollection.url = '/tatami/rest/statuses/home_timeline';
+
       app.views.timeline = new app.View.TimeLinePanelView({
         model: timelinecollection
       });
