@@ -53,9 +53,8 @@
         </profile>
         <profile>
             <!--
-            Don't use this profile yet!
-            Looks like a bug in JRebel : Spring Javaconfig is not reloaded
-            This is under investigation, this profile is left for the JRebel team to test
+            Spring JavaConfig is not supported in JRebel, so this configuration is useless at the moment.
+            Migration to XML configuration is under discussion.
             -->
             <id>jrebel</id>
             <properties>
