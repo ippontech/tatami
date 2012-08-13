@@ -14,31 +14,31 @@
                 <img class="span12 avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
             </th>
             <th>
-              <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= status.username @> <@= status.firstName @> <@=status.lastName@>">
+              <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
                 <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
               </a>
               <p class="pull-right" style="width: 50px"><@= status.prettyPrintStatusDate @></p>
               <div class="pull-right status-actions">
-                <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>" title="<fmt:message key="tatami.user.status.show"/>">
-                  <i class="icon-eye-open"></i>
+                <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
+                  <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
                 </a>
-                <a class="status-action-details" title="<fmt:message key="tatami.user.status.details"/>">
-                   <i class="icon-search"></i>
+                <a class="status-action-details">
+                   <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
                 </a>
-                <a class="status-action-reply" title="<fmt:message key="tatami.user.status.reply"/>">
-                      <i class="icon-pencil"></i>
+                <a class="status-action-reply">
+                      <i class="icon-pencil"></i><fmt:message key="tatami.user.status.reply"/>
                 </a>
                   <@ if (status.username != username) { @>
-                    <a class="status-action-share" title="<fmt:message key="tatami.user.status.share"/>">
-                        <i class="icon-retweet"></i>
+                    <a class="status-action-share">
+                        <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
                     </a>
                   <@ } @>
-                <a class="status-action-favorite" title="<fmt:message key="tatami.user.status.favorite"/>">
-                  <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
+                <a class="status-action-favorite">
+                  <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i><fmt:message key="tatami.user.status.favorite"/>
                 </a>
                   <@ if (status.username == username) { @>
-                    <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">
-                        <i class="icon-trash"></i>
+                    <a class="status-action-remove">
+                        <i class="icon-trash"></i><fmt:message key="tatami.user.status.delete"/>
                     </a>
                   <@ } @>
               </div>

@@ -98,6 +98,8 @@ form {
 }
 
 .status-actions {
+  font-size: 90%;
+  font-weight: normal;
   padding-right: 10px;
 }
 
