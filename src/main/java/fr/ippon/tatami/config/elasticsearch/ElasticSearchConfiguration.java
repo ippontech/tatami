@@ -84,6 +84,6 @@ public class ElasticSearchConfiguration {
 
     @Bean(name = "indexActivated")
     public boolean indexActivated() {
-        return this.env.getProperty("elasticsearch.activated", Boolean.class);
+        return this.env.getProperty("elasticsearch.enabled", Boolean.class);
     }
 }

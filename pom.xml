@@ -49,6 +49,7 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
             </properties>
         </profile>
         <profile>
@@ -71,6 +72,7 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
             </properties>
             <build>
                 <plugins>
@@ -107,6 +109,7 @@
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
             </properties>
             <build>
                 <plugins>
