@@ -48,7 +48,7 @@
           <tr>
               <td>
                   <@ if (status.sharedByUsername != null) { @>
-                    <div>Shared by <a href="/tatami/profile/<@= status.sharedByUsername @>/">@<@= status.sharedByUsername @></a></div>
+                    <div><fmt:message key="tatami.user.status.shared.by"/> <a href="/tatami/profile/<@= status.sharedByUsername @>/">@<@= status.sharedByUsername @></a></div>
                   <@ } @>
               </td>
           </tr>
