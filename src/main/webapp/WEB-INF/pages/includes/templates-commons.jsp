@@ -28,15 +28,19 @@
                 <a class="status-action-reply" title="<fmt:message key="tatami.user.status.reply"/>">
                       <i class="icon-pencil"></i>
                 </a>
-                <a class="status-action-share" title="<fmt:message key="tatami.user.status.share"/>">
-                      <i class="icon-retweet"></i>
-                </a>
+                  <@ if (status.username != username) { @>
+                    <a class="status-action-share" title="<fmt:message key="tatami.user.status.share"/>">
+                        <i class="icon-retweet"></i>
+                    </a>
+                  <@ } @>
                 <a class="status-action-favorite" title="<fmt:message key="tatami.user.status.favorite"/>">
                   <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i>
                 </a>
-                <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">
-                  <i class="icon-trash"></i>
-                </a>
+                  <@ if (status.username == username) { @>
+                    <a class="status-action-remove" title="<fmt:message key="tatami.user.status.delete"/>">
+                        <i class="icon-trash"></i>
+                    </a>
+                  <@ } @>
               </div>
             </th>
           </tr>
