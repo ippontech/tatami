@@ -16,21 +16,6 @@ if(!window.app){
 
         Status:{
             statuses:[],
-            details:function (id) {
-                _.each(this.statuses, function (status) {
-                    if (status.get('statusId') === id) {
-                        status.set('details', !status.get('details'));
-                    }
-                });
-            },
-            discuss:function (id) {
-                _.each(this.statuses, function (status) {
-                    if (status.get('statusId') === id) {
-                        status.set('discuss', !status.get('discuss'));
-                        status.set('replyContent', '');
-                    }
-                });
-            },
             share:function (id) {
                 _.each(this.statuses, function (status) {
                     if (status.get('statusId') === id) {
@@ -82,7 +67,7 @@ app.Model.Share = Backbone.Model.extend({
 });
 
 app.Model.Discussion = Backbone.Model.extend({
-    url:  '/tatami/rest/statuses/discussion/'
+    url:  '/tatami/rest/statuses/discussion'
 });
 
 app.Model.StatusDelete = Backbone.Model.extend({
@@ -140,36 +125,46 @@ app.View.TimeLineItemView = Backbone.View.extend({
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
     'click .status-action-remove': 'removeAction',
-    'click .discussion-reply-button': 'sendReply'
+    'submit .reply-form': 'sendReply'
   },
 
-    detailsAction:function () {
-        var statusId = this.model.get('statusId');
-        if (this.model.get('details') != true) {
-            var statusDetails = new app.Model.StatusDetails(this.model);
-            statusDetails.fetch();
-        }
-        app.Status.details(statusId);
-        $(".status-" + statusId).effect("highlight", {color:'#08C'}, 500);
-    },
+  highlight: function() {
+    this.$el.find('.status').effect("highlight", {color:'#08C'}, 500);
+  },
+
+  detailsAction:function () {
+    var statusId = this.model.get('statusId');
+
+    if (this.model.get('details') != true) {
+      var statusDetails = new app.Model.StatusDetails(this.model);
+      statusDetails.fetch();
+    }
+
+    this.model.set('details', !this.model.get('details'));
+
+    this.highlight();
+  },
 
   replyAction: function() {
-      var statusId = this.model.get('statusId');
-      app.Status.discuss(statusId);
-      $(".status-" + statusId).effect("highlight", {color: '#08C'}, 500);
+    var statusId = this.model.get('statusId');
+    
+    this.model.set('discuss', !this.model.get('discuss'));
+    this.model.set('replyContent', '');
+
+    this.highlight();
   },
 
-    shareAction:function () {
-        var shareModel = new app.Model.Share(this.model);
-        var self = this;
-        shareModel.save(null, {
-            success:function () {
-                var statusId = self.model.get('statusId');
-                app.Status.share(statusId);
-                $(".status-" + statusId).effect("highlight", {color:'#08C'}, 500);
-            }
-        });
-    },
+  shareAction:function () {
+    var shareModel = new app.Model.Share(this.model);
+    var self = this;
+    shareModel.save(null, {
+      success:function () {
+        var statusId = self.model.get('statusId');
+        app.Status.share(statusId);
+        self.highlight();
+      }
+    });
+  },
 
   favoriteAction: function() {
     var self = this;
@@ -183,7 +178,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
       success: function(){
         var statusId = self.model.get('statusId');
         app.Status.favorite(statusId);
-        $(".status-" + statusId).effect("highlight", {color: '#08C'}, 500);
       }
     });
   },
@@ -202,15 +196,24 @@ app.View.TimeLineItemView = Backbone.View.extend({
     }
   },
 
-  sendReply: function() {
+  sendReply: function(e) {
+    e.preventDefault();
+
+    var self = this;
+
     var dm = new app.Model.Discussion({
-        statusId: this.model.get('statusId'),
-        content: this.model.get('replyContent') //TODO get the reply content
+      statusId: this.model.get('statusId')
     });
+
+    _.each($(e.target).serializeArray(), function(value){
+      dm.set(value.name, value.value);
+    });
+
     dm.save(null, {
-        success: function(){
-            //TODO refresh
-        }
+      success: function(){
+        self.replyAction();
+        self.highlight();
+      }
     });
 
   },
