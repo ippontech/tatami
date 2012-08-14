@@ -17,9 +17,9 @@ import javax.inject.Inject;
  * @author Julien Dubois
  */
 @Controller
-public class StatusController {
+public class ProfileController {
 
-    private final Log log = LogFactory.getLog(StatusController.class);
+    private final Log log = LogFactory.getLog(ProfileController.class);
 
     @Inject
     private UserService userService;
