@@ -70,7 +70,6 @@ public class CassandraStatusDetailsRepository implements StatusDetailsRepository
         // LinkedHashSet are used instead of ArrayList, as there might be duplicate entries
         Collection<String> discussionStatusIds = new LinkedHashSet<String>();
         Collection<String> sharedByLogins = new LinkedHashSet<String>();
-        Collection<String> favoritedByLogins = new LinkedHashSet<String>();
         for (HColumn<String, String> column : result.getColumns()) {
             String name = column.getName();
             String value = column.getValue();
