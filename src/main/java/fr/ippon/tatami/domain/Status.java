@@ -73,6 +73,12 @@ public class Status {
     @Column(name = "replyTo")
     private String replyTo;
 
+    /**
+     * If this status is a reply, the username who posted the original status.
+     */
+    @Column(name = "replyToUsername")
+    private String replyToUsername;
+
     private String firstName;
 
     private String lastName;
@@ -165,6 +171,14 @@ public class Status {
         this.replyTo = replyTo;
     }
 
+    public String getReplyToUsername() {
+        return replyToUsername;
+    }
+
+    public void setReplyToUsername(String replyToUsername) {
+        this.replyToUsername = replyToUsername;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -240,6 +254,7 @@ public class Status {
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", replyTo='" + replyTo + '\'' +
+                ", replyToUsername='" + replyToUsername + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +

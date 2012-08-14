@@ -46,7 +46,12 @@ public class CassandraStatusRepository implements StatusRepository {
     private static Validator validator = factory.getValidator();
 
     @Override
-    public Status createStatus(String login, String username, String domain, String content, String replyTo)
+    public Status createStatus(String login,
+                               String username,
+                               String domain,
+                               String content,
+                               String replyTo,
+                               String replyToUsername)
             throws ConstraintViolationException {
 
         Status status = new Status();
@@ -57,6 +62,7 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());
         status.setReplyTo(replyTo);
+        status.setReplyToUsername(replyToUsername);
         status.setRemoved(false);
         if (log.isDebugEnabled()) {
             log.debug("Persisting Status : " + status);

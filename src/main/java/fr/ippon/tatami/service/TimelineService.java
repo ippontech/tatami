@@ -130,6 +130,7 @@ public class TimelineService {
                     statusCopy.setDomain(status.getDomain());
                     statusCopy.setStatusDate(status.getStatusDate());
                     statusCopy.setReplyTo(status.getReplyTo());
+                    statusCopy.setReplyToUsername(status.getReplyToUsername());
                     if (favoriteLine.containsKey(statusId)) {
                         statusCopy.setFavorite(true);
                     } else {

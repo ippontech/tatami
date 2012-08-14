@@ -32,7 +32,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setContent(content);
         status.setLogin(login);
 
-        assertThat(statusRepository.createStatus(login, username, domain, content, ""), notNullValue());
+        assertThat(statusRepository.createStatus(login, username, domain, content, "", ""), notNullValue());
     }
 
     @Test(expected = ValidationException.class)
@@ -46,7 +46,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "");
+        statusRepository.createStatus(login, username, domain, content, "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -60,7 +60,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "");
+        statusRepository.createStatus(login, username, domain, content, "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -74,7 +74,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "");
+        statusRepository.createStatus(login, username, domain, content, "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -91,6 +91,6 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String username = "jdubois";
         String domain = "ippon.fr";
 
-        statusRepository.createStatus(login, username, domain, content, "");
+        statusRepository.createStatus(login, username, domain, content, "", "");
     }
 }

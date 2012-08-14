@@ -12,7 +12,12 @@ import java.util.Map;
  */
 public interface StatusRepository {
 
-    Status createStatus(String login, String username, String domain, String content, String replyTo) throws ConstraintViolationException;
+    Status createStatus(String login,
+                        String username,
+                        String domain,
+                        String content,
+                        String replyTo,
+                        String replyToUsername) throws ConstraintViolationException;
 
     void removeStatus(Status status);
 

@@ -51,12 +51,12 @@ public class StatusUpdateService {
 
 
     public void postStatus(String content) {
-        createStatus(content, "");
+        createStatus(content, "", "");
     }
 
     public void replyToStatus(String content, String replyTo) {
-        Status replyStatus = createStatus(content, replyTo);
         Status originalStatus = statusRepository.findStatusById(replyTo);
+        Status replyStatus = createStatus(content, replyTo, originalStatus.getUsername());
         if (!originalStatus.getReplyTo().equals("")) {
             log.debug("Original status is also a reply, replying to the real original status instead.");
             Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getReplyTo());
@@ -66,14 +66,15 @@ public class StatusUpdateService {
         }
     }
 
-    private Status createStatus(String content, String replyTo) {
+    private Status createStatus(String content, String replyTo, String replyToUsername) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new status : " + content);
         }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String username = DomainUtil.getUsernameFromLogin(currentLogin);
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
-        Status status = statusRepository.createStatus(currentLogin, username, domain, content, replyTo);
+        Status status =
+                statusRepository.createStatus(currentLogin, username, domain, content, replyTo, replyToUsername);
 
         // add status to the dayline, userline, timeline, tagline
         String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
