@@ -212,7 +212,9 @@ app.View.TimeLineItemView = Backbone.View.extend({
     dm.save(null, {
       success: function(){
         self.replyAction();
-        self.highlight();
+        
+        app.trigger('refreshProfile');
+        app.trigger('refreshTimeline');
       }
     });
 
