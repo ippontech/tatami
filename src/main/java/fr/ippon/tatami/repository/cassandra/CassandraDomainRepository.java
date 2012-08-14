@@ -28,6 +28,11 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 /**
  * Cassandra implementation of the Domain repository.
  *
+ * Structure :
+ * - Key = domain
+ * - Name = login
+ * - Value = time
+ *
  * @author Julien Dubois
  */
 @Repository

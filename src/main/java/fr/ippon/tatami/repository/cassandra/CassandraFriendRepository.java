@@ -25,6 +25,11 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 /**
  * Cassandra implementation of the Follower repository.
  *
+ * Structure :
+ * - Key = login
+ * - Name = friend login
+ * - Value = time
+ *
  * @author Julien Dubois
  */
 @Repository

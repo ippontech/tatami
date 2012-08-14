@@ -26,6 +26,11 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 /**
  * Cassandra implementation of the status repository.
  *
+ * Structure :
+ * - Key = tag + domain
+ * - Name = statusId
+ * - Value = ""
+ *
  * @author Julien Dubois
  */
 @Repository

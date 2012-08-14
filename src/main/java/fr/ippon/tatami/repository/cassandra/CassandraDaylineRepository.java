@@ -26,6 +26,11 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterSliceQuery
 /**
  * Cassandra implementation of the user repository.
  *
+ * Structure :
+ * - Key = day + domain
+ * - Name = username
+ * - Value = count
+ *
  * @author Julien Dubois
  */
 @Repository
