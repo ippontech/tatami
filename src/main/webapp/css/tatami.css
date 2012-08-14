@@ -83,6 +83,10 @@ form {
     color: #808080;
     font-weight: normal;
 }
+.userStatus-info {
+    color: #808080;
+    font-weight: normal;
+}
 
 .avatar {
     width: 64px;

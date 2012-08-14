@@ -52,14 +52,14 @@
           <tr>
               <td>
                   <@ if (status.sharedByUsername != null) { @>
-                    <div><fmt:message key="tatami.user.status.shared.by"/> <a href="/tatami/profile/<@= status.sharedByUsername @>/">@<@= status.sharedByUsername @></a></div>
+                    <div><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> @<@= status.sharedByUsername @></a></div>
                   <@ } @>
               </td>
           </tr>
           <tr>
               <td>
                   <@ if (status.replyTo != '') { @>
-                  <div><fmt:message key="tatami.user.status.replyto"/></div>
+                  <div class="userStatus-info"><i class="icon-pencil"></i> <fmt:message key="tatami.user.status.replyto"/></div>
                   <@ } @>
               </td>
           </tr>
