@@ -18,7 +18,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
 
 /**
  * Cassandra implementation of the Follower repository.
- *
+ * <p/>
  * Structure :
  * - Key = login
  * - Name = counterId

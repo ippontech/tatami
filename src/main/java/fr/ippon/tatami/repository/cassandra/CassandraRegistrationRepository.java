@@ -18,7 +18,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
 
 /**
  * Cassandra implementation of the Registration repository.
- *
+ * <p/>
  * Structure :
  * - Key = "registration_key"
  * - Name = key

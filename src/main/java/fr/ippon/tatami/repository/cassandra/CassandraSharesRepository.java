@@ -1,6 +1,5 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.repository.SharesRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -9,8 +8,6 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -23,7 +20,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * Cassandra implementation of the StatusDetails repository.
- *
+ * <p/>
  * Structure :
  * - Key = status Id
  * - Name = time

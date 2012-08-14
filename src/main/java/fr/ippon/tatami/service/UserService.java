@@ -46,6 +46,9 @@ public class UserService {
     private CounterRepository counterRepository;
 
     @Inject
+    private FavoritelineRepository favoritelineRepository;
+
+    @Inject
     private AuthenticationService authenticationService;
 
     @Inject
@@ -201,7 +204,7 @@ public class UserService {
         log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
 
         // Delete userline, tagLine...
-        statusRepository.deleteFavoritesline(user.getLogin());
+        favoritelineRepository.deleteFavoritesline(user.getLogin());
         statusRepository.deleteTimeline(user.getLogin());
         statusRepository.deleteUserline(user.getLogin());
         log.debug("Delete user step 3 : user " + user.getLogin() + " has no more lines.");

@@ -28,10 +28,6 @@ public interface StatusRepository {
      */
     Status findStatusById(String statusId);
 
-    void addStatusToFavoritesline(Status status, String login);
-
-    void removeStatusFromFavoritesline(Status status, String login);
-
     void addStatusToTimeline(String login, Status status);
 
     void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status);
@@ -39,8 +35,6 @@ public interface StatusRepository {
     void addStatusToUserline(Status status);
 
     void shareStatusToUserline(String currentLogin, Status status);
-
-    void deleteFavoritesline(String login);
 
     void deleteUserline(String login);
 
@@ -59,11 +53,4 @@ public interface StatusRepository {
      * - The value is who shared the statuses (or null if it wasn't shared)
      */
     Map<String, String> getUserline(String login, int size, String since_id, String max_id);
-
-    /**
-     * The favoriteline : the statuses fovorited by the user.
-     * - The key is the statusId of the statuses
-     * - The value is who shared the statuses (or null if it wasn't shared)
-     */
-    Map<String, String> getFavoritesline(String login);
 }

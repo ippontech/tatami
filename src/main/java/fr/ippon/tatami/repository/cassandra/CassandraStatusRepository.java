@@ -23,7 +23,8 @@ import javax.persistence.EntityManager;
 import javax.validation.*;
 import java.util.*;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
@@ -131,46 +132,6 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     public Map<String, String> getUserline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(USERLINE_CF, login, size, since_id, max_id);
-    }
-
-    @Override
-    @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addStatusToFavoritesline(Status status, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()), "",
-                UUIDSerializer.get(), StringSerializer.get()));
-    }
-
-    @Override
-    @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeStatusFromFavoritesline(Status status, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, UUID.fromString(status.getStatusId()), UUIDSerializer.get());
-    }
-
-    @Override
-    @Cacheable("favorites-cache")
-    public Map<String, String> getFavoritesline(String login) {
-        Map<String, String> line = new LinkedHashMap<String, String>();
-        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-                .setColumnFamily(FAVLINE_CF)
-                .setKey(login)
-                .setRange(null, null, true, 50)
-                .execute()
-                .get();
-
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            line.put(column.getName().toString(), column.getValue());
-        }
-        return line;
-    }
-
-    @Override
-    public void deleteFavoritesline(String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addDeletion(login, FAVLINE_CF);
-        mutator.execute();
     }
 
     @Override
