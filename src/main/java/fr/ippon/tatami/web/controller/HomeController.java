@@ -32,6 +32,7 @@ public class HomeController {
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
+        mv.addObject("authenticatedUsername", currentUser.getUsername());
         mv.addObject("tag", tag);
         mv.addObject("search", search);
         return mv;

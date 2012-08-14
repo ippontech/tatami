@@ -67,6 +67,7 @@
     <script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
         var username = "${user.username}";
+        var authenticatedUsername = "${authenticatedUsername}";
         var tag = "${tag}";
         var searchQuery = "${search}";
         var page = "home";

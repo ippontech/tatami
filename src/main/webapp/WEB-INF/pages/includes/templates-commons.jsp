@@ -28,7 +28,7 @@
                 <a class="status-action-reply">
                       <i class="icon-pencil"></i><fmt:message key="tatami.user.status.reply"/>
                 </a>
-                  <@ if (status.username != username) { @>
+                  <@ if (status.username != authenticatedUsername) { @>
                     <a class="status-action-share">
                         <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
                     </a>
@@ -36,7 +36,7 @@
                 <a class="status-action-favorite">
                   <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i><fmt:message key="tatami.user.status.favorite"/>
                 </a>
-                  <@ if (status.username == username) { @>
+                  <@ if (status.username == authenticatedUsername) { @>
                     <a class="status-action-remove">
                         <i class="icon-trash"></i><fmt:message key="tatami.user.status.delete"/>
                     </a>

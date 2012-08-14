@@ -117,6 +117,7 @@
 <script type="text/javascript">
     var test = "${user.login}";
     var username = "${user.username}";
+    var authenticatedUsername = "${authenticatedUsername}";
     var page = "profile";
     var followed = ${followed};
     var owner = ${user.login eq login};

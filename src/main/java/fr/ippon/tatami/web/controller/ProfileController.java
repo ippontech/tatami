@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.controller;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.CounterService;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -27,6 +28,9 @@ public class ProfileController {
     @Inject
     private CounterService counterService;
 
+    @Inject
+    private AuthenticationService authenticationService;
+
     @RequestMapping(value = "/profile/{username}/",
             method = RequestMethod.GET)
     public ModelAndView getUserProfile(@PathVariable("username") String username) {
@@ -34,6 +38,8 @@ public class ProfileController {
             log.debug("Request to get username : " + username);
         }
         ModelAndView mv = new ModelAndView("profile");
+        User currentUser = authenticationService.getCurrentUser();
+        mv.addObject("authenticatedUsername", currentUser.getUsername());
         User user = userService.getUserProfileByUsername(username);
         if (null != user) {
             mv.addObject("user", user);
