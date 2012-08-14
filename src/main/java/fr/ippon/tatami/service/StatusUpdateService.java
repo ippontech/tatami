@@ -37,7 +37,7 @@ public class StatusUpdateService {
     private TaglineRepository taglineRepository;
 
     @Inject
-    private StatusDetailsRepository statusDetailsRepository;
+    private DiscussionRepository discussionRepository;
 
     @Inject
     private CounterRepository counterRepository;
@@ -55,8 +55,15 @@ public class StatusUpdateService {
     }
 
     public void replyToStatus(String content, String replyTo) {
-        Status status = createStatus(content, replyTo);
-        statusDetailsRepository.addDiscussionStatusId(replyTo, status.getStatusId());
+        Status replyStatus = createStatus(content, replyTo);
+        Status originalStatus = statusRepository.findStatusById(replyTo);
+        if (!originalStatus.getReplyTo().equals("")) {
+            log.debug("Original status is also a reply, replying to the real original status instead.");
+            Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getReplyTo());
+            discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
+        } else {
+            discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
+        }
     }
 
     private Status createStatus(String content, String replyTo) {

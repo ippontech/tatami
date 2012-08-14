@@ -37,7 +37,10 @@ public class TimelineService {
     private StatusRepository statusRepository;
 
     @Inject
-    private StatusDetailsRepository statusDetailsRepository;
+    private SharesRepository sharesRepository;
+
+    @Inject
+    private DiscussionRepository discussionRepository;
 
     @Inject
     private CounterRepository counterRepository;
@@ -69,11 +72,31 @@ public class TimelineService {
         }
     }
 
+    /**
+     * Get the details for a status
+     * - Who shared this status
+     * - The discussion in which this status belongs to
+     */
     public StatusDetails getStatusDetails(String statusId) {
-        StatusDetails details = statusDetailsRepository.findStatusDetails(statusId);
+        StatusDetails details = new StatusDetails();
+        details.setStatusId(statusId);
+
+        // Shares management
+        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
+        details.setSharedByLogins(sharedByLogins);
+
+        // Discussion management
+        Status status = statusRepository.findStatusById(statusId);
+        Collection<String> statusIdsInDiscussion;
+        String replyTo = status.getReplyTo();
+        if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
+            statusIdsInDiscussion = discussionRepository.findStatusIdsInDiscussion(status.getReplyTo());
+        } else { // This is the original discussion
+            statusIdsInDiscussion = discussionRepository.findStatusIdsInDiscussion(statusId);
+        }
         // Enrich the details object with the complete statuses in the discussion
         Collection<Status> statusesInDiscussion = new ArrayList<Status>();
-        for (String statusIdInDiscussion : details.getDiscussionStatusIds()) {
+        for (String statusIdInDiscussion : statusIdsInDiscussion) {
             Status statusInDiscussion = statusRepository.findStatusById(statusIdInDiscussion);
             statusesInDiscussion.add(statusInDiscussion);
         }
@@ -217,7 +240,7 @@ public class TimelineService {
             statusRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
         }
         // update the status details to add this share
-        statusDetailsRepository.addSharedByLogin(statusId, currentLogin);
+        sharesRepository.newShareByLogin(statusId, currentLogin);
     }
 
     public void addFavoriteStatus(String statusId) {

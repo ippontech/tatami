@@ -13,9 +13,6 @@ public class StatusDetails {
 
     private String StatusId;
 
-    @JsonIgnore
-    private Collection<String> discussionStatusIds;
-
     private Collection<Status> discussionStatuses;
 
     private Collection<String> sharedByLogins;
@@ -26,14 +23,6 @@ public class StatusDetails {
 
     public void setStatusId(String statusId) {
         StatusId = statusId;
-    }
-
-    public Collection<String> getDiscussionStatusIds() {
-        return discussionStatusIds;
-    }
-
-    public void setDiscussionStatusIds(Collection<String> discussionStatusIds) {
-        this.discussionStatusIds = discussionStatusIds;
     }
 
     public Collection<Status> getDiscussionStatuses() {
@@ -56,7 +45,7 @@ public class StatusDetails {
     public String toString() {
         return "StatusDetails{" +
                 "StatusId='" + StatusId + '\'' +
-                ", discussionStatusIds=" + discussionStatusIds +
+                ", discussionStatuses=" + discussionStatuses +
                 ", sharedByLogins=" + sharedByLogins +
                 '}';
     }

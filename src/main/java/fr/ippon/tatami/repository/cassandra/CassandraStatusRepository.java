@@ -76,7 +76,11 @@ public class CassandraStatusRepository implements StatusRepository {
             log.debug("Finding status : " + statusId);
         }
         Status status = em.find(Status.class, statusId);
-        return Boolean.TRUE.equals(status.getRemoved()) ? null : status;
+        if (status != null) {
+            return Boolean.TRUE.equals(status.getRemoved()) ? null : status;
+        } else {
+            return null;
+        }
     }
 
     @Override

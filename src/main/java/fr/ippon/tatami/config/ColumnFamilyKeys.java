@@ -13,7 +13,9 @@ public class ColumnFamilyKeys {
 
     public final static String STATUS_CF = "Status";
 
-    public final static String STATUS_DETAILS_CF = "StatusDetails";
+    public final static String SHARES_CF = "Shares";
+
+    public final static String DISCUSSION_CF = "Discussion";
 
     public final static String DAYLINE_CF = "Dayline";
 
