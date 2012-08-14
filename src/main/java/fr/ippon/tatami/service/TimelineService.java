@@ -109,7 +109,7 @@ public class TimelineService {
 
     public Collection<Status> buildStatusList(Map<String, String> line) {
         User currentUser = authenticationService.getCurrentUser();
-        Map<String, String> favoriteLine = favoritelineRepository.getFavoritesline(currentUser.getLogin());
+        Map<String, String> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
         Collection<Status> statuses = new ArrayList<Status>(line.size());
         for (String statusId : line.keySet()) {
             Status status = statusRepository.findStatusById(statusId);
@@ -253,7 +253,7 @@ public class TimelineService {
         }
         Status status = statusRepository.findStatusById(statusId);
         String login = authenticationService.getCurrentUser().getLogin();
-        favoritelineRepository.addStatusToFavoritesline(status, login);
+        favoritelineRepository.addStatusToFavoriteline(status, login);
     }
 
     public void removeFavoriteStatus(String statusId) {
@@ -262,7 +262,7 @@ public class TimelineService {
         }
         Status status = statusRepository.findStatusById(statusId);
         User currentUser = authenticationService.getCurrentUser();
-        favoritelineRepository.removeStatusFromFavoritesline(status, currentUser.getLogin());
+        favoritelineRepository.removeStatusFromFavoriteline(status, currentUser.getLogin());
     }
 
     /**
@@ -272,7 +272,7 @@ public class TimelineService {
      */
     public Collection<Status> getFavoritesline() {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Map<String, String> line = favoritelineRepository.getFavoritesline(currentLogin);
+        Map<String, String> line = favoritelineRepository.getFavoriteline(currentLogin);
         return this.buildStatusList(line);
     }
 }

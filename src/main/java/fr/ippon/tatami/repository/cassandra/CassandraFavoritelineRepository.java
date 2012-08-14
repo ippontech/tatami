@@ -43,7 +43,7 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addStatusToFavoritesline(Status status, String login) {
+    public void addStatusToFavoriteline(Status status, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()), "",
                 UUIDSerializer.get(), StringSerializer.get()));
@@ -51,14 +51,14 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeStatusFromFavoritesline(Status status, String login) {
+    public void removeStatusFromFavoriteline(Status status, String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(login, FAVLINE_CF, UUID.fromString(status.getStatusId()), UUIDSerializer.get());
     }
 
     @Override
     @Cacheable("favorites-cache")
-    public Map<String, String> getFavoritesline(String login) {
+    public Map<String, String> getFavoriteline(String login) {
         Map<String, String> line = new LinkedHashMap<String, String>();
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
@@ -75,7 +75,7 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
     }
 
     @Override
-    public void deleteFavoritesline(String login) {
+    public void deleteFavoriteline(String login) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.addDeletion(login, FAVLINE_CF);
         mutator.execute();

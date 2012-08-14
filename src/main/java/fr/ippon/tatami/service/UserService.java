@@ -204,7 +204,7 @@ public class UserService {
         log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
 
         // Delete userline, tagLine...
-        favoritelineRepository.deleteFavoritesline(user.getLogin());
+        favoritelineRepository.deleteFavoriteline(user.getLogin());
         statusRepository.deleteTimeline(user.getLogin());
         statusRepository.deleteUserline(user.getLogin());
         log.debug("Delete user step 3 : user " + user.getLogin() + " has no more lines.");
