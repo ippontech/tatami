@@ -70,7 +70,15 @@ public class TimelineService {
     }
 
     public StatusDetails getStatusDetails(String statusId) {
-        return statusDetailsRepository.findStatusDetails(statusId);
+        StatusDetails details = statusDetailsRepository.findStatusDetails(statusId);
+        // Enrich the details object with the complete statuses in the discussion
+        Collection<Status> statusesInDiscussion = new ArrayList<Status>();
+        for (String statusIdInDiscussion : details.getDiscussionStatusIds()) {
+            Status statusInDiscussion = statusRepository.findStatusById(statusIdInDiscussion);
+            statusesInDiscussion.add(statusInDiscussion);
+        }
+        details.setDiscussionStatuses(statusesInDiscussion);
+        return details;
     }
 
     public Collection<Status> buildStatusList(Map<String, String> line) {

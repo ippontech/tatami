@@ -1,18 +1,22 @@
 package fr.ippon.tatami.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.Collection;
 
 /**
  * Extended information for a status.
  * - Lists the discussion related to this status
  * - Lists the users who shared this status
- * - Lists the users who favorited this status
  */
 public class StatusDetails {
 
     private String StatusId;
 
+    @JsonIgnore
     private Collection<String> discussionStatusIds;
+
+    private Collection<Status> discussionStatuses;
 
     private Collection<String> sharedByLogins;
 
@@ -30,6 +34,14 @@ public class StatusDetails {
 
     public void setDiscussionStatusIds(Collection<String> discussionStatusIds) {
         this.discussionStatusIds = discussionStatusIds;
+    }
+
+    public Collection<Status> getDiscussionStatuses() {
+        return discussionStatuses;
+    }
+
+    public void setDiscussionStatuses(Collection<Status> discussionStatuses) {
+        this.discussionStatuses = discussionStatuses;
     }
 
     public Collection<String> getSharedByLogins() {
