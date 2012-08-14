@@ -29,6 +29,11 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * Cassandra implementation of the status repository.
+ * <p/>
+ * Timeline and Userline have the same structure :
+ * - Key : login
+ * - Name : status Id
+ * - Value : ""
  *
  * @author Julien Dubois
  */
