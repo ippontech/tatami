@@ -19,7 +19,8 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.SHARES_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
- * Cassandra implementation of the StatusDetails repository.
+ * Cassandra implementation of the Shares repository.
+ * Lists the shares for a given status.
  * <p/>
  * Structure :
  * - Key = status Id
