@@ -34,6 +34,12 @@ public class StatusUpdateService {
     private StatusRepository statusRepository;
 
     @Inject
+    private TimelineRepository timelineRepository;
+
+    @Inject
+    private UserlineRepository userlineRepository;
+
+    @Inject
     private TaglineRepository taglineRepository;
 
     @Inject
@@ -79,14 +85,14 @@ public class StatusUpdateService {
         // add status to the dayline, userline, timeline, tagline
         String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
         daylineRepository.addStatusToDayline(status, domain, day);
-        statusRepository.addStatusToUserline(status);
-        statusRepository.addStatusToTimeline(currentLogin, status);
+        userlineRepository.addStatusToUserline(status);
+        timelineRepository.addStatusToTimeline(currentLogin, status);
         taglineRepository.addStatusToTagline(status, domain);
 
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            statusRepository.addStatusToTimeline(followerLogin, status);
+            timelineRepository.addStatusToTimeline(followerLogin, status);
         }
 
         // add status to the mentioned users' timeline
@@ -103,7 +109,7 @@ public class StatusUpdateService {
                 String mentionedLogin =
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
-                statusRepository.addStatusToTimeline(mentionedLogin, status);
+                timelineRepository.addStatusToTimeline(mentionedLogin, status);
             }
         }
 

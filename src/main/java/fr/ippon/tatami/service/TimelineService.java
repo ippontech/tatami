@@ -46,6 +46,12 @@ public class TimelineService {
     private CounterRepository counterRepository;
 
     @Inject
+    private TimelineRepository timelineRepository;
+
+    @Inject
+    private UserlineRepository userlineRepository;
+
+    @Inject
     private FavoritelineRepository favoritelineRepository;
 
     @Inject
@@ -188,7 +194,7 @@ public class TimelineService {
      */
     public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Map<String, String> line = statusRepository.getTimeline(login, nbStatus, since_id, max_id);
+        Map<String, String> line = timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
         return buildStatusList(line);
     }
 
@@ -208,7 +214,7 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        Map<String, String> line = statusRepository.getUserline(login, nbStatus, since_id, max_id);
+        Map<String, String> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
         return this.buildStatusList(line);
     }
 
@@ -236,12 +242,12 @@ public class TimelineService {
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         Status status = statusRepository.findStatusById(statusId);
         // add status to the user's userline and timeline
-        statusRepository.shareStatusToUserline(currentLogin, status);
-        statusRepository.shareStatusToTimeline(currentLogin, currentLogin, status);
+        userlineRepository.shareStatusToUserline(currentLogin, status);
+        timelineRepository.shareStatusToTimeline(currentLogin, currentLogin, status);
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            statusRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
+            timelineRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
         }
         // update the status details to add this share
         sharesRepository.newShareByLogin(statusId, currentLogin);

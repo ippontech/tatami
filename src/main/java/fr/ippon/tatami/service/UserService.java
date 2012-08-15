@@ -58,6 +58,12 @@ public class UserService {
     private StatusRepository statusRepository;
 
     @Inject
+    private TimelineRepository timelineRepository;
+
+    @Inject
+    private UserlineRepository userlineRepository;
+
+    @Inject
     private RegistrationRepository registrationRepository;
 
     @Inject
@@ -205,8 +211,8 @@ public class UserService {
 
         // Delete userline, tagLine...
         favoritelineRepository.deleteFavoriteline(user.getLogin());
-        statusRepository.deleteTimeline(user.getLogin());
-        statusRepository.deleteUserline(user.getLogin());
+        timelineRepository.deleteTimeline(user.getLogin());
+        userlineRepository.deleteUserline(user.getLogin());
         log.debug("Delete user step 3 : user " + user.getLogin() + " has no more lines.");
 
         // Remove from domain

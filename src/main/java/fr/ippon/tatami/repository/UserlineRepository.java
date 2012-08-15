@@ -1,0 +1,29 @@
+package fr.ippon.tatami.repository;
+
+import fr.ippon.tatami.domain.Status;
+
+import javax.validation.ConstraintViolationException;
+import java.util.Map;
+
+/**
+ * The Userline Repository.
+ *
+ * A Userline is the list of statuses updated by a user (including the statuses he shared).
+ *
+ * @author Julien Dubois
+ */
+public interface UserlineRepository {
+
+    void addStatusToUserline(Status status);
+
+    void shareStatusToUserline(String currentLogin, Status status);
+
+    void deleteUserline(String login);
+
+    /**
+     * The userline : the user's statuses.
+     * - The key is the statusId of the statuses
+     * - The value is who shared the statuses (or null if it wasn't shared)
+     */
+    Map<String, String> getUserline(String login, int size, String since_id, String max_id);
+}
