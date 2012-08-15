@@ -44,7 +44,7 @@
             <p><fmt:message key="tatami.presentation.text"/></p>
 
             <p>
-                <fmt:message key="tatami.presentation.moreinfo"/><a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a>
+                [<a href="/tatami/presentation"><fmt:message key="tatami.presentation.moreinfo"/></a>]
             </p>
         </div>
     </div>
