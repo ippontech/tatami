@@ -98,7 +98,7 @@ public class MailService {
     public void sendValidationEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending validation e-mail to User '" + user.getLogin() +
-                    "', Password='" + password + "'");
+                    "', non-encrypted Password='" + password + "'");
         }
         String subject = "Tatami account validated";
         String text = "Dear "
@@ -117,7 +117,7 @@ public class MailService {
     public void sendPasswordReinitializedEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
-                    "', Password='" + password + "'");
+                    "', non-encrypted Password='" + password + "'");
         }
         String subject = "Tatami password re-initialized";
         String text = "Dear "
@@ -151,7 +151,8 @@ public class MailService {
         } catch (MailException e) {
             log.warn("Warning! SMTP server error, could not send e-mail.");
             if (log.isDebugEnabled()) {
-                e.printStackTrace();
+                log.debug("SMTP Error : " + e.getMessage());
+                log.debug("Did you configure your SMTP settings in /META-INF/tatami/tatami.properties ?");
             }
         }
     }
