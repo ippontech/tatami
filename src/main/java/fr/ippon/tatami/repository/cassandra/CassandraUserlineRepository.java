@@ -26,6 +26,7 @@ import java.util.*;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
@@ -50,7 +51,7 @@ public class CassandraUserlineRepository extends AbstractLineRepository implemen
 
     @Override
     public void shareStatusToUserline(String currentLogin, Status status) {
-        shareStatus(currentLogin, status, currentLogin, USERLINE_CF);
+        shareStatus(currentLogin, status, currentLogin, USERLINE_CF, USERLINE_SHARES_CF);
     }
 
     @Override

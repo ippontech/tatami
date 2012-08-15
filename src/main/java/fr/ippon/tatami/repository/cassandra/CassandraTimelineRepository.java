@@ -25,6 +25,7 @@ import javax.validation.*;
 import java.util.*;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
@@ -50,7 +51,7 @@ public class CassandraTimelineRepository extends AbstractLineRepository implemen
 
     @Override
     public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status) {
-        shareStatus(timelineLogin, status, sharedByLogin, TIMELINE_CF);
+        shareStatus(timelineLogin, status, sharedByLogin, TIMELINE_CF, TIMELINE_SHARES_CF);
     }
 
     @Override

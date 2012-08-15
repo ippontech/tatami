@@ -25,7 +25,11 @@ public class ColumnFamilyKeys {
 
     public final static String TIMELINE_CF = "Timeline";
 
+    public final static String TIMELINE_SHARES_CF = "TimelineShares";
+
     public final static String USERLINE_CF = "Userline";
+
+    public final static String USERLINE_SHARES_CF = "UserlineShares";
 
     public final static String COUNTER_CF = "Counter";
 
