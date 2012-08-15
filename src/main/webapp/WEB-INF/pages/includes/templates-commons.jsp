@@ -26,7 +26,7 @@
                    <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
                 </a>
                 <a class="status-action-reply">
-                      <i class="icon-share"></i><fmt:message key="tatami.user.status.reply"/>
+                      <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
                 </a>
                   <@ if (status.username != authenticatedUsername) { @>
                     <a class="status-action-share">
@@ -59,7 +59,7 @@
           <tr>
               <td>
                   <@ if (status.replyTo != '') { @>
-                  <div><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
+                  <div><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
                   <@ } @>
               </td>
           </tr>
