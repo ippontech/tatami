@@ -3,17 +3,6 @@
 
 <jsp:include page="templates-commons.jsp"/>
 
-<footer>
-    <div id="footer" class="navbar navbar-fixed-bottom">
-        <a href="http://www.ippon.fr" id="footer_ippon"><fmt:message key="tatami.copyright"/> <fmt:message key="tatami.ippon.technologies"/></a> |
-        <a href="https://github.com/ippontech/tatami" id="footer_github"><fmt:message key="tatami.github.fork"/></a> |
-        <a href="http://blog.ippon.fr" id="footer_blog"><fmt:message key="tatami.ippon.blog"/></a> |
-        <a href="https://twitter.com/#!/ippontech" id="footer_twitter"><fmt:message key="tatami.ippon.twitter.follow"/></a>
-    </div>
-</footer>
-
-<!-- Le javascript -->
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 

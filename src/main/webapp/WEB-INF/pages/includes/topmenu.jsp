@@ -46,6 +46,26 @@
                                         key="tatami.menu.license"/>
                                 </a>
                             </li>
+                            <li>
+                                <a href="https://github.com/ippontech/tatami" target="_blank">
+                                    <i class="icon-wrench"></i> <fmt:message key="tatami.github.fork"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://blog.ippon.fr" target="_blank">
+                                    <i class="icon-pencil"></i> <fmt:message key="tatami.ippon.blog"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/ippontech" target="_blank">
+                                    <i class="icon-bullhorn"></i> <fmt:message key="tatami.ippon.twitter.follow"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.ippon.fr" target="_blank">
+                                    <i class="icon-exclamation-sign"></i> <fmt:message key="tatami.copyright"/> <fmt:message key="tatami.ippon.technologies"/>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
