@@ -86,10 +86,8 @@ rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
 # Configure Maven for the tatami user
-su - $USER
-echo "export M2_HOME=/opt/tatami/maven/current" >>﻿ ~/.bashrc 
-echo "export PATH=$M2_HOME/bin:$PATH" >>﻿ ~/.bashrc 
-exit
+echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.bashrc
+echo "export PATH=$M2_HOME/bin:$PATH" ﻿>> /home/tatami/.bashrc
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
@@ -98,10 +96,8 @@ cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.x
 #################################
 ## Install Application
 #################################
-su - $USER
-
 cd /opt/tatami/application/tatami
-mvn clean install
+sudo -u tatami mvn clean install
 
 #################################
 ## Post install
