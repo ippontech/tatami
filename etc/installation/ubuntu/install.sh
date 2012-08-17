@@ -87,8 +87,8 @@ ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
 # Configure Maven for the tatami user
 su - $USER
-echo "export M2_HOME=/opt/tatami/maven/current" >> ﻿~/.bashrc
-echo "export PATH=$M2_HOME/bin:$PATH" >> ﻿~/.bashrc
+echo "export M2_HOME=/opt/tatami/maven/current" >>﻿ ~/.bashrc 
+echo "export PATH=$M2_HOME/bin:$PATH" >>﻿ ~/.bashrc 
 exit
 
 # Configure Maven repository
