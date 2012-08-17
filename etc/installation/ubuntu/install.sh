@@ -91,7 +91,7 @@ echo "export PATH=/opt/tatami/maven/current/bin:$PATH" ﻿>> /home/tatami/.bashr
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
-cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.xml /home/$USER/
+cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.xml $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION/conf
 
 #################################
 ## Install Application
