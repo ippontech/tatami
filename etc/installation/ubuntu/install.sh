@@ -90,7 +90,7 @@ echo "# Begin tatami configuration" ﻿>> /home/tatami/.bashrc
 echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.bashrc
 echo "export PATH=/opt/tatami/maven/current/bin:$PATH" ﻿>> /home/tatami/.bashrc
 echo "export MAVEN_OPTS=-XX:MaxPermSize=64m -Xms256m -Xmx512m" ﻿>> /home/tatami/.bashrc
-echo "# End tatami configuration" ﻿>> /home/tatami/.bashrc"
+echo "# End tatami configuration" ﻿>> /home/tatami/.bashrc
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
