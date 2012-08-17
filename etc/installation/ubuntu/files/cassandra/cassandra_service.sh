@@ -6,7 +6,7 @@ hostname=`hostname`
 case $1 in
 start)
         echo "Starting cassandra service on $hostname..."
-        /opt/tatami/apache-cassandra-1.1.3-bin/bin/./cassandra -p /var/tmp/cassandra.pid
+        /opt/tatami/cassandra/current/bin/./cassandra -p /var/tmp/cassandra.pid
         ;;
 stop)
         echo "Stopping cassandra service on $hostname..."
@@ -15,7 +15,7 @@ stop)
 restart)
         echo "Restarting cassandra service on $hostname..."
         pkill -f CassandraDaemon
-        /opt/usi2011_jaxio/apache-cassandra-1.1.3-bin/bin/./cassandra -p /var/tmp/cassandra.pid
+        /opt/tatami/cassandra/current/./cassandra -p /var/tmp/cassandra.pid
         ;;
 esac
 exit 0
