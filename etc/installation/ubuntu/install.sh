@@ -77,6 +77,7 @@ cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/cassandra/log4j-serve
 ## Install Maven
 #################################
 echo "Installing Maven"
+
 cd $TATAMI_DIR/maven
 
 wget http://apache.cict.fr/maven/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
@@ -84,15 +85,24 @@ tar -xzvf apache-maven-$MAVEN_VERSION-bin.tar.gz
 rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
-echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.bashrc
-echo "export PATH=$M2_HOME/bin:$PATH" >> /home/tatami/.bashrc
+echo "export M2_HOME=/opt/tatami/maven/current" >> /home/$USER/.bashrc
+echo "export PATH=$M2_HOME/bin:$PATH" >> /home/$USER/.bashrc
+
+# Configure Maven repository
+mkdir -p $TATAMI_DIR/maven/repository
+cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/maven/settings.xml /home/$USER/
 
 #################################
 ## Install Application
 #################################
-chown -R tatami $TATAMI_DIR
+su - $USER
 
-su - tatami
 cd $TATAMI_DIR/application/tatami
 mvn clean install
+
+#################################
+## Post install
+#################################
+
+chown -R $USER $TATAMI_DIR
 
