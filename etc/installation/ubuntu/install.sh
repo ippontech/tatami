@@ -69,9 +69,9 @@ echo "$USER hard memlock unlimited"  >> /etc/security/limits.conf
 
 # Copy Cassandra configuration
 echo "Configuring Cassandra"
-cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/cassandra/cassandra.yaml $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
-cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/cassandra/cassandra-env.sh $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
-cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/cassandra/log4j-server.properties $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
+cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/cassandra/cassandra.yaml $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
+cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/cassandra/cassandra-env.sh $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
+cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/cassandra/log4j-server.properties $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION/conf
 
 #################################
 ## Install Maven
@@ -90,7 +90,7 @@ echo "export PATH=$M2_HOME/bin:$PATH" >> /home/$USER/.bashrc
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
-cp $TATAMI_DIR/application/tatami/etc/install/ubuntu/files/maven/settings.xml /home/$USER/
+cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.xml /home/$USER/
 
 #################################
 ## Install Application
