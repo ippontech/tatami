@@ -85,8 +85,11 @@ tar -xzvf apache-maven-$MAVEN_VERSION-bin.tar.gz
 rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
-echo "export M2_HOME=/opt/tatami/maven/current" >> /home/$USER/.bashrc
-echo "export PATH=$M2_HOME/bin:$PATH" >> /home/$USER/.bashrc
+# Configure Maven for the tatami user
+su - $USER
+echo "export M2_HOME=/opt/tatami/maven/current" >> ﻿/.bashrc
+echo "export PATH=$M2_HOME/bin:$PATH" >> ﻿~/.bashrc
+exit
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
