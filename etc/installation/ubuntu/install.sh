@@ -97,7 +97,7 @@ cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.x
 #################################
 su - $USER
 
-cd $TATAMI_DIR/application/tatami
+cd /opt/tatami/application/tatami
 mvn clean install
 
 #################################
