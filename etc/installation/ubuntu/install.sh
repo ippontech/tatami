@@ -29,7 +29,7 @@ apt-get install git-core openjdk-7-jre-headless curl -y --force-yes
 # Create directories & users
 #################################
 echo "Creating directories and users"
-useradd $USER
+useradd -m $USER
 
 mkdir -p $TATAMI_DIR
 mkdir -p $TATAMI_DIR/application
