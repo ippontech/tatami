@@ -14,7 +14,7 @@ echo "Remove Tatami user"
 # Remove JNA settings
 sed -i '/tatami/d' /etc/security/limits.conf
 
-userdel -f tatami
+userdel -f -r tatami
 
 echo "Delete Tatami directory"
 rm -rf /opt/tatami
