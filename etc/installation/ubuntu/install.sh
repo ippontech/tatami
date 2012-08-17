@@ -2,6 +2,8 @@
 #
 # description: Installs Tatami on Ubuntu
 # This script must be run by the "root" user.
+# Run this script directly by typing :
+# ﻿curl -L https://github.com/ippontech/tatami/raw/master/etc/installation/ubuntu/install.sh | sudo bash
 #
 # - Tatami is installed in the "/opt/tatami" directory
 # - Tatami is run by the "tatami" user
@@ -21,7 +23,7 @@ export MAVEN_VERSION=3.0.4
 # Install missing packages
 #################################
 echo "Installing missing packages"
-apt-get install git-core openjdk-7-jre-headless -y --force-yes
+apt-get install git-core openjdk-7-jre-headless curl -y --force-yes
 
 #################################
 # Create directories & users
@@ -88,10 +90,9 @@ echo "export PATH=$M2_HOME/bin:$PATH" >> /home/tatami/.bashrc
 #################################
 ## Install Application
 #################################
-
-
-#################################
-# Post install
-#################################
-
 chown -R tatami $TATAMI_DIR
+
+su - tatami
+cd $TATAMI_DIR/application/tatami
+mvn clean install
+
