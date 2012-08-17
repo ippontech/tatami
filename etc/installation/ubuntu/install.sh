@@ -54,7 +54,7 @@ cd $TATAMI_DIR/cassandra
 
 # Cassandra Installation
 wget http://apache.crihan.fr/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz
-tar -xzvf apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz
+tar -xzf apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz
 rm -f apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/cassandra/apache-cassandra-$CASSANDRA_VERSION $TATAMI_DIR/cassandra/current
 
@@ -81,7 +81,7 @@ echo "Installing Maven"
 cd $TATAMI_DIR/maven
 
 wget http://apache.cict.fr/maven/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
-tar -xzvf apache-maven-$MAVEN_VERSION-bin.tar.gz
+tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz
 rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
