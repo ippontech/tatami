@@ -86,11 +86,11 @@ rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
 # Configure Maven for the tatami user
-echo "# Begin tatami configuration" ﻿>> /home/tatami/.bashrc
-echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.bashrc
-echo "export PATH=/opt/tatami/maven/current/bin:$PATH" ﻿>> /home/tatami/.bashrc
-echo "export MAVEN_OPTS=\"-XX:MaxPermSize=64m -Xms256m -Xmx512m\"" ﻿>> /home/tatami/.bashrc
-echo "# End tatami configuration" ﻿>> /home/tatami/.bashrc
+echo "# Begin tatami configuration" ﻿>> /home/tatami/.profile
+echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.profile
+echo "export PATH=/opt/tatami/maven/current/bin:$PATH" >> /home/tatami/.profile
+echo "export MAVEN_OPTS=\"-XX:MaxPermSize=64m -Xms256m -Xmx512m\"" >> /home/tatami/.profile
+echo "# End tatami configuration" ﻿>> /home/tatami/.profile
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
@@ -100,9 +100,7 @@ cp $TATAMI_DIR/application/tatami/etc/installation/ubuntu/files/maven/settings.x
 ## Install Application
 #################################
 cd /opt/tatami/application/tatami
-su tatami 
-mvn clean install
-exit
+su - tatami -c "mvn clean install"
 
 #################################
 ## Post install
