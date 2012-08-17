@@ -23,7 +23,7 @@ export MAVEN_VERSION=3.0.4
 # Install missing packages
 #################################
 echo "Installing missing packages"
-apt-get install git-core openjdk-7-jre-headless curl -y --force-yes
+apt-get install git-core openjdk-7-jdk curl -y --force-yes
 
 #################################
 # Create directories & users
@@ -86,8 +86,11 @@ rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 ln -s $TATAMI_DIR/maven/apache-maven-$MAVEN_VERSION $TATAMI_DIR/maven/current
 
 # Configure Maven for the tatami user
+echo "# Begin tatami configuration" ﻿>> /home/tatami/.bashrc"
 echo "export M2_HOME=/opt/tatami/maven/current" >> /home/tatami/.bashrc
 echo "export PATH=/opt/tatami/maven/current/bin:$PATH" ﻿>> /home/tatami/.bashrc
+echo "export MAVEN_OPTS=-XX:MaxPermSize=64m -Xms256m -Xmx512m" ﻿>> /home/tatami/.bashrc
+echo "# End tatami configuration" ﻿>> /home/tatami/.bashrc"
 
 # Configure Maven repository
 mkdir -p $TATAMI_DIR/maven/repository
