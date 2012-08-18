@@ -189,9 +189,9 @@ index.analysis.filter.elision.articles: ["l", "m", "t", "qu", "n", "s", "j", "d"
 #
 # path.plugins: /path/to/plugins
 
-path.data: target/elasticsearch
-path.work: target/elasticsearch
-path.logs: target/elasticsearch
+path.data: ${tatami.elasticsearch.path.data}/data
+path.work: ${tatami.elasticsearch.path.data}/work
+path.logs: ${tatami.elasticsearch.path.log}
 
 #################################### Plugin ###################################
 

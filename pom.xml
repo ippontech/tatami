@@ -49,7 +49,9 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
         </profile>
         <profile>
@@ -73,6 +75,8 @@
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
             <build>
                 <plugins>
@@ -110,6 +114,8 @@
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
             <build>
                 <plugins>
@@ -151,10 +157,10 @@
 
         <!-- Dependencies -->
         <spring.version>3.1.2.RELEASE</spring.version>
-        <spring.security.version>3.1.1.RELEASE</spring.security.version>
+        <spring.security.version>3.1.2.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
         <spring.mobile.version>1.0.0.RELEASE</spring.mobile.version>
-        <elasticsearch.version>0.19.3</elasticsearch.version>
+        <elasticsearch.version>0.19.8</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
