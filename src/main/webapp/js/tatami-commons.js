@@ -175,7 +175,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
           collection.forEach(function(model, index, collection){
             var initDate = self.model.get('statusDate');
-            if (model.get('statusDate') > initDate){
+            if (model.get('statusDate') < initDate){
               self.views.discussBefore.model.add(model.toJSON());
             }
             else {
