@@ -8,97 +8,96 @@
     <div class="status alert alert-info">
   <@ } @>
     <div class="row-fluid">
-      <table class="statuses">
-          <tr>
-            <th rowspan="6">
-                <img class="span12 avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
-            </th>
-            <th>
-              <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
-                <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
-              </a>
-              <p class="pull-right" style="width: 50px"><@= status.prettyPrintStatusDate @></p>
-              <div class="pull-right status-actions">
-                <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
-                  <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
-                </a>
-                <a class="status-action-details">
-                   <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
-                </a>
-                <a class="status-action-reply">
-                      <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
-                </a>
-                  <@ if (status.username != authenticatedUsername) { @>
-                    <a class="status-action-share">
-                        <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
-                    </a>
-                  <@ } @>
-                <a class="status-action-favorite">
-                  <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i><fmt:message key="tatami.user.status.favorite"/>
-                </a>
-                  <@ if (status.username == authenticatedUsername) { @>
-                    <a class="status-action-remove">
-                        <i class="icon-trash"></i><fmt:message key="tatami.user.status.delete"/>
-                    </a>
-                  <@ } @>
-              </div>
-            </th>
-          </tr>
-          <tr>
-              <td>
-                  <div class="well status-content"><@=status.content@></div>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <@ if (status.sharedByUsername != null) { @>
-                    <div><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a></div>
-                  <@ } @>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <@ if (status.replyTo != '') { @>
-                  <div><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
-                  <@ } @>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <@ if (status.details === true) { @>
-                  <div>
-                      <div><fmt:message key="tatami.user.status.details"/></div>
 
-                  </div>
-                  <@ } else { @>
-                  <div></div>
-                  <@ } @>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <@ if (status.discuss === true) { @>
-                  <form class="reply-form">
-                      <div><fmt:message key="tatami.status.reply"/></div>
-                      <fieldset>
-                          <div class="control-group">
-                              <textarea class="span12" required="required" maxlength="500"
-                                        name="content">@<@= status.username @> </textarea>
-                          </div>
-                          <div>
-                              <input type='submit' class="span12 btn btn-primary"
-                                     value="<fmt:message key="tatami.status.reply.action"/>"/>
-                          </div>
-                      </fieldset>
-                  </form>
-                  <@ } else { @>
-                  <div></div>
-                  <@ } @>
-              </td>
-          </tr>
-      </table>
+      <div class="discuss-before">
+      </div>
+
+      <div class="statuses">
+      </div>
+
+      <div class="discuss-after">
+      </div>
+
     </div>
   </div>
+</script>
+
+<script type="text/template" id="timeline-item-inner">
+  <tr>
+    <th rowspan="6">
+        <img class="avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
+    </th>
+    <th>
+      <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
+        <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
+      </a>
+      <p class="pull-right" style="width: 50px"><@= status.prettyPrintStatusDate @></p>
+      <div class="pull-right status-actions">
+        <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
+          <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
+        </a>
+        <a class="status-action-details">
+           <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
+        </a>
+        <a class="status-action-reply">
+              <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
+        </a>
+          <@ if (status.username != authenticatedUsername) { @>
+            <a class="status-action-share">
+                <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
+            </a>
+          <@ } @>
+        <a class="status-action-favorite">
+          <i class="icon-star<@ if (status.favorite === false) { @>-empty<@ } @>"></i><fmt:message key="tatami.user.status.favorite"/>
+        </a>
+          <@ if (status.username == authenticatedUsername) { @>
+            <a class="status-action-remove">
+                <i class="icon-trash"></i><fmt:message key="tatami.user.status.delete"/>
+            </a>
+          <@ } @>
+      </div>
+    </th>
+  </tr>
+  <tr>
+      <td>
+          <div class="well status-content"><@=status.content@></div>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <@ if (status.sharedByUsername != null) { @>
+            <div><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a></div>
+          <@ } @>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <@ if (status.replyTo != '') { @>
+          <div><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
+          <@ } @>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <@ if (status.discuss === true) { @>
+          <form class="reply-form">
+              <div><fmt:message key="tatami.status.reply"/></div>
+              <fieldset>
+                  <div class="control-group">
+                      <textarea class="span12" required="required" maxlength="500"
+                                name="content">@<@= status.username @> </textarea>
+                  </div>
+                  <div>
+                      <input type='submit' class="span12 btn btn-primary"
+                             value="<fmt:message key="tatami.status.reply.action"/>"/>
+                  </div>
+              </fieldset>
+          </form>
+          <@ } else { @>
+          <div></div>
+          <@ } @>
+      </td>
+  </tr>
 </script>
 
 <script type="text/template" id="timeline-new">
