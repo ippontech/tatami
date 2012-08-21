@@ -139,7 +139,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
     this.views.status.bind('details', this.detailsAction, this);
     this.views.status.bind('highlight', this.highlight, this);
-    this.views.status.bind('favorite', this.favoriteAction, this);
   },
 
   refreshFavorite: function() {
@@ -203,70 +202,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
       this.$el.find('.discuss-before').empty();
       this.$el.find('.discuss-after').empty();
     }
-  },
-
-  replyAction: function() {
-    var statusId = this.model.get('statusId');
-    
-    this.model.set('discuss', !this.model.get('discuss'));
-    this.model.set('replyContent', '');
-
-    this.highlight();
-  },
-
-  favoriteAction: function() {
-    debugger;
-    var self = this;
-    var sd;
-    if(this.model.get('favorite') === true)
-      sd = new app.Model.StatusRemoveFavorite(this.model);
-    else
-      sd = new app.Model.StatusAddFavorite(this.model);
-
-    sd.save(null, {
-      success: function(){
-        var statusId = self.model.get('statusId');
-        app.Status.favorite(statusId);
-      }
-    });
-  },
-
-  removeAction: function() {
-    if(window.confirm($('#status-delete-popup').html().trim())){
-      var self = this;
-      var sd = new app.Model.StatusDelete(this.model);
-
-      sd.save(null, {
-        success: function(){
-              app.trigger('refreshProfile');
-          app.Status.destroy(self.model.get('statusId'));
-        }
-      });
-    }
-  },
-
-  sendReply: function(e) {
-    e.preventDefault();
-
-    var self = this;
-
-    var dm = new app.Model.Discussion({
-      statusId: this.model.get('statusId')
-    });
-
-    _.each($(e.target).serializeArray(), function(value){
-      dm.set(value.name, value.value);
-    });
-
-    dm.save(null, {
-      success: function(){
-        self.replyAction();
-        
-        app.trigger('refreshProfile');
-        app.trigger('refreshTimeline');
-      }
-    });
-
   },
 
   render: function() {
@@ -343,7 +278,6 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
       sd.save(null, {
         success: function(){
           app.trigger('refreshProfile');
-          debugger;
           app.Status.destroy(self.model.get('statusId'));
         }
       });
