@@ -301,15 +301,13 @@ app.View.UserListView = Backbone.View.extend({
 /*
   Status
 */
-app.Model.StatusModel = Backbone.Model.extend({
-});
 
 app.View.StatusView = Backbone.View.extend({
 
   initialize: function() {
     this.views = {};
 
-    this.model = new app.Model.StatusModel();
+    this.model = new app.Model.Status();
     this.model.url = "/tatami/rest/statuses/show/" + this.options.idstatus;
 
     this.views.item = new app.View.TimeLineItemView({
