@@ -49,8 +49,21 @@ else {
 /*
   Timeline
 */
+app.Model.Status = Backbone.Model.extend({
+  initialize: function() {
+    var self = this;
+
+    app.Status.statuses.push(self);
+
+    this.bind('destroy', function() {
+      app.Status.statuses.shift(self);
+    });
+  }
+});
+
 
 app.Collection.StatusCollection = Backbone.Collection.extend({
+  model: app.Model.Status
 });
 
 app.Model.StatusUpdateModel = Backbone.Model.extend({
@@ -97,12 +110,15 @@ app.Model.StatusRemoveFavorite = Backbone.Model.extend({
   }
 });
 
-app.Model.StatusDetails = Backbone.Model.extend({
+app.Collection.StatusDetails = Backbone.Collection.extend({
     url: function(){
-        return '/tatami/rest/statuses/details/' + this.model.get('statusId');
+        return '/tatami/rest/statuses/details/' + this.statusId;
     },
     initialize: function(model) {
-        this.model = model;
+        this.statusId = model.get('statusId');
+    },
+    parse: function(data){
+      return data.discussionStatuses;
     }
 });
 
@@ -112,10 +128,160 @@ app.View.TimeLineItemView = Backbone.View.extend({
   template: _.template($('#timeline-item').html()),
 
   initialize: function() {
-    if(app.Status.statuses.indexOf(this.model) === -1)
-      app.Status.statuses.push(this.model);
+    this.views = {};
 
+    this.views.status = new app.View.TimeLineItemInnerView({
+      model : this.model
+    })
+
+    this.model.bind('change', this.refreshFavorite, this);
     this.model.bind('destroy', this.remove, this);
+
+    this.views.status.bind('details', this.detailsAction, this);
+    this.views.status.bind('highlight', this.highlight, this);
+    this.views.status.bind('favorite', this.favoriteAction, this);
+  },
+
+  refreshFavorite: function() {
+    if(this.model.get('favorite') === true)
+      this.$el.find(':first').addClass('favorite');
+    else
+      this.$el.find(':first').removeClass('favorite');
+  },
+
+  highlight: function() {
+    this.$el.find('.status').effect("highlight", {color:'#08C'}, 500);
+  },
+
+  detailsAction:function () {
+    var statusId = this.model.get('statusId');
+    var self = this;
+
+    if (this.details != true) {
+      var statusDetails = new app.Collection.StatusDetails(this.model);
+
+      if(typeof this.views.discussBefore === 'undefined'){
+        this.views.discussBefore = new app.View.TimeLineView({
+          model: new app.Collection.StatusCollection()
+        });
+      }
+      if(typeof this.views.discussAfter === 'undefined'){
+        this.views.discussAfter = new app.View.TimeLineView({
+          model: new app.Collection.StatusCollection()
+        });
+      }
+      statusDetails.fetch({
+        success: function(collection){
+          self.views.discussBefore.model.reset();
+          self.views.discussAfter.model.reset();
+          collection.forEach(function(model, index, collection){
+            var initDate = self.model.get('statusDate');
+            if (model.get('statusDate') > initDate){
+              self.views.discussBefore.model.add(model.toJSON());
+            }
+            else {
+              self.views.discussAfter.model.add(model.toJSON());
+            }
+
+          });
+        }
+      });
+    }
+
+    this.details = !this.details;
+
+    this.detailsRender();
+
+    this.highlight();
+  },
+
+  detailsRender: function() {
+    if(this.details){
+      this.$el.find('.discuss-before').append(this.views.discussBefore.render());
+      this.$el.find('.discuss-after').append(this.views.discussAfter.render());
+    }else{
+      this.$el.find('.discuss-before').empty();
+      this.$el.find('.discuss-after').empty();
+    }
+  },
+
+  replyAction: function() {
+    var statusId = this.model.get('statusId');
+    
+    this.model.set('discuss', !this.model.get('discuss'));
+    this.model.set('replyContent', '');
+
+    this.highlight();
+  },
+
+  favoriteAction: function() {
+    debugger;
+    var self = this;
+    var sd;
+    if(this.model.get('favorite') === true)
+      sd = new app.Model.StatusRemoveFavorite(this.model);
+    else
+      sd = new app.Model.StatusAddFavorite(this.model);
+
+    sd.save(null, {
+      success: function(){
+        var statusId = self.model.get('statusId');
+        app.Status.favorite(statusId);
+      }
+    });
+  },
+
+  removeAction: function() {
+    if(window.confirm($('#status-delete-popup').html().trim())){
+      var self = this;
+      var sd = new app.Model.StatusDelete(this.model);
+
+      sd.save(null, {
+        success: function(){
+              app.trigger('refreshProfile');
+          app.Status.destroy(self.model.get('statusId'));
+        }
+      });
+    }
+  },
+
+  sendReply: function(e) {
+    e.preventDefault();
+
+    var self = this;
+
+    var dm = new app.Model.Discussion({
+      statusId: this.model.get('statusId')
+    });
+
+    _.each($(e.target).serializeArray(), function(value){
+      dm.set(value.name, value.value);
+    });
+
+    dm.save(null, {
+      success: function(){
+        self.replyAction();
+        
+        app.trigger('refreshProfile');
+        app.trigger('refreshTimeline');
+      }
+    });
+
+  },
+
+  render: function() {
+    $(this.el).html(this.template({status:this.model.toJSON()}));
+    this.$el.find('.statuses').html(this.views.status.render());
+    return $(this.el);
+  }
+});
+
+app.View.TimeLineItemInnerView = Backbone.View.extend({
+  tagName: 'table',
+
+  template: _.template($('#timeline-item-inner').html()),
+
+  initialize: function() {
     this.model.bind('change', this.render, this);
   },
 
@@ -128,21 +294,8 @@ app.View.TimeLineItemView = Backbone.View.extend({
     'submit .reply-form': 'sendReply'
   },
 
-  highlight: function() {
-    this.$el.find('.status').effect("highlight", {color:'#08C'}, 500);
-  },
-
-  detailsAction:function () {
-    var statusId = this.model.get('statusId');
-
-    if (this.model.get('details') != true) {
-      var statusDetails = new app.Model.StatusDetails(this.model);
-      statusDetails.fetch();
-    }
-
-    this.model.set('details', !this.model.get('details'));
-
-    this.highlight();
+  detailsAction: function () {
+    this.trigger('details');
   },
 
   replyAction: function() {
@@ -151,7 +304,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
     this.model.set('discuss', !this.model.get('discuss'));
     this.model.set('replyContent', '');
 
-    this.highlight();
+    this.trigger('highlight');
   },
 
   shareAction:function () {
@@ -161,7 +314,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
       success:function () {
         var statusId = self.model.get('statusId');
         app.Status.share(statusId);
-        self.highlight();
+        self.trigger('highlight');
       }
     });
   },
@@ -189,7 +342,8 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
       sd.save(null, {
         success: function(){
-              app.trigger('refreshProfile');
+          app.trigger('refreshProfile');
+          debugger;
           app.Status.destroy(self.model.get('statusId'));
         }
       });
