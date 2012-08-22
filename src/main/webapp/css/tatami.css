@@ -62,6 +62,10 @@ form {
   padding-right: 14px;
 }
 
+.alert-success *{
+  color: rgb(70, 136, 71);
+}
+
 .statuses table {
     width: 100%;
 }

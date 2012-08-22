@@ -2,11 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/template" id="timeline-item">
-  <@ if (status.favorite === true) { @>
-    <div class="status alert alert-info favorite">
-  <@ } else { @> 
-    <div class="status alert alert-info">
-  <@ } @>
+  <div class="status alert  <@ if (discuss === true) { @> alert-success<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } @>">
     <div class="row-fluid">
 
       <div class="discuss-before">
@@ -36,9 +32,11 @@
         <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
           <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
         </a>
+        <@ if (!discuss) { @>
         <a class="status-action-details">
            <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
         </a>
+        <@ } @>
         <a class="status-action-reply">
               <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
         </a>
