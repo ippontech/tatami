@@ -131,7 +131,8 @@ app.View.TimeLineItemView = Backbone.View.extend({
     this.views = {};
 
     this.views.status = new app.View.TimeLineItemInnerView({
-      model : this.model
+      model : this.model,
+      discuss : this.options.discuss
     })
 
     this.model.bind('change', this.refreshFavorite, this);
@@ -161,12 +162,14 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
       if(typeof this.views.discussBefore === 'undefined'){
         this.views.discussBefore = new app.View.TimeLineView({
-          model: new app.Collection.StatusCollection()
+          model: new app.Collection.StatusCollection(),
+          discuss: true
         });
       }
       if(typeof this.views.discussAfter === 'undefined'){
         this.views.discussAfter = new app.View.TimeLineView({
-          model: new app.Collection.StatusCollection()
+          model: new app.Collection.StatusCollection(),
+          discuss: true
         });
       }
       statusDetails.fetch({
@@ -205,7 +208,10 @@ app.View.TimeLineItemView = Backbone.View.extend({
   },
 
   render: function() {
-    $(this.el).html(this.template({status:this.model.toJSON()}));
+    $(this.el).html(this.template({
+      status:this.model.toJSON(),
+      discuss: (this.options.discuss)
+    }));
     this.$el.find('.statuses').html(this.views.status.render());
     return $(this.el);
   }
@@ -309,7 +315,10 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
   },
 
   render: function() {
-    $(this.el).html(this.template({status:this.model.toJSON()}));
+    $(this.el).html(this.template({
+      status:this.model.toJSON(),
+      discuss: (this.options.discuss)
+    }));
     $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
     return $(this.el);
   }
@@ -333,7 +342,8 @@ app.View.TimeLineView = Backbone.View.extend({
 
   addItem: function(item, index) {
     var el = new app.View.TimeLineItemView({
-      model: item
+      model: item,
+      discuss: this.options.discuss
     }).render();
     if(index === 0)
       $(this.el).prepend(el);
