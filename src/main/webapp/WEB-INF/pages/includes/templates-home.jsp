@@ -67,7 +67,7 @@
       <textarea class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content"></textarea>
     </div>
     <div>
-      <input type='submit' class="span12 btn btn-primary" value="<fmt:message key="tatami.status.update"/>" />
+      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
 </script>
@@ -82,7 +82,7 @@
       <input class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.follow.username"/>..." name="username" />
     </div>
     <div>
-      <input type='submit' class="span12 btn btn-primary" value="<fmt:message key="tatami.follow.action"/>" />
+      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.follow.action"/></button>
     </div>
   </fieldset>
 </script>

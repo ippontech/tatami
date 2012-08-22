@@ -7,7 +7,7 @@
       <textarea class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content">@${user.username} </textarea>
     </div>
     <div>
-      <input type='submit' class="span12 btn btn-primary" value="<fmt:message key="tatami.status.update.to"/>" />
+      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update.to"/></button>
     </div>
   </fieldset>
 </script>
