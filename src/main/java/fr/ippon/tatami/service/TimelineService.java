@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manages the timeline.
@@ -96,19 +93,27 @@ public class TimelineService {
 
         // Discussion management
         Status status = statusRepository.findStatusById(statusId);
-        Collection<String> statusIdsInDiscussion;
+        Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
-            statusIdsInDiscussion = discussionRepository.findStatusIdsInDiscussion(status.getReplyTo());
+            // Add the original discussion
+            statusIdsInDiscussion.add(status.getReplyTo());
+            // Add the replies
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getReplyTo()));
+            // Remove the current status from the list
+            statusIdsInDiscussion.remove(statusId);
         } else { // This is the original discussion
-            statusIdsInDiscussion = discussionRepository.findStatusIdsInDiscussion(statusId);
+            // Add the replies
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(statusId));
+        }
+
+        // Transform the Set to a Map<String, String>
+        Map<String, String> line = new LinkedHashMap<String, String>();
+        for (String statusIdInDiscussion : statusIdsInDiscussion) {
+            line.put(statusIdInDiscussion, null);
         }
         // Enrich the details object with the complete statuses in the discussion
-        Collection<Status> statusesInDiscussion = new ArrayList<Status>();
-        for (String statusIdInDiscussion : statusIdsInDiscussion) {
-            Status statusInDiscussion = statusRepository.findStatusById(statusIdInDiscussion);
-            statusesInDiscussion.add(statusInDiscussion);
-        }
+        Collection<Status> statusesInDiscussion = buildStatusList(line);
         details.setDiscussionStatuses(statusesInDiscussion);
         return details;
     }

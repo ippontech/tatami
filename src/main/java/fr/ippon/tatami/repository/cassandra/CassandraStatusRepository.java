@@ -84,6 +84,9 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     @Cacheable("status-cache")
     public Status findStatusById(String statusId) {
+        if (statusId == null || statusId.equals("")) {
+            return null;
+        }
         if (log.isDebugEnabled()) {
             log.debug("Finding status : " + statusId);
         }
