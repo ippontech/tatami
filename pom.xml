@@ -171,7 +171,7 @@
         <cglib.version>2.2.2</cglib.version>
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
         <javax.validation.api.version>1.0.0.GA</javax.validation.api.version>
-        <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+        <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
         <jstl.version>1.2</jstl.version>
         <jackson.version>1.9.5</jackson.version>
         <jodatime.version>2.1</jodatime.version>
