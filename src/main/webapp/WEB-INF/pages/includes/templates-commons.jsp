@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/template" id="timeline-item">
-  <div class="status alert  <@ if (discuss === true) { @> alert-success<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } @>">
+  <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } @>">
     <div class="row-fluid">
 
       <div class="discuss-before">
