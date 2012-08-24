@@ -6,7 +6,7 @@
   <div class="span12 text-center">
     <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
       <img class="pull-left avatar" src="http://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
-      <h3><@=profile.firstName@> <@=profile.lastName@></h3>
+      <h4><@=profile.firstName@> <@=profile.lastName@></h4>
       @<@=profile.username@>
     </a>
   </div>

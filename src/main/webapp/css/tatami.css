@@ -62,8 +62,13 @@ form {
   padding-right: 14px;
 }
 
-.alert-success *{
-  color: rgb(70, 136, 71);
+.alert-discuss {
+  color: #3a5fad;
+  background-color: #d9e0f7;
+  border-color: #bcccf1;
+}
+.alert-discuss * {
+  color: #3a5fad;
 }
 
 .statuses table {
