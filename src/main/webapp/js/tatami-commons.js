@@ -233,7 +233,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
           _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
-              console.log(model);
             if (model.statusDate < initDate){
               self.views.discussBefore.model.add(model);
             }
