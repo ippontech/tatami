@@ -52,17 +52,13 @@ public class User {
     @Size(min = 0, max = 50)
     @Column(name = "lastName")
     private String lastName;
-    
-    @Size(min = 0, max = 50)
-    @Column(name = "email")
-    private String email;
 
     @NotNull
-    @Size(min = 10, max = 50)
+    @Size(min = 10, max = 100)
     @Column(name = "jobTitle")
     private String jobTitle;
 
-    @Size(min = 0, max = 15)
+    @Size(min = 0, max = 20)
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
@@ -131,15 +127,7 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
-    public String getEmail() {
-		return email;
-	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	public String getJobTitle() {
 		return jobTitle;
 	}
@@ -216,7 +204,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
-                ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +

@@ -132,18 +132,6 @@
                                     </div>
                                     
                                     <div class="control-group">
-                                        <label class="control-label" for="email"><fmt:message
-                                                key="tatami.user.email"/></label>
-
-                                        <div class="controls">
-                                            <form:input type="text"
-                                                        id="email"
-                                                        size="15" maxlength="40" class="input-xlarge"
-                                                        path="email"/>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="control-group">
                                         <label class="control-label" for="phoneNumber"><fmt:message
                                                 key="tatami.user.phoneNumber"/></label>
 
