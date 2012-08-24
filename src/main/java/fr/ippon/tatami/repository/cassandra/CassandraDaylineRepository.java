@@ -10,13 +10,13 @@ import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
+import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -39,7 +39,7 @@ public class CassandraDaylineRepository implements DaylineRepository {
     private final Log log = LogFactory.getLog(CassandraDaylineRepository.class);
 
     @Inject
-    private EntityManager em;
+    private EntityManagerImpl em;
 
     @Inject
     private Keyspace keyspaceOperator;

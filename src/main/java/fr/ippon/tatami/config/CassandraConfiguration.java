@@ -112,7 +112,7 @@ public class CassandraConfiguration {
     }
 
     @Bean
-    public EntityManager entityManager(Keyspace keyspace) {
+    public EntityManagerImpl entityManager(Keyspace keyspace) {
         return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
     }
 
