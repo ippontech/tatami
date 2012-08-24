@@ -176,6 +176,8 @@ public class UserService {
         user.setDomain(domain);
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
+        user.setJobTitle("");
+        user.setPhoneNumber("");
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());

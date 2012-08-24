@@ -54,7 +54,7 @@ public class User {
     private String lastName;
 
     @NotNull
-    @Size(min = 10, max = 100)
+    @Size(min = 0, max = 100)
     @Column(name = "jobTitle")
     private String jobTitle;
 
