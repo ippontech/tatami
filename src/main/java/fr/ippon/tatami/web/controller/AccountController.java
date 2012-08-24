@@ -51,6 +51,9 @@ public class AccountController {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setFirstName(updatedUser.getFirstName());
         currentUser.setLastName(updatedUser.getLastName());
+        currentUser.setJobTitle(updatedUser.getJobTitle());
+        currentUser.setEmail(updatedUser.getEmail());
+        currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {

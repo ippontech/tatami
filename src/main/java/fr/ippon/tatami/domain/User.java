@@ -52,6 +52,19 @@ public class User {
     @Size(min = 0, max = 50)
     @Column(name = "lastName")
     private String lastName;
+    
+    @Size(min = 0, max = 50)
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
+    @Size(min = 10, max = 50)
+    @Column(name = "jobTitle")
+    private String jobTitle;
+
+    @Size(min = 0, max = 15)
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
 
     @Column(name = "openIdUrl")
     @JsonIgnore
@@ -118,8 +131,32 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    
+    public String getEmail() {
+		return email;
+	}
 
-    public String getOpenIdUrl() {
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getOpenIdUrl() {
         return openIdUrl;
     }
 
@@ -178,6 +215,9 @@ public class User {
                 ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +

@@ -64,6 +64,7 @@ public abstract class AbstractCassandraTatamiTest {
         user.setDomain(DomainUtil.getDomainFromLogin(login));
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setJobTitle("web developer");
         return user;
     }
 
