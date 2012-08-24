@@ -115,6 +115,7 @@ form {
   font-size: 90%;
   font-weight: normal;
   padding-right: 10px;
+  display: none;
 }
 
 .status-actions a:hover {
