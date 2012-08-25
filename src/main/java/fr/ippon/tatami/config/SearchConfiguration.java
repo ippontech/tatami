@@ -11,8 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
@@ -47,19 +47,6 @@ public class SearchConfiguration {
     }
 
     // ElasticSearch configuration
-
-    @Bean
-    public SearchService searchService() {
-        SearchService searchService = null;
-        if (elasticsearchActivated()) {
-            log.info("Elastic Search is activated.");
-            searchService = new ElasticsearchSearchService();
-        } else {
-            log.info("Lucene is activated.");
-            searchService = new LuceneSearchService();
-        }
-        return searchService;
-    }
 
     @Bean
     public ElasticSearchSettings esSettings() {
@@ -185,14 +172,13 @@ public class SearchConfiguration {
 
     @Bean
     @DependsOn({"indexWriter"})
-    public IndexReader indexReader() {
+    public SearcherManager searcherManager() {
         if (!elasticsearchActivated()) {
             try {
                 IndexWriter indexWriter = indexWriter();
                 if (indexWriter != null) {
-                    IndexReader indexReader = IndexReader.open(indexWriter, true);
-
-                    return indexReader;
+                    SearcherManager searcherManager = new SearcherManager(indexWriter, true, null);
+                    return searcherManager;
                 } else {
                     return null;
                 }

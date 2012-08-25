@@ -51,12 +51,12 @@ public class TatamiUserDetailsService implements UserDetailsService {
         adminGrantedAuthorities.add(roleUser);
         adminGrantedAuthorities.add(roleAdmin);
 
-        String adminUsersList = this.env.getProperty("tatami.admin.users");
+        String adminUsersList = env.getProperty("tatami.admin.users");
         String[] adminUsersArray = adminUsersList.split(",");
         adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
         if (log.isDebugEnabled()) {
             for (String admin : adminUsers) {
-                log.debug("User \"" + admin + "\" is an administrator.");
+                log.debug("Initialization : user \"" + admin + "\" is an administrator");
             }
         }
     }
@@ -77,7 +77,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
         Collection<GrantedAuthority> grantedAuthorities = null;
         if (adminUsers.contains(login)) {
             if (log.isDebugEnabled()) {
-                log.debug("User \"" + login + "\" is an administrator.");
+                log.debug("User \"" + login + "\" is an administrator");
             }
             grantedAuthorities = adminGrantedAuthorities;
         } else {

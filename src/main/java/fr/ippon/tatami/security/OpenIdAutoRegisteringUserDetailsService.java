@@ -41,7 +41,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
     private DomainRepository domainRepository;
 
     @Inject
-    private TatamiUserDetailsService tatamiUserDetailsService; // => handles grantedAuthorities
+    private TatamiUserDetailsService userDetailsService; // => handles grantedAuthorities
 
     @Override
     public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
@@ -65,7 +65,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
         // Automatically create OpenId users in Tatami :
         UserDetails userDetails;
         try {
-            userDetails = tatamiUserDetailsService.loadUserByUsername(login);
+            userDetails = userDetailsService.loadUserByUsername(login);
             // ensure that this user has access to its domain if it has been created before
             domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(login), login);
 
@@ -100,7 +100,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
         user.setLastName(lastName);
         userService.createUser(user);
 
-        return tatamiUserDetailsService.getTatamiUserDetails(login, user.getPassword());
+        return userDetailsService.getTatamiUserDetails(login, user.getPassword());
     }
 
     private String getAttributeValue(OpenIDAuthenticationToken token, String name) {

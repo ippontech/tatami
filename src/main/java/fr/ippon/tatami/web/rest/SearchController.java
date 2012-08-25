@@ -56,7 +56,7 @@ public class SearchController {
         }
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        final Map<String, String> line = searchService.searchStatus(domain, q, "statusDate", "desc", page, rpp);
+        final Map<String, String> line = searchService.searchStatus(domain, q, page, rpp);
         return timelineService.buildStatusList(line);
     }
 

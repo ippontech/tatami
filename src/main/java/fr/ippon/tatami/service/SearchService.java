@@ -51,10 +51,8 @@ public interface SearchService {
      * @param size      the size of a page
      * @return a list of uid
      */
-    Map<String, String> searchStatus(@SuppressWarnings("rawtypes")
-                                     String domain,
+    Map<String, String> searchStatus(String domain,
                                      String query,
-                                     String sortField, String sortOrder,
                                      int page,
                                      int size);
 

@@ -35,7 +35,7 @@ public class LuceneSearchService implements SearchService {
     private IndexWriter indexWriter;
 
     @Inject
-    private IndexReader indexReader;
+    private SearcherManager searcherManager;
 
     @Inject
     private Analyzer analyzer;
@@ -50,7 +50,18 @@ public class LuceneSearchService implements SearchService {
 
     @Override
     public boolean reset() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        log.warn("Trying to delete the complete Lucene index");
+        try {
+            indexWriter.deleteAll();
+            indexWriter.commit();
+            return true;
+        } catch (IOException e) {
+            log.error("I/O error while deleting the Lucene index : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 
     @Override
@@ -68,6 +79,7 @@ public class LuceneSearchService implements SearchService {
 
         try {
             indexWriter.addDocument(document);
+            indexWriter.commit();
             if (log.isDebugEnabled()) {
                 log.debug("Lucene indexed status : " + status);
             }
@@ -82,10 +94,8 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, String> searchStatus(@SuppressWarnings("rawtypes") String domain,
+    public Map<String, String> searchStatus(String domain,
                                             String query,
-                                            String sortField,
-                                            String sortOrder,
                                             int page,
                                             int size) {
 
@@ -95,8 +105,10 @@ public class LuceneSearchService implements SearchService {
         if (size <= 0) {
             size = SearchService.DEFAULT_PAGE_SIZE;
         }
-        IndexSearcher searcher = new IndexSearcher(indexReader);
+
+        IndexSearcher searcher = null;
         try {
+            searcher = searcherManager.acquire();
             MultiFieldQueryParser parser =
                     new MultiFieldQueryParser(Version.LUCENE_36,
                             new String[]{"username", "firstName", "lastName", "content"},
@@ -141,6 +153,17 @@ public class LuceneSearchService implements SearchService {
             log.error("A Lucene query had a I/O error : " + e.getMessage());
             if (log.isDebugEnabled()) {
                 e.printStackTrace();
+            }
+        } finally {
+            try {
+                searcherManager.release(searcher);
+            } catch (IOException e) {
+                log.error("The Lucene searcher could not be given back to the searcherManager pool. " +
+                        e.getMessage());
+
+                if (log.isDebugEnabled()) {
+                    e.printStackTrace();
+                }
             }
         }
         return new HashMap<String, String>(0);

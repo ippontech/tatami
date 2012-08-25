@@ -15,6 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Map;
 
 import static org.elasticsearch.client.Requests.deleteIndexRequest;
@@ -63,6 +64,7 @@ public class ElasticSearchTest {
         status1.setLogin("dmartinpro@ippon.fr");
         status1.setUsername("dmartinpro");
         status1.setDomain("ippon.fr");
+        status1.setStatusDate(Calendar.getInstance().getTime());
 
         final Status status2 = new Status();
         status2.setContent("Recherche dans du texte riche écrit en français avec un #hashtag caché dedans");
@@ -70,9 +72,10 @@ public class ElasticSearchTest {
         status2.setLogin("dmartinpro@ippon.fr");
         status2.setUsername("dmartinpro");
         status2.setDomain("ippon.fr");
+        status2.setStatusDate(Calendar.getInstance().getTime());
 
 
-        final Map<String, String> ids0 = this.service.searchStatus("ippon.fr", "trying", null, null, 0, 50);
+        final Map<String, String> ids0 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -80,8 +83,8 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final Map<String, String> ids1 = this.service.searchStatus("ippon.fr", "trying", null, null, 0, 50);
-        final Map<String, String> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant être ecrit en francais", null, null, 0, 50);
+        final Map<String, String> ids1 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
+        final Map<String, String> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant être ecrit en francais", 0, 50);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

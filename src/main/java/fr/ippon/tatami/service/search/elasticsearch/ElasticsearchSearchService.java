@@ -94,8 +94,10 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, String> searchStatus(@SuppressWarnings("rawtypes") final String domain,
-                                            final String query, final String sortField, final String sortOrder, int page, int size) {
+    public Map<String, String> searchStatus(final String domain,
+                                            final String query,
+                                            int page,
+                                            int size) {
 
         Assert.notNull(query);
         Assert.notNull(domain);
@@ -120,9 +122,8 @@ public class ElasticsearchSearchService implements SearchService {
                     .setFilter(domainFilter)
                     .setTypes(dataType)
                     .setFrom(page * size).setSize(size).setExplain(false);
-            if (StringUtils.isNotBlank(sortField)) {
-                builder.addSort(sortField, ("desc".equalsIgnoreCase(sortOrder)) ? SortOrder.DESC : SortOrder.ASC);
-            }
+
+            builder.addSort("statusDate", SortOrder.DESC);
 
             searchResponse = builder.execute().actionGet();
         } catch (IndexMissingException e) {
