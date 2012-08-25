@@ -34,7 +34,7 @@ public class ElasticSearchTest {
     private static final Log log = LogFactory.getLog(ElasticSearchTest.class);
 
     @Inject
-    private IndexService service;
+    private SearchService service;
 
     @Inject
     private ElasticSearchServerNodeFactory factory;
@@ -42,7 +42,7 @@ public class ElasticSearchTest {
     @Before
     public void initElasticSearch() {
         //        factory = new ElasticSearchServerNodeFactory();
-        //        factory.setIndexActivated(true);
+        //        factory.setElasticsearchActivated(true);
         //        factory.setIndexName("tatami");
         //        factory.setEsSettings(new ElasticSearchSettings());
         //        factory.buildServerNodes();

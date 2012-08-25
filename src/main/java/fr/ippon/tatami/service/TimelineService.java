@@ -61,11 +61,7 @@ public class TimelineService {
     private AuthenticationService authenticationService;
 
     @Inject
-    private IndexService indexService;
-
-    @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
+    private SearchService searchService;
 
     public Status getStatus(String statusId) {
         Map<String, String> line = new HashMap<String, String>();
@@ -234,9 +230,7 @@ public class TimelineService {
                 && !Boolean.TRUE.equals(status.getRemoved())) {
             statusRepository.removeStatus(status);
             counterRepository.decrementStatusCounter(currentUser.getLogin());
-            if (indexActivated) {
-                indexService.removeStatus(status);
-            }
+            searchService.removeStatus(status);
         }
     }
 

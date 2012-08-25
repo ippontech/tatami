@@ -34,7 +34,7 @@ public class ElasticSearchServerNodeFactory {
 
     private String indexName;
 
-    private boolean indexActivated;
+    private boolean elasticsearchActivated;
 
     /**
      * Return a default Factory.
@@ -58,13 +58,13 @@ public class ElasticSearchServerNodeFactory {
         return this.serverNode;
     }
 
-    public void setIndexActivated(boolean indexActivated) {
-        this.indexActivated = indexActivated;
+    public void setElasticsearchActivated(boolean elasticsearchActivated) {
+        this.elasticsearchActivated = elasticsearchActivated;
     }
 
     @PostConstruct
     public void buildServerNode() throws IOException {
-        if (this.indexActivated) {
+        if (this.elasticsearchActivated) {
             log.debug("Instantiating Elastic Search cluster...");
             final Settings settings = this.esSettings.getSettings();
 
@@ -103,7 +103,7 @@ public class ElasticSearchServerNodeFactory {
 
     @PreDestroy
     public void shutdownNodes() {
-        if (this.indexActivated) {
+        if (this.elasticsearchActivated) {
             log.info("Shutting down Elastic Search nodes...");
             if (this.serverNode != null) {
                 this.serverNode.stop();

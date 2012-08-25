@@ -67,11 +67,7 @@ public class UserService {
     private RegistrationRepository registrationRepository;
 
     @Inject
-    private IndexService indexService;
-
-    @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
+    private SearchService searchService;
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
@@ -127,10 +123,7 @@ public class UserService {
         user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         try {
             userRepository.updateUser(user);
-            // Add to Elastic Search index if it is activated
-            if (indexActivated) {
-                indexService.addUser(user);
-            }
+            searchService.addUser(user);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating user " + user + " : " + cve);
             throw cve;
@@ -184,10 +177,8 @@ public class UserService {
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
 
-        // Add to Elastic Search index if it is activated
-        if (indexActivated) {
-            indexService.addUser(user);
-        }
+        // Add to the search engine
+        searchService.addUser(user);
 
         if (log.isDebugEnabled()) {
             log.debug("Created User : " + user.toString());

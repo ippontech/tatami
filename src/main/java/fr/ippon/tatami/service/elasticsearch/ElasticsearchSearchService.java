@@ -1,7 +1,8 @@
-package fr.ippon.tatami.service;
+package fr.ippon.tatami.service.elasticsearch;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.SearchService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -9,6 +10,8 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -35,13 +38,9 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * @author dmartinpro
- */
-@Service
-public class IndexService {
+public class ElasticsearchSearchService implements SearchService {
 
-    private static final Log log = LogFactory.getLog(IndexService.class);
+    private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
 
     private static final String ALL_FIELDS = "_all";
 
@@ -53,12 +52,20 @@ public class IndexService {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    /**
-     * Add a status to the index.
-     *
-     * @param status the status to add : can't be null
-     * @return the response's Id
-     */
+    @Override
+    public boolean reset() {
+        DeleteIndexResponse delete = client.admin().
+                indices().delete(new DeleteIndexRequest(this.indexName)).actionGet();
+
+        if (!delete.acknowledged()) {
+            log.error("Search engine Index wasn't deleted !");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     @Async
     public String addStatus(final Status status) {
         Assert.notNull(status, "status can't be null");
@@ -84,29 +91,13 @@ public class IndexService {
         return addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
     }
 
-    /**
-     * Delete a status from the index.
-     *
-     * @param status the status to delete
-     * @return the response's Id
-     */
+    @Override
     public String removeStatus(final Status status) {
         Assert.notNull(status, "status can't be null");
         return removeObject(status.getClass(), status.getStatusId());
     }
 
-    /**
-     * Search an item in the index.
-     *
-     * @param clazz     the item type : mandatory
-     * @param field     a particular field to search into
-     * @param query     the query : mandatory
-     * @param page      the page to return
-     * @param size      the size of a page
-     * @param sortField which field should be used to sort the results
-     * @param sortOrder which order to apply, ASC if not provided
-     * @return a list of uid
-     */
+    @Override
     public Map<String, String> search(@SuppressWarnings("rawtypes") final String domain, final Class clazz, final String field,
                                       final String query, int page, int size, final String sortField, final String sortOrder) {
 
@@ -160,17 +151,7 @@ public class IndexService {
         return items;
     }
 
-    /**
-     * Search an item in the index.
-     *
-     * @param clazz       the item type
-     * @param searchField a particular field to search into, if null, "_all" field is used
-     * @param uidField    : the field to return in the results collection
-     * @param query       the query
-     * @param page        the page to return
-     * @param size        the size of a page
-     * @return a list of uid
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> List<String> searchPrefix(final String domain, final Class<T> clazz, final String searchField, final String uidField, final String query, int page, int size) {
 
@@ -223,12 +204,7 @@ public class IndexService {
         return items;
     }
 
-    /**
-     * Add a user to the index.
-     *
-     * @param user the user to add : can't be null
-     * @return the response's Id
-     */
+    @Override
     @Async
     public String addUser(final User user) {
         Assert.notNull(user, "user can't be null");

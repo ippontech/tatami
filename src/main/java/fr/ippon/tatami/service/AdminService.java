@@ -43,7 +43,7 @@ public class AdminService {
     private DomainRepository domainRepository;
 
     @Inject
-    private IndexService indexService;
+    private SearchService searchService;
 
     @Inject
     private UserRepository userRepository;
@@ -65,19 +65,20 @@ public class AdminService {
     }
 
     /**
-     * Rebuilds the ElasticSearch Index.
+     * Rebuilds the Search Engine Index.
      * <p>
      * This could be a huge batch process : it does not use a Repository for performance reasons.
      * </p>
      */
     public void rebuildIndex() {
-        log.info("ElasticSearch Index rebuild triggered.");
+        log.info("Search engine Index rebuild triggered.");
         log.debug("Deleting Index");
-        DeleteIndexResponse delete = elasticSearchClient.admin().
-                indices().delete(new DeleteIndexRequest(this.indexName)).actionGet();
+        if (searchService.reset()) {
+            log.info("Search engine Index deleted.");
+        }  else {
+            log.error("An error has occured while deleting the Search Engine Index. " +
+                    "Full rebuild of the index cancelled.");
 
-        if (!delete.acknowledged()) {
-            log.error("ElasticSearch Index wasn't deleted !");
             return;
         }
 
@@ -98,9 +99,9 @@ public class AdminService {
                 for (String login : logins) {
                     User user = userRepository.findUserByLogin(login);
                     log.debug("Indexing user : " + user);
-                    indexService.addUser(user); // This should be batched for optimum performance
+                    searchService.addUser(user); // This should be batched for optimum performance
                 }
-                log.info("ElasticSearch should index " + logins.size() + " users.");
+                log.info("The search engine should index " + logins.size() + " users.");
             }
         }
 
@@ -125,11 +126,11 @@ public class AdminService {
             }
             for (Row<String, String, String> row : rows) {
                 Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
-                indexService.addStatus(status); // This should be batched for optimum performance
+                searchService.addStatus(status); // This should be batched for optimum performance
             }
-            log.info("ElasticSearch should index " + rows.size() + " statuses.");
+            log.info("The search engine should index " + rows.size() + " statuses.");
         }
-        log.info("ElasticSearch Index rebuilt.");
+        log.info("Search engine index rebuilt.");
     }
 
 }

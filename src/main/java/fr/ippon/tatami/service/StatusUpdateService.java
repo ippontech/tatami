@@ -49,12 +49,7 @@ public class StatusUpdateService {
     private CounterRepository counterRepository;
 
     @Inject
-    private IndexService indexService;
-
-    @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
-
+    private SearchService searchService;
 
     public void postStatus(String content) {
         createStatus(content, "", "");
@@ -116,10 +111,9 @@ public class StatusUpdateService {
         // Increment status count for the current user
         counterRepository.incrementStatusCounter(currentLogin);
 
-        // Add to Elastic Search index if it is activated
-        if (indexActivated) {
-            indexService.addStatus(status);
-        }
+        // Add to the search engine
+        searchService.addStatus(status);
+
         return status;
     }
 

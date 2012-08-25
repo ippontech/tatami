@@ -3,7 +3,7 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -43,11 +43,11 @@ public class UserController {
     private AuthenticationService authenticationService;
 
     @Inject
-    private IndexService indexService;
+    private SearchService searchService;
 
     @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
+    @Named("elasticsearchActivated")
+    private boolean elasticsearchActivated;
 
     /**
      * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
@@ -114,10 +114,10 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to find users starting with : " + query);
         }
-        if (this.indexActivated) {
+        if (this.elasticsearchActivated) {
             final User currentUser = authenticationService.getCurrentUser();
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            final List<String> logins = this.indexService.searchPrefix(domain, User.class, null, "login", query, 0, 20);
+            final List<String> logins = this.searchService.searchPrefix(domain, User.class, null, "login", query, 0, 20);
             final Collection<User> users = this.userService.getUsersByLogin(logins);
             users.remove(currentUser);
             return users;
