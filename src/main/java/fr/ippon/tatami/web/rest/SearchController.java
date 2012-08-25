@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class SearchController {
     private TimelineService timelineService;
 
     /**
-     * GET  /search/?q=jdubois -> get the status where "jdubois" appears
+     * GET  /searchStatus/?q=tatami -> get the status where "tatami" appears
      */
     @RequestMapping(value = "/rest/search",
             method = RequestMethod.GET,
@@ -55,14 +54,9 @@ public class SearchController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to search status containing these words (" + q + ").");
         }
-
-        if (!elasticsearchActivated) {
-            return new ArrayList<Status>();
-        }
-
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        final Map<String, String> line = searchService.search(domain, Status.class, null, q, page, rpp, "statusDate", "desc");
+        final Map<String, String> line = searchService.searchStatus(domain, q, "statusDate", "desc", page, rpp);
         return timelineService.buildStatusList(line);
     }
 

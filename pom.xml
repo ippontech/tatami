@@ -50,6 +50,8 @@
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/data</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
@@ -75,6 +77,8 @@
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/data</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
@@ -114,6 +118,8 @@
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/data</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
@@ -165,6 +171,8 @@
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
             </properties>

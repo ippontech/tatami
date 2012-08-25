@@ -72,7 +72,7 @@ public class ElasticSearchTest {
         status2.setDomain("ippon.fr");
 
 
-        final Map<String, String> ids0 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
+        final Map<String, String> ids0 = this.service.searchStatus("ippon.fr", "trying", null, null, 0, 50);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -80,8 +80,8 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final Map<String, String> ids1 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
-        final Map<String, String> ids2 = this.service.search("ippon.fr", Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final Map<String, String> ids1 = this.service.searchStatus("ippon.fr", "trying", null, null, 0, 50);
+        final Map<String, String> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant être ecrit en francais", null, null, 0, 50);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

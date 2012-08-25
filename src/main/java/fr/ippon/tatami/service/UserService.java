@@ -176,7 +176,7 @@ public class UserService {
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
 
-        // Add to the search engine
+        // Add to the searchStatus engine
         searchService.addUser(user);
 
         if (log.isDebugEnabled()) {

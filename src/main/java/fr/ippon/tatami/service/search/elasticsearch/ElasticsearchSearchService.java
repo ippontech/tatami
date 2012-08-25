@@ -1,9 +1,8 @@
-package fr.ippon.tatami.service.elasticsearch;
+package fr.ippon.tatami.service.search.elasticsearch;
 
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,7 +13,6 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -66,7 +64,7 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     @Async
-    public String addStatus(final Status status) {
+    public void addStatus(final Status status) {
         Assert.notNull(status, "status can't be null");
 
         XContentBuilder jsonifiedObject = null;
@@ -76,7 +74,7 @@ public class ElasticsearchSearchService implements SearchService {
                     .field("username", status.getUsername())
                     .field("domain", status.getDomain())
                     .field("statusDate", status.getStatusDate())
-                    .field("content", StringEscapeUtils.unescapeHtml(status.getContent()))
+                    .field("content", status.getContent())
                     .endObject();
         } catch (IOException e) {
             log.error("The status wasn't added to the index: "
@@ -84,10 +82,9 @@ public class ElasticsearchSearchService implements SearchService {
                     + " ["
                     + status.toString()
                     + "]", e);
-            return null;
         }
 
-        return addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
+        addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
     }
 
     @Override
@@ -97,10 +94,9 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, String> search(@SuppressWarnings("rawtypes") final String domain, final Class clazz, final String field,
-                                      final String query, int page, int size, final String sortField, final String sortOrder) {
+    public Map<String, String> searchStatus(@SuppressWarnings("rawtypes") final String domain,
+                                            final String query, final String sortField, final String sortOrder, int page, int size) {
 
-        Assert.notNull(clazz);
         Assert.notNull(query);
         Assert.notNull(domain);
 
@@ -108,14 +104,13 @@ public class ElasticsearchSearchService implements SearchService {
             page = 0; //Default value
         }
         if (size <= 0) {
-            size = 20; //Default value
+            size = SearchService.DEFAULT_PAGE_SIZE;
         }
 
-
-        final String name = (StringUtils.isBlank(field) ? ALL_FIELDS : field);
-        final QueryBuilder qb = QueryBuilders.textQuery(name, query);
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        final FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
+        String name = ALL_FIELDS;
+        QueryBuilder qb = QueryBuilders.textQuery(name, query);
+        String dataType = Status.class.getSimpleName().toLowerCase();
+        FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
 
         SearchResponse searchResponse = null;
         try {
@@ -205,7 +200,7 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     @Async
-    public String addUser(final User user) {
+    public void addUser(final User user) {
         Assert.notNull(user, "user can't be null");
 
         XContentBuilder jsonifiedObject;
@@ -218,16 +213,15 @@ public class ElasticsearchSearchService implements SearchService {
                     .field("firstName", user.getFirstName())
                     .field("lastName", user.getLastName())
                     .endObject();
+
+            addObject(user.getClass(), user.getLogin(), jsonifiedObject);
         } catch (IOException e) {
             log.error("The user wasn't added to the index: "
                     + user.getLogin()
                     + " ["
                     + user.toString()
                     + "]", e);
-            return null;
         }
-
-        return addObject(user.getClass(), user.getLogin(), jsonifiedObject);
     }
 
     /**
@@ -238,7 +232,7 @@ public class ElasticsearchSearchService implements SearchService {
      * @param jsonifiedObject the item json representation
      * @return the response's Id
      */
-    private String addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
+    private void addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
 
         if (log.isDebugEnabled()) {
             String itemAsString = null;
@@ -251,15 +245,13 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         final String dataType = clazz.getSimpleName().toLowerCase();
-        IndexResponse response = this.client.prepareIndex(this.indexName, dataType, uid)
+        client.prepareIndex(this.indexName, dataType, uid)
                 .setSource(jsonifiedObject)
                 .execute()
                 .actionGet();
 
         // Should we force the update ? Not sure... due to performance cost. "index.refresh_interval" properties may be adjusted if needed
         // client.admin().indices().refresh(Requests.refreshRequest(indexName)).actionGet();
-
-        return (response == null) ? null : response.getId();
     }
 
     /**

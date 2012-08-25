@@ -3,11 +3,19 @@ package fr.ippon.tatami.config;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
 import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.elasticsearch.ElasticsearchSearchService;
-import fr.ippon.tatami.service.lucene.LuceneSearchService;
+import fr.ippon.tatami.service.search.elasticsearch.ElasticsearchSearchService;
+import fr.ippon.tatami.service.search.lucene.LuceneSearchService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.NIOFSDirectory;
+import org.apache.lucene.util.Version;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.client.Client;
@@ -17,6 +25,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Search configuration : uses Elastic Search if it is configured, basic Lucene otherwise.
@@ -28,6 +38,15 @@ public class SearchConfiguration {
 
     @Inject
     private Environment env;
+
+    // ElasticSearch or Lucene configuration ?
+
+    @Bean(name = "elasticsearchActivated")
+    public boolean elasticsearchActivated() {
+        return env.getProperty("elasticsearch.enabled", Boolean.class);
+    }
+
+    // ElasticSearch configuration
 
     @Bean
     public SearchService searchService() {
@@ -45,7 +64,7 @@ public class SearchConfiguration {
     @Bean
     public ElasticSearchSettings esSettings() {
         if (elasticsearchActivated()) {
-            String configPath = configurationPath();
+            String configPath = env.getRequiredProperty("elasticsearch.path.conf");
             ElasticSearchSettings settings = null;
             if (StringUtils.isBlank(configPath)) {
                 settings = new ElasticSearchSettings();
@@ -97,13 +116,95 @@ public class SearchConfiguration {
         return env.getRequiredProperty("elasticsearch.indexName");
     }
 
+    // Lucene configuration
+
     @Bean
-    public String configurationPath() {
-        return env.getRequiredProperty("elasticsearch.path.conf");
+    public Analyzer analyzer() {
+        if (!elasticsearchActivated()) {
+            Analyzer analyzer = null;
+            String language = env.getRequiredProperty("lucene.language");
+            if (language.equals("French")) {
+                analyzer = new FrenchAnalyzer(Version.LUCENE_36);
+            } else {
+                analyzer = new StandardAnalyzer(Version.LUCENE_36);
+            }
+            return analyzer;
+        } else {
+            return null;
+        }
     }
 
-    @Bean(name = "elasticsearchActivated")
-    public boolean elasticsearchActivated() {
-        return env.getProperty("elasticsearch.enabled", Boolean.class);
+    @Bean
+    public Directory directory() {
+        if (!elasticsearchActivated()) {
+            log.info("Initializing Lucene search engine...");
+            String lucenePath = env.getRequiredProperty("lucene.path");
+            try {
+                Directory directory = new NIOFSDirectory(new File(lucenePath));
+                log.info("Lucene is initialized");
+                return directory;
+            } catch (IOException e) {
+                log.error("Lucene could not be started : " + e.getMessage());
+                if (log.isWarnEnabled()) {
+                    e.printStackTrace();
+                }
+                log.error("The search engine will NOT be available in Tatami.");
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    @Bean
+    @DependsOn({"analyzer", "directory"})
+    public IndexWriter indexWriter() {
+        if (!elasticsearchActivated()) {
+            try {
+                Directory directory = directory();
+                if (directory != null) {
+                    IndexWriter indexWriter = new IndexWriter(directory(),
+                            analyzer(),
+                            IndexWriter.MaxFieldLength.UNLIMITED);
+
+                    return indexWriter;
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                log.error("Lucene I/O error while writing : " + e.getMessage());
+                if (log.isInfoEnabled()) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    @Bean
+    @DependsOn({"indexWriter"})
+    public IndexReader indexReader() {
+        if (!elasticsearchActivated()) {
+            try {
+                IndexWriter indexWriter = indexWriter();
+                if (indexWriter != null) {
+                    IndexReader indexReader = IndexReader.open(indexWriter, true);
+
+                    return indexReader;
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                log.error("Lucene I/O error wnile reading : " + e.getMessage());
+                if (log.isInfoEnabled()) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

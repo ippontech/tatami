@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Service used to search statuses and users.
+ * Service used to searchStatus statuses and users.
  */
 public interface SearchService {
 
+    public static final int DEFAULT_PAGE_SIZE = 20;
+
     /**
-     * Reset the search engine.
+     * Reset the searchStatus engine.
      * <p/>
      * This is used to do a full reindexation of all the data.
      *
@@ -26,7 +28,7 @@ public interface SearchService {
      * @param status the status to add : can't be null
      * @return the response's Id
      */
-    String addStatus(Status status);
+    void addStatus(Status status);
 
     /**
      * Delete a status from the index.
@@ -39,30 +41,28 @@ public interface SearchService {
     /**
      * Search an item in the index.
      *
-     * @param clazz     the item type : mandatory
-     * @param field     a particular field to search into
+     *
+     *
+     *
      * @param query     the query : mandatory
-     * @param page      the page to return
-     * @param size      the size of a page
      * @param sortField which field should be used to sort the results
      * @param sortOrder which order to apply, ASC if not provided
+     * @param page      the page to return
+     * @param size      the size of a page
      * @return a list of uid
      */
-    Map<String, String> search(@SuppressWarnings("rawtypes")
-                               String domain,
-                               Class clazz,
-                               String field,
-                               String query,
-                               int page,
-                               int size,
-                               String sortField,
-                               String sortOrder);
+    Map<String, String> searchStatus(@SuppressWarnings("rawtypes")
+                                     String domain,
+                                     String query,
+                                     String sortField, String sortOrder,
+                                     int page,
+                                     int size);
 
     /**
      * Search an item in the index.
      *
      * @param clazz       the item type
-     * @param searchField a particular field to search into, if null, "_all" field is used
+     * @param searchField a particular field to searchStatus into, if null, "_all" field is used
      * @param uidField    : the field to return in the results collection
      * @param query       the query
      * @param page        the page to return
@@ -83,5 +83,5 @@ public interface SearchService {
      * @param user the user to add : can't be null
      * @return the response's Id
      */
-    String addUser(User user);
+    void addUser(User user);
 }

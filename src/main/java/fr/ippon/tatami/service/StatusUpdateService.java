@@ -110,7 +110,7 @@ public class StatusUpdateService {
         // Increment status count for the current user
         counterRepository.incrementStatusCounter(currentLogin);
 
-        // Add to the search engine
+        // Add to the searchStatus engine
         searchService.addStatus(status);
 
         return status;
