@@ -54,9 +54,6 @@ public class UserService {
     private MailService mailService;
 
     @Inject
-    private StatusRepository statusRepository;
-
-    @Inject
     private TimelineRepository timelineRepository;
 
     @Inject
