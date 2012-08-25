@@ -1,7 +1,5 @@
 package fr.ippon.tatami.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import java.util.Collection;
 
 /**

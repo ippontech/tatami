@@ -128,23 +128,23 @@ public class User {
         this.lastName = lastName;
     }
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getOpenIdUrl() {
+    public String getOpenIdUrl() {
         return openIdUrl;
     }
 

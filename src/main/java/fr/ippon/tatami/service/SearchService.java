@@ -13,7 +13,7 @@ public interface SearchService {
 
     /**
      * Reset the search engine.
-     *
+     * <p/>
      * This is used to do a full reindexation of all the data.
      *
      * @return if the reset was completed OK
@@ -49,14 +49,14 @@ public interface SearchService {
      * @return a list of uid
      */
     Map<String, String> search(@SuppressWarnings("rawtypes")
-                                      String domain,
-                                      Class clazz,
-                                      String field,
-                                      String query,
-                                      int page,
-                                      int size,
-                                      String sortField,
-                                      String sortOrder);
+                               String domain,
+                               Class clazz,
+                               String field,
+                               String query,
+                               int page,
+                               int size,
+                               String sortField,
+                               String sortOrder);
 
     /**
      * Search an item in the index.

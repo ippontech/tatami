@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 

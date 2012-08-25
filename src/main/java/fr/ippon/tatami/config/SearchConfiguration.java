@@ -33,8 +33,10 @@ public class SearchConfiguration {
     public SearchService searchService() {
         SearchService searchService = null;
         if (elasticsearchActivated()) {
+            log.info("Elastic Search is activated.");
             searchService = new ElasticsearchSearchService();
         } else {
+            log.info("Lucene is activated.");
             searchService = new LuceneSearchService();
         }
         return searchService;

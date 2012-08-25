@@ -15,8 +15,6 @@ import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.client.Client;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -75,7 +73,7 @@ public class AdminService {
         log.debug("Deleting Index");
         if (searchService.reset()) {
             log.info("Search engine Index deleted.");
-        }  else {
+        } else {
             log.error("An error has occured while deleting the Search Engine Index. " +
                     "Full rebuild of the index cancelled.");
 

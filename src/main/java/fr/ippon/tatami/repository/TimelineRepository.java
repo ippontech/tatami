@@ -2,12 +2,11 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Status;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 /**
  * The Timeline Repository.
- *
+ * <p/>
  * A Timeline is the list of statuses that a user sees, which includes :
  * - The statuses from the people he follows
  * - His own statuses
