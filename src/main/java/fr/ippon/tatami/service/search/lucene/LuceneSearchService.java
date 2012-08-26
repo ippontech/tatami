@@ -140,7 +140,10 @@ public class LuceneSearchService implements SearchService {
             Term domainTerm = new Term("domain", domain);
             filter.addTerm(domainTerm);
 
-            TopDocs topDocs = searcher.search(luceneQuery, filter, size);
+            SortField sortField = new SortField("statusDate", SortField.STRING, true);
+            Sort sort = new Sort(sortField);
+
+            TopDocs topDocs = searcher.search(luceneQuery, filter, size, sort);
             int totalHits = topDocs.totalHits;
             if (totalHits == 0) {
                 return new HashMap<String, String>(0);
