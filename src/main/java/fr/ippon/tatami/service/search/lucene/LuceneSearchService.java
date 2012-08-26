@@ -9,7 +9,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -20,6 +19,7 @@ import org.apache.lucene.util.Version;
 import org.springframework.scheduling.annotation.Async;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,12 +40,26 @@ public class LuceneSearchService implements SearchService {
     @Inject
     private Analyzer analyzer;
 
-    private Map<String,Float> statusBoosts = new HashMap<String, Float>();
+    private Map<String, Float> statusBoosts = new HashMap<String, Float>();
 
     @PostConstruct
     public void init() {
         statusBoosts.put("username", 1f);
         statusBoosts.put("content", 5f);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.debug("Closing the Lucene index");
+        try {
+            indexWriter.commit();
+            indexWriter.close();
+        } catch (IOException e) {
+            log.error("I/O error while closing the Lucene index : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

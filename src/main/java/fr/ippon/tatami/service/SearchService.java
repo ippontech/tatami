@@ -41,9 +41,6 @@ public interface SearchService {
     /**
      * Search an item in the index.
      *
-     *
-     *
-     *
      * @param query     the query : mandatory
      * @param sortField which field should be used to sort the results
      * @param sortOrder which order to apply, ASC if not provided

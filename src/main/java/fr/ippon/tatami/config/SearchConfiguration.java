@@ -2,9 +2,6 @@ package fr.ippon.tatami.config;
 
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.search.elasticsearch.ElasticsearchSearchService;
-import fr.ippon.tatami.service.search.lucene.LuceneSearchService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

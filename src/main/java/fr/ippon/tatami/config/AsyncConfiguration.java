@@ -6,7 +6,6 @@ import fr.ippon.tatami.service.search.lucene.LuceneIndexReaderReloader;
 import fr.ippon.tatami.service.search.lucene.LuceneSearchService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.SearcherManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
