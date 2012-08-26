@@ -56,12 +56,13 @@ public class StatusUpdateService {
 
     public void replyToStatus(String content, String replyTo) {
         Status originalStatus = statusRepository.findStatusById(replyTo);
-        Status replyStatus = createStatus(content, replyTo, originalStatus.getUsername());
         if (!originalStatus.getReplyTo().equals("")) {
             log.debug("Original status is also a reply, replying to the real original status instead.");
             Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getReplyTo());
+            Status replyStatus = createStatus(content, realOriginalStatus.getStatusId(), originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
+            Status replyStatus = createStatus(content, replyTo, originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
         }
     }
