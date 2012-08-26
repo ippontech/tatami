@@ -37,6 +37,11 @@
         <fmt:message key="tatami.lost.password.msg.error"/>
     </div>
     </c:if>
+        <div class="row">
+            <div class="alert alert-error">
+                <h4><fmt:message key="tatami.beta.alert"/></h4>
+            </div>
+        </div>
     <div class="row">
         <div class="span12 text-center">
             <h1><fmt:message key="tatami.presentation"/></h1>
@@ -48,7 +53,6 @@
             </p>
         </div>
     </div>
-
     <div class="row">
         <div class="span4">
             <div class="row-fluid">
