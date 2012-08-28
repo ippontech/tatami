@@ -190,13 +190,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
     this.views.status.bind('details', this.detailsAction, this);
     this.views.status.bind('highlight', this.highlight, this);
-    this.views.status.bind('displayActions', this.displayActions, this);
-    this.views.status.bind('hideActions', this.hideActions, this);
-  },
-
-  events: {
-    'mouseover .status': 'displayActions',
-    'mouseout .status': 'hideActions',
   },
 
   refreshFavorite: function() {
@@ -208,14 +201,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
   highlight: function() {
     this.$el.find('.status').effect("highlight", {color:'#08C'}, 500);
-  },
-
-  displayActions: function() {
-    this.$el.find('.status-actions').show();
-  },
-
-  hideActions: function() {
-    this.$el.find('.status-actions').hide();
   },
 
   detailsAction:function () {
