@@ -88,9 +88,9 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public String removeStatus(final Status status) {
+    public void removeStatus(final Status status) {
         Assert.notNull(status, "status can't be null");
-        return removeObject(status.getClass(), status.getStatusId());
+        removeObject(status.getClass(), status.getStatusId());
     }
 
     @Override

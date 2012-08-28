@@ -34,9 +34,8 @@ public interface SearchService {
      * Delete a status from the index.
      *
      * @param status the status to delete
-     * @return the response's Id
      */
-    String removeStatus(Status status);
+     void removeStatus(Status status);
 
     /**
      * Search an item in the index.

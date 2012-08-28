@@ -103,8 +103,19 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public String removeStatus(Status status) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public void removeStatus(Status status) {
+        Term term = new Term("statusId", status.getStatusId());
+        try {
+            indexWriter.deleteDocuments(term);
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene deleted status : " + status);
+            }
+        } catch (IOException e) {
+            log.error("Lucene had an I/O error while deleting status " + status + " : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

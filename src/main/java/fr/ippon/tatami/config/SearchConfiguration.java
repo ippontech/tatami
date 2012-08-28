@@ -9,6 +9,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
@@ -119,6 +120,20 @@ public class SearchConfiguration {
     }
 
     @Bean
+    @DependsOn({"analyzer"})
+    public IndexWriterConfig indexWriterConfig() {
+        if (!elasticsearchActivated()) {
+            Analyzer analyzer = analyzer();
+            IndexWriterConfig indexWriterConfig =
+                    new IndexWriterConfig(Version.LUCENE_36, analyzer);
+
+            return indexWriterConfig;
+        } else {
+            return null;
+        }
+    }
+
+    @Bean
     public Directory directory() {
         if (!elasticsearchActivated()) {
             log.info("Initializing Lucene search engine...");
@@ -141,15 +156,14 @@ public class SearchConfiguration {
     }
 
     @Bean
-    @DependsOn({"analyzer", "directory"})
+    @DependsOn({"indexWriterConfig", "directory"})
     public IndexWriter indexWriter() {
         if (!elasticsearchActivated()) {
             try {
                 Directory directory = directory();
                 if (directory != null) {
                     IndexWriter indexWriter = new IndexWriter(directory(),
-                            analyzer(),
-                            IndexWriter.MaxFieldLength.UNLIMITED);
+                            indexWriterConfig());
 
                     return indexWriter;
                 } else {
