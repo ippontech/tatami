@@ -13,7 +13,7 @@
 <div class="container mainPanel">
     <div class="row">
 
-        <div class="offset4 span4 ">
+        <div class="offset2 span8 ">
             <h1><fmt:message key="tatami.presentation.title"/></h1>
             <br><br>
         </div>
@@ -86,6 +86,15 @@
             </ul>
         </div>
         <div class="span4"><img src="/img/ippon-logo-bookmark.png" height="148" width="150" alt="Ippon Technologies"></div>
+
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p><h2><fmt:message key="tatami.presentation.row5.title"/></h2></p>
+            <ul>
+                <li><fmt:message key="tatami.presentation.row5.1"/> <a href="mailto:commercial@ippon.fr">commercial@ippon.fr</a></li>
+            </ul>
+        </div>
 
     </div>
 </div>
