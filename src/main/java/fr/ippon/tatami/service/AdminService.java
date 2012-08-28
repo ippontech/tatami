@@ -15,13 +15,15 @@ import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.client.Client;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
@@ -50,16 +52,27 @@ public class AdminService {
     private StatusRepository statusRepository;
 
     @Inject
+    private Environment env;
+
+    @Inject
     private Keyspace keyspaceOperator;
-
-    @Inject
-    private Client elasticSearchClient;
-
-    @Inject
-    private String indexName;
 
     public Collection<Domain> getAllDomains() {
         return domainRepository.getAllDomains();
+    }
+
+    public Map<String, String> getEnvProperties() {
+        Map<String, String> properties = new LinkedHashMap<String, String>();
+        properties.put("tatami.version", env.getProperty("tatami.version"));
+        properties.put("tatami.wro4j.enabled", env.getProperty("tatami.wro4j.enabled"));
+        properties.put("tatami.google.analytics.key", env.getProperty("tatami.google.analytics.key"));
+        properties.put("tatami.message.reloading.enabled", env.getProperty("tatami.message.reloading.enabled"));
+        properties.put("smtp.host", env.getProperty("smtp.host"));
+        properties.put("cassandra.host", env.getProperty("cassandra.host"));
+        properties.put("elasticsearch.enabled", env.getProperty("elasticsearch.enabled"));
+        properties.put("elasticsearch.path.conf", env.getProperty("elasticsearch.path.conf"));
+        properties.put("lucene.path", env.getProperty("lucene.path"));
+        return properties;
     }
 
     /**

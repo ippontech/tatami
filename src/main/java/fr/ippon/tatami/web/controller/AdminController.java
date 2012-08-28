@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Julien Dubois
@@ -28,8 +29,10 @@ public class AdminController {
             method = RequestMethod.GET)
     public ModelAndView adminPage(@RequestParam(required = false) String message) {
         Collection<Domain> domains = adminService.getAllDomains();
+        Map<String, String> properties = adminService.getEnvProperties();
         ModelAndView mv = new ModelAndView("admin");
         mv.addObject("domains", domains);
+        mv.addObject("properties", properties);
         mv.addObject("message", message);
         return mv;
     }

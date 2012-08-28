@@ -1,14 +1,13 @@
 package me.prettyprint.hom;
 
-import java.util.Map;
+import org.apache.openjpa.persistence.EntityManagerFactoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
-
-import org.apache.openjpa.persistence.EntityManagerFactoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Map;
 
 /**
  * This is a temporary hack : this class is needed at startup by the HOM configuration,
@@ -29,7 +28,7 @@ public class CassandraPersistenceProvider implements PersistenceProvider {
     @Override
     public EntityManagerFactory createContainerEntityManagerFactory(
             PersistenceUnitInfo info, Map map) {
-        if ( log.isDebugEnabled() ) {
+        if (log.isDebugEnabled()) {
             log.debug("creating EntityManagerFactory {} with properties {} ", "null", map);
         }
         return null;
@@ -37,10 +36,10 @@ public class CassandraPersistenceProvider implements PersistenceProvider {
 
     @Override
     public EntityManagerFactory createEntityManagerFactory(String emName, Map map) {
-        if ( log.isDebugEnabled() ) {
+        if (log.isDebugEnabled()) {
             log.debug("creating EntityManagerFactory {} with properties {} ", emName, map);
         }
-        if ( map == null || map.isEmpty()) {
+        if (map == null || map.isEmpty()) {
             return new EntityManagerFactoryImpl();
         }
         return new EntityManagerFactoryImpl();
