@@ -24,9 +24,7 @@ public class MailService {
     private static final Log log = LogFactory.getLog(MailService.class);
 
     @Inject
-    Environment env;
-
-    private JavaMailSenderImpl sender;
+    private Environment env;
 
     private String host;
 

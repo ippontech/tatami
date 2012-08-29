@@ -39,9 +39,6 @@ public class CassandraDaylineRepository implements DaylineRepository {
     private final Log log = LogFactory.getLog(CassandraDaylineRepository.class);
 
     @Inject
-    private EntityManagerImpl em;
-
-    @Inject
     private Keyspace keyspaceOperator;
 
     @Override

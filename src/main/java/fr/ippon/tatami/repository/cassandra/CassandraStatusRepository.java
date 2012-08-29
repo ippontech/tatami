@@ -3,7 +3,6 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.StatusRepository;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
-import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,9 +33,6 @@ public class CassandraStatusRepository implements StatusRepository {
 
     @Inject
     private EntityManagerImpl em;
-
-    @Inject
-    private Keyspace keyspaceOperator;
 
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
