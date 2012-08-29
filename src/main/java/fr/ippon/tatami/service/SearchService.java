@@ -35,7 +35,7 @@ public interface SearchService {
      *
      * @param status the status to delete
      */
-     void removeStatus(Status status);
+    void removeStatus(Status status);
 
     /**
      * Search an item in the index.

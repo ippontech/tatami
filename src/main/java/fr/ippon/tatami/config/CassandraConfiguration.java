@@ -33,14 +33,14 @@ public class CassandraConfiguration {
     private final Log log = LogFactory.getLog(CassandraConfiguration.class);
 
     @Inject
-    Environment env;
+    private Environment env;
 
     @Bean
     public Keyspace keyspaceOperator() {
 
-        String cassandraHost = this.env.getProperty("cassandra.host");
-        String cassandraClusterName = this.env.getProperty("cassandra.clusterName");
-        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
+        String cassandraHost = env.getProperty("cassandra.host");
+        String cassandraClusterName = env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
@@ -49,7 +49,7 @@ public class CassandraConfiguration {
 
         KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
         if (keyspaceDef == null) {
-            this.log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
