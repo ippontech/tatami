@@ -69,7 +69,8 @@
                 <li><fmt:message key="tatami.presentation.row3.4"/></li>
                 <li><fmt:message key="tatami.presentation.row3.5"/></li>
                 <li><fmt:message key="tatami.presentation.row3.6"/></li>
-                <li><fmt:message key="tatami.presentation.row3.7"/> <a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a></li>
+                <li><fmt:message key="tatami.presentation.row3.7"/></li>
+                <li><fmt:message key="tatami.presentation.row3.8"/> <a href="https://github.com/ippontech/tatami">https://github.com/ippontech/tatami</a></li>
             </ul>
         </div>
 
@@ -83,6 +84,7 @@
             <ul>
                 <li><fmt:message key="tatami.presentation.row4.1"/> <a href="http://tatami.ippon.fr">http://tatami.ippon.fr</a></li>
                 <li><fmt:message key="tatami.presentation.row4.2"/></li>
+                <li><fmt:message key="tatami.presentation.row4.3"/></li>
             </ul>
         </div>
         <div class="span4"><img src="/img/ippon-logo-bookmark.png" height="148" width="150" alt="Ippon Technologies"></div>
