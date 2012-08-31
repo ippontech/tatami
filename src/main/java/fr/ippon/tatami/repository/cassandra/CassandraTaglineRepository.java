@@ -1,7 +1,16 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.TaglineRepository;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -9,19 +18,14 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.repository.TaglineRepository;
+import fr.ippon.tatami.repository.cassandra.util.DomainTagUtil;
 
 /**
  * Cassandra implementation of the status repository.
@@ -53,7 +57,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
                 if (log.isDebugEnabled()) {
                     log.debug("Found tag : " + tag);
                 }
-                mutator.insert(getKey(domain, tag), TAGLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
+                mutator.insert(DomainTagUtil.getColumnFamilyKey(domain, tag), TAGLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                         "", UUIDSerializer.get(), StringSerializer.get()));
             }
         }
@@ -64,7 +68,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
-                .setKey(getKey(domain, tag))
+                .setKey(DomainTagUtil.getColumnFamilyKey(domain, tag))
                 .setRange(null, null, true, size)
                 .execute()
                 .get();
@@ -76,10 +80,4 @@ public class CassandraTaglineRepository implements TaglineRepository {
         return line;
     }
 
-    /**
-     * Generates the key for this column family.
-     */
-    private String getKey(String domain, String tag) {
-        return tag.toLowerCase() + "-" + domain;
-    }
 }

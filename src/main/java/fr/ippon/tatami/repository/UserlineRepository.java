@@ -2,12 +2,11 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Status;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 /**
  * The Userline Repository.
- *
+ * <p/>
  * A Userline is the list of statuses updated by a user (including the statuses he shared).
  *
  * @author Julien Dubois

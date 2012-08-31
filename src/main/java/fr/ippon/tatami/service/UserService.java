@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,9 +54,6 @@ public class UserService {
     private MailService mailService;
 
     @Inject
-    private StatusRepository statusRepository;
-
-    @Inject
     private TimelineRepository timelineRepository;
 
     @Inject
@@ -67,11 +63,7 @@ public class UserService {
     private RegistrationRepository registrationRepository;
 
     @Inject
-    private IndexService indexService;
-
-    @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
+    private SearchService searchService;
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
@@ -127,10 +119,7 @@ public class UserService {
         user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         try {
             userRepository.updateUser(user);
-            // Add to Elastic Search index if it is activated
-            if (indexActivated) {
-                indexService.addUser(user);
-            }
+            searchService.addUser(user);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating user " + user + " : " + cve);
             throw cve;
@@ -176,16 +165,16 @@ public class UserService {
         user.setDomain(domain);
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
+        user.setJobTitle("");
+        user.setPhoneNumber("");
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
 
-        // Add to Elastic Search index if it is activated
-        if (indexActivated) {
-            indexService.addUser(user);
-        }
+        // Add to the searchStatus engine
+        searchService.addUser(user);
 
         if (log.isDebugEnabled()) {
             log.debug("Created User : " + user.toString());

@@ -11,6 +11,9 @@
       <div class="statuses">
       </div>
 
+      <div class="shares">
+      </div>
+
       <div class="discuss-after">
       </div>
 
@@ -64,14 +67,14 @@
   <tr>
       <td>
           <@ if (status.sharedByUsername != null) { @>
-            <div><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a></div>
+            <div class="pull-right"><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a></div>
           <@ } @>
       </td>
   </tr>
   <tr>
       <td>
           <@ if (status.replyTo != '') { @>
-          <div><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
+          <div class="pull-right"><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
           <@ } @>
       </td>
   </tr>
@@ -96,6 +99,25 @@
           <@ } @>
       </td>
   </tr>
+</script>
+
+<script type="text/template" id="timeline-share">
+  <tr>
+    <th class="well">
+      <h5><fmt:message key="tatami.timeline.shares"/></h5>
+      <h1><@= count @></h1>
+    </th>
+    <td class="well shares-list">
+    </td>
+  </tr>
+</script>
+
+<script type="text/template" id="timeline-share-item">
+  <@ if (profile) { @>
+    <a href="/tatami/profile/<@= profile.username @>/"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"></a>
+  <@ } else { @>
+    <a href="/tatami/profile/<@= username @>/"><@= username @></a> 
+  <@ } @>
 </script>
 
 <script type="text/template" id="timeline-new">

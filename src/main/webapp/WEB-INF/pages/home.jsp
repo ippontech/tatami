@@ -72,6 +72,8 @@
         var searchQuery = "${search}";
         var page = "home";
 
+        var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
+
         if(tag !== '')
             $('a[href="#tags"]').tab('show');
         else if(searchQuery !== '')

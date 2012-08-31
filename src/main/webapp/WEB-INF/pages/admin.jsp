@@ -32,25 +32,6 @@
 
     <div class="row">
         <div class="span12">
-            <h2>
-                Re-index ElasticSearch
-            </h2>
-
-            <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
-                <fieldset>
-                    <div class="form-actions">
-                        <button type="submit" class="input-xlarge btn btn-danger"
-                                onclick="return(confirm('Are you sure you want to re-index ElasticSearch?'));">
-                            Re-index ElasticSearch
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span12">
             <div class="row-fluid">
                 <div class="tab-content span12">
                     <h2>
@@ -81,6 +62,58 @@
             </div>
         </div>
     </div>
+
+        <div class="row">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="tab-content span12">
+                        <h2>
+                            Environnement variables (from tatami.properties)
+                        </h2>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${properties}" var="property">
+                                <tr>
+                                    <td>
+                                            ${property.key}
+                                    </td>
+                                    <td>
+                                            ${property.value}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span12">
+                <h2>
+                    Re-index Search Engine
+                </h2>
+
+                <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
+                    <fieldset>
+                        <div class="form-actions">
+                            <button type="submit" class="input-xlarge btn btn-danger"
+                                    onclick="return(confirm('Are you sure you want to re-index Search Engine?'));">
+                                Re-index Search Engine
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
 
     <jsp:include page="includes/footer.jsp"/>
 

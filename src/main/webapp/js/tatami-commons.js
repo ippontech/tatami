@@ -110,16 +110,66 @@ app.Model.StatusRemoveFavorite = Backbone.Model.extend({
   }
 });
 
-app.Collection.StatusDetails = Backbone.Collection.extend({
+app.Model.StatusDetails = Backbone.Model.extend({
     url: function(){
         return '/tatami/rest/statuses/details/' + this.statusId;
     },
     initialize: function(model) {
         this.statusId = model.get('statusId');
-    },
-    parse: function(data){
-      return data.discussionStatuses;
     }
+});
+
+app.Collection.Discussion = Backbone.Collection.extend({
+});
+
+app.Collection.SharesCollection = Backbone.Collection.extend({
+
+});
+
+app.View.SharesView = Backbone.View.extend({
+  tagName: 'table',
+  template: _.template($('#timeline-share').html()),
+
+  render: function() {
+    var self = this;
+    if (this.model.size() > 0) {
+      this.$el.html(this.template({count:this.model.size()}));
+      this.model.forEach(function(model) {
+        self.$el.find('.shares-list').append(new app.View.ShareView({username: model.get('username')}).render());
+      });
+    }
+    else
+      this.$el.empty();
+    return this.$el;
+  }
+});
+
+app.Model.ShareProfileModel = Backbone.Model.extend({
+  url : function(){
+    return '/tatami/rest/users/show?screen_name=' + this.options.username;
+  }
+});
+
+app.View.ShareView = Backbone.View.extend({
+  template: _.template($('#timeline-share-item').html()),
+  initialize: function(){
+    var self = this;
+    var profile = new app.Model.ShareProfileModel();
+    profile.options = { username: this.options.username };
+    profile.fetch({
+      success: function(model){
+        self.model = model;
+        self.render();
+      }
+    });
+  },
+  render: function(){
+    this.$el.html(this.template({
+      username: this.options.username,
+      profile: ((typeof this.model !== 'undefined') ? this.model.toJSON() : null)
+    }));
+    return this.$el;
+  }
 });
 
 /* Views */
@@ -158,7 +208,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
     var self = this;
 
     if (this.details != true) {
-      var statusDetails = new app.Collection.StatusDetails(this.model);
+      var statusDetails = new app.Model.StatusDetails(this.model);
 
       if(typeof this.views.discussBefore === 'undefined'){
         this.views.discussBefore = new app.View.TimeLineView({
@@ -172,20 +222,30 @@ app.View.TimeLineItemView = Backbone.View.extend({
           discuss: true
         });
       }
+      if(typeof this.views.shares === 'undefined'){
+        this.views.shares = new app.View.SharesView({
+          model: new app.Collection.SharesCollection()
+        });
+      }
       statusDetails.fetch({
-        success: function(collection){
+        success: function(model){
           self.views.discussBefore.model.reset();
           self.views.discussAfter.model.reset();
-          collection.forEach(function(model, index, collection){
+          _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
-            if (model.get('statusDate') < initDate){
-              self.views.discussBefore.model.add(model.toJSON());
+            if (model.statusDate < initDate){
+              self.views.discussBefore.model.add(model);
             }
             else {
-              self.views.discussAfter.model.add(model.toJSON());
+              self.views.discussAfter.model.add(model);
             }
-
           });
+          self.views.shares.model.reset();
+          _.forEach(model.get('sharedByLogins'), function(value) {
+            var username = value.split('@')[0];
+            self.views.shares.model.add({username:username});
+          });
+          self.views.shares.render();
         }
       });
     }
@@ -201,9 +261,11 @@ app.View.TimeLineItemView = Backbone.View.extend({
     if(this.details){
       this.$el.find('.discuss-before').append(this.views.discussBefore.render());
       this.$el.find('.discuss-after').append(this.views.discussAfter.render());
+      this.$el.find('.shares').append(this.views.shares.render());
     }else{
       this.$el.find('.discuss-before').empty();
       this.$el.find('.discuss-after').empty();
+      this.$el.find('.shares').empty();
     }
   },
 

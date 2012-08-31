@@ -5,9 +5,12 @@ package fr.ippon.tatami.config;
  */
 public class Constants {
 
-    public static String VERSION = null;
+    private Constants() {
+    }
 
-    public static int PAGINATION_SIZE = 50;
+    public static final int PAGINATION_SIZE = 50;
+
+    public static String VERSION = null;
 
     public static String GOOGLE_ANALYTICS_KEY = null;
 

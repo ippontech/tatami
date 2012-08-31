@@ -1,6 +1,6 @@
 package fr.ippon.tatami.test.application;
 
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchConfiguration;
+import fr.ippon.tatami.config.SearchConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Configuration
 @PropertySource({"classpath:/tatami/tatami-test.properties", "classpath:/tatami/tatami-es-test.properties"})
-@Import(value = {ElasticSearchTestConfiguration.class, ElasticSearchConfiguration.class})
+@Import(value = {ElasticSearchTestConfiguration.class, SearchConfiguration.class})
 public class ApplicationElasticSearchTestConfiguration {
 
     private final Log log = LogFactory.getLog(ApplicationElasticSearchTestConfiguration.class);

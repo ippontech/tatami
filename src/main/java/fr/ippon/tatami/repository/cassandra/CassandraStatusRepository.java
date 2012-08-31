@@ -1,31 +1,44 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.StatusRepository;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
+import static fr.ippon.tatami.repository.cassandra.util.CassandraConstants.COLUMN_TAG_PREFIX;
+import static fr.ippon.tatami.repository.cassandra.util.CassandraConstants.TAG_COLUMN_MAX_NAME;
+import static fr.ippon.tatami.repository.cassandra.util.CassandraConstants.TAG_COLUMN_MIN_NAME;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.QueryResult;
+import me.prettyprint.hector.api.query.SliceQuery;
+import me.prettyprint.hom.EntityManagerImpl;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.validation.*;
-import java.util.*;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.repository.StatusRepository;
 
 /**
  * Cassandra implementation of the status repository.
@@ -43,8 +56,8 @@ public class CassandraStatusRepository implements StatusRepository {
     private final Log log = LogFactory.getLog(CassandraStatusRepository.class);
 
     @Inject
-    private EntityManager em;
-
+    private EntityManagerImpl em;
+    
     @Inject
     private Keyspace keyspaceOperator;
 
@@ -57,11 +70,13 @@ public class CassandraStatusRepository implements StatusRepository {
                                String domain,
                                String content,
                                String replyTo,
-                               String replyToUsername)
+                               String replyToUsername,
+                               List<String> tags)
             throws ConstraintViolationException {
 
         Status status = new Status();
-        status.setStatusId(TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString());
+        String statusId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
+		status.setStatusId(statusId);
         status.setLogin(login);
         status.setUsername(username);
         status.setDomain(domain);
@@ -70,6 +85,7 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setReplyTo(replyTo);
         status.setReplyToUsername(replyToUsername);
         status.setRemoved(false);
+        status.setTags(tags);
         if (log.isDebugEnabled()) {
             log.debug("Persisting Status : " + status);
         }
@@ -78,6 +94,10 @@ public class CassandraStatusRepository implements StatusRepository {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
         em.persist(status);
+        
+        // Persist tags
+        addTags(keyspaceOperator, STATUS_CF, statusId, tags);
+        
         return status;
     }
 
@@ -91,14 +111,20 @@ public class CassandraStatusRepository implements StatusRepository {
             log.debug("Finding status : " + statusId);
         }
         Status status = em.find(Status.class, statusId);
+        
         if (status != null) {
-            return Boolean.TRUE.equals(status.getRemoved()) ? null : status;
-        } else {
-            return null;
+	        // Find status's tags
+        	List<String> tags = getTags(keyspaceOperator, STATUS_CF, statusId, TAG_COLUMN_MIN_NAME, TAG_COLUMN_MAX_NAME);
+        	
+	        status.setTags(tags);
+	        
+	        status = Boolean.TRUE.equals(status.getRemoved()) ? null : status;
         }
+
+        return status;
     }
 
-    @Override
+	@Override
     @CacheEvict(value = "status-cache", key = "#status.statusId")
     public void removeStatus(Status status) {
         status.setRemoved(true);
@@ -107,4 +133,69 @@ public class CassandraStatusRepository implements StatusRepository {
         }
         em.persist(status);
     }
+	
+	/**
+	 * Check if the tags exists and add them if they don't exist.
+	 * 
+	 * @param keyspaceOperator
+	 * @param columnfamily
+	 * @param columnfamilyId
+	 * @param tags
+	 * @return
+	 */
+	private int addTags(Keyspace keyspaceOperator, String columnfamily, String columnfamilyId, List<String> tags) {
+		
+		// Get current user tags
+		List<String> currentTags = getTags(keyspaceOperator, columnfamily, columnfamilyId, TAG_COLUMN_MIN_NAME, TAG_COLUMN_MAX_NAME);
+
+		// Get the number of tags of the user
+		int nbColumns = currentTags.size();
+		int nbAddedTags = 0;
+		
+		Mutator<String> mutator = HFactory.createMutator(keyspaceOperator,
+				StringSerializer.get());
+		
+		for (String tag : tags) {
+			String tagLowerCase = tag.toLowerCase();
+
+			// Check if the tag already exists
+			if (currentTags.contains(tagLowerCase)) {
+				// This tag already exists => we don't add it!
+				continue;
+			}
+
+			// Add the new tag
+			nbColumns++;
+			String columnName = COLUMN_TAG_PREFIX + nbColumns;
+			
+			mutator.insert(columnfamilyId, columnfamily, HFactory.createColumn(columnName,
+					tagLowerCase, StringSerializer.get(),
+					StringSerializer.get()));
+			nbAddedTags++;
+		}
+		
+		return nbAddedTags;
+
+	}
+	
+	private List<String> getTags(Keyspace keyspaceOperator, String columnfamily, String cfId, String startRange, String endRange) {
+		SliceQuery<String, String, String> query = HFactory
+				.createSliceQuery(keyspaceOperator, StringSerializer.get(),
+						StringSerializer.get(), StringSerializer.get())
+				.setColumnFamily(columnfamily)
+				.setKey(cfId)
+				.setRange(TAG_COLUMN_MIN_NAME, TAG_COLUMN_MAX_NAME, false,
+						Integer.MAX_VALUE);
+
+		QueryResult<ColumnSlice<String, String>> queryResult = query.execute();
+
+		ColumnSlice<String, String> columnSlice = queryResult.get();
+		
+		SortedSet<String> tags = new TreeSet<String>();
+		for (HColumn<String, String> hColumn : columnSlice.getColumns()) {
+			tags.add(hColumn.getValue());
+		}
+
+		return new ArrayList<String>(tags);
+	}
 }

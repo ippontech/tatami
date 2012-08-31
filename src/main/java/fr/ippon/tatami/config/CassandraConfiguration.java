@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 
@@ -34,14 +33,14 @@ public class CassandraConfiguration {
     private final Log log = LogFactory.getLog(CassandraConfiguration.class);
 
     @Inject
-    Environment env;
+    private Environment env;
 
     @Bean
     public Keyspace keyspaceOperator() {
 
-        String cassandraHost = this.env.getProperty("cassandra.host");
-        String cassandraClusterName = this.env.getProperty("cassandra.clusterName");
-        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
+        String cassandraHost = env.getProperty("cassandra.host");
+        String cassandraClusterName = env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
@@ -50,7 +49,7 @@ public class CassandraConfiguration {
 
         KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
         if (keyspaceDef == null) {
-            this.log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
+            log.warn("Keyspace \"" + cassandraKeyspace + "\" does not exist, creating it!");
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
             cluster.addKeyspace(keyspaceDef, true);
 
@@ -62,6 +61,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, REGISTRATION_CF, 0);
             addColumnFamily(cluster, SHARES_CF, 0);
             addColumnFamily(cluster, DISCUSSION_CF, 0);
+            addColumnFamily(cluster, USERTAG_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);
@@ -72,6 +72,7 @@ public class CassandraConfiguration {
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, DAYLINE_CF, 0);
+            addColumnFamilyCounter(cluster, USERTAGCOUNTER_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
@@ -112,7 +113,7 @@ public class CassandraConfiguration {
     }
 
     @Bean
-    public EntityManager entityManager(Keyspace keyspace) {
+    public EntityManagerImpl entityManager(Keyspace keyspace) {
         return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
     }
 

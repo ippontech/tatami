@@ -15,6 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Map;
 
 import static org.elasticsearch.client.Requests.deleteIndexRequest;
@@ -34,7 +35,7 @@ public class ElasticSearchTest {
     private static final Log log = LogFactory.getLog(ElasticSearchTest.class);
 
     @Inject
-    private IndexService service;
+    private SearchService service;
 
     @Inject
     private ElasticSearchServerNodeFactory factory;
@@ -42,7 +43,7 @@ public class ElasticSearchTest {
     @Before
     public void initElasticSearch() {
         //        factory = new ElasticSearchServerNodeFactory();
-        //        factory.setIndexActivated(true);
+        //        factory.setElasticsearchActivated(true);
         //        factory.setIndexName("tatami");
         //        factory.setEsSettings(new ElasticSearchSettings());
         //        factory.buildServerNodes();
@@ -63,16 +64,18 @@ public class ElasticSearchTest {
         status1.setLogin("dmartinpro@ippon.fr");
         status1.setUsername("dmartinpro");
         status1.setDomain("ippon.fr");
+        status1.setStatusDate(Calendar.getInstance().getTime());
 
         final Status status2 = new Status();
-        status2.setContent("Recherche dans du texte riche écrit en français avec un #hashtag caché dedans");
+        status2.setContent("Recherche dans du texte riche Ã©crit en franÃ§ais avec un #hashtag cachÃ© dedans");
         status2.setStatusId("1234-4567-8988");
         status2.setLogin("dmartinpro@ippon.fr");
         status2.setUsername("dmartinpro");
         status2.setDomain("ippon.fr");
+        status2.setStatusDate(Calendar.getInstance().getTime());
 
 
-        final Map<String, String> ids0 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
+        final Map<String, String> ids0 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -80,8 +83,8 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final Map<String, String> ids1 = this.service.search("ippon.fr", Status.class, null, "trying", 0, 50, null, null);
-        final Map<String, String> ids2 = this.service.search("ippon.fr", Status.class, null, "texte riche pouvant être ecrit en francais", 0, 50, null, null);
+        final Map<String, String> ids1 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
+        final Map<String, String> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant Ãªtre ecrit en francais", 0, 50);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

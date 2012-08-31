@@ -62,19 +62,26 @@ form {
   padding-right: 14px;
 }
 
+.counter{
+    font-size:80%;
+    font-style: italic;
+}
+.counter_warning{color: #ff7f00;}
+.counter_exceeded{color: #ee0014;}
+
 .alert-discuss {
   color: #3a5fad;
   background-color: #d9e0f7;
   border-color: #bcccf1;
 }
+
 .alert-discuss * {
   color: #3a5fad;
 }
 
-.statuses table {
+.statuses table, .shares table {
     width: 100%;
 }
-
 .userStatus {
     color: #000000;
     text-decoration: none;
@@ -108,6 +115,8 @@ form {
 .avatar-small {
     width: 32px;
     height: 32px;
+    margin-right: 2px;
+    margin-bottom: 2px;
 }
 
 .status-actions {
@@ -137,13 +146,6 @@ form {
 
 .status {
   margin-bottom: 5px;
-}
-
-.status th:first-child {
-  vertical-align: top;
-  width: 64px;
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .status th:first-child {

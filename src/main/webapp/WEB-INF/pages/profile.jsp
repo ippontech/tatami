@@ -77,6 +77,11 @@
                   <div class="row-fluid">
                     <div class="span4">
                       <div class="alert alert-info">
+                        <div><b><fmt:message key="tatami.user.email"/> :</b> <a href="mailto:${user.login}">${user.login}</a></div>
+                        <div><b><fmt:message key="tatami.user.jobTitle"/> :</b> ${user.jobTitle}</div>
+                        <div><b><fmt:message key="tatami.user.phoneNumber"/> :</b> ${user.phoneNumber}</div>
+                      </div>
+                      <div class="alert alert-info">
                         <div class="row-fluid">
                           <div class="span12">
                             <ul class="nav nav-pills nav-stacked profilMenu">

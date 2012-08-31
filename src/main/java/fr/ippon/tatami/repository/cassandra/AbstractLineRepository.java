@@ -15,7 +15,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
@@ -67,10 +70,10 @@ public abstract class AbstractLineRepository {
                     .execute()
                     .get();
 
-            result =  query.getColumns();
+            result = query.getColumns();
         }
 
-        Map<String, String> line= new LinkedHashMap<String, String>();
+        Map<String, String> line = new LinkedHashMap<String, String>();
         boolean logDebug = log.isDebugEnabled();
         for (HColumn<UUID, String> column : result) {
             String value = column.getValue();

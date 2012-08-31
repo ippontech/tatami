@@ -12,6 +12,7 @@
     <script src="/js/bootstrap-min.js"></script>
     <script src="/js/underscore-min.js"></script>
     <script src="/js/backbone-min.js"></script>
+    <script src="/js/jquery-charcount.js"></script>
     <script src="/js/jquery-tatami-tagLinker.js"></script>
     <script src="/js/jquery-tatami-usernameLinker.js"></script>
     <script src="/js/jquery-raphael-tatami-pie.js"></script>

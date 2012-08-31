@@ -1,9 +1,10 @@
 package fr.ippon.tatami.repository;
 
+import java.util.List;
+
 import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Map;
 
 /**
  * The Status Repository.
@@ -17,7 +18,8 @@ public interface StatusRepository {
                         String domain,
                         String content,
                         String replyTo,
-                        String replyToUsername) throws ConstraintViolationException;
+                        String replyToUsername,
+                        List<String> tags) throws ConstraintViolationException;
 
     void removeStatus(Status status);
 

@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A user.
@@ -78,6 +79,8 @@ public class Status {
      */
     @Column(name = "replyToUsername")
     private String replyToUsername;
+    
+    private List<String> tags;
 
     private String firstName;
 
@@ -226,8 +229,16 @@ public class Status {
     public void setRemoved(Boolean removed) {
         this.removed = removed;
     }
+    
+    public List<String> getTags() {
+		return tags;
+	}
 
-    @Override
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -261,6 +272,7 @@ public class Status {
                 ", favorite=" + favorite +
                 ", sharedByUsername='" + sharedByUsername + '\'' +
                 ", removed=" + removed +
+                ", tags='" + tags + '\'' +
                 '}';
     }
 }

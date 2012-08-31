@@ -28,7 +28,7 @@ public class ElasticSearchServerNodeFactoryTest {
         log.debug(this.getClass().getSimpleName() + ": testing the ES Factory");
 
         final ElasticSearchServerNodeFactory f = new ElasticSearchServerNodeFactory();
-        f.setIndexActivated(true);
+        f.setElasticsearchActivated(true);
         f.setIndexName("tatami");
         f.setEsSettings(new ElasticSearchSettings());
         f.buildServerNode();

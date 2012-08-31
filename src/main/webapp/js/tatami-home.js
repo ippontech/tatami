@@ -808,6 +808,14 @@ app.Router.HomeRouter = Backbone.Router.extend({
       model : new app.Model.ProfileModel()
     });
     $('#profileContent').html(profile.render());
+    $("#updateStatusContent").charCount({
+          css: 'counter',
+          cssWarning: 'counter_warning',
+          cssExceeded: 'counter_exceeded',
+          allowed: 500,
+          warning: 20,
+          counterText: text_characters_left
+    });
 
     var follow = app.views.follow = new app.View.FollowView();
     $('#profileFollow').html(follow.render());

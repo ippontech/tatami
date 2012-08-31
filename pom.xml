@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -50,57 +50,16 @@
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
                 <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
         </profile>
         <profile>
-            <!--
-            Spring JavaConfig is not supported in JRebel, so this configuration is useless at the moment.
-            Migration to XML configuration is under discussion.
-            -->
-            <id>jrebel</id>
+            <id>preprod</id>
             <properties>
                 <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.smtp.host>localhost</tatami.smtp.host>
-                <tatami.smtp.port>25</tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.zeroturnaround</groupId>
-                        <artifactId>jrebel-maven-plugin</artifactId>
-                        <version>1.1.1</version>
-                        <executions>
-                            <execution>
-                                <id>generate-rebel-xml</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>ippon</id>
-            <properties>
-                <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
                 <tatami.version>${project.version}</tatami.version>
@@ -110,12 +69,14 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.elasticsearch.enabled>true</tatami.elasticsearch.enabled>
-                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
             <build>
                 <plugins>
@@ -165,7 +126,7 @@
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
         <hector.version>1.0-5</hector.version>
-        <hector.mapper.version>1.1-03</hector.mapper.version>
+        <hector.mapper.version>3.0-04</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
         <cglib.version>2.2.2</cglib.version>
@@ -241,6 +202,11 @@
             <groupId>me.prettyprint</groupId>
             <artifactId>hector-object-mapper</artifactId>
             <version>${hector.mapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openjpa</groupId>
+            <artifactId>openjpa</artifactId>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -415,7 +381,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>tatami</finalName>
+        <finalName>root</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

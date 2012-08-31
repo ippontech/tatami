@@ -1,6 +1,7 @@
 package fr.ippon.tatami.test.application;
 
-import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.search.elasticsearch.ElasticsearchSearchService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class ElasticSearchTestConfiguration {
 
     @Bean
-    public IndexService indexService() {
-        IndexService is = new IndexService();
+    public SearchService searchService() {
+        SearchService is = new ElasticsearchSearchService();
         return is;
     }
 }

@@ -1,5 +1,8 @@
 package fr.ippon.tatami.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.Status;
 import org.junit.Test;
@@ -27,12 +30,14 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String username = "jdubois";
         String domain = "ippon.fr";
         String content = "content";
+        List<String> tags = new ArrayList<String>();
+        tags.add("java");
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        assertThat(statusRepository.createStatus(login, username, domain, content, "", ""), notNullValue());
+        assertThat(statusRepository.createStatus(login, username, domain, content, "", "", tags), notNullValue());
     }
 
     @Test(expected = ValidationException.class)
@@ -41,12 +46,14 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String username = "jdubois";
         String domain = "ippon.fr";
         String content = "content";
+        List<String> tags = new ArrayList<String>();
+        tags.add("java");
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "", "");
+        statusRepository.createStatus(login, username, domain, content, "", "", tags);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -55,12 +62,14 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String username = "jdubois";
         String domain = "ippon.fr";
         String content = null;
+        List<String> tags = new ArrayList<String>();
+        tags.add("java");
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "", "");
+        statusRepository.createStatus(login, username, domain, content, "", "", tags);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -69,12 +78,14 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String username = "jdubois";
         String domain = "ippon.fr";
         String content = "";
+        List<String> tags = new ArrayList<String>();
+        tags.add("java");
 
         Status status = new Status();
         status.setContent(content);
         status.setLogin(login);
 
-        statusRepository.createStatus(login, username, domain, content, "", "");
+        statusRepository.createStatus(login, username, domain, content, "", "", tags);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -90,7 +101,9 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "jdubois@ippon.fr";
         String username = "jdubois";
         String domain = "ippon.fr";
+        List<String> tags = new ArrayList<String>();
+        tags.add("java");
 
-        statusRepository.createStatus(login, username, domain, content, "", "");
+        statusRepository.createStatus(login, username, domain, content, "", "", tags);
     }
 }

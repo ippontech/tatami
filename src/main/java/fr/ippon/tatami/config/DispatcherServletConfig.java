@@ -26,7 +26,7 @@ import java.util.*;
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
-@PropertySource(value = "classpath:/META-INF/tatami/tatami.properties")
+@PropertySource({"classpath:/META-INF/tatami/tatami.properties"})
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Inject

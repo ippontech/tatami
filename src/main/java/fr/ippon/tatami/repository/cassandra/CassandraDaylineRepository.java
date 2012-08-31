@@ -16,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -37,9 +36,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterSliceQuery
 public class CassandraDaylineRepository implements DaylineRepository {
 
     private final Log log = LogFactory.getLog(CassandraDaylineRepository.class);
-
-    @Inject
-    private EntityManager em;
 
     @Inject
     private Keyspace keyspaceOperator;

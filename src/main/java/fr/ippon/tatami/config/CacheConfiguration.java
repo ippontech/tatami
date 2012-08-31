@@ -21,6 +21,4 @@ public class CacheConfiguration {
     public net.sf.ehcache.CacheManager ehCacheManager() {
         return new net.sf.ehcache.CacheManager();
     }
-
-
 }

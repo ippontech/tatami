@@ -36,4 +36,8 @@ public class ColumnFamilyKeys {
     public final static String DOMAIN_CF = "Domain";
 
     public final static String REGISTRATION_CF = "Registration";
+    
+    public final static String USERTAG_CF = "UserTag";
+    
+    public final static String USERTAGCOUNTER_CF = "UserTagCounter";
 }
