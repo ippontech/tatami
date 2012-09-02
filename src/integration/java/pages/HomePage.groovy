@@ -15,6 +15,6 @@ class HomePage extends TatamiBasePage {
 		profileContent { $("div#profileContent") }
 	  
 		// les contenus ci-dessous ne sont accessibles qu'avec le javascript puisque les div sont chargés vides ...
-		updateStatus { $("input",value:"Update your status") }
+		updateStatus { $("button",text:"Update your status") }
     }
 }

@@ -22,7 +22,9 @@ forcedLocale = "en"
 // See: http://code.google.com/p/selenium/wiki/HtmlUnitDriver
 driver = {
 	def browserVersion = BrowserVersion.getDefault()
+	browserVersion.setSystemLanguage(forcedLocale)
 	browserVersion.setBrowserLanguage(forcedLocale)
+	browserVersion.setUserLanguage(forcedLocale)
 	def driver = new HtmlUnitDriver(browserVersion)
 	// driver.javascriptEnabled = true // raphael.js fails to be executed by HtmlUnitDriver
 	driver

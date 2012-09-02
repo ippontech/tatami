@@ -9,8 +9,8 @@ class LoginPage extends Page {
  
     static content = {
 		
-		errorAlert(required:false) { $("div.alert-error") }
-		infoAlert(required:false) { $("div.alert-info") }
+		errorAlert(required:false) { $("div.alert-error",text:contains("e-mail address is already in used")) }
+		infoAlert(required:false) { $("div.alert-info",text:contains("registration e-mail")) }
 		
 		registrationForm { $("#registrationForm") }
 		registrationButton { $("#registrationButton") }

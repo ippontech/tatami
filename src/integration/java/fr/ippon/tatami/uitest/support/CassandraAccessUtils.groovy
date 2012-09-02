@@ -7,6 +7,7 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.ColumnQuery;
+import me.prettyprint.hom.EntityManagerImpl;
 
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
@@ -14,13 +15,11 @@ import org.springframework.core.env.StandardEnvironment;
 
 import fr.ippon.tatami.config.CassandraConfiguration;
 
-import javax.persistence.EntityManager;
-
 @Singleton(lazy=true)
 public class CassandraAccessUtils {
 
 	Keyspace keyspaceOperator
-	EntityManager entityManager
+	EntityManagerImpl entityManager
 	
 	CassandraAccessUtils() {
 		// TODO : use tatami.properties or tatami-uitest.properties ?
