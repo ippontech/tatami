@@ -67,7 +67,7 @@
       <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content"></textarea>
     </div>
     <div>
-      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
+      <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block" data-content="<fmt:message key="tatami.status.update.success"/>"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
 </script>

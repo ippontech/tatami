@@ -90,11 +90,16 @@ app.View.UpdateView = Backbone.View.extend({
 
     status.save(null,{
       success: function(model, response) {
-        e.target.reset();
-        $(self.el).find('.control-group').removeClass('error');
+          e.target.reset();
+          $(self.el).find('.control-group').removeClass('error');
 
-        app.trigger('refreshProfile');
-        app.trigger('refreshTimeline');
+          $("#updateStatusBtn").popover('show');
+          $("#updateStatusContent").change();
+          app.trigger('refreshProfile');
+          app.trigger('refreshTimeline');
+          setTimeout(function () {
+              $("#updateStatusBtn").popover('hide')
+          }, 3000);
       },
       error: function(model, response) {
         $(self.el).find('.control-group').addClass('error');
@@ -815,6 +820,11 @@ app.Router.HomeRouter = Backbone.Router.extend({
           allowed: 500,
           warning: 20,
           counterText: text_characters_left
+    });
+    $("#updateStatusBtn").popover({
+        animation: true,
+        placement: 'bottom',
+        trigger: 'manual',
     });
 
     var follow = app.views.follow = new app.View.FollowView();
