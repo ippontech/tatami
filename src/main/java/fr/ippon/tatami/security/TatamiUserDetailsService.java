@@ -42,21 +42,23 @@ public class TatamiUserDetailsService implements UserDetailsService {
 
     @PostConstruct
     public void init() {
-        //Roles for "normal" users
-        GrantedAuthority roleUser = new SimpleGrantedAuthority("ROLE_USER");
-        userGrantedAuthorities.add(roleUser);
+        if (userGrantedAuthorities.size() == 0) { // to prevent a bug that makes this bean initialized twice
+            //Roles for "normal" users
+            GrantedAuthority roleUser = new SimpleGrantedAuthority("ROLE_USER");
+            userGrantedAuthorities.add(roleUser);
 
-        //Roles for "admin" users, configured in tatami.properties
-        GrantedAuthority roleAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
-        adminGrantedAuthorities.add(roleUser);
-        adminGrantedAuthorities.add(roleAdmin);
+            //Roles for "admin" users, configured in tatami.properties
+            GrantedAuthority roleAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
+            adminGrantedAuthorities.add(roleUser);
+            adminGrantedAuthorities.add(roleAdmin);
 
-        String adminUsersList = env.getProperty("tatami.admin.users");
-        String[] adminUsersArray = adminUsersList.split(",");
-        adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
-        if (log.isDebugEnabled()) {
-            for (String admin : adminUsers) {
-                log.debug("Initialization : user \"" + admin + "\" is an administrator");
+            String adminUsersList = env.getProperty("tatami.admin.users");
+            String[] adminUsersArray = adminUsersList.split(",");
+            adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
+            if (log.isDebugEnabled()) {
+                for (String admin : adminUsers) {
+                    log.debug("Initialization : user \"" + admin + "\" is an administrator");
+                }
             }
         }
     }
