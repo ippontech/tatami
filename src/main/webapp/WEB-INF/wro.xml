@@ -7,6 +7,8 @@
         <css>/css/bootstrap-responsive-min.css</css>
         <css>/css/tatami.css</css>
 
+        <js>/js/jquery.min.js</js>
+        <js>/js/jquery-ui.min.js</js>
         <js>/js/bootstrap-min.js</js>
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
@@ -14,7 +16,6 @@
         <js>/js/jquery-tatami-infinitiScroll.js</js>
         <js>/js/jquery-tatami-tagLinker.js</js>
         <js>/js/jquery-tatami-usernameLinker.js</js>
-        <js>/js/jquery-raphael-tatami-pie.js</js>
         <js>/js/tatami-commons.js</js>
     </group>
 </groups>

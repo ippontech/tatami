@@ -82,6 +82,8 @@
     </script>
 
     <script src="/js/tatami-home.js"></script>
+    <script src="/js/raphael-min.js"></script>
+    <script src="/js/jquery-raphael-tatami-pie.js"></script>
 
 </body>
 </html>
