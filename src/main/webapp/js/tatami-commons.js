@@ -430,8 +430,8 @@ url : function(){
 });
 
 app.View.FollowButtonView = Backbone.View.extend({
-templateFollow: _.template($('#follow-button').html()),
-templateFollowed: _.template($('#followed-button').html()),
+  templateFollow: _.template($('#follow-button').html()),
+  templateFollowed: _.template($('#followed-button').html()),
 
 initialize: function() {
   this.set(this.options.owner, this.options.followed);

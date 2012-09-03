@@ -126,6 +126,8 @@
     var page = "profile";
     var followed = ${followed};
     var owner = ${user.login eq login};
+
+    var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>
 
 <script src="/js/tatami-profile.js"></script>

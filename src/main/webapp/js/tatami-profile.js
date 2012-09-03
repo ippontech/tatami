@@ -48,11 +48,15 @@ app.View.ProfileUpdateView = Backbone.View.extend({
 
     status.save(null,{
       success: function(model, response) {
-        e.target.reset();
-        $(self.el).find('.control-group').removeClass('error');
+          e.target.reset();
+          $(self.el).find('.control-group').removeClass('error');
 
-        app.trigger('refreshProfile');
-        app.trigger('refreshTimeline');
+          $("#updateStatusBtn").popover('show');
+          $("#updateStatusContent").change();
+          setTimeout(function () {
+              $("#updateStatusBtn").popover('hide')
+          }, 3000);
+
       },
       error: function(model, response) {
         $(self.el).find('.control-group').addClass('error');
@@ -322,8 +326,6 @@ app.View.StatusView = Backbone.View.extend({
   }
 });
 
-
-
 /*
   Initialization
 */
@@ -338,6 +340,19 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     app.views.update = new app.View.ProfileUpdateView();
     $('#follow-action').html(app.views.followButton.render());
     $('#div-update').html(app.views.update.render());
+      $("#updateStatusContent").charCount({
+          css: 'counter',
+          cssWarning: 'counter_warning',
+          cssExceeded: 'counter_exceeded',
+          allowed: 500,
+          warning: 20,
+          counterText: text_characters_left
+      });
+      $("#updateStatusBtn").popover({
+          animation: true,
+          placement: 'bottom',
+          trigger: 'manual',
+      });
   },
 
   selectMenu: function(menu) {
