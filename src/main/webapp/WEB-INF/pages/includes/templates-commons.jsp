@@ -44,7 +44,7 @@
               <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
         </a>
           <@ if (status.username != authenticatedUsername) { @>
-            <a class="status-action-share">
+            <a class="status-action-share" data-content="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
             </a>
           <@ } @>

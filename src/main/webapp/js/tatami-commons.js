@@ -190,6 +190,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
     this.views.status.bind('details', this.detailsAction, this);
     this.views.status.bind('highlight', this.highlight, this);
+    this.views.status.bind('sharePopover', this.sharePopover, this);
   },
 
   refreshFavorite: function() {
@@ -202,6 +203,21 @@ app.View.TimeLineItemView = Backbone.View.extend({
   highlight: function() {
     this.$el.find('.status').effect("highlight", {color:'#08C'}, 500);
   },
+
+    sharePopover: function() {
+        var shareBtn = this.$el.find('.status-action-share');
+        shareBtn.popover({
+            animation: true,
+            placement: 'bottom',
+            trigger: 'manual',
+            content: 'test',
+        });
+        console.log(shareBtn);
+        shareBtn.popover('show');
+        setTimeout(function () {
+            shareBtn.popover('hide');
+        }, 3000);
+    },
 
   detailsAction:function () {
     var statusId = this.model.get('statusId');
@@ -310,17 +326,18 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
     this.trigger('highlight');
   },
 
-  shareAction:function () {
-    var shareModel = new app.Model.Share(this.model);
-    var self = this;
-    shareModel.save(null, {
-      success:function () {
-        var statusId = self.model.get('statusId');
-        app.Status.share(statusId);
-        self.trigger('highlight');
-      }
-    });
-  },
+    shareAction:function () {
+        var shareModel = new app.Model.Share(this.model);
+        var self = this;
+        shareModel.save(null, {
+            success:function () {
+                var statusId = self.model.get('statusId');
+                app.Status.share(statusId);
+                self.trigger('highlight');
+                self.trigger('sharePopover');
+            }
+        });
+    },
 
   favoriteAction: function() {
     var self = this;
