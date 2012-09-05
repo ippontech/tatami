@@ -1,5 +1,6 @@
 package fr.ippon.tatami.uitest
 
+import fr.ippon.tatami.test.support.LdapTestServer;
 import fr.ippon.tatami.uitest.support.TatamiBaseGebSpec;
 import geb.Page
 import geb.spock.GebSpec
@@ -8,6 +9,21 @@ import pages.*
 import pages.google.*;
 
 class AuthenticationSpec extends TatamiBaseGebSpec {
+	
+	static LdapTestServer ldapTestServer
+	def setupSpec() {
+		// It only works if Tatami server is on the same host as the test ...
+		// AND tatami server points to localhost to reach the ldap server !
+		// TODO : fix tatami configuration !
+		// TODO : put this into maven
+		ldapTestServer = new LdapTestServer();
+		ldapTestServer.start();
+	}
+	
+	def cleanupSpec() {
+		ldapTestServer.stop();
+		ldapTestServer = null;
+	}
 			
     def "login as admin with ldap"() {
         given:

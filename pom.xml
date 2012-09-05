@@ -41,6 +41,7 @@
                 <log4j.loglevel>DEBUG</log4j.loglevel>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
                 <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
@@ -64,6 +65,7 @@
                 <log4j.loglevel>WARN</log4j.loglevel>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
@@ -478,6 +480,18 @@
           <artifactId>selenium-support</artifactId>
           <version>${selenium.version}</version>    
           <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.directory.server</groupId>
+          <artifactId>apacheds-all</artifactId>
+          <version>1.5.5</version> <!-- Don't change this version ! It breaks the code -->
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>org.apache.directory.shared</groupId>
+              <artifactId>shared-ldap</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
     </dependencies>
     <build>

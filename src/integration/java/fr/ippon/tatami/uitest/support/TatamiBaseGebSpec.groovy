@@ -4,7 +4,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import geb.spock.GebSpec;
 
-public class TatamiBaseGebSpec extends GebSpec {
+public abstract class TatamiBaseGebSpec extends GebSpec {
 	
 	static {
 		// TODO : il doit y avoir un moyen plus simple/propre de choisir le driver : (cf GebConfig aussi)
