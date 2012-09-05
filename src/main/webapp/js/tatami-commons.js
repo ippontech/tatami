@@ -382,7 +382,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
       discuss: (this.options.discuss)
     }));
     $(this.el).tagLinker('.status-content').usernameLinker('.status-content');
-    jQuery("abbr.timeago").timeago();
+    $(this.el).find("abbr.timeago").timeago();
     return $(this.el);
   }
 });

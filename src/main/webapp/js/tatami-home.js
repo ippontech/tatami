@@ -280,6 +280,8 @@ app.View.TimeLineNewView = Backbone.View.extend({
     this.temp = new app.Collection.StatusCollection();
 
     _.delay(_.bind(this.refresh, this), this.options.interval);
+
+    $(this.el).find("abbr.timeago").timeago();
   },
 
   events: {
