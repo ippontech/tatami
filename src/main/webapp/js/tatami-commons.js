@@ -212,7 +212,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
             trigger: 'manual',
             content: 'test',
         });
-        console.log(shareBtn);
         shareBtn.popover('show');
         setTimeout(function () {
             shareBtn.popover('hide');
