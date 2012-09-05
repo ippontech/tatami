@@ -345,8 +345,8 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           cssWarning: 'counter_warning',
           cssExceeded: 'counter_exceeded',
           allowed: 500,
-          warning: 20,
-          counterText: text_characters_left
+          warning: 50,
+          counterText: text_characters_left + " "
       });
       $("#updateStatusBtn").popover({
           animation: true,
