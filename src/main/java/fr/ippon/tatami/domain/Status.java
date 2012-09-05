@@ -160,8 +160,7 @@ public class Status {
         DateTime dateTime = new DateTime(statusDate);
         Period period =
                 new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis(),
-                        PeriodType.dayTime());
+                        Calendar.getInstance().getTimeInMillis());
 
         if (period.getMonths() < 1) { // Only format if it is more than 1 month old
             this.iso8601StatusDate = iso8601Formatter.print(dateTime);
