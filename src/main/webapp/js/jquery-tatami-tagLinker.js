@@ -1,7 +1,7 @@
 /**
 * jQuery-tagLinker for Tatami
 * (c) 2012 [Ippon Technologies](www.ippon.fr)
-* Released under the MIT license
+*
 * by Arthur Weber
 */
 (function($) {
