@@ -4,7 +4,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
@@ -104,7 +103,7 @@ public class Status {
     private Boolean removed;
 
     public String getISO8601StatusDate() {
-          return this.iso8601StatusDate;
+        return this.iso8601StatusDate;
     }
 
     public String getPrettyPrintStatusDate() {

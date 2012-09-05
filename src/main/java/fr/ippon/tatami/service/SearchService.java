@@ -3,6 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ public interface SearchService {
      * @return the response's Id
      */
     void addStatus(Status status);
+
+    void addStatuses(Collection<Status> statuses);
 
     /**
      * Delete a status from the index.
@@ -78,4 +81,6 @@ public interface SearchService {
      * @return the response's Id
      */
     void addUser(User user);
+
+    void addUsers(Collection<User> users);
 }

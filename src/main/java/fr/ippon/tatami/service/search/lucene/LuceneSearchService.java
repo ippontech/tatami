@@ -22,10 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LuceneSearchService implements SearchService {
 
@@ -81,6 +78,31 @@ public class LuceneSearchService implements SearchService {
     @Override
     @Async
     public void addStatus(Status status) {
+        try {
+            internalAddStatus(status);
+            indexWriter.commit();
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene indexed status : " + status);
+            }
+        } catch (IOException e) {
+            log.error("The status wasn't added to the index: " + status, e);
+        }
+    }
+
+    @Override
+    public void addStatuses(Collection<Status> statuses) {
+        try {
+            for (Status status : statuses) {
+                internalAddStatus(status);
+            }
+            indexWriter.commit();
+            log.info(statuses.size() + " statuses indexed!");
+        } catch (IOException e) {
+            log.error("Batch status insert failed ! ", e);
+        }
+    }
+
+    private void internalAddStatus(Status status) throws IOException {
         Document document = new Document();
         document.add(new Field("statusId", status.getStatusId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", status.getUsername(), Field.Store.NO, Field.Index.NOT_ANALYZED));
@@ -91,15 +113,7 @@ public class LuceneSearchService implements SearchService {
                 Field.Store.NO,
                 Field.Index.NOT_ANALYZED));
 
-        try {
-            indexWriter.addDocument(document);
-            indexWriter.commit();
-            if (log.isDebugEnabled()) {
-                log.debug("Lucene indexed status : " + status);
-            }
-        } catch (IOException e) {
-            log.error("The status wasn't added to the index: " + status, e);
-        }
+        indexWriter.addDocument(document);
     }
 
     @Override
@@ -199,12 +213,17 @@ public class LuceneSearchService implements SearchService {
 
     @Override
     public <T> List<String> searchPrefix(String domain, Class<T> clazz, String searchField, String uidField, String query, int page, int size) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;  // TODO
     }
 
     @Override
     @Async
     public void addUser(User user) {
+        // TODO
+    }
 
+    @Override
+    public void addUsers(Collection<User> users) {
+        // TODO
     }
 }

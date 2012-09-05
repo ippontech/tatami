@@ -20,10 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
@@ -95,6 +92,7 @@ public class AdminService {
 
         //Rebuild the user Index
         log.debug("Rebuilding the user Index");
+        long fullIndexStartTime = Calendar.getInstance().getTimeInMillis();
         Collection<Domain> domains = domainRepository.getAllDomains();
         for (Domain domain : domains) {
             int paginationId = 0;
@@ -117,14 +115,16 @@ public class AdminService {
         }
 
         //Rebuild the status Index
-        log.debug("Rebuilding the status Index");
+        log.info("Rebuilding the status Index");
         String startKey = null;
         boolean moreStatus = true;
         while (moreStatus) {
+            long startTime = Calendar.getInstance().getTimeInMillis();
             RangeSlicesQuery<String, String, String> query = createRangeSlicesQuery(keyspaceOperator,
                     StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                     .setColumnFamily(STATUS_CF)
-                    .setRange(startKey, null, false, 0)
+                    .setRange("statusId", "statusId", false, 1)
+                    .setKeys(startKey, null)
                     .setRowCount(1001);
 
             QueryResult<OrderedRows<String, String, String>> result = query.execute();
@@ -135,13 +135,17 @@ public class AdminService {
             } else {
                 moreStatus = false;
             }
+            Collection<Status> statuses = new ArrayList<Status>();
             for (Row<String, String, String> row : rows) {
                 Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
-                searchService.addStatus(status); // This should be batched for optimum performance
+                if (status != null) {  // if a status has been removed, it is returned as null
+                    statuses.add(status);
+                }
             }
-            log.info("The search engine should index " + rows.size() + " statuses.");
+            searchService.addStatuses(statuses); // This should be batched for optimum performance
+            log.info("The search engine indexed " + rows.size() + " rows in " + (Calendar.getInstance().getTimeInMillis() - startTime) + " ms.");
         }
-        log.info("Search engine index rebuilt.");
+        log.info("Search engine index rebuilt in " + (Calendar.getInstance().getTimeInMillis() - fullIndexStartTime) + " ms.");
     }
 
 }

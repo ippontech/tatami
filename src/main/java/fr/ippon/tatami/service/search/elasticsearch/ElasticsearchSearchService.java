@@ -65,17 +65,8 @@ public class ElasticsearchSearchService implements SearchService {
     @Override
     @Async
     public void addStatus(final Status status) {
-        Assert.notNull(status, "status can't be null");
-
-        XContentBuilder jsonifiedObject = null;
         try {
-            jsonifiedObject = XContentFactory.jsonBuilder()
-                    .startObject()
-                    .field("username", status.getUsername())
-                    .field("domain", status.getDomain())
-                    .field("statusDate", status.getStatusDate())
-                    .field("content", status.getContent())
-                    .endObject();
+            internalAddStatus(status);
         } catch (IOException e) {
             log.error("The status wasn't added to the index: "
                     + status.getStatusId()
@@ -83,6 +74,31 @@ public class ElasticsearchSearchService implements SearchService {
                     + status.toString()
                     + "]", e);
         }
+    }
+
+    @Override
+    public void addStatuses(Collection<Status> statuses) {
+        try {
+            for (Status status : statuses) {
+                internalAddStatus(status);
+            }
+            log.info(statuses.size() + " statuses indexed!");
+        } catch (IOException e) {
+            log.error("Batch status insert failed ! ", e);
+        }
+    }
+
+    private void internalAddStatus(Status status) throws IOException {
+        XContentBuilder jsonifiedObject = null;
+
+        jsonifiedObject = XContentFactory.jsonBuilder()
+                .startObject()
+                .field("username", status.getUsername())
+                .field("domain", status.getDomain())
+                .field("statusDate", status.getStatusDate())
+                .field("content", status.getContent())
+                .endObject();
+
 
         addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
     }
@@ -225,6 +241,13 @@ public class ElasticsearchSearchService implements SearchService {
         }
     }
 
+    @Override
+    public void addUsers(Collection<User> users) {
+        for (User user : users) {
+            addUser(user);
+        }
+    }
+
     /**
      * Add an item to the index.
      *
@@ -234,7 +257,6 @@ public class ElasticsearchSearchService implements SearchService {
      * @return the response's Id
      */
     private void addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
-
         if (log.isDebugEnabled()) {
             String itemAsString = null;
             try {
@@ -251,8 +273,6 @@ public class ElasticsearchSearchService implements SearchService {
                 .execute()
                 .actionGet();
 
-        // Should we force the update ? Not sure... due to performance cost. "index.refresh_interval" properties may be adjusted if needed
-        // client.admin().indices().refresh(Requests.refreshRequest(indexName)).actionGet();
     }
 
     /**
