@@ -138,6 +138,11 @@ form {
   margin-bottom: 0px;
 }
 
+.timeago {
+  color: #808080;
+  font-size: 90%;
+}
+
 .favorite {
   background-image: url(/img/favorite.png);
   background-repeat: no-repeat;

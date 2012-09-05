@@ -2,10 +2,12 @@ package fr.ippon.tatami.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.format.ISODateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,21 +27,22 @@ import java.util.Date;
 @Table(name = "Status")
 public class Status {
 
-    private static PeriodFormatter dayFormatter = new PeriodFormatterBuilder()
-            .appendDays()
-            .appendSuffix("d").toFormatter();
+    private static DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
 
-    private static PeriodFormatter hourFormatter = new PeriodFormatterBuilder()
-            .appendHours()
-            .appendSuffix("h").toFormatter();
+    private static DateTimeFormatter basicDateFormatter = new DateTimeFormatterBuilder()
+            .appendDayOfMonth(1)
+            .appendLiteral(' ')
+            .appendMonthOfYearShortText()
+            .toFormatter();
 
-    private static PeriodFormatter minuteFormatter = new PeriodFormatterBuilder()
-            .appendMinutes()
-            .appendSuffix("m").toFormatter();
+    private static DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
+            .appendDayOfMonth(1)
+            .appendLiteral(' ')
+            .appendMonthOfYearShortText()
+            .appendLiteral(' ')
+            .appendYear(4, 4)
+            .toFormatter();
 
-    private static PeriodFormatter secondFormatter = new PeriodFormatterBuilder()
-            .appendSeconds()
-            .appendSuffix("s").toFormatter();
 
     @Id
     private String statusId;
@@ -66,6 +69,10 @@ public class Status {
 
     @Column(name = "statusDate")
     private Date statusDate;
+
+    private String iso8601StatusDate;
+
+    private String prettyPrintStatusDate;
 
     /**
      * If this status is a reply, the statusId of the original status.
@@ -96,23 +103,12 @@ public class Status {
     @JsonIgnore
     private Boolean removed;
 
-    public String getPrettyPrintStatusDate() {
-        Period period =
-                new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis(),
-                        PeriodType.dayTime());
+    public String getISO8601StatusDate() {
+          return this.iso8601StatusDate;
+    }
 
-        if (period.getDays() > 0) {
-            return dayFormatter.print(period);
-        } else if (period.getHours() > 0) {
-            return hourFormatter.print(period);
-        } else if (period.getMinutes() > 0) {
-            return minuteFormatter.print(period);
-        } else if (period.getSeconds() > 0) {
-            return secondFormatter.print(period);
-        } else {
-            return "0s";
-        }
+    public String getPrettyPrintStatusDate() {
+        return this.prettyPrintStatusDate;
     }
 
     public String getStatusId() {
@@ -161,6 +157,23 @@ public class Status {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
+        DateTime dateTime = new DateTime(statusDate);
+        Period period =
+                new Period(statusDate.getTime(),
+                        Calendar.getInstance().getTimeInMillis(),
+                        PeriodType.dayTime());
+
+        if (period.getMonths() < 1) { // Only format if it is more than 1 month old
+            this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+        } else {
+            this.iso8601StatusDate = "";
+        }
+
+        if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
+            this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
+        } else {
+            this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+        }
     }
 
     public String getReplyTo() {

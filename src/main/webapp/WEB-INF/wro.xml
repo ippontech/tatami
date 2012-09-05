@@ -13,6 +13,7 @@
         <js>/js/underscore-min.js</js>
         <js>/js/backbone-min.js</js>
         <js>/js/jquery-charcount.js</js>
+        <js>/js/jquery-timeago.js</js>
         <js>/js/jquery-tatami-infinitiScroll.js</js>
         <js>/js/jquery-tatami-tagLinker.js</js>
         <js>/js/jquery-tatami-usernameLinker.js</js>

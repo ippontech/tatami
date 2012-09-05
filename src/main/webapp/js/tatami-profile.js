@@ -353,6 +353,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           placement: 'bottom',
           trigger: 'manual',
       });
+      jQuery("abbr.timeago").timeago();
   },
 
   selectMenu: function(menu) {

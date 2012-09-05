@@ -30,7 +30,7 @@
       <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
         <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
       </a>
-      <p class="pull-right" style="width: 50px"><@= status.prettyPrintStatusDate @></p>
+      <p class="pull-right" style="width: 50px"><abbr class="timeago" title="<@= status.iso8601StatusDate @>"><@= status.prettyPrintStatusDate @></abbr></p>
       <div class="pull-right status-actions">
         <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
           <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
