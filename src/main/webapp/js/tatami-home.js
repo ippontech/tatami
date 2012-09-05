@@ -300,24 +300,33 @@ app.View.TimeLineNewView = Backbone.View.extend({
     else if(typeof _.first(self.model.models) !== 'undefined')
       data.since_id = _.first(self.model.models).get('statusId');
 
-    sc.fetch({
-      data: data,
-      success: function(){
-        while(sc.length > 0)
-          self.temp.unshift(sc.pop());
-        self.render();
-        if(typeof callback === 'undefined')
-          _.delay(_.bind(self.refresh, self), self.options.interval);
-        else
-          callback();
-      },
-      error: function() {
-        self.render();
-        if(typeof callback === 'undefined')
-          _.delay(_.bind(self.refresh, self), self.options.interval);
-        else
-          callback();
-      }
+      sc.fetch({
+          data:data,
+          success:function () {
+              if (sc.length > 0) {
+                  document.title = "Tatami (" + sc.length + ")";
+              } else {
+                  document.title = "Tatami";
+              }
+              while (sc.length > 0) {
+                  self.temp.unshift(sc.pop());
+              }
+              self.render();
+              if (typeof callback === 'undefined') {
+                  _.delay(_.bind(self.refresh, self), self.options.interval);
+              } else {
+                  document.title = "Tatami";
+                  callback();
+              }
+          },
+          error:function () {
+              self.render();
+              if (typeof callback === 'undefined') {
+                  _.delay(_.bind(self.refresh, self), self.options.interval);
+              } else {
+                  callback();
+              }
+          }
     });
   },
 
@@ -325,23 +334,22 @@ app.View.TimeLineNewView = Backbone.View.extend({
 
     this.progress();
     var self = this;
-
-    if(this.model.models.length === 0)
-      this.model.fetch({
-        success: function(){
-          self.render();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    else{
-      this.refresh(function() {
-        while(self.temp.length > 0)
-          self.model.unshift(self.temp.pop());
-        self.render();
-      });
-    }
+      if (this.model.models.length === 0) {
+          this.model.fetch({
+              success:function () {
+                  self.render();
+              },
+              error:function () {
+                  self.render();
+              }
+          });
+      } else {
+          this.refresh(function () {
+              while (self.temp.length > 0)
+                  self.model.unshift(self.temp.pop());
+              self.render();
+          });
+      }
   },
 
   render: function() {
