@@ -16,17 +16,18 @@
 
     <http pattern="/tatami/static/**" security="none"/>
     <http pattern="/tatami/login" security="none"/>
-    <http pattern="/tatami/tos" security="none"/>
-    <http pattern="/tatami/license" security="none"/>
-    <http pattern="/tatami/presentation" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
-    <http pattern="/tatami/404-error" security="none"/>
-    <http pattern="/tatami/500-error" security="none"/>
 
     <http auto-config="true" use-expressions="true">
         <remember-me key="tatamiRememberKey"/>
+        <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
+        <intercept-url pattern="/tatami/tos" access="permitAll()"/>
+        <intercept-url pattern="/tatami/license" access="permitAll()"/>
+        <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
+        <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
+
         <form-login
                 login-processing-url="/tatami/authentication"
                 login-page="/tatami/login"
