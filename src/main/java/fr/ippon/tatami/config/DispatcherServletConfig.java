@@ -9,9 +9,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
@@ -59,7 +57,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SessionLocaleResolver localeChangeInterceptor() {
+    public SessionLocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
         Locale locale = new Locale("en");
         resolver.setDefaultLocale(locale);
@@ -67,12 +65,10 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ControllerClassNameHandlerMapping controllerClassNameHandlerMapping() {
-        ControllerClassNameHandlerMapping mapping = new ControllerClassNameHandlerMapping();
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
-        mapping.setInterceptors(new Object[]{localeChangeInterceptor});
-        return mapping;
+        return localeChangeInterceptor;
     }
 
     @Bean
@@ -83,6 +79,12 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
             messageSource.setCacheSeconds(1);
         }
         return messageSource;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+        super.addInterceptors(registry);
     }
 
     @Override
