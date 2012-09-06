@@ -1,6 +1,7 @@
 <%@ page import="fr.ippon.tatami.config.Constants" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%
     String version = Constants.VERSION;
     request.setAttribute("version", version);
@@ -17,8 +18,13 @@
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 
+    <sec:authorize ifNotGranted="ROLE_USER">
+        <link href="/css/themes/bootstrap.css" rel="stylesheet">
+    </sec:authorize>
+    <sec:authorize ifAnyGranted="ROLE_USER">
+        <link href="/css/themes/<sec:authentication property='principal.theme'/>.css" rel="stylesheet">
+    </sec:authorize>
     <c:if test="${wro4jEnabled eq false}">
-        <link href="/css/bootstrap-min.css" rel="stylesheet">
         <link href="/css/reset.css" rel="stylesheet">
         <link href="/css/bootstrap-responsive-min.css" rel="stylesheet">
         <link href="/css/tatami.css" rel="stylesheet">

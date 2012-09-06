@@ -143,6 +143,20 @@ public class UserService {
         }
     }
 
+    public void updateTheme(String theme) {
+        User currentUser = authenticationService.getCurrentUser();
+        currentUser.setTheme(theme);
+        if (log.isDebugEnabled()) {
+            log.debug("Setting theme to : " + theme);
+        }
+        try {
+            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating theme : " + cve);
+            throw cve;
+        }
+    }
+
     public void createUser(User user) {
         String login = user.getLogin();
 

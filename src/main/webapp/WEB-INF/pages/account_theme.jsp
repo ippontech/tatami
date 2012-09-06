@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,13 +34,13 @@
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/tatami/account/theme">
+                            <li class="active">
+                                <a href="#">
                                     <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
                                 </a>
                             </li>
-                            <li class="active">
-                                <a href="#">
+                            <li>
+                                <a href="/tatami/account/password">
                                     <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>
                             </li>
@@ -57,15 +55,37 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
-                                <div class="alert alert-success">
-                                    <fmt:message key="tatami.user.password.success"/>
+                                <h2>
+                                    <fmt:message key="tatami.menu.theme"/>
+                                </h2>
+                            <p>
+                            Current theme : ${theme}
+                            </p>
+                            <p>
+                            Choose a theme :
+                            <form class="form-horizontal" method="post" acceptCharset="utf-8">
+
+                                <select name="theme">
+                                    <option>bootstrap</option>
+                                    <option>amelia</option>
+                                    <option>cerulean</option>
+                                    <option>cyborg</option>
+                                    <option>journal</option>
+                                    <option>readable</option>
+                                    <option>simplex</option>
+                                    <option>slate</option>
+                                    <option>spacelab</option>
+                                    <option>spruce</option>
+                                    <option>superhero</option>
+                                    <option>united</option>
+                                </select>
+                                <br/>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><fmt:message
+                                            key="tatami.form.save"/></button>
                                 </div>
-                            </c:if>
-
-                            <h2><fmt:message key="tatami.menu.password"/></h2>
-                            <p><fmt:message key="tatami.user.password.ldap"/></p>
-
+                            </form>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -80,6 +100,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+
 
 <jsp:include page="includes/footer.jsp"/>
 

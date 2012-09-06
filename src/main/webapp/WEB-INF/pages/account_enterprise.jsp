@@ -35,6 +35,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/tatami/account/theme">
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/tatami/account/password">
                                     <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>

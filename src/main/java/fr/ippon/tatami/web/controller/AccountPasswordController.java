@@ -109,8 +109,6 @@ public class AccountPasswordController {
         if (log.isDebugEnabled()) {
             log.debug("User password updated : " + currentUser);
         }
-        ModelAndView mv = new ModelAndView("redirect:/tatami/account/password?success=true");
-
-        return mv;
+        return new ModelAndView("redirect:/tatami/account/password?success=true");
     }
 }

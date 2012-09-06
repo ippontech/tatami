@@ -66,6 +66,10 @@ public class User {
     @JsonIgnore
     private String openIdUrl;
 
+    @Column(name = "theme")
+    @JsonIgnore
+    private String theme;
+
     private long statusCount;
 
     private long friendsCount;
@@ -152,6 +156,14 @@ public class User {
         this.openIdUrl = openIdUrl;
     }
 
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -205,11 +217,11 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", openIdUrl='" + openIdUrl + '\'' +
+                ", theme='" + theme + '\'' +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
-                ", openIdUrl=" + openIdUrl +
                 '}';
     }
-
 }
