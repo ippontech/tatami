@@ -14,6 +14,7 @@
     <script src="/js/jquery-tatami-tagLinker.js"></script>
     <script src="/js/jquery-tatami-usernameLinker.js"></script>
     <script src="/js/jquery-tatami-infinitiScroll.js"></script>
+    <script src="/js/marked.js"></script>
     <script src="/js/tatami-commons.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
