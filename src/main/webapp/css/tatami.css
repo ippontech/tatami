@@ -1,14 +1,5 @@
-/*
-  Fix Navbar
-*/
 
-.navbar .brand {
-  padding: 8px 20px 8px;
-}
-
-.navbar-search .search-query {
-  margin-bottom: 0px;
-}
+.homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
 
 /*
   Profile Stats table
@@ -60,6 +51,10 @@ form {
 
 .alert {
   padding-right: 14px;
+}
+
+#updateStatusContent {
+    height: 20px;
 }
 
 .counter{

@@ -10,7 +10,7 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <div class="offset2 span8 ">
         <h1>Terms of Service / Conditions générales d'utilisation</h1>
 
@@ -62,7 +62,7 @@
             <li>You understand that Ippon can use third parties (e.g., hosting partners) to provide the necessary
                 resources (e.g., hardware, software, networking, storage, etc.) to run the Services.
             <li>Ippon may stop, remove, modify, or add (permanently or temporarily) Services (or features within
-                Services) at Ipponâ€™s sole discretion. Any new, changed, or removed features are subject to the Terms of
+                Services) at Ippon?s sole discretion. Any new, changed, or removed features are subject to the Terms of
                 Service. Continued use of the Services after any such changes constitute your consent to the changes.
         </ol>
         <h2>3 Use of the Services by you</h2>
@@ -90,7 +90,7 @@
                 third party for) any breach of your obligations under the Terms of Service and for the consequences
                 (including any loss or damage which Ippon may suffer) of any such breach.
             <li>Ippon reserves the right (but has no obligation) to pre-screen, review, flag, filter, modify, refuse or
-                remove any or all content or account from any of the Services at Ipponâ€™s sole discretion. You understand
+                remove any or all content or account from any of the Services at Ippon?s sole discretion. You understand
                 that by using the Services you may be exposed to content that you may find offensive, indecent or
                 objectionable and that, in this respect, you use the Services at your own risk.
         </ol>

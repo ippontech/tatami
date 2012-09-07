@@ -10,7 +10,7 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <div class="offset2 span8 ">
 
         <h1><fmt:message key="tatami.license"/></h1>

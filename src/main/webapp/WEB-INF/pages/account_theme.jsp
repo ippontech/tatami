@@ -12,19 +12,23 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <c:choose>
         <c:when test="${not empty user}">
             <div class="nomargin well row">
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
-                        <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="Arthur Weber">
+                        <img class="pull-left nomargin avatar"
+                             src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="Arthur Weber">
+
                         <h3>${user.firstName} ${user.lastName}</h3>
+
                         <p>@${user.username}</p>
                     </a>
                 </div>
             </div>
             <br/>
+
             <div class="row">
                 <div class="span4">
                     <div class="tabbable alert alert-info">
@@ -55,37 +59,51 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                                <h2>
-                                    <fmt:message key="tatami.menu.theme"/>
-                                </h2>
-                            <p>
-                            Current theme : ${theme}
-                            </p>
-                            <p>
-                            Choose a theme :
-                            <form class="form-horizontal" method="post" acceptCharset="utf-8">
-
-                                <select name="theme">
-                                    <option>bootstrap</option>
-                                    <option>amelia</option>
-                                    <option>cerulean</option>
-                                    <option>cyborg</option>
-                                    <option>journal</option>
-                                    <option>readable</option>
-                                    <option>simplex</option>
-                                    <option>slate</option>
-                                    <option>spacelab</option>
-                                    <option>spruce</option>
-                                    <option>superhero</option>
-                                    <option>united</option>
-                                </select>
-                                <br/>
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary"><fmt:message
-                                            key="tatami.form.save"/></button>
+                            <c:if test="${success == 'true'}">
+                                <div class="alert alert-success">
+                                    <fmt:message
+                                            key="tatami.user.password.success"/>
                                 </div>
-                            </form>
-                            </p>
+                            </c:if>
+
+                            <h2>
+                                <fmt:message key="tatami.menu.theme"/>
+                            </h2>
+
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
+                                        <fmt:message key="tatami.user.theme.current"/> ${theme} <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="theme/update?theme=bootstrap">bootstrap</a></li>
+                                        <li><a href="theme/update?theme=amelia">amelia</a></li>
+                                        <li><a href="theme/update?theme=cerulean">cerulean</a></li>
+                                        <li><a href="theme/update?theme=cyborg">cyborg</a></li>
+                                        <li><a href="theme/update?theme=journal">journal</a></li>
+                                        <li><a href="theme/update?theme=readable">readable</a></li>
+                                        <li><a href="theme/update?theme=simplex">simplex</a></li>
+                                        <li><a href="theme/update?theme=slate">slate</a></li>
+                                        <li><a href="theme/update?theme=spacelab">spacelab</a></li>
+                                        <li><a href="theme/update?theme=spruce">spruce</a></li>
+                                        <li><a href="theme/update?theme=superhero">superhero</a></li>
+                                        <li><a href="theme/update?theme=united">united</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
                         </div>
                     </div>
                 </div>

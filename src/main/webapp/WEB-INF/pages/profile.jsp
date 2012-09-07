@@ -14,7 +14,7 @@
 <div class="container-fluid mainPanel">
     <c:choose>
         <c:when test="${not empty user}">
-            <div class="container mainPanel">
+            <div id="mainPanel" class="container">
               <div class="row">
                 <div class="span12">
                   <div class="well">

@@ -289,7 +289,7 @@ table .span23{float:none;width:1804px;margin-left:0;}
 table .span24{float:none;width:1884px;margin-left:0;}
 .table tbody tr.success td{background-color:#819e37;}
 .table tbody tr.error td{background-color:#cd0200;}
-.table tbody tr.info td{background-color:#3399f3;}
+.table tbody tr.info td{background-color:#A7DFF1;}
 [class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("../../img/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;margin-top:1px;}
 .icon-white,.nav>.active>a>[class^="icon-"],.nav>.active>a>[class*=" icon-"],.dropdown-menu>li>a:hover>[class^="icon-"],.dropdown-menu>li>a:hover>[class*=" icon-"],.dropdown-menu>.active>a>[class^="icon-"],.dropdown-menu>.active>a>[class*=" icon-"]{background-image:url("../../img/glyphicons-halflings-white.png");}
 .icon-glass{background-position:0 0;}
@@ -542,7 +542,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .alert .close{position:relative;top:-2px;right:-21px;line-height:21px;}
 .alert-success{background-color:#819e37;border-color:#818b30;color:#ffffff;}
 .alert-danger,.alert-error{background-color:#cd0200;border-color:#be001e;color:#ffffff;}
-.alert-info{background-color:#3399f3;border-color:#11adf1;color:#ffffff;}
+.alert-info{background-color:#A7DFF1;border-color:#11adf1;color:#ffffff;}
 .alert-block{padding-top:14px;padding-bottom:14px;}
 .alert-block>p,.alert-block>ul{margin-bottom:0;}
 .alert-block p+p{margin-top:5px;}
@@ -831,11 +831,11 @@ div.subnav .nav>li.dropdown.open>.dropdown-toggle{border-left:1px solid whiteSmo
 .control-group.success>label,.control-group.success .help-block,.control-group.success .help-inline{color:#2ba949;}
 .control-group.success .checkbox,.control-group.success .radio,.control-group.success input,.control-group.success select,.control-group.success textarea{color:#2ba949;border-color:#2ba949;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);}.control-group.success .checkbox:focus,.control-group.success .radio:focus,.control-group.success input:focus,.control-group.success select:focus,.control-group.success textarea:focus{border-color:#218037;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #63d77e;-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #63d77e;box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #63d77e;}
 .control-group.success .input-prepend .add-on,.control-group.success .input-append .add-on{color:#2ba949;background-color:#819e37;border-color:#2ba949;}
-.alert{color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);}
+.alert{color:#000;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);}
 .label,.badge{padding-top:4px;}.label-important,.badge-important{background-color:#cd0200;}
 .label-warning,.badge-warning{background-color:#d47500;}
 .label-success,.badge-success{background-color:#819e37;}
-.label-info,.badge-info{background-color:#3399f3;}
+.label-info,.badge-info{background-color:#A7DFF1;}
 .well{background-color:#eeeeee;}
 .hero-unit{-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);border:1px solid rgba(0, 0, 0, 0.05);}
 .pull-right{float:right;}

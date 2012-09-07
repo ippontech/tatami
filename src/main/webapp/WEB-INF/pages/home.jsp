@@ -10,7 +10,7 @@
 
     <jsp:include page="includes/topmenu.jsp"/>
 
-    <div class="container mainPanel">
+    <div id="mainPanel" class="container">
         <div class="row">
 
             <div class="span4">

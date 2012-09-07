@@ -2,12 +2,15 @@ package fr.ippon.tatami.web.controller;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,6 +36,9 @@ public class AccountThemeController {
     @Inject
     private AuthenticationService authenticationService;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     @RequestMapping(value = "/account/theme",
             method = RequestMethod.GET)
     public ModelAndView getTheme() {
@@ -43,10 +49,14 @@ public class AccountThemeController {
         return mv;
     }
 
-    @RequestMapping(value = "/account/theme",
-            method = RequestMethod.POST)
+    @RequestMapping(value = "/account/theme/update",
+            method = RequestMethod.GET)
     public String updateTheme(@RequestParam String theme) {
         userService.updateTheme(theme);
-        return "redirect:/tatami/account/theme";
+        TatamiUserDetails userDetails = (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userDetails.setTheme(theme);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "redirect:/tatami/account/theme?success=true";
     }
 }

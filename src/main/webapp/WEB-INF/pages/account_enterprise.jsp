@@ -12,7 +12,7 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <c:choose>
         <c:when test="${not empty user}">
             <div class="nomargin well row">

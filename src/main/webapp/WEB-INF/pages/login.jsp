@@ -11,7 +11,7 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <c:if test="${action eq 'register'}">
     <div class="alert alert-info">
         <fmt:message key="tatami.register.msg"/>

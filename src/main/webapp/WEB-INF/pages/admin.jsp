@@ -12,7 +12,7 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
 
     <c:if test="${message == 'reindex'}">
     <div class="row">

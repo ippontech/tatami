@@ -11,7 +11,7 @@
 
 <jsp:include page="../includes/topmenu.jsp"/>
 
-<div class="container mainPanel">
+<div id="mainPanel" class="container">
     <div class="row">
         <div class="offset2 span8 text-center">
             <h1><fmt:message key="tatami.404"/></h1>
