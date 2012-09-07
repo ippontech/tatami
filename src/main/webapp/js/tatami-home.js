@@ -93,12 +93,13 @@ app.View.UpdateView = Backbone.View.extend({
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
 
+          $("#updateStatusContent").css("height", "20px");
           $("#updateStatusBtn").popover('show');
           $("#updateStatusContent").change();
           app.trigger('refreshProfile');
           app.trigger('refreshTimeline');
           setTimeout(function () {
-              $("#updateStatusBtn").popover('hide')
+              $("#updateStatusBtn").popover('hide');
           }, 3000);
       },
       error: function(model, response) {
@@ -818,28 +819,32 @@ Initialization
 
 app.Router.HomeRouter = Backbone.Router.extend({
 
-  initialize: function() {
-    var profile = app.views.profile = new app.View.ProfileView({
-      model : new app.Model.ProfileModel()
-    });
-    $('#profileContent').html(profile.render());
-    $("#updateStatusContent").charCount({
-          css: 'counter',
-          cssWarning: 'counter_warning',
-          cssExceeded: 'counter_exceeded',
-          allowed: 500,
-          warning: 50,
-          counterText: text_characters_left + " "
-    });
-    $("#updateStatusBtn").popover({
-        animation: true,
-        placement: 'bottom',
-        trigger: 'manual',
-    });
+    initialize:function () {
+        var profile = app.views.profile = new app.View.ProfileView({
+            model:new app.Model.ProfileModel()
+        });
+        $('#profileContent').html(profile.render());
+        $("#updateStatusContent").focus(function () {
+            $(this).css("height", "200px");
+        });
+        $("#updateStatusContent").charCount({
+            css:'counter',
+            cssWarning:'counter_warning',
+            cssExceeded:'counter_exceeded',
+            allowed:500,
+            warning:50,
+            counterText:text_characters_left + " "
+        });
 
-    var follow = app.views.follow = new app.View.FollowView();
-    $('#profileFollow').html(follow.render());
-  },
+        $("#updateStatusBtn").popover({
+            animation:true,
+            placement:'bottom',
+            trigger:'manual',
+        });
+
+        var follow = app.views.follow = new app.View.FollowView();
+        $('#profileFollow').html(follow.render());
+    },
 
   selectMenu: function(menu) {
     $('.homeMenu a').parent().removeClass('active');

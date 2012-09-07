@@ -51,6 +51,7 @@ app.View.ProfileUpdateView = Backbone.View.extend({
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
 
+          $("#updateStatusContent").css("height", "20px");
           $("#updateStatusBtn").popover('show');
           $("#updateStatusContent").change();
           setTimeout(function () {
@@ -340,6 +341,9 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     app.views.update = new app.View.ProfileUpdateView();
     $('#follow-action').html(app.views.followButton.render());
     $('#div-update').html(app.views.update.render());
+      $("#updateStatusContent").focus(function () {
+          $(this).css("height", "200px");
+      });
       $("#updateStatusContent").charCount({
           css: 'counter',
           cssWarning: 'counter_warning',
