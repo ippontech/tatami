@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,7 +57,12 @@ public class SearchController {
         }
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        final Map<String, String> line = searchService.searchStatus(domain, q, page, rpp);
+        Map<String, String> line;
+        if (q != null && !q.equals("")) {
+            line = searchService.searchStatus(domain, q, page, rpp);
+        } else {
+            line = new HashMap<String, String>();
+        }
         return timelineService.buildStatusList(line);
     }
 
