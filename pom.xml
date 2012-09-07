@@ -109,6 +109,59 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <jetty.port>80</jetty.port>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
+                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-maven-plugin</artifactId>
+                        <version>1.4.7</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetGroups>all</targetGroups>
+                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
+                            <ignoreMissingResources>false</ignoreMissingResources>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>ro.isdc.wro4j</groupId>
+                                <artifactId>wro4j-extensions</artifactId>
+                                <version>1.4.7</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <properties>
