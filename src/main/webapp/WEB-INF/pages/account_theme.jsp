@@ -70,25 +70,24 @@
                                 <fmt:message key="tatami.menu.theme"/>
                             </h2>
 
-                            <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
-                                        <fmt:message key="tatami.user.theme.current"/> ${theme} <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="theme/update?theme=bootstrap">bootstrap</a></li>
-                                        <li><a href="theme/update?theme=amelia">amelia</a></li>
-                                        <li><a href="theme/update?theme=cerulean">cerulean</a></li>
-                                        <li><a href="theme/update?theme=cyborg">cyborg</a></li>
-                                        <li><a href="theme/update?theme=journal">journal</a></li>
-                                        <li><a href="theme/update?theme=readable">readable</a></li>
-                                        <li><a href="theme/update?theme=simplex">simplex</a></li>
-                                        <li><a href="theme/update?theme=slate">slate</a></li>
-                                        <li><a href="theme/update?theme=spacelab">spacelab</a></li>
-                                        <li><a href="theme/update?theme=spruce">spruce</a></li>
-                                        <li><a href="theme/update?theme=superhero">superhero</a></li>
-                                        <li><a href="theme/update?theme=united">united</a></li>
-                                    </ul>
-                                </div>
+                            <div class="btn-group">
+                                <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
+                                    <fmt:message key="tatami.user.theme.current"/> ${theme} <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="theme/update?theme=bootstrap">bootstrap</a></li>
+                                    <li><a href="theme/update?theme=amelia">amelia</a></li>
+                                    <li><a href="theme/update?theme=cerulean">cerulean</a></li>
+                                    <li><a href="theme/update?theme=cyborg">cyborg</a></li>
+                                    <li><a href="theme/update?theme=journal">journal</a></li>
+                                    <li><a href="theme/update?theme=readable">readable</a></li>
+                                    <li><a href="theme/update?theme=simplex">simplex</a></li>
+                                    <li><a href="theme/update?theme=slate">slate</a></li>
+                                    <li><a href="theme/update?theme=spacelab">spacelab</a></li>
+                                    <li><a href="theme/update?theme=spruce">spruce</a></li>
+                                    <li><a href="theme/update?theme=superhero">superhero</a></li>
+                                    <li><a href="theme/update?theme=united">united</a></li>
+                                </ul>
                             </div>
 
                             <p>&nbsp;</p>
