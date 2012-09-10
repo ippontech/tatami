@@ -37,22 +37,20 @@
         <fmt:message key="tatami.lost.password.msg.error"/>
     </div>
     </c:if>
-        <div class="row">
-            <div class="alert alert-error">
-                <h4><fmt:message key="tatami.beta.alert"/></h4>
-            </div>
-        </div>
+
     <div class="row">
-        <div class="span12 text-center">
+        <div class="hero-unit">
             <h1><fmt:message key="tatami.presentation"/></h1>
-
-            <p><fmt:message key="tatami.presentation.text"/></p>
-
             <p>
                 [<a href="/tatami/presentation"><fmt:message key="tatami.presentation.moreinfo"/></a>]
             </p>
         </div>
     </div>
+        <div class="row">
+            <div class="alert alert-discuss">
+                <h4><fmt:message key="tatami.beta.alert"/></h4>
+            </div>
+        </div>
     <div class="row">
         <div class="span4">
             <div class="row-fluid">
@@ -72,7 +70,7 @@
                             <label>
                                 <fmt:message key="tatami.login"/> :
                             </label>
-                            <input name="email" type="email" required="required" autofocus class="span12"
+                            <input name="email" type="email" required="required" class="span12"
                                    placeholder="Your e-mail..."/>
                         </div>
                         <div class="controle-group">
