@@ -1,5 +1,6 @@
 package fr.ippon.tatami.security;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
@@ -80,6 +81,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         if (user == null) {
             user = new User();
             user.setLogin(login);
+            user.setTheme(Constants.DEFAULT_THEME);
             userService.createUser(user);
         } else {
             // ensure that this user has access to its domain if it has been created before
@@ -87,11 +89,18 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         }
 
         // The real authentication object uses the login, and not the username
-        UserDetails realUser = userDetailsService.getTatamiUserDetails(login, authentication.getCredentials().toString());
+        TatamiUserDetails realUser = userDetailsService.getTatamiUserDetails(login,
+                authentication.getCredentials().toString());
+
+        if (user.getTheme() == null) {
+            user.setTheme(Constants.DEFAULT_THEME);
+        }
+        realUser.setTheme(user.getTheme());
 
         UsernamePasswordAuthenticationToken realAuthentication =
                 new UsernamePasswordAuthenticationToken(realUser, authentication.getCredentials(),
                         realUser.getAuthorities());
+
         return realAuthentication;
     }
 }

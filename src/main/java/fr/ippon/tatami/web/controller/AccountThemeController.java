@@ -53,9 +53,15 @@ public class AccountThemeController {
             method = RequestMethod.GET)
     public String updateTheme(@RequestParam String theme) {
         userService.updateTheme(theme);
-        TatamiUserDetails userDetails = (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TatamiUserDetails userDetails =
+                (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         userDetails.setTheme(theme);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(userDetails,
+                        userDetails.getPassword(),
+                        userDetails.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return "redirect:/tatami/account/theme?success=true";
     }

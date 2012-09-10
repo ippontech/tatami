@@ -1,5 +1,6 @@
 package fr.ippon.tatami.security;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
@@ -75,7 +76,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
         TatamiUserDetails userDetails = getTatamiUserDetails(login, userFromCassandra.getPassword());
         String theme = userFromCassandra.getTheme();
         if (theme == null) {
-            theme = "bootstrap";
+            theme = Constants.DEFAULT_THEME;
         }
         userDetails.setTheme(theme);
         return userDetails;
