@@ -64,6 +64,11 @@ form {
 .counter_warning{color: #ff7f00;}
 .counter_exceeded{color: #ee0014;}
 
+#contentHelp{
+    font-size:80%;
+    font-style: italic;
+}
+
 .alert-discuss {
   color: #3a5fad;
   background-color: #d9e0f7;

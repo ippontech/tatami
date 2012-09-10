@@ -839,7 +839,11 @@ app.Router.HomeRouter = Backbone.Router.extend({
         $("#updateStatusBtn").popover({
             animation:true,
             placement:'bottom',
-            trigger:'manual',
+            trigger:'manual'
+        });
+        $("#contentHelp").popover({
+            animation:true,
+            placement:'right'
         });
 
         var follow = app.views.follow = new app.View.FollowView();
