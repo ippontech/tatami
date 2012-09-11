@@ -68,7 +68,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         if (!canHandleAuthentication(authentication)) {
             return null; // this provider is not suitable for this domain
         }
-        String login = authentication.getName();
+        String login = authentication.getName().toLowerCase();
         String username = DomainUtil.getUsernameFromLogin(login);
 
         // Use temporary token to use username, and not login to authenticate on ldap :
