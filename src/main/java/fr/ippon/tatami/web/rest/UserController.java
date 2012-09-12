@@ -5,7 +5,6 @@ import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.StatsService;
-import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
@@ -18,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -29,9 +30,6 @@ import java.util.*;
 public class UserController {
 
     private final Log log = LogFactory.getLog(UserController.class);
-
-    @Inject
-    private TimelineService timelineService;
 
     @Inject
     private StatsService statsService;
@@ -111,19 +109,16 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> searchUsers(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find users starting with : " + query);
+            this.log.debug("REST request to find users starting with : " + prefix);
         }
-        if (this.elasticsearchActivated) {
-            final User currentUser = authenticationService.getCurrentUser();
-            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            final List<String> logins = this.searchService.searchPrefix(domain, User.class, null, "login", query, 0, 20);
-            final Collection<User> users = this.userService.getUsersByLogin(logins);
-            users.remove(currentUser);
-            return users;
-        } else {
-            return new ArrayList<User>();
-        }
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        Collection<User> users = userService.getUsersByLogin(logins);
+        users.remove(currentUser);
+        return users;
     }
 
 }

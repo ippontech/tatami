@@ -3,7 +3,6 @@ package fr.ippon.tatami.service.search.elasticsearch;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
@@ -163,59 +162,6 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> List<String> searchPrefix(final String domain, final Class<T> clazz, final String searchField, final String uidField, final String query, int page, int size) {
-
-        Assert.notNull(clazz);
-        Assert.notNull(domain);
-
-        final String name = (StringUtils.isBlank(searchField) ? ALL_FIELDS : searchField);
-        final QueryBuilder qb = QueryBuilders.prefixQuery(name, query);
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        final FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
-
-        SearchResponse searchResponse = null;
-        try {
-            searchResponse = this.client.prepareSearch(this.indexName)
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(qb)
-                    .setFilter(domainFilter)
-                    .setTypes(dataType)
-                    .setFrom(page * size).setSize(size).setExplain(false)
-                    .addSort(SortBuilders.fieldSort(uidField).order(SortOrder.ASC))
-                    .execute()
-                    .actionGet();
-        } catch (IndexMissingException e) {
-            log.warn("The index was not found in the cluster.");
-            return new ArrayList<String>(0);
-        }
-
-        final SearchHits searchHits = searchResponse.getHits();
-        final Long hitsNumber = searchHits.getTotalHits();
-        if (hitsNumber == 0) {
-            return new ArrayList<String>(0);
-        }
-
-        final SearchHit[] searchHitsArray = searchHits.getHits();
-        final List<String> items = new ArrayList<String>(hitsNumber.intValue());
-        Map<String, Object> item = null;
-        try {
-            for (int i = 0; i < searchHitsArray.length; i++) {
-                item = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
-                items.add((String) item.get(uidField));
-            }
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return items;
-    }
-
-    @Override
     @Async
     public void addUser(final User user) {
         Assert.notNull(user, "user can't be null");
@@ -246,6 +192,58 @@ public class ElasticsearchSearchService implements SearchService {
         for (User user : users) {
             addUser(user);
         }
+    }
+
+    @Override
+    public Collection<String> searchUserByPrefix(String domain, String prefix) {
+        QueryBuilder qb = QueryBuilders.prefixQuery("username", prefix);
+        String dataType = User.class.getSimpleName().toLowerCase();
+        FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = this.client.prepareSearch(this.indexName)
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                    .setQuery(qb)
+                    .setFilter(domainFilter)
+                    .setTypes(dataType)
+                    .setFrom(0).setSize(5).setExplain(false)
+                    .addSort(SortBuilders.fieldSort("username").order(SortOrder.ASC))
+                    .execute()
+                    .actionGet();
+        } catch (IndexMissingException e) {
+            log.warn("The index was not found in the cluster.");
+            return new ArrayList<String>(0);
+        }
+
+        final SearchHits searchHits = searchResponse.getHits();
+        final Long hitsNumber = searchHits.getTotalHits();
+        if (hitsNumber == 0) {
+            return new ArrayList<String>(0);
+        }
+
+        final SearchHit[] searchHitsArray = searchHits.getHits();
+        final List<String> usernames = new ArrayList<String>(hitsNumber.intValue());
+        Map<String, Object> username = null;
+        try {
+            for (int i = 0; i < searchHitsArray.length; i++) {
+                username = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
+                usernames.add((String) username.get("username"));
+            }
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return usernames;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        //TODO
     }
 
     /**

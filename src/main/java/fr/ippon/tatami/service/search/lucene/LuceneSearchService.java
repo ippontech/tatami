@@ -3,6 +3,7 @@ package fr.ippon.tatami.service.search.lucene;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -38,6 +39,10 @@ public class LuceneSearchService implements SearchService {
     private Analyzer analyzer;
 
     private Map<String, Float> statusBoosts = new HashMap<String, Float>();
+
+    private String statusDataType = Status.class.getSimpleName().toLowerCase();
+
+    private String userDataType = User.class.getSimpleName().toLowerCase();
 
     @PostConstruct
     public void init() {
@@ -104,9 +109,10 @@ public class LuceneSearchService implements SearchService {
 
     private void internalAddStatus(Status status) throws IOException {
         Document document = new Document();
+        document.add(new Field("dataType", statusDataType, Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new Field("domain", status.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("statusId", status.getStatusId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", status.getUsername(), Field.Store.NO, Field.Index.NOT_ANALYZED));
-        document.add(new Field("domain", status.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("content", status.getContent(), Field.Store.NO, Field.Index.ANALYZED));
         document.add(new Field("statusDate",
                 DateTools.dateToString(status.getStatusDate(), DateTools.Resolution.SECOND),
@@ -164,6 +170,8 @@ public class LuceneSearchService implements SearchService {
             TermsFilter filter = new TermsFilter();
             Term domainTerm = new Term("domain", domain);
             filter.addTerm(domainTerm);
+            Term dataTypeTerm = new Term("dataType", statusDataType);
+            filter.addTerm(dataTypeTerm);
 
             SortField sortField = new SortField("statusDate", SortField.STRING, true);
             Sort sort = new Sort(sortField);
@@ -212,18 +220,108 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public <T> List<String> searchPrefix(String domain, Class<T> clazz, String searchField, String uidField, String query, int page, int size) {
-        return null;  // TODO
-    }
-
-    @Override
     @Async
     public void addUser(User user) {
-        // TODO
+        try {
+            internalAddUser(user);
+            indexWriter.commit();
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene indexed user : " + user);
+            }
+        } catch (IOException e) {
+            log.error("The status wasn't added to the index: " + user, e);
+        }
     }
 
     @Override
     public void addUsers(Collection<User> users) {
-        // TODO
+        try {
+            for (User user : users) {
+                internalAddUser(user);
+            }
+            indexWriter.commit();
+            log.info(users.size() + " users indexed!");
+        } catch (IOException e) {
+            log.error("Batch status insert failed ! ", e);
+        }
+    }
+
+    private void internalAddUser(User user) throws IOException {
+        Document document = new Document();
+        document.add(new Field("dataType", userDataType, Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new Field("domain", user.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new Field("login", user.getLogin(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new Field("username", user.getUsername(), Field.Store.YES, Field.Index.ANALYZED));
+        indexWriter.addDocument(document);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        Term term = new Term("login", user.getLogin());
+        try {
+            indexWriter.deleteDocuments(term);
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene deleted login : " + user.getLogin());
+            }
+        } catch (IOException e) {
+            log.error("Lucene had an I/O error while deleting user " + user.getLogin() + " : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public Collection<String> searchUserByPrefix(String domain, String prefix) {
+        IndexSearcher searcher = null;
+        List<String> logins = new ArrayList<String>();
+        try {
+            searcher = searcherManager.acquire();
+
+            Term prefixTerm = new Term("username", prefix);
+            Query luceneQuery = new PrefixQuery(prefixTerm);
+
+            TermsFilter filter = new TermsFilter();
+            Term domainTerm = new Term("domain", domain);
+            filter.addTerm(domainTerm);
+            Term dataTypeTerm = new Term("dataType", userDataType);
+            filter.addTerm(dataTypeTerm);
+
+            SortField sortField = new SortField("username", SortField.STRING, true);
+            Sort sort = new Sort(sortField);
+
+            TopDocs topDocs = searcher.search(luceneQuery, filter, 5, sort);
+            int totalHits = topDocs.totalHits;
+            if (totalHits == 0) {
+                return new ArrayList<String>();
+            }
+
+            ScoreDoc[] scoreDocArray = topDocs.scoreDocs;
+            for (int i = 0; i < scoreDocArray.length; i++) {
+                int documentId = scoreDocArray[i].doc;
+                Document document = searcher.doc(documentId);
+                String username = document.get("username");
+                log.info("Document : " + document);
+                String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
+                logins.add(login);
+            }
+        } catch (IOException e) {
+            log.error("A Lucene query had a I/O error : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                searcherManager.release(searcher);
+            } catch (IOException e) {
+                log.error("The Lucene searcher could not be given back to the searcherManager pool. " +
+                        e.getMessage());
+
+                if (log.isDebugEnabled()) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return logins;
     }
 }

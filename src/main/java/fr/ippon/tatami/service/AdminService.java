@@ -105,12 +105,12 @@ public class AdminService {
                     logins = logins.subList(0, Constants.PAGINATION_SIZE);
                 }
                 paginationId += Constants.PAGINATION_SIZE;
+                Collection<User> users = new ArrayList<User>();
                 for (String login : logins) {
-                    User user = userRepository.findUserByLogin(login);
-                    log.debug("Indexing user : " + user);
-                    searchService.addUser(user); // This should be batched for optimum performance
+                    users.add(userRepository.findUserByLogin(login));
                 }
-                log.info("The search engine should index " + logins.size() + " users.");
+                searchService.addUsers(users);
+                log.info("The search engine indexed " + logins.size() + " users.");
             }
         }
 

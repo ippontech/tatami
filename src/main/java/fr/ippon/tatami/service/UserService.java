@@ -11,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -75,14 +74,11 @@ public class UserService {
      * @param logins the collection : must not be null
      * @return a Collection of User
      */
-    public Collection<User> getUsersByLogin(final List<String> logins) {
-        Assert.notNull(logins);
-
-        final Collection<User> users = new ArrayList<User>(logins.size());
+    public Collection<User> getUsersByLogin(Collection<String> logins) {
+        final Collection<User> users = new ArrayList<User>();
         for (String login : logins) {
             users.add(userRepository.findUserByLogin(login));
         }
-
         return users;
     }
 

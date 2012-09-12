@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,35 +43,15 @@ public interface SearchService {
      * Search an item in the index.
      *
      * @param query     the query : mandatory
-     * @param sortField which field should be used to sort the results
-     * @param sortOrder which order to apply, ASC if not provided
      * @param page      the page to return
      * @param size      the size of a page
-     * @return a list of uid
      */
     Map<String, String> searchStatus(String domain,
                                      String query,
                                      int page,
                                      int size);
 
-    /**
-     * Search an item in the index.
-     *
-     * @param clazz       the item type
-     * @param searchField a particular field to searchStatus into, if null, "_all" field is used
-     * @param uidField    : the field to return in the results collection
-     * @param query       the query
-     * @param page        the page to return
-     * @param size        the size of a page
-     * @return a list of uid
-     */
-    <T> List<String> searchPrefix(String domain,
-                                  Class<T> clazz,
-                                  String searchField,
-                                  String uidField,
-                                  String query,
-                                  int page,
-                                  int size);
+
 
     /**
      * Add a user to the index.
@@ -83,4 +62,9 @@ public interface SearchService {
     void addUser(User user);
 
     void addUsers(Collection<User> users);
+
+    void deleteUser(User user);
+
+    Collection<String> searchUserByPrefix(String domain,
+                                        String prefix);
 }
