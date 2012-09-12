@@ -104,7 +104,6 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="firstName"
-                                                        required="required"
                                                         size="15" maxlength="40" class="input-xlarge"
                                                         path="firstName"/>
                                         </div>
@@ -117,7 +116,6 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="lastName"
-                                                        required="required"
                                                         size="15" maxlength="40" class="input-xlarge"
                                                         path="lastName"/>
                                         </div>
@@ -130,7 +128,6 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="jobTitle"
-                                                        required="required"
                                                         size="15" maxlength="100" class="input-xlarge"
                                                         path="jobTitle"/>
                                         </div>
@@ -142,7 +139,6 @@
 
                                         <div class="controls">
                                             <form:input type="text"
-                                                        id="phoneNumber"
                                                         size="10" maxlength="20" class="input-xlarge"
                                                         path="phoneNumber"/>
                                         </div>
