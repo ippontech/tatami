@@ -10,11 +10,10 @@ public abstract class TatamiBaseGebSpec extends GebSpec {
 		// TODO : il doit y avoir un moyen plus simple/propre de choisir le driver : (cf GebConfig aussi)
 		// by default we use HtmlUnit (cf GebConfig.groovy )
 		// FIXME : delete this :
-		
-		if(!System.getProperty('gev.env')) {
-//			System.setProperty('geb.env',"chrome")
-			System.setProperty('geb.env',"firefox")
-		}
+//		if(!System.getProperty('gev.env')) {
+////			System.setProperty('geb.env',"chrome")
+//			System.setProperty('geb.env',"firefox")
+//		}
 	}
 	
 	boolean realBrowser() {

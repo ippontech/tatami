@@ -13,22 +13,24 @@ import org.openqa.selenium.chrome.ChromeOptions
 
 import com.gargoylesoftware.htmlunit.BrowserVersion
 
-// TODO : faut-il laisser la baseUrl ici ?
 baseUrl = "http://localhost:8080/"
 
-forcedLocale = "en"
+def forcedLocale = "en"
 
-// Use htmlunit as the default
-// See: http://code.google.com/p/selenium/wiki/HtmlUnitDriver
-driver = {
-	def browserVersion = BrowserVersion.getDefault()
-	browserVersion.setSystemLanguage(forcedLocale)
-	browserVersion.setBrowserLanguage(forcedLocale)
-	browserVersion.setUserLanguage(forcedLocale)
-	def driver = new HtmlUnitDriver(browserVersion)
-	// driver.javascriptEnabled = true // raphael.js fails to be executed by HtmlUnitDriver
-	driver
-}
+//// See: http://code.google.com/p/selenium/wiki/HtmlUnitDriver
+//driver = {
+//	def browserVersion = BrowserVersion.getDefault()
+//	browserVersion.setSystemLanguage(forcedLocale)
+//	browserVersion.setBrowserLanguage(forcedLocale)
+//	browserVersion.setUserLanguage(forcedLocale)
+//	def driver = new HtmlUnitDriver(browserVersion)
+////	driver.javascriptEnabled = true // raphael.js fails to be executed by HtmlUnitDriver
+//	driver
+//}
+
+FirefoxProfile p = new FirefoxProfile();
+p.setPreference( "intl.accept_languages", forcedLocale );
+driver = { new FirefoxDriver(p) }
 
 environments {
 

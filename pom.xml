@@ -164,6 +164,229 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>uitest</id>
+            <properties>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>add-uitests-source</id>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>${basedir}/src/integration/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                            <!-- TODO : eclipse doesn't add this resource to classpath ... test with classic <testResources> -->
+                                <id>add-uitests-resource</id>
+                                <goals>
+                                    <goal>add-test-resource</goal>
+                                </goals>
+                                <configuration>
+                                       <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/integration/resources</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.gmaven</groupId>
+                        <artifactId>gmaven-plugin</artifactId>
+                        <version>1.4</version>
+                        <configuration>
+                            <providerSelection>1.8</providerSelection>
+                            <sources>
+                                <fileset>
+                                    <directory>${basedir}/src/integration/java</directory>
+                                    <includes>
+                                        <include>**/*.groovy</include>
+                                    </includes>
+                                </fileset>
+                            </sources>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.12.3</version>
+                        <configuration>
+                            <testSourceDirectory>${basedir}/src/integration/java</testSourceDirectory>
+                            <includes>
+                                <include>**/*Spec.*</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <!-- <geb.build.baseUrl>http://localhost:8080/tatami</geb.build.baseUrl> -->
+                                <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
+                                <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                                <google.password>${google.password}</google.password>
+                                <google.email>${google.email}</google.email>
+                            </systemPropertyVariables>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cassandra-maven-plugin</artifactId>
+                        <version>${maven.cassandra.version}</version>
+                        <executions>
+                            <execution>
+                                <id>start-cassandra</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <!-- TODO : add stop also ? -->
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven.jetty.version}</version>
+                        <configuration>
+                            <scanIntervalSeconds>${jetty.scanIntervalSeconds}</scanIntervalSeconds>
+                            <stopKey>stop-jetty</stopKey>
+                            <stopPort>9999</stopPort>
+                            <systemProperties>
+                                <systemProperty>
+                                    <name>spring.profiles.active</name>
+                                    <value>${spring.profiles.active}</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <name>jetty.port</name>
+                                    <value>${jetty.port}</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-jetty</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <!-- <goal>run-exploded</goal> -->
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                                    <daemon>true</daemon>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-jetty</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <!-- TODO extract versions as property -->
+                <dependency>
+                  <groupId>org.codehaus.groovy</groupId>
+                  <artifactId>groovy-all</artifactId>
+        <!--           <version>1.7.10</version> -->
+                  <version>1.8.1</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.spockframework</groupId>
+                  <artifactId>spock-core</artifactId>
+                  <!-- <version>0.5-groovy-1.7</version> -->
+                  <version>0.6-groovy-1.8</version>
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.codehaus.geb</groupId>
+                  <artifactId>geb-spock</artifactId>
+                  <version>0.7.1</version>
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.seleniumhq.selenium</groupId>
+                  <artifactId>selenium-firefox-driver</artifactId>
+                  <version>${selenium.version}</version>
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.seleniumhq.selenium</groupId>
+                  <artifactId>selenium-htmlunit-driver</artifactId>
+                  <version>${selenium.version}</version>
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.seleniumhq.selenium</groupId>
+                  <artifactId>selenium-chrome-driver</artifactId>
+                  <version>${selenium.version}</version>
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.seleniumhq.selenium</groupId>
+                  <artifactId>selenium-support</artifactId>
+                  <version>${selenium.version}</version>    
+                  <scope>test</scope>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.directory.server</groupId>
+                  <artifactId>apacheds-all</artifactId>
+                  <version>1.5.5</version> <!-- Don't change this version ! It breaks the code -->
+                  <scope>test</scope>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>org.apache.directory.shared</groupId>
+                      <artifactId>shared-ldap</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 
     <properties>
@@ -436,63 +659,6 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        
-        <!-- TODO extract versions as property -->
-        <dependency>
-          <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
-<!--           <version>1.7.10</version> -->
-          <version>1.8.1</version>
-        </dependency>
-        <dependency>
-          <groupId>org.spockframework</groupId>
-          <artifactId>spock-core</artifactId>
-          <!-- <version>0.5-groovy-1.7</version> -->
-          <version>0.6-groovy-1.8</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.codehaus.geb</groupId>
-          <artifactId>geb-spock</artifactId>
-          <version>0.7.1</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-firefox-driver</artifactId>
-          <version>${selenium.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-htmlunit-driver</artifactId>
-          <version>${selenium.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-chrome-driver</artifactId>
-          <version>${selenium.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-support</artifactId>
-          <version>${selenium.version}</version>    
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.directory.server</groupId>
-          <artifactId>apacheds-all</artifactId>
-          <version>1.5.5</version> <!-- Don't change this version ! It breaks the code -->
-          <scope>test</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>org.apache.directory.shared</groupId>
-              <artifactId>shared-ldap</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
     </dependencies>
     <build>
         <finalName>root</finalName>
@@ -543,39 +709,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
             </plugin>
-<!-- 
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                  <includes>
-                    <include>*Spec.*</include>
-                  </includes>
-                  <systemPropertyVariables>
-                    <geb.build.baseUrl>http://localhost:8080/tatami</geb.build.baseUrl>
-                    <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
-                  </systemPropertyVariables>
-                </configuration>
-              </plugin>
-              <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.3</version>
-                <configuration>
-                  <providerSelection>1.7</providerSelection>
-                    => mettre 1.8 a priori ...
-                </configuration>
-                <executions>
-                  <execution>
-                    <goals>
-                      <goal>testCompile</goal>
-                    </goals>
-                  </execution>
-                </executions>
-              </plugin>
-      -->
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -591,6 +724,12 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <!-- Cassandra must be configured before jetty ... -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cassandra-maven-plugin</artifactId>
+                <version>${maven.cassandra.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -611,11 +750,6 @@
                         </systemProperty>
                     </systemProperties>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cassandra-maven-plugin</artifactId>
-                <version>${maven.cassandra.version}</version>
             </plugin>
         </plugins>
         <pluginManagement>

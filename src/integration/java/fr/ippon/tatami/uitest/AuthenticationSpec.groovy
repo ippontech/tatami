@@ -78,9 +78,13 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 	
 	def "login as normal user with google"() {
 		given:
+		def googleEmail = System.getProperty("google.email")
+		def googlePassword = System.getProperty("google.password")
+		assert googleEmail !=null
+		assert googlePassword !=null
 		to LoginPage
 		verifyAt()
-		// and google account not accepting localhost ...
+		// and google account not already accepting localhost ...
 				
 		when: "click on goodle authentication button"
 		googleButton.click()
@@ -90,8 +94,8 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		
 		when : "enter credentials on google"
 		loginForm.with {
-			Email = "farrault@ippon.fr"
-			Passwd = System.getProperty("mypassord");
+			Email = googleEmail
+			Passwd = googlePassword
 		}
 		loginButton.click()
 		

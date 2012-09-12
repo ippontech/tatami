@@ -9,7 +9,7 @@ class NewRegistrationSpec extends TatamiBaseGebSpec {
 		given:
 		to LoginPage
 		verifyAt()
-		def existingUserEmail = "farrault@ippon.fr"
+		def existingUserEmail = "john_doe@ippon.fr"
 		accountUtils.assertUserExists(existingUserEmail);
 		// TODO create user if necessary ?
 		
