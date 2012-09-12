@@ -105,12 +105,12 @@
 
 <script type="text/template" id="profile-follow-suggest-empty">
   <tr>
-    <td><fmt:message key="tatami.follow.nobody"/></td>
+    <td class="pull-left"><fmt:message key="tatami.follow.nobody"/></td>
   </tr>
 </script>
 
 <script type="text/template" id="profile-follow-suggest-item">
-  <td>
+  <td class="pull-left">
     <a href="/tatami/profile/<@= follow.username @>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
       <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
     </a>
