@@ -116,9 +116,6 @@ public class UserController {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
-        Collection<User> users = userService.getUsersByLogin(logins);
-        users.remove(currentUser);
-        return users;
+        return userService.getUsersByLogin(logins);
     }
-
 }

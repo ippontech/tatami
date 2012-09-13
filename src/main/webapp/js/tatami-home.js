@@ -155,7 +155,7 @@ app.View.ProfileView = Backbone.View.extend({
 
 app.View.FollowFormView = Backbone.View.extend({
   tagName: 'form',
-  template: _.template($('#profile-follow-form').html()),
+  template: _.template($('#profile-find-form').html()),
 
   initialize: function() {
     $(this.el).addClass('row-fluid');
@@ -186,10 +186,21 @@ app.View.FollowFormView = Backbone.View.extend({
     });
   },
 
-  render: function() {
-    $(this.el).html(this.template());
-    return $(this.el);
-  }
+    render:function () {
+        $(this.el).html(this.template());
+        $(this.el).find("#findUsername").typeahead({
+            source: function (query, process) {
+              return $.get('/tatami/rest/users/search', {q: query}, function(data) {
+                  var results = [];
+                  for (var i = 0; i<data.length; i++) {
+                      results[i] = data[i].username;
+                  }
+                  return process(results);
+              });
+            }
+        });
+        return $(this.el);
+    }
 });
 
 app.Collection.SuggestCollection = Backbone.Collection.extend({

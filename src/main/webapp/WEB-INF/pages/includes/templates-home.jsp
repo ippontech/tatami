@@ -73,17 +73,17 @@
   </fieldset>
 </script>
 
-<script type="text/template" id="profile-follow-form">
-  <!-- Follow another user -->
+<script type="text/template" id="profile-find-form">
+  <!-- Find another user -->
   <fieldset class="span12">
     <div>
-      <label class="control-label"><i class="icon-zoom-in icon-white"></i><fmt:message key="tatami.follow.title"/>...</label>
+      <label class="control-label"><i class="icon-zoom-in icon-white"></i><fmt:message key="tatami.find.title"/></label>
     </div>
     <div class="control-group">
-      <input class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.follow.username"/>..." name="username" />
+      <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"/>
     </div>
     <div>
-      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.follow.action"/></button>
+      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.find.action"/></button>
     </div>
   </fieldset>
 </script>

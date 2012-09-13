@@ -293,7 +293,7 @@ public class LuceneSearchService implements SearchService {
             SortField sortField = new SortField("username", SortField.STRING, true);
             Sort sort = new Sort(sortField);
 
-            TopDocs topDocs = searcher.search(luceneQuery, filter, 5, sort);
+            TopDocs topDocs = searcher.search(luceneQuery, filter, 8, sort);
             int totalHits = topDocs.totalHits;
             if (totalHits == 0) {
                 return new ArrayList<String>();
@@ -306,6 +306,7 @@ public class LuceneSearchService implements SearchService {
                 String username = document.get("username");
                 String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
                 logins.add(login);
+                log.debug(login);
             }
         } catch (IOException e) {
             log.error("A Lucene query had a I/O error : " + e.getMessage());
