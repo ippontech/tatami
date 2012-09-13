@@ -304,10 +304,8 @@ public class LuceneSearchService implements SearchService {
                 int documentId = scoreDocArray[i].doc;
                 Document document = searcher.doc(documentId);
                 String username = document.get("username");
-                log.info("Document : " + document);
                 String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
                 logins.add(login);
-                log.info("logins: " + logins);
             }
         } catch (IOException e) {
             log.error("A Lucene query had a I/O error : " + e.getMessage());
