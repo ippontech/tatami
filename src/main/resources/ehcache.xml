@@ -27,7 +27,7 @@
     <cache name="user-prefix-cache"
            maxElementsInMemory="5000"
            eternal="false"
-           timeToLiveSeconds="3600"
+           timeToLiveSeconds="600"
            overflowToDisk="false">
     </cache>
 
