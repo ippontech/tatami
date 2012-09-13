@@ -41,7 +41,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
     }
 
     @Bean
-    @DependsOn({"searcherManager"})
+    @DependsOn({"statusSearcherManager", "userSearcherManager"})
     public LuceneIndexReaderReloader luceneIndexReaderReloader() {
         if (!elasticsearchActivated) {
             LuceneIndexReaderReloader reloader = new LuceneIndexReaderReloader();

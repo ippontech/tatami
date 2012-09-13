@@ -119,35 +119,31 @@ public class SearchConfiguration {
         }
     }
 
-    @Bean
-    @DependsOn({"analyzer"})
-    public IndexWriterConfig indexWriterConfig() {
-        if (!elasticsearchActivated()) {
-            Analyzer analyzer = analyzer();
-            IndexWriterConfig indexWriterConfig =
-                    new IndexWriterConfig(Version.LUCENE_36, analyzer);
-
-            return indexWriterConfig;
-        } else {
-            return null;
-        }
+    @Bean(name = "statusDirectory")
+    public Directory statusDirectory() {
+        return internalDirectory("status");
     }
 
-    @Bean
-    public Directory directory() {
+    @Bean(name = "userDirectory")
+    public Directory userDirectory() {
+        return internalDirectory("user");
+    }
+
+    private Directory internalDirectory(String directoryName) {
         if (!elasticsearchActivated()) {
-            log.info("Initializing Lucene search engine...");
+            log.info("Initializing Lucene " + directoryName + " directory");
             String lucenePath = env.getRequiredProperty("lucene.path");
             try {
-                Directory directory = new NIOFSDirectory(new File(lucenePath));
-                log.info("Lucene is initialized");
+                Directory directory = new NIOFSDirectory(
+                        new File(lucenePath + System.getProperty("file.separator") + directoryName));
+
+                log.info("Lucene directory " + directoryName + " is initialized");
                 return directory;
             } catch (IOException e) {
-                log.error("Lucene could not be started : " + e.getMessage());
+                log.error("Lucene direcotry could not be started : " + e.getMessage());
                 if (log.isWarnEnabled()) {
                     e.printStackTrace();
                 }
-                log.error("The search engine will NOT be available in Tatami.");
                 return null;
             }
         } else {
@@ -155,15 +151,30 @@ public class SearchConfiguration {
         }
     }
 
+    @Bean(name = "statusIndexWriter")
+    @DependsOn({"statusDirectory"})
+    public IndexWriter statusIndexWriter() {
+        Directory directory = statusDirectory();
+        return internalIndexWriter(directory);
+    }
+
     @Bean
-    @DependsOn({"indexWriterConfig", "directory"})
-    public IndexWriter indexWriter() {
+    @DependsOn({"userDirectory"})
+    public IndexWriter userIndexWriter() {
+        Directory directory = userDirectory();
+        return internalIndexWriter(directory);
+    }
+
+    private IndexWriter internalIndexWriter(Directory directory) {
         if (!elasticsearchActivated()) {
             try {
-                Directory directory = directory();
                 if (directory != null) {
-                    IndexWriter indexWriter = new IndexWriter(directory(),
-                            indexWriterConfig());
+                    Analyzer analyzer = analyzer();
+                    IndexWriterConfig indexWriterConfig =
+                            new IndexWriterConfig(Version.LUCENE_36, analyzer);
+
+                    IndexWriter indexWriter = new IndexWriter(directory,
+                            indexWriterConfig);
 
                     return indexWriter;
                 } else {
@@ -182,11 +193,20 @@ public class SearchConfiguration {
     }
 
     @Bean
-    @DependsOn({"indexWriter"})
-    public SearcherManager searcherManager() {
+    @DependsOn({"statusIndexWriter"})
+    public SearcherManager statusSearcherManager() {
+        return internalSearcherManager(statusIndexWriter());
+    }
+
+    @Bean
+    @DependsOn({"userIndexWriter"})
+    public SearcherManager userSearcherManager() {
+        return internalSearcherManager(userIndexWriter());
+    }
+
+    private SearcherManager internalSearcherManager(IndexWriter indexWriter) {
         if (!elasticsearchActivated()) {
             try {
-                IndexWriter indexWriter = indexWriter();
                 if (indexWriter != null) {
                     SearcherManager searcherManager = new SearcherManager(indexWriter, true, null);
                     return searcherManager;

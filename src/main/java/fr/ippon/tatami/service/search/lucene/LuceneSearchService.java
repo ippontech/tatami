@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.Async;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.util.*;
 
@@ -30,19 +31,25 @@ public class LuceneSearchService implements SearchService {
     private static final Log log = LogFactory.getLog(LuceneSearchService.class);
 
     @Inject
-    private IndexWriter indexWriter;
+    @Named("statusIndexWriter")
+    private IndexWriter statusIndexWriter;
 
     @Inject
-    private SearcherManager searcherManager;
+    @Named("userIndexWriter")
+    private IndexWriter userIndexWriter;
+
+    @Inject
+    @Named("statusSearcherManager")
+    private SearcherManager statusSearcherManager;
+
+    @Inject
+    @Named("userSearcherManager")
+    private SearcherManager userSearcherManager;
 
     @Inject
     private Analyzer analyzer;
 
     private Map<String, Float> statusBoosts = new HashMap<String, Float>();
-
-    private String statusDataType = Status.class.getSimpleName().toLowerCase();
-
-    private String userDataType = User.class.getSimpleName().toLowerCase();
 
     @PostConstruct
     public void init() {
@@ -54,8 +61,10 @@ public class LuceneSearchService implements SearchService {
     public void destroy() {
         log.debug("Closing the Lucene index");
         try {
-            indexWriter.commit();
-            indexWriter.close();
+            statusIndexWriter.commit();
+            statusIndexWriter.close();
+            userIndexWriter.commit();
+            userIndexWriter.close();
         } catch (IOException e) {
             log.error("I/O error while closing the Lucene index : " + e.getMessage());
             if (log.isDebugEnabled()) {
@@ -68,8 +77,10 @@ public class LuceneSearchService implements SearchService {
     public boolean reset() {
         log.warn("Trying to delete the complete Lucene index");
         try {
-            indexWriter.deleteAll();
-            indexWriter.commit();
+            statusIndexWriter.deleteAll();
+            statusIndexWriter.commit();
+            userIndexWriter.deleteAll();
+            userIndexWriter.commit();
             return true;
         } catch (IOException e) {
             log.error("I/O error while deleting the Lucene index : " + e.getMessage());
@@ -85,7 +96,6 @@ public class LuceneSearchService implements SearchService {
     public void addStatus(Status status) {
         try {
             internalAddStatus(status);
-            indexWriter.commit();
             if (log.isDebugEnabled()) {
                 log.debug("Lucene indexed status : " + status);
             }
@@ -100,7 +110,7 @@ public class LuceneSearchService implements SearchService {
             for (Status status : statuses) {
                 internalAddStatus(status);
             }
-            indexWriter.commit();
+            statusIndexWriter.commit();
             log.info(statuses.size() + " statuses indexed!");
         } catch (IOException e) {
             log.error("Batch status insert failed ! ", e);
@@ -109,7 +119,6 @@ public class LuceneSearchService implements SearchService {
 
     private void internalAddStatus(Status status) throws IOException {
         Document document = new Document();
-        document.add(new Field("dataType", statusDataType, Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("domain", status.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("statusId", status.getStatusId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", status.getUsername(), Field.Store.NO, Field.Index.NOT_ANALYZED));
@@ -119,14 +128,14 @@ public class LuceneSearchService implements SearchService {
                 Field.Store.NO,
                 Field.Index.NOT_ANALYZED));
 
-        indexWriter.addDocument(document);
+        statusIndexWriter.addDocument(document);
     }
 
     @Override
     public void removeStatus(Status status) {
         Term term = new Term("statusId", status.getStatusId());
         try {
-            indexWriter.deleteDocuments(term);
+            statusIndexWriter.deleteDocuments(term);
             if (log.isDebugEnabled()) {
                 log.debug("Lucene deleted status : " + status);
             }
@@ -153,7 +162,7 @@ public class LuceneSearchService implements SearchService {
 
         IndexSearcher searcher = null;
         try {
-            searcher = searcherManager.acquire();
+            searcher = statusSearcherManager.acquire();
             MultiFieldQueryParser parser =
                     new MultiFieldQueryParser(Version.LUCENE_36,
                             new String[]{"username", "firstName", "lastName", "content"},
@@ -170,8 +179,6 @@ public class LuceneSearchService implements SearchService {
             TermsFilter filter = new TermsFilter();
             Term domainTerm = new Term("domain", domain);
             filter.addTerm(domainTerm);
-            Term dataTypeTerm = new Term("dataType", statusDataType);
-            filter.addTerm(dataTypeTerm);
 
             SortField sortField = new SortField("statusDate", SortField.STRING, true);
             Sort sort = new Sort(sortField);
@@ -206,7 +213,7 @@ public class LuceneSearchService implements SearchService {
             }
         } finally {
             try {
-                searcherManager.release(searcher);
+                statusSearcherManager.release(searcher);
             } catch (IOException e) {
                 log.error("The Lucene searcher could not be given back to the searcherManager pool. " +
                         e.getMessage());
@@ -224,7 +231,6 @@ public class LuceneSearchService implements SearchService {
     public void addUser(User user) {
         try {
             internalAddUser(user);
-            indexWriter.commit();
             if (log.isDebugEnabled()) {
                 log.debug("Lucene indexed user : " + user);
             }
@@ -239,7 +245,7 @@ public class LuceneSearchService implements SearchService {
             for (User user : users) {
                 internalAddUser(user);
             }
-            indexWriter.commit();
+            userIndexWriter.commit();
             log.info(users.size() + " users indexed!");
         } catch (IOException e) {
             log.error("Batch status insert failed ! ", e);
@@ -248,18 +254,17 @@ public class LuceneSearchService implements SearchService {
 
     private void internalAddUser(User user) throws IOException {
         Document document = new Document();
-        document.add(new Field("dataType", userDataType, Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("domain", user.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("login", user.getLogin(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", user.getUsername(), Field.Store.YES, Field.Index.ANALYZED));
-        indexWriter.addDocument(document);
+        userIndexWriter.addDocument(document);
     }
 
     @Override
     public void deleteUser(User user) {
         Term term = new Term("login", user.getLogin());
         try {
-            indexWriter.deleteDocuments(term);
+            userIndexWriter.deleteDocuments(term);
             if (log.isDebugEnabled()) {
                 log.debug("Lucene deleted login : " + user.getLogin());
             }
@@ -276,7 +281,7 @@ public class LuceneSearchService implements SearchService {
         IndexSearcher searcher = null;
         List<String> logins = new ArrayList<String>();
         try {
-            searcher = searcherManager.acquire();
+            searcher = userSearcherManager.acquire();
 
             Term prefixTerm = new Term("username", prefix);
             Query luceneQuery = new PrefixQuery(prefixTerm);
@@ -284,8 +289,6 @@ public class LuceneSearchService implements SearchService {
             TermsFilter filter = new TermsFilter();
             Term domainTerm = new Term("domain", domain);
             filter.addTerm(domainTerm);
-            Term dataTypeTerm = new Term("dataType", userDataType);
-            filter.addTerm(dataTypeTerm);
 
             SortField sortField = new SortField("username", SortField.STRING, true);
             Sort sort = new Sort(sortField);
@@ -304,6 +307,7 @@ public class LuceneSearchService implements SearchService {
                 log.info("Document : " + document);
                 String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
                 logins.add(login);
+                log.info("logins: " + logins);
             }
         } catch (IOException e) {
             log.error("A Lucene query had a I/O error : " + e.getMessage());
@@ -312,7 +316,7 @@ public class LuceneSearchService implements SearchService {
             }
         } finally {
             try {
-                searcherManager.release(searcher);
+                userSearcherManager.release(searcher);
             } catch (IOException e) {
                 log.error("The Lucene searcher could not be given back to the searcherManager pool. " +
                         e.getMessage());
