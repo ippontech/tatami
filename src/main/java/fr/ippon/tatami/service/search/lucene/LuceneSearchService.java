@@ -17,6 +17,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.Version;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 
 import javax.annotation.PostConstruct;
@@ -277,6 +278,7 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
+    @Cacheable("user-prefix-cache")
     public Collection<String> searchUserByPrefix(String domain, String prefix) {
         IndexSearcher searcher = null;
         List<String> logins = new ArrayList<String>();
