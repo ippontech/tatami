@@ -154,49 +154,33 @@ app.View.ProfileView = Backbone.View.extend({
 */
 
 app.View.FollowFormView = Backbone.View.extend({
-  tagName: 'form',
-  template: _.template($('#profile-find-form').html()),
+    tagName:'form',
+    template:_.template($('#profile-find-form').html()),
 
-  initialize: function() {
-    $(this.el).addClass('row-fluid');
-  },
+    initialize:function () {
+        $(this.el).addClass('row-fluid');
+    },
 
-  events: {
-    'submit': 'addStatus'
-  },
+    events:{
+        'submit':'goToUserProfile'
+    },
 
-  addStatus: function(e) {
-    var self = this;
-    e.preventDefault();
-
-    var user = new app.Model.FollowModel();
-
-    _.each($(e.target).serializeArray(), function(value){
-      user.set(value.name, value.value);
-    });
-
-    user.save(null,{
-      success: function(model, response) {
-        e.target.reset();
-        $(self.el).find('.control-group').removeClass('error');
-      },
-      error: function(model, response) {
-        $(self.el).find('.control-group').addClass('error');
-      }
-    });
-  },
+    goToUserProfile: function (e) {
+        e.preventDefault();
+        window.location.href = "/tatami/profile/" + $('#findUsername').val() + "/";
+    },
 
     render:function () {
         $(this.el).html(this.template());
         $(this.el).find("#findUsername").typeahead({
-            source: function (query, process) {
-              return $.get('/tatami/rest/users/search', {q: query}, function(data) {
-                  var results = [];
-                  for (var i = 0; i<data.length; i++) {
-                      results[i] = data[i].username;
-                  }
-                  return process(results);
-              });
+            source:function (query, process) {
+                return $.get('/tatami/rest/users/search', {q:query}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = data[i].username;
+                    }
+                    return process(results);
+                });
             }
         });
         return $(this.el);
