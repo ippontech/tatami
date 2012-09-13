@@ -830,6 +830,14 @@ app.Router.HomeRouter = Backbone.Router.extend({
             warning:50,
             counterText:text_characters_left + " "
         });
+        $("#updateStatusContent").bind('keypress', function (e) {
+            var keycode = (e.keycode ? e.keycode : e.which);
+            if (keycode == 64) { //the user pressed the "@" key
+               // TODO drop down list of users
+            } else if (keycode == 35) { //the user pressed the "#" key
+               // TODO drop down list of tags
+            }
+        });
 
         $("#updateStatusBtn").popover({
             animation:true,
