@@ -18,7 +18,7 @@
     <div class="row">
         <div class="span12">
             <div class="alert alert-success">
-                ElasticSearch re-indexation has been triggered.
+                Search engine re-indexation has succeeded.
             </div>
         </div>
     </div>
