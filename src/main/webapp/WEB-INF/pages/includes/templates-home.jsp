@@ -77,7 +77,7 @@
   <!-- Find another user -->
   <fieldset class="span12">
     <div>
-      <label class="control-label"><i class="icon-zoom-in icon-white"></i><fmt:message key="tatami.find.title"/></label>
+      <label><i class="icon-zoom-in"></i> <fmt:message key="tatami.find.title"/></label>
     </div>
     <div class="control-group">
       <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"/>
@@ -87,6 +87,7 @@
     </div>
   </fieldset>
 </script>
+
 <script type="text/template" id="profile-follow-suggest">
   <div class="row-fluid">
       <div class="well">
@@ -115,6 +116,15 @@
       <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
     </a>
   </td>
+</script>
+
+<script type="text/template" id="trends-template">
+        <div>
+            <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
+        </div>
+        <div>
+
+        </div>
 </script>
 
 <script type="text/template" id="favorite-refresh">

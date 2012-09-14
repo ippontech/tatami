@@ -264,6 +264,19 @@ app.View.FollowView = Backbone.View.extend({
   }
 });
 
+app.View.TrendsView = Backbone.View.extend({
+    template: _.template($('#trends-template').html()),
+
+    initialize: function() {
+    },
+
+    render: function() {
+        $(this.el).html(this.template());
+        this.delegateEvents();
+        return $(this.el);
+    }
+});
+
 /*
   Timeline
 */
@@ -851,6 +864,9 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());
+
+        var trends = new app.View.TrendsView();
+        $('#trends').html(trends.render());
     },
 
   selectMenu: function(menu) {

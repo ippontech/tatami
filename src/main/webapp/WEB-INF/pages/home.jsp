@@ -22,6 +22,10 @@
                 <!-- Follow -->
                 <div id="profileFollow" class="alert alert-info hidden-phone">
                 </div>
+
+                <!-- Trends -->
+                <div id="trends" class="alert alert-info hidden-phone">
+                </div>
             </div>
 
             <div class="span8">
