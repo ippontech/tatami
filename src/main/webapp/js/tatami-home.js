@@ -313,8 +313,8 @@ app.View.TimeLineNewView = Backbone.View.extend({
           data:data,
           success:function () {
               if (sc.length > 0) {
-                  document.title = "Tatami (" + sc.length + ")";
-              } else {
+                  document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
+              } else if (sc.length == 0 && typeof callback != 'undefined') {
                   document.title = "Tatami";
               }
               while (sc.length > 0) {
