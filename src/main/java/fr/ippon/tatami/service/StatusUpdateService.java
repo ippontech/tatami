@@ -20,6 +20,8 @@ public class StatusUpdateService {
 
     private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
+    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#(\\w+)");
+
     @Inject
     private FollowerRepository followerRepository;
 
@@ -40,6 +42,9 @@ public class StatusUpdateService {
 
     @Inject
     private TaglineRepository taglineRepository;
+
+    @Inject
+    private TrendRepository trendsRepository;
 
     @Inject
     private DiscussionRepository discussionRepository;
@@ -77,12 +82,14 @@ public class StatusUpdateService {
         Status status =
                 statusRepository.createStatus(currentLogin, username, domain, content, replyTo, replyToUsername);
 
-        // add status to the dayline, userline, timeline, tagline
+        // add status to the dayline, userline, timeline
         String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
-        daylineRepository.addStatusToDayline(status, domain, day);
+        daylineRepository.addStatusToDayline(status, day);
         userlineRepository.addStatusToUserline(status);
         timelineRepository.addStatusToTimeline(currentLogin, status);
-        taglineRepository.addStatusToTagline(status, domain);
+
+        // tag managgement
+        manageStatusTags(status);
 
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
@@ -115,6 +122,24 @@ public class StatusUpdateService {
         searchService.addStatus(status);
 
         return status;
+    }
+
+    /**
+     * Parses the status to find tags, and add those tags to the TagLine and the Trends.
+     */
+    private void manageStatusTags(Status status) {
+        Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
+        while (m.find()) {
+            String tag = m.group(1);
+            if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Found tag : " + tag);
+                }
+                taglineRepository.addStatusToTagline(status, tag);
+                trendsRepository.addTag(status.getDomain(), tag);
+            }
+        }
+
     }
 
     private String extractUsernameWithoutAt(String dest) {

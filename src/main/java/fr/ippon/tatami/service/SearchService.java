@@ -43,15 +43,14 @@ public interface SearchService {
     /**
      * Search an item in the index.
      *
-     * @param query     the query : mandatory
-     * @param page      the page to return
-     * @param size      the size of a page
+     * @param query the query : mandatory
+     * @param page  the page to return
+     * @param size  the size of a page
      */
     Map<String, SharedStatusInfo> searchStatus(String domain,
-                                     String query,
-                                     int page,
-                                     int size);
-
+                                               String query,
+                                               int page,
+                                               int size);
 
 
     /**
@@ -67,5 +66,5 @@ public interface SearchService {
     void deleteUser(User user);
 
     Collection<String> searchUserByPrefix(String domain,
-                                        String prefix);
+                                          String prefix);
 }

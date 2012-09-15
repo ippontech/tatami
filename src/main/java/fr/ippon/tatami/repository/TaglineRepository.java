@@ -14,10 +14,8 @@ public interface TaglineRepository {
 
     /**
      * Analyze a message in order to extract and reference eventual hashtags.
-     *
-     * @param status
      */
-    void addStatusToTagline(Status status, String domain);
+    void addStatusToTagline(Status status, String tag);
 
     /**
      * The tagline : the statuses for a given tag.

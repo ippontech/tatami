@@ -111,9 +111,9 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public Map<String, SharedStatusInfo> searchStatus(final String domain,
-                                            final String query,
-                                            int page,
-                                            int size) {
+                                                      final String query,
+                                                      int page,
+                                                      int size) {
 
         Assert.notNull(query);
         Assert.notNull(domain);

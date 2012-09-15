@@ -36,4 +36,6 @@ public class ColumnFamilyKeys {
     public final static String DOMAIN_CF = "Domain";
 
     public final static String REGISTRATION_CF = "Registration";
+
+    public final static String TRENDS_CF = "TRENDS_CF";
 }

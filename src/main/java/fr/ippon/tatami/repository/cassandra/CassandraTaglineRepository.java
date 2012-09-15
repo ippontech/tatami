@@ -18,8 +18,6 @@ import javax.inject.Inject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -42,22 +40,18 @@ public class CassandraTaglineRepository implements TaglineRepository {
     @Inject
     private Keyspace keyspaceOperator;
 
-    private static final Pattern HASHTAG_PATTERN = Pattern.compile("#(\\w+)");
-
     @Override
-    public void addStatusToTagline(Status status, String domain) {
+    public void addStatusToTagline(Status status, String tag) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        Matcher m = HASHTAG_PATTERN.matcher(status.getContent());
-        while (m.find()) {
-            String tag = m.group(1);
-            if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found tag : " + tag);
-                }
-                mutator.insert(getKey(domain, tag), TAGLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
-                        "", UUIDSerializer.get(), StringSerializer.get()));
-            }
-        }
+        mutator.insert(
+                getKey(status.getDomain(), tag),
+                TAGLINE_CF,
+                HFactory.createColumn(
+                        UUID.fromString(status.getStatusId()),
+                        "",
+                        UUIDSerializer.get(),
+                        StringSerializer.get()));
+
     }
 
     @Override

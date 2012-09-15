@@ -15,7 +15,7 @@ public interface DaylineRepository {
     /**
      * Add a status to the repository.
      */
-    void addStatusToDayline(Status status, String domain, String day);
+    void addStatusToDayline(Status status, String day);
 
     /**
      * Get the statistics for one day, in the form &lt;username, number of status updates&gt;.

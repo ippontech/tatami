@@ -151,9 +151,9 @@ public class LuceneSearchService implements SearchService {
 
     @Override
     public Map<String, SharedStatusInfo> searchStatus(String domain,
-                                            String query,
-                                            int page,
-                                            int size) {
+                                                      String query,
+                                                      int page,
+                                                      int size) {
 
         if (page < 0) {
             page = 0; //Default value

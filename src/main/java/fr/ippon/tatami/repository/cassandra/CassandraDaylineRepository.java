@@ -41,8 +41,8 @@ public class CassandraDaylineRepository implements DaylineRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToDayline(Status status, String domain, String day) {
-        String key = getKey(domain, day);
+    public void addStatusToDayline(Status status, String day) {
+        String key = getKey(status.getDomain(), day);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.incrementCounter(key, DAYLINE_CF, status.getUsername(), 1);
     }
