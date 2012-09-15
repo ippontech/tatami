@@ -1,0 +1,261 @@
+create keyspace tatami
+  with placement_strategy = 'SimpleStrategy'
+  and strategy_options = {replication_factor : 1}
+  and durable_writes = true;
+
+use tatami;
+
+create column family Counter
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Dayline
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Discussion
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Domain
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Favline
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Followers
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Friends
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Registration
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Shares
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Status
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Tagline
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Timeline
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family TimelineShares
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family User
+  with column_type = 'Standard'
+  and comparator = 'BytesType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Userline
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family UserlineShares
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family Trends
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'BytesType'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
