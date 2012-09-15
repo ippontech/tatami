@@ -45,5 +45,12 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="trends-cache"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToLiveSeconds="300"
+           overflowToDisk="false">
+    </cache>
+
 </ehcache>
 

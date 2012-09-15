@@ -7,6 +7,7 @@ import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.ValueComparator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ public class TrendService {
     @Inject
     private TrendRepository trendRepository;
 
+    @Cacheable("trends-cache")
     public List<Trend> getCurrentTrends(String domain) {
         List<String> tags = trendRepository.getRecentTags(domain);
         if (log.isDebugEnabled()) {
