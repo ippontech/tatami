@@ -34,7 +34,7 @@ public class TrendService {
         HashMap<String, Integer> recentTagsCount  = new HashMap<String, Integer>();
         HashMap<String, Integer> oldTagsCount  = new HashMap<String, Integer>();
         int currentPosition = 0;
-        int middlePosition = (tags.size() / 2) - 1;
+        int middlePosition = tags.size() / 2;
         for(String tag : tags) {
             addTagInMap(totalTagsCount, tag);
             if (currentPosition <= middlePosition) {
