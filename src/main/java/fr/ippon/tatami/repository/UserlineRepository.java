@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 
 import java.util.Map;
@@ -24,5 +25,5 @@ public interface UserlineRepository {
      * - The key is the statusId of the statuses
      * - The value is who shared the statuses (or null if it wasn't shared)
      */
-    Map<String, String> getUserline(String login, int size, String since_id, String max_id);
+    Map<String, SharedStatusInfo> getUserline(String login, int size, String since_id, String max_id);
 }

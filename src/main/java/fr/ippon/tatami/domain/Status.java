@@ -46,6 +46,13 @@ public class Status {
     @Id
     private String statusId;
 
+    /**
+     * The timelineId is used on the client side :
+     * - When this is an original status, timelineId = statusId
+     * - When this is a shared status, timelineId = the id of this share in the user's timeline
+     */
+    private String timelineId;
+
     @NotNull
     @Column(name = "login")
     @JsonIgnore
@@ -116,6 +123,14 @@ public class Status {
 
     public void setStatusId(String statusId) {
         this.statusId = statusId;
+    }
+
+    public String getTimelineId() {
+        return timelineId;
+    }
+
+    public void setTimelineId(String timelineId) {
+        this.timelineId = timelineId;
     }
 
     public String getLogin() {
@@ -259,11 +274,14 @@ public class Status {
     public String toString() {
         return "Status{" +
                 "statusId='" + statusId + '\'' +
+                ", timelineId='" + timelineId + '\'' +
                 ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
+                ", iso8601StatusDate='" + iso8601StatusDate + '\'' +
+                ", prettyPrintStatusDate='" + prettyPrintStatusDate + '\'' +
                 ", replyTo='" + replyTo + '\'' +
                 ", replyToUsername='" + replyToUsername + '\'' +
                 ", firstName='" + firstName + '\'' +

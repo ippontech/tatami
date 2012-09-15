@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.test.application.ApplicationElasticSearchTestConfiguration;
 import org.apache.commons.logging.Log;
@@ -75,7 +76,7 @@ public class ElasticSearchTest {
         status2.setStatusDate(Calendar.getInstance().getTime());
 
 
-        final Map<String, String> ids0 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
+        final Map<String, SharedStatusInfo> ids0 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
         assertNotNull(ids0);
         assertEquals(0, ids0.size());
 
@@ -83,8 +84,8 @@ public class ElasticSearchTest {
         this.service.addStatus(status2);
         this.factory.getServerNode().client().admin().indices().refresh(refreshRequest("tatami")).actionGet();
 
-        final Map<String, String> ids1 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
-        final Map<String, String> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant être ecrit en francais", 0, 50);
+        final Map<String, SharedStatusInfo> ids1 = this.service.searchStatus("ippon.fr", "trying", 0, 50);
+        final Map<String, SharedStatusInfo> ids2 = this.service.searchStatus("ippon.fr", "texte riche pouvant être ecrit en francais", 0, 50);
 
         assertNotNull(ids1); // not null
         assertEquals(1, ids1.size()); // only one match if everything is ok

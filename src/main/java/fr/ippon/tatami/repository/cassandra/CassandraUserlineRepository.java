@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.UserlineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -40,7 +41,7 @@ public class CassandraUserlineRepository extends AbstractLineRepository implemen
     }
 
     @Override
-    public Map<String, String> getUserline(String login, int size, String since_id, String max_id) {
+    public Map<String, SharedStatusInfo> getUserline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(USERLINE_CF, login, size, since_id, max_id);
     }
 

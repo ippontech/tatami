@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.TaglineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -60,7 +61,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
     }
 
     @Override
-    public Map<String, String> getTagline(String domain, String tag, int size) {
+    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size) {
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TAGLINE_CF)
@@ -69,7 +70,7 @@ public class CassandraTaglineRepository implements TaglineRepository {
                 .execute()
                 .get();
 
-        Map<String, String> line = new LinkedHashMap<String, String>();
+        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
         for (HColumn<UUID, String> column : result.getColumns()) {
             line.put(column.getName().toString(), null);
         }

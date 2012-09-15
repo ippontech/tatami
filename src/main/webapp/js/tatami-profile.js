@@ -104,7 +104,7 @@ app.View.StatusNewView = Backbone.View.extend({
       var sc = _.clone(this.model);
       sc.fetch({
         data: {
-          since_id: _.first(self.model.models).get('statusId'),
+          since_id: _.first(self.model.models).get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){
@@ -170,7 +170,7 @@ app.View.StatusNextView = Backbone.View.extend({
       var sc = _.clone(this.model);
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('statusId'),
+          max_id: _.last(self.model.models).get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -39,7 +40,7 @@ public abstract class AbstractLineRepository {
     @Inject
     protected Keyspace keyspaceOperator;
 
-    protected Map<String, String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+    protected Map<String, SharedStatusInfo> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         List<HColumn<UUID, String>> result;
         if (max_id != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
@@ -73,12 +74,12 @@ public abstract class AbstractLineRepository {
             result = query.getColumns();
         }
 
-        Map<String, String> line = new LinkedHashMap<String, String>();
+        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
         boolean logDebug = log.isDebugEnabled();
         for (HColumn<UUID, String> column : result) {
             String value = column.getValue();
             if (value.equals("")) { // This is a normal status
-                line.put(column.getName().toString(), "");
+                line.put(column.getName().toString(), null);
             } else { // This status was shared by another user
                 // The form is statusId:'statusId',sharedByLogin:'sharedByLogin'
                 // So we just substing() to get the original status Id and who shared it
@@ -87,7 +88,12 @@ public abstract class AbstractLineRepository {
                 if (logDebug) {
                     log.debug("Shared status : " + orginialStatusId + " shared by : " + sharedByLogin);
                 }
-                line.put(orginialStatusId, sharedByLogin);
+                SharedStatusInfo sharedStatusInfo = new SharedStatusInfo(
+                        column.getName().toString(),
+                        orginialStatusId,
+                        sharedByLogin);
+
+                line.put(orginialStatusId, sharedStatusInfo);
             }
         }
         return line;

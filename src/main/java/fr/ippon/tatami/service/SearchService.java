@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 
@@ -46,7 +47,7 @@ public interface SearchService {
      * @param page      the page to return
      * @param size      the size of a page
      */
-    Map<String, String> searchStatus(String domain,
+    Map<String, SharedStatusInfo> searchStatus(String domain,
                                      String query,
                                      int page,
                                      int size);

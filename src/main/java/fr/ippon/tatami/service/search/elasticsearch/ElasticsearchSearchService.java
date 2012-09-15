@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
@@ -109,7 +110,7 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, String> searchStatus(final String domain,
+    public Map<String, SharedStatusInfo> searchStatus(final String domain,
                                             final String query,
                                             int page,
                                             int size) {
@@ -143,17 +144,19 @@ public class ElasticsearchSearchService implements SearchService {
             searchResponse = builder.execute().actionGet();
         } catch (IndexMissingException e) {
             log.warn("The index was not found in the cluster.");
-            return new HashMap<String, String>(0);
+            return new HashMap<String, SharedStatusInfo>(0);
         }
 
         final SearchHits searchHits = searchResponse.getHits();
         final Long hitsNumber = searchHits.getTotalHits();
         if (hitsNumber == 0) {
-            return new HashMap<String, String>(0);
+            return new HashMap<String, SharedStatusInfo>(0);
         }
 
         final SearchHit[] searchHitsArray = searchHits.getHits();
-        final Map<String, String> items = new LinkedHashMap<String, String>(hitsNumber.intValue());
+        final Map<String, SharedStatusInfo> items =
+                new LinkedHashMap<String, SharedStatusInfo>(hitsNumber.intValue());
+
         for (int i = 0; i < searchHitsArray.length; i++) {
             items.put(searchHitsArray[i].getId(), null);
         }

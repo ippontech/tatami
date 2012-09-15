@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
@@ -63,7 +64,7 @@ public class TimelineService {
     private SearchService searchService;
 
     public Status getStatus(String statusId) {
-        Map<String, String> line = new HashMap<String, String>();
+        Map<String, SharedStatusInfo> line = new HashMap<String, SharedStatusInfo>();
         line.put(statusId, null);
         Collection<Status> statusCollection = buildStatusList(line);
         if (statusCollection.isEmpty()) {
@@ -103,7 +104,7 @@ public class TimelineService {
         }
 
         // Transform the Set to a Map<String, String>
-        Map<String, String> line = new LinkedHashMap<String, String>();
+        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
         for (String statusIdInDiscussion : statusIdsInDiscussion) {
             line.put(statusIdInDiscussion, null);
         }
@@ -113,12 +114,18 @@ public class TimelineService {
         return details;
     }
 
-    public Collection<Status> buildStatusList(Map<String, String> line) {
+    public Collection<Status> buildStatusList(Map<String, SharedStatusInfo> line) {
         User currentUser = authenticationService.getCurrentUser();
-        Map<String, String> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
+        Map<String, SharedStatusInfo> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
         Collection<Status> statuses = new ArrayList<Status>(line.size());
         for (String statusId : line.keySet()) {
-            Status status = statusRepository.findStatusById(statusId);
+            SharedStatusInfo sharedStatusInfo = line.get(statusId);
+            Status status = null;
+            if (sharedStatusInfo != null) {
+                status = statusRepository.findStatusById(sharedStatusInfo.getOriginalStatusId());
+            } else {
+                status = statusRepository.findStatusById(statusId);
+            }
             if (status != null) {
                 User statusUser = userService.getUserByLogin(status.getLogin());
                 if (statusUser != null) {
@@ -128,12 +135,21 @@ public class TimelineService {
                                 " status : " + status);
 
                     }
-                    // if the Status comes from ehcache, it has to be cloned to another instance
-                    // in order to be thread-safe.
-                    // ehcache shares the Status instances per statusId, but favorites are per user.
+
+                    // if the Status comes from ehcache, it has to be cloned.
+                    // ehcache shares the Status instances per statusId, but favorites are per user and
+                    // shared statuses are also per user
                     Status statusCopy = new Status();
                     statusCopy.setLogin(status.getLogin());
                     statusCopy.setStatusId(status.getStatusId());
+                    if (sharedStatusInfo != null) { // Manage shared statuses
+                        statusCopy.setTimelineId(sharedStatusInfo.getSharedStatusId());
+                        String sharedByLogin = sharedStatusInfo.getSharedByLogin();
+                        String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
+                        statusCopy.setSharedByUsername(sharedByUsername);
+                    } else {
+                        statusCopy.setTimelineId(status.getStatusId());
+                    }
                     statusCopy.setContent(status.getContent());
                     statusCopy.setUsername(status.getUsername());
                     statusCopy.setDomain(status.getDomain());
@@ -148,11 +164,6 @@ public class TimelineService {
                     statusCopy.setFirstName(statusUser.getFirstName());
                     statusCopy.setLastName(statusUser.getLastName());
                     statusCopy.setGravatar(statusUser.getGravatar());
-                    String sharedByLogin = line.get(statusId);
-                    if (sharedByLogin != null && !sharedByLogin.equals("")) {
-                        String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
-                        statusCopy.setSharedByUsername(sharedByUsername);
-                    }
                     statuses.add(statusCopy);
                 } else {
                     if (log.isDebugEnabled()) {
@@ -181,7 +192,7 @@ public class TimelineService {
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, String> line = taglineRepository.getTagline(domain, tag, nbStatus);
+        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus);
         return buildStatusList(line);
     }
 
@@ -194,7 +205,9 @@ public class TimelineService {
      */
     public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Map<String, String> line = timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+        Map<String, SharedStatusInfo> line =
+                timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+
         return buildStatusList(line);
     }
 
@@ -214,7 +227,7 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        Map<String, String> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
+        Map<String, SharedStatusInfo> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
         return this.buildStatusList(line);
     }
 
@@ -276,7 +289,7 @@ public class TimelineService {
      */
     public Collection<Status> getFavoritesline() {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Map<String, String> line = favoritelineRepository.getFavoriteline(currentLogin);
+        Map<String, SharedStatusInfo> line = favoritelineRepository.getFavoriteline(currentLogin);
         return this.buildStatusList(line);
     }
 }

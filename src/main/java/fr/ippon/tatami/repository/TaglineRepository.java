@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 
 import java.util.Map;
@@ -24,5 +25,5 @@ public interface TaglineRepository {
      * - Value is always null : this is to be consistent with the Timeline & Userline API,
      * which returns Map<String, String>
      */
-    Map<String, String> getTagline(String domain, String tag, int size);
+    Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size);
 }

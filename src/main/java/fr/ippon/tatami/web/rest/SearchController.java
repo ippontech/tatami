@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -57,11 +58,11 @@ public class SearchController {
         }
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, String> line;
+        Map<String, SharedStatusInfo> line;
         if (q != null && !q.equals("")) {
             line = searchService.searchStatus(domain, q, page, rpp);
         } else {
-            line = new HashMap<String, String>();
+            line = new HashMap<String, SharedStatusInfo>();
         }
         return timelineService.buildStatusList(line);
     }

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -40,7 +41,7 @@ public class CassandraTimelineRepository extends AbstractLineRepository implemen
     }
 
     @Override
-    public Map<String, String> getTimeline(String login, int size, String since_id, String max_id) {
+    public Map<String, SharedStatusInfo> getTimeline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(TIMELINE_CF, login, size, since_id, max_id);
     }
 

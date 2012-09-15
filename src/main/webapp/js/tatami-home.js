@@ -305,9 +305,9 @@ app.View.TimeLineNewView = Backbone.View.extend({
 
     var data = {};
     if( typeof _.first(self.temp.models) !== 'undefined')
-      data.since_id = _.first(self.temp.models).get('statusId');
+      data.since_id = _.first(self.temp.models).get('timelineId');
     else if(typeof _.first(self.model.models) !== 'undefined')
-      data.since_id = _.first(self.model.models).get('statusId');
+      data.since_id = _.first(self.model.models).get('timelineId');
 
       sc.fetch({
           data:data,
@@ -409,7 +409,7 @@ app.View.TimeLineNextView = Backbone.View.extend({
 
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('statusId')
+          max_id: _.last(self.model.models).get('timelineId')
         },
         success: function(){
           _.each(sc.models, function(model, key) {

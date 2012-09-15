@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service.search.lucene;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
@@ -149,7 +150,7 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, String> searchStatus(String domain,
+    public Map<String, SharedStatusInfo> searchStatus(String domain,
                                             String query,
                                             int page,
                                             int size) {
@@ -187,14 +188,14 @@ public class LuceneSearchService implements SearchService {
             TopDocs topDocs = searcher.search(luceneQuery, filter, size, sort);
             int totalHits = topDocs.totalHits;
             if (totalHits == 0) {
-                return new HashMap<String, String>(0);
+                return new HashMap<String, SharedStatusInfo>(0);
             }
 
             ScoreDoc[] scoreDocArray = topDocs.scoreDocs;
             if (log.isDebugEnabled()) {
                 log.debug("Lucene found " + topDocs.totalHits + " results");
             }
-            final Map<String, String> items = new LinkedHashMap<String, String>(totalHits);
+            final Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(totalHits);
             for (int i = 0; i < scoreDocArray.length; i++) {
                 int documentId = scoreDocArray[i].doc;
                 Document document = searcher.doc(documentId);
@@ -224,7 +225,7 @@ public class LuceneSearchService implements SearchService {
                 }
             }
         }
-        return new HashMap<String, String>(0);
+        return new HashMap<String, SharedStatusInfo>(0);
     }
 
     @Override

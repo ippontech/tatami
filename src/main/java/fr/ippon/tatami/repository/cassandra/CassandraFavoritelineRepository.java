@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.FavoritelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -58,8 +59,8 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     @Cacheable("favorites-cache")
-    public Map<String, String> getFavoriteline(String login) {
-        Map<String, String> line = new LinkedHashMap<String, String>();
+    public Map<String, SharedStatusInfo> getFavoriteline(String login) {
+        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
@@ -69,7 +70,7 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
                 .get();
 
         for (HColumn<UUID, String> column : result.getColumns()) {
-            line.put(column.getName().toString(), column.getValue());
+            line.put(column.getName().toString(), null);
         }
         return line;
     }
