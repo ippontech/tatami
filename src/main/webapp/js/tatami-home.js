@@ -264,15 +264,60 @@ app.View.FollowView = Backbone.View.extend({
   }
 });
 
+app.Collection.TrendsCollection = Backbone.Collection.extend({
+    url : function(){
+        return '/tatami/rest/trends';
+    }
+});
+
 app.View.TrendsView = Backbone.View.extend({
     template: _.template($('#trends-template').html()),
+    tagName: 'tbody',
+
+    initialize: function() {
+        var self = this;
+
+        this.model = new app.Collection.TrendsCollection();
+
+        this.model.bind('reset', this.render, this);
+        this.model.bind('add', function(model, collection, options) {
+            self.addItem(model, options.index);
+        }, this);
+
+        this.model.fetch();
+    },
+
+    render: function() {
+        $(this.el).empty();
+        if(this.model.length > 0)
+            _.each(this.model.models, this.addItem, this);
+        else
+            $(this.el).html(this.template());
+        return $(this.el);
+    },
+
+    addItem: function(item, index) {
+        var el = new app.View.TrendsItemView({
+            model: item
+        }).render();
+        if(index === 0)
+            $(this.el).prepend(el);
+        else
+            $(this.el).append(el);
+    }
+});
+
+app.View.TrendsItemView = Backbone.View.extend({
+    tagName: 'tr',
+    template: _.template($('#trends-template-item').html()),
+
 
     initialize: function() {
     },
 
     render: function() {
-        $(this.el).html(this.template());
-        this.delegateEvents();
+        var $el = $(this.el);
+        $el.html(this.template({trend:this.model.toJSON()}));
         return $(this.el);
     }
 });

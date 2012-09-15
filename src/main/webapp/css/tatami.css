@@ -69,6 +69,14 @@ form {
     font-style: italic;
 }
 
+.trends {
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 110%;
+    margin-left: 5px;
+}
+
 .alert-discuss {
   color: #3a5fad;
   background-color: #d9e0f7;

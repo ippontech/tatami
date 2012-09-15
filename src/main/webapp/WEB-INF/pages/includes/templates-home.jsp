@@ -95,7 +95,7 @@
               <thead>
                   <tr>
                       <th>
-                          <i class="icon-random icon-white"></i> <strong><fmt:message key="tatami.follow.suggestions"/></strong>
+                          <i class="icon-random"></i> <strong><fmt:message key="tatami.follow.suggestions"/></strong>
                       </th>
                   </tr>
               </thead>
@@ -119,12 +119,15 @@
 </script>
 
 <script type="text/template" id="trends-template">
-        <div>
-            <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
-        </div>
-        <div>
 
-        </div>
+</script>
+
+<script type="text/template" id="trends-template-item">
+    <td class="pull-left">
+        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
+            #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
+        </a>
+    </td>
 </script>
 
 <script type="text/template" id="favorite-refresh">
