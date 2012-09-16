@@ -11,7 +11,7 @@ class NewRegistrationSpec extends TatamiBaseGebSpec {
 		verifyAt()
 		def existingUserEmail = "john_doe@ippon.fr"
 		accountUtils.assertUserExists(existingUserEmail);
-		// TODO create user if necessary ?
+		// TODO : use org.cassandraunit.DataLoader to create user before ...
 		
 		when:
 		registrationForm.email = existingUserEmail

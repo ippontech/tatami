@@ -188,6 +188,14 @@
                 <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
             </properties>
             <build>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                    </testResource>
+                    <testResource>
+                        <directory>src/integration/resources</directory>
+                    </testResource>
+                </testResources>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -203,20 +211,6 @@
                                     <sources>
                                         <source>${basedir}/src/integration/java</source>
                                     </sources>
-                                </configuration>
-                            </execution>
-                            <execution>
-                            <!-- TODO : eclipse doesn't add this resource to classpath ... test with classic <testResources> -->
-                                <id>add-uitests-resource</id>
-                                <goals>
-                                    <goal>add-test-resource</goal>
-                                </goals>
-                                <configuration>
-                                       <resources>
-                                        <resource>
-                                            <directory>${basedir}/src/integration/resources</directory>
-                                        </resource>
-                                    </resources>
                                 </configuration>
                             </execution>
                         </executions>
@@ -254,7 +248,7 @@
                                 <include>**/*Spec.*</include>
                             </includes>
                             <systemPropertyVariables>
-                                <!-- <geb.build.baseUrl>http://localhost:8080/tatami</geb.build.baseUrl> -->
+                                <!-- <geb.build.baseUrl>http://localhost:8080/</geb.build.baseUrl> -->
                                 <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
                                 <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
                                 <google.password>${google.password}</google.password>
@@ -773,6 +767,25 @@
                                         </versionRange>
                                         <goals>
                                             <goal>run</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.codehaus.gmaven
+                                        </groupId>
+                                        <artifactId>
+                                            gmaven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.4,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>testCompile</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
