@@ -32,7 +32,7 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		
         when:
         loginForm.with {
-            j_username = "tatami@ippon.fr"
+            j_username = "jdubois@ippon.fr"
             j_password = "ippon"
         }
          

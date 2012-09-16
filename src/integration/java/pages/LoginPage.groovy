@@ -5,7 +5,7 @@ import geb.Page
 class LoginPage extends Page {
     static url = "tatami/login"
  
-    static at = { $("h1").text() == "Presentation" } // TODO : avec htmlunit je suis en anglais et avec un navigateur en Français ...
+    static at = { $("h1",text:contains("Welcome to Tatami")) }
  
     static content = {
 		

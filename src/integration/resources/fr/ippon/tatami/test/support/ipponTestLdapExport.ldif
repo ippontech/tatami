@@ -10,6 +10,16 @@ sn: tatami
 uid: tatami
 userPassword:: e1NIQX1sK2lzNUhobFUya1BoTWh4V1pVMnZmSUIvZ289
 
+dn: cn=jdubois,dc=ippon,dc=fr
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: jdubois
+sn: jdubois
+uid: jdubois
+userPassword:: e1NIQX1sK2lzNUhobFUya1BoTWh4V1pVMnZmSUIvZ289
+
 dn: cn=john_doe,dc=ippon,dc=fr
 objectClass: organizationalPerson
 objectClass: person
