@@ -136,7 +136,7 @@ public class LdapTestServer {
 			service.getAdminSession().add(serverEntry);
 			// service.getAdminSession().add( new DefaultServerEntry( service.getSchemaManager(), entry.getEntry() ) );
 		} else if (entry.isChangeModify()) {
-			// pas utilis� ... pas test�
+			// not used, not tested ...
 			service.getAdminSession().modify(entry.getDn(), entry.getModificationItems());
 		} else {
 			throw new IllegalArgumentException("bug");
