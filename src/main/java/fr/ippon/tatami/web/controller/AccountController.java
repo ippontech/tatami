@@ -1,11 +1,12 @@
 package fr.ippon.tatami.web.controller;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
-import org.apache.commons.lang.StringEscapeUtils;
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * @author Julien Dubois
@@ -34,8 +36,8 @@ public class AccountController {
     @RequestMapping(value = "/account",
             method = RequestMethod.GET)
     public ModelAndView getUserProfile(@RequestParam(required = false) boolean success) {
-        if (log.isDebugEnabled()) {
-            log.debug("Request to get account");
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Request to get account");
         }
         ModelAndView mv = basicModelAndView(success);
         mv.setViewName("account");
@@ -45,30 +47,31 @@ public class AccountController {
     @RequestMapping(value = "/account",
             method = RequestMethod.POST)
     public String updateUserProfile(@ModelAttribute("user")
-                                    User updatedUser, BindingResult result) {
+    User updatedUser, BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/tatami/account?error=true";
         }
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = this.authenticationService.getCurrentUser();
+
         currentUser.setFirstName(
-                StringEscapeUtils.escapeHtml(updatedUser.getFirstName()));
+                Jsoup.clean(updatedUser.getFirstName(), Whitelist.none()));
 
         currentUser.setLastName(
-                StringEscapeUtils.escapeHtml(updatedUser.getLastName()));
+                Jsoup.clean(updatedUser.getLastName(), Whitelist.none()));
 
         currentUser.setJobTitle(
-                StringEscapeUtils.escapeHtml(updatedUser.getJobTitle()));
+                Jsoup.clean(updatedUser.getJobTitle(), Whitelist.none()));
 
         currentUser.setPhoneNumber(
-                StringEscapeUtils.escapeHtml(updatedUser.getPhoneNumber()));
+                Jsoup.clean(updatedUser.getPhoneNumber(), Whitelist.none()));
 
         try {
-            userService.updateUser(currentUser);
+            this.userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
             return "redirect:/tatami/account?error=true";
         }
-        if (log.isDebugEnabled()) {
-            log.debug("User updated : " + currentUser);
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("User updated : " + currentUser);
         }
         return "redirect:/tatami/account?success=true";
     }
@@ -76,11 +79,11 @@ public class AccountController {
     @RequestMapping(value = "/account/suppress",
             method = RequestMethod.POST)
     public String suppressUserProfile() {
-        User currentUser = authenticationService.getCurrentUser();
-        if (log.isDebugEnabled()) {
-            log.debug("Suppression du compte utilisateur : " + currentUser);
+        User currentUser = this.authenticationService.getCurrentUser();
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Suppression du compte utilisateur : " + currentUser);
         }
-        userService.deleteUser(currentUser);
+        this.userService.deleteUser(currentUser);
         return "redirect:/tatami/logout";
     }
 
@@ -89,8 +92,8 @@ public class AccountController {
      */
     private ModelAndView basicModelAndView(boolean success) {
         ModelAndView mv = new ModelAndView();
-        User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
+        User currentUser = this.authenticationService.getCurrentUser();
+        User user = this.userService.getUserByLogin(currentUser.getLogin());
         mv.addObject("user", user);
         mv.addObject("success", success);
         return mv;

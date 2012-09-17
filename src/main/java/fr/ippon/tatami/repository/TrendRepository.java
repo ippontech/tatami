@@ -1,6 +1,5 @@
 package fr.ippon.tatami.repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**

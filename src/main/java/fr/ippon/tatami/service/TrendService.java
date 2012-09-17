@@ -1,20 +1,24 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Trend;
-import fr.ippon.tatami.repository.TrendRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.service.util.ValueComparator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import java.util.*;
+import fr.ippon.tatami.domain.Trend;
+import fr.ippon.tatami.repository.TrendRepository;
+import fr.ippon.tatami.service.util.ValueComparator;
 
 /**
- * Analyses trends (tags going up or down depending on the current time).
+ * Analyzes trends (tags going up or down depending on the current time).
  */
 @Service
 public class TrendService {

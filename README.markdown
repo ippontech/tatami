@@ -13,7 +13,8 @@ Tatami is made with the following technologies :
 - HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
 - [Apache Cassandra](http://cassandra.apache.org/)
-- [Elastic Search](http://www.elasticsearch.org/)
+- [Apache Lucene](http://lucene.apache.org/core/)
+- [Elastic Search](http://www.elasticsearch.org/) (optional add-on)
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
@@ -36,7 +37,7 @@ To create users, use the registration form. As we have not configured a SMTP ser
 
 If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
 ```
-export MAVEN_OPTS="-XX:MaxPermSize=64m -Xms128m -Xmx1024m"
+export MAVEN_OPTS="-XX:PermSize=96m -XX:MaxPermSize=96m -Xms128m -Xmx1024m"
 ```
 
 If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :

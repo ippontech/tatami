@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar"
-                             src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="">
+                             src="https://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="">
 
                         <h3>${user.firstName} ${user.lastName}</h3>
 
