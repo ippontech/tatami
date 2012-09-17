@@ -186,6 +186,7 @@
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
         <javax.validation.api.version>1.0.0.GA</javax.validation.api.version>
         <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
+        <jsoup.version>1.6.3</jsoup.version>
         <jstl.version>1.2</jstl.version>
         <jackson.version>1.9.5</jackson.version>
         <jodatime.version>2.1</jodatime.version>
@@ -306,6 +307,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
+        </dependency>
+        <dependency>
+           <groupId>org.jsoup</groupId>
+           <artifactId>jsoup</artifactId>
+           <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>

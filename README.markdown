@@ -37,7 +37,7 @@ To create users, use the registration form. As we have not configured a SMTP ser
 
 If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
 ```
-export MAVEN_OPTS="-XX:MaxPermSize=64m -Xms128m -Xmx1024m"
+export MAVEN_OPTS="-XX:PermSize=96m -XX:MaxPermSize=96m -Xms128m -Xmx1024m"
 ```
 
 If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :
