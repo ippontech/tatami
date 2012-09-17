@@ -189,6 +189,13 @@ form {
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
+  .hero-unit {
+    padding: 10px;
+  }
+
+  .hero-unit h1 {
+    font-size: 42px;
+  }
 }
  
 /* Landscape phone to portrait tablet */
