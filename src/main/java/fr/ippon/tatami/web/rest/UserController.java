@@ -58,7 +58,7 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = this.userService.getUserProfileByUsername(username);
+        User user = this.userService.getUserByUsername(username);
         return user;
     }
 
@@ -83,7 +83,7 @@ public class UserController {
         Collection<UserStatusStat> stats = statsService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
         for (UserStatusStat stat : stats) {
-            User potentialFriend = userService.getUserProfileByUsername(stat.getUsername());
+            User potentialFriend = userService.getUserByUsername(stat.getUsername());
             if (exceptions.contains(potentialFriend.getLogin())) {
                 continue;
             }

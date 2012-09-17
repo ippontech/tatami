@@ -14,7 +14,10 @@ import static org.junit.Assert.assertThat;
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Inject
-    public UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Inject
+    private CounterRepository counterRepository;
 
     @Test
     public void shouldGetAUserRepositoryInjected() {
@@ -35,6 +38,9 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         user.setLastName(lastName);
         user.setGravatar(gravatar);
 
+        counterRepository.createStatusCounter(user.getLogin());
+        counterRepository.createFriendsCounter(user.getLogin());
+        counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
 
         assertThat(userRepository.findUserByLogin("nuuser@ippon.fr"), notNullValue());

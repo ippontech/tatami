@@ -68,6 +68,13 @@ public class UserService {
         return userRepository.findUserByLogin(login);
     }
 
+    public User getUserByUsername(String username) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
+        return getUserByLogin(login);
+    }
+
     /**
      * Return a collection of Users based on their username (ie : uid)
      *
@@ -92,19 +99,6 @@ public class UserService {
             users.add(user);
         }
         return users;
-    }
-
-    public User getUserProfileByUsername(String username) {
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
-        User user = getUserByLogin(login);
-        if (user != null) {
-            user.setStatusCount(counterRepository.getStatusCounter(login));
-            user.setFollowersCount(counterRepository.getFollowersCounter(login));
-            user.setFriendsCount(counterRepository.getFriendsCounter(login));
-        }
-        return user;
     }
 
     public void updateUser(User user) {

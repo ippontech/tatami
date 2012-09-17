@@ -40,7 +40,7 @@ public class ProfileController {
         ModelAndView mv = new ModelAndView("profile");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("authenticatedUsername", currentUser.getUsername());
-        User user = userService.getUserProfileByUsername(username);
+        User user = userService.getUserByUsername(username);
         if (null != user) {
             mv.addObject("user", user);
             String login = user.getLogin();
