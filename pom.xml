@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.9</version>
     <packaging>war</packaging>
 
-    <description>Tatami is a private Tweeter clone</description>
+    <description>Tatami is an enterprise micro-blogging platform</description>
     <inceptionYear>2012</inceptionYear>
     <url>https://github.com/ippontech/tatami</url>
     <organization>
@@ -27,8 +27,142 @@
     <scm>
         <url>http://github.com/ippontech/tatami</url>
         <connection>scm:git:git@github.com:ippontech/tatami.git</connection>
-        <!-- <developerConnection>scm:git:git@github.com:ippontech/tatami.git</developerConnection> -->
     </scm>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
+            </properties>
+        </profile>
+        <profile>
+            <id>preprod</id>
+            <properties>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch</tatami.elasticsearch.path.log>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-maven-plugin</artifactId>
+                        <version>1.4.7</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetGroups>all</targetGroups>
+                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
+                            <ignoreMissingResources>false</ignoreMissingResources>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>ro.isdc.wro4j</groupId>
+                                <artifactId>wro4j-extensions</artifactId>
+                                <version>1.4.7</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <jetty.port>80</jetty.port>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://tatami.ippon.fr</tatami.url>
+                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
+                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.enabled>false</tatami.elasticsearch.enabled>
+                <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-maven-plugin</artifactId>
+                        <version>1.4.7</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetGroups>all</targetGroups>
+                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
+                            <ignoreMissingResources>false</ignoreMissingResources>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>ro.isdc.wro4j</groupId>
+                                <artifactId>wro4j-extensions</artifactId>
+                                <version>1.4.7</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <properties>
         <!-- Configuration -->
@@ -36,29 +170,27 @@
         <java.version>1.6</java.version>
 
         <!-- Dependencies -->
-        <spring.version>3.1.1.RELEASE</spring.version>
-        <spring.security.version>3.1.0.RELEASE</spring.security.version>
+        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.security.version>3.1.2.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
-        <spring.mobile.version>1.0.0.RC2</spring.mobile.version>
-        <elasticsearch.version>0.19.3</elasticsearch.version>
+        <spring.mobile.version>1.0.0.RELEASE</spring.mobile.version>
+        <elasticsearch.version>0.19.8</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.0-3</hector.version>
-        <hector.mapper.version>1.1-01</hector.mapper.version>
+        <hector.version>1.0-5</hector.version>
+        <hector.mapper.version>3.0-04</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
-        <ehcache.version>2.5.1</ehcache.version>
         <javax.inject.version>1</javax.inject.version>
         <cglib.version>2.2.2</cglib.version>
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
         <javax.validation.api.version>1.0.0.GA</javax.validation.api.version>
-        <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+        <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
         <jstl.version>1.2</jstl.version>
         <jackson.version>1.9.5</jackson.version>
         <jodatime.version>2.1</jodatime.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.3</commons.io.version>
-        <tiles.version>2.2.2</tiles.version>
         <junit.version>4.9</junit.version>
         <cassandra.unit.version>1.0.3.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
@@ -68,15 +200,10 @@
         <maven.enforcer.version>1.0.1</maven.enforcer.version>
         <maven.surefire.version>2.12</maven.surefire.version>
         <maven.war.version>2.2</maven.war.version>
-        <maven.jetty.version>8.1.3.v20120416</maven.jetty.version>
+        <maven.jetty.version>8.1.5.v20120716</maven.jetty.version>
         <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
     </properties>
     <repositories>
-        <repository>
-            <id>org.springframework.maven.milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
@@ -88,6 +215,11 @@
     </prerequisites>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.javamail</groupId>
+            <artifactId>geronimo-javamail_1.4_mail</artifactId>
+            <version>1.8.2</version>
+        </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
@@ -125,9 +257,19 @@
             <version>${hector.mapper.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.openjpa</groupId>
+            <artifactId>openjpa</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>${ehcache.version}</version>
+            <version>2.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-web</artifactId>
+            <version>2.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -235,6 +377,21 @@
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-openid</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
@@ -243,23 +400,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
-        </dependency>
-        <!-- Apache Tiles -->
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
-            <version>${tiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-el</artifactId>
-            <version>${tiles.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.mobile</groupId>
@@ -294,7 +434,16 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>tatami</finalName>
+        <finalName>root</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -354,9 +503,19 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${maven.jetty.version}</version>
                 <configuration>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                    <scanIntervalSeconds>${jetty.scanIntervalSeconds}</scanIntervalSeconds>
                     <stopKey>stop-jetty</stopKey>
                     <stopPort>9999</stopPort>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>${spring.profiles.active}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>jetty.port</name>
+                            <value>${jetty.port}</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
@@ -365,5 +524,43 @@
                 <version>${maven.cassandra.version}</version>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>ro.isdc.wro4j</groupId>
+                                        <artifactId>
+                                            wro4j-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.4.7,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>run</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

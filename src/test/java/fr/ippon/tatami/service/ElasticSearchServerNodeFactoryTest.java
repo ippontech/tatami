@@ -1,15 +1,14 @@
 package fr.ippon.tatami.service;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
+import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
+import java.io.IOException;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author dmartin
@@ -29,7 +28,7 @@ public class ElasticSearchServerNodeFactoryTest {
         log.debug(this.getClass().getSimpleName() + ": testing the ES Factory");
 
         final ElasticSearchServerNodeFactory f = new ElasticSearchServerNodeFactory();
-        f.setIndexActivated(true);
+        f.setElasticsearchActivated(true);
         f.setIndexName("tatami");
         f.setEsSettings(new ElasticSearchSettings());
         f.buildServerNode();

@@ -2,10 +2,14 @@
 	"user" : {
 		"_source" : { "enabled" : true },
 		"properties" : {
-			"login" : {
-				"type" : "string",
-				"index" : "not_analyzed"
-			},
+            "username" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
+            "domain" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
 			"firstName" : {
 				"type" : "string",
 				"index" : "not_analyzed"

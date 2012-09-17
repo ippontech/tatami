@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+    <group name='all'>
+        <css>/css/reset.css</css>
+        <css>/css/bootstrap-responsive-min.css</css>
+        <css>/css/tatami.css</css>
+
+        <js>/js/jquery.min.js</js>
+        <js>/js/jquery-ui.min.js</js>
+        <js>/js/bootstrap-min.js</js>
+        <js>/js/underscore-min.js</js>
+        <js>/js/backbone-min.js</js>
+        <js>/js/jquery-charcount.js</js>
+        <js>/js/jquery-timeago.js</js>
+        <js>/js/jquery-tatami-infinitiScroll.js</js>
+        <js>/js/jquery-tatami-tagLinker.js</js>
+        <js>/js/jquery-tatami-usernameLinker.js</js>
+        <js>/js/marked.js</js>
+    </group>
+</groups>

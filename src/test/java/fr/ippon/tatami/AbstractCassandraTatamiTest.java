@@ -1,7 +1,8 @@
 package fr.ippon.tatami;
 
-import fr.ippon.tatami.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -12,6 +13,7 @@ import org.elasticsearch.node.NodeBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -20,6 +22,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @ContextConfiguration(
         classes = ApplicationTestConfiguration.class,
         loader = AnnotationConfigContextLoader.class)
+@ActiveProfiles("default")
 public abstract class AbstractCassandraTatamiTest {
 
     private static boolean isInitialized = false;
@@ -53,17 +56,20 @@ public abstract class AbstractCassandraTatamiTest {
         }
     }
 
-    protected User constructAUser(String login, String email, String firstName, String lastName) {
+    protected User constructAUser(String login, String firstName, String lastName) {
         User user = new User();
         user.setLogin(login);
-        user.setEmail(email);
+        user.setPassword("");
+        user.setUsername(DomainUtil.getUsernameFromLogin(login));
+        user.setDomain(DomainUtil.getDomainFromLogin(login));
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setJobTitle("web developer");
         return user;
     }
 
-    protected User constructAUser(String login, String email) {
-        return constructAUser(login, email, null, null);
+    protected User constructAUser(String login) {
+        return constructAUser(login, null, null);
     }
 
 }

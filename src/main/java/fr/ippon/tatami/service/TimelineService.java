@@ -1,28 +1,19 @@
 package fr.ippon.tatami.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.SharedStatusInfo;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.StatusDetails;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.DomainViolationException;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.ShortURLRepository;
-import fr.ippon.tatami.repository.TweetRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.UrlShortener;
+import javax.inject.Inject;
+import java.util.*;
 
 /**
  * Manages the timeline.
@@ -32,326 +23,273 @@ import fr.ippon.tatami.service.util.UrlShortener;
 @Service
 public class TimelineService {
 
-    private static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
-
-    private final Pattern urlPattern1 = Pattern.compile("(http|https):\\/\\/[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$)");
-    private final Pattern urlPattern2 = Pattern.compile("(^|[^\\/{2}])(w{3}[a-zA-Z0-9-\\/_\\.\\:\\?\\=(\\&amp\\;)]+(\\b|$))");
-
     private final Log log = LogFactory.getLog(TimelineService.class);
 
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
+    private final static String hashtagDefault = "---";
 
     @Inject
     private UserService userService;
 
     @Inject
-    private TweetRepository tweetRepository;
+    private StatusRepository statusRepository;
+
+    @Inject
+    private SharesRepository sharesRepository;
+
+    @Inject
+    private DiscussionRepository discussionRepository;
 
     @Inject
     private CounterRepository counterRepository;
 
     @Inject
-    private FollowerRepository followerRepository;
+    private TimelineRepository timelineRepository;
 
     @Inject
-    private ShortURLRepository shortURLRepository;
+    private UserlineRepository userlineRepository;
+
+    @Inject
+    private FavoritelineRepository favoritelineRepository;
+
+    @Inject
+    private TaglineRepository taglineRepository;
+
+    @Inject
+    private FollowerRepository followerRepository;
 
     @Inject
     private AuthenticationService authenticationService;
 
     @Inject
-    private IndexService indexService;
+    private SearchService searchService;
 
-    @Inject
-    private UrlShortener urlShortener;
-
-    @Inject
-    private boolean indexActivated;
-
-    private final String hashtagDefault = "---";
-
-
-    /**
-     * Return a new content with every URL replaced with a shorten one
-     *
-     * @param content the content to filter
-     * @param urls    the short/long URL used in the replacement
-     * @return a shorten content
-     */
-    private String shortenContent(final String content, final Map<String, String> urls) {
-        String shortenContent = content;
-        for (Map.Entry<String, String> entry : urls.entrySet()) {
-            shortenContent = shortenContent.replace(entry.getValue(), entry.getKey());
+    public Status getStatus(String statusId) {
+        Map<String, SharedStatusInfo> line = new HashMap<String, SharedStatusInfo>();
+        line.put(statusId, null);
+        Collection<Status> statusCollection = buildStatusList(line);
+        if (statusCollection.isEmpty()) {
+            return null;
+        } else {
+            return statusCollection.iterator().next();
         }
-
-        return shortenContent.toString();
     }
 
     /**
-     * Return a Map of all the URLs shortened in the content provided, only if shorten URL are effectively shorter than original URL
-     *
-     * @param content the content to analyze
-     * @return a Map of the shorten URLs (short version as a key, original (long) as the value)
+     * Get the details for a status
+     * - Who shared this status
+     * - The discussion in which this status belongs to
      */
-    private Map<String, String> getShortenURLs(final String content) {
-        final Map<String, String> shortenURLs = new HashMap<String, String>();
+    public StatusDetails getStatusDetails(String statusId) {
+        StatusDetails details = new StatusDetails();
+        details.setStatusId(statusId);
 
-        StringBuffer shortenContent = new StringBuffer();
-        String input = content;
-        Matcher matcher = null;
-        String matchUrl, shortenUrl = null;
+        // Shares management
+        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
+        details.setSharedByLogins(sharedByLogins);
 
-        matcher = this.urlPattern1.matcher(input);
-
-        while (matcher.find()) {
-            matchUrl = matcher.group(0);
-            shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl != null) {
-                shortenURLs.put(shortenUrl, matchUrl);
-            }
+        // Discussion management
+        Status status = statusRepository.findStatusById(statusId);
+        Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
+        String replyTo = status.getReplyTo();
+        if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
+            // Add the original discussion
+            statusIdsInDiscussion.add(status.getReplyTo());
+            // Add the replies
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getReplyTo()));
+            // Remove the current status from the list
+            statusIdsInDiscussion.remove(statusId);
+        } else { // This is the original discussion
+            // Add the replies
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(statusId));
         }
-        matcher.appendTail(shortenContent);
 
-        input = shortenContent.toString();
-        shortenContent = new StringBuffer();
-
-        matcher = this.urlPattern2.matcher(input);
-        while (matcher.find()) {
-            matchUrl = matcher.group(2);
-            shortenUrl = this.urlShortener.shorten(matchUrl);
-            if (shortenUrl != null && shortenUrl.length() < matchUrl.length()) {
-                shortenURLs.put(shortenUrl, matchUrl);
-            }
+        // Transform the Set to a Map<String, String>
+        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
+        for (String statusIdInDiscussion : statusIdsInDiscussion) {
+            line.put(statusIdInDiscussion, null);
         }
-        matcher.appendTail(shortenContent);
-
-        return shortenURLs;
+        // Enrich the details object with the complete statuses in the discussion
+        Collection<Status> statusesInDiscussion = buildStatusList(line);
+        details.setDiscussionStatuses(statusesInDiscussion);
+        return details;
     }
 
-    /**
-     * Post a tweet :<br>
-     * <ul>
-     * <li>save it in the datastore</li>
-     * <li>update all the related application states</li>
-     * </ul>
-     *
-     * @param content the content to save as a tweet
-     * @return the tweet object created on the basis of the content provided
-     */
-    public Tweet postTweet(final String content) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Creating new tweet : " + content);
-        }
-
-        Map<String, String> map = getShortenURLs(content);
-        // Map can be persisted
-        String shortenContent = shortenContent(content, map); // enable the content processing to reduce the URLs length
-
-        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
-        Tweet tweet = this.tweetRepository.createTweet(currentLogin, shortenContent);
-
-        // add tweet to the dayline, userline, timeline, tagline
-        this.tweetRepository.addTweetToDayline(tweet, DAYLINE_KEY_FORMAT.format(tweet.getTweetDate()));
-        this.tweetRepository.addTweetToUserline(tweet);
-        this.tweetRepository.addTweetToTimeline(currentLogin, tweet);
-        this.tweetRepository.addTweetToTagline(tweet);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            this.shortURLRepository.addURLPair(entry.getKey(), entry.getValue());
-        }
-
-        // add tweet to the follower's timelines
-        Collection<String> followersForUser = this.followerRepository.findFollowersForUser(currentLogin);
-        for (String followerLogin : followersForUser) {
-            this.tweetRepository.addTweetToTimeline(followerLogin, tweet);
-        }
-
-        // add tweet to the mentioned users' timeline
-        Matcher m = PATTERN_LOGIN.matcher(tweet.getContent());
-        while (m.find()) {
-            String mentionedLogin = extractLoginWithoutAt(m.group());
-            if (mentionedLogin != null &&
-                    !mentionedLogin.equals(currentLogin) &&
-                    !followersForUser.contains(mentionedLogin)) {
-
-                this.tweetRepository.addTweetToTimeline(mentionedLogin, tweet);
-            }
-        }
-
-        // Increment tweet count for the current user
-        this.counterRepository.incrementTweetCounter(currentLogin);
-
-        // Add to Elastic Search index if it is activated
-        if (this.indexActivated) {
-            this.indexService.addTweet(tweet);
-        }
-        return tweet;
-    }
-
-    public Collection<Tweet> buildTweetsList(Collection<String> tweetIds) {
-        String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> favoriteIds = this.tweetRepository.getFavoritesline(login);
-        Collection<Tweet> tweets = new ArrayList<Tweet>(tweetIds.size());
-        for (String tweetId : tweetIds) {
-            Tweet tweet = this.tweetRepository.findTweetById(tweetId);
-            if (tweet == null) {
-                this.log.debug("Invisible tweet : " + tweetId);
-                continue;
-            }
-            if (favoriteIds.contains(tweetId)) {
-                tweet.setFavorite(true);
+    public Collection<Status> buildStatusList(Map<String, SharedStatusInfo> line) {
+        User currentUser = authenticationService.getCurrentUser();
+        Map<String, SharedStatusInfo> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
+        Collection<Status> statuses = new ArrayList<Status>(line.size());
+        for (String statusId : line.keySet()) {
+            SharedStatusInfo sharedStatusInfo = line.get(statusId);
+            Status status = null;
+            if (sharedStatusInfo != null) {
+                status = statusRepository.findStatusById(sharedStatusInfo.getOriginalStatusId());
             } else {
-                tweet.setFavorite(false);
+                status = statusRepository.findStatusById(statusId);
             }
-            User tweetUser = this.userService.getUserByLogin(tweet.getLogin());
-            tweet.setFirstName(tweetUser.getFirstName());
-            tweet.setLastName(tweetUser.getLastName());
-            tweet.setGravatar(tweetUser.getGravatar());
-            tweets.add(tweet);
+            if (status != null) {
+                User statusUser = userService.getUserByLogin(status.getLogin());
+                if (statusUser != null) {
+                    // Security check
+                    if (!statusUser.getDomain().equals(currentUser.getDomain())) {
+                        throw new DomainViolationException("User " + currentUser + " tried to access " +
+                                " status : " + status);
+
+                    }
+
+                    // if the Status comes from ehcache, it has to be cloned.
+                    // ehcache shares the Status instances per statusId, but favorites are per user and
+                    // shared statuses are also per user
+                    Status statusCopy = new Status();
+                    statusCopy.setLogin(status.getLogin());
+                    statusCopy.setStatusId(status.getStatusId());
+                    if (sharedStatusInfo != null) { // Manage shared statuses
+                        statusCopy.setTimelineId(sharedStatusInfo.getSharedStatusId());
+                        String sharedByLogin = sharedStatusInfo.getSharedByLogin();
+                        String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
+                        statusCopy.setSharedByUsername(sharedByUsername);
+                    } else {
+                        statusCopy.setTimelineId(status.getStatusId());
+                    }
+                    statusCopy.setContent(status.getContent());
+                    statusCopy.setUsername(status.getUsername());
+                    statusCopy.setDomain(status.getDomain());
+                    statusCopy.setStatusDate(status.getStatusDate());
+                    statusCopy.setReplyTo(status.getReplyTo());
+                    statusCopy.setReplyToUsername(status.getReplyToUsername());
+                    if (favoriteLine.containsKey(statusId)) {
+                        statusCopy.setFavorite(true);
+                    } else {
+                        statusCopy.setFavorite(false);
+                    }
+                    statusCopy.setFirstName(statusUser.getFirstName());
+                    statusCopy.setLastName(statusUser.getLastName());
+                    statusCopy.setGravatar(statusUser.getGravatar());
+                    statuses.add(statusCopy);
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Deleted user : " + status.getLogin());
+                    }
+                }
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("Invisible status : " + statusId);
+                }
+            }
         }
-        return tweets;
+        return statuses;
     }
 
     /**
-     * The dayline contains a day's tweets
-     *
-     * @param date the day's name to retrieve the tweets of
-     * @return a tweets list
-     */
-    public Collection<Tweet> getDayline(String date) {
-        if (date == null || date.isEmpty() || !date.matches("^\\d{8}$")) {
-            date = DAYLINE_KEY_FORMAT.format(new Date());
-        }
-        Collection<String> tweetIds = this.tweetRepository.getDayline(date);
-
-        return this.buildTweetsList(tweetIds);
-    }
-
-    /**
-     * The dayline contains a day's tweets
-     *
-     * @param date the day to retrieve the tweets of
-     * @return a tweets list
-     */
-    public Collection<Tweet> getDayline(Date date) {
-        if (date == null) date = new Date();
-        Collection<String> tweetIds = this.tweetRepository.getDayline(DAYLINE_KEY_FORMAT.format(date));
-
-        return this.buildTweetsList(tweetIds);
-    }
-
-    /**
-     * The tagline contains a tag's tweets
+     * The tagline contains a tag's status
      *
      * @param tag      the tag to retrieve the timeline of
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
      */
-    public Collection<Tweet> getTagline(String tag, int nbTweets) {
+    public Collection<Status> getTagline(String tag, int nbStatus) {
         if (tag == null || tag.isEmpty()) {
-            tag = this.hashtagDefault;
+            tag = hashtagDefault;
         }
-        Collection<String> tweetIds = this.tweetRepository.getTagline(tag, nbTweets);
-
-        return this.buildTweetsList(tweetIds);
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus);
+        return buildStatusList(line);
     }
 
     /**
-     * The timeline contains the user's tweets merged with his friends tweets
+     * The timeline contains the user's status merged with his friends status
      *
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @param since_id
-     * @param max_id   @return a tweets list
+     * @param max_id   @return a status list
      */
-    public Collection<Tweet> getTimeline(int nbTweets, String since_id, String max_id) {
-        String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = this.tweetRepository.getTimeline(login, nbTweets, since_id, max_id);
-        return this.buildTweetsList(tweetIds);
+    public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
+        String login = authenticationService.getCurrentUser().getLogin();
+        Map<String, SharedStatusInfo> line =
+                timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+
+        return buildStatusList(line);
     }
 
     /**
-     * The userline contains the user's own tweets
+     * The userline contains the user's own status
      *
-     * @param login    the user to retrieve the userline of
-     * @param nbTweets the number of tweets to retrieve, starting from most recent ones
-     * @return a tweets list
+     * @param username the user to retrieve the userline of
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
      */
-    public Collection<Tweet> getUserline(String login, int nbTweets, String since_id, String max_id) {
-        if (login == null || login.isEmpty()) {
-            User currentUser = this.authenticationService.getCurrentUser();
+    public Collection<Status> getUserline(String username, int nbStatus, String since_id, String max_id) {
+        String login = null;
+        User currentUser = authenticationService.getCurrentUser();
+        if (username == null || username.isEmpty()) { // current user
             login = currentUser.getLogin();
+        } else {  // another user, in the same domain
+            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+            login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        Collection<String> tweetIds = this.tweetRepository.getUserline(login, nbTweets, since_id, max_id);
-        return this.buildTweetsList(tweetIds);
+        Map<String, SharedStatusInfo> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
+        return this.buildStatusList(line);
     }
 
-    public void removeTweet(String tweetId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Removing tweet : " + tweetId);
+    public void removeStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Removing status : " + statusId);
         }
-        final Tweet tweet = this.tweetRepository.findTweetById(tweetId);
+        final Status status = statusRepository.findStatusById(statusId);
 
-        final User currentUser = this.authenticationService.getCurrentUser();
-        if (tweet.getLogin().equals(currentUser.getLogin())
-                && !Boolean.TRUE.equals(tweet.getRemoved())) {
-            this.tweetRepository.removeTweet(tweet);
-            this.counterRepository.decrementTweetCounter(currentUser.getLogin());
-            if (this.indexActivated) {
-                this.indexService.removeTweet(tweet);
-            }
-        }
-    }
-
-    public void addFavoriteTweet(String tweetId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Marking tweet : " + tweetId);
-        }
-        Tweet tweet = this.tweetRepository.findTweetById(tweetId);
-
-        // registering
-        User currentUser = this.authenticationService.getCurrentUser();
-        this.tweetRepository.addTweetToFavoritesline(tweet, currentUser.getLogin());
-
-        // alerting
-        if (!currentUser.getLogin().equals(tweet.getLogin())) {
-            String content = '@' + currentUser.getLogin() + " liked your tweet<br/><em>_PH_...</em>";
-            int maxLength = 140 - content.length() + 4;
-            if (tweet.getContent().length() > maxLength) {
-                content = content.replace("_PH_", tweet.getContent().substring(0, maxLength));
-            } else {
-                content = content.replace("_PH_", tweet.getContent());
-            }
-
-            Tweet helloTweet = this.tweetRepository.createTweet(tweet.getLogin(), content); // removable
-            this.tweetRepository.addTweetToTimeline(tweet.getLogin(), helloTweet);
+        final User currentUser = authenticationService.getCurrentUser();
+        if (status.getLogin().equals(currentUser.getLogin())
+                && !Boolean.TRUE.equals(status.getRemoved())) {
+            statusRepository.removeStatus(status);
+            counterRepository.decrementStatusCounter(currentUser.getLogin());
+            searchService.removeStatus(status);
         }
     }
 
-    public void removeFavoriteTweet(String tweetId) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("Unmarking tweet : " + tweetId);
+    public void shareStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Share status : " + statusId);
         }
-        Tweet tweet = this.tweetRepository.findTweetById(tweetId);
-        User currentUser = this.authenticationService.getCurrentUser();
-        this.tweetRepository.removeTweetFromFavoritesline(tweet, currentUser.getLogin());
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        Status status = statusRepository.findStatusById(statusId);
+        // add status to the user's userline and timeline
+        userlineRepository.shareStatusToUserline(currentLogin, status);
+        timelineRepository.shareStatusToTimeline(currentLogin, currentLogin, status);
+        // add status to the follower's timelines
+        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        for (String followerLogin : followersForUser) {
+            timelineRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
+        }
+        // update the status details to add this share
+        sharesRepository.newShareByLogin(statusId, currentLogin);
+    }
+
+    public void addFavoriteStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Favorite status : " + statusId);
+        }
+        Status status = statusRepository.findStatusById(statusId);
+        String login = authenticationService.getCurrentUser().getLogin();
+        favoritelineRepository.addStatusToFavoriteline(status, login);
+    }
+
+    public void removeFavoriteStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Un-favorite status : " + statusId);
+        }
+        Status status = statusRepository.findStatusById(statusId);
+        User currentUser = authenticationService.getCurrentUser();
+        favoritelineRepository.removeStatusFromFavoriteline(status, currentUser.getLogin());
     }
 
     /**
-     * The favline contains the user's favorites tweets
+     * The favline contains the user's favorites status
      *
-     * @return a tweets list
+     * @return a status list
      */
-    public Collection<Tweet> getFavoritesline() {
-        String login = this.authenticationService.getCurrentUser().getLogin();
-        Collection<String> tweetIds = this.tweetRepository.getFavoritesline(login);
-        return this.buildTweetsList(tweetIds);
+    public Collection<Status> getFavoritesline() {
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        Map<String, SharedStatusInfo> line = favoritelineRepository.getFavoriteline(currentLogin);
+        return this.buildStatusList(line);
     }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
-
-    private String extractLoginWithoutAt(String dest) {
-        return dest.substring(1, dest.length());
-    }
-
 }

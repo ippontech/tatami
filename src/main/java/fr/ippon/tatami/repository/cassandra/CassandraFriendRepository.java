@@ -24,6 +24,11 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 
 /**
  * Cassandra implementation of the Follower repository.
+ * <p/>
+ * Structure :
+ * - Key = login
+ * - Name = friend login
+ * - Value = time
  *
  * @author Julien Dubois
  */
@@ -73,15 +78,5 @@ public class CassandraFriendRepository implements FriendRepository {
             friends.add(columnName);
         }
         return friends;
-    }
-
-    @Override
-    public Collection<String> findFollowersForUser(String login) {
-        ColumnFamilyResult<String, String> result = followersTemplate.queryColumns(login);
-        Collection<String> followers = new ArrayList<String>();
-        for (String columnName : result.getColumnNames()) {
-            followers.add(columnName);
-        }
-        return followers;
     }
 }

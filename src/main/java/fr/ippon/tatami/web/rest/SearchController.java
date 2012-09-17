@@ -1,8 +1,12 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
-import fr.ippon.tatami.service.IndexService;
+import fr.ippon.tatami.domain.SharedStatusInfo;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -13,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dmartin
@@ -26,36 +30,41 @@ public class SearchController {
     private final Log log = LogFactory.getLog(SearchController.class);
 
     @Inject
-    private IndexService indexService;
+    private AuthenticationService authenticationService;
 
     @Inject
-    @Named("indexActivated")
-    private boolean indexActivated;
+    private SearchService searchService;
+
+    @Inject
+    @Named("elasticsearchActivated")
+    private boolean elasticsearchActivated;
 
     @Inject
     private TimelineService timelineService;
 
     /**
-     * GET  /search/?q=jdubois -> get the tweets where "jdubois" appears
+     * GET  /searchStatus/?q=tatami -> get the status where "tatami" appears
      */
     @RequestMapping(value = "/rest/search",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTweetsForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
-                                               @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                               @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
+    public Collection<Status> listStatusForUser(@RequestParam(value = "q", required = false, defaultValue = "") String q,
+                                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
         if (log.isDebugEnabled()) {
-            log.debug("REST request to search tweets containing these words (" + q + ").");
+            log.debug("REST request to search status containing these words (" + q + ").");
         }
-
-        if (!indexActivated) {
-            return new ArrayList<Tweet>();
+        final User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line;
+        if (q != null && !q.equals("")) {
+            line = searchService.searchStatus(domain, q, page, rpp);
+        } else {
+            line = new HashMap<String, SharedStatusInfo>();
         }
-
-        final List<String> ids = indexService.search(Tweet.class, null, q, page, rpp, "tweetDate", "desc");
-        return timelineService.buildTweetsList(ids);
+        return timelineService.buildStatusList(line);
     }
 
 }

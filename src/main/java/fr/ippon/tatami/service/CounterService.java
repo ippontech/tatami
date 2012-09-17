@@ -20,8 +20,8 @@ public class CounterService {
         return counterRepository.getFriendsCounter(login);
     }
 
-    public long getNbTweets(String login) {
-        return counterRepository.getTweetCounter(login);
+    public long getNbStatus(String login) {
+        return counterRepository.getStatusCounter(login);
     }
 
     public long getNbFollowed(String login) {

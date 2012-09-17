@@ -4,53 +4,82 @@ Tatami
 Presentation
 ------------------
 
-Tatami is a twitter-like application, for internal use inside a company.
+Tatami is a micro-blogging platform, for internal use inside a company.
+
+A publicly installed version of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [http://tatami.ippon.fr](http://tatami.ippon.fr)
 
 Tatami is made with the following technologies :
 
-- [Apache Cassandra](http://cassandra.apache.org/)
-- [Elastic Search](http://www.elasticsearch.org/) - version : 0.19.2
+- HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
-- HTML5 and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+- [Apache Cassandra](http://cassandra.apache.org/)
+- [Elastic Search](http://www.elasticsearch.org/)
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
-Installation
-------------
+Current build status is available on [BuildHive](https://buildhive.cloudbees.com/job/ippontech/job/tatami/) : [![Build Status](https://buildhive.cloudbees.com/job/ippontech/job/tatami/badge/icon)](https://buildhive.cloudbees.com/job/ippontech/job/tatami/)
 
+Installation for developpers
+---------------------------------------
+
+### 5 minutes installation
+
+- Clone, fork or download the source code from this Github page
 - Install [Maven 3](http://maven.apache.org/)
 - Run Cassandra from Maven : `mvn cassandra:run`
 - Run Jetty from Maven : `mvn jetty:run`
-- Optional : if you want to activate ElasticSearch, just add `-Delasticsearch.activated=true`
 - Connect to the application at http://127.0.0.1:8080
 
-The default users are "jdubois/password" and "tescolan/password", you can check or modify the
-Spring Security configuration at `/META-INF/spring/applicationContext-security.xml`
+To create users, use the registration form. As we have not configured a SMTP server (you can configure it in src/main/resources/META-INF/tatami/tatami.properties - see below "installation for production use" for more options), the validation URL as well as the password will not be e-mailed to you, but you can see them in the log (look at the Jetty console output).
 
-If you want to remote debug, don't forget to set MAVEN_OPTS accordingly :
+### Maven tuning and troubleshooting
+
+If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
+```
+export MAVEN_OPTS="-XX:MaxPermSize=64m -Xms128m -Xmx1024m"
+```
+
+If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :
 ```
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 ```
-And remote debug under your IDE on port 8000
 
-Note 1 : if you run into some Permgen errors, don't forget to boost these parameters : PermSize and MaxPermSize. For instance : 
-```
--XX:PermSize=256m -XX:MaxPermSize=256m
-```
-Adding this to MAVEN_OPTS is the simplest solution
+Installation for production use
+---------------------------------------
 
-Note 2 : if you want to look inside ElasticSearch index, feel free to use [elasticsearch-head](https://github.com/Aconex/elasticsearch-head), by @mobz, under /tatami/etc/ as a submodule of tatami. 
-```
-# to setup the submodule 
-git submodule init 
+### Cassandra installation
 
-# and fetch the submodule
-git submodule update
+- Download [Apache Cassandra](http://cassandra.apache.org/)
+- Install Cassandra : the application will work fine with just one node, but ideally you should have a cluster with at least 3 or 5 nodes
+- Cassandra is configured with its cassandra.yaml file : don't forget to backup your "data" and "commitlog" directories
 
-# otherwise, if you don't have clone the repository, you can setup and fetch directly during the clone
-git clone --recursive ${tatami_git_repository}
-```
-Credits : https://github.com/mobz/elasticsearch-head
+### Tatami installation
+
+Tatami can be configured with the src/main/resources/META-INF/tatami/tatami.properties file. You can configure this file in 2 ways :
+
+- Edit the file in your own Tatami fork
+- Properties in this file are replaced at build time by Maven : you can set up your own Maven profile with your specific properties
+
+Once Tatami is started, you will be able to check your properties at runtime in the Administration page.
+
+To deploy Tatami :
+
+- Create the Tatami WAR file : `mvn package`
+- The WAR file will be called "root.war", as Tatami should be run as the root application (on the "/" Web context)
+- Deploy the WAR file on your favorite Java EE server
+- The WAR has been tested on Jetty 8 and Tomcat 7, and should work fine on all Java EE servers
+
+Thanks
+------
+
+Jetbrains is providing us free [Intellij IDEA](http://www.jetbrains.com/idea/) licenses, 
+which definitely allows us to be more productive and have more fun on the project!
+
+YourKit is kindly supporting open source projects with its full-featured Java Profiler.
+YourKit, LLC is the creator of innovative and intelligent tools for profiling
+Java and .NET applications. Take a look at YourKit's leading software products:
+[YourKit Java Profiler](http://www.yourkit.com/java/profiler/index.jsp) and
+[YourKit .NET Profiler](http://www.yourkit.com/.net/profiler/index.jsp).
 
 License
 -------

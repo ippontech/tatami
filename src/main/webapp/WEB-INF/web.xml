@@ -21,14 +21,24 @@
         <listener-class>fr.ippon.tatami.web.init.WebConfigurer</listener-class>
     </listener>
 
+    <filter>
+        <filter-name>GzipFilter</filter-name>
+        <filter-class>net.sf.ehcache.constructs.web.filter.GzipFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>GzipFilter</filter-name>
+        <url-pattern>/tatami/*</url-pattern>
+    </filter-mapping>
+
     <error-page>
         <error-code>500</error-code>
-        <location>/tatami/500-error</location>
+        <location>/tatami/errors/500</location>
     </error-page>
 
     <error-page>
         <error-code>404</error-code>
-        <location>/tatami/404-error</location>
+        <location>/tatami/errors/404</location>
     </error-page>
 
 </web-app>

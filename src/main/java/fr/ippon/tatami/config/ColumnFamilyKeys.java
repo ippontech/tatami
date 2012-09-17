@@ -11,7 +11,11 @@ public class ColumnFamilyKeys {
 
     public final static String FOLLOWERS_CF = "Followers";
 
-    public final static String TWEET_CF = "Tweet";
+    public final static String STATUS_CF = "Status";
+
+    public final static String SHARES_CF = "Shares";
+
+    public final static String DISCUSSION_CF = "Discussion";
 
     public final static String DAYLINE_CF = "Dayline";
 
@@ -21,9 +25,17 @@ public class ColumnFamilyKeys {
 
     public final static String TIMELINE_CF = "Timeline";
 
+    public final static String TIMELINE_SHARES_CF = "TimelineShares";
+
     public final static String USERLINE_CF = "Userline";
+
+    public final static String USERLINE_SHARES_CF = "UserlineShares";
 
     public final static String COUNTER_CF = "Counter";
 
-    public final static String URLS_CF = "Urls";
+    public final static String DOMAIN_CF = "Domain";
+
+    public final static String REGISTRATION_CF = "Registration";
+
+    public final static String TRENDS_CF = "Trends";
 }

@@ -1,53 +1,39 @@
 package fr.ippon.tatami.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
-import org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
-import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
-import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles2.TilesView;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
-@PropertySource(value = "classpath:/META-INF/tatami/tatami.properties")
+@PropertySource({"classpath:/META-INF/tatami/tatami.properties"})
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Inject
     private Environment env;
-
-    // Any other way to inject a Properties object containing all the properties?
-    @Bean
-    public Properties applicationProps() {
-        Properties props = new Properties();
-        props.put("tatami.version", this.env.getProperty("tatami.version"));
-        return props;
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/about").setViewName("about");
-        registry.addViewController("/404-error").setViewName("404-error");
-        registry.addViewController("/500-error").setViewName("500-error");
-    }
 
     @Bean
     public ViewResolver ContentNegotiatingViewResolver() {
@@ -59,10 +45,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         viewResolver.setMediaTypes(mediaTypes);
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
-        viewResolvers.add(new BeanNameViewResolver());
 
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-        urlBasedViewResolver.setViewClass(TilesView.class);
+        urlBasedViewResolver.setViewClass(JstlView.class);
+        urlBasedViewResolver.setPrefix("/WEB-INF/pages/");
+        urlBasedViewResolver.setSuffix(".jsp");
         viewResolvers.add(urlBasedViewResolver);
 
         viewResolver.setViewResolvers(viewResolvers);
@@ -74,54 +61,39 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
-    /**
-     * Configures Tiles at application startup.
-     */
     @Bean
-    public TilesConfigurer tilesConfigurer() {
-        TilesConfigurer configurer = new TilesConfigurer();
-        configurer.setDefinitions(new String[]{
-                "/WEB-INF/layouts/tiles.xml"
-        });
-        configurer.setCheckRefresh(true);
-        return configurer;
-    }
-
-    @Bean
-    public SessionLocaleResolver localeChangeInterceptor() {
+    public SessionLocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
-        Locale locale = new Locale("en");
-        resolver.setDefaultLocale(locale);
         return resolver;
     }
 
     @Bean
-    public ControllerClassNameHandlerMapping controllerClassNameHandlerMapping() {
-        ControllerClassNameHandlerMapping mapping = new ControllerClassNameHandlerMapping();
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
-        mapping.setInterceptors(new Object[]{localeChangeInterceptor});
-        return mapping;
+        return localeChangeInterceptor;
     }
 
     @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("/WEB-INF/messages/messages");
+        if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
+            messageSource.setCacheSeconds(1);
+        }
         return messageSource;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DeviceResolverHandlerInterceptor());
-        registry.addInterceptor(new SitePreferenceHandlerInterceptor());
+        registry.addInterceptor(localeChangeInterceptor());
+        super.addInterceptors(registry);
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/" + this.env.getProperty("tatami.version") + "/**")
-                .addResourceLocations("/public-resources/", "classpath:/META-INF/public-web-resources/")
-                .setCachePeriod(31556926);
+        registry.addResourceHandler("/static/" + env.getProperty("tatami.version") + "/**")
+                .addResourceLocations("/WEB-INF/generated-wro4j/")
+                .setCachePeriod(60 * 60 * 24 * 30);
     }
-
 }

@@ -1,0 +1,31 @@
+{
+	"status" : {
+		"_source" : { "enabled" : true },
+		"_all" : { "analyzer": "francais" },
+		"properties" : {
+			"username" : {
+				"type" : "string",
+				"index" : "not_analyzed"
+			},
+            "domain" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
+			"firstName" : {
+				"type" : "string",
+				"index" : "not_analyzed"
+			},
+			"lastName" : {
+				"type" : "string",
+				"index" : "not_analyzed"
+			},
+			"content" : {
+				"type" : "string",
+				"analyzer" : "francais"
+			},
+			"statusDate" : {
+				"type" : "date"
+			}
+		}
+	}
+}

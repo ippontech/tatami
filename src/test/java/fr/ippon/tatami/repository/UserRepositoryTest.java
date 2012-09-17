@@ -23,22 +23,21 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldCreateAUser() {
-        String login = "ulogin";
+        String login = "nuuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String email = "nuuser@ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
+        user.setPassword("");
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.createUser(user);
 
-        assertThat(userRepository.findUserByLogin("ulogin"), notNullValue());
+        assertThat(userRepository.findUserByLogin("nuuser@ippon.fr"), notNullValue());
     }
 
     @Test(expected = ValidationException.class)
@@ -46,14 +45,12 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = null;
         String firstName = "New";
         String lastName = "User";
-        String email = "nuser@ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.createUser(user);
@@ -64,140 +61,12 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "";
         String firstName = "New";
         String lastName = "User";
-        String email = "nuser@ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void shouldNotCreateAUserBecauseEmailInvalid() {
-        String login = "nuser-testemail";
-        String firstName = "New";
-        String lastName = "User";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void shouldNotCreateAUserBecauseLastNameNull() {
-        String login = "nuser-testemail";
-        String firstName = "fs";
-        String lastName = null;
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void shouldNotCreateAUserBecauseLastNameEmpty() {
-        String login = "nuser-testemail";
-        String firstName = "eee";
-        String lastName = "";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void shouldNotCreateAUserBecauseLastNameWithSeventeenCharacters() {
-        String login = "nuser-testemail";
-        String firstName = "eeee";
-        String lastName = "12345678901234567";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void shouldNotCreateAUserBecauseFirstNameNull() {
-        String login = "nuser-testemail";
-        String firstName = null;
-        String lastName = "User";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void shouldNotCreateAUserBecauseFirstNameEmpty() {
-        String login = "nuser-testemail";
-        String firstName = "";
-        String lastName = "User";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setGravatar(gravatar);
-
-        userRepository.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void shouldNotCreateAUserBecauseFirstNameWithSeventeenCharacters() {
-        String login = "nuser-testemail";
-        String firstName = "12345678901234567";
-        String lastName = "User";
-        String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
-
-        User user = new User();
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.createUser(user);
@@ -208,14 +77,12 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = null;
         String firstName = "New";
         String lastName = "User";
-        String email = "nuser@ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -226,14 +93,12 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "";
         String firstName = "New";
         String lastName = "User";
-        String email = "nuser@ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -241,17 +106,15 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseEmailInvalid() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String email = "nuser_ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -259,7 +122,7 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ValidationException.class)
     public void shouldNotUpdateAUserBecauseLastNameNull() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "fs";
         String lastName = null;
         String email = "nuser_ippon.fr";
@@ -269,7 +132,6 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -277,17 +139,15 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseLastNameEmpty() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "eee";
         String lastName = "";
-        String email = "nuser_ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -295,17 +155,15 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseLastNameWithSeventeenCharacters() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "eeee";
         String lastName = "12345678901234567";
-        String email = "nuser_ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -313,7 +171,7 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ValidationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameNull() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = null;
         String lastName = "User";
         String email = "nuser_ippon.fr";
@@ -323,7 +181,6 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -331,7 +188,7 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameEmpty() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "";
         String lastName = "User";
         String email = "nuser_ippon.fr";
@@ -341,7 +198,6 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);
@@ -349,17 +205,15 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotUpdateAUserBecauseFirstNameWithSeventeenCharacters() {
-        String login = "nuser-testemail";
+        String login = "nuser_ippon.fr";
         String firstName = "12345678901234567";
         String lastName = "User";
-        String email = "nuser_ippon.fr";
         String gravatar = "newGravatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setEmail(email);
         user.setGravatar(gravatar);
 
         userRepository.updateUser(user);

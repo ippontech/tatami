@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository;
 import java.util.Collection;
 
 /**
- * The Follower Respository.
+ * The Follower Repository.
  *
  * @author Julien Dubois
  */

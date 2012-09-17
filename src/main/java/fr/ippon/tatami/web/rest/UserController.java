@@ -1,10 +1,12 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.IndexService;
-import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.domain.UserStatusStat;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import java.util.*;
+import javax.inject.Named;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST controller for managing users.
@@ -27,16 +32,20 @@ public class UserController {
     private final Log log = LogFactory.getLog(UserController.class);
 
     @Inject
-    private TimelineService timelineService;
+    private StatsService statsService;
 
     @Inject
     private UserService userService;
 
     @Inject
-    private IndexService indexService;
+    private AuthenticationService authenticationService;
 
     @Inject
-    private boolean indexActivated;
+    private SearchService searchService;
+
+    @Inject
+    @Named("elasticsearchActivated")
+    private boolean elasticsearchActivated;
 
     /**
      * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
@@ -45,11 +54,11 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public User getUser(@RequestParam("screen_name") String login) {
+    public User getUser(@RequestParam("screen_name") String username) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get Profile : " + login);
+            this.log.debug("REST request to get Profile : " + username);
         }
-        User user = this.userService.getUserProfileByLogin(login);
+        User user = this.userService.getUserProfileByUsername(username);
         return user;
     }
 
@@ -61,28 +70,33 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
-        User currentUser = this.userService.getCurrentUser();
-        final String login = currentUser.getLogin();
+        User currentUser = authenticationService.getCurrentUser();
+        String currentLogin = currentUser.getLogin();
+        String currentUsername = DomainUtil.getUsernameFromLogin(currentLogin);
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get the last active tweeters list (except " + login + ").");
+            this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendIdsForUser(login);
-        exceptions.add(login);
+        Collection<String> exceptions = userService.getFriendIdsForUser(currentLogin);
+        exceptions.add(currentLogin);
 
-        Collection<Tweet> tweets = this.timelineService.getDayline("");
+        Collection<UserStatusStat> stats = statsService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
-        for (Tweet tweet : tweets) {
-            if (exceptions.contains(tweet.getLogin())) continue;
-
-            users.put(tweet.getLogin(), this.userService.getUserProfileByLogin(tweet.getLogin()));
-            if (users.size() == 3) break;    // suggestions list limit
+        for (UserStatusStat stat : stats) {
+            User potentialFriend = userService.getUserProfileByUsername(stat.getUsername());
+            if (exceptions.contains(potentialFriend.getLogin())) {
+                continue;
+            }
+            users.put(potentialFriend.getUsername(), potentialFriend);
+            if (users.size() == 3) {
+                break;    // suggestions list limit
+            }
         }
         return users.values();
     }
 
     /**
-     * GET  /users/search -> search user by login<br>
+     * GET  /users/searchStatus -> searchStatus user by username<br>
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
@@ -95,18 +109,13 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> searchUsers(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find users starting with : " + query);
+            this.log.debug("REST request to find users starting with : " + prefix);
         }
-        if (this.indexActivated) {
-            final List<String> logins = this.indexService.searchPrefix(User.class, null, "login", query, 0, 20);
-            final Collection<User> users = this.userService.getUsersByLogin(logins);
-            final User currentUser = this.userService.getCurrentUser();
-            users.remove(currentUser);
-            return users;
-        } else {
-            return new ArrayList<User>();
-        }
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        return userService.getUsersByLogin(logins);
     }
-
 }

@@ -2,13 +2,11 @@ package fr.ippon.tatami.web.init;
 
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.DispatcherServletConfig;
-import fr.ippon.tatami.web.filter.URLShortenerHandlerFilter;
-import fr.ippon.tatami.web.monitoring.MonitoringFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.mobile.device.DeviceResolverHandlerFilter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -64,56 +62,42 @@ public class WebConfigurer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-        this.log.info("Configuring servlets and filters from a ServletContextListener referenced by web.xml");
+        log.info("Web application configuration");
 
+        log.debug("Configuring Spring root application context");
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(ApplicationConfiguration.class);
         rootContext.refresh();
 
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
-        //        AnnotationConfigWebApplicationContext shortenerServletConfig = new AnnotationConfigWebApplicationContext();
-        //        shortenerServletConfig.setParent(rootContext);
-        //        shortenerServletConfig.register(DispatcherServletConfig.class);
-
+        log.debug("Configuring Spring Web application context");
         AnnotationConfigWebApplicationContext dispatcherServletConfig = new AnnotationConfigWebApplicationContext();
         dispatcherServletConfig.setParent(rootContext);
         dispatcherServletConfig.register(DispatcherServletConfig.class);
 
-        //        ServletRegistration.Dynamic shortLinksServlet = servletContext.addServlet("shortener", new DispatcherServlet(
-        //                shortenerServletConfig));
-        //        shortLinksServlet.addMapping("/s/*");
-        //        shortLinksServlet.setLoadOnStartup(1);
-
+        log.debug("Registering Spring MVC Servlet");
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcher", new DispatcherServlet(
                 dispatcherServletConfig));
         dispatcherServlet.addMapping("/tatami/*");
         dispatcherServlet.setLoadOnStartup(2);
 
+        log.debug("Registering Spring Security Filter");
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
                 new DelegatingFilterProxy());
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
         springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher");
 
-        FilterRegistration.Dynamic monitoringFilter = servletContext.addFilter("monitoringFilter",
-                new MonitoringFilter());
-        monitoringFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-        FilterRegistration.Dynamic deviceResolverHandlerFilter = servletContext.addFilter("deviceResolverHandlerFilter",
-                new DeviceResolverHandlerFilter());
-        deviceResolverHandlerFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-        final URLShortenerHandlerFilter shortenerFilter = new URLShortenerHandlerFilter();
-        shortenerFilter.setParent(rootContext);
-        FilterRegistration.Dynamic urlShortenerHandlerFilter = servletContext.addFilter("urlShortenerHandlerFilter",
-                shortenerFilter);
-        urlShortenerHandlerFilter.addMappingForUrlPatterns(disps, true, "/s/*");
-
+        log.debug("Web application fully configured");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        // TODO : close ApplicationContexts
+        log.info("Destroying Web application");
+        WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
+        AnnotationConfigWebApplicationContext gwac = (AnnotationConfigWebApplicationContext) ac;
+        gwac.close();
+        log.debug("Web application destroyed");
     }
 
 }

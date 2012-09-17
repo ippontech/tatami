@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository;
 import java.util.Collection;
 
 /**
- * The Follower Respository.
+ * The Follower Repository.
  *
  * @author Julien Dubois
  */
@@ -14,6 +14,4 @@ public interface FriendRepository {
     void removeFriend(String login, String friendLogin);
 
     Collection<String> findFriendsForUser(String login);
-
-    Collection<String> findFollowersForUser(String login);
 }

@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,43 +27,43 @@ public class FavoritesController {
     private TimelineService timelineService;
 
     /**
-     * GET  /favorites -> get the favorite tweets of the current user
+     * GET  /favorites -> get the favorite status of the current user
      */
     @RequestMapping(value = "/rest/favorites",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listFavoriteTweets() {
+    public Collection<Status> listFavoriteStatus() {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get the favorite tweets of the current user.");
+            log.debug("REST request to get the favorite status of the current user.");
         }
         return timelineService.getFavoritesline();
     }
 
     /**
-     * POST /favorites/create/:id -> Favorites the tweet
+     * POST /favorites/create/:id -> Favorites the status
      */
-    @RequestMapping(value = "/rest/favorites/create/{tweetId}",
+    @RequestMapping(value = "/rest/favorites/create/{statusId}",
             method = RequestMethod.POST)
     @ResponseBody
-    public void favoriteTweet(@PathVariable("tweetId") String tweetId) {
+    public void favoriteStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to like tweet : " + tweetId);
+            log.debug("REST request to like status : " + statusId);
         }
-        timelineService.addFavoriteTweet(tweetId);
+        timelineService.addFavoriteStatus(statusId);
     }
 
     /**
-     * POST /favorites/destroy/:id -> Unfavorites the tweet
+     * POST /favorites/destroy/:id -> Unfavorites the status
      */
-    @RequestMapping(value = "/rest/favorites/destroy/{tweetId}",
+    @RequestMapping(value = "/rest/favorites/destroy/{statusId}",
             method = RequestMethod.POST)
     @ResponseBody
-    public void unfavoriteTweet(@PathVariable("tweetId") String tweetId) {
+    public void unfavoriteStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to unlike tweet : " + tweetId);
+            log.debug("REST request to unlike status : " + statusId);
         }
-        timelineService.removeFavoriteTweet(tweetId);
+        timelineService.removeFavoriteStatus(statusId);
     }
 
 }

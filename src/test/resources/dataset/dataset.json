@@ -6,12 +6,8 @@
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-            "key" : "jdubois",
+            "key" : "jdubois@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "jdubois@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -25,12 +21,8 @@
             }]
         },
         {
-            "key" : "uuser",
+            "key" : "uuser@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "uuser@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -44,12 +36,8 @@
             }]
         },
         {
-            "key" : "userWhoWantToFollow",
+            "key" : "userWhoWantToFollow@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoWantToFollow@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -63,12 +51,8 @@
             }]
         },
         {
-            "key" : "userWhoWillBeFollowed",
+            "key" : "userWhoWillBeFollowed@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoWillBeFollowed@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -82,12 +66,8 @@
             }]
         },
         {
-            "key" : "userWhoFollow",
+            "key" : "userWhoFollow@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoFollow@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -101,12 +81,8 @@
             }]
         },
         {
-            "key" : "userWhoIsFollowed",
+            "key" : "userWhoIsFollowed@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoIsFollowed@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -120,12 +96,8 @@
             }]
         },
         {
-            "key" : "userWhoWantToForget",
+            "key" : "userWhoWantToForget@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoWantToForget@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -139,12 +111,8 @@
             }]
         },
         {
-            "key" : "userToForget",
+            "key" : "userToForget@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userToForget@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -158,12 +126,14 @@
             }]
         },
         {
-            "key" : "userWithTweets",
+            "key" : "userWithStatus@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWithUserlinet@ippon.fr"
-            },
-            {
+                "name" : "username",
+                "value" : "userWithStatus"
+            },{
+                "name" : "domain",
+                "value" : "ippon.fr"
+            },{
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -177,12 +147,14 @@
             }]
         },
         {
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoPostTweet@ippon.fr"
-            },
-            {
+                "name" : "username",
+                "value" : "userWhoPostStatus"
+            },{
+                "name" : "domain",
+                "value" : "ippon.fr"
+            },{
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -192,16 +164,12 @@
             },
             {
                 "name" : "lastName",
-                "value" : "WhoPostTweet"
+                "value" : "WhoPostStatus"
             }]
         },
         {
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoReadTweet@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -211,16 +179,12 @@
             },
             {
                 "name" : "lastName",
-                "value" : "WhoReadTweet"
+                "value" : "WhoReadStatus"
             }]
         },
         {
-            "key" : "userWhoShouldBeFoundBySimilarSearch",
+            "key" : "userWhoShouldBeFoundBySimilarSearch@ippon.fr",
             "columns" : [{
-                "name" : "email",
-                "value" : "userWhoShouldBeFoundBySimilarSearch@ippon.fr"
-            },
-            {
                 "name" : "gravatar",
                 "value" : "gravatar"
             },
@@ -235,14 +199,19 @@
         }]
     },
     {
+        "name" : "Domain",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type"
+    },
+    {
         "name" : "Counter",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "CounterColumnType",
         "rows" : [{
-            "key" : "jdubois",
+            "key" : "jdubois@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "2"
             },
             {
@@ -255,9 +224,9 @@
             }]
         },
         {
-            "key" : "userWhoWantToFollow",
+            "key" : "userWhoWantToFollow@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -270,9 +239,9 @@
             }]
     	},
     	{
-            "key" : "userWhoWillBeFollowed",
+            "key" : "userWhoWillBeFollowed@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -285,39 +254,9 @@
             }]
     	},
     	{
-            "key" : "userWhoFollow",
+            "key" : "userWhoFollow@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
-                "value" : "0"
-            },
-            {
-                "name" : "FOLLOWERS_COUNTER",
-                "value" : "0"
-            },
-            {
-                "name" : "FRIENDS_COUNTER",
-                "value" : "1"
-            }]
-    	},
-    	{
-            "key" : "userWhoIsFollowed",
-            "columns" : [{
-                "name" : "TWEET_COUNTER",
-                "value" : "0"
-            },
-            {
-                "name" : "FOLLOWERS_COUNTER",
-                "value" : "1"
-            },
-            {
-                "name" : "FRIENDS_COUNTER",
-                "value" : "0"
-            }]
-    	},
-    	{
-            "key" : "userWhoWantToForget",
-            "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -330,9 +269,9 @@
             }]
     	},
     	{
-            "key" : "userToForget",
+            "key" : "userWhoIsFollowed@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -345,9 +284,39 @@
             }]
     	},
     	{
-            "key" : "userWithTweets",
+            "key" : "userWhoWantToForget@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FOLLOWERS_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FRIENDS_COUNTER",
+                "value" : "1"
+            }]
+    	},
+    	{
+            "key" : "userToForget@ippon.fr",
+            "columns" : [{
+                "name" : "STATUS_COUNTER",
+                "value" : "0"
+            },
+            {
+                "name" : "FOLLOWERS_COUNTER",
+                "value" : "1"
+            },
+            {
+                "name" : "FRIENDS_COUNTER",
+                "value" : "0"
+            }]
+    	},
+    	{
+            "key" : "userWithStatus@ippon.fr",
+            "columns" : [{
+                "name" : "STATUS_COUNTER",
                 "value" : "2"
             },
             {
@@ -360,9 +329,9 @@
             }]
     	},
     	{
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -375,9 +344,9 @@
             }]
     	},
     	{
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus@ippon.fr",
             "columns" : [{
-                "name" : "TWEET_COUNTER",
+                "name" : "STATUS_COUNTER",
                 "value" : "0"
             },
             {
@@ -396,23 +365,23 @@
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "LongType",
         "rows" : [{
-            "key" : "userWhoFollow",
+            "key" : "userWhoFollow@ippon.fr",
             "columns" : [{
-                "name" : "userWhoIsFollowed",
+                "name" : "userWhoIsFollowed@ippon.fr",
                 "value" : "0"
             }]
         },
         {
-            "key" : "userWhoWantToForget",
+            "key" : "userWhoWantToForget@ippon.fr",
             "columns" : [{
-                "name" : "userToForget",
+                "name" : "userToForget@ippon.fr",
                 "value" : "0"
             }]
        	},
        	{
-            "key" : "userWhoReadTweet",
+            "key" : "userWhoReadStatus@ippon.fr",
             "columns" : [{
-                "name" : "userWhoPostTweet",
+                "name" : "userWhoPostStatus@ippon.fr",
                 "value" : "0"
             }]
        	}]
@@ -423,9 +392,9 @@
         "comparatorType" : "UTF8Type",
         "defaultColumnValueType" : "LongType",
         "rows" : [{
-            "key" : "userWhoPostTweet",
+            "key" : "userWhoPostStatus@ippon.fr",
             "columns" : [{
-                "name" : "userWhoReadTweet",
+                "name" : "userWhoReadStatus@ippon.fr",
                 "value" : "0"
             }]
        	}]
@@ -436,23 +405,19 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWhoPostTweet"
+        	"key" : "userWhoPostStatus@ippon.fr"
         }]
     },
     {
         "name" : "Dayline",
         "keyType" : "UTF8Type",
-        "comparatorType" : "UUIDType",
-        "defaultColumnValueType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "CounterColumnType",
         "rows" : [{
-        	"key" : "19042012",
+        	"key" : "19052012-ippon.fr",
         	"columns" : [{
-        		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
-        		"value" : ""
-        	},
-        	{
-        		"name" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
-        		"value" : ""
+        		"name" : "userWithStatus",
+        		"value" : "1"
         	}]
         }]
     },
@@ -462,7 +427,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "ippon",
+        	"key" : "ippon-ippon.fr",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -479,7 +444,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWithTweets",
+        	"key" : "userWithStatus@ippon.fr",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -496,7 +461,7 @@
         "comparatorType" : "UUIDType",
         "defaultColumnValueType" : "UTF8Type",
         "rows" : [{
-        	"key" : "userWithTweets",
+        	"key" : "userWithStatus@ippon.fr",
         	"columns" : [{
         		"name" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         		"value" : ""
@@ -508,21 +473,25 @@
         }]
     },
     {
-        "name" : "Tweet",
+        "name" : "Status",
         "keyType" : "UTF8Type",
         "comparatorType" : "UTF8Type",
         "rows" : [{
         	"key" : "fa2bd770-9848-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
-        		"value" : "utf8(userWithTweets)"
+        		"value" : "utf8(userWithStatus@ippon.fr)"
         	},
+            {
+                "name" : "domain",
+                "value" : "utf8(ippon.fr)"
+            },
         	{
         		"name" : "content",
         		"value" : "utf8(Devoxx, c'est nowwwwww)"
         	},
         	{
-        		"name" : "tweetDate",
+        		"name" : "statusDate",
         		"value" : "utf8(10/03/2012)"
         	}]
         },
@@ -530,14 +499,14 @@
         	"key" : "f97d6470-9847-11e1-a6ca-e0f847068d52",
         	"columns" : [{
         		"name" : "login",
-        		"value" : "utf8(userWithTweets)"
+        		"value" : "utf8(userWithStatus@ippon.fr)"
         	},
         	{
         		"name" : "content",
         		"value" : "utf8(Devoxx, ça va déchirer)"
         	},
         	{
-        		"name" : "tweetDate",
+        		"name" : "statusDate",
         		"value" : "utf8(11/03/2012)"
         	}]
         }]

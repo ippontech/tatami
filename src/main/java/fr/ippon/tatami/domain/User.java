@@ -1,5 +1,7 @@
 package fr.ippon.tatami.domain;
 
+import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 /**
  * A user.
@@ -19,31 +22,55 @@ import javax.validation.constraints.Size;
 @Table(name = "User")
 public class User {
 
-    @NotEmpty(message = "Login is mandatory.")
-    @NotNull(message = "Login is mandatory.")
+    @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
+    @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
+    @Email(message = "Email is invalid.")
     @Id
+    @JsonIgnore
     private String login;
 
-    @Email(message = "Email is invalid.")
-    @Column(name = "email")
-    private String email;
+    @Column(name = "password")
+    @JsonIgnore
+    private String password;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "domain")
+    @JsonIgnore
+    private String domain;
 
     @Column(name = "gravatar")
     private String gravatar;
 
     @NotNull
-    @NotEmpty(message = "First Name field is mandatory.")
-    @Size(min = 1, max = 50)
+    @Size(min = 0, max = 50)
     @Column(name = "firstName")
     private String firstName;
 
     @NotNull
-    @NotEmpty(message = "Last field is mandatory.")
-    @Size(min = 1, max = 50)
+    @Size(min = 0, max = 50)
     @Column(name = "lastName")
     private String lastName;
 
-    private long tweetCount;
+    @NotNull
+    @Size(min = 0, max = 100)
+    @Column(name = "jobTitle")
+    private String jobTitle;
+
+    @Size(min = 0, max = 20)
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "openIdUrl")
+    @JsonIgnore
+    private String openIdUrl;
+
+    @Column(name = "theme")
+    @JsonIgnore
+    private String theme;
+
+    private long statusCount;
 
     private long friendsCount;
 
@@ -57,12 +84,28 @@ public class User {
         this.login = login;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getGravatar() {
@@ -89,12 +132,44 @@ public class User {
         this.lastName = lastName;
     }
 
-    public long getTweetCount() {
-        return tweetCount;
+    public String getJobTitle() {
+        return jobTitle;
     }
 
-    public void setTweetCount(long tweetCount) {
-        this.tweetCount = tweetCount;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getOpenIdUrl() {
+        return openIdUrl;
+    }
+
+    public void setOpenIdUrl(String openIdUrl) {
+        this.openIdUrl = openIdUrl;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public long getStatusCount() {
+        return statusCount;
+    }
+
+    public void setStatusCount(long statusCount) {
+        this.statusCount = statusCount;
     }
 
     public long getFriendsCount() {
@@ -134,11 +209,17 @@ public class User {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
-                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", domain='" + domain + '\'' +
                 ", gravatar='" + gravatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", tweetCount=" + tweetCount +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", openIdUrl='" + openIdUrl + '\'' +
+                ", theme='" + theme + '\'' +
+                ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';

@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Tweet;
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,18 +27,18 @@ public class TagController {
     private TimelineService timelineService;
 
     /**
-     * GET  /tags -> get the latest tweets with no tags
+     * GET  /tags -> get the latest status with no tags
      */
-    @RequestMapping(value = "/rest/tags/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{nbStatus}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTagTweets(@PathVariable("nbTweets") String nbTweets) {
+    public Collection<Status> listTagStatus(@PathVariable("nbStatus") String nbStatus) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+            log.debug("REST request to get a tag status list (" + nbStatus + " sized).");
         }
         try {
-            return timelineService.getTagline(null, Integer.parseInt(nbTweets));
+            return timelineService.getTagline(null, Integer.parseInt(nbStatus));
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
             return timelineService.getTagline(null, 20);
@@ -46,18 +46,18 @@ public class TagController {
     }
 
     /**
-     * GET  /tags/ippon -> get the latest tweets tagged with "ippon"
+     * GET  /tags/ippon -> get the latest status tagged with "ippon"
      */
-    @RequestMapping(value = "/rest/tags/{tag}/{nbTweets}",
+    @RequestMapping(value = "/rest/tags/{tag}/{nbStatus}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tweet> listTagTweets(@PathVariable("tag") String tag, @PathVariable("nbTweets") String nbTweets) {
+    public Collection<Status> listTagStatus(@PathVariable("tag") String tag, @PathVariable("nbStatus") String nbStatus) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag tweet list (" + nbTweets + " sized).");
+            log.debug("REST request to get a tag status list (" + nbStatus + " sized).");
         }
         try {
-            return timelineService.getTagline(tag, Integer.parseInt(nbTweets));
+            return timelineService.getTagline(tag, Integer.parseInt(nbStatus));
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
             return timelineService.getTagline(tag, 20);

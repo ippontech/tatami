@@ -10,7 +10,7 @@
             overflowToDisk="true"
             />
 
-    <cache name="tweet-cache"
+    <cache name="status-cache"
            maxElementsInMemory="100000"
            eternal="false"
            timeToLiveSeconds="3600"
@@ -24,10 +24,31 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="user-prefix-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="600"
+           overflowToDisk="false">
+    </cache>
+
     <cache name="favorites-cache"
            maxElementsInMemory="50000"
            eternal="false"
            timeToLiveSeconds="3600"
+           overflowToDisk="false">
+    </cache>
+
+    <cache name="dayline-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="60"
+           overflowToDisk="false">
+    </cache>
+
+    <cache name="trends-cache"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToLiveSeconds="300"
            overflowToDisk="false">
     </cache>
 

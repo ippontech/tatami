@@ -32,9 +32,9 @@ public class FriendshipController {
     @ResponseBody
     public void followUser(@RequestBody User user) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to follow user login : " + user.getLogin());
+            log.debug("REST request to follow username : " + user.getUsername());
         }
-        userService.followUser(user.getLogin());
+        userService.followUser(user.getUsername());
     }
 
     /**
@@ -46,9 +46,9 @@ public class FriendshipController {
     @ResponseBody
     public void unfollowUser(@RequestBody User user) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow user login  : " + user.getLogin());
+            log.debug("REST request to unfollow username  : " + user.getUsername());
         }
-        userService.unfollowUser(user.getLogin());
+        userService.unfollowUser(user.getUsername());
     }
 
     /**
@@ -58,8 +58,8 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<User> getFriends(@RequestParam("screen_name") String login) {
-        return userService.getFriendsForUser(login);
+    public Collection<User> getFriends(@RequestParam("screen_name") String username) {
+        return userService.getFriendsForUser(username);
     }
 
     /**
@@ -69,7 +69,7 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<User> getFollowers(@RequestParam("screen_name") String login) {
-        return userService.getFollowersForUser(login);
+    public Collection<User> getFollowers(@RequestParam("screen_name") String username) {
+        return userService.getFollowersForUser(username);
     }
 }
