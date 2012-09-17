@@ -84,7 +84,7 @@ public class CassandraUserRepository implements UserRepository {
             return em.find(User.class, login);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for user " + login + " : " + e.getMessage());
+                log.debug("Exception while looking for user " + login + " : " + e.toString());
             }
             return null;
         }

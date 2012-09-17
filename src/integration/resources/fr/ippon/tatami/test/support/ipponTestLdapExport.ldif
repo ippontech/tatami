@@ -1,0 +1,31 @@
+version: 1
+
+dn: cn=tatami,dc=ippon,dc=fr
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: tatami
+sn: tatami
+uid: tatami
+userPassword:: e1NIQX1sK2lzNUhobFUya1BoTWh4V1pVMnZmSUIvZ289
+
+dn: cn=jdubois,dc=ippon,dc=fr
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: jdubois
+sn: jdubois
+uid: jdubois
+userPassword:: e1NIQX1sK2lzNUhobFUya1BoTWh4V1pVMnZmSUIvZ289
+
+dn: cn=john_doe,dc=ippon,dc=fr
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: john_doe
+sn: john_doe
+uid: john_doe
+userPassword:: e1NIQX1wUjNhZkgvMUMySHE2Z1JFTng5S2FwTUI1UUU9

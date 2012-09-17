@@ -44,6 +44,43 @@ If you want to debug remotely the application with your IDE, set up your MAVEN_O
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 ```
 
+### Launching functional tests
+
+Requirement : all components must run on localhost :
+- for ldap auth, the tests starts the ldap server that the Tatami server will use
+- for fixture setup and assertions, the test connects directly to the local cassandra
+  
+Launching UI Tests from maven : 
+- add this profile on your settings.xml :
+```xml
+<profile>
+  <id>tatami</id>
+  <activation>
+    <activeByDefault>true</activeByDefault>
+  </activation>
+  <properties>
+    <webdriver.chrome.driver>C:\path\to\chromedriver.exe</webdriver.chrome.driver><!--optional-->
+    <google.password>xxxx</google.password>
+    <google.email>xxx@xxx.fr</google.email>
+  </properties>
+</profile>
+```
+
+- Run Maven with this command : `mvn clean verify -Puitest`
+
+Launching UI Tests from maven with Chrome : 
+- install ChromerDriver in your system
+- configure the property "webdriver.chrome.driver" in your settings pointing to your chrome driver install directory
+- add `-Dgeb.env=chrome` to the maven command above     
+
+Launching UI Tests from your IDE :
+- Enable a groovy plugin on your IDE 
+- Activate maven profile "uitest" or add src/integration/* in your classpath 
+- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0`
+- Run Specs (in src\integration\java\fr\ippon\tatami\uitest) as Junit Tests from your IDE
+  => you have to set adequate system properties to your running configurations (the same as those that are necessary in setting.xml for maven : see above)  
+
+
 Installation for production use
 ---------------------------------------
 
