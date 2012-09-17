@@ -137,11 +137,11 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn">Follow</span>
+  <span class="btn"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary">Followed</span>
+  <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="user-item">
