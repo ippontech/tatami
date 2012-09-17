@@ -1,9 +1,6 @@
 /**
- * marked - A markdown parser (https://github.com/chjj/marked)
+ * marked - A markdown parser (https://github.com/dmartinpro/marked clone of https://github.com/chjj/marked)
  * Copyright (c) 2011-2012, Christopher Jeffrey. (MIT Licensed)
- *
- * Copied on 20120906
- * Removed "heading" with '#' syntax, as it overlaps with Tatami tags
  */
 
 ;(function() {
@@ -17,12 +14,13 @@ var block = {
   code: /^( {4}[^\n]+\n*)+/,
   fences: noop,
   hr: /^( *[-*_]){3,} *(?:\n+|$)/,
+  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
   lheading: /^([^\n]+)\n *(=|-){3,} *\n*/,
   blockquote: /^( *>[^\n]+(\n[^\n]+)*\n*)+/,
   list: /^( *)(bull) [^\0]+?(?:hr|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
   html: /^ *(?:comment|closed|closing) *(?:\n{2,}|\s*$)/,
   def: /^ *\[([^\]]+)\]: *([^\s]+)(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,
-  paragraph: /^([^\n]+\n?(?!body))+\n*/,
+  paragraph: /^([^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+\n*/,
   text: /^[^\n]+/
 };
 
@@ -44,24 +42,14 @@ block.html = replace(block.html)
   (/tag/g, tag())
   ();
 
-block.paragraph = (function() {
-  var paragraph = block.paragraph.source
-    , body = [];
-
-  (function push(rule) {
-    rule = block[rule] ? block[rule].source : rule;
-    body.push(rule.replace(/(^|[^\[])\^/g, '$1'));
-    return push;
-  })
-  ('hr')
-  ('lheading')
-  ('blockquote')
-  ('<' + tag())
-  ('def');
-
-  return new
-    RegExp(paragraph.replace('body', body.join('|')));
-})();
+block.paragraph = replace(block.paragraph)
+  ('hr', block.hr)
+  ('heading', block.heading)
+  ('lheading', block.lheading)
+  ('blockquote', block.blockquote)
+  ('tag', '<' + tag())
+  ('def', block.def)
+  ();
 
 block.normal = {
   fences: block.fences,
@@ -74,10 +62,7 @@ block.gfm = {
 };
 
 block.gfm.paragraph = replace(block.paragraph)
-  ('(?!', '(?!' + block.gfm.fences.source
-    .replace(/(^|[^\[])\^/g, '$1')
-    .replace('\\1', '\\2')
-     + '|')
+  ('(?!', '(?!' + block.gfm.fences.source.replace('\\1', '\\2') + '|')
   ();
 
 /**
@@ -137,6 +122,17 @@ block.token = function(src, tokens, top) {
         type: 'code',
         lang: cap[2],
         text: cap[3]
+      });
+      continue;
+    }
+
+    // heading
+    if (cap = block.heading.exec(src)) {
+      src = src.substring(cap[0].length);
+      tokens.push({
+        type: 'heading',
+        depth: cap[1].length,
+        text: cap[2]
       });
       continue;
     }
@@ -250,7 +246,9 @@ block.token = function(src, tokens, top) {
     if (cap = block.html.exec(src)) {
       src = src.substring(cap[0].length);
       tokens.push({
-        type: 'html',
+        type: options.sanitize
+          ? 'paragraph'
+          : 'html',
         pre: cap[1] === 'pre',
         text: cap[0]
       });
@@ -486,7 +484,9 @@ function outputLink(cap, link) {
       + inline.lexer(cap[1])
       + '</a>';
   } else {
-    return '<img src="'
+    var img_src = '';
+    if (isImgSrcValid(link.href)) {
+      img_src = '<img src="'
       + escape(link.href)
       + '" alt="'
       + escape(cap[1])
@@ -497,8 +497,12 @@ function outputLink(cap, link) {
       + '"'
       : '')
       + '>';
+    }
+    return img_src;
   }
 }
+
+
 
 /**
  * Parsing
@@ -603,9 +607,6 @@ function tok() {
         + '</li>\n';
     }
     case 'html': {
-      if (options.sanitize) {
-        return inline.lexer(token.text);
-      }
       return !token.pre && !options.pedantic
         ? inline.lexer(token.text)
         : token.text;
@@ -693,7 +694,9 @@ function replace(regex, opt) {
   opt = opt || '';
   return function self(name, val) {
     if (!name) return new RegExp(regex, opt);
-    regex = regex.replace(name, val.source || val);
+    val = val.source || val;
+    val = val.replace(/(^|[^\[])\^/g, '$1');
+    regex = regex.replace(name, val);
     return self;
   };
 }
@@ -782,3 +785,16 @@ if (typeof module !== 'undefined') {
 }).call(function() {
   return this || (typeof window !== 'undefined' ? window : global);
 }());
+
+function isImgSrcValid(link) {
+  if (link == null) {
+    return false;
+  }
+  // does it contain an accepted IMG file extension (jpg, jpeg, gif, png)
+  // can only be followed by '#' or '?' character (or nothing of course)
+  // just to avoir some "myimage.png.php" fake images...
+  var allowed_extensions = /.*(\.gif|\.jpg|\.jpeg|\.png)($|[?#].*)/gi;
+  var extension_found = allowed_extensions.test(link.toLowerCase());
+  return extension_found;
+
+}
