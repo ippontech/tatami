@@ -18,7 +18,7 @@ import fr.ippon.tatami.repository.TrendRepository;
 import fr.ippon.tatami.service.util.ValueComparator;
 
 /**
- * Analyses trends (tags going up or down depending on the current time).
+ * Analyzes trends (tags going up or down depending on the current time).
  */
 @Service
 public class TrendService {
