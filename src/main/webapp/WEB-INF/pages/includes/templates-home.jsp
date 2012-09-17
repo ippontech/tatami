@@ -80,7 +80,7 @@
       <label><i class="icon-zoom-in"></i> <fmt:message key="tatami.find.title"/></label>
     </div>
     <div class="control-group">
-      <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"/>
+      <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"  autocomplete="off"/>
     </div>
     <div>
       <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.find.action"/></button>
