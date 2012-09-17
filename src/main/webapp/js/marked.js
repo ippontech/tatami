@@ -790,11 +790,13 @@ function isImgSrcValid(link) {
   if (link == null) {
     return false;
   }
+  // only consider the URL without any query parameters
+  var _link = (link.indexOf('?') > -1) ? link.substring(0, link.indexOf('?')): link;
   // does it contain an accepted IMG file extension (jpg, jpeg, gif, png)
   // can only be followed by '#' or '?' character (or nothing of course)
   // just to avoir some "myimage.png.php" fake images...
   var allowed_extensions = /.*(\.gif|\.jpg|\.jpeg|\.png)($|[?#].*)/gi;
-  var extension_found = allowed_extensions.test(link.toLowerCase());
+  var extension_found = allowed_extensions.test(_link.toLowerCase());
   return extension_found;
 
 }
