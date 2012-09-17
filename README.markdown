@@ -13,7 +13,8 @@ Tatami is made with the following technologies :
 - HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
 - [Apache Cassandra](http://cassandra.apache.org/)
-- [Elastic Search](http://www.elasticsearch.org/)
+- [Apache Lucene](http://lucene.apache.org/core/)
+- [Elastic Search](http://www.elasticsearch.org/) (optional add-on)
 
 Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
