@@ -6,7 +6,7 @@ Presentation
 
 Tatami is a micro-blogging platform, for internal use inside a company.
 
-A publicly installed version of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [http://tatami.ippon.fr](http://tatami.ippon.fr)
+A publicly installed version of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
 
 Tatami is made with the following technologies :
 

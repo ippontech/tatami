@@ -82,7 +82,7 @@
         <div class="span8">
             <p><h2><fmt:message key="tatami.presentation.row4.title"/></h2></p>
             <ul>
-                <li><fmt:message key="tatami.presentation.row4.1"/> <a href="http://tatami.ippon.fr">http://tatami.ippon.fr</a></li>
+                <li><fmt:message key="tatami.presentation.row4.1"/> <a href="https://tatami.ippon.fr">https://tatami.ippon.fr</a></li>
                 <li><fmt:message key="tatami.presentation.row4.2"/></li>
                 <li><fmt:message key="tatami.presentation.row4.3"/></li>
             </ul>

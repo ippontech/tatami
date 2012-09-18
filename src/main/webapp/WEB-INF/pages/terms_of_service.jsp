@@ -21,7 +21,7 @@
                 (collectively referred to as "Services") provided by Ippon Techonologies ("Ippon"), you agree to be
                 bound by the following terms and conditions ("Terms of Service").
             <li>Ippon reserves the right to update and change the Terms of Service at any time without notice. You can
-                review the most current version of the Terms of Service at: http://tatami.ippon.fr/tatami/tos
+                review the most current version of the Terms of Service at: https://tatami.ippon.fr/tatami/tos
             <li>The failure of Ippon to exercise or enforce any right or provision of the Terms of Service shall not
                 constitute a waiver of such right or provision.
             <li>You agree that Ippon owns all legal rights in the Service. You must not remove, modify or obscure any
