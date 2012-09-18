@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 /**
- * Analyses trends (tags going up or down depending on the current time).
+ * Analyzes trends (tags going up or down depending on the current time).
  */
 @Service
 public class TrendService {
