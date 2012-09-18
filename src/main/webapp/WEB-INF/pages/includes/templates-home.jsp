@@ -125,7 +125,7 @@
 <script type="text/template" id="trends-template-item">
     <td class="pull-left">
         <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
-            #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
+            <span class="badge badge-info"><@= trend.tag @></span> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
         </a>
     </td>
 </script>
