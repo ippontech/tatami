@@ -392,7 +392,6 @@
         <spring.version>3.1.2.RELEASE</spring.version>
         <spring.security.version>3.1.2.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
-        <spring.mobile.version>1.0.0.RELEASE</spring.mobile.version>
         <elasticsearch.version>0.19.8</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
@@ -621,11 +620,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.mobile</groupId>
-            <artifactId>spring-mobile-device</artifactId>
-            <version>${spring.mobile.version}</version>
         </dependency>
 
         <!-- Test dependencies -->
