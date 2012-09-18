@@ -63,7 +63,7 @@ public interface SearchService {
 
     void addUsers(Collection<User> users);
 
-    void deleteUser(User user);
+    void removeUser(User user);
 
     Collection<String> searchUserByPrefix(String domain,
                                           String prefix);

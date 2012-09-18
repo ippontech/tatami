@@ -245,7 +245,7 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void removeUser(User user) {
         //TODO
     }
 

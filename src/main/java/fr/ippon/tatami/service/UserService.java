@@ -109,6 +109,7 @@ public class UserService {
         user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         try {
             userRepository.updateUser(user);
+            searchService.removeUser(user);
             searchService.addUser(user);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating user " + user + " : " + cve);
