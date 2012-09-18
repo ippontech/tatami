@@ -21,7 +21,7 @@
                     <div class="row-fluid">
                       <div class="span4 text-center">
                         <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
-                          <img class="pull-left nomargin avatar" src="http://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="${user.firstName} ${user.lastName}">
+                          <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="${user.firstName} ${user.lastName}">
                           <h4>${user.firstName} ${user.lastName}</h4>
                           @${user.username}
                         </a>
