@@ -26,7 +26,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraUserlineRepository extends AbstractLineRepository implements UserlineRepository {
+public class CassandraUserlineRepository extends AbstractCassandraLineRepository implements UserlineRepository {
 
     @Override
     public void addStatusToUserline(Status status) {

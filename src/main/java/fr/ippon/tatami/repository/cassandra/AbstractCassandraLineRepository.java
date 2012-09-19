@@ -33,9 +33,9 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  *
  * @author Julien Dubois
  */
-public abstract class AbstractLineRepository {
+public abstract class AbstractCassandraLineRepository {
 
-    private final Log log = LogFactory.getLog(AbstractLineRepository.class);
+    private final Log log = LogFactory.getLog(AbstractCassandraLineRepository.class);
 
     @Inject
     protected Keyspace keyspaceOperator;

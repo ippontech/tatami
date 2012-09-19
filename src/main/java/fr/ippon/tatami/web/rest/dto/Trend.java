@@ -1,4 +1,4 @@
-package fr.ippon.tatami.domain;
+package fr.ippon.tatami.web.rest.dto;
 
 /**
  * A trend : a tag that is trending up or down.

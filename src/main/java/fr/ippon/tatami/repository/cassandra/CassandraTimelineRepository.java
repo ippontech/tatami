@@ -26,7 +26,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTimelineRepository extends AbstractLineRepository implements TimelineRepository {
+public class CassandraTimelineRepository extends AbstractCassandraLineRepository implements TimelineRepository {
 
     @Override
     public void addStatusToTimeline(String login, Status status) {

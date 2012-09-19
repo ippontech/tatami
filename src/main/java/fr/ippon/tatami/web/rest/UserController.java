@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.UserService;
@@ -36,6 +37,9 @@ public class UserController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private FriendshipService friendshipService;
 
     @Inject
     private AuthenticationService authenticationService;
@@ -77,7 +81,7 @@ public class UserController {
             this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendIdsForUser(currentLogin);
+        Collection<String> exceptions = friendshipService.getFriendIdsForUser(currentLogin);
         exceptions.add(currentLogin);
 
         Collection<UserStatusStat> stats = statsService.getDayline();

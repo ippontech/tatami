@@ -10,8 +10,6 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -34,8 +32,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  */
 @Repository
 public class CassandraTaglineRepository implements TaglineRepository {
-
-    private final Log log = LogFactory.getLog(CassandraTaglineRepository.class);
 
     @Inject
     private Keyspace keyspaceOperator;

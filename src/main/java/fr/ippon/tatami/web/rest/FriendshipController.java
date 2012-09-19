@@ -1,7 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -23,10 +25,13 @@ public class FriendshipController {
     @Inject
     private UserService userService;
 
+    @Inject
+    private FriendshipService friendshipService;
+
     /**
-     * POST /friendships/create -> follow user
+     * POST /friendships/user/create -> follow user
      */
-    @RequestMapping(value = "/rest/friendships/create",
+    @RequestMapping(value = "/rest/friendships/user/create",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
@@ -34,13 +39,13 @@ public class FriendshipController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow username : " + user.getUsername());
         }
-        userService.followUser(user.getUsername());
+        friendshipService.followUser(user.getUsername());
     }
 
     /**
-     * POST /friendships/destroy -> unfollow user
+     * POST /friendships/user/destroy -> unfollow user
      */
-    @RequestMapping(value = "/rest/friendships/destroy",
+    @RequestMapping(value = "/rest/friendships/user/destroy",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
@@ -48,7 +53,35 @@ public class FriendshipController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to unfollow username  : " + user.getUsername());
         }
-        userService.unfollowUser(user.getUsername());
+        friendshipService.unfollowUser(user.getUsername());
+    }
+
+    /**
+     * POST /friendships/tag/create -> follow tag
+     */
+    @RequestMapping(value = "/rest/friendships/tag/create",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void followTag(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to follow tag : " + tag);
+        }
+        friendshipService.followTag(tag);
+    }
+
+    /**
+     * POST /friendships/tag/destroy -> unfollow tag
+     */
+    @RequestMapping(value = "/rest/friendships/tag/destroy",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void unfollowTag(Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unfollow tag  : " + tag);
+        }
+        friendshipService.unfollowTag(tag);
     }
 
     /**
@@ -59,7 +92,7 @@ public class FriendshipController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> getFriends(@RequestParam("screen_name") String username) {
-        return userService.getFriendsForUser(username);
+        return friendshipService.getFriendsForUser(username);
     }
 
     /**
@@ -70,6 +103,6 @@ public class FriendshipController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> getFollowers(@RequestParam("screen_name") String username) {
-        return userService.getFollowersForUser(username);
+        return friendshipService.getFollowersForUser(username);
     }
 }

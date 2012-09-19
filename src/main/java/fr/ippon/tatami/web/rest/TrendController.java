@@ -1,9 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Trend;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TrendService;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.Trend;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
