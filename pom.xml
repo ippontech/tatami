@@ -290,10 +290,6 @@
                             <stopPort>9999</stopPort>
                             <systemProperties>
                                 <systemProperty>
-                                    <name>spring.profiles.active</name>
-                                    <value>${spring.profiles.active}</value>
-                                </systemProperty>
-                                <systemProperty>
                                     <name>jetty.port</name>
                                     <value>${jetty.port}</value>
                                 </systemProperty>
@@ -730,14 +726,18 @@
                     <stopPort>9999</stopPort>
                     <systemProperties>
                         <systemProperty>
-                            <name>spring.profiles.active</name>
-                            <value>${spring.profiles.active}</value>
-                        </systemProperty>
-                        <systemProperty>
                             <name>jetty.port</name>
                             <value>${jetty.port}</value>
                         </systemProperty>
                     </systemProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <path>/</path>
                 </configuration>
             </plugin>
         </plugins>
