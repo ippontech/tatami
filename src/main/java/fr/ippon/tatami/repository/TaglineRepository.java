@@ -19,9 +19,9 @@ public interface TaglineRepository {
 
     /**
      * The tagline : the statuses for a given tag.
-     * - The key is the statusId of the statuses
+     * - The name is the statusId of the statuses
      * - Value is always null : this is to be consistent with the Timeline & Userline API,
      * which returns Map<String, String>
      */
-    Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size);
+    Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id);
 }

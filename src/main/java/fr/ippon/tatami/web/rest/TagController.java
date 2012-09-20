@@ -5,10 +5,7 @@ import fr.ippon.tatami.service.TimelineService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -29,38 +26,50 @@ public class TagController {
     /**
      * GET  /tags -> get the latest status with no tags
      */
-    @RequestMapping(value = "/rest/tags/{nbStatus}",
+    @RequestMapping(value = "/rest/tags/",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listTagStatus(@PathVariable("nbStatus") String nbStatus) {
+    public Collection<Status> listStatusWithNoTag(@RequestParam(required = false) Integer count,
+                                                  @RequestParam(required = false) String since_id,
+                                                  @RequestParam(required = false) String max_id) {
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag status list (" + nbStatus + " sized).");
+            log.debug("REST request to get statuses with no tags");
+        }
+        if (count == null) {
+            count = 20;
         }
         try {
-            return timelineService.getTagline(null, Integer.parseInt(nbStatus));
+            return timelineService.getTagline(null, count, since_id, max_id);
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(null, 20);
+            return timelineService.getTagline(null, 20, since_id, max_id);
         }
     }
 
     /**
      * GET  /tags/ippon -> get the latest status tagged with "ippon"
      */
-    @RequestMapping(value = "/rest/tags/{tag}/{nbStatus}",
+    @RequestMapping(value = "/rest/tags/{tag}/",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listTagStatus(@PathVariable("tag") String tag, @PathVariable("nbStatus") String nbStatus) {
+    public Collection<Status> listStatusForTag(@PathVariable("tag") String tag,
+                                            @RequestParam(required = false) Integer count,
+                                            @RequestParam(required = false) String since_id,
+                                            @RequestParam(required = false) String max_id) {
+
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get a tag status list (" + nbStatus + " sized).");
+            log.debug("REST request to get statuses for tag : " + tag);
+        }
+        if (count == null) {
+            count = 20;
         }
         try {
-            return timelineService.getTagline(tag, Integer.parseInt(nbStatus));
+            return timelineService.getTagline(tag, count, since_id, max_id);
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(tag, 20);
+            return timelineService.getTagline(tag, 20, since_id, max_id);
         }
     }
 }

@@ -57,7 +57,7 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetTagline() throws Exception {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         String hashtag = "ippon";
-        Collection<Status> status = timelineService.getTagline(hashtag, 10);
+        Collection<Status> status = timelineService.getTagline(hashtag, 10, null, null);
         assertThatLineForUserWithStatusIsOk("userWithStatus@ippon.fr", status);
     }
 

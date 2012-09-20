@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
@@ -31,7 +32,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTaglineRepository implements TaglineRepository {
+public class CassandraTaglineRepository extends AbstractCassandraLineRepository implements TaglineRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -49,22 +50,9 @@ public class CassandraTaglineRepository implements TaglineRepository {
                         StringSerializer.get()));
 
     }
-
     @Override
-    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size) {
-        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-                .setColumnFamily(TAGLINE_CF)
-                .setKey(getKey(domain, tag))
-                .setRange(null, null, true, size)
-                .execute()
-                .get();
-
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            line.put(column.getName().toString(), null);
-        }
-        return line;
+    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id) {
+        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
     }
 
     /**

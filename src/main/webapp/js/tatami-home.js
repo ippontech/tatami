@@ -610,13 +610,12 @@ app.View.TagsSearchView = Backbone.View.extend({
 
     $(this.el).addClass('alert alert-info');
 
-    this.nbStatus = 20;
     var self = this;
     this.model.url = function() {
       if(self.options.tag && self.options.tag !== '')
-        return '/tatami/rest/tags/' + self.options.tag + '/' + self.nbStatus;
+        return '/tatami/rest/tags/' + self.options.tag + '/';
       else
-        return '/tatami/rest/tags/' + self.nbStatus;
+        return '/tatami/rest/tags/';
     };
   },
 
@@ -651,28 +650,33 @@ app.View.TagsSearchView = Backbone.View.extend({
 });
 
 app.View.TagsView = Backbone.View.extend({
-  initialize: function(){
-    this.views = {};
+    initialize:function () {
+        this.views = {};
 
-    this.model = new app.Collection.StatusCollection();
+        this.model = new app.Collection.StatusCollection();
 
-    this.views.search = new app.View.TagsSearchView({
-      tag: this.options.tag,
-      model: this.model
-    });
+        this.views.search = new app.View.TagsSearchView({
+            tag:this.options.tag,
+            model:this.model
+        });
 
-    this.views.list = new app.View.TimeLineView({
-      model : this.model
-    });
+        this.views.list = new app.View.TimeLineView({
+            model:this.model
+        });
 
-    this.views.search.fetch();
-  },
+        this.views.next = new app.View.TimeLineNextView({
+            model:this.model
+        });
 
-  render: function () {
-    $(this.el).append(this.views.search.render());
-    $(this.el).append(this.views.list.render());
-    return $(this.el);
-  }
+        this.views.next.nextStatus();
+    },
+
+    render:function () {
+        $(this.el).append(this.views.search.render());
+        $(this.el).append(this.views.list.render());
+        $(this.el).append(this.views.next.render());
+        return $(this.el);
+    }
 
 });
 
