@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /tatami/authentication
+Disallow: /tatami/profile
+Disallow: /tatami/rest
+Disallow: /tatami/account
