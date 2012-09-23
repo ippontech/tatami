@@ -137,6 +137,11 @@ form {
   cursor: pointer;
 }
 
+.status-content p {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
 .status-content a {
   font-weight: bold;
 }
