@@ -18,7 +18,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.COUNTER_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createCounterColumn;
 
 /**
- * Cassandra implementation of the Follower repository.
+ * Cassandra implementation of the Counter repository.
  * <p/>
  * Structure :
  * - Key = login

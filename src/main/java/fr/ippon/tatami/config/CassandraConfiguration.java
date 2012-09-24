@@ -73,6 +73,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, TRENDS_CF, 0);
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
+            addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, DAYLINE_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
