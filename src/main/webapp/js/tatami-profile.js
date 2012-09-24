@@ -349,9 +349,6 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
       });
-      $("#updateStatusContent").blur(function () {
-          $(this).css("height", "12px");
-      });
       $("#updateStatusContent").charCount({
           css: 'counter',
           cssWarning: 'counter_warning',
