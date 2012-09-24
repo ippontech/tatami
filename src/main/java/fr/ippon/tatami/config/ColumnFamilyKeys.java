@@ -38,4 +38,9 @@ public class ColumnFamilyKeys {
     public final static String REGISTRATION_CF = "Registration";
 
     public final static String TRENDS_CF = "Trends";
+
+    public final static String TAG_FRIENDS_CF = "TagFriends";
+
+    public final static String TAG_FOLLOWERS_CF = "TagFollowers";
+
 }

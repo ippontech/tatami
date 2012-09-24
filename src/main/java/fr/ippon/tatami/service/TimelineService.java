@@ -186,13 +186,13 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getTagline(String tag, int nbStatus) {
+    public Collection<Status> getTagline(String tag, int nbStatus, String since_id, String max_id) {
         if (tag == null || tag.isEmpty()) {
             tag = hashtagDefault;
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus);
+        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
         return buildStatusList(line);
     }
 
@@ -200,8 +200,7 @@ public class TimelineService {
      * The timeline contains the user's status merged with his friends status
      *
      * @param nbStatus the number of status to retrieve, starting from most recent ones
-     * @param since_id
-     * @param max_id   @return a status list
+     * @return a status list
      */
     public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();

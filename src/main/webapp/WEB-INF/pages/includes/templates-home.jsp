@@ -5,7 +5,7 @@
 <script type="text/template" id="profile-infos">
   <div class="span12 text-center">
     <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
-      <img class="pull-left avatar" src="http://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
+      <img class="pull-left avatar" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
       <h4><@=profile.firstName@> <@=profile.lastName@></h4>
       @<@=profile.username@>
     </a>
@@ -80,7 +80,7 @@
       <label><i class="icon-zoom-in"></i> <fmt:message key="tatami.find.title"/></label>
     </div>
     <div class="control-group">
-      <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"/>
+      <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"  autocomplete="off"/>
     </div>
     <div>
       <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.find.action"/></button>
@@ -112,7 +112,7 @@
 
 <script type="text/template" id="profile-follow-suggest-item">
   <td class="pull-left">
-    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
+    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
       <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
     </a>
   </td>

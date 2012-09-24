@@ -10,8 +10,6 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -20,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
@@ -33,9 +32,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTaglineRepository implements TaglineRepository {
-
-    private final Log log = LogFactory.getLog(CassandraTaglineRepository.class);
+public class CassandraTaglineRepository extends AbstractCassandraLineRepository implements TaglineRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -53,22 +50,9 @@ public class CassandraTaglineRepository implements TaglineRepository {
                         StringSerializer.get()));
 
     }
-
     @Override
-    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size) {
-        ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-                .setColumnFamily(TAGLINE_CF)
-                .setKey(getKey(domain, tag))
-                .setRange(null, null, true, size)
-                .execute()
-                .get();
-
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
-        for (HColumn<UUID, String> column : result.getColumns()) {
-            line.put(column.getName().toString(), null);
-        }
-        return line;
+    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id) {
+        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
     }
 
     /**

@@ -61,6 +61,8 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, REGISTRATION_CF, 0);
             addColumnFamily(cluster, SHARES_CF, 0);
             addColumnFamily(cluster, DISCUSSION_CF, 0);
+            addColumnFamily(cluster, TAG_FRIENDS_CF, 0);
+            addColumnFamily(cluster, TAG_FOLLOWERS_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);

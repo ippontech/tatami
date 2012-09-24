@@ -2,6 +2,7 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
+import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -36,6 +37,9 @@ public class CassandraUserRepository implements UserRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
+
+    @Inject
+    private CounterRepository counterRepository;
 
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
@@ -80,13 +84,20 @@ public class CassandraUserRepository implements UserRepository {
     @Override
     @Cacheable("user-cache")
     public User findUserByLogin(String login) {
+        User user = null;
         try {
-            return em.find(User.class, login);
+            user = em.find(User.class, login);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for user " + login + " : " + e.getMessage());
+                log.debug("Exception while looking for user " + login + " : " + e.toString());
             }
             return null;
         }
+        if (user != null) {
+            user.setStatusCount(counterRepository.getStatusCounter(login));
+            user.setFollowersCount(counterRepository.getFollowersCounter(login));
+            user.setFriendsCount(counterRepository.getFriendsCounter(login));
+        }
+        return user;
     }
 }

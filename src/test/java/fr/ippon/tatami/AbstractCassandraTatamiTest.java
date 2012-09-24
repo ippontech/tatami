@@ -1,6 +1,7 @@
 package fr.ippon.tatami;
 
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import org.cassandraunit.DataLoader;
@@ -18,6 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import javax.inject.Inject;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = ApplicationTestConfiguration.class,
@@ -28,6 +31,9 @@ public abstract class AbstractCassandraTatamiTest {
     private static boolean isInitialized = false;
 
     protected static Client client = null;
+
+    @Inject
+    private CounterRepository counterRepository;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -65,6 +71,9 @@ public abstract class AbstractCassandraTatamiTest {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setJobTitle("web developer");
+        counterRepository.createStatusCounter(user.getLogin());
+        counterRepository.createFriendsCounter(user.getLogin());
+        counterRepository.createFollowersCounter(user.getLogin());
         return user;
     }
 

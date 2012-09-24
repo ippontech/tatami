@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.UserService;
@@ -38,6 +39,9 @@ public class UserController {
     private UserService userService;
 
     @Inject
+    private FriendshipService friendshipService;
+
+    @Inject
     private AuthenticationService authenticationService;
 
     @Inject
@@ -58,7 +62,7 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = this.userService.getUserProfileByUsername(username);
+        User user = this.userService.getUserByUsername(username);
         return user;
     }
 
@@ -77,13 +81,13 @@ public class UserController {
             this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
         }
 
-        Collection<String> exceptions = userService.getFriendIdsForUser(currentLogin);
+        Collection<String> exceptions = friendshipService.getFriendIdsForUser(currentLogin);
         exceptions.add(currentLogin);
 
         Collection<UserStatusStat> stats = statsService.getDayline();
         Map<String, User> users = new HashMap<String, User>();
         for (UserStatusStat stat : stats) {
-            User potentialFriend = userService.getUserProfileByUsername(stat.getUsername());
+            User potentialFriend = userService.getUserByUsername(stat.getUsername());
             if (exceptions.contains(potentialFriend.getLogin())) {
                 continue;
             }

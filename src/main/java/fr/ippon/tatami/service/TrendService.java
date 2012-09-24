@@ -1,10 +1,8 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Trend;
 import fr.ippon.tatami.repository.TrendRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.ValueComparator;
+import fr.ippon.tatami.web.rest.dto.Trend;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,7 +12,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 /**
- * Analyses trends (tags going up or down depending on the current time).
+ * Analyzes trends (tags going up or down depending on the current time).
  */
 @Service
 public class TrendService {
@@ -32,12 +30,12 @@ public class TrendService {
         if (log.isDebugEnabled()) {
             log.debug("All tags: " + tags);
         }
-        HashMap<String, Integer> totalTagsCount  = new HashMap<String, Integer>();
-        HashMap<String, Integer> recentTagsCount  = new HashMap<String, Integer>();
-        HashMap<String, Integer> oldTagsCount  = new HashMap<String, Integer>();
+        HashMap<String, Integer> totalTagsCount = new HashMap<String, Integer>();
+        HashMap<String, Integer> recentTagsCount = new HashMap<String, Integer>();
+        HashMap<String, Integer> oldTagsCount = new HashMap<String, Integer>();
         int currentPosition = 0;
         int middlePosition = tags.size() / 2;
-        for(String tag : tags) {
+        for (String tag : tags) {
             addTagInMap(totalTagsCount, tag);
             if (currentPosition <= middlePosition) {
                 addTagInMap(recentTagsCount, tag);
@@ -81,7 +79,7 @@ public class TrendService {
         }
     }
 
-    private List<String> findMostUsedTags(HashMap<String,Integer> totalTagsCount) {
+    private List<String> findMostUsedTags(HashMap<String, Integer> totalTagsCount) {
         ValueComparator valueComparator = new ValueComparator(totalTagsCount);
         TreeMap<String, Integer> orderedTags =
                 new TreeMap<String, Integer>(valueComparator);

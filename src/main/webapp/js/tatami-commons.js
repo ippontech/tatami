@@ -442,15 +442,15 @@ app.View.TimeLineView = Backbone.View.extend({
 /*
 Friendship
 */
-app.Model.FollowModel = Backbone.Model.extend({
+app.Model.FollowUserModel = Backbone.Model.extend({
 url : function(){
-  return '/tatami/rest/friendships/create';
+  return '/tatami/rest/friendships/user/create';
 }
 });
 
-app.Model.UnFollowModel = Backbone.Model.extend({
+app.Model.UnFollowUserModel = Backbone.Model.extend({
 url : function(){
-  return '/tatami/rest/friendships/destroy';
+  return '/tatami/rest/friendships/user/destroy';
 }
 });
 
@@ -484,7 +484,7 @@ follow: function() {
   this.undelegateEvents();
   $(this.el).empty();
 
-  var m = new app.Model.FollowModel();
+  var m = new app.Model.FollowUserModel();
   m.set('username', this.options.username);
 
   m.save(null, {
@@ -504,7 +504,7 @@ unfollow: function() {
   this.undelegateEvents();
   $(this.el).empty();
 
-  var m = new app.Model.UnFollowModel();
+  var m = new app.Model.UnFollowUserModel();
   m.set('username', this.options.username);
 
   m.save(null, {

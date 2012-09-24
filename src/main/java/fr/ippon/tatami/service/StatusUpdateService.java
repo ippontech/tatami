@@ -26,6 +26,9 @@ public class StatusUpdateService {
     private FollowerRepository followerRepository;
 
     @Inject
+    private TagFollowerRepository tagFollowerRepository;
+
+    @Inject
     private AuthenticationService authenticationService;
 
     @Inject
@@ -137,6 +140,11 @@ public class StatusUpdateService {
                 }
                 taglineRepository.addStatusToTagline(status, tag);
                 trendsRepository.addTag(status.getDomain(), tag);
+                // Add the status to all users following this tag
+                Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
+                for (String followerLogin : followersForTag) {
+                    timelineRepository.addStatusToTimeline(followerLogin, status);
+                }
             }
         }
 

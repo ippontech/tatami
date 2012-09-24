@@ -9,6 +9,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -41,31 +42,37 @@ public class CassandraCounterRepository implements CounterRepository {
     private Keyspace keyspaceOperator;
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void incrementFollowersCounter(String login) {
         incrementCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void incrementFriendsCounter(String login) {
         incrementCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void incrementStatusCounter(String login) {
         incrementCounter(STATUS_COUNTER, login);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void decrementFollowersCounter(String login) {
         decrementCounter(FOLLOWERS_COUNTER, login);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void decrementFriendsCounter(String login) {
         decrementCounter(FRIENDS_COUNTER, login);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#login")
     public void decrementStatusCounter(String login) {
         decrementCounter(STATUS_COUNTER, login);
     }

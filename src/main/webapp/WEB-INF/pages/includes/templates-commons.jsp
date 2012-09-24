@@ -24,7 +24,7 @@
 <script type="text/template" id="timeline-item-inner">
   <tr>
     <th rowspan="6">
-        <img class="avatar" src="http://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
+        <img class="avatar" src="https://www.gravatar.com/avatar/<@=status.gravatar@>?s=64" alt="<@=status.firstName@> <@=status.lastName@>">
     </th>
     <th>
       <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
@@ -114,7 +114,7 @@
 
 <script type="text/template" id="timeline-share-item">
   <@ if (profile) { @>
-    <a href="/tatami/profile/<@= profile.username @>/"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"></a>
+    <a href="/tatami/profile/<@= profile.username @>/"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64" alt="<@= profile.firstName @> <@= profile.lastName @>"></a>
   <@ } else { @>
     <a href="/tatami/profile/<@= username @>/"><@= username @></a> 
   <@ } @>
@@ -137,18 +137,18 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn">Follow</span>
+  <span class="btn"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary">Followed</span>
+  <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="user-item">
   <div class="alert alert-info">
     <div class="row-fluid">
       <div class="span12">
-        <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of @<@= user.username @> <@= user.firstName @> <@= user.lastName @>"><img class="avatar avatar-small" src="http://www.gravatar.com/avatar/<@= user.gravatar @>?s=64" alt="<@= user.firstName @> <@= user.lastName @>">
+        <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of @<@= user.username @> <@= user.firstName @> <@= user.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64" alt="<@= user.firstName @> <@= user.lastName @>">
           <@=user.firstName@> <@=user.lastName@> <em>@<@=user.username@></em>
         </a>
       </div>    

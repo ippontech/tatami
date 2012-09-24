@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.CounterService;
+import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +27,9 @@ public class ProfileController {
     private UserService userService;
 
     @Inject
+    private FriendshipService friendshipService;
+
+    @Inject
     private CounterService counterService;
 
     @Inject
@@ -40,11 +44,11 @@ public class ProfileController {
         ModelAndView mv = new ModelAndView("profile");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("authenticatedUsername", currentUser.getUsername());
-        User user = userService.getUserProfileByUsername(username);
+        User user = userService.getUserByUsername(username);
         if (null != user) {
             mv.addObject("user", user);
             String login = user.getLogin();
-            mv.addObject("followed", userService.isFollowed(login));
+            mv.addObject("followed", friendshipService.isFollowed(login));
             mv.addObject("nbStatus", counterService.getNbStatus(login));
             mv.addObject("nbFollowed", counterService.getNbFollowed(login));
             mv.addObject("nbFollowers", counterService.getNbFollowers(login));

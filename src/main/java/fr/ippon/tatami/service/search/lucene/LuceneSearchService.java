@@ -263,7 +263,7 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void removeUser(User user) {
         Term term = new Term("login", user.getLogin());
         try {
             userIndexWriter.deleteDocuments(term);
