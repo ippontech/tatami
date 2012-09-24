@@ -41,6 +41,9 @@ public class StatusUpdateService {
     private TimelineRepository timelineRepository;
 
     @Inject
+    private MentionlineRepository mentionlineRepository;
+
+    @Inject
     private UserlineRepository userlineRepository;
 
     @Inject
@@ -120,6 +123,7 @@ public class StatusUpdateService {
                 String mentionedLogin =
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
+                mentionlineRepository.addStatusToMentionline(status);
                 timelineRepository.addStatusToTimeline(mentionedLogin, status);
             }
         }
