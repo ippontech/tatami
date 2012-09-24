@@ -61,11 +61,6 @@
                                 <i class="icon-search"></i> <fmt:message key="tatami.search"/>
                             </a>
                         </li>
-                        <li>
-                            <a href="#/daily">
-                                <i class="icon-signal"></i> <fmt:message key="tatami.stats.status.piechart"/>
-                            </a>
-                        </li>
                     </ul>
                     <div id="tab-content">
                     </div>
@@ -98,8 +93,6 @@
 
     <script src="/js/tatami-commons.js"></script>
     <script src="/js/tatami-home.js"></script>
-    <script src="/js/raphael-min.js"></script>
-    <script src="/js/jquery-raphael-tatami-pie.js"></script>
 
 </body>
 </html>

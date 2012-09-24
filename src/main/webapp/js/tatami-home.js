@@ -788,37 +788,6 @@ app.View.SearchView = Backbone.View.extend({
 });
 
 /*
-  Statistics
-*/
-
-app.Collection.DailyStatCollection = Backbone.Collection.extend({
-  url: '/tatami/rest/stats/day'
-});
-
-app.View.DailyStatsView = Backbone.View.extend({
-  initialize: function() {
-    this.model = new app.Collection.DailyStatCollection();
-    this.model.bind('reset', this.render, this);
-
-    this.model.fetch();
-  },
-
-  render: function() {
-    var values = [];
-    var labels = [];
-    this.model.each(function(model){
-      values.push(model.get('statusCount'));
-      labels.push(model.get('username'));
-    });
-    
-    $(this.el).pie(values, labels);
-
-    return $(this.el);
-  }
-});
-
-
-/*
 Initialization
 */
 
@@ -881,7 +850,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
     "tags/*tag": "tags",
     "search": "search",
     "search/*search": "search",
-    "daily": "daily",
     "*action": "timeline"
   },
 
@@ -938,13 +906,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
       $('#tab-content').append(app.views.search.render());
     }
   },
-
-  daily: function() {
-    this.selectMenu('daily');
-    app.views.daily = new app.View.DailyStatsView();
-    $('#tab-content').empty();
-    $('#tab-content').append(app.views.daily.render());
-  }
 });
 
 $(function() {

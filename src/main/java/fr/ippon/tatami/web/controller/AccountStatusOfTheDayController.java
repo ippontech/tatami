@@ -20,9 +20,7 @@ import java.util.List;
  * @author Julien Dubois
  */
 @Controller
-public class AccountEnterpriseController {
-
-    private final Log log = LogFactory.getLog(AccountEnterpriseController.class);
+public class AccountStatusOfTheDayController {
 
     @Inject
     private UserService userService;
@@ -36,22 +34,11 @@ public class AccountEnterpriseController {
         return userService.getUserByLogin(currentUser.getLogin());
     }
 
-    @RequestMapping(value = "/account/enterprise",
+    @RequestMapping(value = "/account/status_of_the_day",
             method = RequestMethod.GET)
-    public ModelAndView getEnterprise(@RequestParam(required = false) Integer pagination) {
-        if (pagination == null) {
-            pagination = 0;
-        }
-        ModelAndView mv = new ModelAndView("account_enterprise");
-        List<User> users = userService.getUsersForCurrentDomain(pagination);
-        if (pagination > 0) {
-            mv.addObject("paginationPrevious", pagination - Constants.PAGINATION_SIZE);
-        }
-        if (users.size() > Constants.PAGINATION_SIZE) {
-            mv.addObject("paginationNext", pagination + Constants.PAGINATION_SIZE);
-            users.remove(users.size() - 1);
-        }
-        mv.addObject("users", users);
+    public ModelAndView getStatusOfTheDay() {
+
+        ModelAndView mv = new ModelAndView("account_status_of_the_day");
         return mv;
     }
 }

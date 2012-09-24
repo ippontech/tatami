@@ -46,7 +46,12 @@
                             </li>
                             <li class="active">
                                 <a href="#">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.enterprise"/>
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/status_of_the_day">
+                                    <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
                         </ul>
@@ -56,7 +61,7 @@
                     <div class="row-fluid">
                         <div class="tab-content span12">
                                 <h2>
-                                    <fmt:message key="tatami.menu.enterprise"/>
+                                    <fmt:message key="tatami.menu.directory"/>
                                 </h2>
                                 <table class="table table-striped">
                                     <thead>
@@ -106,13 +111,13 @@
                                 <ul class="pager">
                                     <c:if test="${paginationPrevious != null}">
                                         <li>
-                                            <a href="/tatami/account/enterprise?pagination=${paginationPrevious}"><fmt:message
+                                            <a href="/tatami/account/directory?pagination=${paginationPrevious}"><fmt:message
                                                     key="tatami.form.previous"/></a>
                                         </li>
                                     </c:if>
                                     <c:if test="${paginationNext != null}">
                                         <li>
-                                            <a href="/tatami/account/enterprise?pagination=${paginationNext}"><fmt:message
+                                            <a href="/tatami/account/directory?pagination=${paginationNext}"><fmt:message
                                                     key="tatami.form.next"/></a>
                                         </li>
                                     </c:if>
@@ -139,7 +144,7 @@
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "account";
+    var page = "directory";
 </script>
 </body>
 </html>

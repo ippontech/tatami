@@ -125,9 +125,14 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/tatami/account/enterprise">
+                                    <a href="/tatami/account/directory">
                                         <i class="icon-globe"></i> <fmt:message
-                                            key="tatami.menu.enterprise"/></a>
+                                            key="tatami.menu.directory"/></a>
+                                </li>
+                                <li>
+                                    <a href="/tatami/account/status_of_the_day">
+                                        <i class="icon-signal"></i> <fmt:message
+                                            key="tatami.menu.status.of.the.day"/></a>
                                 </li>
                                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <li class="divider"></li>
