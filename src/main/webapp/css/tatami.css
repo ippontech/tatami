@@ -1,3 +1,11 @@
+.status.content {
+    word-wrap: break-word;
+      -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -o-hyphens: auto;
+  hyphens: auto;
+}
 
 .homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
 
@@ -164,6 +172,8 @@ form {
 .status th:first-child {
   vertical-align: top;
   width: 64px;
+  min-width: 64px;
+  max-width: 64px;
 }
 
 .status table {
