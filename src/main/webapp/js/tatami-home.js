@@ -832,6 +832,9 @@ app.Router.HomeRouter = Backbone.Router.extend({
         $("#updateStatusContent").focus(function () {
             $(this).css("height", "200px");
         });
+        $("#updateStatusContent").blur(function () {
+            $(this).css("height", "12px");
+        });
         $("#updateStatusContent").charCount({
             css:'counter',
             cssWarning:'counter_warning',
@@ -862,7 +865,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());
 
-        var trends = new app.View.TrendsCollection();
+        var trends = new app.View.TrendsView();
         $('#trends').html(trends.render());
     },
 
