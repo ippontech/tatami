@@ -19,6 +19,11 @@ else {
   app = window.app;
 }
 
+app.Collection.TrendsCollection = Backbone.Collection.extend({
+    url : function(){
+        return '/tatami/rest/users/trends?screen_name=' + username;
+    }
+});
 
 /*
   Timeline
@@ -358,6 +363,8 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           trigger: 'manual',
       });
       jQuery("abbr.timeago").timeago();
+      var trends = new app.View.TrendsView();
+      $('#trends').html(trends.render());
   },
 
   selectMenu: function(menu) {

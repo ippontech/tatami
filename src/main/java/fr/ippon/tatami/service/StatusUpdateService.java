@@ -53,6 +53,9 @@ public class StatusUpdateService {
     private TrendRepository trendsRepository;
 
     @Inject
+    private UserTrendRepository userTrendRepository;
+
+    @Inject
     private DiscussionRepository discussionRepository;
 
     @Inject
@@ -144,6 +147,7 @@ public class StatusUpdateService {
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 trendsRepository.addTag(status.getDomain(), tag);
+                userTrendRepository.addTag(status.getLogin(), tag);
                 // Add the status to all users following this tag
                 Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
                 for (String followerLogin : followersForTag) {

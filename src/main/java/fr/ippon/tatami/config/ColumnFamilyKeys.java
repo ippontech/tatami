@@ -45,4 +45,6 @@ public class ColumnFamilyKeys {
 
     public final static String TAG_COUNTER_CF = "TagCounter";
 
+    public final static String USER_TRENDS_CF = "UserTrends";
+
 }

@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.repository.TrendRepository;
+import fr.ippon.tatami.repository.UserTrendRepository;
 import fr.ippon.tatami.service.util.ValueComparator;
 import fr.ippon.tatami.web.rest.dto.Trend;
 import org.apache.commons.logging.Log;
@@ -24,9 +25,22 @@ public class TrendService {
     @Inject
     private TrendRepository trendRepository;
 
+    @Inject
+    private UserTrendRepository userTrendRepository;
+
     @Cacheable("trends-cache")
     public List<Trend> getCurrentTrends(String domain) {
         List<String> tags = trendRepository.getRecentTags(domain);
+        return calculateTrends(tags);
+    }
+
+    @Cacheable("user-trends-cache")
+    public List<Trend> getTrendsForUser(String login) {
+        List<String> tags = userTrendRepository.getRecentTags(login);
+        return calculateTrends(tags);
+    }
+
+    private List<Trend> calculateTrends(List<String> tags) {
         if (log.isDebugEnabled()) {
             log.debug("All tags: " + tags);
         }

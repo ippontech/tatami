@@ -71,6 +71,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, FAVLINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TAGLINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TRENDS_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, USER_TRENDS_CF, 0);
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
