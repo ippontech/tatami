@@ -4,10 +4,7 @@ _.templateSettings = {
     evaluate: /<\@(.+?)\@\>/gim
 };
 
-var app;
-
-if(!window.app){
-    app = window.app = _.extend({
+var app = window.app = _.extend({
         views:{},
         View:{},
         Collection:{},
@@ -41,10 +38,6 @@ if(!window.app){
     },
 
   }, Backbone.Events);
-}
-else {
-  app = window.app;
-}
 
 /*
   Timeline
@@ -536,10 +529,6 @@ render: function() {
 }
 
 });
-
-/*
-Initialization
-*/
 
   /*
     Search form in the top menu.
