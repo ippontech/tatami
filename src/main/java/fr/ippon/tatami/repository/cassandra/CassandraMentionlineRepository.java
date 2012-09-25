@@ -31,9 +31,9 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
 public class CassandraMentionlineRepository extends AbstractCassandraLineRepository implements MentionlineRepository {
 
     @Override
-    public void addStatusToMentionline(Status status) {
+    public void addStatusToMentionline(String mentionedLogin, Status status) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(status.getLogin(), MENTIONLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
+        mutator.insert(mentionedLogin, MENTIONLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
                 "", UUIDSerializer.get(), StringSerializer.get()));
     }
 

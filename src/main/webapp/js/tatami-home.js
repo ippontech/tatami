@@ -471,6 +471,80 @@ app.View.TimeLinePanelView = Backbone.View.extend({
 });
 
 /*
+  Mentions
+ */
+app.View.MentionView = Backbone.View.extend({
+    template: _.template($('#mention-refresh').html()),
+    progressTemplate: _.template($('#timeline-progress').html()),
+
+    initialize:function () {
+        this.views = {};
+
+        this.views.list = new app.View.TimeLineView({
+            model:this.model
+        });
+
+        this.views.next = new app.View.TimeLineNextView({
+            model:this.model
+        });
+
+        this.views.next.nextStatus();
+    },
+
+    events: {
+       'click #mentionRefresh': 'refreshMention'
+    },
+
+    refreshMention: function(done, context){
+        this.progress();
+        var self = this;
+        this.model.fetch({
+            success: function(){
+                self.render();
+            },
+            error: function() {
+                self.render();
+            }
+        });
+    },
+
+    render: function() {
+        $(this.el).html(this.template());
+        $(this.el).append(this.views.list.render());
+        $(this.el).append(this.views.next.render());
+        this.delegateEvents();
+        return $(this.el);
+    },
+
+    progress: function() {
+        $(this.el).html(this.progressTemplate());
+        this.undelegateEvents();
+        return $(this.el);
+    }
+
+});
+
+app.View.MentionPanelView = Backbone.View.extend({
+
+    initialize: function(){
+        this.views = {};
+        this.views.mentionView = new app.View.MentionView({
+            model : this.model
+        });
+
+        this.views.mentionView.refreshMention();
+
+        this.on('refresh', this.views.mentionView.refreshMention, this.views.mentionView);
+    },
+
+    render: function() {
+        $(this.el).append(this.views.mentionView.render());
+        return $(this.el);
+    }
+
+});
+
+/*
   Favorite
 */
 
@@ -842,6 +916,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
   routes: {
     "timeline": "timeline",
+    "mention": "mention",
     "favorite": "favorite",
     "tags": "tags",
     "tags/*tag": "tags",
@@ -865,6 +940,20 @@ app.Router.HomeRouter = Backbone.Router.extend({
     $('#tab-content').empty();
     $('#tab-content').append(app.views.timeline.render());
   },
+
+    mention:function () {
+        this.selectMenu('mention');
+        if(!app.views.mention) {
+            var mentionCollection = new app.Collection.StatusCollection();
+            mentionCollection.url = '/tatami/rest/mentions';
+            app.views.mention = new app.View.MentionPanelView({
+                model: mentionCollection
+            });
+        }
+        app.views.mention.trigger('refresh');
+        $('#tab-content').empty();
+        $('#tab-content').append(app.views.mention.render());
+    },
 
   favorite: function() {
     this.selectMenu('favorite');

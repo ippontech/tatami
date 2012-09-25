@@ -47,6 +47,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="#/mention">
+                                <i class="icon-user"></i> <fmt:message key="tatami.mentions"/>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#/favorite">
                                 <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
                             </a>

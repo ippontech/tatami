@@ -122,6 +122,10 @@
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>
 
+<script type="text/template" id="mention-refresh">
+    <div id="mentionRefresh" class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
+</script>
+
 <script type="text/template" id="timeline-progress">
   <div class="status text-center alert alert-info">
     <div class="progress progress-striped active">

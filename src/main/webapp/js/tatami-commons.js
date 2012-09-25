@@ -363,7 +363,6 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
 
   replyAction: function() {
     var statusId = this.model.get('statusId');
-    
     this.model.set('discuss', !this.model.get('discuss'));
     this.model.set('replyContent', '');
 

@@ -34,9 +34,6 @@ public class MentionsController {
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get the mentions of the current user.");
-        }
         if (count == null) {
             count = 20;
         }
