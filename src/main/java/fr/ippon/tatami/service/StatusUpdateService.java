@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +42,9 @@ public class StatusUpdateService {
     private TimelineRepository timelineRepository;
 
     @Inject
+    private MentionlineRepository mentionlineRepository;
+
+    @Inject
     private UserlineRepository userlineRepository;
 
     @Inject
@@ -51,6 +55,9 @@ public class StatusUpdateService {
 
     @Inject
     private TrendRepository trendsRepository;
+
+    @Inject
+    private UserTrendRepository userTrendRepository;
 
     @Inject
     private DiscussionRepository discussionRepository;
@@ -79,7 +86,9 @@ public class StatusUpdateService {
     }
 
     private Status createStatus(String content, String replyTo, String replyToUsername) {
+        long startTime = 0;
         if (log.isDebugEnabled()) {
+            startTime = Calendar.getInstance().getTimeInMillis();
             log.debug("Creating new status : " + content);
         }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -117,6 +126,7 @@ public class StatusUpdateService {
                 String mentionedLogin =
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
+                mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
                 timelineRepository.addStatusToTimeline(mentionedLogin, status);
             }
         }
@@ -127,6 +137,10 @@ public class StatusUpdateService {
         // Add to the searchStatus engine
         searchService.addStatus(status);
 
+        if (log.isDebugEnabled()) {
+            long finishTime = Calendar.getInstance().getTimeInMillis();
+            log.debug("Status created in " + (finishTime - startTime) + "ms.");
+        }
         return status;
     }
 
@@ -144,6 +158,7 @@ public class StatusUpdateService {
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 trendsRepository.addTag(status.getDomain(), tag);
+                userTrendRepository.addTag(status.getLogin(), tag);
                 // Add the status to all users following this tag
                 Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
                 for (String followerLogin : followersForTag) {

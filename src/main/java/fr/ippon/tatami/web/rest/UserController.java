@@ -62,7 +62,7 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = this.userService.getUserByUsername(username);
+        User user = userService.getUserByUsername(username);
         return user;
     }
 

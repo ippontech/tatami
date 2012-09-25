@@ -17,5 +17,6 @@
         <js>/js/jquery-tatami-tagLinker.js</js>
         <js>/js/jquery-tatami-usernameLinker.js</js>
         <js>/js/marked.js</js>
+        <js>/js/tatami-search.js</js>
     </group>
 </groups>

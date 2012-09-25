@@ -46,6 +46,9 @@ public class TimelineService {
     private TimelineRepository timelineRepository;
 
     @Inject
+    private MentionlineRepository mentionlineRepository;
+
+    @Inject
     private UserlineRepository userlineRepository;
 
     @Inject
@@ -177,6 +180,20 @@ public class TimelineService {
             }
         }
         return statuses;
+    }
+
+    /**
+     * The mentionline contains a statuses where the current user is mentioned.
+     *
+     * @return a status list
+     */
+    public Collection<Status> getMentionline(int nbStatus, String since_id, String max_id) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line =
+                mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, since_id, max_id);
+
+        return buildStatusList(line);
     }
 
     /**

@@ -137,8 +137,8 @@ form {
 }
 
 .status-content p {
-	word-break: break-all;
-	word-wrap: break-word;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 .status-content a {

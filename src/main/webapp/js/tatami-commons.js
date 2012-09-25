@@ -4,10 +4,7 @@ _.templateSettings = {
     evaluate: /<\@(.+?)\@\>/gim
 };
 
-var app;
-
-if(!window.app){
-    app = window.app = _.extend({
+var app = window.app = _.extend({
         views:{},
         View:{},
         Collection:{},
@@ -41,10 +38,6 @@ if(!window.app){
     },
 
   }, Backbone.Events);
-}
-else {
-  app = window.app;
-}
 
 /*
   Timeline
@@ -173,6 +166,58 @@ app.View.ShareView = Backbone.View.extend({
 });
 
 /* Views */
+
+app.View.TrendsView = Backbone.View.extend({
+    template: _.template($('#trends-template').html()),
+    tagName: 'tbody',
+
+    initialize: function() {
+        var self = this;
+
+        this.model = new app.Collection.TrendsCollection();
+
+        this.model.bind('reset', this.render, this);
+        this.model.bind('add', function(model, collection, options) {
+            self.addItem(model, options.index);
+        }, this);
+
+        this.model.fetch();
+    },
+
+    render: function() {
+        $(this.el).empty();
+        if(this.model.length > 0)
+            _.each(this.model.models, this.addItem, this);
+        else
+            $(this.el).html(this.template());
+        return $(this.el);
+    },
+
+    addItem: function(item, index) {
+        var el = new app.View.TrendsItemView({
+            model: item
+        }).render();
+        if(index === 0)
+            $(this.el).prepend(el);
+        else
+            $(this.el).append(el);
+    }
+});
+
+app.View.TrendsItemView = Backbone.View.extend({
+    tagName: 'tr',
+    template: _.template($('#trends-template-item').html()),
+
+
+    initialize: function() {
+    },
+
+    render: function() {
+        var $el = $(this.el);
+        $el.html(this.template({trend:this.model.toJSON()}));
+        return $(this.el);
+    }
+});
 
 app.View.TimeLineItemView = Backbone.View.extend({
   template: _.template($('#timeline-item').html()),
@@ -318,7 +363,6 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
 
   replyAction: function() {
     var statusId = this.model.get('statusId');
-    
     this.model.set('discuss', !this.model.get('discuss'));
     this.model.set('replyContent', '');
 
@@ -536,10 +580,6 @@ render: function() {
 }
 
 });
-
-/*
-Initialization
-*/
 
   /*
     Search form in the top menu.

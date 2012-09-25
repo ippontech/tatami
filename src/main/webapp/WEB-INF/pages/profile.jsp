@@ -95,6 +95,19 @@
                       <div class="alert alert-info">
                         <div id="div-update"></div>
                       </div>
+                        <!-- Trends -->
+                        <div class="alert alert-info hidden-phone">
+                            <div>
+                                <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.user.title"/></label>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="well">
+                                    <table class="table table-center" id="trends">
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="span8">
                       <div id="tab-content"></div>

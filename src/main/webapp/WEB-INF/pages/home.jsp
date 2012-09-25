@@ -43,7 +43,12 @@
                     <ul class="nav nav-tabs homeMenu">
                         <li class="active">
                             <a href="#/timeline">
-                                <i class="icon-th-list"></i> <fmt:message key="tatami.status"/>
+                                <i class="icon-th-list"></i> <fmt:message key="tatami.timeline"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/mention">
+                                <i class="icon-user"></i> <fmt:message key="tatami.mentions"/>
                             </a>
                         </li>
                         <li>
@@ -59,11 +64,6 @@
                         <li>
                             <a href="#/search">
                                 <i class="icon-search"></i> <fmt:message key="tatami.search"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/daily">
-                                <i class="icon-signal"></i> <fmt:message key="tatami.stats.status.piechart"/>
                             </a>
                         </li>
                     </ul>
@@ -98,8 +98,6 @@
 
     <script src="/js/tatami-commons.js"></script>
     <script src="/js/tatami-home.js"></script>
-    <script src="/js/raphael-min.js"></script>
-    <script src="/js/jquery-raphael-tatami-pie.js"></script>
 
 </body>
 </html>

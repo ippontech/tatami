@@ -18,17 +18,13 @@
             <div class="nomargin well row">
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
-                        <img class="pull-left nomargin avatar"
-                             src="https://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="">
-
+                        <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="">
                         <h3>${user.firstName} ${user.lastName}</h3>
-
                         <p>@${user.username}</p>
                     </a>
                 </div>
             </div>
             <br/>
-
             <div class="row">
                 <div class="span4">
                     <div class="tabbable alert alert-info">
@@ -38,8 +34,8 @@
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
-                            <li class="active">
-                                <a href="#">
+                            <li>
+                                <a href="/tatami/account/theme">
                                     <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
                                 </a>
                             </li>
@@ -53,7 +49,7 @@
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
-                            <li>
+                            <li href="#" class="active">
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
@@ -64,50 +60,11 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
-                                <div class="alert alert-success">
-                                    <fmt:message
-                                            key="tatami.user.password.success"/>
+                                <h2>
+                                    <fmt:message key="tatami.menu.status.of.the.day"/>
+                                </h2>
+                                <div id="piechart">
                                 </div>
-                            </c:if>
-
-                            <h2>
-                                <fmt:message key="tatami.menu.theme"/>
-                            </h2>
-
-                            <div class="btn-group">
-                                <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
-                                    <fmt:message key="tatami.user.theme.current"/> ${theme} <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="theme/update?theme=bootstrap">bootstrap</a></li>
-                                    <li><a href="theme/update?theme=amelia">amelia</a></li>
-                                    <li><a href="theme/update?theme=cerulean">cerulean</a></li>
-                                    <li><a href="theme/update?theme=cyborg">cyborg</a></li>
-                                    <li><a href="theme/update?theme=journal">journal</a></li>
-                                    <li><a href="theme/update?theme=readable">readable</a></li>
-                                    <li><a href="theme/update?theme=simplex">simplex</a></li>
-                                    <li><a href="theme/update?theme=slate">slate</a></li>
-                                    <li><a href="theme/update?theme=spacelab">spacelab</a></li>
-                                    <li><a href="theme/update?theme=spruce">spruce</a></li>
-                                    <li><a href="theme/update?theme=superhero">superhero</a></li>
-                                    <li><a href="theme/update?theme=united">united</a></li>
-                                </ul>
-                            </div>
-
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
                         </div>
                     </div>
                 </div>
@@ -123,13 +80,16 @@
     </c:choose>
 </div>
 
-
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "account";
+    var page = "status_of_the_day";
 </script>
+<script src="/js/raphael-min.js"></script>
+<script src="/js/jquery-raphael-tatami-pie.js"></script>
+<script src="/js/tatami-status-of-the-day.js"></script>
+
 </body>
 </html>

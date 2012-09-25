@@ -118,20 +118,12 @@
   </td>
 </script>
 
-<script type="text/template" id="trends-template">
-
-</script>
-
-<script type="text/template" id="trends-template-item">
-    <td class="pull-left">
-        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
-            #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
-        </a>
-    </td>
-</script>
-
 <script type="text/template" id="favorite-refresh">
   <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
+</script>
+
+<script type="text/template" id="mention-refresh">
+    <div id="mentionRefresh" class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
 </script>
 
 <script type="text/template" id="timeline-progress">
