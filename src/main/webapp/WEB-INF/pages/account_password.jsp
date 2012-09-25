@@ -37,6 +37,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/tatami/account/groups">
+                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/tatami/account/theme">
                                     <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
                                 </a>

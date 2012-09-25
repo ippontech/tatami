@@ -3,7 +3,6 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.MentionlineRepository;
-import fr.ippon.tatami.repository.UserlineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -14,8 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.MENTIONLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
 
 /**
  * Cassandra implementation of the Userline repository.

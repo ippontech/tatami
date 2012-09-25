@@ -9,10 +9,10 @@ public class Tag {
 
     /**
      * Default scope is public.
-     *
+     * <p/>
      * A tag can be :
-     *   - null -> means "public" as this is the default
-     *   - "private" -> this tag is only available to registered members
+     * - null -> means "public" as this is the default
+     * - "private" -> this tag is only available to registered members
      */
     private String scope;
 

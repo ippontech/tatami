@@ -55,9 +55,9 @@ public class TagController {
             produces = "application/json")
     @ResponseBody
     public Collection<Status> listStatusForTag(@PathVariable("tag") String tag,
-                                            @RequestParam(required = false) Integer count,
-                                            @RequestParam(required = false) String since_id,
-                                            @RequestParam(required = false) String max_id) {
+                                               @RequestParam(required = false) Integer count,
+                                               @RequestParam(required = false) String since_id,
+                                               @RequestParam(required = false) String max_id) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to get statuses for tag : " + tag);

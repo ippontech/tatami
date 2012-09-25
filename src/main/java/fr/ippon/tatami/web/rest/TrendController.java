@@ -1,9 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Trend;
 import org.apache.commons.logging.Log;

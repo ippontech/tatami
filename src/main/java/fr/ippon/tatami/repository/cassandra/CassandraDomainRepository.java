@@ -14,8 +14,6 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -37,8 +35,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  */
 @Repository
 public class CassandraDomainRepository implements DomainRepository {
-
-    private final Log log = LogFactory.getLog(CassandraDomainRepository.class);
 
     @Inject
     private Keyspace keyspaceOperator;

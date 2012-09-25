@@ -1,6 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.repository.TagCounterRepository;
+import fr.ippon.tatami.repository.GroupCounterRepository;
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -11,60 +11,51 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAG_COUNTER_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_COUNTER_CF;
 
 /**
- * Cassandra implementation of the Tag Counter repository.
+ * Cassandra implementation of the Group Counter repository.
  * <p/>
  * Structure :
- * - Key = tag + domain
- * - Name = TAG_COUNTER
+ * - Key = domain
+ * - Name = groupId
  * - Value = count
  *
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTagCounterRepository implements TagCounterRepository {
-
-    private static final String TAG_COUNTER = "TAG_COUNTER";
+public class CassandraGroupCounterRepository implements GroupCounterRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
 
     @Override
-    public long getTagCounter(String domain, String tag) {
+    public long getGroupCounter(String domain, String groupId) {
         CounterQuery<String, String> counter =
                 new ThriftCounterColumnQuery<String, String>(keyspaceOperator,
                         StringSerializer.get(),
                         StringSerializer.get());
 
-        counter.setColumnFamily(TAG_COUNTER_CF).setKey(getKey(domain, tag)).setName(TAG_COUNTER);
+        counter.setColumnFamily(GROUP_COUNTER_CF).setKey(domain).setName(groupId);
         return counter.execute().get().getValue();
     }
 
     @Override
-    public void incrementTagCounter(String domain, String tag) {
+    public void incrementGroupCounter(String domain, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.incrementCounter(getKey(domain, tag), TAG_COUNTER_CF, TAG_COUNTER, 1);
+        mutator.incrementCounter(domain, GROUP_COUNTER_CF, groupId, 1);
     }
 
     @Override
-    public void decrementTagCounter(String domain, String tag) {
+    public void decrementGroupCounter(String domain, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.decrementCounter(getKey(domain, tag), TAG_COUNTER_CF, TAG_COUNTER, 1);
+        mutator.decrementCounter(domain, GROUP_COUNTER_CF, groupId, 1);
     }
 
     @Override
-    public void deleteTagCounter(String domain, String tag) {
+    public void deleteGroupCounter(String domain, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addCounterDeletion(getKey(domain, tag), TAG_COUNTER_CF, TAG_COUNTER, StringSerializer.get());
+        mutator.addCounterDeletion(domain, GROUP_COUNTER_CF, groupId, StringSerializer.get());
         mutator.execute();
-    }
-
-    /**
-     * Generates the key for this column family.
-     */
-    private String getKey(String domain, String tag) {
-        return tag.toLowerCase() + "-" + domain;
     }
 }

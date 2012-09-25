@@ -16,10 +16,6 @@ public class CounterService {
     @Inject
     private CounterRepository counterRepository;
 
-    public long getFriendsCounter(String login) {
-        return counterRepository.getFriendsCounter(login);
-    }
-
     public long getNbStatus(String login) {
         return counterRepository.getStatusCounter(login);
     }

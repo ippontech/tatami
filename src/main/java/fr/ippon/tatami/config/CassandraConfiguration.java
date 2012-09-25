@@ -63,6 +63,9 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, DISCUSSION_CF, 0);
             addColumnFamily(cluster, TAG_FRIENDS_CF, 0);
             addColumnFamily(cluster, TAG_FOLLOWERS_CF, 0);
+            addColumnFamily(cluster, GROUP_MEMBERS_CF, 0);
+            addColumnFamily(cluster, USER_GROUPS_CF, 0);
+            addColumnFamily(cluster, GROUP_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);
@@ -76,6 +79,7 @@ public class CassandraConfiguration {
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
+            addColumnFamilyCounter(cluster, GROUP_COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, DAYLINE_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);

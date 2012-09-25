@@ -15,7 +15,7 @@ public interface MentionlineRepository {
     /**
      * Add a status to the Mention line.
      */
-    void  addStatusToMentionline(String mentionedLogin, Status status);
+    void addStatusToMentionline(String mentionedLogin, Status status);
 
     /**
      * The mention line : the mentions for a given user.

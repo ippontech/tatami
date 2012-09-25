@@ -6,20 +6,15 @@ import fr.ippon.tatami.repository.TaglineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
-import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * Cassandra implementation of the status repository.
@@ -50,6 +45,7 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
                         StringSerializer.get()));
 
     }
+
     @Override
     public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id) {
         return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
