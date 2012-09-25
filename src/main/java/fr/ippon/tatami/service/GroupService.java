@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -52,14 +54,21 @@ public class GroupService {
         userGroupsRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
     }
 
-    public Collection<User> getMembersForGroup(String groupId) {
-        Collection<String> logins = groupMembersRepository.findMembers(groupId);
-        Collection<User> users = new ArrayList<User>();
-        for (String memberLogin : logins) {
-            User friend = userRepository.findUserByLogin(memberLogin);
-            users.add(friend);
+    public Collection<UserGroupDTO> getMembersForGroup(String groupId) {
+        Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
+        Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
+        for (Map.Entry<String, String> member : membersMap.entrySet()) {
+            UserGroupDTO dto = new UserGroupDTO();
+            User user = userRepository.findUserByLogin(member.getKey());
+            dto.setLogin(user.getLogin());
+            dto.setUsername(user.getUsername());
+            dto.setGravatar(user.getGravatar());
+            dto.setFirstName(user.getFirstName());
+            dto.setLastName(user.getLastName());
+            dto.setRole(member.getValue());
+            userGroupDTOs.add(dto);
         }
-        return users;
+        return userGroupDTOs;
     }
 
     public Collection<Group> getGroupsForCurrentUser() {

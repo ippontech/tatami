@@ -74,57 +74,48 @@
                             <h2>
                                 <fmt:message key="tatami.menu.groups"/>
                             </h2>
+                            <a href="../groups">&lt;&lt; <fmt:message key="tatami.back"/></a>
                             <h3>
-                                <fmt:message key="tatami.group.add"/>
+                                <fmt:message key="tatami.group.edit"/> : ${group.name}
                             </h3>
-                            <form:form class="form-horizontal" commandName="group" method="post" acceptCharset="utf-8">
-                                <fieldset>
-                                    <div class="control-group">
-                                        <label class="control-label" for="name"><fmt:message
-                                                key="tatami.group.add.legend"/></label>
-
-                                        <div class="controls">
-                                            <form:input type="text"
-                                                        id="name"
-                                                        required="required"
-                                                        size="30" maxlength="50" class="input-xlarge"
-                                                        path="name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn btn-primary"><fmt:message
-                                                key="tatami.form.save"/></button>
-                                    </div>
-                                </fieldset>
-                            </form:form>
-                            <c:if test="${not empty groups}">
+                            <c:if test="${not empty users}">
                                 <h3>
-                                    <fmt:message key="tatami.group.list.admin"/>
+                                    <fmt:message key="tatami.group.edit.list"/>
                                 </h3>
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th><fmt:message
-                                                key="tatami.group.name"/></th>
+                                                key="tatami.username"/></th>
+                                        <th class="hidden-phone"><fmt:message
+                                                key="tatami.user.firstName"/></th>
+                                        <th class="hidden-phone"><fmt:message
+                                                key="tatami.user.lastName"/></th>
                                         <th><fmt:message
-                                                key="tatami.group.counter"/></th>
-                                        <th></th>
+                                                key="tatami.group.role"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach items="${groups}" var="group">
-                                            <tr>
-                                                <td>
-                                                        ${group.name}
-                                                </td>
-                                                <td>
-                                                        ${group.counter}
-                                                </td>
-                                                <td>
-                                                        <a href="groups/edit?groupName=${group.name}"><fmt:message key="tatami.group.edit.link"/></a>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                                    <c:forEach items="${users}" var="u">
+                                        <tr>
+                                            <td>
+                                                <a href="/tatami/profile/${u.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${u.username} ${u.firstName} ${u.lastName}">
+                                                    <img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/${u.gravatar}?s=64" alt="${u.firstName} ${u.lastName}"/>
+                                                    @${u.username}
+                                                </a>
+                                            </td>
+                                            <td class="hidden-phone">
+                                                    ${u.firstName}
+                                            </td>
+                                            <td class="hidden-phone">
+                                                    ${u.lastName}
+                                            </td>
+                                            <td>
+                                                <c:if test="${u.role eq 'ADMIN'}"><fmt:message key="tatami.group.role.admin"/></c:if>
+                                                <c:if test="${u.role eq 'MEMBER'}"><fmt:message key="tatami.group.role.member"/></c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </c:if>

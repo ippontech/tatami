@@ -11,9 +11,8 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_MEMBERS_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -55,8 +54,8 @@ public class CassandraGroupMembersRepository implements GroupMembersRepository {
     }
 
     @Override
-    public Collection<String> findMembers(String groupId) {
-        List<String> logins = new ArrayList<String>();
+    public Map<String, String> findMembers(String groupId) {
+        Map<String, String> members = new HashMap<String, String>();
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(GROUP_MEMBERS_CF)
@@ -66,8 +65,8 @@ public class CassandraGroupMembersRepository implements GroupMembersRepository {
                 .get();
 
         for (HColumn<String, String> column : result.getColumns()) {
-            logins.add(column.getName());
+            members.put(column.getName(), column.getValue());
         }
-        return logins;
+        return members;
     }
 }

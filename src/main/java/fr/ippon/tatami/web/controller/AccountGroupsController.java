@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -45,9 +46,34 @@ public class AccountGroupsController {
         return mv;
     }
 
+    @RequestMapping(value = "/account/groups/edit",
+            method = RequestMethod.GET)
+    public ModelAndView editGroup(
+            @RequestParam String groupName,
+            @RequestParam(required = false) boolean success) {
+
+        ModelAndView mv = basicModelAndView(success);
+        Collection<Group> groups = groupService.getGroupsForCurrentUser();
+        Group group = null;
+        for (Group testGroup : groups) {
+            if (testGroup.getName().equals(groupName)) {
+                group = testGroup;
+                break;
+            }
+        }
+        if (group == null) {
+            return new ModelAndView("redirect:/tatami/account/groups");
+        }
+        Collection<UserGroupDTO> users = groupService.getMembersForGroup(group.getGroupId());
+        mv.addObject("users", users);
+        mv.addObject("group", group);
+        mv.setViewName("account_groups_edit");
+        return mv;
+    }
+
     @RequestMapping(value = "/account/groups",
             method = RequestMethod.POST)
-    public ModelAndView getGroups(@ModelAttribute("group")
+    public ModelAndView addNewGroup(@ModelAttribute("group")
                                       Group group) {
 
         if (group.getName() != null && !group.getName().equals("")) {

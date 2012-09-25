@@ -1,6 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * The Group members Repository.
@@ -15,5 +15,5 @@ public interface GroupMembersRepository {
 
     void removeMember(String groupId, String login);
 
-    Collection<String> findMembers(String groupId);
+    Map<String, String> findMembers(String groupId);
 }
