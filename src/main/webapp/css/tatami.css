@@ -28,11 +28,11 @@
   Profile Stats table tablet
 */
 
-#profileContent .well, #profileFollow .well, #profileTrends .well {
+#profileContent .well, #profileFollow .well, #profileTrends .well, #userTrends .well {
   padding: 5px;
 }
 
-#profileContent table, #profileFollow table, #profileTrends table {
+#profileContent table, #profileFollow table, #profileTrends table, #userTrends table {
   margin: 0px;
 }
 
