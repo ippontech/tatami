@@ -9,7 +9,7 @@ import fr.ippon.tatami.domain.Group;
  */
 public interface GroupRepository {
 
-    String createGroup(String domain, String groupName);
+    String createGroup(String domain);
 
     Group getGroupById(String domain, String groupId);
 }

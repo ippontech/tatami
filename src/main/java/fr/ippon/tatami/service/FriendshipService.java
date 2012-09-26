@@ -1,10 +1,12 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.FriendRepository;
+import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import java.util.Collection;
 
 /**
  * Manages the user's frienships.
- *
+ * <p/>
  * - A friend is someone you follow
  * - A follower is someone that follows you
  *

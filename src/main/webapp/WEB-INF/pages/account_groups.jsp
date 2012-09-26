@@ -74,14 +74,16 @@
                             <h2>
                                 <fmt:message key="tatami.menu.groups"/>
                             </h2>
-                            <h3>
-                                <fmt:message key="tatami.group.add"/>
-                            </h3>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addGroupCollapsible">
+                                 <fmt:message key="tatami.group.add"/>
+                            </button>
+                            <div id="addGroupCollapsible" class="collapse out">
+                            <br/>
                             <form:form class="form-horizontal" commandName="group" method="post" acceptCharset="utf-8">
                                 <fieldset>
                                     <div class="control-group">
                                         <label class="control-label" for="name"><fmt:message
-                                                key="tatami.group.add.legend"/></label>
+                                                key="tatami.group.add.title"/></label>
 
                                         <div class="controls">
                                             <form:input type="text"
@@ -91,21 +93,51 @@
                                                         path="name"/>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="name"><fmt:message
+                                                key="tatami.group.add.description"/></label>
+
+                                        <div class="controls">
+                                            <form:textarea
+                                                        id="description"
+                                                        class="input-xlarge"
+                                                        path="description"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="name"><fmt:message
+                                                key="tatami.group.add.public"/></label>
+
+                                        <div class="controls">
+                                            <form:checkbox
+                                                        id="publicGroup"
+                                                        class="input-xlarge"
+                                                        path="publicGroup"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="alert">
+                                        <i class="icon-warning-sign"></i> <fmt:message
+                                            key="tatami.group.add.public.alert"/>
+                                    </div>
                                     <div class="form-actions">
                                         <button type="submit" class="btn btn-primary"><fmt:message
                                                 key="tatami.form.save"/></button>
                                     </div>
                                 </fieldset>
                             </form:form>
+                            </div>
                             <c:if test="${not empty groups}">
-                                <h3>
+                                <legend>
                                     <fmt:message key="tatami.group.list.admin"/>
-                                </h3>
+                                </legend>
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th><fmt:message
                                                 key="tatami.group.name"/></th>
+                                        <th><fmt:message
+                                                key="tatami.group.add.access"/></th>
                                         <th><fmt:message
                                                 key="tatami.group.counter"/></th>
                                         <th></th>
@@ -118,10 +150,22 @@
                                                         ${group.name}
                                                 </td>
                                                 <td>
+                                                    <c:if test="${group.publicGroup}">
+                                                        <span class="label label-warning"><fmt:message
+                                                                key="tatami.group.add.public"/></span>
+                                                    </c:if>
+                                                    <c:if test="${not group.publicGroup}">
+                                                        <span class="label label-info"><fmt:message
+                                                                key="tatami.group.add.private"/></span>
+                                                    </c:if>
+                                                </td>
+                                                <td>
                                                         ${group.counter}
                                                 </td>
                                                 <td>
-                                                        <a href="groups/edit?groupName=${group.name}"><fmt:message key="tatami.group.edit.link"/></a>
+                                                    <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
+                                                        <fmt:message key="tatami.group.edit.link"/>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>

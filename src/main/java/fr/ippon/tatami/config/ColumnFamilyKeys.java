@@ -51,6 +51,8 @@ public class ColumnFamilyKeys {
 
     public final static String GROUP_CF = "Group";
 
+    public final static String GROUP_DETAILS_CF = "GroupDetails";
+
     public final static String GROUP_MEMBERS_CF = "GroupMembers";
 
     public final static String USER_GROUPS_CF = "UserGroups";

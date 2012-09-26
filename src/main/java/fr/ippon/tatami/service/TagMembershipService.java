@@ -1,7 +1,8 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.repository.TagFollowerRepository;
+import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Tag;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 
 /**
  * Manages the tag memberships.
- *
+ * <p/>
  * - A tag follower is someone who follows a tag
  * - A user tag is a tag followed by a user
  *

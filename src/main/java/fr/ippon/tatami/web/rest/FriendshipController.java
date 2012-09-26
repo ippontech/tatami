@@ -2,8 +2,6 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.FriendshipService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;

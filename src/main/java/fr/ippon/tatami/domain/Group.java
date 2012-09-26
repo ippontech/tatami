@@ -7,7 +7,11 @@ public class Group implements Comparable<Group> {
 
     private String groupId;
 
+    private boolean publicGroup;
+
     private String name;
+
+    private String description;
 
     private String domain;
 
@@ -21,12 +25,28 @@ public class Group implements Comparable<Group> {
         this.groupId = groupId;
     }
 
+    public boolean isPublicGroup() {
+        return publicGroup;
+    }
+
+    public void setPublicGroup(boolean publicGroup) {
+        this.publicGroup = publicGroup;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDomain() {
@@ -80,6 +100,7 @@ public class Group implements Comparable<Group> {
     public String toString() {
         return "Group{" +
                 "groupId='" + groupId + '\'' +
+                ", publicGroup=" + publicGroup +
                 ", name='" + name + '\'' +
                 ", domain='" + domain + '\'' +
                 ", counter=" + counter +

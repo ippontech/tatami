@@ -30,6 +30,9 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     @Inject
+    private GroupDetailsRepository groupDetailsRepository;
+
+    @Inject
     private GroupMembersRepository groupMembersRepository;
 
     @Inject
@@ -41,16 +44,21 @@ public class GroupService {
     @Inject
     private UserRepository userRepository;
 
-    public void createGroup(String groupName) {
+    public void createGroup(String name, String description, boolean publicGroup) {
         if (log.isDebugEnabled()) {
-            log.debug("Creating group : " + groupName);
+            log.debug("Creating group : " + name);
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String groupId = groupRepository.createGroup(domain, groupName);
+        String groupId = groupRepository.createGroup(domain);
+        groupDetailsRepository.createGroupDetails(groupId, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, currentUser.getLogin());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
+    }
+
+    public void editGroup(Group group) {
+        groupDetailsRepository.editGroupDetails(group.getGroupId(), group.getName(), group.getDescription());
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(String groupId) {
@@ -72,15 +80,69 @@ public class GroupService {
 
     public Collection<Group> getGroupsForCurrentUser() {
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> groupIds = userGroupRepository.findGroups(currentUser.getLogin());
+        return getGroupDetails(currentUser, groupIds);
+    }
+
+    public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(currentUser.getLogin());
+        return getGroupDetails(currentUser, groupIds);
+    }
+
+    private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
         for (String groupId : groupIds) {
             Group group = groupRepository.getGroupById(domain, groupId);
+            Group groupDetails = groupDetailsRepository.getGroupDetails(groupId);
+            group.setName(groupDetails.getName());
+            group.setPublicGroup(groupDetails.isPublicGroup());
+            group.setDescription(groupDetails.getDescription());
             long counter = groupCounterRepository.getGroupCounter(domain, groupId);
             group.setCounter(counter);
             groups.add(group);
         }
         return groups;
+    }
+
+    public void addMemberToGroup(User user, Group group) {
+        String groupId = group.getGroupId();
+        Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+        boolean userIsAlreadyAMember = false;
+        for (String testGroupId : userCurrentGroupIds) {
+            if (testGroupId.equals(groupId)) {
+                userIsAlreadyAMember = true;
+            }
+        }
+        if (!userIsAlreadyAMember) {
+            groupMembersRepository.addMember(groupId, user.getLogin());
+            groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
+            userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("User " + user.getLogin() + " is already a member of group " + group.getName());
+            }
+        }
+    }
+
+    public void removeMemberFromGroup(User user, Group group) {
+        String groupId = group.getGroupId();
+        Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+        boolean userIsAlreadyAMember = false;
+        for (String testGroupId : userCurrentGroupIds) {
+            if (testGroupId.equals(groupId)) {
+                userIsAlreadyAMember = true;
+            }
+        }
+        if (userIsAlreadyAMember) {
+            groupMembersRepository.removeMember(groupId, user.getLogin());
+            groupCounterRepository.decrementGroupCounter(user.getDomain(), groupId);
+            userGroupRepository.removeGroup(user.getLogin(), groupId);
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("User " + user.getLogin() + " is not a member of group " + group.getName());
+            }
+        }
     }
 }

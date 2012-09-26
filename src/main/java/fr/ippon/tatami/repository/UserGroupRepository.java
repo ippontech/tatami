@@ -16,4 +16,6 @@ public interface UserGroupRepository {
     void removeGroup(String login, String groupId);
 
     Collection<String> findGroups(String login);
+
+    Collection<String> findGroupsAsAdmin(String login);
 }

@@ -70,4 +70,23 @@ public class CassandraUserGroupRepository implements UserGroupRepository {
         }
         return groups;
     }
+
+    @Override
+    public Collection<String> findGroupsAsAdmin(String login) {
+        List<String> groups = new ArrayList<String>();
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(USER_GROUPS_CF)
+                .setKey(login)
+                .setRange(null, null, false, Integer.MAX_VALUE)
+                .execute()
+                .get();
+
+        for (HColumn<String, String> column : result.getColumns()) {
+            if (column.getValue() != null && column.getValue().equals(GroupRoles.ADMIN)) {
+                groups.add(column.getName());
+            }
+        }
+        return groups;
+    }
 }

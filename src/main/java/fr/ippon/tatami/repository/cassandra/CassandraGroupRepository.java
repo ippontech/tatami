@@ -21,7 +21,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_CF;
  * Structure :
  * - Key = domain
  * - Name = Group ID
- * - Value = Group name
+ * - Value = ""
  *
  * @author Julien Dubois
  */
@@ -32,11 +32,11 @@ public class CassandraGroupRepository implements GroupRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public String createGroup(String domain, String groupName) {
+    public String createGroup(String domain) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         String groupId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
         mutator.insert(domain, GROUP_CF, HFactory.createColumn(groupId,
-                groupName, StringSerializer.get(), StringSerializer.get()));
+                "", StringSerializer.get(), StringSerializer.get()));
 
         return groupId;
     }
@@ -55,7 +55,6 @@ public class CassandraGroupRepository implements GroupRepository {
             Group group = new Group();
             group.setDomain(domain);
             group.setGroupId(groupId);
-            group.setName(column.getValue());
             return group;
         } else {
             return null;
