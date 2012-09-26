@@ -106,13 +106,13 @@
 
 <script type="text/template" id="profile-follow-suggest-empty">
   <tr>
-    <td class="pull-left"><fmt:message key="tatami.follow.nobody"/></td>
+    <td><span class="pull-left"><fmt:message key="tatami.follow.nobody"/></span></td>
   </tr>
 </script>
 
 <script type="text/template" id="profile-follow-suggest-item">
-  <td class="pull-left">
-    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus"  title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
+  <td>
+    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
       <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
     </a>
   </td>
