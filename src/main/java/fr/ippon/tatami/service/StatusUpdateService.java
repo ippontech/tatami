@@ -128,7 +128,7 @@ public class StatusUpdateService {
 
         // add status to the follower's timelines
         // only for public groups : if the use belongs to the private group, he will get the status anyway
-        if (group != null && !group.isPublicGroup()) {
+        if (group == null || group.isPublicGroup()) {
             for (String followerLogin : followersForUser) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
             }
