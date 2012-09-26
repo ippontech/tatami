@@ -2,7 +2,7 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.TaglineRepository;
+import fr.ippon.tatami.repository.GrouplineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
@@ -14,30 +14,30 @@ import javax.inject.Inject;
 import java.util.Map;
 import java.util.UUID;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE_CF;
 
 /**
- * Cassandra implementation of the Tag line repository.
+ * Cassandra implementation of the Group line repository.
  * <p/>
  * Structure :
- * - Key = tag + domain
+ * - Key = groupId
  * - Name = statusId
  * - Value = ""
  *
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTaglineRepository extends AbstractCassandraLineRepository implements TaglineRepository {
+public class CassandraGrouplineRepository extends AbstractCassandraLineRepository implements GrouplineRepository {
 
     @Inject
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToTagline(Status status, String tag) {
+    public void addStatusToGroupline(Status status, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(
-                getKey(status.getDomain(), tag),
-                TAGLINE_CF,
+                groupId,
+                GROUPLINE_CF,
                 HFactory.createColumn(
                         UUID.fromString(status.getStatusId()),
                         "",
@@ -47,14 +47,7 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id) {
-        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
-    }
-
-    /**
-     * Generates the key for this column family.
-     */
-    private String getKey(String domain, String tag) {
-        return tag.toLowerCase() + "-" + domain;
+    public Map<String, SharedStatusInfo> getGroupline(String groupId, int size, String since_id, String max_id) {
+        return getLineFromCF(GROUPLINE_CF, groupId, size, since_id, max_id);
     }
 }

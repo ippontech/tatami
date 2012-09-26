@@ -67,6 +67,9 @@ public class Status {
     @JsonIgnore
     private String domain;
 
+    @Column(name = "groupId")
+    private String groupId;
+
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
     @Size(min = 1, max = 1024)
@@ -155,6 +158,14 @@ public class Status {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getContent() {
@@ -278,6 +289,7 @@ public class Status {
                 ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
+                ", groupId='" + groupId + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", iso8601StatusDate='" + iso8601StatusDate + '\'' +

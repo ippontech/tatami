@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.StatusRepository;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
@@ -41,6 +42,7 @@ public class CassandraStatusRepository implements StatusRepository {
     public Status createStatus(String login,
                                String username,
                                String domain,
+                               Group group,
                                String content,
                                String replyTo,
                                String replyToUsername)
@@ -51,6 +53,9 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setLogin(login);
         status.setUsername(username);
         status.setDomain(domain);
+        if (group != null) {
+            status.setGroupId(group.getGroupId());
+        }
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());
         status.setReplyTo(replyTo);

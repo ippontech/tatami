@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
@@ -14,6 +15,7 @@ public interface StatusRepository {
     Status createStatus(String login,
                         String username,
                         String domain,
+                        Group group,
                         String content,
                         String replyTo,
                         String replyToUsername) throws ConstraintViolationException;

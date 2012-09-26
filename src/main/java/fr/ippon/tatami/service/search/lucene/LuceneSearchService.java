@@ -1,8 +1,10 @@
 package fr.ippon.tatami.service.search.lucene;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
@@ -47,6 +49,9 @@ public class LuceneSearchService implements SearchService {
     @Inject
     @Named("userSearcherManager")
     private SearcherManager userSearcherManager;
+
+    @Inject
+    private GroupDetailsRepository groupDetailsRepository;
 
     @Inject
     private Analyzer analyzer;
@@ -122,6 +127,14 @@ public class LuceneSearchService implements SearchService {
     private void internalAddStatus(Status status) throws IOException {
         Document document = new Document();
         document.add(new Field("domain", status.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+
+        Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
+        if (group.isPublicGroup()) {
+            document.add(new Field("publicGroup", "true", Field.Store.NO, Field.Index.NOT_ANALYZED));
+        } else {
+            document.add(new Field("publicGroup", "false", Field.Store.NO, Field.Index.NOT_ANALYZED));
+        }
+        document.add(new Field("groupId", status.getGroupId(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("statusId", status.getStatusId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", status.getUsername(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("content", status.getContent(), Field.Store.NO, Field.Index.ANALYZED));
