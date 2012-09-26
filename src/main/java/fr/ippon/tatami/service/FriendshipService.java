@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Manages the application's users.
+ * Manages the user's frienships.
+ *
+ * - A friend is someone you follow
+ * - A follower is someone that follows you
  *
  * @author Julien Dubois
  */
@@ -30,13 +33,7 @@ public class FriendshipService {
     private FollowerRepository followerRepository;
 
     @Inject
-    private TagFollowerRepository tagFollowerRepository;
-
-    @Inject
     private FriendRepository friendRepository;
-
-    @Inject
-    private TagFriendRepository tagFriendRepository;
 
     @Inject
     private CounterRepository counterRepository;
@@ -78,30 +75,6 @@ public class FriendshipService {
         }
     }
 
-    public void followTag(Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("Following tag : " + tag);
-        }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : tagFriendRepository.findFriends(domain, tag.getName())) {
-            if (alreadyFollowingTest.equals(tag)) {
-                tagAlreadyFollowed = true;
-                if (log.isDebugEnabled()) {
-                    log.debug("User " + currentUser.getLogin() +
-                            " already follows tag " + tag);
-                }
-            }
-        }
-        if (!tagAlreadyFollowed) {
-            tagFriendRepository.addFriend(domain, currentUser.getLogin(), tag.getName());
-            tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
-            log.debug("User " + currentUser.getLogin() +
-                    " now follows tag " + tag);
-        }
-    }
-
     public void unfollowUser(String usernameToUnfollow) {
         if (log.isDebugEnabled()) {
             log.debug("Removing followed user : " + usernameToUnfollow);
@@ -133,27 +106,6 @@ public class FriendshipService {
             log.debug("Followed user does not exist.");
         }
     }
-
-    public void unfollowTag(Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing followed tag : " + tag);
-        }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : tagFriendRepository.findFriends(domain, currentUser.getLogin())) {
-            if (alreadyFollowingTest.equals(tag)) {
-                tagAlreadyFollowed = true;
-            }
-        }
-        if (tagAlreadyFollowed) {
-            tagFriendRepository.removeFriend(domain, currentUser.getLogin(), tag.getName());
-            tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getLogin());
-            log.debug("User " + currentUser.getLogin() +
-                    " has stopped following tag " + tag);
-        }
-    }
-
 
     public Collection<String> getFriendIdsForUser(String login) {
         if (log.isDebugEnabled()) {

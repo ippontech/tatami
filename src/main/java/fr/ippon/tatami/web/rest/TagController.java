@@ -1,7 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class TagController {
 
     @Inject
     private TimelineService timelineService;
+
+    @Inject
+    private TagMembershipService tagMembershipService;
 
     /**
      * GET  /tags -> get the latest status with no tags
@@ -71,5 +76,33 @@ public class TagController {
             log.warn("Page size undefined ; sizing to default", e);
             return timelineService.getTagline(tag, 20, since_id, max_id);
         }
+    }
+
+    /**
+     * POST /tagmemberships/create -> follow tag
+     */
+    @RequestMapping(value = "/rest/tagmemberships/create",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void followTag(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to follow tag : " + tag);
+        }
+        tagMembershipService.followTag(tag);
+    }
+
+    /**
+     * POST /tagmemberships/destroy -> unfollow tag
+     */
+    @RequestMapping(value = "/rest/tagmemberships/destroy",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void unfollowTag(Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unfollow tag  : " + tag);
+        }
+        tagMembershipService.unfollowTag(tag);
     }
 }

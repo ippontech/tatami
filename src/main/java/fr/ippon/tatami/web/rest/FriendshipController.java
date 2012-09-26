@@ -23,15 +23,12 @@ public class FriendshipController {
     private final Log log = LogFactory.getLog(FriendshipController.class);
 
     @Inject
-    private UserService userService;
-
-    @Inject
     private FriendshipService friendshipService;
 
     /**
-     * POST /friendships/user/create -> follow user
+     * POST /friendships/create -> follow user
      */
-    @RequestMapping(value = "/rest/friendships/user/create",
+    @RequestMapping(value = "/rest/friendships/create",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
@@ -43,9 +40,9 @@ public class FriendshipController {
     }
 
     /**
-     * POST /friendships/user/destroy -> unfollow user
+     * POST /friendships/destroy -> unfollow user
      */
-    @RequestMapping(value = "/rest/friendships/user/destroy",
+    @RequestMapping(value = "/rest/friendships/destroy",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
@@ -54,34 +51,6 @@ public class FriendshipController {
             log.debug("REST request to unfollow username  : " + user.getUsername());
         }
         friendshipService.unfollowUser(user.getUsername());
-    }
-
-    /**
-     * POST /friendships/tag/create -> follow tag
-     */
-    @RequestMapping(value = "/rest/friendships/tag/create",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void followTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow tag : " + tag);
-        }
-        friendshipService.followTag(tag);
-    }
-
-    /**
-     * POST /friendships/tag/destroy -> unfollow tag
-     */
-    @RequestMapping(value = "/rest/friendships/tag/destroy",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void unfollowTag(Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow tag  : " + tag);
-        }
-        friendshipService.unfollowTag(tag);
     }
 
     /**

@@ -41,9 +41,9 @@ public class ColumnFamilyKeys {
 
     public final static String TRENDS_CF = "Trends";
 
-    public final static String TAG_FRIENDS_CF = "TagFriends";
-
     public final static String TAG_FOLLOWERS_CF = "TagFollowers";
+
+    public final static String USER_TAGS_CF = "UserTags";
 
     public final static String TAG_COUNTER_CF = "TagCounter";
 

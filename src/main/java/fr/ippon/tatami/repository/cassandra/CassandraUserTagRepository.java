@@ -1,11 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.repository.TagFriendRepository;
+import fr.ippon.tatami.repository.UserTagRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAG_FRIENDS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_TAGS_CF;
 
 /**
  * Cassandra implementation of the TagFriend repository.
@@ -18,28 +18,28 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TAG_FRIENDS_CF;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraTagFriendRepository
+public class CassandraUserTagRepository
         extends AbstractCassandraFriendRepository
-        implements TagFriendRepository {
+        implements UserTagRepository {
 
     @Override
-    public void addFriend(String domain, String login, String friendTag) {
+    public void addTag(String domain, String login, String friendTag) {
         super.addFriend(login, getKey(domain, friendTag));
     }
 
     @Override
-    public void removeFriend(String domain, String login, String friendTag) {
+    public void removeTag(String domain, String login, String friendTag) {
         super.removeFriend(login, getKey(domain, friendTag));
     }
 
     @Override
-    public Collection<String> findFriends(String domain, String login) {
+    public Collection<String> findTags(String domain, String login) {
         return super.findFriends(getKey(domain, login));
     }
 
     @Override
     public String getFriendsCF() {
-        return TAG_FRIENDS_CF;
+        return USER_TAGS_CF;
     }
 
     /**

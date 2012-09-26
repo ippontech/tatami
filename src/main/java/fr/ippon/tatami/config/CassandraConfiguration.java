@@ -61,7 +61,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, REGISTRATION_CF, 0);
             addColumnFamily(cluster, SHARES_CF, 0);
             addColumnFamily(cluster, DISCUSSION_CF, 0);
-            addColumnFamily(cluster, TAG_FRIENDS_CF, 0);
+            addColumnFamily(cluster, USER_TAGS_CF, 0);
             addColumnFamily(cluster, TAG_FOLLOWERS_CF, 0);
             addColumnFamily(cluster, GROUP_MEMBERS_CF, 0);
             addColumnFamily(cluster, USER_GROUPS_CF, 0);

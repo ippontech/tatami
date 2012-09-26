@@ -275,7 +275,7 @@ create column family TagFollowers
   and caching = 'KEYS_ONLY'
   and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
 
-create column family TagFriends
+create column family UserTags
   with column_type = 'Standard'
   and comparator = 'BytesType'
   and default_validation_class = 'BytesType'

@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.config.GroupRoles;
-import fr.ippon.tatami.repository.UserGroupsRepository;
+import fr.ippon.tatami.repository.UserGroupRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
@@ -29,7 +29,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  * @author Julien Dubois
  */
 @Repository
-public class CassandraUserGroupsRepository implements UserGroupsRepository {
+public class CassandraUserGroupRepository implements UserGroupRepository {
 
     @Inject
     private Keyspace keyspaceOperator;

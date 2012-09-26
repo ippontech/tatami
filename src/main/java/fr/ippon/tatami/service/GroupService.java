@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
@@ -37,7 +36,7 @@ public class GroupService {
     private GroupCounterRepository groupCounterRepository;
 
     @Inject
-    private UserGroupsRepository userGroupsRepository;
+    private UserGroupRepository userGroupRepository;
 
     @Inject
     private UserRepository userRepository;
@@ -51,7 +50,7 @@ public class GroupService {
         String groupId = groupRepository.createGroup(domain, groupName);
         groupMembersRepository.addAdmin(groupId, currentUser.getLogin());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
-        userGroupsRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
+        userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(String groupId) {
@@ -74,7 +73,7 @@ public class GroupService {
     public Collection<Group> getGroupsForCurrentUser() {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Collection<String> groupIds = userGroupsRepository.findGroups(currentUser.getLogin());
+        Collection<String> groupIds = userGroupRepository.findGroups(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
         for (String groupId : groupIds) {
             Group group = groupRepository.getGroupById(domain, groupId);
