@@ -62,6 +62,9 @@ public class StatusUpdateService {
     private GrouplineRepository grouplineRepository;
 
     @Inject
+    private GroupMembersRepository groupMembersRepository;
+
+    @Inject
     private TrendRepository trendsRepository;
 
     @Inject
@@ -123,12 +126,19 @@ public class StatusUpdateService {
         // add the status to the group line and group followers
         if (group != null) {
             grouplineRepository.addStatusToGroupline(status, group.getGroupId());
-            //TODO add the status to the group members
-        }
-
-        // add status to the follower's timelines
-        // only for public groups : if the use belongs to the private group, he will get the status anyway
-        if (group == null || group.isPublicGroup()) {
+            Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
+            // For all people following the group
+            for (String groupMemberLogin : groupMemberLogins) {
+                timelineRepository.addStatusToTimeline(groupMemberLogin, status);
+            }
+            if (isPublicGroup(group)) { // for people not following the group but following the user
+                for (String followerLogin : followersForUser) {
+                    if (!groupMemberLogins.contains(followerLogin)) {
+                        timelineRepository.addStatusToTimeline(followerLogin, status);
+                    }
+                }
+            }
+        } else { // only people following the user
             for (String followerLogin : followersForUser) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
             }
@@ -152,7 +162,7 @@ public class StatusUpdateService {
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
-                if (group != null && !group.isPublicGroup()) {
+                if (!isPublicGroup(group)) {
                     Collection<String> groupIds = userGroupRepository.findGroups(mentionedLogin);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                         mentionUser(status, mentionedLogin);
@@ -200,7 +210,7 @@ public class StatusUpdateService {
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
         Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
-        if (group == null || group.isPublicGroup()) { // This is a public status
+        if (isPublicGroup(group)) { // This is a public status
             for (String followerLogin : followersForTag) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
             }
@@ -224,5 +234,9 @@ public class StatusUpdateService {
 
     private String extractUsernameWithoutAt(String dest) {
         return dest.substring(1, dest.length());
+    }
+
+    private boolean isPublicGroup(Group group) {
+        return group == null || group.isPublicGroup();
     }
 }

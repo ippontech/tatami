@@ -145,6 +145,7 @@ public class TimelineService {
                     Status statusCopy = new Status();
                     statusCopy.setLogin(status.getLogin());
                     statusCopy.setStatusId(status.getStatusId());
+                    statusCopy.setGroupId(status.getGroupId());
                     if (sharedStatusInfo != null) { // Manage shared statuses
                         statusCopy.setTimelineId(sharedStatusInfo.getSharedStatusId());
                         String sharedByLogin = sharedStatusInfo.getSharedByLogin();
@@ -255,7 +256,7 @@ public class TimelineService {
 
         final User currentUser = authenticationService.getCurrentUser();
         if (status.getLogin().equals(currentUser.getLogin())
-                && !Boolean.TRUE.equals(status.getRemoved())) {
+                && Boolean.FALSE.equals(status.getRemoved())) {
             statusRepository.removeStatus(status);
             counterRepository.decrementStatusCounter(currentUser.getLogin());
             searchService.removeStatus(status);
