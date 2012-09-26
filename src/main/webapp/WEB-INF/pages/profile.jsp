@@ -96,7 +96,7 @@
                         <div id="div-update"></div>
                       </div>
                         <!-- Trends -->
-                        <div class="alert alert-info hidden-phone">
+                        <div id="userTrends" class="alert alert-info hidden-phone">
                             <div>
                                 <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.user.title"/></label>
                             </div>

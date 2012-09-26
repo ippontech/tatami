@@ -24,7 +24,7 @@
                 </div>
 
                 <!-- Trends -->
-                <div class="alert alert-info hidden-phone">
+                <div id="profileTrends" class="alert alert-info hidden-phone">
                     <div>
                         <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
                     </div>

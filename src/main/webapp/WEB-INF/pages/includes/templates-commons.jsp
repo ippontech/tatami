@@ -165,8 +165,8 @@
 </script>
 
 <script type="text/template" id="trends-template-item">
-    <td class="pull-left">
-        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
+    <td>
+        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends pull-left">
             #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
         </a>
     </td>
