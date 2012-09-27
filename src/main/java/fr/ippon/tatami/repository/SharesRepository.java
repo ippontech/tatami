@@ -12,4 +12,6 @@ public interface SharesRepository {
     void newShareByLogin(String statusId, String sharedByLogin);
 
     Collection<String> findLoginsWhoSharedAStatus(String statusId);
+
+	boolean hasBeenShared(String statusId);
 }

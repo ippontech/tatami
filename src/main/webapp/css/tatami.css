@@ -76,6 +76,10 @@ form {
     margin-left: 5px;
 }
 
+.discuss-current>div:first-of-type {
+   box-shadow: 2px 2px 2px #888;
+}
+
 .alert-discuss {
   color: #3a5fad;
   background-color: #d9e0f7;
@@ -84,6 +88,21 @@ form {
 
 .alert-discuss * {
   color: #3a5fad;
+}
+
+
+.details-available {
+    box-shadow: 2px 2px 2px #888;
+}
+
+.status-action-details {
+    font-weight: bold;
+    font-style:italic;
+}
+
+.statuses-details {
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 .statuses table, .shares table {
