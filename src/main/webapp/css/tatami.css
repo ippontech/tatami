@@ -76,6 +76,10 @@ form {
     margin-left: 5px;
 }
 
+.discuss-current>div:first-of-type {
+   box-shadow: 2px 2px 2px #888;
+}
+
 .alert-discuss {
   color: #3a5fad;
   background-color: #d9e0f7;
