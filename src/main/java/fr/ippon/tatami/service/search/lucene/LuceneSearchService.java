@@ -128,13 +128,15 @@ public class LuceneSearchService implements SearchService {
         Document document = new Document();
         document.add(new Field("domain", status.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
 
-        Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
-        if (group.isPublicGroup()) {
-            document.add(new Field("publicGroup", "true", Field.Store.NO, Field.Index.NOT_ANALYZED));
-        } else {
-            document.add(new Field("publicGroup", "false", Field.Store.NO, Field.Index.NOT_ANALYZED));
+        if (status.getGroupId() != null) {
+            Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
+            if (group.isPublicGroup()) {
+                document.add(new Field("publicGroup", "true", Field.Store.NO, Field.Index.NOT_ANALYZED));
+            } else {
+                document.add(new Field("publicGroup", "false", Field.Store.NO, Field.Index.NOT_ANALYZED));
+            }
+            document.add(new Field("groupId", status.getGroupId(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         }
-        document.add(new Field("groupId", status.getGroupId(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("statusId", status.getStatusId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("username", status.getUsername(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("content", status.getContent(), Field.Store.NO, Field.Index.ANALYZED));
