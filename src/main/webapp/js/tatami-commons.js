@@ -270,6 +270,13 @@ app.View.TimeLineItemView = Backbone.View.extend({
     if (this.details != true) {
       var statusDetails = new app.Model.StatusDetails(this.model);
 
+
+      if(typeof this.views.discussCurrent === 'undefined'){
+        this.views.discussCurrent = new app.View.TimeLineView({
+          model: new app.Collection.StatusCollection(),
+          discuss: true
+        });
+      }
       if(typeof this.views.discussBefore === 'undefined'){
         this.views.discussBefore = new app.View.TimeLineView({
           model: new app.Collection.StatusCollection(),
@@ -289,8 +296,12 @@ app.View.TimeLineItemView = Backbone.View.extend({
       }
       statusDetails.fetch({
         success: function(model){
+          self.views.discussCurrent.model.reset();
           self.views.discussBefore.model.reset();
           self.views.discussAfter.model.reset();
+
+          self.views.discussCurrent.model.add(self.model);
+
           _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
@@ -319,10 +330,12 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
   detailsRender: function() {
     if(this.details){
+      this.$el.find('.discuss-current').append(this.views.discussCurrent.render());
       this.$el.find('.discuss-before').append(this.views.discussBefore.render());
       this.$el.find('.discuss-after').append(this.views.discussAfter.render());
       this.$el.find('.shares').append(this.views.shares.render());
     }else{
+      this.$el.find('.discuss-current').empty();
       this.$el.find('.discuss-before').empty();
       this.$el.find('.discuss-after').empty();
       this.$el.find('.shares').empty();

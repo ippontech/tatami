@@ -4,19 +4,23 @@
 <script type="text/template" id="timeline-item">
   <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } @>">
     <div class="row-fluid">
-
-      <div class="discuss-before">
-      </div>
-
       <div class="statuses">
       </div>
-
-      <div class="shares">
+      
+      <div class="statuses-details">
+        
+        <blockquote class="discuss-details">
+          <div class="discuss-before">
+          </div>
+          <div class="discuss-current">
+          </div>
+          <div class="discuss-after">
+          </div>
+        </blockquote>
+        
+        <blockquote class="shares">
+        </blockquote>
       </div>
-
-      <div class="discuss-after">
-      </div>
-
     </div>
   </div>
 </script>

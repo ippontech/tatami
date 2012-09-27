@@ -86,6 +86,12 @@ form {
   color: #3a5fad;
 }
 
+
+.statuses-details {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
 .statuses table, .shares table {
     width: 100%;
 }
