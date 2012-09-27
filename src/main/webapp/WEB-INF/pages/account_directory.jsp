@@ -18,7 +18,7 @@
             <div class="nomargin well row">
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
-                        <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64" alt="">
+                        <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
                         <h3>${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
@@ -90,7 +90,7 @@
                                         <tr>
                                             <td>
                                                 <a href="/tatami/profile/${u.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${u.username} ${u.firstName} ${u.lastName}">
-                                                    <img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/${u.gravatar}?s=64" alt="${u.firstName} ${u.lastName}"/>
+                                                    <img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/${u.gravatar}?s=64&d=mm" alt="${u.firstName} ${u.lastName}"/>
                                                     @${u.username}
                                                 </a>
                                             </td>
