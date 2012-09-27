@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DISCUSSION_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.SHARES_CF;
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
@@ -62,4 +63,16 @@ public class CassandraSharesRepository implements SharesRepository {
         }
         return sharedByLogins;
     }
+    
+	@Override
+	public boolean hasBeenShared(String statusId) {
+		int zeroOrOne = HFactory.createCountQuery(keyspaceOperator, StringSerializer.get(), LongSerializer.get())
+			.setColumnFamily(SHARES_CF)
+			.setKey(statusId)
+			.setRange(null, null, 1)
+			.execute()
+			.get();
+		
+		return zeroOrOne > 0;
+	}
 }

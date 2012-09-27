@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.DiscussionRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -61,4 +62,16 @@ public class CassandraDiscussionRepository implements DiscussionRepository {
         }
         return statusIds;
     }
+
+	@Override
+	public boolean hasReply(String statusId) {
+		int zeroOrOne = HFactory.createCountQuery(keyspaceOperator, StringSerializer.get(), LongSerializer.get())
+			.setColumnFamily(DISCUSSION_CF)
+			.setKey(statusId)
+			.setRange(null, null, 1)
+			.execute()
+			.get();
+		
+		return zeroOrOne > 0;
+	}
 }
