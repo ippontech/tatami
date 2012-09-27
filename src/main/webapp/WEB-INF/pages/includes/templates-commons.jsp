@@ -2,21 +2,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/template" id="timeline-item">
-  <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } @>">
+  <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } if (!discuss && status.detailsAvailable) { @> details-available <@ } @>">
     <div class="row-fluid">
-
-      <div class="discuss-before">
-      </div>
-
       <div class="statuses">
       </div>
-
-      <div class="shares">
+      
+      <@ if (discuss !== true) { @>
+      <div class="statuses-details">
+        <blockquote class="shares">
+        </blockquote>
+        
+        <blockquote class="discuss-details">
+          <div class="discuss-before">
+          </div>
+          <div class="discuss-current">
+          </div>
+          <div class="discuss-after">
+          </div>
+        </blockquote>
       </div>
-
-      <div class="discuss-after">
-      </div>
-
+      <@} @>
     </div>
   </div>
 </script>
@@ -32,14 +37,14 @@
       </a>
       <p class="pull-right" style="width: 50px"><abbr class="timeago" title="<@= status.iso8601StatusDate @>"><@= status.prettyPrintStatusDate @></abbr></p>
       <div class="pull-right status-actions">
-        <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
-          <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
-        </a>
-        <@ if (!discuss) { @>
+        <@ if (!discuss && status.detailsAvailable) { @>
         <a class="status-action-details">
            <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
         </a>
         <@ } @>
+        <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
+          <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
+        </a>
         <a class="status-action-reply">
               <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
         </a>

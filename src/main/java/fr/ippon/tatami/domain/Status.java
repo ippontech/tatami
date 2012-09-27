@@ -102,6 +102,8 @@ public class Status {
     private String gravatar;
 
     private boolean favorite;
+    
+    private boolean detailsAvailable;
 
     /**
      * If this status was shared, username of the user who shared it.
@@ -248,6 +250,14 @@ public class Status {
         this.favorite = favorite;
     }
 
+    public boolean isDetailsAvailable() {
+        return detailsAvailable;
+    }
+
+    public void setDetailsAvailable(boolean detailsAvailable) {
+        this.detailsAvailable = detailsAvailable;
+    }
+
     public String getSharedByUsername() {
         return sharedByUsername;
     }
@@ -304,4 +314,5 @@ public class Status {
                 ", removed=" + removed +
                 '}';
     }
+    
 }
