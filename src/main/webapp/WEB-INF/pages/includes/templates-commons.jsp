@@ -35,7 +35,7 @@
         <a href="/tatami/profile/<@=status.username@>/#/status/<@= status.statusId @>">
           <i class="icon-eye-open"></i><fmt:message key="tatami.user.status.show"/>
         </a>
-        <@ if (!discuss) { @>
+        <@ if (!discuss && status.detailsAvailable) { @>
         <a class="status-action-details">
            <i class="icon-search"></i><fmt:message key="tatami.user.status.details"/>
         </a>

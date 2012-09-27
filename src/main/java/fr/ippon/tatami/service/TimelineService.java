@@ -168,6 +168,10 @@ public class TimelineService {
                     statusCopy.setFirstName(statusUser.getFirstName());
                     statusCopy.setLastName(statusUser.getLastName());
                     statusCopy.setGravatar(statusUser.getGravatar());
+                    
+                    boolean detailsAvailable = computeDetailsAvailable(status);
+                    statusCopy.setDetailsAvailable(detailsAvailable);
+                    
                     statuses.add(statusCopy);
                 } else {
                     if (log.isDebugEnabled()) {
@@ -183,7 +187,15 @@ public class TimelineService {
         return statuses;
     }
 
-    /**
+    private boolean computeDetailsAvailable(Status status) {
+    	
+    	boolean detailsAvailable = true;
+    	// todo
+    	
+		return detailsAvailable;
+	}
+
+	/**
      * The mentionline contains a statuses where the current user is mentioned.
      *
      * @return a status list
