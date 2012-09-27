@@ -510,5 +510,31 @@
         		"value" : "utf8(11/03/2012)"
         	}]
         }]
+    },
+    {
+        "name" : "Discussion",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "f97d6470-9847-11e1-a6ca-dummy1",
+        	"columns" : [{
+        		"name" : "111111111",
+        		"value" : "utf8(f97d6470-9847-11e1-a6ca-dummy2)"
+        	}]
+        }]
+    },
+    {
+        "name" : "Shares",
+        "keyType" : "UTF8Type",
+        "comparatorType" : "UTF8Type",
+        "defaultColumnValueType" : "UTF8Type",
+        "rows" : [{
+        	"key" : "f97d6470-9847-11e1-a6ca-dummy1",
+        	"columns" : [{
+        		"name" : "111111111",
+        		"value" : "utf8(john_doe)"
+        	}]
+        }]
     }]
 }
