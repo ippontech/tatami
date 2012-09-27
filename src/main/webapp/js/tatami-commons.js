@@ -487,13 +487,13 @@ Friendship
 */
 app.Model.FollowUserModel = Backbone.Model.extend({
 url : function(){
-  return '/tatami/rest/friendships/user/create';
+  return '/tatami/rest/friendships/create';
 }
 });
 
 app.Model.UnFollowUserModel = Backbone.Model.extend({
 url : function(){
-  return '/tatami/rest/friendships/user/destroy';
+  return '/tatami/rest/friendships/destroy';
 }
 });
 
