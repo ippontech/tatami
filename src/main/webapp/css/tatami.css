@@ -87,6 +87,15 @@ form {
 }
 
 
+.details-available {
+    box-shadow: 2px 2px 2px #888;
+}
+
+.status-action-details {
+    font-weight: bold;
+    font-style:italic;
+}
+
 .statuses-details {
     padding-left: 10px;
     padding-top: 10px;
