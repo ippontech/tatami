@@ -7,6 +7,7 @@
       <div class="statuses">
       </div>
       
+      <@ if (discuss !== true) { @>
       <div class="statuses-details">
         <blockquote class="shares">
         </blockquote>
@@ -20,6 +21,7 @@
           </div>
         </blockquote>
       </div>
+      <@} @>
     </div>
   </div>
 </script>
