@@ -300,8 +300,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussBefore.model.reset();
           self.views.discussAfter.model.reset();
 
-          self.views.discussCurrent.model.add(self.model);
-
+          var discussionIsPresent = false;
           _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
@@ -310,7 +309,11 @@ app.View.TimeLineItemView = Backbone.View.extend({
             else {
               self.views.discussAfter.model.add(model);
             }
+            discussionIsPresent = true;
           });
+          if(discussionIsPresent) {
+        	self.views.discussCurrent.model.add(self.model);
+          }
           self.views.shares.model.reset();
           _.forEach(model.get('sharedByLogins'), function(value) {
             var username = value.split('@')[0];

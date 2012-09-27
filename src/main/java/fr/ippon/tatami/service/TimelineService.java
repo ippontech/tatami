@@ -198,7 +198,7 @@ public class TimelineService {
     	} else if(discussionRepository.hasReply(status.getStatusId())) {
     		detailsAvailable = true;
     	} else if(StringUtils.isNotBlank(status.getSharedByUsername())) {
-    		detailsAvailable = true; // TODO : être plus fin et vérifier si il y a qq d'autres qui a partager ce statut ?
+    		detailsAvailable = true;
     	} else if(sharesRepository.hasBeenShared(status.getStatusId())) {
     		detailsAvailable = true;
     	}
