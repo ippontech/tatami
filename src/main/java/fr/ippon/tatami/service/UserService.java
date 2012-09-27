@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -165,6 +166,7 @@ public class UserService {
         user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
+        user.setTheme(Constants.DEFAULT_THEME);
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
