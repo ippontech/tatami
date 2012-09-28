@@ -54,7 +54,7 @@ public class CassandraDiscussionRepository implements DiscussionRepository {
                 StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DISCUSSION_CF)
                 .setKey(originalStatusId)
-                .setRange(null, null, false, Integer.MAX_VALUE) // Limit to 100 replies
+                .setRange(null, null, false, Integer.MAX_VALUE)
                 .execute()
                 .get();
 
