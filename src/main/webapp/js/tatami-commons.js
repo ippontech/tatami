@@ -120,7 +120,7 @@ app.Collection.SharesCollection = Backbone.Collection.extend({
 });
 
 app.View.SharesView = Backbone.View.extend({
-  tagName: 'table',
+  tagName: 'div',
   template: _.template($('#timeline-share').html()),
 
   render: function() {
@@ -224,7 +224,6 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
   initialize: function() {
     this.views = {};
-
     this.views.status = new app.View.TimeLineItemInnerView({
       model : this.model,
       discuss : this.options.discuss

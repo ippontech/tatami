@@ -88,6 +88,26 @@ form {
   border-color: #E6E6E6;
 }
 
+.alert-shares {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #000000;
+  border-color: #E6E6E6;
+}
+
+.share-title {
+  text-align: center;
+}
+
+.share-number {
+  text-align: center;
+  font-weight: bold;
+}
+
+.shares-list div {
+  float:left;
+}
+
 .details-available {
     box-shadow: 2px 2px 2px #888;
 }

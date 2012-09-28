@@ -107,14 +107,19 @@
 </script>
 
 <script type="text/template" id="timeline-share">
+  <div  class="alert-shares">
+  <table>
   <tr>
-    <th class="well">
-      <h5><fmt:message key="tatami.timeline.shares"/></h5>
-      <h1><@= count @></h1>
-    </th>
-    <td class="well shares-list">
+    <td class="well" width="50px">
+      <div class="share-title"><fmt:message key="tatami.timeline.shares"/></div>
+      <div class="share-number"><@= count @></div>
+    </td>
+    <td class="well">
+        <div class="shares-list"></div>
     </td>
   </tr>
+  </table>
+  </div>
 </script>
 
 <script type="text/template" id="timeline-share-item">
