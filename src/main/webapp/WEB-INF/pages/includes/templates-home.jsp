@@ -134,14 +134,20 @@
   </div>
 </script>
 
-<script type="text/template" id="group-search-form">
+<script type="text/template" id="group-list">
     <div class="row-fluid">
-        <select id="group-selector">
+        <ul class="nav nav-stacked nav-pills">
+            <li><a href="#/timeline"><i class="icon-chevron-right pull-right"/> Aucun groupe</a></li>
             <@ groupsCollection.each(function(group) { @>
-            <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
+            <li><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
             <@ }); @>
-        </select>
-        <input class="span12" name="search" value="<@= group @>" type="text"  placeholder="<fmt:message key="tatami.group.name"/>">
+        </ul>
+    </div>
+</script>
+
+<script type="text/template" id="group-display">
+    <div class="row-fluid">
+
     </div>
 </script>
 

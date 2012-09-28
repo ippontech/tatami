@@ -83,13 +83,11 @@
                       </div>
                       <div class="alert alert-status">
                         <div class="row-fluid">
-                          <div class="span12">
                             <ul class="nav nav-pills nav-stacked profilMenu">
                               <li><a href="#/status"><fmt:message key="tatami.badge.status"/></a></li>
                               <li><a href="#/followed"><fmt:message key="tatami.badge.followed"/></a></li>
                               <li><a href="#/followers"><fmt:message key="tatami.badge.followers"/></a></li>
                             </ul>
-                          </div>
                         </div>
                       </div>
                       <div class="alert alert-status">

@@ -619,62 +619,48 @@ app.View.FavoritePanelView = Backbone.View.extend({
 Groups
  */
 
-app.View.GroupsSearchView = Backbone.View.extend({
-    template: _.template($('#group-search-form').html()),
+app.View.GroupsListView = Backbone.View.extend({
+    template: _.template($('#group-list').html()),
 
-    tagName: 'form',
-
-    events: {
-        'submit': 'submit'
-    },
+    tagName: 'div',
 
     initialize: function(){
         this.groupsCollection = new app.Collection.GroupsCollection();
         this.groupsCollection.fetch();
         this.groupsCollection.bind("reset", this.render, this);
-        $(this.el).addClass('alert alert-status');
 
         var self = this;
-        this.model.url = function() {
-            if(self.options.group && self.options.group !== '')
-                return '/tatami/rest/groups/' + self.options.group + '/';
-            else
-                return '/tatami/rest/groups/';
-        };
     },
 
-    submit: function(e) {
-        e.preventDefault();
-
-        var self = this;
-
-        _.each($(this.el).serializeArray(), function(input){
-            if(input.name === 'search')
-                self.options.group =input.value;
-        });
-
-        this.search();
-    },
-
-    search: function () {
-        app.router.navigate('//groups/' + this.options.group, {trigger: false,replace:false});
-        this.fetch();
-    },
-
-    fetch : function() {
-        this.model.fetch();
-    },
-
-    render: function () {
-        var group = (typeof this.options.group === 'undefined')? '':this.options.group;
+    render: function() {
         $(this.el).html(this.template({
-            groupsCollection: this.groupsCollection,
-            group: group}));
-
+            groupsCollection: this.groupsCollection}));
         return $(this.el);
     }
 
 });
+
+app.View.GroupsDisplayView = Backbone.View.extend({
+    template: _.template($('#group-display').html()),
+
+    tagName: 'div',
+
+    initialize: function(){
+        this.groupsCollection = new app.Collection.GroupsCollection();
+        this.groupsCollection.fetch();
+        this.groupsCollection.bind("reset", this.render, this);
+
+        var self = this;
+    },
+
+    render: function() {
+        $(this.el).html(this.template({
+            groupsCollection: this.groupsCollection}));
+        return $(this.el);
+    }
+
+});
+
 
 app.Collection.GroupsCollection = Backbone.Collection.extend({
     url : function(){
@@ -686,12 +672,10 @@ app.View.GroupsView = Backbone.View.extend({
     initialize:function () {
         this.views = {};
 
-        this.model = new app.Collection.StatusCollection();
+        this.group = this.options.group;
 
-        this.views.search = new app.View.GroupsSearchView({
-            group: this.options.group,
-            model: this.model
-        });
+        this.model = new app.Collection.StatusCollection();
+        this.model.url = '/tatami/rest/groups/' + this.group + "/";
 
         this.views.list = new app.View.TimeLineView({
             model:this.model
@@ -700,12 +684,10 @@ app.View.GroupsView = Backbone.View.extend({
         this.views.next = new app.View.TimeLineNextView({
             model:this.model
         });
-
         this.views.next.nextStatus();
     },
 
     render:function () {
-        $(this.el).append(this.views.search.render());
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
         return $(this.el);
@@ -1000,6 +982,9 @@ app.Router.HomeRouter = Backbone.Router.extend({
             placement:'right'
         });
 
+        var groupList = new app.View.GroupsListView();
+        $('#userGroups').html(groupList.render());
+
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());
 
@@ -1016,6 +1001,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
     "timeline": "timeline",
     "mention": "mention",
     "groups": "groups",
+    "groups/*group": "groups",
     "tags": "tags",
     "tags/*tag": "tags",
     "favorite": "favorite",
@@ -1070,11 +1056,11 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
     groups: function(group) {
         this.selectMenu('groups');
-        app.views.tags = new app.View.GroupsView({
+        app.views.groups = new app.View.GroupsView({
             group: group
         });
         $('#tab-content').empty();
-        $('#tab-content').append(app.views.tags.render());
+        $('#tab-content').append(app.views.groups.render());
     },
 
   tags: function(tag) {

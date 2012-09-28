@@ -19,12 +19,22 @@
                 <div id="profileContent" class="alert alert-status">
                 </div>
 
+                <!-- Groups -->
+                <div id="groupsList" class="alert alert-status">
+                    <div>
+                        <label><i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/></label>
+                        <div class="row-fluid" id="userGroups">
+
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Follow -->
-                <div id="profileFollow" class="alert alert-status hidden-phone">
+                <div id="profileFollow" class="alert alert-status">
                 </div>
 
                 <!-- Trends -->
-                <div id="profileTrends" class="alert alert-status hidden-phone">
+                <div id="profileTrends" class="alert alert-status">
                     <div>
                         <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
                     </div>
@@ -36,6 +46,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="span8">
