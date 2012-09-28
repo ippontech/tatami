@@ -631,6 +631,7 @@ app.View.GroupsSearchView = Backbone.View.extend({
     initialize: function(){
         this.groupsCollection = new app.Collection.GroupsCollection();
         this.groupsCollection.fetch();
+        this.groupsCollection.bind("reset", this.render, this);
         $(this.el).addClass('alert alert-status');
 
         var self = this;
