@@ -136,6 +136,11 @@
 
 <script type="text/template" id="group-search-form">
     <div class="row-fluid">
+        <select id="group-selector">
+            <@ groupsCollection.each(function(group) { @>
+            <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
+            <@ }); @>
+        </select>
         <input class="span12" name="search" value="<@= group @>" type="text"  placeholder="<fmt:message key="tatami.group.name"/>">
     </div>
 </script>

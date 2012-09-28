@@ -629,7 +629,8 @@ app.View.GroupsSearchView = Backbone.View.extend({
     },
 
     initialize: function(){
-
+        this.groupsCollection = new app.Collection.GroupsCollection();
+        this.groupsCollection.fetch();
         $(this.el).addClass('alert alert-status');
 
         var self = this;
@@ -665,10 +666,19 @@ app.View.GroupsSearchView = Backbone.View.extend({
 
     render: function () {
         var group = (typeof this.options.group === 'undefined')? '':this.options.group;
-        $(this.el).html(this.template({group: group}));
+        $(this.el).html(this.template({
+            groupsCollection: this.groupsCollection,
+            group: group}));
+
         return $(this.el);
     }
 
+});
+
+app.Collection.GroupsCollection = Backbone.Collection.extend({
+    url : function(){
+        return '/tatami/rest/groupmemberships/lookup?screen_name=' + username;
+    }
 });
 
 app.View.GroupsView = Backbone.View.extend({
