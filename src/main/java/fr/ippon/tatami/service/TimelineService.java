@@ -170,10 +170,7 @@ public class TimelineService {
                     statusCopy.setFirstName(statusUser.getFirstName());
                     statusCopy.setLastName(statusUser.getLastName());
                     statusCopy.setGravatar(statusUser.getGravatar());
-                    
-                    boolean detailsAvailable = computeDetailsAvailable(status); // TODO : put this information in cache ?
-                    statusCopy.setDetailsAvailable(detailsAvailable);
-                    
+                    statusCopy.setDetailsAvailable(status.isDetailsAvailable());
                     statuses.add(statusCopy);
                 } else {
                     if (log.isDebugEnabled()) {
@@ -188,23 +185,6 @@ public class TimelineService {
         }
         return statuses;
     }
-
-    private boolean computeDetailsAvailable(Status status) {
-    	
-    	boolean detailsAvailable = false;
-    	
-    	if(StringUtils.isNotBlank(status.getReplyTo())) {
-    		detailsAvailable = true;
-    	} else if(discussionRepository.hasReply(status.getStatusId())) {
-    		detailsAvailable = true;
-    	} else if(StringUtils.isNotBlank(status.getSharedByUsername())) {
-    		detailsAvailable = true;
-    	} else if(sharesRepository.hasBeenShared(status.getStatusId())) {
-    		detailsAvailable = true;
-    	}
-    	
-		return detailsAvailable;
-	}
 
 	/**
      * The mentionline contains a statuses where the current user is mentioned.

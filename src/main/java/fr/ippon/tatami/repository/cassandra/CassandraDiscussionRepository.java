@@ -9,6 +9,7 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ public class CassandraDiscussionRepository implements DiscussionRepository {
     private Keyspace keyspaceOperator;
 
     @Override
+    @CacheEvict(value = "status-cache", key = "#originalStatusId")
     public void addReplyToDiscussion(String originalStatusId, String replyStatusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(originalStatusId, DISCUSSION_CF,
@@ -52,7 +54,7 @@ public class CassandraDiscussionRepository implements DiscussionRepository {
                 StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DISCUSSION_CF)
                 .setKey(originalStatusId)
-                .setRange(null, null, false, 100) // Limit to 100 replies
+                .setRange(null, null, false, Integer.MAX_VALUE) // Limit to 100 replies
                 .execute()
                 .get();
 

@@ -8,6 +8,7 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ public class CassandraSharesRepository implements SharesRepository {
     private Keyspace keyspaceOperator;
 
     @Override
+    @CacheEvict(value = "status-cache", key = "#statusId")
     public void newShareByLogin(String statusId, String sharedByLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(statusId, SHARES_CF,
