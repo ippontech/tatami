@@ -52,13 +52,18 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#/favorite">
-                                <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
+                            <a href="#/groups">
+                                <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
                             </a>
                         </li>
                         <li>
                             <a href="#/tags">
-                                <i class="icon-tag"></i> <fmt:message key="tatami.tags"/>
+                                <i class="icon-tags"></i> <fmt:message key="tatami.tags"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/favorite">
+                                <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
                             </a>
                         </li>
                         <li>

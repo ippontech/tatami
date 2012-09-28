@@ -43,7 +43,8 @@ public class AccountGroupsController {
 
         ModelAndView mv = basicModelAndView();
         mv.addObject("success", success);
-        Collection<Group> groups = groupService.getGroupsForCurrentUser();
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         mv.addObject("groups", groups);
         mv.setViewName("account_groups");
         return mv;

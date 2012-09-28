@@ -616,6 +616,93 @@ app.View.FavoritePanelView = Backbone.View.extend({
 });
 
 /*
+Groups
+ */
+
+app.View.GroupsSearchView = Backbone.View.extend({
+    template: _.template($('#group-search-form').html()),
+
+    tagName: 'form',
+
+    events: {
+        'submit': 'submit'
+    },
+
+    initialize: function(){
+
+        $(this.el).addClass('alert alert-status');
+
+        var self = this;
+        this.model.url = function() {
+            if(self.options.group && self.options.group !== '')
+                return '/tatami/rest/groups/' + self.options.group + '/';
+            else
+                return '/tatami/rest/groups/';
+        };
+    },
+
+    submit: function(e) {
+        e.preventDefault();
+
+        var self = this;
+
+        _.each($(this.el).serializeArray(), function(input){
+            if(input.name === 'search')
+                self.options.group =input.value;
+        });
+
+        this.search();
+    },
+
+    search: function () {
+        app.router.navigate('//groups/' + this.options.group, {trigger: false,replace:false});
+        this.fetch();
+    },
+
+    fetch : function() {
+        this.model.fetch();
+    },
+
+    render: function () {
+        var group = (typeof this.options.group === 'undefined')? '':this.options.group;
+        $(this.el).html(this.template({group: group}));
+        return $(this.el);
+    }
+
+});
+
+app.View.GroupsView = Backbone.View.extend({
+    initialize:function () {
+        this.views = {};
+
+        this.model = new app.Collection.StatusCollection();
+
+        this.views.search = new app.View.GroupsSearchView({
+            group: this.options.group,
+            model: this.model
+        });
+
+        this.views.list = new app.View.TimeLineView({
+            model:this.model
+        });
+
+        this.views.next = new app.View.TimeLineNextView({
+            model:this.model
+        });
+
+        this.views.next.nextStatus();
+    },
+
+    render:function () {
+        $(this.el).append(this.views.search.render());
+        $(this.el).append(this.views.list.render());
+        $(this.el).append(this.views.next.render());
+        return $(this.el);
+    }
+
+});
+
+/*
 Tags
 */
 
@@ -917,9 +1004,10 @@ app.Router.HomeRouter = Backbone.Router.extend({
   routes: {
     "timeline": "timeline",
     "mention": "mention",
-    "favorite": "favorite",
+    "groups": "groups",
     "tags": "tags",
     "tags/*tag": "tags",
+    "favorite": "favorite",
     "search": "search",
     "search/*search": "search",
     "*action": "timeline"
@@ -968,6 +1056,15 @@ app.Router.HomeRouter = Backbone.Router.extend({
     $('#tab-content').empty();
     $('#tab-content').append(app.views.favorite.render());
   },
+
+    groups: function(group) {
+        this.selectMenu('groups');
+        app.views.tags = new app.View.GroupsView({
+            group: group
+        });
+        $('#tab-content').empty();
+        $('#tab-content').append(app.views.tags.render());
+    },
 
   tags: function(tag) {
     this.selectMenu('tags');

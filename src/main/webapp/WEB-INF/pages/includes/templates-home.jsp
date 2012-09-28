@@ -134,9 +134,15 @@
   </div>
 </script>
 
+<script type="text/template" id="group-search-form">
+    <div class="row-fluid">
+        <input class="span12" name="search" value="<@= group @>" type="text"  placeholder="<fmt:message key="tatami.group.name"/>">
+    </div>
+</script>
+
 <script type="text/template" id="tag-search-form">
   <div class="row-fluid">
-    <input class="span12" name="search" value="<@= tag @>" type="text" placeholder="tag">
+    <input class="span12" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
   </div>
 </script>
 

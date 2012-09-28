@@ -8,6 +8,8 @@ import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -44,6 +46,7 @@ public class GroupService {
     @Inject
     private UserRepository userRepository;
 
+    @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
         if (log.isDebugEnabled()) {
             log.debug("Creating group : " + name);
@@ -57,6 +60,7 @@ public class GroupService {
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
     }
 
+    @CacheEvict(value = "group-user-cache", allEntries = true)
     public void editGroup(Group group) {
         groupDetailsRepository.editGroupDetails(group.getGroupId(), group.getName(), group.getDescription());
     }
@@ -78,10 +82,10 @@ public class GroupService {
         return userGroupDTOs;
     }
 
-    public Collection<Group> getGroupsForCurrentUser() {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<String> groupIds = userGroupRepository.findGroups(currentUser.getLogin());
-        return getGroupDetails(currentUser, groupIds);
+    @Cacheable(value = "group-user-cache", key = "#user.login")
+    public Collection<Group> getGroupsForUser(User user) {
+        Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
+        return getGroupDetails(user, groupIds);
     }
 
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
@@ -106,6 +110,7 @@ public class GroupService {
         return groups;
     }
 
+    @CacheEvict(value = "group-user-cache", allEntries = true)
     public void addMemberToGroup(User user, Group group) {
         String groupId = group.getGroupId();
         Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
@@ -126,6 +131,7 @@ public class GroupService {
         }
     }
 
+    @CacheEvict(value = "group-user-cache", allEntries = true)
     public void removeMemberFromGroup(User user, Group group) {
         String groupId = group.getGroupId();
         Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());

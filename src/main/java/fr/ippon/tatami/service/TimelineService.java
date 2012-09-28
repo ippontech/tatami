@@ -60,6 +60,9 @@ public class TimelineService {
     private TaglineRepository taglineRepository;
 
     @Inject
+    private GrouplineRepository grouplineRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -201,7 +204,7 @@ public class TimelineService {
     }
 
     /**
-     * The tagline contains a tag's status
+     * The tagline contains a tag's statuses
      *
      * @param tag      the tag to retrieve the timeline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
@@ -214,6 +217,18 @@ public class TimelineService {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
+        return buildStatusList(line);
+    }
+
+    /**
+     * The groupline contains a group's statuses
+     *
+     * @param group      the group to retrieve the timeline of
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
+     */
+    public Collection<Status> getGroupline(String groupId, Integer count, String since_id, String max_id) {
+        Map<String, SharedStatusInfo> line = grouplineRepository.getGroupline(groupId, count, since_id, max_id);
         return buildStatusList(line);
     }
 

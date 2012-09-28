@@ -2,9 +2,7 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
-import fr.ippon.tatami.repository.GroupRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
