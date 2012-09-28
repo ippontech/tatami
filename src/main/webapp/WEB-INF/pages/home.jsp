@@ -16,15 +16,15 @@
             <div class="span4">
 
                 <!-- Infos -->
-                <div id="profileContent" class="alert alert-info">
+                <div id="profileContent" class="alert alert-status">
                 </div>
 
                 <!-- Follow -->
-                <div id="profileFollow" class="alert alert-info hidden-phone">
+                <div id="profileFollow" class="alert alert-status hidden-phone">
                 </div>
 
                 <!-- Trends -->
-                <div id="profileTrends" class="alert alert-info hidden-phone">
+                <div id="profileTrends" class="alert alert-status hidden-phone">
                     <div>
                         <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
                     </div>

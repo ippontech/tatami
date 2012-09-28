@@ -331,19 +331,19 @@ app.View.TimeLineItemView = Backbone.View.extend({
     this.highlight();
   },
 
-  detailsRender: function() {
-    if(this.details){
-      this.$el.find('.discuss-current').append(this.views.discussCurrent.render());
-      this.$el.find('.discuss-before').append(this.views.discussBefore.render());
-      this.$el.find('.discuss-after').append(this.views.discussAfter.render());
-      this.$el.find('.shares').append(this.views.shares.render());
-    }else{
-      this.$el.find('.discuss-current').empty();
-      this.$el.find('.discuss-before').empty();
-      this.$el.find('.discuss-after').empty();
-      this.$el.find('.shares').empty();
-    }
-  },
+    detailsRender:function () {
+        if (this.details) {
+            this.$el.find('.discuss-current').append(this.views.discussCurrent.render());
+            this.$el.find('.discuss-before').append(this.views.discussBefore.render());
+            this.$el.find('.discuss-after').append(this.views.discussAfter.render());
+            this.$el.find('.shares').append(this.views.shares.render());
+        } else {
+            this.$el.find('.discuss-current').empty();
+            this.$el.find('.discuss-before').empty();
+            this.$el.find('.discuss-after').empty();
+            this.$el.find('.shares').empty();
+        }
+    },
 
   render: function() {
     $(this.el).html(this.template({

@@ -2,24 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/template" id="timeline-item">
-  <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-info<@ } if (status.favorite === true) { @> favorite<@ } if (!discuss && status.detailsAvailable) { @> details-available <@ } @>">
+  <div class="status alert  <@ if (discuss === true) { @> alert-discuss<@ } else { @> alert-status<@ } if (status.favorite === true) { @> favorite<@ } if (!discuss && status.detailsAvailable) { @> details-available <@ } @>">
     <div class="row-fluid">
       <div class="statuses">
       </div>
       
       <@ if (discuss !== true) { @>
       <div class="statuses-details">
-        <blockquote class="shares">
-        </blockquote>
+        <div class="shares">
+        </div>
         
-        <blockquote class="discuss-details">
+        <div class="discuss-details">
           <div class="discuss-before">
           </div>
           <div class="discuss-current">
           </div>
           <div class="discuss-after">
           </div>
-        </blockquote>
+        </div>
       </div>
       <@} @>
     </div>
@@ -126,11 +126,11 @@
 </script>
 
 <script type="text/template" id="timeline-new">
-    <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></div>
+    <button type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></button>
 </script>
 
 <script type="text/template" id="timeline-next">
-    <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.next"/></div>
+    <button type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.next"/></button>
 </script>
 
 <script type="text/template" id="timeline-progress">

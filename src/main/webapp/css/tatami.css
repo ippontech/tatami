@@ -76,38 +76,30 @@ form {
     margin-left: 5px;
 }
 
-.discuss-current>div:first-of-type {
-   box-shadow: 2px 2px 2px #888;
+.alert-status {
+    color: #000000;
+    background-color: #fcfcfc;
+    border-color: #E6E6E6;
 }
 
 .alert-discuss {
-  color: #3a5fad;
-  background-color: #d9e0f7;
-  border-color: #bcccf1;
+  color: #000000;
+  background-color: #E6E6E6;
+  border-color: #E6E6E6;
 }
-
-.alert-discuss * {
-  color: #3a5fad;
-}
-
 
 .details-available {
     box-shadow: 2px 2px 2px #888;
 }
 
-.status-action-details {
-    font-weight: bold;
-    font-style:italic;
-}
-
 .statuses-details {
-    padding-left: 10px;
-    padding-top: 10px;
+    padding-left: 50px;
 }
 
 .statuses table, .shares table {
     width: 100%;
 }
+
 .userStatus {
     color: #000000;
     text-decoration: none;

@@ -83,7 +83,7 @@
       <input id="findUsername" class="span12 input-xlarge" type="text" required="required" placeholder="<fmt:message key="tatami.find.username"/>..." name="username" data-provide="typeahead"  autocomplete="off"/>
     </div>
     <div>
-      <button type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.find.action"/></button>
+      <button type='submit' class="btn btn-block"><fmt:message key="tatami.find.action"/></button>
     </div>
   </fieldset>
 </script>
@@ -119,11 +119,11 @@
 </script>
 
 <script type="text/template" id="favorite-refresh">
-  <div class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
+    <button type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/></button>
 </script>
 
 <script type="text/template" id="mention-refresh">
-    <div id="mentionRefresh" class="status text-center alert alert-info"><fmt:message key="tatami.timeline.refresh"/></div>
+    <button id="mentionRefresh" type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/></button>
 </script>
 
 <script type="text/template" id="timeline-progress">

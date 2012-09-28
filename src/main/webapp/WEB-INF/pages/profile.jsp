@@ -76,12 +76,12 @@
                 <div class="span12">
                   <div class="row-fluid">
                     <div class="span4">
-                      <div class="alert alert-info">
+                      <div class="alert alert-status">
                         <div><b><fmt:message key="tatami.user.email"/> :</b> <a href="mailto:${user.login}">${user.login}</a></div>
                         <div><b><fmt:message key="tatami.user.jobTitle"/> :</b> ${user.jobTitle}</div>
                         <div><b><fmt:message key="tatami.user.phoneNumber"/> :</b> ${user.phoneNumber}</div>
                       </div>
-                      <div class="alert alert-info">
+                      <div class="alert alert-status">
                         <div class="row-fluid">
                           <div class="span12">
                             <ul class="nav nav-pills nav-stacked profilMenu">
@@ -92,11 +92,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="alert alert-info">
+                      <div class="alert alert-status">
                         <div id="div-update"></div>
                       </div>
                         <!-- Trends -->
-                        <div id="userTrends" class="alert alert-info hidden-phone">
+                        <div id="userTrends" class="alert alert-status hidden-phone">
                             <div>
                                 <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.user.title"/></label>
                             </div>

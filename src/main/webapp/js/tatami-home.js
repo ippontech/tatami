@@ -630,7 +630,7 @@ app.View.TagsSearchView = Backbone.View.extend({
 
   initialize: function(){
 
-    $(this.el).addClass('alert alert-info');
+    $(this.el).addClass('alert alert-status');
 
     var self = this;
     this.model.url = function() {
@@ -717,7 +717,7 @@ app.View.SearchSearchView = Backbone.View.extend({
 
   initialize: function(){
 
-    $(this.el).addClass('alert alert-info');
+    $(this.el).addClass('alert alert-status');
 
     this.nbStatus = 20;
   },
