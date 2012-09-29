@@ -41,33 +41,49 @@ public class GroupController {
     private UserService userService;
 
     /**
-     * GET  /groups -> returns nothing, as no group is selected
+     * GET  /group/ -> returns nothing, as no group is selected
      */
-    @RequestMapping(value = "/rest/groups/",
+    @RequestMapping(value = "/rest/groups/{groupId}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusWithNoGroup(@RequestParam(required = false) Integer count,
-                                                  @RequestParam(required = false) String since_id,
-                                                  @RequestParam(required = false) String max_id) {
-
-        return new ArrayList<Status>();
+    public Group getGroup(@PathVariable("groupId") String groupId) {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+        Group group = null;
+        for (Group testGroup : groups) {
+            if (testGroup.getGroupId().equals(groupId)) {
+                group = testGroup;
+                break;
+            }
+        }
+        if (group ==  null) {
+            if (log.isInfoEnabled()) {
+                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                        "group ID = " + groupId);
+            }
+            return null;
+        }
+        return group;
     }
 
     /**
-     * GET  /groups/ippon -> get the latest status in group "ippon"
+     * GET  /rest/statuses/group_timeline -> get the latest status in group "ippon"
      */
-    @RequestMapping(value = "/rest/groups/{group}/",
+    @RequestMapping(value = "/rest/statuses/group_timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusForGroup(@PathVariable("group") String groupId,
+    public Collection<Status> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
                                                @RequestParam(required = false) Integer count,
                                                @RequestParam(required = false) String since_id,
                                                @RequestParam(required = false) String max_id) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to get statuses for group : " + groupId);
+        }
+        if (groupId == null) {
+            return new ArrayList<Status>();
         }
         if (count == null) {
             count = 20;

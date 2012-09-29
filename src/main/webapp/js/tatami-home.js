@@ -668,21 +668,32 @@ app.Collection.GroupsCollection = Backbone.Collection.extend({
     }
 });
 
+app.Model.GroupModel = Backbone.Model.extend({
+    initialize: function(groupId) {
+        this.groupId = groupId;
+    },
+    url : function(){
+        return '/tatami/rest/groups/' + this.groupId;
+    }
+});
+
 app.View.GroupsView = Backbone.View.extend({
     initialize:function () {
         this.views = {};
 
-        this.group = this.options.group;
+        this.groupId = this.options.group;
+        this.group = new app.Model.GroupModel(this.groupId);
+        this.group.fetch();
 
         this.model = new app.Collection.StatusCollection();
-        this.model.url = '/tatami/rest/groups/' + this.group + "/";
+        this.model.url = '/tatami/rest/statuses/group_timeline?groupId=' + this.groupId;
 
         this.views.list = new app.View.TimeLineView({
-            model:this.model
+            model: this.model
         });
 
         this.views.next = new app.View.TimeLineNextView({
-            model:this.model
+            model: this.model
         });
         this.views.next.nextStatus();
     },
@@ -715,9 +726,9 @@ app.View.TagsSearchView = Backbone.View.extend({
     var self = this;
     this.model.url = function() {
       if(self.options.tag && self.options.tag !== '')
-        return '/tatami/rest/tags/' + self.options.tag + '/';
+        return '/tatami/rest/statuses/tag_timeline?tag=' + self.options.tag;
       else
-        return '/tatami/rest/tags/';
+        return '/tatami/rest/statuses/tag_timeline';
     };
   },
 

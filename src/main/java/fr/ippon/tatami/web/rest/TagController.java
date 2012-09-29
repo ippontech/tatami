@@ -29,37 +29,13 @@ public class TagController {
     private TagMembershipService tagMembershipService;
 
     /**
-     * GET  /tags -> get the latest status with no tags
+     * GET  /statuses/tag_timeline -> get the latest status for a given tag
      */
-    @RequestMapping(value = "/rest/tags/",
+    @RequestMapping(value = "/rest/statuses/tag_timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusWithNoTag(@RequestParam(required = false) Integer count,
-                                                  @RequestParam(required = false) String since_id,
-                                                  @RequestParam(required = false) String max_id) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses with no tags");
-        }
-        if (count == null) {
-            count = 20;
-        }
-        try {
-            return timelineService.getTagline(null, count, since_id, max_id);
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(null, 20, since_id, max_id);
-        }
-    }
-
-    /**
-     * GET  /tags/ippon -> get the latest status tagged with "ippon"
-     */
-    @RequestMapping(value = "/rest/tags/{tag}/",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Status> listStatusForTag(@PathVariable("tag") String tag,
+    public Collection<Status> listStatusForTag(@RequestParam(required = false, value = "tag") String tag,
                                                @RequestParam(required = false) Integer count,
                                                @RequestParam(required = false) String since_id,
                                                @RequestParam(required = false) String max_id) {
