@@ -640,28 +640,6 @@ app.View.GroupsListView = Backbone.View.extend({
 
 });
 
-app.View.GroupsDisplayView = Backbone.View.extend({
-    template: _.template($('#group-display').html()),
-
-    tagName: 'div',
-
-    initialize: function(){
-        this.groupsCollection = new app.Collection.GroupsCollection();
-        this.groupsCollection.fetch();
-        this.groupsCollection.bind("reset", this.render, this);
-
-        var self = this;
-    },
-
-    render: function() {
-        $(this.el).html(this.template({
-            groupsCollection: this.groupsCollection}));
-        return $(this.el);
-    }
-
-});
-
-
 app.Collection.GroupsCollection = Backbone.Collection.extend({
     url : function(){
         return '/tatami/rest/groupmemberships/lookup?screen_name=' + username;
@@ -672,8 +650,24 @@ app.Model.GroupModel = Backbone.Model.extend({
     initialize: function(groupId) {
         this.groupId = groupId;
     },
-    url : function(){
+    url : function() {
         return '/tatami/rest/groups/' + this.groupId;
+    }
+});
+
+app.View.GroupDetailsView = Backbone.View.extend({
+    template: _.template($('#group-details').html()),
+
+    initialize:function () {
+        this.group = new app.Model.GroupModel(this.model);
+        this.group.fetch();
+    },
+
+    render: function() {
+        $(this.el).html(this.template({
+            group: this.group}));
+
+        return $(this.el);
     }
 });
 
@@ -682,11 +676,12 @@ app.View.GroupsView = Backbone.View.extend({
         this.views = {};
 
         this.groupId = this.options.group;
-        this.group = new app.Model.GroupModel(this.groupId);
-        this.group.fetch();
-
         this.model = new app.Collection.StatusCollection();
         this.model.url = '/tatami/rest/statuses/group_timeline?groupId=' + this.groupId;
+
+        this.views.groupDetails = new app.View.GroupDetailsView({
+            model: this.groupId
+        });
 
         this.views.list = new app.View.TimeLineView({
             model: this.model
@@ -699,6 +694,7 @@ app.View.GroupsView = Backbone.View.extend({
     },
 
     render:function () {
+        $(this.el).append(this.views.groupDetails.render());
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
         return $(this.el);

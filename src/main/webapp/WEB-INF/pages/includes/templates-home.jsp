@@ -134,20 +134,19 @@
   </div>
 </script>
 
+<script type="text/template" id="group-details">
+    <div class="row-fluid">
+      <h1> <@= group.get('name') @>   </h1>
+    </div>
+</script>
+
 <script type="text/template" id="group-list">
     <div class="row-fluid">
         <ul class="nav nav-stacked nav-pills">
-            <li><a href="#/timeline"><i class="icon-chevron-right pull-right"/> Aucun groupe</a></li>
             <@ groupsCollection.each(function(group) { @>
             <li><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
             <@ }); @>
         </ul>
-    </div>
-</script>
-
-<script type="text/template" id="group-display">
-    <div class="row-fluid">
-
     </div>
 </script>
 
