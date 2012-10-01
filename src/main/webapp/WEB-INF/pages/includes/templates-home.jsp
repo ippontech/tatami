@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<script type="text/template" id="profile-infos">
-  <div class="span12 text-center">
+<script type="text/template" id="profile-infos-template">
+  <div class="span12 profile-infos">
     <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
       <img class="pull-left avatar" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
       <h4><@=profile.firstName@> <@=profile.lastName@></h4>
@@ -12,11 +12,11 @@
   </div>
 </script>
 
-<script type="text/template" id="profile-stats">
+<script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
   <div class="well">
     <div class="row-fluid">
-      <table class="table table-center">
+      <table class="table profile-infos">
         <thead>
           <tr>
             <th>

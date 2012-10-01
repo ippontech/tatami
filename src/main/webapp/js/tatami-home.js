@@ -35,7 +35,7 @@ app.Model.ProfileModel = Backbone.Model.extend({
 });
 
 app.View.ProfileInfoView = Backbone.View.extend({
-  template: _.template($('#profile-infos').html()),
+  template: _.template($('#profile-infos-template').html()),
 
   initialize: function() {
     $(this.el).addClass('row-fluid hidden-phone');
@@ -51,7 +51,7 @@ app.View.ProfileInfoView = Backbone.View.extend({
 });
 
 app.View.ProfileStatsView = Backbone.View.extend({
-  template: _.template($('#profile-stats').html()),
+  template: _.template($('#profile-stats-template').html()),
 
   initialize: function() {
     $(this.el).addClass('');

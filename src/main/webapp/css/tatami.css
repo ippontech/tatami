@@ -16,12 +16,13 @@
   Profile Stats table desktop
 */
 
-.text-center {
+.profile-infos {
   text-align: center
 }
 
-.table-center td, .table-center th {
-  text-align: center
+.profile-infos td, .profile-infos th {
+  text-align: center;
+  padding: 0px;
 }
 
 /*
@@ -29,7 +30,7 @@
 */
 
 #profileContent .well, #profileFollow .well, #profileTrends .well, #userTrends .well {
-  padding: 5px;
+  padding: 0px;
 }
 
 #profileContent table, #profileFollow table, #profileTrends table, #userTrends table {
@@ -37,7 +38,7 @@
 }
 
 form {
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .table-right th {
