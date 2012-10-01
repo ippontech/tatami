@@ -29,7 +29,7 @@
             <br/>
             <div class="row">
                 <div class="span4">
-                    <div class="tabbable alert alert-info">
+                    <div class="tabbable alert alert-status">
                         <ul class="nav nav-pills nav-stacked nomargin">
                             <li>
                                 <a href="/tatami/account">
