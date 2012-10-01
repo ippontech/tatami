@@ -1,9 +1,15 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.SearchService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
@@ -31,9 +37,10 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.Assert;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.*;
+import fr.ippon.tatami.domain.SharedStatusInfo;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.SearchService;
 
 public class ElasticsearchSearchService implements SearchService {
 
@@ -99,7 +106,6 @@ public class ElasticsearchSearchService implements SearchService {
                 .field("content", status.getContent())
                 .endObject();
 
-
         addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
     }
 
@@ -111,9 +117,9 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public Map<String, SharedStatusInfo> searchStatus(final String domain,
-                                                      final String query,
-                                                      int page,
-                                                      int size) {
+            final String query,
+            int page,
+            int size) {
 
         Assert.notNull(query);
         Assert.notNull(domain);
@@ -126,7 +132,7 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         String name = ALL_FIELDS;
-        QueryBuilder qb = QueryBuilders.textQuery(name, query);
+        QueryBuilder qb = QueryBuilders.matchQuery(name, query);
         String dataType = Status.class.getSimpleName().toLowerCase();
         FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
 
@@ -270,9 +276,9 @@ public class ElasticsearchSearchService implements SearchService {
 
         final String dataType = clazz.getSimpleName().toLowerCase();
         client.prepareIndex(this.indexName, dataType, uid)
-                .setSource(jsonifiedObject)
-                .execute()
-                .actionGet();
+        .setSource(jsonifiedObject)
+        .execute()
+        .actionGet();
 
     }
 
