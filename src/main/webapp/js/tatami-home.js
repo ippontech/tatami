@@ -647,9 +647,6 @@ app.Collection.GroupsCollection = Backbone.Collection.extend({
 });
 
 app.Model.GroupModel = Backbone.Model.extend({
-    initialize: function(groupId) {
-        this.groupId = groupId;
-    },
     url : function() {
         return '/tatami/rest/groups/' + this.groupId;
     }
@@ -659,13 +656,19 @@ app.View.GroupDetailsView = Backbone.View.extend({
     template: _.template($('#group-details').html()),
 
     initialize:function () {
-        this.group = new app.Model.GroupModel(this.model);
-        this.group.fetch();
+        var self = this;
+        debugger;
+        this.model.groupId = this.options.groupId;
+        this.model.fetch({
+          success: function(){
+            self.render();
+          }
+        });
     },
 
     render: function() {
         $(this.el).html(this.template({
-            group: this.group}));
+            group: this.model}));
 
         return $(this.el);
     }
@@ -680,7 +683,8 @@ app.View.GroupsView = Backbone.View.extend({
         this.model.url = '/tatami/rest/statuses/group_timeline?groupId=' + this.groupId;
 
         this.views.groupDetails = new app.View.GroupDetailsView({
-            model: this.groupId
+            model: new app.Model.GroupModel(),
+            groupId: this.groupId
         });
 
         this.views.list = new app.View.TimeLineView({
@@ -694,7 +698,7 @@ app.View.GroupsView = Backbone.View.extend({
     },
 
     render:function () {
-        $(this.el).append(this.views.groupDetails.render());
+        $(this.el).append(this.views.groupDetails.$el);
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
         return $(this.el);
