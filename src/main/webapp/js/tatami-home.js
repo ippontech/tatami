@@ -1,4 +1,3 @@
-
 _.templateSettings = {
     interpolate: /<\@\=(.+?)\@\>/gim,
     evaluate: /<\@(.+?)\@\>/gim
@@ -657,7 +656,6 @@ app.View.GroupDetailsView = Backbone.View.extend({
 
     initialize:function () {
         var self = this;
-        debugger;
         this.model.groupId = this.options.groupId;
         this.model.fetch({
           success: function(){
