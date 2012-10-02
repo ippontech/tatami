@@ -103,7 +103,7 @@ public class AccountGroupsController {
     @RequestMapping(value = "/account/groups/edit",
             method = RequestMethod.POST)
     public ModelAndView doEditGroup(@ModelAttribute("group")
-                                        Group group) {
+                                    Group group) {
 
         if (group.getGroupId() == null) {
             return new ModelAndView("redirect:/tatami/account/groups");
@@ -130,7 +130,7 @@ public class AccountGroupsController {
     @RequestMapping(value = "/account/groups/edit/addMember",
             method = RequestMethod.POST)
     public ModelAndView addMembership(@ModelAttribute("userGroupMembership")
-                                         UserGroupMembership userGroupMembership) {
+                                      UserGroupMembership userGroupMembership) {
 
         if (log.isDebugEnabled()) {
             log.debug("Managing group membership for : " + userGroupMembership);

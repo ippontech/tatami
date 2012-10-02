@@ -2,8 +2,6 @@ package fr.ippon.tatami.repository;
 
 import java.util.Collection;
 
-import fr.ippon.tatami.domain.Status;
-
 /**
  * The StatusDetails Repository.
  *
@@ -15,5 +13,5 @@ public interface DiscussionRepository {
 
     Collection<String> findStatusIdsInDiscussion(String originalStatusId);
 
-	boolean hasReply(String string);
+    boolean hasReply(String string);
 }

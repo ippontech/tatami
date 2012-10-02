@@ -110,13 +110,13 @@ public class CassandraStatusRepository implements StatusRepository {
 
     private boolean computeDetailsAvailable(Status status) {
         boolean detailsAvailable = false;
-        if(StringUtils.isNotBlank(status.getReplyTo())) {
+        if (StringUtils.isNotBlank(status.getReplyTo())) {
             detailsAvailable = true;
-        } else if(discussionRepository.hasReply(status.getStatusId())) {
+        } else if (discussionRepository.hasReply(status.getStatusId())) {
             detailsAvailable = true;
-        } else if(StringUtils.isNotBlank(status.getSharedByUsername())) {
+        } else if (StringUtils.isNotBlank(status.getSharedByUsername())) {
             detailsAvailable = true;
-        } else if(sharesRepository.hasBeenShared(status.getStatusId())) {
+        } else if (sharesRepository.hasBeenShared(status.getStatusId())) {
             detailsAvailable = true;
         }
         return detailsAvailable;

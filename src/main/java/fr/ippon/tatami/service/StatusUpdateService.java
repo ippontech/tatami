@@ -1,36 +1,19 @@
 package fr.ippon.tatami.service;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.DaylineRepository;
-import fr.ippon.tatami.repository.DiscussionRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.GroupMembersRepository;
-import fr.ippon.tatami.repository.GrouplineRepository;
-import fr.ippon.tatami.repository.MentionlineRepository;
-import fr.ippon.tatami.repository.StatusRepository;
-import fr.ippon.tatami.repository.TagCounterRepository;
-import fr.ippon.tatami.repository.TagFollowerRepository;
-import fr.ippon.tatami.repository.TaglineRepository;
-import fr.ippon.tatami.repository.TimelineRepository;
-import fr.ippon.tatami.repository.TrendRepository;
-import fr.ippon.tatami.repository.UserGroupRepository;
-import fr.ippon.tatami.repository.UserTrendRepository;
-import fr.ippon.tatami.repository.UserlineRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.DomainUtil;
+import javax.inject.Inject;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class StatusUpdateService {
@@ -183,7 +166,7 @@ public class StatusUpdateService {
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                         mentionUser(status, mentionedLogin);
                     }
-                }  else { // This is a public status
+                } else { // This is a public status
                     mentionUser(status, mentionedLogin);
                 }
             }

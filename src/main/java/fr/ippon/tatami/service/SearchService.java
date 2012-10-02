@@ -1,11 +1,11 @@
 package fr.ippon.tatami.service;
 
-import java.util.Collection;
-import java.util.Map;
-
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Service used to search statuses and users.
@@ -48,9 +48,9 @@ public interface SearchService {
      * @param size  the size of a page
      */
     Map<String, SharedStatusInfo> searchStatus(String domain,
-            String query,
-            int page,
-            int size);
+                                               String query,
+                                               int page,
+                                               int size);
 
 
     /**
@@ -66,5 +66,5 @@ public interface SearchService {
     void removeUser(User user);
 
     Collection<String> searchUserByPrefix(String domain,
-            String prefix);
+                                          String prefix);
 }

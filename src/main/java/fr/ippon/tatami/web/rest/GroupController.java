@@ -5,10 +5,8 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
-import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -57,7 +55,7 @@ public class GroupController {
                 break;
             }
         }
-        if (group ==  null) {
+        if (group == null) {
             if (log.isInfoEnabled()) {
                 log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                         "group ID = " + groupId);
@@ -75,9 +73,9 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     public Collection<Status> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
-                                               @RequestParam(required = false) Integer count,
-                                               @RequestParam(required = false) String since_id,
-                                               @RequestParam(required = false) String max_id) {
+                                                 @RequestParam(required = false) Integer count,
+                                                 @RequestParam(required = false) String since_id,
+                                                 @RequestParam(required = false) String max_id) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to get statuses for group : " + groupId);
@@ -92,15 +90,15 @@ public class GroupController {
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         boolean userIsMemberOfGroup = false;
         for (Group group : groups) {
-             if (group.getGroupId().equals(groupId)) {
-                 userIsMemberOfGroup = true;
-                 break;
-             }
+            if (group.getGroupId().equals(groupId)) {
+                userIsMemberOfGroup = true;
+                break;
+            }
         }
         if (!userIsMemberOfGroup) {
             if (log.isInfoEnabled()) {
                 log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                    "group ID = " + groupId);
+                        "group ID = " + groupId);
             }
             return new ArrayList<Status>();
         }

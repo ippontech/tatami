@@ -76,7 +76,7 @@ public class TimelineController {
                     break;
                 }
             }
-            if (group ==  null) {
+            if (group == null) {
                 if (log.isInfoEnabled()) {
                     log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                             "group ID = " + status.getGroupId());

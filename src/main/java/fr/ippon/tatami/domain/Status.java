@@ -102,7 +102,7 @@ public class Status {
     private String gravatar;
 
     private boolean favorite;
-    
+
     private boolean detailsAvailable;
 
     /**
@@ -314,5 +314,5 @@ public class Status {
                 ", removed=" + removed +
                 '}';
     }
-    
+
 }

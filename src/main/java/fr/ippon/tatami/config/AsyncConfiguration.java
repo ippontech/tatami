@@ -1,9 +1,9 @@
 package fr.ippon.tatami.config;
 
-import java.util.concurrent.Executor;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.search.elasticsearch.ElasticsearchSearchService;
+import fr.ippon.tatami.service.search.lucene.LuceneIndexReaderReloader;
+import fr.ippon.tatami.service.search.lucene.LuceneSearchService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
@@ -14,12 +14,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.search.elasticsearch.ElasticsearchSearchService;
-import fr.ippon.tatami.service.search.lucene.LuceneIndexReaderReloader;
-import fr.ippon.tatami.service.search.lucene.LuceneSearchService;
+import javax.inject.Inject;
+import java.util.concurrent.Executor;
 
-import static fr.ippon.tatami.config.Constants.*;
+import static fr.ippon.tatami.config.Constants.ELASTICSEARCH_ENGINE;
+import static fr.ippon.tatami.config.Constants.LUCENE_ENGINE;
 
 
 @Configuration

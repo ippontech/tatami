@@ -1,10 +1,5 @@
 package fr.ippon.tatami.config;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.inject.Inject;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +24,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
-import static fr.ippon.tatami.config.Constants.*;
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+
+import static fr.ippon.tatami.config.Constants.ELASTICSEARCH_ENGINE;
+import static fr.ippon.tatami.config.Constants.LUCENE_ENGINE;
 
 /**
  * Search configuration : uses Elastic Search if it is configured, basic Lucene otherwise.
@@ -46,10 +46,10 @@ public class SearchConfiguration {
 
     @Bean(name = "searchEngine")
     public String searchEngine() {
-    	String searchEngine = env.getProperty("search.engine");
-    	if (StringUtils.isBlank(searchEngine)) {
-    		searchEngine = LUCENE_ENGINE;
-    	}
+        String searchEngine = env.getProperty("search.engine");
+        if (StringUtils.isBlank(searchEngine)) {
+            searchEngine = LUCENE_ENGINE;
+        }
         return searchEngine;
     }
 
@@ -67,13 +67,13 @@ public class SearchConfiguration {
             String nodes = env.getRequiredProperty("elasticsearch.cluster.nodes");
             String[] nodesAddresses = nodes.split(",");
             if (nodesAddresses.length == 0) {
-            	throw new IllegalStateException("ES client must have at least one node to connect to");
+                throw new IllegalStateException("ES client must have at least one node to connect to");
             }
 
             for (String nodeAddress : nodesAddresses) {
-            	String[] nodeConf = nodeAddress.split(":");
-            	Integer nodePort = Integer.valueOf((nodeConf.length>1) ? nodeConf[1] : env.getRequiredProperty("elasticsearch.cluster.default.communication.port"));
-            	client.addTransportAddress(new InetSocketTransportAddress(nodeConf[0], nodePort));
+                String[] nodeConf = nodeAddress.split(":");
+                Integer nodePort = Integer.valueOf((nodeConf.length > 1) ? nodeConf[1] : env.getRequiredProperty("elasticsearch.cluster.default.communication.port"));
+                client.addTransportAddress(new InetSocketTransportAddress(nodeConf[0], nodePort));
             }
 
             if (log.isDebugEnabled()) {
