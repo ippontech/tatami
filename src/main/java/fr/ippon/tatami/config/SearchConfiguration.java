@@ -46,7 +46,7 @@ public class SearchConfiguration {
 
     @Bean(name = "searchEngine")
     public String searchEngine() {
-    	String searchEngine = env.getProperty("tatami.search.engine");
+    	String searchEngine = env.getProperty("search.engine");
     	if (StringUtils.isBlank(searchEngine)) {
     		searchEngine = LUCENE_ENGINE;
     	}
