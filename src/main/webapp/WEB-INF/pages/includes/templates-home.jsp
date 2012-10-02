@@ -91,7 +91,7 @@
 <script type="text/template" id="profile-follow-suggest">
   <div class="row-fluid">
       <div class="well">
-          <table class="table table-center" id="follow-suggest">
+          <table class="table profile-infos" id="follow-suggest">
               <thead>
                   <tr>
                       <th>
@@ -135,8 +135,43 @@
 </script>
 
 <script type="text/template" id="group-details">
-    <div class="row-fluid">
-      <h1> <@= group.get('name') @>   </h1>
+    <div class="well" style="padding: 0px;">
+        <@ if (group.get('name') != undefined) { @>
+        <div class="row-fluid">
+          <table class="table profile-infos">
+              <tr>
+                  <th>
+                      <fmt:message key="tatami.group.name"/>
+                  </th>
+                  <th>
+                      <fmt:message key="tatami.group.add.access"/>
+                  </th>
+                  <th>
+                      <fmt:message key="tatami.group.counter"/>
+                  </th>
+              </tr>
+              <tr>
+                  <td>
+                      <@= group.get('name') @>
+                  </td>
+                  <td>
+                      <@ if (group.get('publicGroup') === true) { @>
+                          <span class="label label-warning"><fmt:message
+                                  key="tatami.group.add.public"/></span>
+                                      <@ } else { @>
+                          <span class="label label-info"><fmt:message
+                                  key="tatami.group.add.private"/></span>
+                      <@ } @>
+                  </td>
+                  <td>
+                      <span class="badge badge-info"><@= group.get('counter') @></span>
+                  </td>
+              </tr>
+          </table>
+        </div>
+        <@ } else { @>
+           <h5>&nbsp;<fmt:message key="tatami.group.select"/></h5>
+        <@ } @>
     </div>
 </script>
 
@@ -144,7 +179,7 @@
     <div class="row-fluid">
         <ul class="nav nav-stacked nav-pills">
             <@ groupsCollection.each(function(group) { @>
-            <li><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
+            <li id="group-list-<@= group.get('groupId') @>"><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
             <@ }); @>
         </ul>
     </div>

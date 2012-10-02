@@ -29,7 +29,7 @@
                         <div id='follow-action'></div>
                       </div>
                       <div class="span8">
-                        <table class="table table-center hidden-phone nomargin">
+                        <table class="table profile-infos hidden-phone nomargin">
                           <thead>
                             <tr>
                               <th>

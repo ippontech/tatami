@@ -662,6 +662,8 @@ app.View.GroupDetailsView = Backbone.View.extend({
             self.render();
           }
         });
+        $("#groupsList li").removeClass("active");
+        $("#group-list-" + this.model.groupId).addClass("active");
     },
 
     render: function() {

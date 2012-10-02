@@ -30,11 +30,11 @@
                 </div>
 
                 <!-- Follow -->
-                <div id="profileFollow" class="alert alert-status">
+                <div id="profileFollow" class="alert alert-status hidden-phone">
                 </div>
 
                 <!-- Trends -->
-                <div id="profileTrends" class="alert alert-status">
+                <div id="profileTrends" class="alert alert-status hidden-phone">
                     <div>
                         <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
                     </div>
@@ -54,32 +54,32 @@
                     <ul class="nav nav-tabs homeMenu">
                         <li class="active">
                             <a href="#/timeline">
-                                <i class="icon-th-list"></i> <fmt:message key="tatami.timeline"/>
+                                <i class="icon-th-list"></i> <span class="hidden-phone"><fmt:message key="tatami.timeline"/></span>
                             </a>
                         </li>
                         <li>
                             <a href="#/mention">
-                                <i class="icon-user"></i> <fmt:message key="tatami.mentions"/>
+                                <i class="icon-user"></i> <span class="hidden-phone"><fmt:message key="tatami.mentions"/></span>
                             </a>
                         </li>
                         <li>
                             <a href="#/groups">
-                                <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                <i class="icon-th"></i> <span class="hidden-phone"><fmt:message key="tatami.menu.groups"/></span>
                             </a>
                         </li>
                         <li>
                             <a href="#/tags">
-                                <i class="icon-tags"></i> <fmt:message key="tatami.tags"/>
+                                <i class="icon-tags"></i> <span class="hidden-phone"><fmt:message key="tatami.tags"/></span>
                             </a>
                         </li>
                         <li>
                             <a href="#/favorite">
-                                <i class="icon-star"></i> <fmt:message key="tatami.user.favoritestatus"/>
+                                <i class="icon-star"></i> <span class="hidden-phone"><fmt:message key="tatami.user.favoritestatus"/></span>
                             </a>
                         </li>
                         <li>
                             <a href="#/search">
-                                <i class="icon-search"></i> <fmt:message key="tatami.search"/>
+                                <i class="icon-search"></i> <span class="hidden-phone"><fmt:message key="tatami.search"/></span>
                             </a>
                         </li>
                     </ul>
