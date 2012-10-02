@@ -71,6 +71,9 @@ app.View.UpdateView = Backbone.View.extend({
 
   initialize: function() {
     $(this.el).addClass('row-fluid');
+      this.groupsCollection = new app.Collection.GroupsCollection();
+      this.groupsCollection.fetch();
+      this.groupsCollection.bind("reset", this.render, this);
   },
 
   events: {
@@ -109,7 +112,29 @@ app.View.UpdateView = Backbone.View.extend({
 
   render: function() {
     var $el = $(this.el);
-    $el.html(this.template());
+    $el.html(this.template({
+        groupsCollection: this.groupsCollection}));
+
+      $("#updateStatusContent").focus(function () {
+          $(this).css("height", "200px");
+      });
+      $("#updateStatusContent").charCount({
+          css:'counter',
+          cssWarning:'counter_warning',
+          cssExceeded:'counter_exceeded',
+          allowed:500,
+          warning:50,
+          counterText:text_characters_left + " "
+      });
+      $("#updateStatusBtn").popover({
+          animation:true,
+          placement:'bottom',
+          trigger:'manual'
+      });
+      $("#contentHelp").popover({
+          animation:true,
+          placement:'right'
+      });
     return $(this.el);
   }
 });
@@ -963,17 +988,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
             model:new app.Model.ProfileModel()
         });
         $('#profileContent').html(profile.render());
-        $("#updateStatusContent").focus(function () {
-            $(this).css("height", "200px");
-        });
-        $("#updateStatusContent").charCount({
-            css:'counter',
-            cssWarning:'counter_warning',
-            cssExceeded:'counter_exceeded',
-            allowed:500,
-            warning:50,
-            counterText:text_characters_left + " "
-        });
         $("#updateStatusContent").bind('keypress', function (e) {
             var keycode = (e.keycode ? e.keycode : e.which);
             if (keycode == 64) { //the user pressed the "@" key
@@ -981,16 +995,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
             } else if (keycode == 35) { //the user pressed the "#" key
                // TODO drop down list of tags
             }
-        });
-
-        $("#updateStatusBtn").popover({
-            animation:true,
-            placement:'bottom',
-            trigger:'manual'
-        });
-        $("#contentHelp").popover({
-            animation:true,
-            placement:'right'
         });
 
         var groupList = new app.View.GroupsListView();

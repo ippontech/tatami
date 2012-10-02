@@ -67,6 +67,14 @@
       <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content"></textarea>
       <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
     </div>
+    <div class="contentGroup"><i class="icon-th"/> <fmt:message key="tatami.group.name"/> :&nbsp;
+        <select id="updateStatusGroup" name="groupId">
+            <option value=""></option>
+            <@ groupsCollection.each(function(group) { @>
+                <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
+            <@ }); @>
+        </select>
+    </div>
     <div>
       <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block" data-content="<fmt:message key="tatami.status.update.success"/>"><fmt:message key="tatami.status.update"/></button>
     </div>
@@ -91,7 +99,7 @@
 <script type="text/template" id="profile-follow-suggest">
   <div class="row-fluid">
       <div class="well">
-          <table class="table profile-infos" id="follow-suggest">
+          <table class="table" id="follow-suggest">
               <thead>
                   <tr>
                       <th>

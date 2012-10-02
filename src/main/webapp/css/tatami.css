@@ -65,9 +65,13 @@ form {
 .counter_warning{color: #ff7f00;}
 .counter_exceeded{color: #ee0014;}
 
-#contentHelp{
+#contentHelp {
     font-size:80%;
     font-style: italic;
+}
+
+#updateStatusGroup {
+    height: 20px;
 }
 
 .trends {

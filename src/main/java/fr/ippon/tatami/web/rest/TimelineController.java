@@ -1,7 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.StatusDetails;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.web.rest.dto.Reply;
@@ -34,6 +38,12 @@ public class TimelineController {
     @Inject
     private StatusUpdateService statusUpdateService;
 
+    @Inject
+    private GroupService groupService;
+
+    @Inject
+    private AuthenticationService authenticationService;
+
     @ExceptionHandler(ConstraintViolationException.class)
     public void handleConstraintViolationException(ConstraintViolationException cve, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -54,7 +64,27 @@ public class TimelineController {
             log.debug("REST request to add status : " + status.getContent());
         }
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
-        statusUpdateService.postStatus(escapedContent);
+        if (status.getGroupId() == null || status.getGroupId().equals("")) {
+            statusUpdateService.postStatus(escapedContent);
+        } else {
+            User currentUser = authenticationService.getCurrentUser();
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            Group group = null;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(status.getGroupId())) {
+                    group = testGroup;
+                    break;
+                }
+            }
+            if (group ==  null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + status.getGroupId());
+                }
+            } else {
+                statusUpdateService.postStatusToGroup(escapedContent, group);
+            }
+        }
     }
 
     /**
