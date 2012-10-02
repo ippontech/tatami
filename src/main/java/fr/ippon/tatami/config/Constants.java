@@ -8,6 +8,9 @@ public class Constants {
     private Constants() {
     }
 
+    public static final String ELASTICSEARCH_ENGINE = "elasticsearch";
+    public static final String LUCENE_ENGINE = "lucene";
+    
     public static final int PAGINATION_SIZE = 50;
 
     public static final String DEFAULT_THEME = "bootstrap";

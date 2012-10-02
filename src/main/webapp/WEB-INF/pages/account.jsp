@@ -66,12 +66,12 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
+                            <c:if test="${param.success == 'true'}">
                                 <div class="alert alert-success">
                                     <fmt:message key="tatami.user.update.success"/>
                                 </div>
                             </c:if>
-                            <c:if test="${error == 'true'}">
+                            <c:if test="${param.error == 'true'}">
                                 <div class="alert alert-error">
                                     <fmt:message key="tatami.user.update.error"/>
                                 </div>

@@ -1,12 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.util.DomainUtil;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import fr.ippon.tatami.domain.SharedStatusInfo;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.util.DomainUtil;
 
 /**
  * @author dmartin
@@ -34,10 +35,6 @@ public class SearchController {
 
     @Inject
     private SearchService searchService;
-
-    @Inject
-    @Named("elasticsearchActivated")
-    private boolean elasticsearchActivated;
 
     @Inject
     private TimelineService timelineService;

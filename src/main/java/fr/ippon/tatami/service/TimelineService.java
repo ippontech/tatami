@@ -1,21 +1,36 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.domain.StatusDetails;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.DomainViolationException;
-import fr.ippon.tatami.service.util.DomainUtil;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import java.util.*;
+import fr.ippon.tatami.domain.SharedStatusInfo;
+import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.StatusDetails;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.DiscussionRepository;
+import fr.ippon.tatami.repository.FavoritelineRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.GrouplineRepository;
+import fr.ippon.tatami.repository.MentionlineRepository;
+import fr.ippon.tatami.repository.SharesRepository;
+import fr.ippon.tatami.repository.StatusRepository;
+import fr.ippon.tatami.repository.TaglineRepository;
+import fr.ippon.tatami.repository.TimelineRepository;
+import fr.ippon.tatami.repository.UserlineRepository;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.DomainViolationException;
+import fr.ippon.tatami.service.util.DomainUtil;
 
 /**
  * Manages the timeline.

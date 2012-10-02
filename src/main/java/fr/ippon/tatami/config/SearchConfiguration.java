@@ -1,7 +1,10 @@
 package fr.ippon.tatami.config;
 
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchServerNodeFactory;
-import fr.ippon.tatami.config.elasticsearch.ElasticSearchSettings;
+import java.io.File;
+import java.io.IOException;
+
+import javax.inject.Inject;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,14 +20,16 @@ import org.apache.lucene.util.Version;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
+import static fr.ippon.tatami.config.Constants.*;
 
 /**
  * Search configuration : uses Elastic Search if it is configured, basic Lucene otherwise.
@@ -37,61 +42,49 @@ public class SearchConfiguration {
     @Inject
     private Environment env;
 
-    // ElasticSearch or Lucene configuration ?
+    // ElasticSearch or Lucene configuration ? Lucene is the default choice
 
-    @Bean(name = "elasticsearchActivated")
-    public boolean elasticsearchActivated() {
-        return env.getProperty("elasticsearch.enabled", Boolean.class);
+    @Bean(name = "searchEngine")
+    public String searchEngine() {
+    	String searchEngine = env.getProperty("search.engine");
+    	if (StringUtils.isBlank(searchEngine)) {
+    		searchEngine = LUCENE_ENGINE;
+    	}
+        return searchEngine;
     }
 
     // ElasticSearch configuration
-
     @Bean
-    public ElasticSearchSettings esSettings() {
-        if (elasticsearchActivated()) {
-            String configPath = env.getRequiredProperty("elasticsearch.path.conf");
-            ElasticSearchSettings settings = null;
-            if (StringUtils.isBlank(configPath)) {
-                settings = new ElasticSearchSettings();
-            } else {
-                settings = new ElasticSearchSettings(configPath);
-            }
-            return settings;
-        } else {
-            return null;
-        }
-    }
-
-    @Bean(name = "nodeFactory")
-    public ElasticSearchServerNodeFactory nodeFactory() {
-        if (elasticsearchActivated()) {
-            final ElasticSearchServerNodeFactory factory = new ElasticSearchServerNodeFactory();
-            factory.setEsSettings(esSettings());
-            factory.setIndexName(indexName());
-            factory.setElasticsearchActivated(elasticsearchActivated());
-            return factory;
-        } else {
-            return null;
-        }
-    }
-
-    @Bean
-    @DependsOn("nodeFactory")
     public Client client() {
-        if (elasticsearchActivated()) {
-            log.info("Elasticsearch is activated, initializing client connection...");
-            final Client client = nodeFactory().getServerNode().client();
+        if (ELASTICSEARCH_ENGINE.equalsIgnoreCase(searchEngine())) {
+            log.info("Elasticsearch is Tatami's search engine. Initializing a client...");
+
+            final Settings settings = ImmutableSettings.settingsBuilder()
+                    .put("cluster.name", env.getRequiredProperty("elasticsearch.cluster.name")).build();
+            final TransportClient client = new TransportClient(settings);
+
+            // Looking for nodes configuration
+            String nodes = env.getRequiredProperty("elasticsearch.cluster.nodes");
+            String[] nodesAddresses = nodes.split(",");
+            if (nodesAddresses.length == 0) {
+            	throw new IllegalStateException("ES client must have at least one node to connect to");
+            }
+
+            for (String nodeAddress : nodesAddresses) {
+            	String[] nodeConf = nodeAddress.split(":");
+            	Integer nodePort = Integer.valueOf((nodeConf.length>1) ? nodeConf[1] : env.getRequiredProperty("elasticsearch.cluster.default.communication.port"));
+            	client.addTransportAddress(new InetSocketTransportAddress(nodeConf[0], nodePort));
+            }
 
             if (log.isDebugEnabled()) {
                 final NodesInfoResponse nir =
                         client.admin().cluster().nodesInfo(new NodesInfoRequest()).actionGet();
 
-                log.debug("Client is now connected to the " + nir.nodes().length + " nodes cluster named "
-                        + nir.clusterName());
+                log.debug("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
+                        + nir.clusterName() + "\"");
             }
             return client;
         } else {
-            log.warn("Elastic Search is NOT activated  : no client instantiated!");
             return null;
         }
     }
@@ -105,7 +98,7 @@ public class SearchConfiguration {
 
     @Bean
     public Analyzer analyzer() {
-        if (!elasticsearchActivated()) {
+        if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
             Analyzer analyzer = null;
             String language = env.getRequiredProperty("lucene.language");
             if (language.equals("French")) {
@@ -130,7 +123,7 @@ public class SearchConfiguration {
     }
 
     private Directory internalDirectory(String directoryName) {
-        if (!elasticsearchActivated()) {
+        if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
             log.info("Initializing Lucene " + directoryName + " directory");
             String lucenePath = env.getRequiredProperty("lucene.path");
             try {
@@ -166,7 +159,7 @@ public class SearchConfiguration {
     }
 
     private IndexWriter internalIndexWriter(Directory directory) {
-        if (!elasticsearchActivated()) {
+        if (!ELASTICSEARCH_ENGINE.equalsIgnoreCase(searchEngine())) {
             try {
                 if (directory != null) {
                     Analyzer analyzer = analyzer();
@@ -205,7 +198,7 @@ public class SearchConfiguration {
     }
 
     private SearcherManager internalSearcherManager(IndexWriter indexWriter) {
-        if (!elasticsearchActivated()) {
+        if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
             try {
                 if (indexWriter != null) {
                     SearcherManager searcherManager = new SearcherManager(indexWriter, true, null);
@@ -214,7 +207,7 @@ public class SearchConfiguration {
                     return null;
                 }
             } catch (IOException e) {
-                log.error("Lucene I/O error wnile reading : " + e.getMessage());
+                log.error("Lucene I/O error while reading : " + e.getMessage());
                 if (log.isInfoEnabled()) {
                     e.printStackTrace();
                 }

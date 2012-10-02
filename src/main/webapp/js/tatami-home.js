@@ -762,14 +762,17 @@ app.View.TagsSearchView = Backbone.View.extend({
 
     var self = this;
 
-    _.each($(this.el).serializeArray(), function(input){
-      if(input.name === 'search')
-        self.options.tag =input.value;
+    _.each($(this.el).serializeArray(), function(input) {
+      if (input.name === 'search') {
+        self.options.tag = self.escapeField(input.value + '');
+      }
     });
 
     this.search();
   },
-
+  escapeField: function (value) {
+    return value.replace(new RegExp('["\'<>]', 'gi'), '');
+  },
   search: function () {
     app.router.navigate('//tags/' + this.options.tag, {trigger: false,replace:false});
     this.fetch();
@@ -843,9 +846,10 @@ app.View.SearchSearchView = Backbone.View.extend({
 
     var self = this;
 
-    _.each($(this.el).serializeArray(), function(input){
-      if(input.name === 'search')
-        self.model.options.search = input.value;
+    _.each($(this.el).serializeArray(), function(input) {
+      if (input.name === 'search') {
+        self.model.options.search = self.escapeField(input.value + '');
+      }
     });
 
     this.search();
@@ -855,7 +859,9 @@ app.View.SearchSearchView = Backbone.View.extend({
     app.router.navigate('//search/' + this.model.options.search, {trigger: false,replace:false});
     this.fetch();
   },
-
+  escapeField: function (value) {
+	    return value.replace(new RegExp('["\'<>]', 'gi'), '');
+  },
   fetch : function() {
     var self = this;
     if(typeof this.model.options.search !== 'undefined'){
@@ -873,7 +879,7 @@ app.View.SearchSearchView = Backbone.View.extend({
   },
 
   render: function () {
-    var search = (typeof this.model.options.search === 'undefined')? '':this.model.options.search;
+	var search = this.escapeField((typeof this.model.options.search === 'undefined')? '':this.model.options.search);
     $(this.el).html(this.template({search: search}));
     return $(this.el);
   }
