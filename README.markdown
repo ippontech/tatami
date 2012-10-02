@@ -43,7 +43,7 @@ If you want to use Tomcat instead of Jetty (which works better in development mo
 
 If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
 ```
-export MAVEN_OPTS="-XX:MaxPermSize=64m -Xms128m -Xmx1024m"
+export MAVEN_OPTS="-XX:PermSize=64m -XX:MaxPermSize=96m -Xms256m -Xmx1024m"
 ```
 
 If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :
