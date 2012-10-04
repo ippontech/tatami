@@ -544,5 +544,18 @@
         		"value" : "utf8(john_doe)"
         	}]
         }]
+    },
+    {
+        "name" : "UserGroups",
+            "keyType" : "UTF8Type",
+            "comparatorType" : "UTF8Type",
+            "defaultColumnValueType" : "UTF8Type",
+            "rows" : [{
+                "key" : "jdubois@ippon.fr",
+                "columns" : [{
+                    "name" : "group1",
+                    "value" : ""
+                }]
+        }]
     }]
 }
