@@ -123,6 +123,7 @@ public class TimelineService {
 
     public Collection<StatusDTO> buildStatusList(Map<String, SharedStatusInfo> line) {
         User currentUser = authenticationService.getCurrentUser();
+        Collection<Group> usergroups = groupService.getGroupsForUser(currentUser);
         Map<String, SharedStatusInfo> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
         Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
         for (String statusId : line.keySet()) {
@@ -145,35 +146,46 @@ public class TimelineService {
 
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(status.getStatusId());
+
+                    // Group check
+                    boolean hiddenStatus = false;
                     if (status.getGroupId() != null) {
                         statusDTO.setGroupId(status.getGroupId());
                         Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
-                        statusDTO.setGroupName(group.getName());
-                        statusDTO.setPublicGroup(group.isPublicGroup());
+                        // if this is a private group and the user is not part of it, he cannot see the status
+                        if (!group.isPublicGroup() && !usergroups.contains(group)) {
+                            hiddenStatus = true;
+                        } else {
+                            statusDTO.setPublicGroup(group.isPublicGroup());
+                            statusDTO.setGroupName(group.getName());
+                        }
                     }
-                    if (sharedStatusInfo != null) { // Manage shared statuses
-                        statusDTO.setTimelineId(sharedStatusInfo.getSharedStatusId());
-                        String sharedByLogin = sharedStatusInfo.getSharedByLogin();
-                        String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
-                        statusDTO.setSharedByUsername(sharedByUsername);
-                    } else {
-                        statusDTO.setTimelineId(status.getStatusId());
+
+                    if (!hiddenStatus) {
+                        if (sharedStatusInfo != null) { // Manage shared statuses
+                            statusDTO.setTimelineId(sharedStatusInfo.getSharedStatusId());
+                            String sharedByLogin = sharedStatusInfo.getSharedByLogin();
+                            String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
+                            statusDTO.setSharedByUsername(sharedByUsername);
+                        } else {
+                            statusDTO.setTimelineId(status.getStatusId());
+                        }
+                        statusDTO.setContent(status.getContent());
+                        statusDTO.setUsername(status.getUsername());
+                        statusDTO.setStatusDate(status.getStatusDate());
+                        statusDTO.setReplyTo(status.getReplyTo());
+                        statusDTO.setReplyToUsername(status.getReplyToUsername());
+                        if (favoriteLine.containsKey(statusId)) {
+                            statusDTO.setFavorite(true);
+                        } else {
+                            statusDTO.setFavorite(false);
+                        }
+                        statusDTO.setFirstName(statusUser.getFirstName());
+                        statusDTO.setLastName(statusUser.getLastName());
+                        statusDTO.setGravatar(statusUser.getGravatar());
+                        statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+                        statuses.add(statusDTO);
                     }
-                    statusDTO.setContent(status.getContent());
-                    statusDTO.setUsername(status.getUsername());
-                    statusDTO.setStatusDate(status.getStatusDate());
-                    statusDTO.setReplyTo(status.getReplyTo());
-                    statusDTO.setReplyToUsername(status.getReplyToUsername());
-                    if (favoriteLine.containsKey(statusId)) {
-                        statusDTO.setFavorite(true);
-                    } else {
-                        statusDTO.setFavorite(false);
-                    }
-                    statusDTO.setFirstName(statusUser.getFirstName());
-                    statusDTO.setLastName(statusUser.getLastName());
-                    statusDTO.setGravatar(statusUser.getGravatar());
-                    statusDTO.setDetailsAvailable(status.isDetailsAvailable());
-                    statuses.add(statusDTO);
                 } else {
                     if (log.isDebugEnabled()) {
                         log.debug("Deleted user : " + status.getLogin());

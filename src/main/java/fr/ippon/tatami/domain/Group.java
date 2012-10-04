@@ -74,7 +74,7 @@ public class Group implements Comparable<Group> {
             return 1;
         }
         if (this.getName().equals(o.getName())) {
-            return -1; // To display duplicates
+            return this.getGroupId().compareTo(o.getGroupId()); // To display duplicates
         }
         return this.getName().compareTo(o.getName());
     }

@@ -96,7 +96,6 @@ public class StatusUpdateService {
         Group group = null;
         if (originalStatus.getGroupId() != null) {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
-
         }
         if (!originalStatus.getReplyTo().equals("")) {
             log.debug("Original status is also a reply, replying to the real original status instead.");
