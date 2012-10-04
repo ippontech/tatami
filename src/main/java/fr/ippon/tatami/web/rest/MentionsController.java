@@ -1,7 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class MentionsController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listMentionStatus(@RequestParam(required = false) Integer count,
+    public Collection<StatusDTO> listMentionStatus(@RequestParam(required = false) Integer count,
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {
 

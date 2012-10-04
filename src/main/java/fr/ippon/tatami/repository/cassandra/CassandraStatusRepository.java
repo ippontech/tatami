@@ -114,8 +114,6 @@ public class CassandraStatusRepository implements StatusRepository {
             detailsAvailable = true;
         } else if (discussionRepository.hasReply(status.getStatusId())) {
             detailsAvailable = true;
-        } else if (StringUtils.isNotBlank(status.getSharedByUsername())) {
-            detailsAvailable = true;
         } else if (sharesRepository.hasBeenShared(status.getStatusId())) {
             detailsAvailable = true;
         }

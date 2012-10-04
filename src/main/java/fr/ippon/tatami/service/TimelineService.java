@@ -7,6 +7,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,10 +70,10 @@ public class TimelineService {
     @Inject
     private SearchService searchService;
 
-    public Status getStatus(String statusId) {
+    public StatusDTO getStatus(String statusId) {
         Map<String, SharedStatusInfo> line = new HashMap<String, SharedStatusInfo>();
         line.put(statusId, null);
-        Collection<Status> statusCollection = buildStatusList(line);
+        Collection<StatusDTO> statusCollection = buildStatusList(line);
         if (statusCollection.isEmpty()) {
             return null;
         } else {
@@ -115,15 +116,15 @@ public class TimelineService {
             line.put(statusIdInDiscussion, null);
         }
         // Enrich the details object with the complete statuses in the discussion
-        Collection<Status> statusesInDiscussion = buildStatusList(line);
+        Collection<StatusDTO> statusesInDiscussion = buildStatusList(line);
         details.setDiscussionStatuses(statusesInDiscussion);
         return details;
     }
 
-    public Collection<Status> buildStatusList(Map<String, SharedStatusInfo> line) {
+    public Collection<StatusDTO> buildStatusList(Map<String, SharedStatusInfo> line) {
         User currentUser = authenticationService.getCurrentUser();
         Map<String, SharedStatusInfo> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
-        Collection<Status> statuses = new ArrayList<Status>(line.size());
+        Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
         for (String statusId : line.keySet()) {
             SharedStatusInfo sharedStatusInfo = line.get(statusId);
             Status status = null;
@@ -142,37 +143,32 @@ public class TimelineService {
 
                     }
 
-                    // if the Status comes from ehcache, it has to be cloned.
-                    // ehcache shares the Status instances per statusId, but favorites are per user and
-                    // shared statuses are also per user
-                    Status statusCopy = new Status();
-                    statusCopy.setLogin(status.getLogin());
-                    statusCopy.setStatusId(status.getStatusId());
-                    statusCopy.setGroupId(status.getGroupId());
+                    StatusDTO statusDTO = new StatusDTO();
+                    statusDTO.setStatusId(status.getStatusId());
+                    statusDTO.setGroupId(status.getGroupId());
                     if (sharedStatusInfo != null) { // Manage shared statuses
-                        statusCopy.setTimelineId(sharedStatusInfo.getSharedStatusId());
+                        statusDTO.setTimelineId(sharedStatusInfo.getSharedStatusId());
                         String sharedByLogin = sharedStatusInfo.getSharedByLogin();
                         String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
-                        statusCopy.setSharedByUsername(sharedByUsername);
+                        statusDTO.setSharedByUsername(sharedByUsername);
                     } else {
-                        statusCopy.setTimelineId(status.getStatusId());
+                        statusDTO.setTimelineId(status.getStatusId());
                     }
-                    statusCopy.setContent(status.getContent());
-                    statusCopy.setUsername(status.getUsername());
-                    statusCopy.setDomain(status.getDomain());
-                    statusCopy.setStatusDate(status.getStatusDate());
-                    statusCopy.setReplyTo(status.getReplyTo());
-                    statusCopy.setReplyToUsername(status.getReplyToUsername());
+                    statusDTO.setContent(status.getContent());
+                    statusDTO.setUsername(status.getUsername());
+                    statusDTO.setStatusDate(status.getStatusDate());
+                    statusDTO.setReplyTo(status.getReplyTo());
+                    statusDTO.setReplyToUsername(status.getReplyToUsername());
                     if (favoriteLine.containsKey(statusId)) {
-                        statusCopy.setFavorite(true);
+                        statusDTO.setFavorite(true);
                     } else {
-                        statusCopy.setFavorite(false);
+                        statusDTO.setFavorite(false);
                     }
-                    statusCopy.setFirstName(statusUser.getFirstName());
-                    statusCopy.setLastName(statusUser.getLastName());
-                    statusCopy.setGravatar(statusUser.getGravatar());
-                    statusCopy.setDetailsAvailable(status.isDetailsAvailable());
-                    statuses.add(statusCopy);
+                    statusDTO.setFirstName(statusUser.getFirstName());
+                    statusDTO.setLastName(statusUser.getLastName());
+                    statusDTO.setGravatar(statusUser.getGravatar());
+                    statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+                    statuses.add(statusDTO);
                 } else {
                     if (log.isDebugEnabled()) {
                         log.debug("Deleted user : " + status.getLogin());
@@ -192,7 +188,7 @@ public class TimelineService {
      *
      * @return a status list
      */
-    public Collection<Status> getMentionline(int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getMentionline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Map<String, SharedStatusInfo> line =
@@ -208,7 +204,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getTagline(String tag, int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getTagline(String tag, int nbStatus, String since_id, String max_id) {
         if (tag == null || tag.isEmpty()) {
             tag = hashtagDefault;
         }
@@ -225,7 +221,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getGroupline(String groupId, Integer count, String since_id, String max_id) {
+    public Collection<StatusDTO> getGroupline(String groupId, Integer count, String since_id, String max_id) {
         Map<String, SharedStatusInfo> line = grouplineRepository.getGroupline(groupId, count, since_id, max_id);
         return buildStatusList(line);
     }
@@ -236,7 +232,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getTimeline(int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
         Map<String, SharedStatusInfo> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
@@ -251,7 +247,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<Status> getUserline(String username, int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getUserline(String username, int nbStatus, String since_id, String max_id) {
         String login = null;
         User currentUser = authenticationService.getCurrentUser();
         if (username == null || username.isEmpty()) { // current user
@@ -320,7 +316,7 @@ public class TimelineService {
      *
      * @return a status list
      */
-    public Collection<Status> getFavoritesline() {
+    public Collection<StatusDTO> getFavoritesline() {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         Map<String, SharedStatusInfo> line = favoritelineRepository.getFavoriteline(currentLogin);
         return this.buildStatusList(line);

@@ -483,12 +483,16 @@
         		"value" : "utf8(userWithStatus@ippon.fr)"
         	},
             {
+                "name" : "username",
+                "value" : "utf8(userWithStatus)"
+            },
+            {
                 "name" : "domain",
                 "value" : "utf8(ippon.fr)"
             },
         	{
         		"name" : "content",
-        		"value" : "utf8(Devoxx, c'est nowwwwww)"
+        		"value" : "utf8(Tatami is an enterprise social network)"
         	},
         	{
         		"name" : "statusDate",
@@ -501,9 +505,13 @@
         		"name" : "login",
         		"value" : "utf8(userWithStatus@ippon.fr)"
         	},
+            {
+                "name" : "username",
+                "value" : "utf8(userWithStatus)"
+            },
         	{
         		"name" : "content",
-        		"value" : "utf8(Devoxx, ça va déchirer)"
+        		"value" : "utf8(Tatami is fully Open Source)"
         	},
         	{
         		"name" : "statusDate",

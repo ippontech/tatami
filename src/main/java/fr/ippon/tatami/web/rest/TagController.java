@@ -1,8 +1,8 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,10 +35,10 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusForTag(@RequestParam(required = false, value = "tag") String tag,
-                                               @RequestParam(required = false) Integer count,
-                                               @RequestParam(required = false) String since_id,
-                                               @RequestParam(required = false) String max_id) {
+    public Collection<StatusDTO> listStatusForTag(@RequestParam(required = false, value = "tag") String tag,
+                                                   @RequestParam(required = false) Integer count,
+                                                   @RequestParam(required = false) String since_id,
+                                                   @RequestParam(required = false) String max_id) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to get statuses for tag : " + tag);

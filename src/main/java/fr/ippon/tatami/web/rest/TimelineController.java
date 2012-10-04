@@ -8,6 +8,7 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -120,7 +121,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Status getStatus(@PathVariable("statusId") String statusId) {
+    public StatusDTO getStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get status Id : " + statusId);
         }
@@ -161,7 +162,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatus(@RequestParam(required = false) Integer count,
+    public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
                                          @RequestParam(required = false) String since_id,
                                          @RequestParam(required = false) String max_id) {
         if (count == null || count == 0) {
@@ -177,7 +178,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusForUser(@RequestParam("screen_name") String username,
+    public Collection<StatusDTO> listStatusForUser(@RequestParam("screen_name") String username,
                                                 @RequestParam(required = false) Integer count,
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {

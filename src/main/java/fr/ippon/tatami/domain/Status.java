@@ -1,12 +1,6 @@
 package fr.ippon.tatami.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.format.ISODateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -26,36 +19,11 @@ import java.util.Date;
 @Table(name = "Status")
 public class Status {
 
-    private static DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
-
-    private static DateTimeFormatter basicDateFormatter = new DateTimeFormatterBuilder()
-            .appendDayOfMonth(1)
-            .appendLiteral(' ')
-            .appendMonthOfYearShortText()
-            .toFormatter();
-
-    private static DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
-            .appendDayOfMonth(1)
-            .appendLiteral(' ')
-            .appendMonthOfYearShortText()
-            .appendLiteral(' ')
-            .appendYear(4, 4)
-            .toFormatter();
-
-
     @Id
     private String statusId;
 
-    /**
-     * The timelineId is used on the client side :
-     * - When this is an original status, timelineId = statusId
-     * - When this is a shared status, timelineId = the id of this share in the user's timeline
-     */
-    private String timelineId;
-
     @NotNull
     @Column(name = "login")
-    @JsonIgnore
     private String login;
 
     @NotNull
@@ -64,7 +32,6 @@ public class Status {
 
     @NotNull
     @Column(name = "domain")
-    @JsonIgnore
     private String domain;
 
     @Column(name = "groupId")
@@ -79,10 +46,6 @@ public class Status {
     @Column(name = "statusDate")
     private Date statusDate;
 
-    private String iso8601StatusDate;
-
-    private String prettyPrintStatusDate;
-
     /**
      * If this status is a reply, the statusId of the original status.
      */
@@ -95,32 +58,10 @@ public class Status {
     @Column(name = "replyToUsername")
     private String replyToUsername;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String gravatar;
-
-    private boolean favorite;
-
     private boolean detailsAvailable;
 
-    /**
-     * If this status was shared, username of the user who shared it.
-     */
-    private String sharedByUsername;
-
     @Column(name = "removed")
-    @JsonIgnore
     private Boolean removed;
-
-    public String getISO8601StatusDate() {
-        return this.iso8601StatusDate;
-    }
-
-    public String getPrettyPrintStatusDate() {
-        return this.prettyPrintStatusDate;
-    }
 
     public String getStatusId() {
         return statusId;
@@ -128,14 +69,6 @@ public class Status {
 
     public void setStatusId(String statusId) {
         this.statusId = statusId;
-    }
-
-    public String getTimelineId() {
-        return timelineId;
-    }
-
-    public void setTimelineId(String timelineId) {
-        this.timelineId = timelineId;
     }
 
     public String getLogin() {
@@ -184,22 +117,6 @@ public class Status {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
-        DateTime dateTime = new DateTime(statusDate);
-        Period period =
-                new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis());
-
-        if (period.getMonths() < 1) { // Only format if it is more than 1 month old
-            this.iso8601StatusDate = iso8601Formatter.print(dateTime);
-        } else {
-            this.iso8601StatusDate = "";
-        }
-
-        if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
-            this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
-        } else {
-            this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
-        }
     }
 
     public String getReplyTo() {
@@ -218,52 +135,12 @@ public class Status {
         this.replyToUsername = replyToUsername;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getGravatar() {
-        return gravatar;
-    }
-
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
     public boolean isDetailsAvailable() {
         return detailsAvailable;
     }
 
     public void setDetailsAvailable(boolean detailsAvailable) {
         this.detailsAvailable = detailsAvailable;
-    }
-
-    public String getSharedByUsername() {
-        return sharedByUsername;
-    }
-
-    public void setSharedByUsername(String sharedByUsername) {
-        this.sharedByUsername = sharedByUsername;
     }
 
     public Boolean getRemoved() {
@@ -295,24 +172,16 @@ public class Status {
     public String toString() {
         return "Status{" +
                 "statusId='" + statusId + '\'' +
-                ", timelineId='" + timelineId + '\'' +
                 ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
-                ", iso8601StatusDate='" + iso8601StatusDate + '\'' +
-                ", prettyPrintStatusDate='" + prettyPrintStatusDate + '\'' +
                 ", replyTo='" + replyTo + '\'' +
                 ", replyToUsername='" + replyToUsername + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gravatar='" + gravatar + '\'' +
-                ", favorite=" + favorite +
-                ", sharedByUsername='" + sharedByUsername + '\'' +
+                ", detailsAvailable=" + detailsAvailable +
                 ", removed=" + removed +
                 '}';
     }
-
 }

@@ -1,12 +1,12 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -72,7 +72,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Status> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
+    public Collection<StatusDTO> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
                                                  @RequestParam(required = false) Integer count,
                                                  @RequestParam(required = false) String since_id,
                                                  @RequestParam(required = false) String max_id) {
@@ -81,7 +81,7 @@ public class GroupController {
             log.debug("REST request to get statuses for group : " + groupId);
         }
         if (groupId == null) {
-            return new ArrayList<Status>();
+            return new ArrayList<StatusDTO>();
         }
         if (count == null) {
             count = 20;
@@ -100,7 +100,7 @@ public class GroupController {
                 log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                         "group ID = " + groupId);
             }
-            return new ArrayList<Status>();
+            return new ArrayList<StatusDTO>();
         }
         return timelineService.getGroupline(groupId, count, since_id, max_id);
     }

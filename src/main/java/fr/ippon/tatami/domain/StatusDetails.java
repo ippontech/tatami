@@ -1,5 +1,7 @@
 package fr.ippon.tatami.domain;
 
+import fr.ippon.tatami.service.dto.StatusDTO;
+
 import java.util.Collection;
 
 /**
@@ -11,7 +13,7 @@ public class StatusDetails {
 
     private String StatusId;
 
-    private Collection<Status> discussionStatuses;
+    private Collection<StatusDTO> discussionStatuses;
 
     private Collection<String> sharedByLogins;
 
@@ -23,11 +25,11 @@ public class StatusDetails {
         StatusId = statusId;
     }
 
-    public Collection<Status> getDiscussionStatuses() {
+    public Collection<StatusDTO> getDiscussionStatuses() {
         return discussionStatuses;
     }
 
-    public void setDiscussionStatuses(Collection<Status> discussionStatuses) {
+    public void setDiscussionStatuses(Collection<StatusDTO> discussionStatuses) {
         this.discussionStatuses = discussionStatuses;
     }
 

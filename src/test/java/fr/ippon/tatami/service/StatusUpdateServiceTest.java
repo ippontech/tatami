@@ -4,6 +4,7 @@ import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -27,6 +28,7 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldPostStatus() throws Exception {
         String login = "userWhoPostStatus@ippon.fr";
+        String username = "userWhoPostStatus";
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
@@ -34,22 +36,22 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
         statusUpdateService.postStatus(content);
 
         /* verify */
-        Collection<Status> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
-        assertThatNewTestIsPosted(login, content, statusFromUserline);
+        Collection<StatusDTO> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
+        assertThatNewTestIsPosted(username, content, statusFromUserline);
 
-        Collection<Status> statusFromTimeline = timelineService.getTimeline(10, null, null);
-        assertThatNewTestIsPosted(login, content, statusFromTimeline);
+        Collection<StatusDTO> statusFromTimeline = timelineService.getTimeline(10, null, null);
+        assertThatNewTestIsPosted(username, content, statusFromTimeline);
 
-        Collection<Status> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
+        Collection<StatusDTO> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
         assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
 
     }
 
-    private void assertThatNewTestIsPosted(String login, String content, Collection<Status> statuses) {
+    private void assertThatNewTestIsPosted(String username, String content, Collection<StatusDTO> statuses) {
         assertThat(statuses, notNullValue());
         assertThat(statuses.size(), is(1));
-        Status status = (Status) statuses.toArray()[0];
-        assertThat(status.getLogin(), is(login));
+        StatusDTO status = (StatusDTO) statuses.toArray()[0];
+        assertThat(status.getUsername(), is(username));
         assertThat(status.getContent(), is(content));
     }
 
