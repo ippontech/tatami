@@ -1,5 +1,9 @@
 .homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
 
+body {
+    background-color: #e9e9e9;
+}
+
 /*
   Profile Stats table
 */

@@ -71,15 +71,21 @@
   </tr>
   <tr>
       <td>
-          <@ if (status.sharedByUsername != null) { @>
-            <div class="pull-right"><a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a></div>
+          <@ if (status.groupId != null) { @>
+              <a href="/tatami/#/groups/<@= status.groupId @>">
+              <@ if (status.publicGroup === true) { @>
+                          <span class="label label-warning"><@= status.groupName @></span>
+              <@ } else { @>
+                          <span class="label label-info"><@= status.groupName @></span>
+              <@ } @>
+              </a>
           <@ } @>
-      </td>
-  </tr>
-  <tr>
-      <td>
+          <@ if (status.sharedByUsername != null) { @>
+                 <a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a>
+           <@ } @>
+
           <@ if (status.replyTo != '') { @>
-          <div class="pull-right"><a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a></div>
+                <a href="/tatami/profile/<@= status.replyToUsername @>/#/status/<@= status.replyTo @>" class="userStatus-info"><i class="icon-share-alt"></i> <fmt:message key="tatami.user.status.replyto"/> <em>@<@= status.replyToUsername @></em></a>
           <@ } @>
       </td>
   </tr>

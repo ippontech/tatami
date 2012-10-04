@@ -60,7 +60,7 @@ public class GroupService {
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
     }
 
-    @CacheEvict(value = "group-user-cache", allEntries = true)
+    @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
         groupDetailsRepository.editGroupDetails(group.getGroupId(), group.getName(), group.getDescription());
     }
@@ -88,6 +88,11 @@ public class GroupService {
         return getGroupDetails(user, groupIds);
     }
 
+    @Cacheable(value = "group-cache")
+    public Group getGroupById(String domain, String groupId) {
+        return internalGetGroupById(domain, groupId);
+    }
+
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(currentUser.getLogin());
@@ -98,19 +103,24 @@ public class GroupService {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
         for (String groupId : groupIds) {
-            Group group = groupRepository.getGroupById(domain, groupId);
-            Group groupDetails = groupDetailsRepository.getGroupDetails(groupId);
-            group.setName(groupDetails.getName());
-            group.setPublicGroup(groupDetails.isPublicGroup());
-            group.setDescription(groupDetails.getDescription());
-            long counter = groupCounterRepository.getGroupCounter(domain, groupId);
-            group.setCounter(counter);
+            Group group = internalGetGroupById(domain, groupId);
             groups.add(group);
         }
         return groups;
     }
 
-    @CacheEvict(value = "group-user-cache", allEntries = true)
+    private Group internalGetGroupById(String domain, String groupId) {
+        Group group = groupRepository.getGroupById(domain, groupId);
+        Group groupDetails = groupDetailsRepository.getGroupDetails(groupId);
+        group.setName(groupDetails.getName());
+        group.setPublicGroup(groupDetails.isPublicGroup());
+        group.setDescription(groupDetails.getDescription());
+        long counter = groupCounterRepository.getGroupCounter(domain, groupId);
+        group.setCounter(counter);
+        return group;
+    }
+
+    @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void addMemberToGroup(User user, Group group) {
         String groupId = group.getGroupId();
         Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
@@ -131,7 +141,7 @@ public class GroupService {
         }
     }
 
-    @CacheEvict(value = "group-user-cache", allEntries = true)
+    @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void removeMemberFromGroup(User user, Group group) {
         String groupId = group.getGroupId();
         Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());

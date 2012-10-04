@@ -38,6 +38,13 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="group-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false">
+    </cache>
+
     <cache name="favorites-cache"
            maxElementsInMemory="50000"
            eternal="false"

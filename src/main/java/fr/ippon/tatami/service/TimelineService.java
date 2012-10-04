@@ -1,9 +1,6 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.domain.StatusDetails;
-import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
@@ -66,6 +63,9 @@ public class TimelineService {
 
     @Inject
     private AuthenticationService authenticationService;
+
+    @Inject
+    private GroupService groupService;
 
     @Inject
     private SearchService searchService;
@@ -145,7 +145,12 @@ public class TimelineService {
 
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(status.getStatusId());
-                    statusDTO.setGroupId(status.getGroupId());
+                    if (status.getGroupId() != null) {
+                        statusDTO.setGroupId(status.getGroupId());
+                        Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
+                        statusDTO.setGroupName(group.getName());
+                        statusDTO.setPublicGroup(group.isPublicGroup());
+                    }
                     if (sharedStatusInfo != null) { // Manage shared statuses
                         statusDTO.setTimelineId(sharedStatusInfo.getSharedStatusId());
                         String sharedByLogin = sharedStatusInfo.getSharedByLogin();

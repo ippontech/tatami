@@ -51,7 +51,7 @@
 
             <div class="span8">
                 <div class="tabbable">
-                    <ul class="nav nav-tabs homeMenu">
+                    <ul class="nav nav-pills homeMenu">
                         <li class="active">
                             <a href="#/timeline">
                                 <i class="icon-th-list"></i> <span class="hidden-phone"><fmt:message key="tatami.timeline"/></span>

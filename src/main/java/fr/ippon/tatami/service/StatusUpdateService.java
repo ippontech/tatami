@@ -66,6 +66,9 @@ public class StatusUpdateService {
     private GroupMembersRepository groupMembersRepository;
 
     @Inject
+    private GroupService groupService;
+
+    @Inject
     private TrendRepository trendsRepository;
 
     @Inject
@@ -90,13 +93,18 @@ public class StatusUpdateService {
 
     public void replyToStatus(String content, String replyTo) {
         Status originalStatus = statusRepository.findStatusById(replyTo);
+        Group group = null;
+        if (originalStatus.getGroupId() != null) {
+            group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
+
+        }
         if (!originalStatus.getReplyTo().equals("")) {
             log.debug("Original status is also a reply, replying to the real original status instead.");
             Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getReplyTo());
-            Status replyStatus = createStatus(content, null, realOriginalStatus.getStatusId(), originalStatus.getUsername());
+            Status replyStatus = createStatus(content, group, realOriginalStatus.getStatusId(), originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
-            Status replyStatus = createStatus(content, null, replyTo, originalStatus.getUsername());
+            Status replyStatus = createStatus(content, group, replyTo, originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
         }
     }
