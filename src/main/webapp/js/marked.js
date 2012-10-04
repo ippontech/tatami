@@ -374,7 +374,7 @@ inline.lexer = function(src) {
         text = escape(cap[1]);
         href = text;
       }
-      out += '<a target="_blank" href="'
+      out += '<a href="'
         + href
         + '" target="_blank">'
         + text
@@ -387,7 +387,7 @@ inline.lexer = function(src) {
       src = src.substring(cap[0].length);
       text = escape(cap[1]);
       href = text;
-      out += '<a target="_blank" href="'
+      out += '<a href="'
         + href
         + '" target="_blank">'
         + text
@@ -498,7 +498,7 @@ inline.lexer = function(src) {
 
 function outputLink(cap, link) {
   if (cap[0][0] !== '!') {
-    return '<a target="_blank" href="'
+    return '<a href="'
       + escape(link.href)
       + '" target="_blank"'
       + (link.title
