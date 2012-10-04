@@ -5,6 +5,8 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class StatusUpdateService {
 
     private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
-    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#(\\w+)");
+    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
     @Inject
     private FollowerRepository followerRepository;
@@ -100,6 +102,7 @@ public class StatusUpdateService {
     }
 
     private Status createStatus(String content, Group group, String replyTo, String replyToUsername) {
+    	content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
         if (log.isDebugEnabled()) {
             startTime = Calendar.getInstance().getTimeInMillis();
