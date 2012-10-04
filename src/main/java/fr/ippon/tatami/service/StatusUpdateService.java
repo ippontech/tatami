@@ -24,7 +24,7 @@ public class StatusUpdateService {
 
     private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
-    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
+    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#([^\\sÂ !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
     @Inject
     private FollowerRepository followerRepository;
