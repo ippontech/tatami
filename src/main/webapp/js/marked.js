@@ -307,7 +307,7 @@ var inline = {
   code: /^(`+)([^\0]*?[^`])\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   mention: /@([a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*)/,
-  tags: /#([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*)/,
+  tags: /#([^\s !"#$%'()*+,./:;<=>?@\\\[\]^_`{|}~-]+)/,
   text: /^[^\0]+?(?=[\\<!\[_*`]| {2,}\n|$)/
 };
 
@@ -376,7 +376,7 @@ inline.lexer = function(src) {
       }
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -389,7 +389,7 @@ inline.lexer = function(src) {
       href = text;
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -500,7 +500,7 @@ function outputLink(cap, link) {
   if (cap[0][0] !== '!') {
     return '<a href="'
       + escape(link.href)
-      + '"'
+      + '" target="_blank"'
       + (link.title
       ? ' title="'
       + escape(link.title)
