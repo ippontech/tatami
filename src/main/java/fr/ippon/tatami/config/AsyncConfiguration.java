@@ -33,7 +33,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
 
     @Bean
     public SearchService searchService() {
-        SearchService searchService = null;
+        SearchService searchService;
         if (ELASTICSEARCH_ENGINE.equalsIgnoreCase(searchEngine)) {
             log.info("Elastic Search is activated.");
             searchService = new ElasticsearchSearchService();

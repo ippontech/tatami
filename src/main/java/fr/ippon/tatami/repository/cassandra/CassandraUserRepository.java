@@ -84,7 +84,7 @@ public class CassandraUserRepository implements UserRepository {
     @Override
     @Cacheable("user-cache")
     public User findUserByLogin(String login) {
-        User user = null;
+        User user;
         try {
             user = em.find(User.class, login);
         } catch (Exception e) {

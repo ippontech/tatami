@@ -89,7 +89,7 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     private void internalAddStatus(Status status) throws IOException {
-        XContentBuilder jsonifiedObject = null;
+        XContentBuilder jsonifiedObject;
 
         jsonifiedObject = XContentFactory.jsonBuilder()
                 .startObject()
@@ -202,7 +202,7 @@ public class ElasticsearchSearchService implements SearchService {
         String dataType = User.class.getSimpleName().toLowerCase();
         FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
 
-        SearchResponse searchResponse = null;
+        SearchResponse searchResponse;
         try {
             searchResponse = this.client.prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -258,7 +258,7 @@ public class ElasticsearchSearchService implements SearchService {
      */
     private void addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
         if (log.isDebugEnabled()) {
-            String itemAsString = null;
+            String itemAsString;
             try {
                 itemAsString = jsonifiedObject.prettyPrint().string();
             } catch (IOException e) {

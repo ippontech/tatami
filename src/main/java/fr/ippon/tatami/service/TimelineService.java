@@ -207,7 +207,6 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getMentionline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Map<String, SharedStatusInfo> line =
                 mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, since_id, max_id);
 
@@ -265,7 +264,7 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getUserline(String username, int nbStatus, String since_id, String max_id) {
-        String login = null;
+        String login;
         User currentUser = authenticationService.getCurrentUser();
         if (username == null || username.isEmpty()) { // current user
             login = currentUser.getLogin();

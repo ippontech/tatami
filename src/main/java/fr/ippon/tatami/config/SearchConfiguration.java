@@ -99,7 +99,7 @@ public class SearchConfiguration {
     @Bean
     public Analyzer analyzer() {
         if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
-            Analyzer analyzer = null;
+            Analyzer analyzer;
             String language = env.getRequiredProperty("lucene.language");
             if (language.equals("French")) {
                 analyzer = new FrenchAnalyzer(Version.LUCENE_36);

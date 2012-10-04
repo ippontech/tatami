@@ -83,7 +83,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
     }
 
     protected TatamiUserDetails getTatamiUserDetails(String login, String password) {
-        Collection<GrantedAuthority> grantedAuthorities = null;
+        Collection<GrantedAuthority> grantedAuthorities;
         if (adminUsers.contains(login)) {
             if (log.isDebugEnabled()) {
                 log.debug("User \"" + login + "\" is an administrator");
