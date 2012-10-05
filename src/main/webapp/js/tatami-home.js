@@ -835,10 +835,7 @@ app.View.SearchSearchView = Backbone.View.extend({
   },
 
   initialize: function(){
-
     $(this.el).addClass('alert alert-status');
-
-    this.nbStatus = 20;
   },
 
   submit: function(e) {
@@ -945,9 +942,6 @@ app.View.SearchNextView = Backbone.View.extend({
 
 app.View.SearchView = Backbone.View.extend({
   initialize: function(){
-    if(typeof this.options.rpp === 'undefined')
-      this.options.rpp = 20;
-
     this.model = new app.Collection.StatusCollection();
     this.model.options = {
       search: this.options.search,
@@ -1104,7 +1098,8 @@ app.Router.HomeRouter = Backbone.Router.extend({
     else {
       this.selectMenu('search');
       app.views.search = new app.View.SearchView({
-        search: search
+        search: search,
+        rpp: 19
       });
       $('#tab-content').empty();
       $('#tab-content').append(app.views.search.render());
