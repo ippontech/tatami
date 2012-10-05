@@ -411,6 +411,7 @@
         <maven.war.version>2.2</maven.war.version>
         <maven.jetty.version>8.1.5.v20120716</maven.jetty.version>
         <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
+        <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
     </properties>
     <repositories>
         <repository>
@@ -732,6 +733,23 @@
                     <path>/</path>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>${maven-eclipse-plugin.version}</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.core.resources.prefs</name>
+							<content>
+					                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+							</content>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
         </plugins>
         <pluginManagement>
             <plugins>
