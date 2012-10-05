@@ -945,6 +945,9 @@ app.View.SearchNextView = Backbone.View.extend({
 
 app.View.SearchView = Backbone.View.extend({
   initialize: function(){
+    if(typeof this.options.rpp === 'undefined')
+      this.options.rpp = 20;
+
     this.model = new app.Collection.StatusCollection();
     this.model.options = {
       search: this.options.search,
