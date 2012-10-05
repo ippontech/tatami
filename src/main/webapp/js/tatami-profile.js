@@ -320,11 +320,16 @@ app.View.StatusView = Backbone.View.extend({
     this.model = new app.Model.Status();
     this.model.url = "/tatami/rest/statuses/show/" + this.options.idstatus;
 
-    this.views.item = new app.View.TimeLineItemView({
-      model : this.model
+    var self = this;
+    this.model.fetch({
+      success: function(model){
+        self.views.item = new app.View.TimeLineItemView({
+          model : model
+        });
+        self.render();
+      }
     });
     
-    this.model.fetch();
   },
   render: function() {
     $(this.el).html(this.views.item.render());
@@ -422,7 +427,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     app.views.showStatus = new app.View.StatusView({
       idstatus: status
     });
-    $('#tab-content').html(app.views.showStatus.render());
+    $('#tab-content').html(app.views.showStatus.$el);
   }
 });
 
