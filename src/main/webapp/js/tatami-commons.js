@@ -4,6 +4,12 @@ _.templateSettings = {
     evaluate: /<\@(.+?)\@\>/gim
 };
 
+marked.setOptions({
+    gfm:true,
+    pedantic:false,
+    sanitize:true
+});
+
 var app = window.app = _.extend({
         views:{},
         View:{},
@@ -452,17 +458,14 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
   },
 
   render: function() {
+      var model = this.model.toJSON();
+      model.markdown = marked(model.content);
+
       $(this.el).html(this.template({
-          status:this.model.toJSON(),
+          status:model,
           discuss:(this.options.discuss)
       }));
-      var contentNode = $(this.el).find(".status-content");
-      marked.setOptions({
-          gfm:true,
-          pedantic:false,
-          sanitize:true, });
-      var markedContent = marked(contentNode.text());
-      contentNode.html(markedContent);
+
       $(this.el).find("abbr.timeago").timeago();
       return $(this.el);
   }
