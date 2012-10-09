@@ -66,7 +66,7 @@
   </tr>
   <tr>
       <td>
-          <div class="well status-content"><@=status.content@></div>
+          <div class="well status-content"><@=status.markdown@></div>
       </td>
   </tr>
   <tr>
