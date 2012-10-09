@@ -13,7 +13,7 @@
     <div id="mainPanel" class="container">
         <div class="row">
 
-            <div class="span4">
+            <div class="span3">
 
                 <!-- Infos -->
                 <div id="profileContent" class="alert alert-status">
@@ -28,28 +28,9 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Follow -->
-                <div id="profileFollow" class="alert alert-status hidden-phone">
-                </div>
-
-                <!-- Trends -->
-                <div id="profileTrends" class="alert alert-status hidden-phone">
-                    <div>
-                        <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="well">
-                            <table class="table table-center" id="trends">
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="span8">
+            <div class="span6">
                 <div class="tabbable">
                     <ul class="nav nav-pills homeMenu">
                         <li class="active">
@@ -63,11 +44,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#/groups">
-                                <i class="icon-th"></i> <span class="hidden-phone"><fmt:message key="tatami.menu.groups"/></span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="#/tags">
                                 <i class="icon-tags"></i> <span class="hidden-phone"><fmt:message key="tatami.tags"/></span>
                             </a>
@@ -77,13 +53,32 @@
                                 <i class="icon-star"></i> <span class="hidden-phone"><fmt:message key="tatami.user.favoritestatus"/></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#/search">
-                                <i class="icon-search"></i> <span class="hidden-phone"><fmt:message key="tatami.search"/></span>
-                            </a>
-                        </li>
                     </ul>
                     <div id="tab-content">
+                    </div>
+                </div>
+            </div>
+
+            <div class="span3">
+                <div id="profileFind" class="alert alert-status">
+                </div>
+
+                <div id="profileOnlineUsers" class="alert alert-status">
+                </div>
+
+                <div id="profileFollow" class="alert alert-status">
+                </div>
+
+                <div id="profileTrends" class="alert alert-status">
+                    <div>
+                        <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="well">
+                            <table class="table table-center" id="trends">
+
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

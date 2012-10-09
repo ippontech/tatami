@@ -96,29 +96,37 @@
   </fieldset>
 </script>
 
+<script type="text/template" id="profile-online-users">
+    <div class="row-fluid">
+        <i class="icon-map-marker"></i> <strong><fmt:message key="tatami.who.is.online.title"/></strong>
+        <div class="row-fluid">
+            <div class="well">
+                <table class="table" id="online-users-list">
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
 <script type="text/template" id="profile-follow-suggest">
   <div class="row-fluid">
-      <div class="well">
-          <table class="table" id="follow-suggest">
-              <thead>
-                  <tr>
-                      <th>
-                          <i class="icon-random"></i> <strong><fmt:message key="tatami.follow.suggestions"/></strong>
-                      </th>
-                  </tr>
-              </thead>
-          </table>
+      <i class="icon-random"></i> <strong><fmt:message key="tatami.follow.suggestions"/></strong>
+      <div class="row-fluid">
+          <div class="well">
+              <table class="table" id="follow-suggest">
+              </table>
+          </div>
       </div>
   </div>
 </script>
 
-<script type="text/template" id="profile-follow-suggest-empty">
+<script type="text/template" id="profile-user-list-empty">
   <tr>
     <td><span class="pull-left"><fmt:message key="tatami.follow.nobody"/></span></td>
   </tr>
 </script>
 
-<script type="text/template" id="profile-follow-suggest-item">
+<script type="text/template" id="profile-user-list-item">
   <td>
     <a href="/tatami/profile/<@= follow.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64&d=mm" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
       <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>

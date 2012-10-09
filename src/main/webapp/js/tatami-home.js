@@ -19,6 +19,13 @@ else {
 }
 
 /*
+ Atmosphere
+ */
+var detectedTransport = null;
+var socket = $.atmosphere;
+var subSocket;
+
+/*
   Profile
 */
 
@@ -177,7 +184,7 @@ app.View.ProfileView = Backbone.View.extend({
   Profile Follow
 */
 
-app.View.FollowFormView = Backbone.View.extend({
+app.View.UserFindFormView = Backbone.View.extend({
     tagName:'form',
     template:_.template($('#profile-find-form').html()),
 
@@ -218,7 +225,7 @@ app.Collection.SuggestCollection = Backbone.Collection.extend({
 });
 
 app.View.SuggestView = Backbone.View.extend({
-  template: _.template($('#profile-follow-suggest-empty').html()),
+  template: _.template($('#profile-user-list-empty').html()),
   tagName: 'tbody',
 
   initialize: function() {
@@ -256,7 +263,7 @@ app.View.SuggestView = Backbone.View.extend({
 
 app.View.SuggestItemView = Backbone.View.extend({
   tagName: 'tr',
-  template: _.template($('#profile-follow-suggest-item').html()),
+  template: _.template($('#profile-user-list-item').html()),
 
 
   initialize: function() {
@@ -269,23 +276,55 @@ app.View.SuggestItemView = Backbone.View.extend({
   }
 });
 
+app.View.OnlineUsersView = Backbone.View.extend({
+    template: _.template($('#profile-online-users').html()),
+
+    initialize: function() {
+        console.log("Trying to connect to Atmosphere")
+        var request = { url : '/realtime/onlineusers',
+            transport : 'websocket' ,
+            fallbackTransport: 'long-polling'};
+
+        request.onOpen = function(response) {
+            console.log('Atmosphere connected using ' + response.transport);
+        };
+
+        request.onMessage = function (response) {
+            detectedTransport = response.transport;
+            if (response.status == 200) {
+                var data = response.responseBody;
+                if (data.length > 0) {
+                    console.log(" Message Received: " + data + " and detected transport is " + detectedTransport);
+                }
+            }
+        };
+
+        subSocket = socket.subscribe(request);
+    },
+
+    render: function() {
+        $(this.el).empty();
+        $(this.el).append(this.template());
+
+        return $(this.el);
+    }
+});
+
 app.View.FollowView = Backbone.View.extend({
-  template: _.template($('#profile-follow-suggest').html()),
+    template: _.template($('#profile-follow-suggest').html()),
 
-  initialize: function() {
-    this.views = {};
-    this.views.form = new app.View.FollowFormView();
-    this.views.suggest = new app.View.SuggestView();
-  },
+    initialize: function() {
+        this.views = {};
+        this.views.suggest = new app.View.SuggestView();
+    },
 
-  render: function() {
-    $(this.el).empty();
-    $(this.el).append(this.views.form.render());
-    $(this.el).append(this.template());
-    $(this.el).find('#follow-suggest').append(this.views.suggest.render());
+    render: function() {
+        $(this.el).empty();
+        $(this.el).append(this.template());
+        $(this.el).find('#follow-suggest').append(this.views.suggest.render());
 
-    return $(this.el);
-  }
+        return $(this.el);
+    }
 });
 
 app.Collection.TrendsCollection = Backbone.Collection.extend({
@@ -1002,6 +1041,12 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
         var groupList = new app.View.GroupsListView();
         $('#userGroups').html(groupList.render());
+
+        var userFind = app.views.follow = new app.View.UserFindFormView();
+        $('#profileFind').html(userFind.render());
+
+        var onlineUsers = app.views.follow = new app.View.OnlineUsersView();
+        $('#profileOnlineUsers').html(onlineUsers.render());
 
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());
