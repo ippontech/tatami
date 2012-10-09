@@ -306,9 +306,9 @@ var inline = {
   em: /^\b_((?:__|[^\0])+?)_\b|^\*((?:\*\*|[^\0])+?)\*(?!\*)/,
   code: /^(`+)([^\0]*?[^`])\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
-  mention: /@([a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*)/,
-  tags: /#([^\s !"#$%'()*+,./:;<=>?@\\\[\]^_`{|}~-]+)/,
-  text: /^[^\0]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+  mention: /^@([A-Za-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[A-Za-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*)/gi,
+  tags: /^#([^\s !"#$%'()*+,.\/:;<=>?@\\\[\]^_`{|}~-]+(?:\.[^\s !"#$%'()*+,.\/:;<=>?@\\\[\]^_`{|}~-]+)*)/gi,
+  text: /^[^\0]+?(?=[\\<!\[_*`@#]| {2,}\n|$)/
 };
 
 inline._linkInside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
@@ -339,7 +339,7 @@ inline.pedantic = {
 
 inline.gfm = {
   url: /^(https?:\/\/[^\s]+[^.,:;"')\]\s])/,
-  text: /^[^\0]+?(?=[\\<!\[_*`]|https?:\/\/| {2,}\n|$)/
+  text: /^[^\0]+?(?=[\\<!\[_*`@#]|https?:\/\/| {2,}\n|$)/
 };
 
 /**
@@ -465,9 +465,7 @@ inline.lexer = function(src) {
 
     // mention
     if (cap = inline.mention.exec(src)) {
-      tab = src.split(cap[0]);
-      src = src.substring(tab[0].length + cap[0].length);
-      out += inline.lexer(tab[0]);
+      src = src.substring(cap[0].length);
       out += '<a href="/tatami/profile/' + cap[1] + '/">'
         + cap[0]
         + '</a>';
@@ -476,9 +474,7 @@ inline.lexer = function(src) {
 
     // tags
     if (cap = inline.tags.exec(src)) {
-      tab = src.split(cap[0]);
-      src = src.substring(tab[0].length + cap[0].length);
-      out += inline.lexer(tab[0]);
+      src = src.substring(cap[0].length);
       out += '<a href="/tatami/#/tags/' + cap[1] + '">'
         + cap[0]
         + '</a>';
