@@ -81,8 +81,12 @@ public class UserService {
      */
     public Collection<User> getUsersByLogin(Collection<String> logins) {
         final Collection<User> users = new ArrayList<User>();
+        User user = null;
         for (String login : logins) {
-            users.add(userRepository.findUserByLogin(login));
+        	user = userRepository.findUserByLogin(login);
+        	if (user != null) {
+        		users.add(user);
+        	}
         }
         return users;
     }

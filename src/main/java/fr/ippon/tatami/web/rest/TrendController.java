@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.Trend;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import java.util.List;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.TrendService;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.Trend;
 
 /**
  * REST controller for managing trends.
@@ -57,5 +61,23 @@ public class TrendController {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         return trendService.getTrendsForUser(DomainUtil.getLoginFromUsernameAndDomain(username, domain));
+    }
+    
+    /**
+     * @return a Collection of a user's recent tags
+     */
+    @RequestMapping(value = "/rest/tags/search",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<String> searchUserRecentTag(@RequestParam("q") String query) {
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to find user tags");
+        }
+        String login = authenticationService.getCurrentUser().getLogin();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+
+        return trendService.getUserTagTrends(login, cal.getTime(), 60);
     }
 }
