@@ -66,9 +66,12 @@ public class AdminService {
         properties.put("tatami.message.reloading.enabled", env.getProperty("tatami.message.reloading.enabled"));
         properties.put("smtp.host", env.getProperty("smtp.host"));
         properties.put("cassandra.host", env.getProperty("cassandra.host"));
-        properties.put("elasticsearch.enabled", env.getProperty("elasticsearch.enabled"));
-        properties.put("elasticsearch.path.conf", env.getProperty("elasticsearch.path.conf"));
+        properties.put("search.engine", env.getProperty("search.engine"));
         properties.put("lucene.path", env.getProperty("lucene.path"));
+        properties.put("elasticsearch.indexName", env.getProperty("elasticsearch.indexName"));
+		properties.put("elasticsearch.cluster.name", env.getProperty("elasticsearch.cluster.name"));
+		properties.put("elasticsearch.cluster.nodes", env.getProperty("elasticsearch.cluster.nodes"));
+		properties.put("elasticsearch.cluster.default.communication.port", env.getProperty("elasticsearch.cluster.default.communication.port"));
         return properties;
     }
 
