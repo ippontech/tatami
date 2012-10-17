@@ -98,7 +98,7 @@ public class StatusUpdateService {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
         }
         if (!originalStatus.getReplyTo().equals("")) {
-            log.debug("Original status is also a reply, replying to the real original status instead.");
+            // Original status is also a reply, replying to the real original status instead
             Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
             Status replyStatus = createStatus(
                     content,
@@ -108,11 +108,8 @@ public class StatusUpdateService {
                     originalStatus.getUsername());
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
-            log.debug("realOriginalStatus=" + realOriginalStatus);
-            log.debug("replyStatus=" + replyStatus);
         } else {
             // The original status of the discussion is the one we reply to
-            log.debug("originalStatus is the real orginial status");
             Status replyStatus = createStatus(content, group, replyTo, replyTo, originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
         }
