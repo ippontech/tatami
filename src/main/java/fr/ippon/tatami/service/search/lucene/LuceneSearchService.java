@@ -176,7 +176,7 @@ public class LuceneSearchService implements SearchService {
         if (size <= 0) {
             size = SearchService.DEFAULT_PAGE_SIZE;
         }
-
+        log.debug("lucene page=" + page);
         IndexSearcher searcher = null;
         try {
             searcher = statusSearcherManager.acquire();
@@ -200,7 +200,7 @@ public class LuceneSearchService implements SearchService {
             SortField sortField = new SortField("statusDate", SortField.STRING, true);
             Sort sort = new Sort(sortField);
 
-            TopDocs topDocs = searcher.search(luceneQuery, filter, size, sort);
+            TopDocs topDocs = searcher.search(luceneQuery, filter, (page + 1) * size, sort);
             int totalHits = topDocs.totalHits;
             if (totalHits == 0) {
                 return new HashMap<String, SharedStatusInfo>(0);
@@ -210,8 +210,13 @@ public class LuceneSearchService implements SearchService {
             if (log.isDebugEnabled()) {
                 log.debug("Lucene found " + topDocs.totalHits + " results");
             }
-            final Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(totalHits);
-            for (int i = 0; i < scoreDocArray.length; i++) {
+            final Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(size);
+            int startItem = page * size;
+            int finishItem = ((page + 1) * size) - 1;
+            if (finishItem < scoreDocArray.length) {
+                finishItem = scoreDocArray.length;
+            }
+            for (int i = startItem; i < finishItem; i++) {
                 int documentId = scoreDocArray[i].doc;
                 Document document = searcher.doc(documentId);
                 String statusId = document.get("statusId");
