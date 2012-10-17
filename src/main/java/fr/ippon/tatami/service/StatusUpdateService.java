@@ -84,11 +84,11 @@ public class StatusUpdateService {
     private SearchService searchService;
 
     public void postStatus(String content) {
-        createStatus(content, null, "", "");
+        createStatus(content, null, "", "", "");
     }
 
     public void postStatusToGroup(String content, Group group) {
-        createStatus(content, group, "", "");
+        createStatus(content, group, "", "", "");
     }
 
     public void replyToStatus(String content, String replyTo) {
@@ -99,16 +99,26 @@ public class StatusUpdateService {
         }
         if (!originalStatus.getReplyTo().equals("")) {
             log.debug("Original status is also a reply, replying to the real original status instead.");
-            Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getReplyTo());
-            Status replyStatus = createStatus(content, group, realOriginalStatus.getStatusId(), originalStatus.getUsername());
+            Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
+            Status replyStatus = createStatus(
+                    content,
+                    group,
+                    realOriginalStatus.getStatusId(),
+                    originalStatus.getStatusId(),
+                    originalStatus.getUsername());
+
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
+            log.debug("realOriginalStatus=" + realOriginalStatus);
+            log.debug("replyStatus=" + replyStatus);
         } else {
-            Status replyStatus = createStatus(content, group, replyTo, originalStatus.getUsername());
+            // The original status of the discussion is the one we reply to
+            log.debug("originalStatus is the real orginial status");
+            Status replyStatus = createStatus(content, group, replyTo, replyTo, originalStatus.getUsername());
             discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
         }
     }
 
-    private Status createStatus(String content, Group group, String replyTo, String replyToUsername) {
+    private Status createStatus(String content, Group group, String discussionId, String replyTo, String replyToUsername) {
     	content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
         if (log.isDebugEnabled()) {
@@ -120,7 +130,14 @@ public class StatusUpdateService {
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
         Status status =
-                statusRepository.createStatus(currentLogin, username, domain, group, content, replyTo, replyToUsername);
+                statusRepository.createStatus(currentLogin,
+                        username,
+                        domain,
+                        group,
+                        content,
+                        discussionId,
+                        replyTo,
+                        replyToUsername);
 
         // add status to the timeline
         timelineRepository.addStatusToTimeline(currentLogin, status);

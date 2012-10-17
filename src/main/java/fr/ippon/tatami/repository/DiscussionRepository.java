@@ -13,5 +13,5 @@ public interface DiscussionRepository {
 
     Collection<String> findStatusIdsInDiscussion(String originalStatusId);
 
-    boolean hasReply(String string);
+    boolean hasReply(String statusId);
 }

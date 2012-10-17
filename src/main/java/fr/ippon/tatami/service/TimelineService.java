@@ -100,9 +100,9 @@ public class TimelineService {
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
             // Add the original discussion
-            statusIdsInDiscussion.add(status.getReplyTo());
+            statusIdsInDiscussion.add(status.getDiscussionId());
             // Add the replies
-            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getReplyTo()));
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getDiscussionId()));
             // Remove the current status from the list
             statusIdsInDiscussion.remove(statusId);
         } else { // This is the original discussion

@@ -17,6 +17,7 @@ public interface StatusRepository {
                         String domain,
                         Group group,
                         String content,
+                        String discussionId,
                         String replyTo,
                         String replyToUsername) throws ConstraintViolationException;
 

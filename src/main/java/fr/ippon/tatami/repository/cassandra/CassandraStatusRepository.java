@@ -53,6 +53,7 @@ public class CassandraStatusRepository implements StatusRepository {
                                String domain,
                                Group group,
                                String content,
+                               String discussionId,
                                String replyTo,
                                String replyToUsername)
             throws ConstraintViolationException {
@@ -67,6 +68,7 @@ public class CassandraStatusRepository implements StatusRepository {
         }
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());
+        status.setDiscussionId(discussionId);
         status.setReplyTo(replyTo);
         status.setReplyToUsername(replyToUsername);
         status.setRemoved(false);

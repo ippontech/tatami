@@ -49,11 +49,17 @@ public class Status {
     /**
      * If this status is a reply, the statusId of the original status.
      */
+    @Column(name = "discussionId")
+    private String discussionId;
+
+    /**
+     * If this status is a reply, the statusId of the status that is being replied to.
+     */
     @Column(name = "replyTo")
     private String replyTo;
 
     /**
-     * If this status is a reply, the username who posted the original status.
+     * If this status is a reply, the username of the status that is being replied to.
      */
     @Column(name = "replyToUsername")
     private String replyToUsername;
@@ -119,6 +125,14 @@ public class Status {
         this.statusDate = statusDate;
     }
 
+    public String getDiscussionId() {
+        return discussionId;
+    }
+
+    public void setDiscussionId(String discussionId) {
+        this.discussionId = discussionId;
+    }
+
     public String getReplyTo() {
         return replyTo;
     }
@@ -178,6 +192,7 @@ public class Status {
                 ", groupId='" + groupId + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
+                ", discussionId='" + discussionId + '\'' +
                 ", replyTo='" + replyTo + '\'' +
                 ", replyToUsername='" + replyToUsername + '\'' +
                 ", detailsAvailable=" + detailsAvailable +
