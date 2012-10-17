@@ -32,7 +32,7 @@
         <img class="avatar" src="https://www.gravatar.com/avatar/<@=status.gravatar@>?s=64&d=mm" alt="<@=status.firstName@> <@=status.lastName@>">
     </th>
     <th>
-      <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/><@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
+      <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> <@= status.firstName @> <@=status.lastName@> @<@= status.username @>">
         <@= status.firstName @> <@= status.lastName @> <em>@<@= status.username @></em>
       </a>
       <p class="pull-right" style="width: 50px"><abbr class="timeago" title="<@= status.iso8601StatusDate @>"><@= status.prettyPrintStatusDate @></abbr></p>
