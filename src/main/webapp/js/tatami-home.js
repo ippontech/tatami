@@ -280,7 +280,6 @@ app.View.OnlineUsersView = Backbone.View.extend({
     template: _.template($('#profile-online-users').html()),
 
     initialize: function() {
-        console.log("Trying to connect to Atmosphere")
         var request = { url : '/realtime/onlineusers',
             transport : 'websocket' ,
             fallbackTransport: 'long-polling'};
@@ -294,7 +293,21 @@ app.View.OnlineUsersView = Backbone.View.extend({
             if (response.status == 200) {
                 var data = response.responseBody;
                 if (data.length > 0) {
-                    console.log(" Message Received: " + data + " and detected transport is " + detectedTransport);
+                    var onlineUsers = data.split(";");
+                    $("#online-users-list").empty();
+                    $("#online-users-list").append("<tbody>");
+                    for (var i = 0; i < onlineUsers.length; i++) {
+                        var onlineUser = onlineUsers[i];
+                        if (onlineUser != "")  {
+                            $("#online-users-list").append(
+                                "<tr><td><a href='/tatami/profile/" +
+                                    onlineUser +
+                                    "/' class='userStatus pull-left'><em>@" +
+                                    onlineUser +
+                                    "</em></a></td></tr>");
+                        }
+                    }
+                    $("#online-users-list").append("</tbody>");
                 }
             }
         };

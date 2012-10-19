@@ -82,7 +82,6 @@
 </script>
 
 <script type="text/template" id="profile-find-form">
-  <!-- Find another user -->
   <fieldset class="span12">
     <div>
       <label><i class="icon-zoom-in"></i> <fmt:message key="tatami.find.title"/></label>
@@ -128,8 +127,8 @@
 
 <script type="text/template" id="profile-user-list-item">
   <td>
-    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> @<@= follow.username @> <@= follow.firstName @> <@= follow.lastName @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= follow.gravatar @>?s=64&d=mm" alt="<@= follow.firstName @> <@= follow.lastName @>"/>
-      <@= follow.firstName @> <@= follow.lastName @> <em>@<@= follow.username @></em>
+    <a href="/tatami/profile/<@= follow.username @>/" class="userStatus pull-left">
+      <em>@<@= follow.username @></em>
     </a>
   </td>
 </script>

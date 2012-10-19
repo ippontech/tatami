@@ -28,6 +28,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="profileTrends" class="alert alert-status">
+                    <div>
+                        <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="well">
+                            <table class="table table-center" id="trends">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="span6">
@@ -67,19 +80,6 @@
                 </div>
 
                 <div id="profileFollow" class="alert alert-status">
-                </div>
-
-                <div id="profileTrends" class="alert alert-status">
-                    <div>
-                        <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="well">
-                            <table class="table table-center" id="trends">
-
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
 

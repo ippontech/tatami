@@ -34,11 +34,11 @@ body {
   Profile Stats table tablet
 */
 
-#profileContent .well, #profileFollow .well, #profileTrends .well, #userTrends .well {
+#profileContent .well, #profileOnlineUsers .well, #profileFollow .well, #profileTrends .well, #userTrends .well {
   padding: 0px;
 }
 
-#profileContent table, #profileFollow table, #profileTrends table, #userTrends table {
+#profileContent table, #profileOnlineUsers .table, #profileFollow table, #profileTrends table, #userTrends table {
   margin: 0px;
 }
 

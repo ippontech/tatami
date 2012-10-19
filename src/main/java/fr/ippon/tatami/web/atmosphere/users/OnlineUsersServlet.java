@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.atmosphere.users;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.atmosphere.config.service.MeteorService;
 import org.atmosphere.cpr.*;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @MeteorService(path = "/realtime/onlineusers",
         interceptors = {
@@ -20,6 +23,8 @@ import java.io.IOException;
 public class OnlineUsersServlet extends HttpServlet {
 
     private AuthenticationService authenticationService;
+
+    private Map<String, User> onlineUsers = new ConcurrentHashMap<String, User>();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -39,11 +44,10 @@ public class OnlineUsersServlet extends HttpServlet {
 
         // Log all events on the console, including WebSocket events.
         User user = authenticationService.getCurrentUser();
-        m.addListener(new OnlineUsersLogger(user, broadcaster));
+        String domain = DomainUtil.getDomainFromLogin(user.getLogin());
+        m.addListener(new OnlineUsersLogger(onlineUsers, user, broadcaster));
 
         res.setContentType("text/html;charset=ISO-8859-1");
-
-
         m.setBroadcaster(broadcaster);
 
         String header = req.getHeader(HeaderConfig.X_ATMOSPHERE_TRANSPORT);
