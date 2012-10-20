@@ -15,7 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_TRENDS_CF;
@@ -76,4 +80,28 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
         }
         return result;
     }
+
+	@Override
+	public Collection<String> getUserRecentTags(String login, Date endDate,
+			int nbRecentTags) {
+		ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
+                .setColumnFamily(USER_TRENDS_CF)
+                .setKey(login)
+                .setRange(null, TimeUUIDUtils.getTimeUUID(endDate.getTime()), true, nbRecentTags)
+                .execute()
+                .get();
+        Map<String,String> result = new HashMap<String,String>();
+        //Map<String,Integer> count = new HashMap<String,Integer>();
+        for (HColumn<UUID, String> column : query.getColumns()) {
+            String tag = column.getValue();
+            result.put(tag.toLowerCase(),tag);
+            /*
+            if(result.put(tag.toLowerCase(),tag) != null) {
+            	count.put(tag.toLowerCase(), count.get(tag.toLowerCase()) + 1);
+            }
+            */
+        }
+        return result.values();
+	}
 }
