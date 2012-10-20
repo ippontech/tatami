@@ -4,6 +4,8 @@ import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.util.DomainUtil;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
@@ -225,12 +227,14 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         final SearchHit[] searchHitsArray = searchHits.getHits();
-        final List<String> usernames = new ArrayList<String>(hitsNumber.intValue());
-        Map<String, Object> username = null;
+        final List<String> logins = new ArrayList<String>(hitsNumber.intValue());
+        Map<String, Object> user = null;
         try {
             for (int i = 0; i < searchHitsArray.length; i++) {
-                username = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
-                usernames.add((String) username.get("username"));
+            	user = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
+                String username = (String) user.get("username");
+                String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
+                logins.add(login);
             }
         } catch (JsonParseException e) {
             e.printStackTrace();
@@ -240,7 +244,7 @@ public class ElasticsearchSearchService implements SearchService {
             e.printStackTrace();
         }
 
-        return usernames;
+        return logins;
     }
 
     @Override
