@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="span3">
+            <div class="span3 hidden-phone">
                 <div id="profileFind" class="alert alert-status">
                 </div>
 
