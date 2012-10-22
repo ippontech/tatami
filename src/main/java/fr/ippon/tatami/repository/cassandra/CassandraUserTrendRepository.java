@@ -1,20 +1,8 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.repository.UserTrendRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.cassandra.utils.TimeUUIDUtils;
-import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
-import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.stereotype.Repository;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_TRENDS_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -23,8 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_TRENDS_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+import javax.inject.Inject;
+
+import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
+import me.prettyprint.cassandra.utils.TimeUUIDUtils;
+import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.ippon.tatami.repository.UserTrendRepository;
 
 /**
  * Cassandra implementation of the User Trends repository.
@@ -49,7 +51,6 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    @CacheEvict("user-trends-cache")
     public void addTag(String login, String tag) {
         HColumn<UUID, String> column =
                 HFactory.createColumn(
