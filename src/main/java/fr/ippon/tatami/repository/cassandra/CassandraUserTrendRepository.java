@@ -11,6 +11,7 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -48,6 +49,7 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
     private Keyspace keyspaceOperator;
 
     @Override
+    @CacheEvict("user-trends-cache")
     public void addTag(String login, String tag) {
         HColumn<UUID, String> column =
                 HFactory.createColumn(
@@ -91,16 +93,11 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
                 .setRange(null, TimeUUIDUtils.getTimeUUID(endDate.getTime()), true, nbRecentTags)
                 .execute()
                 .get();
-        Map<String,String> result = new HashMap<String,String>();
-        //Map<String,Integer> count = new HashMap<String,Integer>();
+        Map<String, String> result = new HashMap<String, String>();
+        String tag = null;
         for (HColumn<UUID, String> column : query.getColumns()) {
-            String tag = column.getValue();
-            result.put(tag.toLowerCase(),tag);
-            /*
-            if(result.put(tag.toLowerCase(),tag) != null) {
-            	count.put(tag.toLowerCase(), count.get(tag.toLowerCase()) + 1);
-            }
-            */
+            tag = column.getValue();
+            result.put(tag.toLowerCase(), tag);
         }
         return result.values();
 	}
