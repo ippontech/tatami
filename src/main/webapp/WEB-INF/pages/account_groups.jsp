@@ -129,7 +129,7 @@
                             </div>
                             <c:if test="${not empty groups}">
                                 <legend>
-                                    <fmt:message key="tatami.group.list.admin"/>
+                                    <fmt:message key="tatami.group.list"/>
                                 </legend>
                                 <table class="table table-striped">
                                     <thead>
@@ -163,9 +163,16 @@
                                                         ${group.counter}
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
-                                                        <fmt:message key="tatami.group.edit.link"/>
-                                                    </button>
+                                                    <c:forEach items="${groupsAdmin}" var="groupAdmin">
+                                                        <c:if test="${groupAdmin == group}">
+                                                            <c:set var="found" value="true" scope="request" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <c:if test="${found}">
+                                                        <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
+                                                            <fmt:message key="tatami.group.edit.link"/>
+                                                        </button>
+                                                    </c:if>
                                                 </td>
                                             </tr>
                                         </c:forEach>
