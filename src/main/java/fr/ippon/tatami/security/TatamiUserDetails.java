@@ -8,7 +8,12 @@ import java.util.Collection;
 
 public class TatamiUserDetails extends User {
 
-    private String theme = Constants.DEFAULT_THEME;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5254098987887378014L;
+	
+	private String theme = Constants.DEFAULT_THEME;
 
     public TatamiUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);

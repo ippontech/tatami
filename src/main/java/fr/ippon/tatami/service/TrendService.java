@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -34,8 +35,16 @@ public class TrendService {
         return calculateTrends(tags);
     }
 
-    public Collection<String> getUserTagTrends(String login, Date endDate, int nbRecentTags) {
-        return userTrendRepository.getUserRecentTags(login, endDate, nbRecentTags);
+    public Collection<String> searchTags(String domain, String startWith) {
+    	Assert.hasLength(startWith);
+    	Collection<String> allTags = trendRepository.getDomainTags(domain);
+    	Collection<String> matchingTags = new ArrayList<String>();
+    	for (String tag : allTags) {
+    		if (tag.toLowerCase().startsWith(startWith)) {
+    			matchingTags.add(tag);
+    		}
+    	}
+    	return matchingTags;
     }
 
     @Cacheable("user-trends-cache")

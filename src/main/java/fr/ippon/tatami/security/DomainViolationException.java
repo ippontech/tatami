@@ -7,7 +7,12 @@ package fr.ippon.tatami.security;
  */
 public class DomainViolationException extends RuntimeException {
 
-    public DomainViolationException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4767023004692189417L;
+
+	public DomainViolationException() {
     }
 
     public DomainViolationException(String s) {
