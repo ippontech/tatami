@@ -474,58 +474,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
 
       $(this.el).find("abbr.timeago").timeago();
       var element = $(this.el).find("textarea.reply");
-      $(this.el).find("textarea.reply").typeahead({
-    	  textarea: element
-          , source:function (query, process) {
-
-          	var matchLogin = query.match(patterns.login);
-          	var matchHash = query.match(patterns.hash);
-          	if (matchLogin == null && matchHash == null) {return;}
-          	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
-
-          	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
-          	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
-
-          	if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
-
-              switch (query2.charAt(0)) {
-      		  case '@' :
-      			q = query2.substring(1, query2.length);
-      			return $.get('/tatami/rest/users/search', {q:q}, function (data) {
-      		        var results = [];
-      		        for (var i = 0; i < data.length; i++) {
-      		            results[i] = '@' + data[i].username;
-      		        }
-      		        return process(results);
-      		    });
-      			break;
-      		  case '#' :
-      			q = query2.substring(1, query2.length);
-      			return $.get('/tatami/rest/tags/search', {q:q}, function (data) {
-      		        var results = [];
-      		        for (var i = 0; i < data.length; i++) {
-      		            results[i] = '#' + data[i];
-      		        }
-      		        return process(results);
-      		    });
-      			break;
-      		}
-
-          }
-        , matcher: function (item) {
-            return true;
-          }
-        , updater: function (item) {
-      	    container = this.options.textarea;
-  			var textBefore = container.val();
-  			var firstChar = item.charAt(0);
-  			var textAfter = item;
-  			if (textBefore.lastIndexOf(firstChar) > -1) {
-  				textAfter = textBefore.substring(0, textBefore.lastIndexOf(firstChar)) + item + ' ';
-  			}
-            return textAfter;
-          }
-        });
+      $(this.el).find("textarea.reply").typeahead(new Suggester(element));
       return $(this.el);
   }
 });
@@ -691,97 +640,58 @@ $(function() {
 
 });
 
-/*
- * Feed the suggestion popup container with the results
+/**
+ * TypeAhead configuration to handle live login and hashtags suggestions
+ * @param element the container to hook
  */
-function feedSuggestions(target, results) {
-	if (target == null || results == null) {
-		return;
-	}
-	var prevSibblingEl = target.prev();
-	if (prevSibblingEl != null && !prevSibblingEl.hasClass('suggest')) {
-		$('<div class="suggest"><ul class="suggest-menu"></ul></div>').insertBefore(target);
-	}
-	var suggestionEl = target.parent().find('.suggest');
+function Suggester(element) {
+	this.textarea = element;
+    this.source = function (query, process) {
 
-	var ul = suggestionEl.find('ul.suggest-menu');
-	ul.find('li').remove(); // clean any previous results
-    for (var i = 0; i < results.length; i++) {
-    	ul.append(
-    	    $('<li>').attr('class', 'suggest').append(results[i])
-    	);
-	}
-    ul.find("li.suggest").bind("click", function() {
-    	updateStatusWithSuggestion(target, $(this).text());
-    	suggestionEl.hide();
-    });
-    suggestionEl.show();
-}
+	  	var matchLogin = query.match(patterns.login);
+	  	var matchHash = query.match(patterns.hash);
+	  	if (matchLogin == null && matchHash == null) {return;}
+	  	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
+	
+	  	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
+	  	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
+	
+	  	if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
 
-/*
- * Search against one of the two services depending on the query first char (@ or # allowed)
- * The target is the textarea under which a suggestion container should display the results list
- */
-function searchSuggestions(query, targetDOM) {
-	var target = $(targetDOM);
-	if (target == null
-			|| query == null || query.length == 0
-			|| (query.charAt(0) != '@' && query.charAt(0) != '#')) {
-		return;
-	}
-
-	switch (query.charAt(0)) {
-		case '@' :
-			q = query.substring(1, query.length);
-			$.get('/tatami/rest/users/search', {q:q}, function (data) {
+	  	switch (query2.charAt(0)) {
+		  case '@' :
+			q = query2.substring(1, query2.length);
+			return $.get('/tatami/rest/users/search', {q:q}, function (data) {
 		        var results = [];
 		        for (var i = 0; i < data.length; i++) {
 		            results[i] = '@' + data[i].username;
 		        }
-		        feedSuggestions(target, results);
+		        return process(results);
 		    });
 			break;
-		case '#' :
-			q = query.substring(1, query.length);
-			$.get('/tatami/rest/tags/search', {q:q}, function (data) {
+		  case '#' :
+			q = query2.substring(1, query2.length);
+			return $.get('/tatami/rest/user/last-trends', {q:q}, function (data) {
 		        var results = [];
 		        for (var i = 0; i < data.length; i++) {
 		            results[i] = '#' + data[i];
 		        }
-		        feedSuggestions(target, results);
+		        return process(results);
 		    });
 			break;
-	}
-
-}
-
-/*
- * Update a status with a suggestion.
- * Replace the last expression (could be a user id beginning with @ or a hashtag with '#')
- * with the value provided.
- * @param container is a jQuery Textarea wrapper
- * @value the value to inject in place of the last characters
- */
-function updateStatusWithSuggestion(container, value) {
-	if (container == null || container.val().length == 0
-			|| value == null || value.length == 0
-			|| (value.charAt(0) != '@' && value.charAt(0) != '#')) {
-		return;
-	}
-	var textBefore = container.val();
-	var firstChar = value.charAt(0);
-	if (textBefore.lastIndexOf(firstChar) > -1) {
-		var textAfter = textBefore.substring(0, textBefore.lastIndexOf(firstChar)) + value + ' ';
-		container.focus();
-		container.val('');
-		container.val(textAfter);
-		jQuery.Event("keyup");
-		e.which = 32;
-		target.trigger(e);
-	}
-	var suggestionEl = container.parent().find('.suggest');
-
-	var ul = suggestionEl.find('ul.suggest-menu');
-	ul.find('li').remove(); // clean any previous results
-
-}
+		}
+    };
+    this.matcher = function (item) {
+    	return true;
+    };
+  	this.updater = function (item) {
+	    container = this.options.textarea;
+		var textBefore = container.val();
+		var firstChar = item.charAt(0);
+		var textAfter = item;
+		if (textBefore.lastIndexOf(firstChar) > -1) {
+			textAfter = textBefore.substring(0, textBefore.lastIndexOf(firstChar)) + item + ' ';
+		}
+		return textAfter;
+  	};
+};

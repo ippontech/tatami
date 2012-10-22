@@ -1,6 +1,5 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,9 +49,9 @@ public class TrendController {
     }
 
     /**
-     * GET  /tags -> get the latest status with no tags
+     * GET  /users/trends -> 
      */
-    @RequestMapping(value = "/rest/users/trends",
+    @RequestMapping(value = "/rest/user/trends",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -62,22 +61,21 @@ public class TrendController {
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         return trendService.getTrendsForUser(DomainUtil.getLoginFromUsernameAndDomain(username, domain));
     }
-    
+
     /**
-     * @return a Collection of a user's recent tags
+     * @return a Collection of a user's domain tags matching the query
      */
-    @RequestMapping(value = "/rest/tags/search",
+    @RequestMapping(value = "/rest/user/last-trends",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<String> searchUserRecentTag(@RequestParam("q") String query) {
+    public Collection<String> searchRecentTags(@RequestParam("q") String query) {
         if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find user tags");
+            this.log.debug("REST request to find tags");
         }
-        String login = authenticationService.getCurrentUser().getLogin();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
-        return trendService.getUserTagTrends(login, cal.getTime(), 60);
+        return trendService.searchTags(domain, query);
     }
 }

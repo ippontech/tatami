@@ -21,7 +21,7 @@ else {
 
 app.Collection.TrendsCollection = Backbone.Collection.extend({
     url : function(){
-        return '/tatami/rest/users/trends?screen_name=' + username;
+        return '/tatami/rest/user/trends?screen_name=' + username;
     }
 });
 

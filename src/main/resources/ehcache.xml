@@ -73,5 +73,12 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="domain-tags-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="300"
+           overflowToDisk="false">
+    </cache>
+
 </ehcache>
 

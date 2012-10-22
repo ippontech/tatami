@@ -136,58 +136,7 @@ app.View.UpdateView = Backbone.View.extend({
           counterText:text_characters_left + " "
       });
       var element = $(this.el).find("#updateStatusContent");
-      $("#updateStatusContent").typeahead({
-    	  textarea: element
-          , source:function (query, process) {
-
-        	var matchLogin = query.match(patterns.login);
-        	var matchHash = query.match(patterns.hash);
-        	if (matchLogin == null && matchHash == null) {return;}
-        	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
-
-        	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
-        	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
-
-        	if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
-
-            switch (query2.charAt(0)) {
-    		  case '@' :
-    			q = query2.substring(1, query2.length);
-    			return $.get('/tatami/rest/users/search', {q:q}, function (data) {
-    		        var results = [];
-    		        for (var i = 0; i < data.length; i++) {
-    		            results[i] = '@' + data[i].username;
-    		        }
-    		        return process(results);
-    		    });
-    			break;
-    		  case '#' :
-    			q = query2.substring(1, query2.length);
-    			return $.get('/tatami/rest/tags/search', {q:q}, function (data) {
-    		        var results = [];
-    		        for (var i = 0; i < data.length; i++) {
-    		            results[i] = '#' + data[i];
-    		        }
-    		        return process(results);
-    		    });
-    			break;
-    		}
-
-          }
-      , matcher: function (item) {
-          return true;//~item.toLowerCase().indexOf(this.query.toLowerCase())
-        }
-      , updater: function (item) {
-    	    container = this.options.textarea;
-			var textBefore = container.val();
-			var firstChar = item.charAt(0);
-			var textAfter = item;
-			if (textBefore.lastIndexOf(firstChar) > -1) {
-				textAfter = textBefore.substring(0, textBefore.lastIndexOf(firstChar)) + item + ' ';
-			}
-          return textAfter;
-        }
-      });
+      $("#updateStatusContent").typeahead(new Suggester(element));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -1221,3 +1170,4 @@ $(function() {
   Backbone.history.start();
 
 });
+

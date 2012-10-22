@@ -7,7 +7,12 @@ import java.io.Serializable;
  */
 public class UserPassword implements Serializable {
 
-    private String oldPassword;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6166308231892342348L;
+
+	private String oldPassword;
 
     private String newPassword;
 
