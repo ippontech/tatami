@@ -5,7 +5,6 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.util.DomainUtil;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;

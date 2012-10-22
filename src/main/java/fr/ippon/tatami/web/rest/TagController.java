@@ -1,22 +1,16 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.Tag;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * REST controller for managing tags.
