@@ -7,11 +7,6 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class TatamiUserDetails extends User {
-
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5254098987887378014L;
 	
 	private String theme = Constants.DEFAULT_THEME;
 
