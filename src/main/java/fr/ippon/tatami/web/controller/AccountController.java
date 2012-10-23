@@ -3,7 +3,6 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -49,18 +48,11 @@ public class AccountController {
         if (result.hasErrors()) {
             return "redirect:/tatami/account?error=true";
         }
-        if (updatedUser.getFirstName().contains("<") ||
-                updatedUser.getLastName().contains("<") ||
-                updatedUser.getPhoneNumber().contains("<") ||
-                updatedUser.getJobTitle().contains("<")) {
-
-            return "redirect:/tatami/account?error=true";
-        }
         User currentUser = authenticationService.getCurrentUser();
-        currentUser.setFirstName(updatedUser.getFirstName());
-        currentUser.setLastName(updatedUser.getLastName());
-        currentUser.setJobTitle(updatedUser.getJobTitle());
-        currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        currentUser.setFirstName(updatedUser.getFirstName().replace("<", " "));
+        currentUser.setLastName(updatedUser.getLastName().replace("<", " "));
+        currentUser.setJobTitle(updatedUser.getJobTitle().replace("<", " "));
+        currentUser.setPhoneNumber(updatedUser.getPhoneNumber().replace("<", " "));
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {

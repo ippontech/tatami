@@ -7,7 +7,6 @@ import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.web.controller.form.UserGroupMembership;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -57,12 +56,8 @@ public class AccountGroupsController {
     public ModelAndView addNewGroup(@ModelAttribute("group")
                                     Group group) {
 
-        if (group.getName().contains("<") ||
-                group.getDescription().contains("<")) {
-
-            return new ModelAndView("redirect:/tatami/account/groups?error=true");
-        }
-
+        group.setName(group.getName().replace("<", " "));
+        group.setDescription(group.getDescription().replace("<", " "));
         if (group.getName() != null && !group.getName().equals("")) {
             groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
             return new ModelAndView("redirect:/tatami/account/groups?success=true");
@@ -99,8 +94,6 @@ public class AccountGroupsController {
         }
         Collection<UserGroupDTO> users = groupService.getMembersForGroup(group.getGroupId());
         mv.addObject("users", users);
-        group.setName(StringEscapeUtils.unescapeHtml(group.getName()));
-        group.setDescription(StringEscapeUtils.unescapeHtml(group.getDescription()));
         mv.addObject("group", group);
         mv.setViewName("account_groups_edit");
         return mv;
@@ -114,8 +107,6 @@ public class AccountGroupsController {
         if (group.getGroupId() == null) {
             return new ModelAndView("redirect:/tatami/account/groups");
         }
-        group.setName(StringEscapeUtils.escapeHtml(group.getName()));
-        group.setDescription(StringEscapeUtils.escapeHtml(group.getDescription()));
         Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();
         boolean isGroupManagedByCurrentUser = false;
         for (Group testGroup : groups) {
@@ -127,6 +118,8 @@ public class AccountGroupsController {
         if (!isGroupManagedByCurrentUser) {
             return new ModelAndView("redirect:/tatami/account/groups");
         }
+        group.setName(group.getName().replace("<", " "));
+        group.setDescription(group.getDescription().replace("<", " "));
         groupService.editGroup(group);
         return new ModelAndView(
                 "redirect:/tatami/account/groups/edit?editGroup=true&groupId="
