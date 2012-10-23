@@ -137,7 +137,8 @@ public class ElasticsearchSearchService implements SearchService {
                     .setQuery(qb)
                     .setFilter(domainFilter)
                     .setTypes(dataType)
-                    .setFrom(page * size).setSize(size).setExplain(false);
+                    .setFrom(page * size).setSize(size)
+                    .setExplain(false);
 
             builder.addSort("statusDate", SortOrder.DESC);
 
@@ -197,7 +198,8 @@ public class ElasticsearchSearchService implements SearchService {
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Collection<String> searchUserByPrefix(String domain, String prefix) {
         QueryBuilder qb = QueryBuilders.prefixQuery("username", prefix);
         String dataType = User.class.getSimpleName().toLowerCase();
@@ -210,7 +212,7 @@ public class ElasticsearchSearchService implements SearchService {
                     .setQuery(qb)
                     .setFilter(domainFilter)
                     .setTypes(dataType)
-                    .setFrom(0).setSize(5).setExplain(false)
+                    .setFrom(0).setSize(DEFAULT_TOP_N_SEARCH_USER).setExplain(false)
                     .addSort(SortBuilders.fieldSort("username").order(SortOrder.ASC))
                     .execute()
                     .actionGet();
@@ -229,18 +231,20 @@ public class ElasticsearchSearchService implements SearchService {
         final List<String> logins = new ArrayList<String>(hitsNumber.intValue());
         Map<String, Object> user = null;
         try {
+        	String username = null;
+        	String login = null;
             for (int i = 0; i < searchHitsArray.length; i++) {
             	user = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
-                String username = (String) user.get("username");
-                String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
+                username = (String) user.get("username");
+                login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
                 logins.add(login);
             }
         } catch (JsonParseException e) {
-            e.printStackTrace();
+        	log.error("Json parse exception", e);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+        	log.error("Json mapping exception", e);
         } catch (IOException e) {
-            e.printStackTrace();
+        	log.error("IO exception", e);
         }
 
         return logins;

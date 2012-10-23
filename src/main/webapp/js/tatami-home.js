@@ -135,8 +135,7 @@ app.View.UpdateView = Backbone.View.extend({
           warning:50,
           counterText:text_characters_left + " "
       });
-      var element = $(this.el).find("#updateStatusContent");
-      $("#updateStatusContent").typeahead(new Suggester(element));
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -362,7 +361,15 @@ app.View.TimeLineNewView = Backbone.View.extend({
               } else {
                   callback();
               }
-          }
+          },
+          statusCode: {
+        	403: function() { // redirect to home page
+          	    	$(location).attr('href', '/');
+          	},
+    	    500: function() { // redirect to home page
+      	    	$(location).attr('href', '/');
+      	    }
+      	  }
     });
   },
 
@@ -489,7 +496,7 @@ app.View.TimeLinePanelView = Backbone.View.extend({
 
     this.on('refresh', this.views.news.newStatus, this.views.news);
     this.on('next', this.views.next.nextStatus, this.views.next);
-    
+
     app.on('refreshTimeline', this.views.news.newStatus, this.views.news);
   },
 

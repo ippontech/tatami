@@ -645,9 +645,9 @@ $(function() {
  * @param element the container to hook
  */
 function Suggester(element) {
-	this.textarea = element;
-    this.source = function (query, process) {
-
+    this.source = function (raw_query, process) {
+  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
+    	var query = raw_query.substring(0, caretPosition);
 	  	var matchLogin = query.match(patterns.login);
 	  	var matchHash = query.match(patterns.hash);
 	  	if (matchLogin == null && matchHash == null) {return;}
@@ -685,13 +685,27 @@ function Suggester(element) {
     	return true;
     };
   	this.updater = function (item) {
-	    container = this.options.textarea;
-		var textBefore = container.val();
+  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
+		var firstPart = element.val().substring(0, caretPosition);
+		var secondPart = element.val().substring(caretPosition, element.val().length);
 		var firstChar = item.charAt(0);
-		var textAfter = item;
-		if (textBefore.lastIndexOf(firstChar) > -1) {
-			textAfter = textBefore.substring(0, textBefore.lastIndexOf(firstChar)) + item + ' ';
+		var newText = item;
+		if (firstPart.lastIndexOf(firstChar) > -1) {
+			newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
 		}
-		return textAfter;
+		return newText;
   	};
+};
+Suggester.getCaretPos = function(element) {
+	var caretPos = 0;	// IE Support
+	if (document.selection) {
+		element.focus ();
+		var sel = document.selection.createRange ();
+		sel.moveStart ('character', -element.value.length);
+		caretPos = sel.text.length;
+	}
+	// Firefox support
+	else if (element.selectionStart || element.selectionStart == '0')
+		caretPos = element.selectionStart;
+	return (caretPos);
 };

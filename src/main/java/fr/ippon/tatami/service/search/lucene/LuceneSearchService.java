@@ -316,7 +316,7 @@ public class LuceneSearchService implements SearchService {
             SortField sortField = new SortField("username", SortField.STRING, true);
             Sort sort = new Sort(sortField);
 
-            TopDocs topDocs = searcher.search(luceneQuery, filter, 8, sort);
+            TopDocs topDocs = searcher.search(luceneQuery, filter, DEFAULT_TOP_N_SEARCH_USER, sort);
             int totalHits = topDocs.totalHits;
             if (totalHits == 0) {
                 return new ArrayList<String>();
