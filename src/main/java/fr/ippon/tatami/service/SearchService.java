@@ -13,7 +13,8 @@ import java.util.Map;
 public interface SearchService {
 
     public static final int DEFAULT_PAGE_SIZE = 20;
-
+    public static final int DEFAULT_TOP_N_SEARCH_USER = 8;
+    
     /**
      * Reset the search engine.
      * <p/>
