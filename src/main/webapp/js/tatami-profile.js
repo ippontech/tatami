@@ -362,6 +362,8 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           warning: 50,
           counterText: text_characters_left + " "
       });
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',
