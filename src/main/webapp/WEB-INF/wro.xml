@@ -16,6 +16,5 @@
         <js>/js/jquery-tatami-infinitiScroll.js</js>
         <js>/js/marked.js</js>
         <js>/js/tatami-search.js</js>
-        <js>/js/jquery.atmosphere.js</js>
     </group>
 </groups>

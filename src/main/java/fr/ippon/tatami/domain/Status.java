@@ -39,7 +39,7 @@ public class Status {
 
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
-    @Size(min = 1, max = 1024)
+    @Size(min = 1, max = 2048)
     @Column(name = "content")
     private String content;
 

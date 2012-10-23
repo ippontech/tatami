@@ -3,7 +3,6 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -50,18 +49,10 @@ public class AccountController {
             return "redirect:/tatami/account?error=true";
         }
         User currentUser = authenticationService.getCurrentUser();
-        currentUser.setFirstName(
-                StringEscapeUtils.escapeHtml(updatedUser.getFirstName()));
-
-        currentUser.setLastName(
-                StringEscapeUtils.escapeHtml(updatedUser.getLastName()));
-
-        currentUser.setJobTitle(
-                StringEscapeUtils.escapeHtml(updatedUser.getJobTitle()));
-
-        currentUser.setPhoneNumber(
-                StringEscapeUtils.escapeHtml(updatedUser.getPhoneNumber()));
-
+        currentUser.setFirstName(updatedUser.getFirstName().replace("<", " "));
+        currentUser.setLastName(updatedUser.getLastName().replace("<", " "));
+        currentUser.setJobTitle(updatedUser.getJobTitle().replace("<", " "));
+        currentUser.setPhoneNumber(updatedUser.getPhoneNumber().replace("<", " "));
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {

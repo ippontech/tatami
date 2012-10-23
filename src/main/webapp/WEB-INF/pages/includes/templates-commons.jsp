@@ -96,7 +96,7 @@
               <div><fmt:message key="tatami.status.reply"/></div>
               <fieldset>
                   <div class="control-group">
-                      <textarea class="reply span12" required="required" maxlength="500"
+                      <textarea class="reply span12" required="required" maxlength="750"
                                 name="content">@<@= status.username @> </textarea>
                   </div>
                   <div>

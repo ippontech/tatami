@@ -71,11 +71,6 @@
                                     <fmt:message key="tatami.user.update.success"/>
                                 </div>
                             </c:if>
-                            <c:if test="${param.error == 'true'}">
-                                <div class="alert alert-error">
-                                    <fmt:message key="tatami.user.update.error"/>
-                                </div>
-                            </c:if>
                             <h2>
                                 <fmt:message key="tatami.account.update.title"/>
                             </h2>
