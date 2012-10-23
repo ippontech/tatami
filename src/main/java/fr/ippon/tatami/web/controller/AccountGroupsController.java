@@ -46,6 +46,8 @@ public class AccountGroupsController {
         User currentUser = authenticationService.getCurrentUser();
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         mv.addObject("groups", groups);
+        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
+        mv.addObject("groupsAdmin", groupsAdmin);
         mv.setViewName("account_groups");
         return mv;
     }

@@ -2,10 +2,8 @@ package fr.ippon.tatami.web.init;
 
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.DispatcherServletConfig;
-import fr.ippon.tatami.web.atmosphere.users.OnlineUsersServlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.atmosphere.cpr.AtmosphereServlet;
 import org.atmosphere.cpr.MeteorServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

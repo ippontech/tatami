@@ -43,17 +43,14 @@ public class User {
     @Column(name = "gravatar")
     private String gravatar;
 
-    @NotNull
     @Size(min = 0, max = 50)
     @Column(name = "firstName")
     private String firstName;
 
-    @NotNull
     @Size(min = 0, max = 50)
     @Column(name = "lastName")
     private String lastName;
 
-    @NotNull
     @Size(min = 0, max = 100)
     @Column(name = "jobTitle")
     private String jobTitle;

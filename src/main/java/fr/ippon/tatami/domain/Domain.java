@@ -7,11 +7,6 @@ import java.io.Serializable;
  */
 public class Domain implements Serializable, Comparable<Domain> {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3584378004101210923L;
-
 	private String name;
 
     private int numberOfUsers;
