@@ -281,53 +281,6 @@ app.View.SuggestItemView = Backbone.View.extend({
   }
 });
 
-app.View.OnlineUsersView = Backbone.View.extend({
-    template: _.template($('#profile-online-users').html()),
-
-    initialize: function() {
-        var request = { url : '/realtime/onlineusers',
-            transport : 'websocket' ,
-            fallbackTransport: 'long-polling'};
-
-        request.onOpen = function(response) {
-            console.log('Atmosphere connected using ' + response.transport);
-        };
-
-        request.onMessage = function (response) {
-            detectedTransport = response.transport;
-            if (response.status == 200) {
-                var data = response.responseBody;
-                if (data.length > 0) {
-                    var onlineUsers = data.split(";");
-                    $("#online-users-list").empty();
-                    $("#online-users-list").append("<tbody>");
-                    for (var i = 0; i < onlineUsers.length; i++) {
-                        var onlineUser = onlineUsers[i];
-                        if (onlineUser != "")  {
-                            $("#online-users-list").append(
-                                "<tr><td><a href='/tatami/profile/" +
-                                    onlineUser +
-                                    "/' class='userStatus pull-left'><em>@" +
-                                    onlineUser +
-                                    "</em></a></td></tr>");
-                        }
-                    }
-                    $("#online-users-list").append("</tbody>");
-                }
-            }
-        };
-
-        subSocket = socket.subscribe(request);
-    },
-
-    render: function() {
-        $(this.el).empty();
-        $(this.el).append(this.template());
-
-        return $(this.el);
-    }
-});
-
 app.View.FollowView = Backbone.View.extend({
     template: _.template($('#profile-follow-suggest').html()),
 
@@ -1056,9 +1009,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
 
         var userFind = app.views.follow = new app.View.UserFindFormView();
         $('#profileFind').html(userFind.render());
-
-        var onlineUsers = app.views.follow = new app.View.OnlineUsersView();
-        $('#profileOnlineUsers').html(onlineUsers.render());
 
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());

@@ -13,7 +13,7 @@
     <div id="mainPanel" class="container">
         <div class="row">
 
-            <div class="span3">
+            <div class="span4">
 
                 <!-- Infos -->
                 <div id="profileContent" class="alert alert-status">
@@ -27,6 +27,12 @@
 
                         </div>
                     </div>
+                </div>
+
+                <div id="profileFind" class="alert alert-status">
+                </div>
+
+                <div id="profileFollow" class="alert alert-status">
                 </div>
 
                 <div id="profileTrends" class="alert alert-status">
@@ -43,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="span6">
+            <div class="span8">
                 <div class="tabbable">
                     <ul class="nav nav-pills homeMenu">
                         <li class="active">
@@ -71,18 +77,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="span3 hidden-phone">
-                <div id="profileFind" class="alert alert-status">
-                </div>
-
-                <div id="profileOnlineUsers" class="alert alert-status">
-                </div>
-
-                <div id="profileFollow" class="alert alert-status">
-                </div>
-            </div>
-
         </div>
     </div>
 
