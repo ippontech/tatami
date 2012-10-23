@@ -131,7 +131,7 @@ app.View.UpdateView = Backbone.View.extend({
           css:'counter',
           cssWarning:'counter_warning',
           cssExceeded:'counter_exceeded',
-          allowed:500,
+          allowed:750,
           warning:50,
           counterText:text_characters_left + " "
       });

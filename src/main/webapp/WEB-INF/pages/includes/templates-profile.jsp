@@ -4,7 +4,7 @@
 <script type="text/template" id="profile-update">
   <fieldset class="span12">
     <div class="control-group">
-      <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="500" name="content">@${user.username} </textarea>
+      <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content">@${user.username} </textarea>
     </div>
     <div>
       <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block" data-content="<fmt:message key="tatami.status.update.success"/>"><fmt:message key="tatami.status.update.to"/></button>
