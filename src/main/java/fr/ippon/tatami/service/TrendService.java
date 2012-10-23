@@ -40,7 +40,7 @@ public class TrendService {
     	Collection<String> allTags = trendRepository.getDomainTags(domain);
     	Collection<String> matchingTags = new ArrayList<String>();
     	for (String tag : allTags) {
-    		if (tag.toLowerCase().startsWith(startWith)) {
+    		if (tag.toLowerCase().startsWith(startWith.toLowerCase())) {
     			matchingTags.add(tag);
     		}
     	}
