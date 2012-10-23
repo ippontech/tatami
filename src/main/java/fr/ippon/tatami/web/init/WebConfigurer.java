@@ -83,27 +83,6 @@ public class WebConfigurer implements ServletContextListener {
         dispatcherServlet.addMapping("/tatami/*");
         dispatcherServlet.setLoadOnStartup(2);
 
-        log.debug("Registering Meteor Servlet for online users");
-
-        ServletRegistration.Dynamic meteorServlet = servletContext.addServlet("atmosphereServlet",
-                new MeteorServlet());
-
-        meteorServlet.setAsyncSupported(true);
-        meteorServlet.addMapping("/realtime/*");
-        meteorServlet.setLoadOnStartup(3);
-
-        meteorServlet.setInitParameter("org.atmosphere.servlet",
-                "fr.ippon.tatami.web.atmosphere.users.OnlineUsersServlet");
-
-        meteorServlet.setInitParameter("org.atmosphere.cpr.broadcasterCacheClass",
-                "org.atmosphere.cache.HeaderBroadcasterCache");
-
-        meteorServlet.setInitParameter("org.atmosphere.cpr.broadcastFilterClasses",
-                "org.atmosphere.client.TrackMessageSizeFilter");
-
-        meteorServlet.setInitParameter("org.atmosphere.useNative",
-                "true");
-
         log.debug("Registering Spring Security Filter");
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
                 new DelegatingFilterProxy());
