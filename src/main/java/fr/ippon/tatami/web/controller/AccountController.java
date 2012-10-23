@@ -49,19 +49,18 @@ public class AccountController {
         if (result.hasErrors()) {
             return "redirect:/tatami/account?error=true";
         }
+        if (updatedUser.getFirstName().contains("<") ||
+                updatedUser.getLastName().contains("<") ||
+                updatedUser.getPhoneNumber().contains("<") ||
+                updatedUser.getJobTitle().contains("<")) {
+
+            return "redirect:/tatami/account?error=true";
+        }
         User currentUser = authenticationService.getCurrentUser();
-        currentUser.setFirstName(
-                StringEscapeUtils.escapeHtml(updatedUser.getFirstName()));
-
-        currentUser.setLastName(
-                StringEscapeUtils.escapeHtml(updatedUser.getLastName()));
-
-        currentUser.setJobTitle(
-                StringEscapeUtils.escapeHtml(updatedUser.getJobTitle()));
-
-        currentUser.setPhoneNumber(
-                StringEscapeUtils.escapeHtml(updatedUser.getPhoneNumber()));
-
+        currentUser.setFirstName(updatedUser.getFirstName());
+        currentUser.setLastName(updatedUser.getLastName());
+        currentUser.setJobTitle(updatedUser.getJobTitle());
+        currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {

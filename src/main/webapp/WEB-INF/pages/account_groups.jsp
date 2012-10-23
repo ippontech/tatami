@@ -71,6 +71,11 @@
                                             key="tatami.group.add.success"/>
                                 </div>
                             </c:if>
+                            <c:if test="${param.error == 'true'}">
+                                <div class="alert alert-error">
+                                    <fmt:message key="tatami.group.add.error"/>
+                                </div>
+                            </c:if>
                             <h2>
                                 <fmt:message key="tatami.menu.groups"/>
                             </h2>

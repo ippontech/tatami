@@ -57,9 +57,13 @@ public class AccountGroupsController {
     public ModelAndView addNewGroup(@ModelAttribute("group")
                                     Group group) {
 
+        if (group.getName().contains("<") ||
+                group.getDescription().contains("<")) {
+
+            return new ModelAndView("redirect:/tatami/account/groups?error=true");
+        }
+
         if (group.getName() != null && !group.getName().equals("")) {
-            group.setName(StringEscapeUtils.escapeHtml(group.getName()));
-            group.setDescription(StringEscapeUtils.escapeHtml(group.getDescription()));
             groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
             return new ModelAndView("redirect:/tatami/account/groups?success=true");
         }
