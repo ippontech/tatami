@@ -187,7 +187,49 @@
         </div>
     </div>
 
+	<div id="modalTimeoutWindow" class="modal hide fade">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3><fmt:message key="tatami.login.modal.timeout.title"/></h3>
+	  </div>
+	  <div class="modal-body">
+	    <p><fmt:message key="tatami.login.modal.timeout.message" /></p>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true"><fmt:message key="tatami.login.modal.timeout.close" /></a>
+	  </div>
+	</div>
     <jsp:include page="includes/footer.jsp"/>
 
+    <script type="text/javascript">
+    var urlParams = {};
+    var actions = new Array({
+			name:'timeout',
+			exec: function() {
+				$('#modalTimeoutWindow').modal({
+					  keyboard: true,
+					  show: true
+				});
+			}
+		});
+
+    $(function() {
+        var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+        while (match = search.exec(query)) {
+          urlParams[decode(match[1])] = decode(match[2]);
+        }
+    
+        for (var i = 0; i < actions.length; i++) {
+	  	  if (urlParams[actions[i].name] != null) {
+		  	actions[i].exec();
+		  }
+        }
+	});
+    </script>
 </body>
 </html>
