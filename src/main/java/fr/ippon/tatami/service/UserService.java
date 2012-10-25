@@ -125,9 +125,7 @@ public class UserService {
 			searchService.removeUser(user);
 			searchService.addUser(user);
 		} catch (ConstraintViolationException cve) {
-			log.info("Constraint violated while updating user " + user + " : "
-					+ cve);
-			throw cve;
+			parseErrorMsg(cve);
 		}
 	}
 
@@ -164,8 +162,8 @@ public class UserService {
 		try {
 			userRepository.updateUser(currentUser);
 		} catch (ConstraintViolationException cve) {
-			log.info("Constraint violated while updating theme : " + cve);
-			throw cve;
+				parseErrorMsg(cve);
+			
 		}
 	}
 
