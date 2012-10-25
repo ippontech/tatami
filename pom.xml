@@ -50,6 +50,7 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
@@ -72,6 +73,7 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
@@ -124,6 +126,7 @@
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.connection.security>https</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
@@ -176,6 +179,7 @@
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
