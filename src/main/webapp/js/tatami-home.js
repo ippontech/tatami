@@ -363,12 +363,12 @@ app.View.TimeLineNewView = Backbone.View.extend({
               }
           },
           statusCode: {
-        	403: function() { // redirect to home page
-          	    	$(location).attr('href', '/');
-          	},
-    	    500: function() { // redirect to home page
-      	    	$(location).attr('href', '/');
-      	    }
+            403: function() { // redirect to the login page if session is expired
+                $(location).attr('href', '/tatami/login?timeout');
+            },
+            500: function() { // redirect to the 500 error page if a severe error is encountered
+                $(location).attr('href', '/tatami/500-error');
+            }
       	  }
     });
   },
@@ -485,7 +485,7 @@ app.View.TimeLinePanelView = Backbone.View.extend({
       model : this.model
     });
     this.views.news = new app.View.TimeLineNewView({
-      interval: 20000,
+      interval: 5000,
       model : this.model
     });
     this.views.next = new app.View.TimeLineNextView({
