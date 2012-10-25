@@ -3,7 +3,10 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import javax.inject.Inject;
 
@@ -122,4 +125,36 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         userService.setAuthenticationService(mockAuthenticationService);
     }
 
+    /**
+     * Méthode de test pour mettre à jour le pwd.
+     */
+    @Test
+    public void shouldUpdatePassword(){
+    	
+    	String login = "nuser@ippon.fr";
+        String firstName = "New";
+        String lastName = "User";
+        String gravatar = "newGravatar";
+        
+    	User userTotest = new User();
+    	userTotest = constructAUser(login);
+    	
+        userTotest.setLogin(login);
+        userTotest.setFirstName(firstName);
+        userTotest.setLastName(lastName);
+        userTotest.setGravatar(gravatar);
+    	String password = "MotDePasse";
+    	userTotest.setPassword(password);
+    	
+    	userService.updatePassword(userTotest);
+    	// Vérification du mot de passe
+    	StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
+        
+        Assert.assertEquals("Le mot de passe"+encryptedPassword, encryptedPassword, userTotest.getPassword());
+    	
+    	
+    	
+    	
+    }
 }
