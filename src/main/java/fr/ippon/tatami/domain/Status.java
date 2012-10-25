@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * A user.
+ * A status.
  *
  * @author Julien Dubois
  */
