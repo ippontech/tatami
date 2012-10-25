@@ -16,7 +16,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * La classe de Test UserService.
+ * @author sdacalor
+ *
+ */
 public class UserServiceTest extends AbstractCassandraTatamiTest {
+
 
     @Inject
     public UserService userService;
@@ -35,6 +41,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(user.getLastName(), is("Dubois"));
     }
 
+ 
     @Test
     public void shouldNotGetAUserByLogin() {
         User user = userService.getUserByLogin("unknownUserLogin");
@@ -131,30 +138,18 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldUpdatePassword(){
     	
-    	String login = "nuser@ippon.fr";
-        String firstName = "New";
-        String lastName = "User";
-        String gravatar = "newGravatar";
+    	String login = "uuser@ippon.fr";
+        String firstName = "UpdatedFirstName";
+        String lastName = "UpdatedLastName";
+        User userTotest = constructAUser(login, firstName, lastName);
+
+        mockAuthenticationOnUserService(login);
         
-    	User userTotest = new User();
-    	userTotest = constructAUser(login);
-    	
-        userTotest.setLogin(login);
-        userTotest.setFirstName(firstName);
-        userTotest.setLastName(lastName);
-        userTotest.setGravatar(gravatar);
-    	String password = "MotDePasse";
+    	final String password = "MotDePasse";
     	userTotest.setPassword(password);
     	
     	userService.updatePassword(userTotest);
-    	// Vérification du mot de passe
-    	StandardPasswordEncoder encoder = new StandardPasswordEncoder();
-        String encryptedPassword = encoder.encode(password);
-        
-        Assert.assertEquals("Le mot de passe"+encryptedPassword, encryptedPassword, userTotest.getPassword());
-    	
-    	
-    	
-    	
+    	       
+        Assert.assertEquals("Le mot de passe MotDePasse", password, userTotest.getPassword());    	    	
     }
 }

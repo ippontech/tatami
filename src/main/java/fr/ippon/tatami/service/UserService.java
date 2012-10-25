@@ -29,7 +29,6 @@ import fr.ippon.tatami.service.util.RandomUtil;
 
 /**
  * Manages the application's users.
- * 
  * @author Julien Dubois
  */
 @Service
@@ -49,6 +48,7 @@ public class UserService {
 	@Inject
 	private FriendshipService friendshipService;
 
+	//Missing javadoc
 	@Inject
 	private CounterRepository counterRepository;
 
