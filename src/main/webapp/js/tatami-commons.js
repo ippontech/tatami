@@ -650,9 +650,14 @@ function Suggester(element) {
     	var query = raw_query.substring(0, caretPosition);
 	  	var matchLogin = query.match(patterns.login);
 	  	var matchHash = query.match(patterns.hash);
-	  	if (matchLogin == null && matchHash == null) {return;}
+	  	if (matchLogin == null && matchHash == null) {
+	  		if (this.shown) {
+	  			this.hide();
+	  		};
+	  		return;
+	  	}
 	  	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
-	
+
 	  	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
 	  	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
 	
