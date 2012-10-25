@@ -485,7 +485,7 @@ app.View.TimeLinePanelView = Backbone.View.extend({
       model : this.model
     });
     this.views.news = new app.View.TimeLineNewView({
-      interval: 5000,
+      interval: 20000,
       model : this.model
     });
     this.views.next = new app.View.TimeLineNextView({
