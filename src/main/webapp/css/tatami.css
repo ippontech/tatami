@@ -182,6 +182,10 @@ form {
   word-wrap: break-word;
 }
 
+.status-content pre {
+  word-break: break-word;
+}
+
 .status-content a {
   font-weight: bold;
 }
