@@ -14,7 +14,7 @@
 <head>
     <meta charset="utf-8">
     <title><fmt:message key="tatami.title"/></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale = 1,user-scalable=no,maximum-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 

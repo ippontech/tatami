@@ -22,7 +22,7 @@
                                 key="tatami.home"/>
                         </a>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown visible-desktop">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="icon-info-sign icon-white"></i> <fmt:message key="tatami.menu.about"/>
                             <b class="caret"></b>
