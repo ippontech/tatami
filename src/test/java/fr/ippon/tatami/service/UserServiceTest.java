@@ -1,5 +1,8 @@
 package fr.ippon.tatami.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -141,15 +144,35 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     	String login = "uuser@ippon.fr";
         String firstName = "UpdatedFirstName";
         String lastName = "UpdatedLastName";
-        User userTotest = constructAUser(login, firstName, lastName);
-
+        User userTotest = constructAUser(login, firstName, lastName);        
         mockAuthenticationOnUserService(login);
         
     	final String password = "MotDePasse";
     	userTotest.setPassword(password);
-    	
     	userService.updatePassword(userTotest);
     	       
-        Assert.assertEquals("Le mot de passe MotDePasse", password, userTotest.getPassword());    	    	
+        Assert.assertNotNull("Le mot de passe MotDePasse", userTotest.getPassword());
+        
+        User userUnConfigure = constructAUser(login, null, null);        
+        mockAuthenticationOnUserService(login);
+    	userService.updatePassword(userUnConfigure);
+        Assert.assertEquals("L'utilisateur n'est pas configuré", null,userUnConfigure.getFirstName());
+    }
+    
+    @Test
+    public void shoulGetUsersByLogin(){
+    	String login = "uuser@ippon.fr";
+        String firstName = "UpdatedFirstName";
+        String lastName = "UpdatedLastName";
+        User userTotest = constructAUser(login, firstName, lastName);
+
+        mockAuthenticationOnUserService(login);
+        
+        Collection<String> loginsToTest = new ArrayList<String>();
+        loginsToTest.add(login);
+        Collection<User> collUserToTest = userService.getUsersByLogin(loginsToTest);
+        
+        Assert.assertFalse("La liste est remplie", collUserToTest.isEmpty());
+    	
     }
 }

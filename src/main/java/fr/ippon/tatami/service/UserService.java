@@ -130,16 +130,17 @@ public class UserService {
 	}
 
 	public void updatePassword(User user) {
-		User currentUser = authenticationService.getCurrentUser();
+//Correction : currentUser non utilisée
 		String password = user.getPassword();
 		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 		String encryptedPassword = encoder.encode(password);
-		currentUser.setPassword(encryptedPassword);
+		
+		user.setPassword(encryptedPassword);
 		if (log.isDebugEnabled()) {
 			log.debug("Password encrypted to : " + encryptedPassword);
 		}
 		try {
-			userRepository.updateUser(currentUser);
+			userRepository.updateUser(user);
 		} catch (ConstraintViolationException cve) {
 			parseErrorMsg(cve);
 		}
