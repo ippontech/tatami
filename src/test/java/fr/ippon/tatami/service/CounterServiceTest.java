@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
@@ -12,33 +14,43 @@ import fr.ippon.tatami.repository.CounterRepository;
 
 public class CounterServiceTest extends AbstractCassandraTatamiTest{
 	
-	@Inject
-    public CounterService CounterService;
+	private final String login = "uuser@ippoon.fr";
 	
 	@Inject
-    private CounterRepository counterRepository;
+    public CounterService counterService;
+	
+	@Inject
+    public CounterRepository counterRepository;
 	
 	@Test
 	public void shouldGetCounterServiceInjected(){
-		assertThat(CounterService, notNullValue());
+		assertThat(counterService, notNullValue());
 	}
 	
 	@Test
 	public void shouldGetCounterRepositoryInjected(){
 		assertThat(counterRepository, notNullValue());
 	}
-	
-//    public long shouldgetNbStatus(String login) {
-//    	assert 
-//    	return counterRepository.getStatusCounter(login);
-//    }
 
-//    public long ShouldgetNbFollowed(String login) {
-//        return counterRepository.getFriendsCounter(login);
-//    }
-//
-//    public long ShouldgetNbFollowers(String login) {
-//        return counterRepository.getFollowersCounter(login);
-//    }
+	@Test
+	public void shouldgetNbStatus() {
+		Long nb =  counterService.getNbStatus(login);
+    	assertThat(nb,notNullValue());
+    	Assert.assertTrue(nb instanceof Long);
+    }
+
+   @Test
+	public void ShouldgetNbFollowed() {
+        Long nb = counterService.getNbFollowed(login);
+        assertThat(nb,notNullValue());
+        Assert.assertTrue(nb instanceof Long);
+    }
+
+    @Test
+    public void ShouldgetNbFollowers() {
+        Long nb = counterService.getNbFollowers(login);
+        assertThat(nb,notNullValue());
+        Assert.assertTrue(nb instanceof Long);
+    }
 
 }

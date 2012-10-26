@@ -139,6 +139,6 @@ public class CassandraCounterRepository implements CounterRepository {
                         StringSerializer.get());
 
         counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
-        return counter.execute().get().getValue();
+        return ( (counter.execute().get() == null) ? 0 : counter.execute().get().getValue());
     }
 }
