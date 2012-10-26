@@ -1,9 +1,15 @@
 package fr.ippon.tatami.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import javax.inject.Inject;
 
@@ -13,7 +19,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * La classe de Test UserService.
+ * @author sdacalor
+ *
+ */
 public class UserServiceTest extends AbstractCassandraTatamiTest {
+
 
     @Inject
     public UserService userService;
@@ -32,6 +44,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(user.getLastName(), is("Dubois"));
     }
 
+ 
     @Test
     public void shouldNotGetAUserByLogin() {
         User user = userService.getUserByLogin("unknownUserLogin");
@@ -122,4 +135,44 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         userService.setAuthenticationService(mockAuthenticationService);
     }
 
+    /**
+     * Méthode de test pour mettre à jour le pwd.
+     */
+    @Test
+    public void shouldUpdatePassword(){
+    	
+    	String login = "uuser@ippon.fr";
+        String firstName = "UpdatedFirstName";
+        String lastName = "UpdatedLastName";
+        User userTotest = constructAUser(login, firstName, lastName);        
+        mockAuthenticationOnUserService(login);
+        
+    	final String password = "MotDePasse";
+    	userTotest.setPassword(password);
+    	userService.updatePassword(userTotest);
+    	       
+        Assert.assertNotNull("Le mot de passe MotDePasse", userTotest.getPassword());
+        
+        User userUnConfigure = constructAUser(login, null, null);        
+        mockAuthenticationOnUserService(login);
+    	userService.updatePassword(userUnConfigure);
+        Assert.assertEquals("L'utilisateur n'est pas configuré", null,userUnConfigure.getFirstName());
+    }
+    
+    @Test
+    public void shoulGetUsersByLogin(){
+    	String login = "uuser@ippon.fr";
+        String firstName = "UpdatedFirstName";
+        String lastName = "UpdatedLastName";
+        User userTotest = constructAUser(login, firstName, lastName);
+
+        mockAuthenticationOnUserService(login);
+        
+        Collection<String> loginsToTest = new ArrayList<String>();
+        loginsToTest.add(login);
+        Collection<User> collUserToTest = userService.getUsersByLogin(loginsToTest);
+        
+        Assert.assertFalse("La liste est remplie", collUserToTest.isEmpty());
+    	
+    }
 }
