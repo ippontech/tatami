@@ -32,7 +32,7 @@
         <intercept-url pattern="/tatami/license" access="permitAll()"/>
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
-        <intercept-url pattern="/**" access="isAuthenticated()" requires-channel="${tatami.connection.security}"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <form-login
                 login-processing-url="/tatami/authentication"
