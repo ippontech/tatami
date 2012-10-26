@@ -183,6 +183,7 @@ form {
 }
 
 .status-content pre {
+  word-break: normal;
   word-break: break-word;
 }
 
