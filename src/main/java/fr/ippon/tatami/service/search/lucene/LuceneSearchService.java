@@ -212,8 +212,8 @@ public class LuceneSearchService implements SearchService {
             }
             final Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(size);
             int startItem = page * size;
-            int finishItem = ((page + 1) * size) - 1;
-            if (finishItem < scoreDocArray.length) {
+            int finishItem = (page + 1) * size;
+            if (finishItem > scoreDocArray.length) {
                 finishItem = scoreDocArray.length;
             }
             for (int i = startItem; i < finishItem; i++) {
