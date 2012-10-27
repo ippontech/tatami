@@ -337,7 +337,11 @@ app.View.TimeLineNewView = Backbone.View.extend({
 
       sc.fetch({
           data:data,
-          success:function () {
+          success:function (model, response) {
+              if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
+                  // if the answer is not an array, the session must have expired
+                  $(location).attr('href', '/tatami/login?timeout');
+              }
               if (sc.length > 0) {
                   document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
               } else if (sc.length == 0 && typeof callback != 'undefined') {
@@ -361,15 +365,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
               } else {
                   callback();
               }
-          },
-          statusCode: {
-            403: function() { // redirect to the login page if session is expired
-                $(location).attr('href', '/tatami/login?timeout');
-            },
-            500: function() { // redirect to the 500 error page if a severe error is encountered
-                $(location).attr('href', '/tatami/500-error');
-            }
-      	  }
+          }
     });
   },
 

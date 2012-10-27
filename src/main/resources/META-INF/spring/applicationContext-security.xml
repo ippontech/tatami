@@ -19,12 +19,6 @@
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
-	<beans:bean id="403EntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
-
-	<http pattern="/tatami/rest/**" use-expressions="true" realm="Tatami Web API" entry-point-ref="403EntryPoint">
-        <intercept-url pattern="/**" access="isAuthenticated()" />
-    </http>
-
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <remember-me key="tatamiRememberKey"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
