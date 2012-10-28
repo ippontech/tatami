@@ -101,6 +101,13 @@ public class UserService {
 		return users;
 	}
 
+	/**
+	 * Méthode de recherche d'utilisateurs d'un domaine.
+	 * @param pagination
+	 * La pagination.
+	 * @return
+	 * Liste des utilisateurs ayant le login
+	 */
 	public List<User> getUsersForCurrentDomain(int pagination) {
 		User currentUSer = authenticationService.getCurrentUser();
 		String domain = DomainUtil.getDomainFromLogin(currentUSer.getLogin());
