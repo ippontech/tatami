@@ -22,8 +22,6 @@ public class MailServiceTest extends AbstractCassandraTatamiTest {
 	    @Test
 	    public void shouldSendRegistrationEmail() {
 	    	
-	    	String subject = "Tatami activation";
-	       // String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
 	    	
 	    }
 	    
