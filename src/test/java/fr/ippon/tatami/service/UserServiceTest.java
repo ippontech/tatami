@@ -138,6 +138,11 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 		assertThat(userToBeTheSame.getStatusCount(), is(0L));
 		assertThat(userToBeTheSame.getFollowersCount(), is(0L));
 		assertThat(userToBeTheSame.getFriendsCount(), is(0L));
+		
+		Log.debug("Test avec Password nul");
+		userTotest.setPassword(null);
+		userService.createUser(userTotest);
+		
 	}
 
 	private void mockAuthenticationOnUserService(String login) {
@@ -198,7 +203,27 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
 	}
 
+	/**
+	 * Methode de Test de l'enregistrement d'un utilisateur.
+	 */
+	@Test
 	public void shouldRegisterUser() {
 
+	}
+	
+	/**
+	 * Test de la mise à jour du thème RoseIndia
+	 */
+	@Test
+	public void shouldUpdateTheme(){
+		
+		String themeToTest = "RoseIndia";
+		Log.info("Mise à jour de la configuration user");
+		userTotest.setTheme(themeToTest);
+		
+		
+		userService.updateTheme(themeToTest);
+		
+		Assert.assertEquals("Le theme est RoseIndia", themeToTest, userTotest.getTheme());
 	}
 }
