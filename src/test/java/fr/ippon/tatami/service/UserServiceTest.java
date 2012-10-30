@@ -163,11 +163,12 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 		userTotest.setPassword(password);
 		userService.updatePassword(userTotest);
 
-		Assert.assertNotNull("Le mot de passe MotDePasse",
+		Assert.assertEquals("Le mot de passe MotDePasse",
 				userTotest.getPassword());
 
 		User userUnConfigure = constructAUser(login, null, null);
 		mockAuthenticationOnUserService(login);
+		
 		userService.updatePassword(userUnConfigure);
 		Assert.assertEquals("L'utilisateur n'est pas configuré", null,
 				userUnConfigure.getFirstName());

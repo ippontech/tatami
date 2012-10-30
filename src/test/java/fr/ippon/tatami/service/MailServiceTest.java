@@ -1,24 +1,23 @@
 package fr.ippon.tatami.service;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Properties;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
+import javax.mail.internet.AddressException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.jvnet.mock_javamail.Mailbox;
 import org.springframework.core.env.Environment;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
@@ -32,17 +31,31 @@ public class MailServiceTest extends AbstractCassandraTatamiTest {
 	 	@Inject
 	    public MailService mailService;
 	 	
+
+	 	
 	 	@Inject
 	    private Environment env;
-	 	 
-	 	private String tatamiUrl;
-	 	
-	 	
+
+	    private String host;
+
+	    private int port;
+
+	    private String smtpUser;
+
+	    private String smtpPassword;
+
+	    private String from;
+
+	    private String tatamiUrl;
 	 	
 	 	 @PostConstruct
 	     public void init() {
-
-	         this.tatamiUrl = env.getProperty("tatami.url");
+	 		this.host = env.getProperty("smtp.host");
+	        this.port = env.getProperty("smtp.port", Integer.class);
+	        this.smtpUser = env.getProperty("smtp.user");
+	        this.smtpPassword = env.getProperty("smtp.password");
+	        this.from = env.getProperty("smtp.from");
+	        this.tatamiUrl = env.getProperty("tatami.url");
 	     }
 	 	
 	 	
@@ -55,7 +68,7 @@ public class MailServiceTest extends AbstractCassandraTatamiTest {
 	    
 	    
 	    @Test
-	    public void shouldSendRegistrationEmail() {
+	    public void shouldSendRegistrationEmail() throws MessagingException, IOException {
 	    	
 	    	User user = constructAUser("uuser@ippon.fr", "uuser", "UpdatedLastName");
 	    	String registrationKey = "edzkubqs1234";
@@ -71,49 +84,22 @@ public class MailServiceTest extends AbstractCassandraTatamiTest {
 	                  + "\n\n"
 	                  + "Regards,\n\n" + "Ippon Technologies.";
 	        
-	    	mailService.sendRegistrationEmail(registrationKey,user);
+		MailService mailS = new MailService();
+		
+		mailS.sendRegistrationEmail(registrationKey, user);
 	    	
-	    	
-	    	
-	    	Session session = Session.getDefaultInstance(new Properties());
-	    	
-	    	
-	    
-	    		Store store;
-				try {
-					store = session.getStore("pop3");
-				
-	    		try {
-					store.connect(user.getDomain(),user.getUsername(), "password");
-					
-					Folder folder = store.getFolder("inbox");
-
-		    		folder.open(Folder.READ_ONLY);
-		    		Message[] msg = folder.getMessages();
-
-		    		assertTrue(msg.length == 1);
-		    	
-		    		assertEquals(subject, msg[0].getSubject());
-		    		try {
-						assertEquals(text, msg[0].getContent());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		    		folder.close(true);
-		    		store.close();
-				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				}
-				catch (NoSuchProviderException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-	    		
-
-	    	
+		List<Message> inbox;
+		try {
+			inbox = Mailbox.get(user.getLogin());
+			assertTrue(inbox.size() == 1);
+			assertEquals(subject, inbox.get(0).getSubject());
+			assertEquals(text, inbox.get(0).getContent());
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	
 	    	
 	    }
 	    
