@@ -104,12 +104,114 @@ public class MailServiceTest extends AbstractCassandraTatamiTest {
 	    }
 	    
 	    @Test
-	    public void shouldSendLostPasswordEmail() {
+	    public void shouldSendLostPasswordEmail() throws MessagingException, IOException {
+	    	
+	    	User user = constructAUser("uuser@ippon.fr", "uuser", "UpdatedLastName");
+	    	String registrationKey = "edzkubqs1234";
+	    	String subject = "Tatami activation";
+	    	String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+	    	
+	    	String text = "Dear "
+	                + user.getLogin()
+	                + ",\n\n"
+	                + "Someone asked to re-initialize your password."
+	                + "\n\n"
+	                + "If you want to re-initialize your password, please click on the link below : "
+	                + "\n\n"
+	                + url
+	                + "\n\n"
+	                + "If you do not want to re-initialize your password, you can safely ignore this message "
+	                + "\n\n"
+	                + "Regards,\n\n" + "Ippon Technologies.";
+	    	
+	    	
+	    	
+	    	MailService mailS = new MailService();
+			
+			mailS.sendLostPasswordEmail(registrationKey, user);
+		    	
+			List<Message> inbox;
+			try {
+				inbox = Mailbox.get(user.getLogin());
+				assertTrue(inbox.size() == 1);
+				assertEquals(subject, inbox.get(0).getSubject());
+				assertEquals(text, inbox.get(0).getContent());
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	
 	    }
 	    
 	    @Test
-	    public void shouldSendValidationEmail() {
+	    public void shouldSendValidationEmail() throws MessagingException, IOException {
+	    	
+	    	User user = constructAUser("uuser@ippon.fr", "uuser", "UpdatedLastName");
+	    	String registrationKey = "edzkubqs1234";
+	    	String subject = "Tatami account validated";
+	    	String password = "password";
+	    	String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+	    	
+	    	
+	        String text = "Dear "
+	                + user.getLogin()
+	                + ",\n\n"
+	                + "Your Tatami account has been validated, here is your password : "
+	                + "\n\n"
+	                + password
+	                + "\n\n"
+	                + "Regards,\n\n" + "Ippon Technologies.";
+	        
+	        MailService mailS = new MailService();
+			
+			mailS.sendValidationEmail(user, password);
+		    	
+			List<Message> inbox;
+			try {
+				inbox = Mailbox.get(user.getLogin());
+				assertTrue(inbox.size() == 1);
+				assertEquals(subject, inbox.get(0).getSubject());
+				assertEquals(text, inbox.get(0).getContent());
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+	    }
+	    
+	    
+	    @Test
+	    public void shouldSendPasswordReinitializedEmail() throws MessagingException, IOException {
+	    	
+	    	User user = constructAUser("uuser@ippon.fr", "uuser", "UpdatedLastName");
+	    	String registrationKey = "edzkubqs1234";
+	    	String subject = "Tatami password re-initialized";
+	    	String password = "password";
+	    	String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+	    	
+	    	
+	        String text = "Dear "
+	                + user.getLogin()
+	                + ",\n\n"
+	                + "Your Tatami password has been re-initialized, here is your new password : "
+	                + "\n\n"
+	                + password
+	                + "\n\n"
+	                + "Regards,\n\n" + "Ippon Technologies.";
+	        MailService mailS = new MailService();
+			
+			mailS.sendPasswordReinitializedEmail(user, password);
+		    	
+			List<Message> inbox;
+			try {
+				inbox = Mailbox.get(user.getLogin());
+				assertTrue(inbox.size() == 1);
+				assertEquals(subject, inbox.get(0).getSubject());
+				assertEquals(text, inbox.get(0).getContent());
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	
 	    }
 
