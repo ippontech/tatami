@@ -280,14 +280,15 @@ public class TimelineService {
         if (log.isDebugEnabled()) {
             log.debug("Removing status : " + statusId);
         }
-        final Status status = statusRepository.findStatusById(statusId);
-
-        final User currentUser = authenticationService.getCurrentUser();
-        if (status.getLogin().equals(currentUser.getLogin())
-                && Boolean.FALSE.equals(status.getRemoved())) {
-            statusRepository.removeStatus(status);
-            counterRepository.decrementStatusCounter(currentUser.getLogin());
-            searchService.removeStatus(status);
+        Status status = statusRepository.findStatusById(statusId);
+        if (status != null) {
+            User currentUser = authenticationService.getCurrentUser();
+            if (status.getLogin().equals(currentUser.getLogin())
+                    && Boolean.FALSE.equals(status.getRemoved())) {
+                statusRepository.removeStatus(status);
+                counterRepository.decrementStatusCounter(currentUser.getLogin());
+                searchService.removeStatus(status);
+            }
         }
     }
 
