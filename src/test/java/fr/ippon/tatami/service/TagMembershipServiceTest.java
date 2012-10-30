@@ -7,7 +7,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mortbay.log.Log;
 
 import com.google.inject.Inject;
 
@@ -21,8 +23,41 @@ import fr.ippon.tatami.web.rest.dto.Tag;
  *
  */
 public class TagMembershipServiceTest extends AbstractCassandraTatamiTest{
-	
 
+	@Inject
+	private static User userTotest;
+
+	@Inject
+	public UserService userService;
+
+	private static final String domainName = "ippon.fr";
+	private static final String login = "uuser@ippon.fr";
+	private static final String firstName = "uuser";
+	private static final String lastName = "UpdatedLastName";
+	private static final String gravatar = "newGravatar";
+	private static final String password = "MotDePasse";
+
+	/**
+	 * Initialisation des éléments de Test
+	 * 
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Log.info("Creation du user à tester");
+		userTotest = constructAUser(login, firstName, lastName);
+		userTotest.setPassword(password);
+		mockAuthenticationOnUserService(login);
+	}
+	
+	private void mockAuthenticationOnUserService(String login) {
+		User authenticateUser = constructAUser(login);
+		AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+		when(mockAuthenticationService.getCurrentUser()).thenReturn(
+				authenticateUser);
+		userService.setAuthenticationService(mockAuthenticationService);
+	}
+	
 	/**
 	 * Test method for {@link fr.ippon.tatami.service.TagMembershipService#followTag(fr.ippon.tatami.web.rest.dto.Tag)}.
 	 */
@@ -34,24 +69,12 @@ public class TagMembershipServiceTest extends AbstractCassandraTatamiTest{
 		Tag tagTest = new Tag();
 		String name = "Mon Tag";
 		String scope = "Scope Tag";
-		
-		/*
-		 * Initialisatioin du User
-		 */
-        String login = "user@ippon.fr";
-        String firstName = "UpdatedFirstName";
-        String lastName = "UpdatedLastName";
-
-		
+	
 		
 		tagTest.setName(name);
 		tagTest.setScope(scope);
-        User userTest = constructAUser(login, firstName, lastName);
-		
-		TagMembershipService tagMembershipServiceTest = new TagMembershipService();
-        
-		
-		
+	
+		TagMembershipService tagMembershipServiceTest = new TagMembershipService();    
         tagMembershipServiceTest.followTag(tagTest);
 		
 		
