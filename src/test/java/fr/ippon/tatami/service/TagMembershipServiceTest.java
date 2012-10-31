@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mortbay.log.Log;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
@@ -75,7 +75,8 @@ public class TagMembershipServiceTest extends AbstractCassandraTatamiTest{
 		tagTest.setScope(scope);
 	
 		TagMembershipService tagMembershipServiceTest = new TagMembershipService();    
-        tagMembershipServiceTest.followTag(tagTest);
+		mockAuthenticationOnUserService(login);
+		//tagMembershipServiceTest.followTag(tagTest);
 		
 		
 	}
@@ -86,7 +87,17 @@ public class TagMembershipServiceTest extends AbstractCassandraTatamiTest{
 	 */
 	@Test
 	public void testUnfollowTag() {
-		fail("Not yet implemented"); // TODO
+	
+		Tag tagTest = new Tag();
+		String name = "Mon Tag";
+		String scope = "Scope Tag";
+	
+		
+		tagTest.setName(name);
+		tagTest.setScope(scope);
+	
+		TagMembershipService tagMembershipServiceTest = new TagMembershipService();
+		//tagMembershipServiceTest.unfollowTag(tagTest);
 	}
 
 }

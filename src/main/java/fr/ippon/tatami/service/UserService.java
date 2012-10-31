@@ -158,7 +158,7 @@ public class UserService {
 	 * le param cve.
 	 */
 	private void parseErrorMsg(final ConstraintViolationException cve) {
-		log.error("Constraint violated while updating user ", cve);
+		log.error("Constraint violated while updating user ");
 	}
 
 	public void updateTheme(String theme) {

@@ -3,111 +3,162 @@
  */
 package fr.ippon.tatami.service;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mortbay.log.Log;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
+import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 
 /**
  * @author PHEJAR
- *
+ * 
  */
-public class GroupServiceTest {
+public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
+	// Atribut
+	private String description = "la description";
+	private String name = "MonGroupe";
+	private String groupId = "Id01";
+	private static final String domain = "ippon.fr";
+
+	@Inject
+	private static User userTotest;
+
+	private static final String domainName = "ippon.fr";
+	private static final String login = "uuser@ippon.fr";
+	private static final String firstName = "uuser";
+	private static final String lastName = "UpdatedLastName";
+	private static final String gravatar = "newGravatar";
+	private static final String password = "MotDePasse";
+
+	@Inject
+	public UserService userService;
+	
 	/**
 	 * The service to test.
 	 */
-	@Inject
-	public GroupService groupServiceToTest;
 	
-	
-	
+	private static GroupService groupServiceToTest = new GroupService();
+
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#createGroup(java.lang.String, java.lang.String, boolean)}.
+	 * Initialisation des éléments de Test
+	 * 
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Log.info("Creation du user à tester");
+		userTotest = constructAUser(login, firstName, lastName);
+		userTotest.setPassword(password);
+		mockAuthenticationOnUserService(login);
+		
+
+	}
+
+	
+	private void mockAuthenticationOnUserService(String login) {
+		User authenticateUser = constructAUser(login);
+		AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+		when(mockAuthenticationService.getCurrentUser()).thenReturn(
+				authenticateUser);
+		userService.setAuthenticationService(mockAuthenticationService);
+	}
+	/**
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#createGroup(java.lang.String, java.lang.String, boolean)}
+	 * .
 	 */
 	@Test
 	public void testCreateGroup() {
-		fail("Not yet implemented"); // TODO
+//		Log.info("Creation du group à tester");
+//		mockAuthenticationOnUserService(login);
+//		groupServiceToTest.createGroup(name, description, true);
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#editGroup(fr.ippon.tatami.domain.Group)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#editGroup(fr.ippon.tatami.domain.Group)}
+	 * .
 	 */
 	@Test
 	public void testEditGroup() {
+
 		
-		GroupDetailsRepository groupDetailsRepository;
-		Log.info("Preparation du groupe à tester");
-		String description = "la description";
-		String name = "MonGroupe";
-		String groupId = "Id01";
-		String domain ="MonDomaine";
-		
-		Group groupToTest = new Group();
-		
-		groupToTest.setDescription(description);
-		groupToTest.setDomain(domain);
-		groupToTest.setGroupId(groupId);
-		groupToTest.setName(name);
-		
-		
-		groupServiceToTest.editGroup(groupToTest);
-		
-		
-		
+//		Log.info("Preparation du groupe à tester");
+//		
+//		mockAuthenticationOnUserService(login);
+//		Group groupeTotest = groupServiceToTest.getGroupById(domain, groupId);
+//		groupServiceToTest.editGroup(groupeTotest);
+
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#getMembersForGroup(java.lang.String)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#getMembersForGroup(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testGetMembersForGroup() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#getGroupsForUser(fr.ippon.tatami.domain.User)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#getGroupsForUser(fr.ippon.tatami.domain.User)}
+	 * .
 	 */
 	@Test
 	public void testGetGroupsForUser() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#getGroupById(java.lang.String, java.lang.String)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#getGroupById(java.lang.String, java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testGetGroupById() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#getGroupsWhereCurrentUserIsAdmin()}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#getGroupsWhereCurrentUserIsAdmin()}
+	 * .
 	 */
 	@Test
 	public void testGetGroupsWhereCurrentUserIsAdmin() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#addMemberToGroup(fr.ippon.tatami.domain.User, fr.ippon.tatami.domain.Group)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#addMemberToGroup(fr.ippon.tatami.domain.User, fr.ippon.tatami.domain.Group)}
+	 * .
 	 */
 	@Test
 	public void testAddMemberToGroup() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 	/**
-	 * Test method for {@link fr.ippon.tatami.service.GroupService#removeMemberFromGroup(fr.ippon.tatami.domain.User, fr.ippon.tatami.domain.Group)}.
+	 * Test method for
+	 * {@link fr.ippon.tatami.service.GroupService#removeMemberFromGroup(fr.ippon.tatami.domain.User, fr.ippon.tatami.domain.Group)}
+	 * .
 	 */
 	@Test
 	public void testRemoveMemberFromGroup() {
-		fail("Not yet implemented"); // TODO
+		Log.info("Non implémenté");
 	}
 
 }

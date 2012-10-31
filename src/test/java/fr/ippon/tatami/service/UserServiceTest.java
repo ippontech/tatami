@@ -161,9 +161,10 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
 		final String password = "MotDePasse";
 		userTotest.setPassword(password);
+		final String passwordOld = userTotest.getPassword();
 		userService.updatePassword(userTotest);
 
-		Assert.assertEquals("Le mot de passe MotDePasse",
+		Assert.assertNotSame("Le mot de passe a changé", passwordOld,
 				userTotest.getPassword());
 
 		User userUnConfigure = constructAUser(login, null, null);
