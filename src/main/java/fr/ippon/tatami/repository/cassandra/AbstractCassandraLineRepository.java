@@ -61,7 +61,11 @@ public abstract class AbstractCassandraLineRepository {
                     .execute()
                     .get();
 
-            result = query.getColumns().subList(0, query.getColumns().size() - 1);
+            int maxIndex = query.getColumns().size() - 1;
+            if (maxIndex < 0) {
+                maxIndex = 0;
+            }
+            result = query.getColumns().subList(0, maxIndex);
         } else {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                     StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
