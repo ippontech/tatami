@@ -83,6 +83,9 @@ public class CassandraConfiguration {
             addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, GROUP_COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, DAYLINE_CF, 0);
+
+            //Tatami Bot CF
+            addColumnFamily(cluster, TATAMIBOT_DUPLICATE_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }

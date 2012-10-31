@@ -61,4 +61,6 @@ public class ColumnFamilyKeys {
 
     public final static String GROUPLINE_CF = "Groupline";
 
+    public final static String TATAMIBOT_DUPLICATE_CF = "TatamiBotDuplicate";
+
 }
