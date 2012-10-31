@@ -19,13 +19,6 @@ else {
 }
 
 /*
- Atmosphere
- */
-var detectedTransport = null;
-var socket = $.atmosphere;
-var subSocket;
-
-/*
   Profile
 */
 
