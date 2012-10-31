@@ -124,7 +124,7 @@
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
-                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.connection.security>https</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
