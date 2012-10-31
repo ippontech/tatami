@@ -359,10 +359,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
                   callback();
               }
           }, statusCode: {
-              200: function() {
-                  console.log("200");
-              }, 302: function() {
-                  console.log("302");
+              302: function() {
                   $(location).attr('href', '/tatami/login?timeout');
               }
           }
