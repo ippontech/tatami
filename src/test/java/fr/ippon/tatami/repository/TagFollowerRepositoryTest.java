@@ -24,7 +24,7 @@ public class TagFollowerRepositoryTest extends AbstractCassandraTatamiTest {
                    String domain = "ippon.fr";
                    String login = "jdubois@ippon.fr";
                    String tag = "jdubois";
-                   assertThat(tagFollowerRepository.addFollower(domain, login, tag), notNullValue());
+                   assertThat(tagFollowerRepository.addFollower(domain, tag, login), notNullValue());
            }
 
            @Test(expected = ValidationException.class)
