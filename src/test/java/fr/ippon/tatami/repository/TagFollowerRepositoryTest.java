@@ -1,38 +1,28 @@
 package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
+import org.junit.Test;
 
-/**
- * Created with IntelliJ IDEA.
- * User: dygcao
- * Date: 29/10/12
- * Time: 21:33
- * To change this template use File | Settings | File Templates.
- */
+import javax.inject.Inject;
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+
 public class TagFollowerRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Inject
     public TagFollowerRepository tagFollowerRepository;
 
-           @Test
-           public void shouldGetAStatusRepositoryInjected() {
-                assertThat(tagFollowerRepository, notNullValue());
-           }
-
-           @Test
-           public void shouldAddFollower() {
-                   String domain = "ippon.fr";
-                   String login = "jdubois@ippon.fr";
-                   String tag = "jdubois";
-                   assertThat(tagFollowerRepository.addFollower(domain, tag, login), notNullValue());
-           }
-
-           @Test(expected = ValidationException.class)
-           public void shouldNotAddFollowerBecauseLoginNull() {
-                   String domain = "ippon.fr";
-                   String login = null;
-                   String tag = "jdubois";
-
-                   tagFollowerRepository.addFollower(domain,login, tag);
-           }
+    @Test
+    public void addNewFollowerForTag() {
+        String domain = "ippon.fr";
+        String login = "jdubois@ippon.fr";
+        String tag = "tag";
+        Collection<String> followers = tagFollowerRepository.findFollowers(domain, tag);
+        assertEquals(0, followers.size());
+        tagFollowerRepository.addFollower(domain, tag, login);
+        followers = tagFollowerRepository.findFollowers(domain, tag);
+        assertEquals(1, followers.size());
+        assertEquals(login, followers.iterator().next());
+    }
 }
