@@ -12,6 +12,9 @@ public class DomainUtil {
 
     private final Log log = LogFactory.getLog(DomainUtil.class);
 
+    private DomainUtil() {
+    }
+
     public static String getDomainFromLogin(String login) {
         return login.substring(login.indexOf("@") + 1, login.length());
     }

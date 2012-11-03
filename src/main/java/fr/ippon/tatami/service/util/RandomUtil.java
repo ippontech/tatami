@@ -9,6 +9,9 @@ import org.apache.commons.lang.RandomStringUtils;
  */
 public class RandomUtil {
 
+    private RandomUtil() {
+    }
+
     public static String generatePassword() {
         return RandomStringUtils.randomAlphanumeric(20);
     }

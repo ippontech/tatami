@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class GravatarUtil {
 
+    private GravatarUtil() {
+    }
+
     public static String getHash(String message) {
         try {
             MessageDigest md =
