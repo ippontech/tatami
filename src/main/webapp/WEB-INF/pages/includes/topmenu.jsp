@@ -156,10 +156,34 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-search pull-right" id="searchHeader">
+<!--                     <form class="navbar-search pull-right" id="searchHeader"> -->
+<%--                         <input class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>" name="search" type="text"> --%>
+                        
+<!--                     <div id="search-contener"> -->
+<!-- 							<div class="btn-group"> -->
+<!-- 								<a class="btn btn-small dropdown-toggle switch-search-agent" data-toggle="dropdown" href="#"> -->
+<!-- 								<i class="icon-tags"></i> -->
+<!-- 								<span class="caret"></span> -->
+<!-- 								</a> -->
+<!-- 								<ul class="dropdown-menu"> -->
+<%-- 									<li class="user-selected"><a href="#"><i class="icon-user"></i>&nbsp;<fmt:message key="tatami.username" /></a></li> --%>
+<%-- 									<li class="tags-selected"><a href="#"><i class="icon-tags"></i>&nbsp;<fmt:message key="tatami.tags" /></a></li> --%>
+<!-- 								</ul> -->
+<!-- 							</div> -->
+							
+<%-- 							<input class="input-medium search-user-agent" placeholder="<fmt:message key="tatami.menu.search"/>" type="text"> --%>
+							
+<!-- 						</div> -->
+                        
+                        
+<!--                     </form> -->
+
+					<form class="navbar-search pull-right" id="searchHeader">
                         <input class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>" name="search" type="text">
                     </form>
-                </sec:authorize>
+					
+
+				</sec:authorize>
             </div>
         </div>
     </div>

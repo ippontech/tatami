@@ -69,6 +69,8 @@
                     </ul>
                     <div id="tab-content">
                     </div>
+                    <div id="tags-content">
+                    </div>
                 </div>
             </div>
 

@@ -288,3 +288,11 @@ form {
 table {
   table-layout: fixed;
 }
+
+.tags-cloud {
+	//width:180px;
+}
+
+.tags-cloud span.label{
+	//float:right;
+}
