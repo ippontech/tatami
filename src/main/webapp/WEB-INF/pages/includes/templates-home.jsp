@@ -62,20 +62,20 @@
 </script>
 
 <script type="text/template" id="update-template">
-  <fieldset class="span12">
+  <fieldset>
     <div class="control-group">
       <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content"></textarea>
       <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
     </div>
-    <div class="contentGroup"><i class="icon-th"/> <fmt:message key="tatami.group.name"/> :&nbsp;
-        <select id="updateStatusGroup" name="groupId">
+    <div class="control-group contentGroup"><i class="icon-th"/> <fmt:message key="tatami.group.name"/> :&nbsp;
+        <select class="btn-block" id="updateStatusGroup" name="groupId">
             <option value=""></option>
             <@ groupsCollection.each(function(group) { @>
                 <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
             <@ }); @>
         </select>
     </div>
-    <div>
+    <div class="control-group">
       <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block" data-content="<fmt:message key="tatami.status.update.success"/>"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
