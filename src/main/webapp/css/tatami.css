@@ -293,3 +293,11 @@ form {
 table {
   table-layout: fixed;
 }
+
+.nav-collapse .dropdown-menu.closed {
+  display: none;
+}
+
+.nav-collapse .open .dropdown-menu.closed {
+  display: block;
+}
