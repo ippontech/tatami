@@ -31,7 +31,7 @@
                         key="tatami.menu.account"/>
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu closed">
                         <li>
                             <a href="/tatami/account">
                                 <i class="icon-user"></i> <fmt:message
@@ -92,7 +92,7 @@
                                     <i class="icon-info-sign icon-white"></i> <fmt:message key="tatami.menu.about"/>
                                     <b class="caret"></b>
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu closed">
                                     <li>
                                         <a href="/tatami/presentation">
                                             <i class="icon-eye-open"></i> <fmt:message
