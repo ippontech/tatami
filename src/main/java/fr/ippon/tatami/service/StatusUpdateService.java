@@ -2,6 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -82,6 +83,12 @@ public class StatusUpdateService {
     @Inject
     private SearchService searchService;
 
+    @Inject
+    private MailService mailService;
+
+    @Inject
+    private UserRepository userRepository;
+
     public void postStatus(String content) {
         createStatus(content, null, "", "", "");
     }
@@ -115,7 +122,7 @@ public class StatusUpdateService {
     }
 
     private Status createStatus(String content, Group group, String discussionId, String replyTo, String replyToUsername) {
-    	content = StringEscapeUtils.unescapeHtml(content);
+        content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
         if (log.isDebugEnabled()) {
             startTime = Calendar.getInstance().getTimeInMillis();
@@ -248,10 +255,14 @@ public class StatusUpdateService {
 
     /**
      * A status that mention a user is put in the user's mentionline and in his timeline.
+     * The mentioned used can also be notified by email.
      */
     private void mentionUser(Status status, String mentionedLogin) {
         mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
         timelineRepository.addStatusToTimeline(mentionedLogin, status);
+        User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
+
+        mailService.sendUserMentionEmail(status, mentionnedUser);
     }
 
     private String extractUsernameWithoutAt(String dest) {
