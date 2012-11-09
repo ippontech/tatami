@@ -11,18 +11,18 @@ import java.util.Collection;
  */
 public class StatusDetails {
 
-    private String StatusId;
+    private String statusId;
 
     private Collection<StatusDTO> discussionStatuses;
 
     private Collection<String> sharedByLogins;
 
     public String getStatusId() {
-        return StatusId;
+        return statusId;
     }
 
     public void setStatusId(String statusId) {
-        StatusId = statusId;
+        statusId = statusId;
     }
 
     public Collection<StatusDTO> getDiscussionStatuses() {
@@ -44,7 +44,7 @@ public class StatusDetails {
     @Override
     public String toString() {
         return "StatusDetails{" +
-                "StatusId='" + StatusId + '\'' +
+                "StatusId='" + statusId + '\'' +
                 ", discussionStatuses=" + discussionStatuses +
                 ", sharedByLogins=" + sharedByLogins +
                 '}';
