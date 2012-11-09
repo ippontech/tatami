@@ -262,7 +262,9 @@ public class StatusUpdateService {
         timelineRepository.addStatusToTimeline(mentionedLogin, status);
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
-        mailService.sendUserMentionEmail(status, mentionnedUser);
+        if (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true)) {
+            mailService.sendUserMentionEmail(status, mentionnedUser);
+        }
     }
 
     private String extractUsernameWithoutAt(String dest) {

@@ -136,16 +136,30 @@ public class UserService {
         }
     }
 
-    public void updateTheme(String theme) {
+    public void updateThemePreferences(String theme) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setTheme(theme);
         if (log.isDebugEnabled()) {
-            log.debug("Setting theme to : " + theme);
+            log.debug("Updating theme :" + theme);
         }
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
-            log.info("Constraint violated while updating theme : " + cve);
+            log.info("Constraint violated while updating preferences : " + cve);
+            throw cve;
+        }
+    }
+
+    public void updateEmailPreferences(boolean preferencesMentionEmail) {
+        User currentUser = authenticationService.getCurrentUser();
+        currentUser.setPreferencesMentionEmail(preferencesMentionEmail);
+        if (log.isDebugEnabled()) {
+            log.debug("Updating e-mail preferences : preferencesMentionEmail=" + preferencesMentionEmail);
+        }
+        try {
+            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating preferences : " + cve);
             throw cve;
         }
     }

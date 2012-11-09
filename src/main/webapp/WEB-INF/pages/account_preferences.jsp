@@ -1,7 +1,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +44,7 @@
                             </li>
                             <li class="active">
                                 <a href="#">
-                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
                                 </a>
                             </li>
                             <li>
@@ -72,46 +71,83 @@
                             <c:if test="${success == 'true'}">
                                 <div class="alert alert-success">
                                     <fmt:message
-                                            key="tatami.user.password.success"/>
+                                            key="tatami.preferences.success"/>
                                 </div>
                             </c:if>
 
                             <h2>
-                                <fmt:message key="tatami.menu.theme"/>
+                                <fmt:message key="tatami.menu.preferences"/>
                             </h2>
+
+                            <h3>
+                                <fmt:message key="tatami.preferences.theme"/>
+                            </h3>
 
                             <div class="btn-group">
                                 <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
-                                    <fmt:message key="tatami.user.theme.current"/> ${theme} <span class="caret"></span>
+                                    <fmt:message key="tatami.preferences.theme.current"/> ${user.theme} <span
+                                        class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="theme/update?theme=bootstrap">bootstrap</a></li>
-                                    <li><a href="theme/update?theme=amelia">amelia</a></li>
-                                    <li><a href="theme/update?theme=cerulean">cerulean</a></li>
-                                    <li><a href="theme/update?theme=cyborg">cyborg</a></li>
-                                    <li><a href="theme/update?theme=journal">journal</a></li>
-                                    <li><a href="theme/update?theme=readable">readable</a></li>
-                                    <li><a href="theme/update?theme=simplex">simplex</a></li>
-                                    <li><a href="theme/update?theme=slate">slate</a></li>
-                                    <li><a href="theme/update?theme=spacelab">spacelab</a></li>
-                                    <li><a href="theme/update?theme=spruce">spruce</a></li>
-                                    <li><a href="theme/update?theme=superhero">superhero</a></li>
-                                    <li><a href="theme/update?theme=united">united</a></li>
+                                    <li><a href="preferences/theme/update?theme=bootstrap">bootstrap</a></li>
+                                    <li><a href="preferences/theme/update?theme=amelia">amelia</a></li>
+                                    <li><a href="preferences/theme/update?theme=cerulean">cerulean</a></li>
+                                    <li><a href="preferences/theme/update?theme=cyborg">cyborg</a></li>
+                                    <li><a href="preferences/theme/update?theme=journal">journal</a></li>
+                                    <li><a href="preferences/theme/update?theme=readable">readable</a></li>
+                                    <li><a href="preferences/theme/update?theme=simplex">simplex</a></li>
+                                    <li><a href="preferences/theme/update?theme=slate">slate</a></li>
+                                    <li><a href="preferences/theme/update?theme=spacelab">spacelab</a></li>
+                                    <li><a href="preferences/theme/update?theme=spruce">spruce</a></li>
+                                    <li><a href="preferences/theme/update?theme=superhero">superhero</a></li>
+                                    <li><a href="preferences/theme/update?theme=united">united</a></li>
                                 </ul>
                             </div>
+                            <p>&nbsp;</p>
+
+                            <h3>
+                                <fmt:message key="tatami.preferences.email"/>
+                            </h3>
+
+                            <form class="form-horizontal" action="preferences/email/update" method="post" accept-charset="utf-8">
+
+                                <fieldset>
+
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label class="checkbox">
+                                                <input name="preferencesMentionEmail" type="checkbox" <c:if test="${user.preferencesMentionEmail}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.email.mention"/>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="input-xlarge btn btn-primary">
+                                            <fmt:message key="tatami.form.save"/>
+                                        </button>
+                                    </div>
+                                </fieldset>
+
+                            </form>
 
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
+
                             <p>&nbsp;</p>
                         </div>
                     </div>

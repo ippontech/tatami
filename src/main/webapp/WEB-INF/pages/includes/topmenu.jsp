@@ -44,9 +44,9 @@
                                 key="tatami.menu.groups"/></a>
                             </li>
                             <li>
-                                <a href="/tatami/account/theme">
+                                <a href="/tatami/account/preferences">
                                     <i class="icon-picture"></i> <fmt:message
-                                    key="tatami.menu.theme"/></a>
+                                    key="tatami.menu.preferences"/></a>
                                 </li>
                                 <li>
                                     <a href="/tatami/account/password">
