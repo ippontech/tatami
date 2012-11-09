@@ -133,6 +133,7 @@ public class MailService {
         sendEmail(user, subject, text);
     }
 
+    @Async
     public void sendUserMentionEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
             log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() + "'");
