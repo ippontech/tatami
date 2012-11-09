@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>1.0.22</version>
+    <version>1.0.21</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -42,8 +42,8 @@
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
                 <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
@@ -382,8 +382,8 @@
         <java.version>1.6</java.version>
 
         <!-- Dependencies -->
-        <spring.version>3.1.3.RELEASE</spring.version>
-        <spring.security.version>3.1.3.RELEASE</spring.security.version>
+        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.security.version>3.1.2.RELEASE</spring.security.version>
         <spring.social.version>1.0.1.RELEASE</spring.social.version>
         <elasticsearch.version>0.19.10</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
