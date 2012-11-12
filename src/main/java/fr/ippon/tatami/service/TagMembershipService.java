@@ -41,7 +41,7 @@ public class TagMembershipService {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : userTagRepository.findTags(domain, tag.getName())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(domain, currentUser.getLogin())) {
             if (alreadyFollowingTest.equals(tag)) {
                 tagAlreadyFollowed = true;
                 if (log.isDebugEnabled()) {
