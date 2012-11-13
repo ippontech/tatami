@@ -81,7 +81,7 @@
                         <div><b><fmt:message key="tatami.user.jobTitle"/> :</b> ${user.jobTitle}</div>
                         <div><b><fmt:message key="tatami.user.phoneNumber"/> :</b> ${user.phoneNumber}</div>
                       </div>
-                      <div class="alert alert-status">
+				 <%--<div class="alert alert-status">
                         <div class="row-fluid">
                             <ul class="nav nav-pills nav-stacked profilMenu">
                               <li><a href="#/status"><fmt:message key="tatami.badge.status"/></a></li>
@@ -89,7 +89,7 @@
                               <li><a href="#/followers"><fmt:message key="tatami.badge.followers"/></a></li>
                             </ul>
                         </div>
-                      </div>
+                      </div> --%>
                       <div class="alert alert-status">
                         <div id="div-update"></div>
                       </div>

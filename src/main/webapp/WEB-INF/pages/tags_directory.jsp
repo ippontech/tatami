@@ -74,16 +74,9 @@
 									<li class="active"><a href="#"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
 									<li><a href="#"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
 								</ul>
-								<div id="">
-								
-								</div>
-								<h2>
-                                    <fmt:message key="tatami.menu.tags.directory"/>
-                                </h2>
-                                                               
-                                
-                                <div id="piechart">
-                                </div>
+								<div id="tags-followed-content">
+									
+								</div>    
                         </div>
                     </div>
                 </div>
@@ -98,7 +91,7 @@
         </c:otherwise>
     </c:choose>
 </div>
-
+<jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
@@ -108,7 +101,7 @@
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-status-of-the-day.js"></script>
+<script src="/js/tatami-tags-directory.js"></script>
 
 </body>
 </html>
