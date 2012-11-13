@@ -1,6 +1,8 @@
 package fr.ippon.tatami.web.rest;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -13,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserTagRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.TrendService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Tag;
+import fr.ippon.tatami.web.rest.dto.Trend;
 
 /**
  * REST controller for managing tags.
@@ -31,32 +38,42 @@ public class TagController {
 
     @Inject
     private TimelineService timelineService;
-
+    
     @Inject
     private TagMembershipService tagMembershipService;
+    
+    @Inject
+    private TrendService trendService;
+
+    @Inject
+    private UserTagRepository userTagRepository;
+
+    @Inject
+    private AuthenticationService authenticationService;
 
     /**
      * GET  /tags -> get the latest status with no tags
      */
-    @RequestMapping(value = "/rest/tags/",
+    @RequestMapping(value = "/rest/tags",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<StatusDTO> listStatusWithNoTag(@RequestParam(required = false) Integer count,
-                                                  @RequestParam(required = false) String since_id,
-                                                  @RequestParam(required = false) String max_id) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses with no tags");
-        }
-        if (count == null) {
-            count = 20;
-        }
-        try {
-            return timelineService.getTagline(null, count, since_id, max_id);
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(null, 20, since_id, max_id);
-        }
+    public Collection<Tag> getTags() {
+		User currentUser = authenticationService.getCurrentUser();
+		String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+		List<Trend> trends = trendService.getCurrentTrends(domain);
+		Collection<String> followedTags = userTagRepository.findTags(domain, currentUser.getLogin());
+		log.debug("followedTags:" + followedTags);
+		Collection<Tag> tags = new ArrayList<Tag>();
+		for (Trend trend : trends) {
+			Tag tag = new Tag();
+			tag.setName(trend.getTag());
+			if (followedTags.contains(trend.getTag())) {
+				tag.setFollowed(true);
+			}
+			tags.add(tag);
+		}
+		return tags;
     }
 
     /**
@@ -112,4 +129,24 @@ public class TagController {
         }
         tagMembershipService.unfollowTag(tag);
     }
+    
+    
+    /**
+     * GET /tagmemberships/lookup -> looks up the tag for the user
+     */
+     @RequestMapping(value = "/rest/tagmemberships/lookup",
+     		method = RequestMethod.GET,
+     		produces = "application/json")
+     @ResponseBody
+     public Tag lookupTag(@RequestParam("tag_name") String tagname) {
+     	User currentUser = authenticationService.getCurrentUser();
+     	String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+     	Collection<String> followedTags = userTagRepository.findTags(domain, currentUser.getLogin());
+     	Tag tag = new Tag();
+     	tag.setName(tagname);
+     	if (followedTags.contains(tagname)) {
+     		tag.setFollowed(true);
+     	}
+     	return tag;
+     }
 }

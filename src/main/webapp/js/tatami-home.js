@@ -842,14 +842,27 @@ app.View.GroupsView = Backbone.View.extend({
 /*
 Tags
 */
+app.Model.FollowTagModel = Backbone.Model.extend({
+	url : function(){
+		return '/tatami/rest/tagmemberships/create';
+	}
+});
+
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+	url : function(){
+		return '/tatami/rest/tagmemberships/destroy';
+	}
+});
 
 app.View.TagsSearchView = Backbone.View.extend({
-  template: _.template($('#tag-search-form').html()),
+  tagFollowTemplate: _.template($('#tag-search-follow-form').html()),
+  tagFollowedtTemplate: _.template($('#tag-search-followed-form').html()),
 
   tagName: 'form',
 
   events: {
-    'submit': 'submit'
+    'submit': 'submit',
+    'click .btn': 'set'
   },
 
   initialize: function(){
@@ -863,6 +876,11 @@ app.View.TagsSearchView = Backbone.View.extend({
       else
         return '/tatami/rest/statuses/tag_timeline';
     };
+    
+    if(this.options.tag && this.options.tag !== '') {
+    	this.isfollow(this.options.tag);
+    }
+    
   },
 
   submit: function(e) {
@@ -889,13 +907,40 @@ app.View.TagsSearchView = Backbone.View.extend({
   fetch : function() {
     this.model.fetch();
   },
+  
+  set: function() {
+	  var m = new app.Model.FollowTagModel();
+	  m.set('name', this.options.tag);
+	  
+	  m.save(null,{
+		  success:function(){
+			  console.log('tag added to favorite');
+		  },
+		  error:function(){
+			  console.log('fail to add tag to favorite');
+		  }
+	  });
+	  
+  },
+  
+  isfollow: function (tag) {
+      return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) {
+          
+    	  console.log(JSON.stringify(data));
+    	  
+      });
+  },
 
   render: function () {
     var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
-    $(this.el).html(this.template({tag: tag}));
+    $(this.el).html(this.tagFollowTemplate({tag: tag}));
      
-    var tags = new app.View.TagsDirectory();
-    $(this.el).append(tags.render());
+    var trends = new app.View.TrendsView();
+    
+    if(this.model.fetch().length > 0)
+    {
+    	$(this.el).append(trends.render());
+    }
     
     return $(this.el);
   }
