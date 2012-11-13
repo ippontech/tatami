@@ -11,3 +11,8 @@
     </div>
   </fieldset>
 </script>
+
+
+<script type="text/template" id="tags-followed">
+	<span><@= tags.tag @></span>
+</script>
