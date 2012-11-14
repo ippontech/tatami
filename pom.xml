@@ -75,7 +75,7 @@
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.connection.security>any</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
             </properties>
             <build>
