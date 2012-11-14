@@ -179,7 +179,7 @@ app.View.ShareView = Backbone.View.extend({
 
 app.View.TrendsView = Backbone.View.extend({
     template: _.template($('#trends-template').html()),
-    tagName: 'tbody',
+    tagName: 'ul',
 
     initialize: function() {
         var self = this;
@@ -215,7 +215,7 @@ app.View.TrendsView = Backbone.View.extend({
 });
 
 app.View.TrendsItemView = Backbone.View.extend({
-    tagName: 'tr',
+    //tagName: 'tr',
     template: _.template($('#trends-template-item').html()),
 
 

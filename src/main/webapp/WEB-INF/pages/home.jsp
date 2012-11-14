@@ -34,10 +34,8 @@
                         <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
                     </div>
                     <div class="row-fluid">
-                        <div class="well">
-                            <table class="table table-center" id="trends">
+                        <div id="trends">
 
-                            </table>
                         </div>
                     </div>
                 </div>

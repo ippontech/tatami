@@ -14,7 +14,7 @@
 
 <script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
-  <div class="well">
+  <div class="well margin-top20">
     <div class="row-fluid">
       <table class="table profile-infos">
         <thead>
@@ -138,7 +138,7 @@
 </script>
 
 <script type="text/template" id="mention-refresh">
-    <button id="mentionRefresh" type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/></button>
+    <button id="mentionRefresh" type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.refresh"/></button>
 </script>
 
 <script type="text/template" id="timeline-progress">

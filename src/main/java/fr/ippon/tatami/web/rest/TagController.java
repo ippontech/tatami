@@ -47,7 +47,7 @@ public class TagController {
 
     @Inject
     private UserTagRepository userTagRepository;
-
+   
     @Inject
     private AuthenticationService authenticationService;
 

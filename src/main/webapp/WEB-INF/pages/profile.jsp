@@ -17,7 +17,7 @@
             <div id="mainPanel" class="container">
               <div class="row">
                 <div class="span12">
-                  <div class="well">
+                  <div class="alert alert-status">
                     <div class="row-fluid">
                       <div class="span4 text-center">
                         <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
@@ -99,10 +99,8 @@
                                 <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.user.title"/></label>
                             </div>
                             <div class="row-fluid">
-                                <div class="well">
-                                    <table class="table table-center" id="trends">
+                                <div id="trends">
 
-                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -1,7 +1,8 @@
 .homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
 
 body {
-    background-color: #e9e9e9;
+    //background-color: #e9e9e9;
+    background-image:url(/img/bgd.jpg);
 }
 
 /*
@@ -79,11 +80,19 @@ form {
 }
 
 .trends {
-    color: #000000;
+    color: #0088CC;
     text-decoration: none;
-    font-weight: bold;
+    /*font-weight: bold;*/
     font-size: 110%;
     margin-left: 5px;
+}
+
+#trends ul li {
+	list-style-type:none;
+}
+
+#trends ul {
+	margin:10px 0 10px 0px;
 }
 
 .alert-status {
@@ -289,10 +298,14 @@ table {
   table-layout: fixed;
 }
 
-.tags-cloud {
-	//width:180px;
+.tags-followed {
+	margin:0px 10px 10px 0px;
 }
 
-.tags-cloud span.label{
-	//float:right;
+.margin-bottom5 {
+	margin-bottom:5px;
+}
+
+.margin-top20 {
+	margin-top:20px;
 }
