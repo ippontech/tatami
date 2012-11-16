@@ -23,5 +23,5 @@ public interface TaglineRepository {
      * - Value is always null : this is to be consistent with the Timeline & Userline API,
      * which returns Map<String, String>
      */
-    Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id);
+    Map<String, SharedStatusInfo> getTagline(String tag, int size, String since_id, String max_id);
 }

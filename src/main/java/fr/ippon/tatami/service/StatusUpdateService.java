@@ -221,7 +221,7 @@ public class StatusUpdateService {
                     log.debug("Found tag : " + tag);
                 }
                 taglineRepository.addStatusToTagline(status, tag);
-                tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
+                tagCounterRepository.incrementTagCounter(tag);
                 trendsRepository.addTag(status.getDomain(), tag);
                 userTrendRepository.addTag(status.getLogin(), tag);
 
@@ -232,7 +232,7 @@ public class StatusUpdateService {
     }
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
-        Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
+        Collection<String> followersForTag = tagFollowerRepository.findFollowers(tag);
         if (isPublicGroup(group)) { // This is a public status
             for (String followerLogin : followersForTag) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);

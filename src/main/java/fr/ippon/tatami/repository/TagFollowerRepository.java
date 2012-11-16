@@ -7,10 +7,10 @@ import java.util.Collection;
  */
 public interface TagFollowerRepository {
 
-    void addFollower(String domain, String tag, String login);
+    void addFollower(String tag, String login);
 
-    void removeFollower(String domain, String tag, String login);
+    void removeFollower(String tag, String login);
 
-    Collection<String> findFollowers(String domain, String tag);
+    Collection<String> findFollowers(String tag);
 
 }

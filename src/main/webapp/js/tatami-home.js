@@ -855,14 +855,13 @@ app.Model.UnFollowTagModel = Backbone.Model.extend({
 });
 
 app.View.TagsSearchView = Backbone.View.extend({
-  tagFollowTemplate: _.template($('#tag-search-follow-form').html()),
-  tagFollowedtTemplate: _.template($('#tag-search-followed-form').html()),
+  template: _.template($('#tag-search-form').html()),
 
   tagName: 'form',
 
   events: {
     'submit': 'submit',
-    'click .btn': 'set'
+    'click .btn': 'save'
   },
 
   initialize: function(){
@@ -908,16 +907,16 @@ app.View.TagsSearchView = Backbone.View.extend({
     this.model.fetch();
   },
   
-  set: function() {
+  save: function() {
 	  var m = new app.Model.FollowTagModel();
 	  m.set('name', this.options.tag);
 	  
 	  m.save(null,{
 		  success:function(){
-			  console.log('tag added to favorite');
+			  $('.button-tag-follow').addClass('btn-primary');
 		  },
 		  error:function(){
-			  console.log('fail to add tag to favorite');
+			  $('.button-tag-follow').removeClass('btn-primary');
 		  }
 	  });
 	  
@@ -925,18 +924,19 @@ app.View.TagsSearchView = Backbone.View.extend({
   
   isfollow: function (tag) {
       return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) {
-          
-    	  console.log(JSON.stringify(data));
+          if(data.followed === true){
+        	  $('.button-tag-follow').addClass('btn-primary');
+          }
     	  
       });
   },
 
   render: function () {
     var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
-    $(this.el).html(this.tagFollowTemplate({tag: tag}));
-     
     var trends = new app.View.TrendsView();
     
+    $(this.el).html(this.template({tag: tag}));
+     
     if(this.model.fetch().length > 0)
     {
     	$(this.el).append(trends.render());

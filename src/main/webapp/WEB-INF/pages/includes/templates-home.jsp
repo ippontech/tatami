@@ -200,17 +200,10 @@
     </div>
 </script>
 
-<script type="text/template" id="tag-search-follow-form">
+<script type="text/template" id="tag-search-form">
   <div class="row-fluid">
     <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
-	<span class="btn pull-right"><fmt:message key="tatami.user.follow"/><span>
-  </div>
-</script>
-
-<script type="text/template" id="tag-search-followed-form">
-  <div class="row-fluid">
-    <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
-	<span class="btn btn-primary pull-right"><fmt:message key="tatami.user.followed"/><span>
+	<span class="btn pull-right button-tag-follow"><fmt:message key="tatami.user.follow"/><span>
   </div>
 </script>
 

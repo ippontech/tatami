@@ -7,11 +7,11 @@ package fr.ippon.tatami.repository;
  */
 public interface TagCounterRepository {
 
-    long getTagCounter(String domain, String tag);
+    long getTagCounter(String tag);
 
-    void incrementTagCounter(String domain, String tag);
+    void incrementTagCounter(String tag);
 
-    void decrementTagCounter(String domain, String tag);
+    void decrementTagCounter(String tag);
 
-    void deleteTagCounter(String domain, String tag);
+    void deleteTagCounter(String tag);
 }

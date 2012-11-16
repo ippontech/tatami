@@ -23,18 +23,18 @@ public class CassandraTagFollowerRepository
         implements TagFollowerRepository {
 
     @Override
-    public void addFollower(String domain, String tag, String login) {
-        super.addFollower(getKey(domain, tag), login);
+    public void addFollower(String tag, String login) {
+        super.addFollower(tag, login);
     }
 
     @Override
-    public void removeFollower(String domain, String tag, String login) {
-        super.removeFollower(getKey(domain, tag), login);
+    public void removeFollower(String tag, String login) {
+        super.removeFollower(tag, login);
     }
 
     @Override
-    public Collection<String> findFollowers(String domain, String tag) {
-        return super.findFollowers(getKey(domain, tag));
+    public Collection<String> findFollowers(String tag) {
+        return super.findFollowers(tag);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CassandraTagFollowerRepository
     /**
      * Generates the key for this column family.
      */
-    private String getKey(String domain, String tag) {
+    /*private String getKey(String domain, String tag) {
         return tag.toLowerCase() + "-" + domain;
-    }
+    }*/
 }

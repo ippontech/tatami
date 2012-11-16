@@ -35,8 +35,7 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
     @Override
     public void addStatusToTagline(Status status, String tag) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(
-                getKey(status.getDomain(), tag),
+        mutator.insert(tag,
                 TAGLINE_CF,
                 HFactory.createColumn(
                         UUID.fromString(status.getStatusId()),
@@ -47,14 +46,14 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id) {
-        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
+    public Map<String, SharedStatusInfo> getTagline(String tag, int size, String since_id, String max_id) {
+        return getLineFromCF(TAGLINE_CF, tag, size, since_id, max_id);
     }
 
     /**
      * Generates the key for this column family.
      */
-    private String getKey(String domain, String tag) {
+    /*private String getKey(String domain, String tag) {
         return tag.toLowerCase() + "-" + domain;
-    }
+    }*/
 }

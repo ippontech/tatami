@@ -62,7 +62,7 @@ public class TagController {
 		User currentUser = authenticationService.getCurrentUser();
 		String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
 		List<Trend> trends = trendService.getCurrentTrends(domain);
-		Collection<String> followedTags = userTagRepository.findTags(domain, currentUser.getLogin());
+		Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
 		log.debug("followedTags:" + followedTags);
 		Collection<Tag> tags = new ArrayList<Tag>();
 		for (Trend trend : trends) {
@@ -140,8 +140,7 @@ public class TagController {
      @ResponseBody
      public Tag lookupTag(@RequestParam("tag_name") String tagname) {
      	User currentUser = authenticationService.getCurrentUser();
-     	String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-     	Collection<String> followedTags = userTagRepository.findTags(domain, currentUser.getLogin());
+     	Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
      	Tag tag = new Tag();
      	tag.setName(tagname);
      	if (followedTags.contains(tagname)) {
