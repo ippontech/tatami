@@ -7,14 +7,7 @@ public class Tag {
 
     private String name;
 
-    /**
-     * Default scope is public.
-     * <p/>
-     * A tag can be :
-     * - null -> means "public" as this is the default
-     * - "private" -> this tag is only available to registered members
-     */
-    private String scope;
+    private boolean followed;
 
     public String getName() {
         return name;
@@ -24,12 +17,12 @@ public class Tag {
         this.name = name;
     }
 
-    public String getScope() {
-        return scope;
+    public boolean isFollowed() {
+        return followed;
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
     }
 
     @Override
@@ -53,7 +46,6 @@ public class Tag {
     public String toString() {
         return "Tag{" +
                 "name='" + name + '\'' +
-                ", scope='" + scope + '\'' +
                 '}';
     }
 }

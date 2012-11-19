@@ -98,12 +98,15 @@ app.View.UpdateView = Backbone.View.extend({
           $(self.el).find('.control-group').removeClass('error');
 
           $("#updateStatusContent").css("height", "20px");
-          $("#updateStatusBtn").popover('show');
+          $("#contentGroup").hide();
+          $("#updateStatusBtn").hide();
+          $("#statusUpdate").popover({placement: 'bottom'});
+          $("#statusUpdate").popover('show');
           $("#updateStatusContent").change();
           app.trigger('refreshProfile');
           app.trigger('refreshTimeline');
           setTimeout(function () {
-              $("#updateStatusBtn").popover('hide');
+              $("#statusUpdate").popover('hide');
           }, 3000);
       },
       error: function(model, response) {
@@ -119,6 +122,8 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
+          $("#contentGroup").fadeIn();
+          $("#updateStatusBtn").fadeIn();
       });
       $("#updateStatusContent").charCount({
           css:'counter',

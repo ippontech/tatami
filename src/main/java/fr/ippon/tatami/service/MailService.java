@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +42,9 @@ public class MailService {
     @PostConstruct
     public void init() {
         this.host = env.getProperty("smtp.host");
-        this.port = env.getProperty("smtp.port", Integer.class);
+        if (!env.getProperty("smtp.port").equals("")) {
+            this.port = env.getProperty("smtp.port", Integer.class);
+        }
         this.smtpUser = env.getProperty("smtp.user");
         this.smtpPassword = env.getProperty("smtp.password");
         this.from = env.getProperty("smtp.from");
@@ -130,28 +133,58 @@ public class MailService {
         sendEmail(user, subject, text);
     }
 
+    @Async
+    public void sendUserMentionEmail(Status status, User mentionnedUser) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() + "'");
+        }
+        String subject = "You have been mentionned on Tatami";
+        String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
+        String text = "Dear @"
+                + mentionnedUser.getUsername()
+                + ",\n\n"
+                + "You have been mentionned on Tatami : "
+                + "\n\n"
+                + "@"
+                + status.getUsername()
+                + "\n\n"
+                + status.getContent()
+                + "\n\n"
+                + "You can see this status on Tatami :"
+                + "\n\n"
+                + url
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(mentionnedUser, subject, text);
+    }
+
     private void sendEmail(User user, String subject, String text) {
-        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost(host);
-        sender.setPort(port);
-        sender.setUsername(smtpUser);
-        sender.setPassword(smtpPassword);
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getLogin());
-        message.setFrom(from);
-        message.setSubject(subject);
-        message.setText(text);
-        try {
-            sender.send(message);
-            if (log.isDebugEnabled()) {
-                log.debug("Sent e-mail to User '" + user.getLogin() + "'!");
+        if (host != null && !host.equals("")) {
+            JavaMailSenderImpl sender = new JavaMailSenderImpl();
+            sender.setHost(host);
+            sender.setPort(port);
+            sender.setUsername(smtpUser);
+            sender.setPassword(smtpPassword);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getLogin());
+            message.setFrom(from);
+            message.setSubject(subject);
+            message.setText(text);
+            try {
+                sender.send(message);
+                if (log.isDebugEnabled()) {
+                    log.debug("Sent e-mail to User '" + user.getLogin() + "'!");
+                }
+            } catch (MailException e) {
+                log.warn("Warning! SMTP server error, could not send e-mail.");
+                if (log.isDebugEnabled()) {
+                    log.debug("SMTP Error : " + e.getMessage());
+                    log.debug("Did you configure your SMTP settings in /META-INF/tatami/tatami.properties ?");
+                }
             }
-        } catch (MailException e) {
-            log.warn("Warning! SMTP server error, could not send e-mail.");
-            if (log.isDebugEnabled()) {
-                log.debug("SMTP Error : " + e.getMessage());
-                log.debug("Did you configure your SMTP settings in /META-INF/tatami/tatami.properties ?");
-            }
+        } else {
+            log.debug("SMTP server is not configured in /META-INF/tatami/tatami.properties");
         }
     }
 }

@@ -63,4 +63,6 @@ public class ColumnFamilyKeys {
 
     public final static String TATAMIBOT_DUPLICATE_CF = "TatamiBotDuplicate";
 
+    public final static String ATTACHMENT_CF = "Attachment";
+
 }

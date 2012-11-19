@@ -67,6 +67,10 @@ public class User {
     @JsonIgnore
     private String theme;
 
+    @Column(name = "preferences_mention_email")
+    @JsonIgnore
+    private Boolean preferencesMentionEmail;
+
     private long statusCount;
 
     private long friendsCount;
@@ -161,6 +165,14 @@ public class User {
         this.theme = theme;
     }
 
+    public Boolean getPreferencesMentionEmail() {
+        return preferencesMentionEmail;
+    }
+
+    public void setPreferencesMentionEmail(Boolean preferencesMentionEmail) {
+        this.preferencesMentionEmail = preferencesMentionEmail;
+    }
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -216,6 +228,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", openIdUrl='" + openIdUrl + '\'' +
                 ", theme='" + theme + '\'' +
+                ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
