@@ -330,7 +330,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
 
   endRefresh: function(){
     this.options.refresh = _.once(_.bind(this.refresh, this));
-    _.delay(this.options.refresh, 100000); // this.options.interval
+    _.delay(this.options.refresh, this.options.interval); // this.options.interval
   },
 
   refresh: function(callback){
