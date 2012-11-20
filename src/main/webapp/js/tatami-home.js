@@ -356,8 +356,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
           self.temp.unshift(sc.pop());
         }
         self.render();
-
-        document.title = "Tatami";
+        
         self.trigger('callbackRefresh');
         self.endRefresh();
       },
@@ -410,7 +409,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
     } else if (sc.length == 0) {
       document.title = "Tatami";
     }
-    
+
     return $(this.el);
   },
 
