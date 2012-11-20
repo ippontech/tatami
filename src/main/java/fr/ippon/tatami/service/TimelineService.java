@@ -224,9 +224,7 @@ public class TimelineService {
         if (tag == null || tag.isEmpty()) {
             tag = hashtagDefault;
         }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
+        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(tag, nbStatus, since_id, max_id);
         return buildStatusList(line);
     }
 

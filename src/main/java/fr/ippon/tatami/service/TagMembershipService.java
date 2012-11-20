@@ -39,9 +39,8 @@ public class TagMembershipService {
             log.debug("Following tag : " + tag);
         }
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : userTagRepository.findTags(domain, currentUser.getLogin())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
             if (alreadyFollowingTest.equals(tag)) {
                 tagAlreadyFollowed = true;
                 if (log.isDebugEnabled()) {
@@ -50,12 +49,13 @@ public class TagMembershipService {
                 }
             }
         }
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         if (!tagAlreadyFollowed) {
-            userTagRepository.addTag(domain, currentUser.getLogin(), tag.getName());
+            userTagRepository.addTag(currentUser.getLogin(), tag.getName());
             tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
             log.debug("User " + currentUser.getLogin() +
                     " now follows tag " + tag);
-        }
+        }       
     }
 
     public void unfollowTag(Tag tag) {
@@ -63,15 +63,15 @@ public class TagMembershipService {
             log.debug("Removing followed tag : " + tag);
         }
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : userTagRepository.findTags(domain, currentUser.getLogin())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
             if (alreadyFollowingTest.equals(tag)) {
                 tagAlreadyFollowed = true;
             }
         }
         if (tagAlreadyFollowed) {
-            userTagRepository.removeTag(domain, currentUser.getLogin(), tag.getName());
+            userTagRepository.removeTag(currentUser.getLogin(), tag.getName());
+            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getLogin());
             log.debug("User " + currentUser.getLogin() +
                     " has stopped following tag " + tag);

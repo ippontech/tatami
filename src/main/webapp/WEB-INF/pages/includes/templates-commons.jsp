@@ -137,11 +137,11 @@
 </script>
 
 <script type="text/template" id="timeline-new">
-    <button type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></button>
+    <button type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.refresh"/><@ if(typeof status !== 'undefined' && status > 0) { @> (<@= status @>)<@ } @></button>
 </script>
 
 <script type="text/template" id="timeline-next">
-    <button type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.next"/></button>
+    <button type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.next"/></button>
 </script>
 
 <script type="text/template" id="timeline-progress">
@@ -181,9 +181,15 @@
 </script>
 
 <script type="text/template" id="trends-template-item">
-    <td>
-        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends pull-left">
-            #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
+<li>
+        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
+         <i class="icon-tag"></i>&nbsp; #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
         </a>
-    </td>
+</li>
 </script>
+
+<script type="text/template" id="tags-directory-template">
+  		<p class="tags-cloud">#<@= tags.tag @>&nbsp;<span class="label label-success">Follow</span></p>
+</script>
+
+

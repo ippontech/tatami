@@ -11,3 +11,13 @@
     </div>
   </fieldset>
 </script>
+
+<script type="text/template" id="tags-followed-template">
+
+</script>
+
+<script type="text/template" id="tags-followed-template-item">
+<div class="<@= tags.name @>">
+	<span class="label label-success pull-left tags-followed"><@= tags.name @>&nbsp;<i class="icon-remove"></i></span>
+</div>
+</script>

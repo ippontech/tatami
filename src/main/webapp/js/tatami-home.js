@@ -749,14 +749,21 @@ app.View.GroupsView = Backbone.View.extend({
 /*
 Tags
 */
+app.Model.FollowTagModel = Backbone.Model.extend({
+	url : function(){
+		return '/tatami/rest/tagmemberships/create';
+	}
+});
 
 app.View.TagsSearchView = Backbone.View.extend({
-  template: _.template($('#tag-search-form').html()),
-
+  tagfollow: _.template($('#tag-search-form-follow').html()),
+  tagfollowed: _.template($('#tag-search-form-followed').html()),
+  
   tagName: 'form',
 
   events: {
-    'submit': 'submit'
+    'submit': 'submit',
+    'click .btn': 'save'
   },
 
   initialize: function(){
@@ -770,6 +777,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       else
         return '/tatami/rest/statuses/tag_timeline';
     };
+    
   },
 
   submit: function(e) {
@@ -796,10 +804,49 @@ app.View.TagsSearchView = Backbone.View.extend({
   fetch : function() {
     this.model.fetch();
   },
+  
+  save: function() {
+	  var m = new app.Model.FollowTagModel();
+	  m.set('name', this.options.tag);
+	  
+	  var _this = this;	  
+	  m.save(null,{
+		  success:function(){
+			  $(_this.el).html(_this.tagfollowed({tag: _this.options.tag}));
+		  },
+		  error:function(){
+			  //no action
+		  }
+	  });
+	  
+  },
+  
+  isfollow: function (tag) {
+	  var _this = this;
+	  return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) { 
+		 if(data.followed === true){
+			 $(_this.el).html(_this.tagfollowed({tag: tag}));
+		 }else if(data.followed === false){
+			 $(_this.el).html(_this.tagfollow({tag: tag}));
+		 }
+		 else{
+			 $(_this.el).html(_this.tagfollow({tag: tag}));
+		 }
+
+      });
+  },
 
   render: function () {
     var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
-    $(this.el).html(this.template({tag: tag}));
+    var trends = new app.View.TrendsView();
+    
+    this.isfollow(tag);  
+     
+    if(this.model.fetch().length > 0)
+    {
+    	$(this.el).append(trends.render());
+    }
+    
     return $(this.el);
   }
 
@@ -835,6 +882,7 @@ app.View.TagsView = Backbone.View.extend({
     }
 
 });
+
 
 /*
 Search
