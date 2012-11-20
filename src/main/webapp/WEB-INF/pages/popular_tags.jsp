@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,12 +40,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/preferences">
+                                <a href="/tatami/account/theme">
                                     <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
                                 </a>
                             </li>
-                            <li class="active">
-                                <a href="#">
+                            <li>
+                                <a href="/tatami/account/password">
                                     <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>
                             </li>
@@ -61,7 +59,7 @@
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="/tatami/account/tags/directory">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
@@ -72,15 +70,13 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
-                                <div class="alert alert-success">
-                                    <fmt:message key="tatami.user.password.success"/>
-                                </div>
-                            </c:if>
-
-                            <h2><fmt:message key="tatami.menu.password"/></h2>
-                            <p><fmt:message key="tatami.user.password.ldap"/></p>
-
+								<ul class="nav nav-pills">
+									<li><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
+									<li class="active"><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+								</ul>
+								<div id="popular-tags-content">
+										
+								</div>    
                         </div>
                     </div>
                 </div>
@@ -95,13 +91,17 @@
         </c:otherwise>
     </c:choose>
 </div>
-
+<jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "account";
+    var page = "status_of_the_day";
 </script>
+<script src="/js/raphael-min.js"></script>
+<script src="/js/jquery-raphael-tatami-pie.js"></script>
+<script src="/js/tatami-tags-directory.js"></script>
+
 </body>
 </html>

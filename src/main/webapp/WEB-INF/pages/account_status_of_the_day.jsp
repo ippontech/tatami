@@ -54,13 +54,13 @@
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
-                            <li href="#" class="active">
+                            <li class="active">
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags_directory">
+                                <a href="/tatami/account/tags/directory">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>

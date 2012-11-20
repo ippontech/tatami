@@ -41,7 +41,7 @@
                             </li>
                             <li>
                                 <a href="/tatami/account/theme">
-                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
                                 </a>
                             </li>
                             <li>
@@ -59,8 +59,8 @@
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
-                            <li href="#" class="active">
-                                <a href="/tatami/account/tags_directory">
+                            <li class="active">
+                                <a href="/tatami/account/tags_directory/">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>
@@ -71,12 +71,12 @@
                     <div class="row-fluid">
                         <div class="tab-content span12">
 								<ul class="nav nav-pills">
-									<li class="active"><a href="#"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
-									<li><a href="#"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+									<li class="active"><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
+									<li><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
 								</ul>
 								<div id="tags-followed-content">
 									
-								</div>    
+								</div>  
                         </div>
                     </div>
                 </div>
