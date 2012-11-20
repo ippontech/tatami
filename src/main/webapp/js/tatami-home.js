@@ -352,11 +352,6 @@ app.View.TimeLineNewView = Backbone.View.extend({
           // if the answer is not an array, the session must have expired
           $(location).attr('href', '/tatami/login?timeout');
         }
-        if (sc.length > 0) {
-          document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
-        } else if (sc.length == 0) {
-          document.title = "Tatami";
-        }
         while (sc.length > 0) {
           self.temp.unshift(sc.pop());
         }
@@ -408,6 +403,14 @@ app.View.TimeLineNewView = Backbone.View.extend({
     var $el = $(this.el);
     $el.html(this.template({status: this.temp.length}));
     this.delegateEvents();
+
+    // Update Title
+    if (sc.length > 0) {
+      document.title = "Tatami (" + (this.temp.length) + ")";
+    } else if (sc.length == 0) {
+      document.title = "Tatami";
+    }
+    
     return $(this.el);
   },
 
