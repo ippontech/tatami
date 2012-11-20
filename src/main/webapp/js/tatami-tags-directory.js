@@ -19,7 +19,7 @@ else {
 }
 
 /*
- * Tags directory
+ * Tags directory, delivery tags following
  * 
  */
 
@@ -27,6 +27,12 @@ app.Collection.TagCollection = Backbone.Collection.extend({
     url : function(){
         return '/tatami/rest/tags';
     }
+});
+
+app.Model.DeletedTagModel = Backbone.Model.extend({
+	url : function(){
+		return '/tatami/rest/tagmemberships/destroy';
+	}
 });
 
 app.View.TagsView = Backbone.View.extend({
@@ -41,13 +47,18 @@ app.View.TagsView = Backbone.View.extend({
     },
     
     events:{
-      'click .icon-remove':'deleteTag'
+      'click .icon-remove':'deleted'
     },
     
     addItem: function(item, index) {
-        var el = new app.View.TagsItemView({
-            model: item
-        }).render();
+    	var el = null;
+    	
+    	if(item.attributes.followed === true){
+    		
+    		el = new app.View.TagsItemView({
+                model: item
+            }).render();
+    	}
         
         if(index === 0) {
         	$(this.el).prepend(el);
@@ -58,10 +69,25 @@ app.View.TagsView = Backbone.View.extend({
             
     },
     
-    deleteTag: function(e){
-    	e.preventDefault();
-    	console.log('tag deleted : ' + $(e.target).parent().text());
-    },
+    deleted: function(e) {  	
+    	
+      var _this = this;
+      var tag = $(e.target).parent().parent().attr('class');
+
+  	  var m = new app.Model.DeletedTagModel();
+  	  m.set('name', tag);
+  	    	  
+  	  m.save(null,{
+  		  success: function(){
+  			$(_this.tag).fadeOut('slow');
+  			 console.log('success');
+  		  },
+  		  error: function(){
+  			 console.log('error');
+  		  }
+  	  });
+  	  
+    },   
 
     render: function() {
     	$(this.el).empty();
@@ -93,7 +119,7 @@ app.View.TagsItemView = Backbone.View.extend({
 
 $(function () {
 
-	var tagView = new app.View.TagsView();
-   $('#tags-followed-content').append(tagView.render());
+	app.views.tagsview = new app.View.TagsView();
+   $('#tags-followed-content').append(app.views.tagsview.render());
 	
 });

@@ -848,15 +848,10 @@ app.Model.FollowTagModel = Backbone.Model.extend({
 	}
 });
 
-app.Model.UnFollowTagModel = Backbone.Model.extend({
-	url : function(){
-		return '/tatami/rest/tagmemberships/destroy';
-	}
-});
-
 app.View.TagsSearchView = Backbone.View.extend({
-  template: _.template($('#tag-search-form').html()),
-
+  tagfollow: _.template($('#tag-search-form-follow').html()),
+  tagfollowed: _.template($('#tag-search-form-followed').html()),
+  
   tagName: 'form',
 
   events: {
@@ -875,10 +870,6 @@ app.View.TagsSearchView = Backbone.View.extend({
       else
         return '/tatami/rest/statuses/tag_timeline';
     };
-    
-    if(this.options.tag && this.options.tag !== '') {
-    	this.isfollow(this.options.tag);
-    }
     
   },
 
@@ -911,23 +902,30 @@ app.View.TagsSearchView = Backbone.View.extend({
 	  var m = new app.Model.FollowTagModel();
 	  m.set('name', this.options.tag);
 	  
+	  var _this = this;	  
 	  m.save(null,{
 		  success:function(){
-			  $('.button-tag-follow').addClass('btn-primary');
+			  $(_this.el).html(_this.tagfollowed({tag: _this.options.tag}));
 		  },
 		  error:function(){
-			  $('.button-tag-follow').removeClass('btn-primary');
+			  //no action
 		  }
 	  });
 	  
   },
   
   isfollow: function (tag) {
-      return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) {
-          if(data.followed === true){
-        	  $('.button-tag-follow').addClass('btn-primary');
-          }
-    	  
+	  var _this = this;
+	  return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) { 
+		 if(data.followed === true){
+			 $(_this.el).html(_this.tagfollowed({tag: tag}));
+		 }else if(data.followed === false){
+			 $(_this.el).html(_this.tagfollow({tag: tag}));
+		 }
+		 else{
+			 $(_this.el).html(_this.tagfollow({tag: tag}));
+		 }
+
       });
   },
 
@@ -935,7 +933,7 @@ app.View.TagsSearchView = Backbone.View.extend({
     var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
     var trends = new app.View.TrendsView();
     
-    $(this.el).html(this.template({tag: tag}));
+    this.isfollow(tag);  
      
     if(this.model.fetch().length > 0)
     {
