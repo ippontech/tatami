@@ -76,6 +76,9 @@
             <@ }); @>
         </select>
     </div>
+    <div>
+       <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
+    </div>
     <div class="control-group">
       <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
     </div>

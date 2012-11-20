@@ -144,6 +144,20 @@ app.View.UpdateView = Backbone.View.extend({
           animation:true,
           placement:'right'
       });
+      console.log("fileupload");
+      $('#updateStatusFileupload').fileupload({
+          dataType: 'json',
+          progressall: function (e, data) {
+              var progress = parseInt(data.loaded / data.total * 100, 10);
+              console.log(progress + '%');
+          },
+          done: function (e, data) {
+              console.log("done uploading");
+              $.each(data.result, function (index, file) {
+                  $('<p/>').text(file.name).appendTo(document.body);
+              });
+          }
+      });
     return $(this.el);
   }
 });
@@ -1182,4 +1196,3 @@ $(function() {
   Backbone.history.start();
 
 });
-

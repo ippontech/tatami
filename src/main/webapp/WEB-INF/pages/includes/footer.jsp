@@ -12,6 +12,9 @@
     <script src="/js/jquery-tatami-infinitiScroll.js"></script>
     <script src="/js/marked.js"></script>
     <script src="/js/tatami-search.js"></script>
+    <script src="/js/jquery.ui.widget.js"></script>
+    <script src="/js/jquery.iframe-transport.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>
