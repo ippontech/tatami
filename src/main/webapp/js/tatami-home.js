@@ -312,13 +312,25 @@ app.View.TimeLineNewView = Backbone.View.extend({
   initialize: function(){
     this.temp = new app.Collection.StatusCollection();
 
-    _.delay(_.bind(this.refresh, this), this.options.interval);
-
     $(this.el).find("abbr.timeago").timeago();
+
+    this.endRefresh();
   },
 
   events: {
     'click': 'newStatus'
+  },
+
+  startRefresh: function(){
+    if(typeof this.options.refresh === 'undefined')
+      this.refresh();
+    else
+      _.defer(this.options.refresh);
+  },
+
+  endRefresh: function(){
+    this.options.refresh = _.once(_.bind(this.refresh, this));
+    _.delay(this.options.refresh, this.options.interval); // this.options.interval
   },
 
   refresh: function(callback){
@@ -333,64 +345,63 @@ app.View.TimeLineNewView = Backbone.View.extend({
     else if(typeof _.first(self.model.models) !== 'undefined')
       data.since_id = _.first(self.model.models).get('timelineId');
 
-      sc.fetch({
-          data:data,
-          success:function (model, response) {
-              if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
-                  // if the answer is not an array, the session must have expired
-                  $(location).attr('href', '/tatami/login?timeout');
-              }
-              if (sc.length > 0) {
-                  document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
-              } else if (sc.length == 0 && typeof callback != 'undefined') {
-                  document.title = "Tatami";
-              }
-              while (sc.length > 0) {
-                  self.temp.unshift(sc.pop());
-              }
-              self.render();
-              if (typeof callback === 'undefined') {
-                  _.delay(_.bind(self.refresh, self), self.options.interval);
-              } else {
-                  document.title = "Tatami";
-                  callback();
-              }
-          },
-          error:function () {
-              self.render();
-              if (typeof callback === 'undefined') {
-                  _.delay(_.bind(self.refresh, self), self.options.interval);
-              } else {
-                  callback();
-              }
-          }, statusCode: {
-              302: function() {
-                  $(location).attr('href', '/tatami/login?timeout');
-              }
-          }
+    sc.fetch({
+      data:data,
+      success:function (model, response) {
+        if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
+          // if the answer is not an array, the session must have expired
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+        if (sc.length > 0) {
+          document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
+        } else if (sc.length == 0) {
+          document.title = "Tatami";
+        }
+        while (sc.length > 0) {
+          self.temp.unshift(sc.pop());
+        }
+        self.render();
+
+        document.title = "Tatami";
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      error:function () {
+        self.render();
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      statusCode: {
+        302: function() {
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+      }
     });
   },
 
   newStatus: function() {
-
     this.progress();
     var self = this;
-      if (this.model.models.length === 0) {
-          this.model.fetch({
-              success:function () {
-                  self.render();
-              },
-              error:function () {
-                  self.render();
-              }
-          });
-      } else {
-          this.refresh(function () {
-              while (self.temp.length > 0)
-                  self.model.unshift(self.temp.pop());
-              self.render();
-          });
-      }
+    if (this.model.models.length === 0) {
+      this.model.fetch({
+        success:function () {
+          self.render();
+        },
+        error:function () {
+          self.render();
+        }
+      });
+    } else {
+      var callback = _.once(_.bind(this.newStatusCallback, this));
+      this.on('callbackRefresh', callback);
+      this.refresh();
+    }
+  },
+
+  newStatusCallback: function(){
+    while (this.temp.length > 0)
+      this.model.unshift(this.temp.pop());
+    this.render();
   },
 
   render: function() {
@@ -469,9 +480,7 @@ app.View.TimeLineNextView = Backbone.View.extend({
 
   progress: function() {
     $(this.el).html(this.progressTemplate());
-    this.undelegateEvents();
-    return $(this.el);
-  }
+    this.undelegateEvents(); return $(this.el); }
 
 });
 
