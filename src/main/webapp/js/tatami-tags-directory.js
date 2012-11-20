@@ -168,15 +168,9 @@ app.View.TagsPopularView = Backbone.View.extend({
 
 });
 
-
-
 $(function () {
 
-	
 	app.views.tagsview = new app.View.TagsView();
 	$('#tags-followed-content').append(app.views.tagsview.render());
 	
-	app.views.tagsPopularview = new app.View.TagsPopularView();
-	$('#popular-tags-content').append(app.views.tagsPopularview.render());
-  
 });

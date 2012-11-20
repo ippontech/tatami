@@ -97,11 +97,11 @@
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "status_of_the_day";
+    var page = "popular_tags";
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-tags-directory.js"></script>
+<script src="/js/tatami-tags-popular.js"></script>
 
 </body>
 </html>
