@@ -367,7 +367,9 @@ app.View.TimeLineNewView = Backbone.View.extend({
           $(location).attr('href', '/tatami/login?timeout');
         }
         if (sc.length > 0) {
-          document.title = "Tatami (" + (self.temp.length + sc.length) + ")";
+       	  var nb = self.temp.length + sc.length;
+          document.title = "Tatami (" + (nb) + ")";
+          NotificationManager.setNotification("Tatami notification", (nb) + " unread statuses", true);
         } else if (sc.length == 0) {
           document.title = "Tatami";
         }
@@ -394,6 +396,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
   },
 
   newStatus: function() {
+    NotificationManager.setAllowNotification();
     this.progress();
     var self = this;
     if (this.model.models.length === 0) {
