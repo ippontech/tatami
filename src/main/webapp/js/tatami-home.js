@@ -404,9 +404,9 @@ app.View.TimeLineNewView = Backbone.View.extend({
     this.delegateEvents();
 
     // Update Title
-    if (sc.length > 0) {
+    if (this.temp.length > 0) {
       document.title = "Tatami (" + (this.temp.length) + ")";
-    } else if (sc.length == 0) {
+    } else {
       document.title = "Tatami";
     }
 
