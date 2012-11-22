@@ -366,19 +366,11 @@ app.View.TimeLineNewView = Backbone.View.extend({
           // if the answer is not an array, the session must have expired
           $(location).attr('href', '/tatami/login?timeout');
         }
-        if (sc.length > 0) {
-       	  var nb = self.temp.length + sc.length;
-          document.title = "Tatami (" + (nb) + ")";
-          NotificationManager.setNotification("Tatami notification", (nb) + " unread statuses", true);
-        } else if (sc.length == 0) {
-          document.title = "Tatami";
-        }
         while (sc.length > 0) {
           self.temp.unshift(sc.pop());
         }
         self.render();
-
-        document.title = "Tatami";
+        
         self.trigger('callbackRefresh');
         self.endRefresh();
       },
@@ -425,6 +417,15 @@ app.View.TimeLineNewView = Backbone.View.extend({
     var $el = $(this.el);
     $el.html(this.template({status: this.temp.length}));
     this.delegateEvents();
+
+    // Update Title
+    if (this.temp.length > 0) {
+      document.title = "Tatami (" + this.temp.length + ")";
+      NotificationManager.setNotification("Tatami notification", (this.temp.length) + " unread statuses", true);
+    } else {
+      document.title = "Tatami";
+    }
+
     return $(this.el);
   },
 
