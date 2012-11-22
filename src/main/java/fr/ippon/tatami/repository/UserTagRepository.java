@@ -7,9 +7,9 @@ import java.util.Collection;
  */
 public interface UserTagRepository {
 
-    void addTag(String domain, String login, String tag);
+    void addTag(String login, String tag);
 
-    void removeTag(String domain, String login, String tag);
+    void removeTag(String login, String tag);
 
-    Collection<String> findTags(String domain, String login);
+    Collection<String> findTags(String login);
 }

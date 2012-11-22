@@ -40,8 +40,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/preferences">
-                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
+                                <a href="/tatami/account/theme">
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.theme"/>
                                 </a>
                             </li>
                             <li>
@@ -54,12 +54,12 @@
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
-                            <li href="#" class="active">
+                            <li>
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
-                            <li>
+                            <li href="#" class="active">
                                 <a href="/tatami/account/tags_directory">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
@@ -70,11 +70,13 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="tab-content span12">
-                                <h2>
-                                    <fmt:message key="tatami.menu.status.of.the.day"/>
-                                </h2>
-                                <div id="piechart">
-                                </div>
+								<ul class="nav nav-pills">
+									<li class="active"><a href="#"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
+									<li><a href="#"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+								</ul>
+								<div id="tags-followed-content">
+									
+								</div>    
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,7 @@
         </c:otherwise>
     </c:choose>
 </div>
-
+<jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
@@ -99,7 +101,7 @@
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-status-of-the-day.js"></script>
+<script src="/js/tatami-tags-directory.js"></script>
 
 </body>
 </html>

@@ -23,29 +23,22 @@ public class CassandraUserTagRepository
         implements UserTagRepository {
 
     @Override
-    public void addTag(String domain, String login, String friendTag) {
-        super.addFriend(login, getKey(domain, friendTag));
+    public void addTag(String login, String friendTag) {
+        super.addFriend(login, friendTag);
     }
 
     @Override
-    public void removeTag(String domain, String login, String friendTag) {
-        super.removeFriend(login, getKey(domain, friendTag));
+    public void removeTag(String login, String friendTag) {
+        super.removeFriend(login, friendTag);
     }
 
     @Override
-    public Collection<String> findTags(String domain, String login) {
-        return super.findFriends(getKey(domain, login));
+    public Collection<String> findTags(String login) {
+        return super.findFriends(login);
     }
 
     @Override
     public String getFriendsCF() {
         return USER_TAGS_CF;
-    }
-
-    /**
-     * Generates the key for this column family.
-     */
-    private String getKey(String domain, String tag) {
-        return tag.toLowerCase() + "-" + domain;
     }
 }

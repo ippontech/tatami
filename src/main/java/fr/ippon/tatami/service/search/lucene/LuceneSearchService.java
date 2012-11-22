@@ -278,7 +278,7 @@ public class LuceneSearchService implements SearchService {
         Document document = new Document();
         document.add(new Field("domain", user.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("login", user.getLogin(), Field.Store.NO, Field.Index.NOT_ANALYZED));
-        document.add(new Field("username", user.getUsername(), Field.Store.YES, Field.Index.ANALYZED));
+        document.add(new Field("username", user.getUsername(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         userIndexWriter.addDocument(document);
     }
 

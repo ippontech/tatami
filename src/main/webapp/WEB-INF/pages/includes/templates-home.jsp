@@ -14,7 +14,7 @@
 
 <script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
-  <div class="well">
+  <div class="well margin-top20">
     <div class="row-fluid">
       <table class="table profile-infos">
         <thead>
@@ -75,6 +75,9 @@
                 <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
             <@ }); @>
         </select>
+    </div>
+    <div>
+       <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
     </div>
     <div class="control-group">
       <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
@@ -139,7 +142,7 @@
 </script>
 
 <script type="text/template" id="mention-refresh">
-    <button id="mentionRefresh" type='submit' class="btn btn-block"><fmt:message key="tatami.timeline.refresh"/></button>
+    <button id="mentionRefresh" type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.refresh"/></button>
 </script>
 
 <script type="text/template" id="timeline-progress">
@@ -201,9 +204,17 @@
     </div>
 </script>
 
-<script type="text/template" id="tag-search-form">
+<script type="text/template" id="tag-search-form-follow">
   <div class="row-fluid">
-    <input class="span12" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
+    <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
+	<span class="btn pull-right button-tag-follow"><fmt:message key="tatami.user.follow"/><span>
+  </div>
+</script>
+
+<script type="text/template" id="tag-search-form-followed">
+  <div class="row-fluid">
+    <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
+	<span class="btn btn-primary pull-right button-tag-follow"><fmt:message key="tatami.user.followed"/><span>
   </div>
 </script>
 

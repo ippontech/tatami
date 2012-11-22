@@ -50,5 +50,35 @@ $(function() {
   app.views.searchFromHeaderView = new app.View.SearchFormHeaderView({
     el: $('#searchHeader')
   });
-
+  
 });
+
+
+app.View.switchSearchAgent = Backbone.View.extend({
+	initialize: function(){
+		this.template = $('.switch-search-agent').children('i');
+	},
+	
+	el:'#search-contener',
+	
+	events:{
+		'click .user-selected':'render',
+		'click .tags-selected':'render',
+	},
+	
+	render: function(e){
+		var item = e.currentTarget.className;
+
+		if(item == 'user-selected')
+		{
+			this.template.attr('class','icon-user');
+		}
+		else if(item == 'tags-selected')
+		{
+			this.template.attr('class','icon-tags');
+		}
+	}
+	
+});
+
+var agent = new app.View.switchSearchAgent();

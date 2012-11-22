@@ -179,7 +179,7 @@ app.View.ShareView = Backbone.View.extend({
 
 app.View.TrendsView = Backbone.View.extend({
     template: _.template($('#trends-template').html()),
-    tagName: 'tbody',
+    tagName: 'ul',
 
     initialize: function() {
         var self = this;
@@ -215,7 +215,7 @@ app.View.TrendsView = Backbone.View.extend({
 });
 
 app.View.TrendsItemView = Backbone.View.extend({
-    tagName: 'tr',
+    //tagName: 'tr',
     template: _.template($('#trends-template-item').html()),
 
 
@@ -715,8 +715,36 @@ Suggester.getCaretPos = function(element) {
 	return (caretPos);
 };
 
-
-
+/**
+ * Webkit notifications manager
+ */
+function NotificationManager() {
+	var n;
+};
+NotificationManager.setNotification = function(title, msg, reload) {
+	if (title == null || msg == null) {return 0;}
+	if (!window.webkitNotifications) {return 0;}
+	if (window.webkitNotifications.checkPermission() != 0) {
+		setAllowNotification();
+		return 0;
+	}
+	if (NotificationManager.n != null) {NotificationManager.n.cancel();}
+	NotificationManager.n = window.webkitNotifications.createNotification('/favicon.ico', title, msg);
+	NotificationManager.n.onclick = function(x) {
+		window.focus();
+		if (reload) {window.location.reload();}
+		this.cancel();
+	};
+	NotificationManager.n.show();
+};
+NotificationManager.setAllowNotification = function(callback) {
+	if (!window.webkitNotifications) {return 0;}
+	if (callback != null) {
+		window.webkitNotifications.requestPermission(callback);
+	} else {
+		window.webkitNotifications.requestPermission();
+	}
+};
 
 // Fix Bootstrap navbar dropdown
 $(function (){

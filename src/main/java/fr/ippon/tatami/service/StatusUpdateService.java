@@ -238,7 +238,9 @@ public class StatusUpdateService {
     }
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
-        Collection<String> followersForTag = tagFollowerRepository.findFollowers(status.getDomain(), tag);
+        Collection<String> followersForTag =
+                tagFollowerRepository.findFollowers(status.getDomain(), tag);
+
         if (isPublicGroup(group)) { // This is a public status
             for (String followerLogin : followersForTag) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
