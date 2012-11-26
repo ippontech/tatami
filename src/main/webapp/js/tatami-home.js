@@ -782,6 +782,12 @@ app.Model.FollowTagModel = Backbone.Model.extend({
 	}
 });
 
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+	url : function(){
+		return '/tatami/rest/tagmemberships/destroy';
+	}
+});
+
 app.View.TagsSearchView = Backbone.View.extend({
   tagfollow: _.template($('#tag-search-form-follow').html()),
   tagfollowed: _.template($('#tag-search-form-followed').html()),
@@ -790,13 +796,14 @@ app.View.TagsSearchView = Backbone.View.extend({
 
   events: {
     'submit': 'submit',
-    'click .btn': 'save'
+    'click #tag-follow': 'follow',
+    'click #tag-followed': 'unfollow'
   },
 
   initialize: function(){
 
     $(this.el).addClass('alert alert-status');
-
+    
     var self = this;
     this.model.url = function() {
       if(self.options.tag && self.options.tag !== '')
@@ -805,6 +812,7 @@ app.View.TagsSearchView = Backbone.View.extend({
         return '/tatami/rest/statuses/tag_timeline';
     };
     
+    this.set(this.options.tag);  
   },
 
   submit: function(e) {
@@ -831,55 +839,92 @@ app.View.TagsSearchView = Backbone.View.extend({
   fetch : function() {
     this.model.fetch();
   },
-  
-  save: function() {
-	  var m = new app.Model.FollowTagModel();
-	  m.set('name', this.options.tag);
+
+  set: function(tag) {
+
+	  var _this = this;
 	  
-	  var _this = this;	  
-	  m.save(null,{
-		  success:function(){
-			  $(_this.el).html(_this.tagfollowed({tag: _this.options.tag}));
-		  },
-		  error:function(){
-			  //no action
-		  }
-	  });
-	  
+	  if(typeof(tag) == 'undefined' || tag == ''){		  
+		  this.emptyRender();
+		  
+	  }else {
+		  
+		  return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) { 
+			  var followed = data.followed;	  
+			  if(followed) {
+				  _this.followedRender();
+			  }
+			  else if(!followed) {
+				  _this.followRender();
+			  }
+		  });  
+	  } 	  
   },
   
-  isfollow: function (tag) {
+  follow: function(){
+	  
 	  var _this = this;
-	  return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) { 
-		 if(data.followed === true){
-			 $(_this.el).html(_this.tagfollowed({tag: tag}));
-		 }else if(data.followed === false){
-			 $(_this.el).html(_this.tagfollow({tag: tag}));
-		 }
-		 else{
-			 $(_this.el).html(_this.tagfollow({tag: tag}));
-		 }
+	  this.undelegateEvents();
 
-      });
+	  var m = new app.Model.FollowTagModel();
+	  m.set('name', this.options.tag);
+
+	  m.save(null, {
+	    success: function(){
+	    	_this.set(_this.options.tag);
+	    	_this.delegateEvents();
+	    },
+	    error: function(){
+	    	_this.delegateEvents();
+	    }
+	  });
+  },
+  
+  unfollow: function(){
+
+	  var _this = this;
+	  this.undelegateEvents();
+
+	  var m = new app.Model.UnFollowTagModel();
+	  m.set('name', this.options.tag);
+
+	  m.save(null, {
+	    success: function(){
+	    	_this.set(_this.options.tag);
+	    	_this.delegateEvents();
+	    },
+	    error: function(){
+	    	_this.delegateEvents();
+	    }
+	  });
+  },
+  
+  followedRender: function() {
+	  $(this.el).html(this.tagfollowed({tag: this.options.tag}));
+  },
+
+  followRender: function() {
+	  $(this.el).html(this.tagfollow({tag: this.options.tag}));
+  },
+  emptyRender: function(){
+	  $(this.el).html(this.tagfollow());
   },
 
   render: function () {
-    var tag = (typeof this.options.tag === 'undefined')? '':this.options.tag;
     var trends = new app.View.TrendsView();
     
-    this.isfollow(tag);  
-     
     if(this.model.fetch().length > 0)
     {
     	$(this.el).append(trends.render());
     }
-    
+
     return $(this.el);
   }
 
 });
 
 app.View.TagsView = Backbone.View.extend({
+	
     initialize:function () {
         this.views = {};
 

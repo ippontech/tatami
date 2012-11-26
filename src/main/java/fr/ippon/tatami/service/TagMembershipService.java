@@ -48,9 +48,9 @@ public class TagMembershipService {
                             " already follows tag " + tag);
                 }
             }
-        }
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        }       
         if (!tagAlreadyFollowed) {
+        	String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             userTagRepository.addTag(currentUser.getLogin(), tag.getName());
             tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
             log.debug("User " + currentUser.getLogin() +
@@ -65,13 +65,13 @@ public class TagMembershipService {
         User currentUser = authenticationService.getCurrentUser();
         boolean tagAlreadyFollowed = false;
         for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
-            if (alreadyFollowingTest.equals(tag)) {
+            if (alreadyFollowingTest.equals(tag.getName())) {
                 tagAlreadyFollowed = true;
             }
         }
         if (tagAlreadyFollowed) {
-            userTagRepository.removeTag(currentUser.getLogin(), tag.getName());
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+            userTagRepository.removeTag(currentUser.getLogin(), tag.getName());   
             tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getLogin());
             log.debug("User " + currentUser.getLogin() +
                     " has stopped following tag " + tag);
