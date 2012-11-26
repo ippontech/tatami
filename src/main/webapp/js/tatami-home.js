@@ -923,6 +923,48 @@ app.View.TagsSearchView = Backbone.View.extend({
 
 });
 
+
+app.View.TagsRefreshView = Backbone.View.extend({
+	template: _.template($('#tag-refresh').html()),
+	progressTemplate: _.template($('#timeline-progress').html()),
+	
+	initialize: function(){
+		
+	},
+	
+	events: {
+		'click': 'refreshTags'
+	},
+	
+	refreshTags: function(){
+		this.progress();
+		var self = this;
+		this.model.fetch({
+			success: function(){
+				self.render();
+			},
+			error: function() {
+				self.render();
+			}
+		});
+	},
+	
+	render: function() {
+		var $el = $(this.el);
+		$el.html(this.template());
+		this.delegateEvents();
+		return $(this.el);
+	},
+	
+	progress: function() {
+		$(this.el).html(this.progressTemplate());
+		this.undelegateEvents();
+		return $(this.el);
+	}
+
+});
+
+
 app.View.TagsView = Backbone.View.extend({
 	
     initialize:function () {
@@ -930,6 +972,10 @@ app.View.TagsView = Backbone.View.extend({
 
         this.model = new app.Collection.StatusCollection();
 
+        this.views.refresh = new app.View.TagsRefreshView({
+        	model:this.model
+        });
+        
         this.views.search = new app.View.TagsSearchView({
             tag:this.options.tag,
             model:this.model
@@ -947,6 +993,7 @@ app.View.TagsView = Backbone.View.extend({
     },
 
     render:function () {
+    	$(this.el).append(this.views.refresh.render());
         $(this.el).append(this.views.search.render());
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
