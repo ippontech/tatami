@@ -64,7 +64,7 @@ form {
 }
 
 #updateStatusBtn {
-   display: none;
+   //display: none;
 }
 
 #contentGroup {
@@ -308,6 +308,12 @@ table {
 
 .tags-followed {
 	margin:0px 10px 10px 0px;
+	padding:5px;
+	text-shadow:none;
+}
+
+.tags-followed a {
+	color:#ffffff;
 }
 
 .margin-bottom5 {

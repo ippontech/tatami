@@ -19,6 +19,16 @@
 
 <script type="text/template" id="tags-followed-template-item">
 <div class="<@= tags.name @>">
-	<span class="label label-success pull-left tags-followed"><@= tags.name @>&nbsp;<i class="icon-remove"></i></span>
+	<span class="label label-success pull-left tags-followed"><a href="/tatami/#/tags/<@= tags.name @>"><@= tags.name @></a>&nbsp;<i class="icon-remove"></i></span>
+</div>
+</script>
+
+<script type="text/template" id="popular-tags-template">
+
+</script>
+
+<script type="text/template" id="popular-tags-template-item">
+<div class="<@= tags.name @>">
+	<span class="label label-success pull-left tags-followed"><a href="/tatami/#/tags/<@= tags.name @>"><@= tags.name @></a></span>
 </div>
 </script>

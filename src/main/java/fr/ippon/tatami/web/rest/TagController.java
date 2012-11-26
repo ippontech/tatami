@@ -116,7 +116,7 @@ public class TagController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void unfollowTag(Tag tag) {
+    public void unfollowTag(@RequestBody Tag tag) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to unfollow tag  : " + tag);
         }

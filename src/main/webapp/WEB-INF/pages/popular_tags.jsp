@@ -60,7 +60,7 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="/tatami/account/tags_directory/">
+                                <a href="/tatami/account/tags/directory">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>
@@ -71,12 +71,12 @@
                     <div class="row-fluid">
                         <div class="tab-content span12">
 								<ul class="nav nav-pills">
-									<li class="active"><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
-									<li><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+									<li><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
+									<li class="active"><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
 								</ul>
-								<div id="tags-followed-content">
-									
-								</div>  
+								<div id="popular-tags-content">
+										
+								</div>    
                         </div>
                     </div>
                 </div>
@@ -97,11 +97,11 @@
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "tags_directory";
+    var page = "popular_tags";
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-tags-directory.js"></script>
+<script src="/js/tatami-tags-popular.js"></script>
 
 </body>
 </html>
