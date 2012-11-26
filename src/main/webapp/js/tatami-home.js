@@ -141,6 +141,7 @@ app.View.UpdateView = Backbone.View.extend({
           trigger:'manual'
       });
       $("#contentHelp").popover({
+          html:true,
           animation:true,
           placement:'right'
       });
