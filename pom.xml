@@ -41,7 +41,11 @@
                 <log4j.loglevel>DEBUG</log4j.loglevel>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.admin.users>pierre.rust@orange.com</tatami.admin.users>
+                <tatami.ldapauth.domain>orange.com</tatami.ldapauth.domain>
+                <tatami.ldapauth.url>ldap://rd.francetelecom.fr</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>OU=Annuaire,DC=rd,DC=francetelecom,DC=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(mailNickname={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host></tatami.smtp.host>
                 <tatami.smtp.port></tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
@@ -413,6 +417,7 @@
         <maven.jetty.version>8.1.5.v20120716</maven.jetty.version>
         <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
         <repository>
