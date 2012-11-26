@@ -61,7 +61,7 @@
                             </li>
                             <li class="active">
                                 <a href="/tatami/account/tags_directory/">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.tags.directory"/>
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>
                         </ul>

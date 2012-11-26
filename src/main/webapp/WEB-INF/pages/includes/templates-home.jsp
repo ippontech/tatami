@@ -142,6 +142,10 @@
     <button id="mentionRefresh" type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.refresh"/></button>
 </script>
 
+<script type="text/template" id="tag-refresh">
+    <button id="tagRefresh" type='submit' class="btn btn-block margin-bottom5"><fmt:message key="tatami.timeline.refresh"/></button>
+</script>
+
 <script type="text/template" id="timeline-progress">
   <div class="status text-center alert alert-info">
     <div class="progress progress-striped active">
@@ -204,14 +208,14 @@
 <script type="text/template" id="tag-search-form-follow">
   <div class="row-fluid">
     <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
-	<span class="btn pull-right button-tag-follow"><fmt:message key="tatami.user.follow"/><span>
+	<span id="tag-follow" class="btn pull-right"><fmt:message key="tatami.user.follow"/><span>
   </div>
 </script>
 
 <script type="text/template" id="tag-search-form-followed">
   <div class="row-fluid">
     <input class="span10" name="search" value="<@= tag @>" type="text" placeholder="<fmt:message key="tatami.tag"/>">
-	<span class="btn btn-primary pull-right button-tag-follow"><fmt:message key="tatami.user.followed"/><span>
+	<span id="tag-followed" class="btn btn-primary pull-right"><fmt:message key="tatami.user.followed"/><span>
   </div>
 </script>
 
