@@ -526,14 +526,17 @@ url : function(){
 app.View.FollowButtonView = Backbone.View.extend({
   templateFollow: _.template($('#follow-button').html()),
   templateFollowed: _.template($('#followed-button').html()),
+  templateUserEdit:_.template($('#edit-profile').html()),
 
 initialize: function() {
   this.set(this.options.owner, this.options.followed);
 },
 
 set: function(owner, followed) {
-  if(owner)
-    this.events = {};
+  if(owner){
+	  this.events = {};
+	  this.editMyProfile();
+  } 
   else if(!owner && followed) {
     this.events = {
       "click .btn": "unfollow"
@@ -596,8 +599,8 @@ followedRender: function() {
   $(this.el).html(this.templateFollowed());
 },
 
-unfollowRender: function() {
-  $(this.el).html(this.templateUnFollow());
+editMyProfile: function() {
+  $(this.el).html(this.templateUserEdit());
 },
 
 render: function() {

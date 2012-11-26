@@ -160,6 +160,10 @@
   <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
+<script type="text/template" id="edit-profile">
+  <a href="/tatami/account"><fmt:message key="tatami.user.profile.edit"/></a>
+</script>
+
 <script type="text/template" id="user-item">
   <div class="alert alert-info">
     <div class="row-fluid">
