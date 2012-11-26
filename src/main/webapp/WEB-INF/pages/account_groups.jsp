@@ -55,13 +55,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/status_of_the_day">
-                                    <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
-                                </a>
-                            </li>
-                             <li>
                                 <a href="/tatami/account/tags/directory">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/status_of_the_day">
+                                    <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
                             </li>
                         </ul>
