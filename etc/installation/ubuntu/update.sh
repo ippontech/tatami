@@ -14,7 +14,7 @@ export TATAMI_DIR=/opt/tatami
 #################################
 # Update application
 #################################
-cd $TATAMI_DIR/application
+cd $TATAMI_DIR/application/tatami
 git pull
 su - $USER -c "cd /opt/tatami/application/tatami && mvn -Ppreprod -DskipTests clean package"
 /etc/init.d/jetty stop
