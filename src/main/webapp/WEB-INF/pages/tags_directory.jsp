@@ -36,7 +36,7 @@
                             </li>
                             <li>
                                 <a href="/tatami/account/groups">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li>
@@ -54,8 +54,13 @@
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
+                            <li>
+                                <a href="/tatami/account/groups/directory">
+                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups.directory"/>
+                                </a>
+                            </li>
                             <li class="active">
-                                <a href="/tatami/account/tags_directory/">
+                                <a href="/tatami/account/tags_directory">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>
