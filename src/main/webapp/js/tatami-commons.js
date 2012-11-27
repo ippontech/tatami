@@ -729,7 +729,7 @@ NotificationManager.setNotification = function(title, msg, reload) {
 	if (title == null || msg == null) {return 0;}
 	if (!window.webkitNotifications) {return 0;}
 	if (window.webkitNotifications.checkPermission() != 0) {
-		setAllowNotification();
+        NotificationManager.setAllowNotification();
 		return 0;
 	}
 	if (NotificationManager.n != null) {NotificationManager.n.cancel();}
