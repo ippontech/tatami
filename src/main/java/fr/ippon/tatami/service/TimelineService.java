@@ -172,6 +172,11 @@ public class TimelineService {
                         }
                         statusDTO.setContent(status.getContent());
                         statusDTO.setUsername(status.getUsername());
+                        if (status.getStatusPrivate() == null) {
+                            statusDTO.setStatusPrivate(false);
+                        } else {
+                            statusDTO.setStatusPrivate(status.getStatusPrivate());
+                        }
                         statusDTO.setStatusDate(status.getStatusDate());
                         statusDTO.setReplyTo(status.getReplyTo());
                         statusDTO.setReplyToUsername(status.getReplyToUsername());

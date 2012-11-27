@@ -99,6 +99,7 @@ app.View.UpdateView = Backbone.View.extend({
 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#updateStatusPrivate").hide();
           $("#updateStatusBtn").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
           $("#statusUpdate").popover('show');
@@ -123,6 +124,7 @@ app.View.UpdateView = Backbone.View.extend({
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
           $("#contentGroup").fadeIn();
+          $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtn").fadeIn();
       });
       $("#updateStatusContent").charCount({

@@ -48,7 +48,7 @@
         <a class="status-action-reply">
               <i class="icon-share-alt"></i><fmt:message key="tatami.user.status.reply"/>
         </a>
-          <@ if (status.username != authenticatedUsername) { @>
+          <@ if (status.username != authenticatedUsername && status.statusPrivate == false) { @>
             <a class="status-action-share" data-content="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="icon-retweet"></i><fmt:message key="tatami.user.status.share"/>
             </a>
@@ -80,6 +80,11 @@
               <@ } @>
               </a>
           <@ } @>
+
+          <@ if (status.statusPrivate == true) { @>
+            <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
+          <@ } @>
+
           <@ if (status.sharedByUsername != null) { @>
                  <a href="/tatami/profile/<@= status.sharedByUsername @>/" class="userStatus-info"><i class="icon-retweet"></i> <fmt:message key="tatami.user.status.shared.by"/> <em>@<@= status.sharedByUsername @></em></a>
            <@ } @>

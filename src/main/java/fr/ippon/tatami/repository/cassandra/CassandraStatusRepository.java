@@ -51,6 +51,7 @@ public class CassandraStatusRepository implements StatusRepository {
     public Status createStatus(String login,
                                String username,
                                String domain,
+                               boolean statusPrivate,
                                Group group,
                                String content,
                                String discussionId,
@@ -63,6 +64,7 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setLogin(login);
         status.setUsername(username);
         status.setDomain(domain);
+        status.setStatusPrivate(statusPrivate);
         if (group != null) {
             status.setGroupId(group.getGroupId());
         }

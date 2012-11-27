@@ -79,8 +79,13 @@
     <%--<div>
        <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
     </div>--%>
+    <div id="updateStatusPrivate" class="control-group">
+      <label class="checkbox">
+          <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
+      </label>
+    </div>
     <div class="control-group">
-      <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
+        <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
 </script>

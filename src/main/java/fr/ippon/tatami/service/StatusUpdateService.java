@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -89,12 +90,12 @@ public class StatusUpdateService {
     @Inject
     private UserRepository userRepository;
 
-    public void postStatus(String content) {
-        createStatus(content, null, "", "", "");
+    public void postStatus(String content, boolean statusPrivate) {
+        createStatus(content, statusPrivate, null, "", "", "");
     }
 
     public void postStatusToGroup(String content, Group group) {
-        createStatus(content, group, "", "", "");
+        createStatus(content, false, group, "", "", "");
     }
 
     public void replyToStatus(String content, String replyTo) {
@@ -108,6 +109,7 @@ public class StatusUpdateService {
             Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
             Status replyStatus = createStatus(
                     content,
+                    realOriginalStatus.getStatusPrivate(),
                     group,
                     realOriginalStatus.getStatusId(),
                     originalStatus.getStatusId(),
@@ -116,12 +118,25 @@ public class StatusUpdateService {
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
             // The original status of the discussion is the one we reply to
-            Status replyStatus = createStatus(content, group, replyTo, replyTo, originalStatus.getUsername());
+            Status replyStatus =
+                    createStatus(content,
+                            originalStatus.getStatusPrivate(),
+                            group,
+                            replyTo,
+                            replyTo,
+                            originalStatus.getUsername());
+
             discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
         }
     }
 
-    private Status createStatus(String content, Group group, String discussionId, String replyTo, String replyToUsername) {
+    private Status createStatus(String content,
+                                boolean statusPrivate,
+                                Group group,
+                                String discussionId,
+                                String replyTo,
+                                String replyToUsername) {
+
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
         if (log.isDebugEnabled()) {
@@ -136,6 +151,7 @@ public class StatusUpdateService {
                 statusRepository.createStatus(currentLogin,
                         username,
                         domain,
+                        statusPrivate,
                         group,
                         content,
                         discussionId,
@@ -145,14 +161,42 @@ public class StatusUpdateService {
         // add status to the timeline
         timelineRepository.addStatusToTimeline(currentLogin, status);
 
-        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        if (status.getStatusPrivate() == true) { // Private status
+            // add status to the mentioned users' timeline
+            manageMentions(status, null, currentLogin, domain, new ArrayList<String>());
 
-        // add status to the dayline, userline
-        String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
-        daylineRepository.addStatusToDayline(status, day);
-        userlineRepository.addStatusToUserline(status);
+        } else { // Public status
+            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
 
-        // add the status to the group line and group followers
+            // add status to the dayline, userline
+            String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
+            daylineRepository.addStatusToDayline(status, day);
+            userlineRepository.addStatusToUserline(status);
+
+            // add the status to the group line and group followers
+            manageGroups(status, group, followersForUser);
+
+            // tag managgement
+            manageStatusTags(status, group);
+
+            // add status to the mentioned users' timeline
+            manageMentions(status, group, currentLogin, domain, followersForUser);
+
+            // Increment status count for the current user
+            counterRepository.incrementStatusCounter(currentLogin);
+
+            // Add to the searchStatus engine
+            searchService.addStatus(status);
+        }
+
+        if (log.isDebugEnabled()) {
+            long finishTime = Calendar.getInstance().getTimeInMillis();
+            log.debug("Status created in " + (finishTime - startTime) + "ms.");
+        }
+        return status;
+    }
+
+    private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
             grouplineRepository.addStatusToGroupline(status, group.getGroupId());
             Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
@@ -172,11 +216,31 @@ public class StatusUpdateService {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
             }
         }
+    }
 
-        // tag managgement
-        manageStatusTags(status, group);
+    /**
+     * Parses the status to find tags, and add those tags to the TagLine and the Trends.
+     */
+    private void manageStatusTags(Status status, Group group) {
+        Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
+        while (m.find()) {
+            String tag = m.group(1);
+            if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Found tag : " + tag);
+                }
+                taglineRepository.addStatusToTagline(status, tag);
+                tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
+                trendsRepository.addTag(status.getDomain(), tag);
+                userTrendRepository.addTag(status.getLogin(), tag);
 
-        // add status to the mentioned users' timeline
+                // Add the status to all users following this tag
+                addStatusToTagFollowers(status, group, tag);
+            }
+        }
+    }
+
+    private void manageMentions(Status status, Group group, String currentLogin, String domain, Collection<String> followersForUser) {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
             String mentionedUsername = extractUsernameWithoutAt(m.group());
@@ -199,40 +263,6 @@ public class StatusUpdateService {
                 } else { // This is a public status
                     mentionUser(status, mentionedLogin);
                 }
-            }
-        }
-
-        // Increment status count for the current user
-        counterRepository.incrementStatusCounter(currentLogin);
-
-        // Add to the searchStatus engine
-        searchService.addStatus(status);
-
-        if (log.isDebugEnabled()) {
-            long finishTime = Calendar.getInstance().getTimeInMillis();
-            log.debug("Status created in " + (finishTime - startTime) + "ms.");
-        }
-        return status;
-    }
-
-    /**
-     * Parses the status to find tags, and add those tags to the TagLine and the Trends.
-     */
-    private void manageStatusTags(Status status, Group group) {
-        Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
-        while (m.find()) {
-            String tag = m.group(1);
-            if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found tag : " + tag);
-                }
-                taglineRepository.addStatusToTagline(status, tag);
-                tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
-                trendsRepository.addTag(status.getDomain(), tag);
-                userTrendRepository.addTag(status.getLogin(), tag);
-
-                // Add the status to all users following this tag
-                addStatusToTagFollowers(status, group, tag);
             }
         }
     }

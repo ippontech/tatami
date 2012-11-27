@@ -37,6 +37,9 @@ public class Status {
     @Column(name = "groupId")
     private String groupId;
 
+    @Column(name = "statusPrivate")
+    private Boolean statusPrivate;
+
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
     @Size(min = 1, max = 2048)
@@ -107,6 +110,14 @@ public class Status {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public Boolean getStatusPrivate() {
+        return statusPrivate;
+    }
+
+    public void setStatusPrivate(Boolean statusPrivate) {
+        this.statusPrivate = statusPrivate;
     }
 
     public String getContent() {
@@ -190,6 +201,7 @@ public class Status {
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
                 ", groupId='" + groupId + '\'' +
+                ", statusPrivate='" + statusPrivate + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", discussionId='" + discussionId + '\'' +

@@ -65,8 +65,12 @@ public class TimelineController {
             log.debug("REST request to add status : " + status.getContent());
         }
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
-        if (status.getGroupId() == null || status.getGroupId().equals("")) {
-            statusUpdateService.postStatus(escapedContent);
+        if (status.getStatusPrivate() == null) {
+            status.setStatusPrivate(false);
+        }
+        if (status.getStatusPrivate() == true || status.getGroupId() == null || status.getGroupId().equals("")) {
+            log.info("private=" + status.getStatusPrivate());
+            statusUpdateService.postStatus(escapedContent, status.getStatusPrivate());
         } else {
             User currentUser = authenticationService.getCurrentUser();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
