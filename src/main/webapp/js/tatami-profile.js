@@ -350,7 +350,14 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       followed: followed,
       owner: owner
     });
+    
+    app.views.isfollowMe = new app.View.isFollowMe({
+    	authenticateUser: authenticatedUsername,
+    	currrentUser : username
+    });
+    
     app.views.update = new app.View.ProfileUpdateView();
+    $('#is-follow-you').html(app.views.isfollowMe.render());
     $('#follow-action').html(app.views.followButton.render());
     $('#div-update').html(app.views.update.render());
       $("#updateStatusContent").focus(function () {
