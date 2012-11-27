@@ -34,5 +34,5 @@
 </script>
 
 <script type="text/template" id="user-follow-me">
-<span>&nbsp;<fmt:message key="tatami.user.follows.you"/></span>
+    <span class="label pull-right"><fmt:message key="tatami.user.follows.you"/></span>
 </script>
