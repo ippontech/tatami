@@ -526,14 +526,17 @@ url : function(){
 app.View.FollowButtonView = Backbone.View.extend({
   templateFollow: _.template($('#follow-button').html()),
   templateFollowed: _.template($('#followed-button').html()),
+  templateUserEdit:_.template($('#edit-profile').html()),
 
 initialize: function() {
   this.set(this.options.owner, this.options.followed);
 },
 
 set: function(owner, followed) {
-  if(owner)
-    this.events = {};
+  if(owner){
+	  this.events = {};
+	  this.editMyProfile();
+  } 
   else if(!owner && followed) {
     this.events = {
       "click .btn": "unfollow"
@@ -596,8 +599,8 @@ followedRender: function() {
   $(this.el).html(this.templateFollowed());
 },
 
-unfollowRender: function() {
-  $(this.el).html(this.templateUnFollow());
+editMyProfile: function() {
+  $(this.el).html(this.templateUserEdit());
 },
 
 render: function() {
@@ -605,6 +608,35 @@ render: function() {
 }
 
 });
+
+/* Add template when user follow you */
+app.View.isFollowMe = Backbone.View.extend({
+	template: _.template($('#user-follow-me').html()),
+	
+	initialize: function(){
+		this.isfollowMe();
+	},
+	
+	isfollowMe: function(){
+		
+		_this = this;
+		return $.get('/tatami/rest/followers/lookup', {screen_name:this.options.authenticateUser}, function (data) {
+		
+			for(var i in data){
+				if(data[i].username == _this.options.currrentUser){
+					$(_this.el).append(_this.template());					
+				}
+			}
+
+	    });
+	},
+	
+	render: function(){
+		return $(this.el);
+	}
+	
+});
+
 
   /*
     Search form in the top menu.
