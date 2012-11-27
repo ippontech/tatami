@@ -185,11 +185,11 @@
 </script>
 
 <script type="text/template" id="trends-template-item">
-<li>
-        <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
-         <i class="icon-tag"></i>&nbsp; #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
-        </a>
-</li>
+  <li>
+     <a href="/tatami/#/tags/<@= trend.tag @>" class="trends">
+     #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
+     </a>
+  </li>
 </script>
 
 <script type="text/template" id="tags-directory-template">
