@@ -31,3 +31,7 @@
 	<span class="label label-success pull-left tags-followed"><a href="/tatami/#/tags/<@= tags.name @>"><@= tags.name @></a></span>
 </div>
 </script>
+
+<script type="text/template" id="user-follow-me">
+<span>&nbsp;<fmt:message key="tatami.user.follows.you"/></span>
+</script>
