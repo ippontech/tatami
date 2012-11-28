@@ -42,6 +42,8 @@ public class StatusDTO {
 
     private String username;
 
+    private boolean statusPrivate;
+
     private String groupId;
 
     private String groupName;
@@ -111,6 +113,14 @@ public class StatusDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isStatusPrivate() {
+        return statusPrivate;
+    }
+
+    public void setStatusPrivate(boolean statusPrivate) {
+        this.statusPrivate = statusPrivate;
     }
 
     public String getGroupId() {
@@ -256,6 +266,7 @@ public class StatusDTO {
                 "statusId='" + statusId + '\'' +
                 ", timelineId='" + timelineId + '\'' +
                 ", username='" + username + '\'' +
+                ", statusPrivate='" + statusPrivate + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", publicGroup=" + publicGroup +

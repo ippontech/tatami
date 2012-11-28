@@ -15,6 +15,7 @@ public interface StatusRepository {
     Status createStatus(String login,
                         String username,
                         String domain,
+                        boolean statusPrivate,
                         Group group,
                         String content,
                         String discussionId,

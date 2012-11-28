@@ -6,8 +6,9 @@
     <div class="control-group">
       <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content">@${user.username} </textarea>
     </div>
+      <div id="statusUpdate" data-content="<fmt:message key="tatami.status.update.success"/>"/>
     <div>
-      <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block" data-content="<fmt:message key="tatami.status.update.success"/>"><fmt:message key="tatami.status.update.to"/></button>
+      <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update.to"/></button>
     </div>
   </fieldset>
 </script>
@@ -33,5 +34,5 @@
 </script>
 
 <script type="text/template" id="user-follow-me">
-<span>&nbsp;<fmt:message key="tatami.user.follows.you"/></span>
+    <span class="label pull-right"><fmt:message key="tatami.user.follows.you"/></span>
 </script>

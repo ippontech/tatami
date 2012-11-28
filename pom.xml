@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>1.0.23</version>
+    <version>1.0.24</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -316,17 +316,14 @@
                 </plugins>
             </build>
             <dependencies>
-                <!-- TODO extract versions as property -->
                 <dependency>
                     <groupId>org.codehaus.groovy</groupId>
                     <artifactId>groovy-all</artifactId>
-                    <!--           <version>1.7.10</version> -->
                     <version>1.8.1</version>
                 </dependency>
                 <dependency>
                     <groupId>org.spockframework</groupId>
                     <artifactId>spock-core</artifactId>
-                    <!-- <version>0.5-groovy-1.7</version> -->
                     <version>0.6-groovy-1.8</version>
                     <scope>test</scope>
                 </dependency>
@@ -429,6 +426,11 @@
     </prerequisites>
 
     <dependencies>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-spring</artifactId>

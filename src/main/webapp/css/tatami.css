@@ -71,6 +71,10 @@ form {
     display: none;
 }
 
+#updateStatusPrivate {
+    display: none;
+}
+
 .counter{
     font-size:80%;
     font-style: italic;

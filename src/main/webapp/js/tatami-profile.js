@@ -57,7 +57,9 @@ app.View.ProfileUpdateView = Backbone.View.extend({
           $(self.el).find('.control-group').removeClass('error');
 
           $("#updateStatusContent").css("height", "20px");
-          $("#updateStatusBtn").popover('show');
+          $("#updateStatusBtn").hide();
+          $("#statusUpdate").popover({placement: 'bottom'});
+          $("#statusUpdate").popover('show');
           $("#updateStatusContent").change();
           setTimeout(function () {
               $("#updateStatusBtn").popover('hide');
@@ -337,6 +339,34 @@ app.View.StatusView = Backbone.View.extend({
   }
 });
 
+/* Add template when a user follows you */
+app.View.isFollowMe = Backbone.View.extend({
+    template: _.template($('#user-follow-me').html()),
+
+    initialize: function(){
+        this.isfollowMe();
+    },
+
+    isfollowMe: function(){
+
+        _this = this;
+        return $.get('/tatami/rest/followers/lookup', {screen_name:this.options.authenticateUser}, function (data) {
+
+            for(var i in data){
+                if(data[i].username == _this.options.currrentUser){
+                    $(_this.el).append(_this.template());
+                }
+            }
+
+        });
+    },
+
+    render: function(){
+        return $(this.el);
+    }
+
+});
+
 /*
   Initialization
 */
@@ -360,6 +390,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     $('#div-update').html(app.views.update.render());
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
+          $("#updateStatusBtn").fadeIn();
       });
       $("#updateStatusContent").charCount({
           css: 'counter',

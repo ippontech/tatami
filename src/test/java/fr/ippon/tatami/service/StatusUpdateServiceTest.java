@@ -33,7 +33,7 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
-        statusUpdateService.postStatus(content);
+        statusUpdateService.postStatus(content, false);
 
         /* verify */
         Collection<StatusDTO> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
