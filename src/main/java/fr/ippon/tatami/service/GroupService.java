@@ -98,6 +98,12 @@ public class GroupService {
         Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(currentUser.getLogin());
         return getGroupDetails(currentUser, groupIds);
     }
+    
+    public Collection<Group> getGroupsWhereCurrentUserIsAdmin(String login) {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(login);
+        return getGroupDetails(currentUser, groupIds);
+    }
 
     private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());

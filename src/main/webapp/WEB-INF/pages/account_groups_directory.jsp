@@ -105,8 +105,10 @@
                                                     <c:if test="${not group.publicGroup}">
                                                         <span class="label label-info"><fmt:message
                                                                 key="tatami.group.add.private"/></span>
-                                                    </c:if>
+                                                    </c:if>  
+                                                    
                                                 </td>
+    
                                                 <td>
                                                         ${group.counter}
                                                 </td>
@@ -116,11 +118,9 @@
                                                             <c:set var="found" value="true" scope="request" />
                                                         </c:if>
                                                     </c:forEach>
-                                                    <c:if test="${found}">
-                                                        <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
-                                                            <fmt:message key="tatami.group.edit.link"/>
-                                                        </button>
-                                                    </c:if>
+                                                    <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
+                                                            <fmt:message key="tatami.group.join.group"/>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>

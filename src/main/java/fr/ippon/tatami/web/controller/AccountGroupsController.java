@@ -21,6 +21,7 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserGroupMembership;
 
 /**
@@ -205,17 +206,16 @@ public class AccountGroupsController {
     public ModelAndView getGroupsDirectory() { 	
         ModelAndView mv = new ModelAndView("account_groups_directory");
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());          
         Collection<Group> userList = new ArrayList<Group>();
         List<User> list = userService.getUsersForCurrentDomain(0);
-
         for(User usr : list){
-        	Collection<Group> groups = groupService.getGroupsForUser(usr);           	
-        	userList.addAll(groups);
-        }
-
+        	Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin(usr.getLogin());        	
+        	if(currentUser.getLogin() != usr.getLogin()){
+        		userList.addAll(groups);
+        	}
+        } 
         mv.addObject("groups", userList);
-        mv.addObject("user", user);
+        mv.addObject("user", currentUser);
         return mv;
     }
 
