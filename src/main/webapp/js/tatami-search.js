@@ -26,7 +26,7 @@ else {
 app.View.SearchFormHeaderView = Backbone.View.extend({
   initialize: function(){
   },
-
+  
   events: {
     'submit' : 'submit'
   },
@@ -40,19 +40,18 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
       if(input.name === 'search')
         search = input.value;
     });
-    if(search)
-      window.location = '/tatami/#/search/' + search;
+    if(search){
+    	 window.location = '/tatami/#/search/' + search;
+    }
+     
   }
 });
 
-$(function() {
 
-  app.views.searchFromHeaderView = new app.View.SearchFormHeaderView({
-    el: $('#searchHeader')
-  });
-  
+var searchFromHeaderView = new app.View.SearchFormHeaderView({
+	el: $('#searchHeader') 
 });
-
+   
 
 app.View.switchSearchAgent = Backbone.View.extend({
 	initialize: function(){
