@@ -295,7 +295,11 @@ public class StatusUpdateService {
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
         if (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true)) {
-            mailService.sendUserMentionEmail(status, mentionnedUser);
+            if (status.getStatusPrivate() == true) { // Private status
+                mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
+            } else {
+                mailService.sendUserMentionEmail(status, mentionnedUser);
+            }
         }
     }
 

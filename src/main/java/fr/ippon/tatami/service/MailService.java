@@ -134,6 +134,31 @@ public class MailService {
     }
 
     @Async
+    public void sendUserPrivateMessageEmail(Status status, User mentionnedUser) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() + "'");
+        }
+        String subject = "You have received a private message on Tatami";
+        String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
+        String text = "Dear @"
+                + mentionnedUser.getUsername()
+                + ",\n\n"
+                + "You have received a private message on Tatami from "
+                + "@"
+                + status.getUsername()
+                + ": \n\n"
+                + status.getContent()
+                + "\n\n"
+                + "You can see this status on Tatami :"
+                + "\n\n"
+                + url
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(mentionnedUser, subject, text);
+    }
+
+    @Async
     public void sendUserMentionEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
             log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() + "'");
