@@ -142,7 +142,9 @@ public class AdminService {
             for (Row<String, String, String> row : rows) {
                 Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
                 if (status != null) {  // if a status has been removed, it is returned as null
-                    statuses.add(status);
+                    if (status.getStatusPrivate() == null || status.getStatusPrivate() == false) {
+                        statuses.add(status);
+                    }
                 }
             }
             searchService.addStatuses(statuses); // This should be batched for optimum performance
