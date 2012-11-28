@@ -82,7 +82,7 @@
           <@ } @>
 
           <@ if (status.statusPrivate == true) { @>
-            <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
+            <span class="userStatus-info"><i class="icon-lock"></i> <fmt:message key="tatami.status.private"/></span>&nbsp;
           <@ } @>
 
           <@ if (status.sharedByUsername != null) { @>
