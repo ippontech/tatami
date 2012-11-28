@@ -60,7 +60,7 @@ app.View.ProfileUpdateView = Backbone.View.extend({
           $("#updateStatusBtn").popover('show');
           $("#updateStatusContent").change();
           setTimeout(function () {
-              $("#updateStatusBtn").popover('hide')
+              $("#updateStatusBtn").popover('hide');
           }, 3000);
 
       },
@@ -369,8 +369,11 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           warning: 50,
           counterText: text_characters_left + " "
       });
+      
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
+      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
+      
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',
