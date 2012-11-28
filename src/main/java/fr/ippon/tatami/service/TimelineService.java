@@ -77,7 +77,16 @@ public class TimelineService {
         if (statusCollection.isEmpty()) {
             return null;
         } else {
-            return statusCollection.iterator().next();
+            StatusDTO statusDTO = statusCollection.iterator().next();
+            // Private message check
+            if (statusDTO.isStatusPrivate()) {
+                String login = authenticationService.getCurrentUser().getLogin();
+                if (!timelineRepository.isStatusInTimeline(login, statusId)) {
+                    log.info("User " + login + " tried to access private message ID " + statusId);
+                    return null;
+                }
+            }
+            return statusDTO;
         }
     }
 

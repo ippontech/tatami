@@ -138,7 +138,7 @@ public abstract class AbstractCassandraLineRepository {
         }
     }
 
-    private QueryResult<HColumn<UUID, String>> findByLoginAndName(String columnFamily, String login, UUID name) {
+    protected QueryResult<HColumn<UUID, String>> findByLoginAndName(String columnFamily, String login, UUID name) {
         ColumnQuery<String, UUID, String> columnQuery =
                 HFactory.createColumnQuery(keyspaceOperator, StringSerializer.get(),
                         UUIDSerializer.get(), StringSerializer.get());

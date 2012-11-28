@@ -5,8 +5,10 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
+import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import me.prettyprint.hector.api.query.QueryResult;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -27,6 +29,19 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
  */
 @Repository
 public class CassandraTimelineRepository extends AbstractCassandraLineRepository implements TimelineRepository {
+
+    @Override
+    public boolean isStatusInTimeline(String login, String statusId) {
+        UUID name = UUID.fromString(statusId);
+        QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
+                findByLoginAndName(TIMELINE_CF, login, name);
+
+        if (isStatusAlreadyinTimeline.get() == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     @Override
     public void addStatusToTimeline(String login, Status status) {

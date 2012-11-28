@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public interface TimelineRepository {
 
+    boolean isStatusInTimeline(String login, String statusId);
 
     void addStatusToTimeline(String login, Status status);
 
