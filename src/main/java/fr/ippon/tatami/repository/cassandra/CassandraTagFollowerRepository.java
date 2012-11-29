@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAG_FOLLOWERS_CF;
 
 /**
  * Cassandra implementation of the Follower repository.
@@ -39,7 +39,7 @@ public class CassandraTagFollowerRepository
 
     @Override
     public String getFollowersCF() {
-        return FOLLOWERS_CF;
+        return TAG_FOLLOWERS_CF;
     }
 
     /**

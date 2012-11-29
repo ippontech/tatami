@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.FOLLOWERS_CF;
-
 /**
  * Abstract class for managing followers : users who follow another user or a tag.
  */
@@ -37,13 +35,13 @@ public abstract class AbstractCassandraFollowerRepository {
 
     protected void addFollower(String key, String followerKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(key, FOLLOWERS_CF, HFactory.createColumn(followerKey,
+        mutator.insert(key, getFollowersCF(), HFactory.createColumn(followerKey,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     protected void removeFollower(String key, String followerKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(key, FOLLOWERS_CF, followerKey, StringSerializer.get());
+        mutator.delete(key, getFollowersCF(), followerKey, StringSerializer.get());
     }
 
     protected Collection<String> findFollowers(String key) {
