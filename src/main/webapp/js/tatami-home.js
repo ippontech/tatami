@@ -407,7 +407,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
     } else {
       var callback = _.once(_.bind(this.newStatusCallback, this));
       this.on('callbackRefresh', callback);
-      this.refresh();
+      this.startRefresh();
     }
   },
 
