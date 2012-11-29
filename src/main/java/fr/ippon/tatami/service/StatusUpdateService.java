@@ -286,8 +286,8 @@ public class StatusUpdateService {
     }
 
     /**
-     * A status that mention a user is put in the user's mentionline and in his timeline.
-     * The mentioned used can also be notified by email.
+     * A status that mentions a user is put in the user's mentionline and in his timeline.
+     * The mentioned user can also be notified by email.
      */
     private void mentionUser(Status status, String mentionedLogin) {
         mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
