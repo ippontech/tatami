@@ -1,7 +1,6 @@
 .homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
 
 body {
-    //background-color: #e9e9e9;
     background-image:url(/img/wallpaper.jpg);
 }
 
@@ -61,10 +60,6 @@ form {
 
 #updateStatusContent {
     height: 20px;
-}
-
-#updateStatusBtn {
-   //display: none;
 }
 
 #contentGroup {
