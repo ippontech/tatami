@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -40,13 +40,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/preferences">
-                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/password">
-                                    <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
+                                <a href="/tatami/account/tags/directory">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
@@ -55,13 +50,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups/directory">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups.directory"/>
+                                <a href="/tatami/account/preferences">
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
+                                <a href="/tatami/account/password">
+                                    <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>
                             </li>
                             <li>
@@ -74,11 +69,16 @@
                 </div>
                 <div class="span8">
                     <div class="row-fluid">
-                        <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
+                        <div class="tab-content span12 alert alert-status">
+								<ul class="nav nav-pills">
+									<li class="active"><a href="/tatami/account/groups"><fmt:message
+												key="tatami.menu.groups.my.groups" /></a></li>
+									<li><a href="/tatami/account/groups/directory"><fmt:message
+												key="tatami.menu.groups.popular" /></a></li>
+								</ul>
+								<c:if test="${success == 'true'}">
                                 <div class="alert alert-success">
-                                    <fmt:message
-                                            key="tatami.group.add.success"/>
+                                    <fmt:message key="tatami.group.add.success"/>
                                 </div>
                             </c:if>
                             <c:if test="${param.error == 'true'}">
@@ -86,12 +86,9 @@
                                     <fmt:message key="tatami.group.add.error"/>
                                 </div>
                             </c:if>
-                            <h2>
-                                <fmt:message key="tatami.menu.groups"/>
-                            </h2>
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addGroupCollapsible">
+                             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addGroupCollapsible">
                                  <fmt:message key="tatami.group.add"/>
-                            </button>
+                            </button> 
                             <div id="addGroupCollapsible" class="collapse out">
                             <br/>
                             <form:form class="form-horizontal" commandName="group" method="post" acceptCharset="utf-8">
@@ -143,9 +140,7 @@
                             </form:form>
                             </div>
                             <c:if test="${not empty groups}">
-                                <legend>
-                                    <fmt:message key="tatami.group.list"/>
-                                </legend>
+                                <br>
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
@@ -186,6 +181,11 @@
                                                     <c:if test="${found}">
                                                         <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
                                                             <fmt:message key="tatami.group.edit.link"/>
+                                                        </button>
+                                                    </c:if>
+                                                    <c:if test="${!found}">
+                                                        <button type="submit" class="btn-small btn-info">
+                                                            <fmt:message key="tatami.group.edit.quit"/>
                                                         </button>
                                                     </c:if>
                                                 </td>

@@ -335,3 +335,8 @@ table {
 .nav-collapse .open .dropdown-menu.closed {
     display: block;
 }
+
+.user-profile {
+	margin:0px;
+}
+

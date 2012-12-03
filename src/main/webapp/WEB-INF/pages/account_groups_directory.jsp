@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -34,9 +34,19 @@
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
-                            <li>
+                            <li  class="active">
                                 <a href="/tatami/account/groups">
                                     <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/tags/directory">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/directory">
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -50,21 +60,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="/tatami/account/groups/directory">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups.directory"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/tags/directory">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
@@ -74,10 +69,13 @@
                 </div>
                 <div class="span8">
                     <div class="row-fluid">
-                        <div class="tab-content span12">
-                            <h2>
-                                <fmt:message key="tatami.menu.groups"/>
-                            </h2>
+                        <div class="tab-content span12 alert alert-status">
+								<ul class="nav nav-pills">
+									<li><a href="/tatami/account/groups"><fmt:message
+												key="tatami.menu.groups.my.groups" /></a></li>
+									<li class="active"><a href="/tatami/account/groups/directory"><fmt:message
+												key="tatami.menu.groups.popular" /></a></li>
+								</ul>
                             <c:if test="${not empty groups}">
                                 <table class="table table-striped">
                                     <thead>
@@ -95,7 +93,12 @@
                                         <c:forEach items="${groups}" var="group">
                                             <tr>
                                                 <td>
-                                                        ${group.name}
+                                                <c:if test="${group.publicGroup}">
+                                                       <a href="/tatami/#/groups/public/${group.groupId}">${group.name}</a>
+                                                </c:if>
+                                                <c:if test="${not group.publicGroup}">
+                                                       ${group.name}
+                                                </c:if>
                                                 </td>
                                                 <td>
                                                     <c:if test="${group.publicGroup}">
