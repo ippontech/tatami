@@ -59,21 +59,4 @@ public class TrendController {
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         return trendService.getTrendsForUser(DomainUtil.getLoginFromUsernameAndDomain(username, domain));
     }
-
-    /**
-     * @return a Collection of a user's domain tags matching the query
-     */
-    @RequestMapping(value = "/rest/user/last-trends",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<String> searchRecentTags(@RequestParam("q") String query) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find tags");
-        }
-        String currentLogin = authenticationService.getCurrentUser().getLogin();
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
-
-        return trendService.searchTags(domain, query);
-    }
 }

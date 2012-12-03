@@ -632,7 +632,7 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
         search = input.value;
     });
     if(search)
-      window.location = '/tatami/#/search/' + search;
+      window.location = '/tatami/#/search/status/' + search;
   }
 });
 
@@ -670,7 +670,7 @@ function Suggester(element) {
 	  	switch (query2.charAt(0)) {
 		  case '@' :
 			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/users/search', {q:q}, function (data) {
+			return $.get('/tatami/rest/search/users', {q:q}, function (data) {
 		        var results = [];
 		        for (var i = 0; i < data.length; i++) {
 		            results[i] = '@' + data[i].username;
@@ -680,7 +680,7 @@ function Suggester(element) {
 			break;
 		  case '#' :
 			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/user/last-trends', {q:q}, function (data) {
+			return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
 		        var results = [];
 		        for (var i = 0; i < data.length; i++) {
 		            results[i] = '#' + data[i];

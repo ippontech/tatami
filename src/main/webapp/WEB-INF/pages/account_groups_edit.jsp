@@ -240,7 +240,7 @@
 
     $("#username").typeahead({
         source:function (query, process) {
-            return $.get('/tatami/rest/users/search', {q:query}, function (data) {
+            return $.get('/tatami/rest/search/users', {q:query}, function (data) {
                 var results = [];
                 for (var i = 0; i < data.length; i++) {
                     results[i] = data[i].username;

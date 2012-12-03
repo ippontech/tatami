@@ -86,14 +86,14 @@ public class CassandraTrendRepository implements TrendRepository {
     }
 
     @Cacheable(value="domain-tags-cache", key="#domain")
-    public Collection<String> getDomainTags(String domain) {
+    public Collection<String> getDomainTags(String domain, int size) {
     	Assert.hasLength(domain);
 
         final ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TRENDS_CF)
                 .setKey(domain)
-                .setRange(null, null, true, Integer.MAX_VALUE)
+                .setRange(null, null, true, size)
                 .execute()
                 .get();
 

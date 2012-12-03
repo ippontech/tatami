@@ -41,7 +41,7 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
         search = input.value;
     });
     if(search)
-      window.location = '/tatami/#/search/' + search;
+      window.location = '/tatami/#/search/status/' + search;
   }
 });
 

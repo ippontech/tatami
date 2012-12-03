@@ -43,9 +43,6 @@ public class UserController {
     @Inject
     private AuthenticationService authenticationService;
 
-    @Inject
-    private SearchService searchService;
-
     /**
      * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
      */
@@ -92,29 +89,5 @@ public class UserController {
             }
         }
         return users.values();
-    }
-
-    /**
-     * GET  /users/searchStatus -> searchStatus user by username<br>
-     * Should return a collection of users matching the query.<br>
-     * The collection doesn't contain the current user even if he matches the query.<br>
-     * If nothing matches, an empty collection (but not null) is returned.<br>
-     *
-     * @param query the query
-     * @return a Collection of User
-     */
-    @RequestMapping(value = "/rest/users/search",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<User> searchUsers(@RequestParam("q") String query) {
-        String prefix = query.toLowerCase();
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find users starting with : " + prefix);
-        }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
-        return userService.getUsersByLogin(logins);
     }
 }

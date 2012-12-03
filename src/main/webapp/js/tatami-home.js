@@ -225,7 +225,7 @@ app.View.UserFindFormView = Backbone.View.extend({
         $(this.el).html(this.template());
         $(this.el).find("#findUsername").typeahead({
             source:function (query, process) {
-                return $.get('/tatami/rest/users/search', {q:query}, function (data) {
+                return $.get('/tatami/rest/search/users', {q:query}, function (data) {
                     var results = [];
                     for (var i = 0; i < data.length; i++) {
                         results[i] = data[i].username;
@@ -1042,7 +1042,7 @@ app.View.SearchSearchView = Backbone.View.extend({
   },
 
   search: function () {
-    app.router.navigate('//search/' + this.model.options.search, {trigger: false,replace:false});
+    app.router.navigate('//search/status/' + this.model.options.search, {trigger: false,replace:false});
     this.fetch();
   },
   escapeField: function (value) {
@@ -1089,7 +1089,7 @@ app.View.SearchNextView = Backbone.View.extend({
     var self = this;
 
     var sc = new app.Collection.StatusCollection();
-    sc.url = '/tatami/rest/search';
+    sc.url = '/tatami/rest/search/status';
 
     sc.fetch({
       data: {
@@ -1138,7 +1138,7 @@ app.View.SearchView = Backbone.View.extend({
       page: 0
     };
 
-    this.model.url = '/tatami/rest/search';
+    this.model.url = '/tatami/rest/search/status';
     this.model.bind('reset', function(){
       this.options.page = 0;
     }, this.model);
@@ -1207,7 +1207,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
     "tags/*tag": "tags",
     "favorite": "favorite",
     "search": "search",
-    "search/*search": "search",
+    "search/status/*search": "search",
     "*action": "timeline"
   },
 
