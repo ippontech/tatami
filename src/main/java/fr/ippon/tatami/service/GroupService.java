@@ -46,6 +46,9 @@ public class GroupService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private SearchService searchService;
+
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
         if (log.isDebugEnabled()) {
@@ -58,11 +61,15 @@ public class GroupService {
         groupMembersRepository.addAdmin(groupId, currentUser.getLogin());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
+        Group group = getGroupById(domain, groupId);
+        searchService.addGroup(group);
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
         groupDetailsRepository.editGroupDetails(group.getGroupId(), group.getName(), group.getDescription());
+        searchService.removeGroup(group);
+        searchService.addGroup(group);
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(String groupId) {
@@ -93,10 +100,14 @@ public class GroupService {
         return internalGetGroupById(domain, groupId);
     }
 
+    public Collection<Group> getGroupsWhereUserIsAdmin(User user) {
+        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(user.getLogin());
+        return getGroupDetails(user, groupIds);
+    }
+
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
         User currentUser = authenticationService.getCurrentUser();
-        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(currentUser.getLogin());
-        return getGroupDetails(currentUser, groupIds);
+        return getGroupsWhereUserIsAdmin(currentUser);
     }
 
     private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {

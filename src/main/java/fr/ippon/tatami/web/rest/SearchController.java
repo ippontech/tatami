@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -48,7 +49,7 @@ public class SearchController {
     private TrendService trendService;
 
     /**
-     * GET  /search/all?q=tatami -> search users, tags, groups and statuses for "tatami"
+     * GET  /search/all?q=tatami -> search users, tags, groups for "tatami"
      */
     @RequestMapping(value = "/rest/search/all",
             method = RequestMethod.GET,
@@ -58,6 +59,7 @@ public class SearchController {
         SearchResults searchResults = new SearchResults();
         searchResults.setTags(this.searchRecentTags(q));
         searchResults.setUsers(this.searchUsers(q));
+        searchResults.setGroups(this.searchGroups(q));
         return searchResults;
     }
 
@@ -98,9 +100,6 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     public Collection<String> searchRecentTags(@RequestParam("q") String query) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find tags");
-        }
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         Collection<String> tags;
@@ -110,6 +109,27 @@ public class SearchController {
             tags = new ArrayList<String>();
         }
         return tags;
+    }
+
+    /**
+     * GET  /search/groups" -> search groups<br>
+     *
+     * @return a Collection of groups matching the query
+     */
+    @RequestMapping(value = "/rest/search/groups",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Group> searchGroups(@RequestParam("q") String query) {
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        Collection<Group> groups;
+        if (query != null && !query.equals("")) {
+            groups = searchService.searchGroups(domain, query, 3);
+        } else {
+            groups = new ArrayList<Group>();
+        }
+        return groups;
     }
 
     /**

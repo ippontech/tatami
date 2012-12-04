@@ -45,9 +45,9 @@ public class CassandraTrendRepository implements TrendRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    @CacheEvict(value="domain-tags-cache", key="#domain")
+    @CacheEvict(value = "domain-tags-cache", key = "#domain")
     public void addTag(String domain, String tag) {
-    	HColumn<UUID, String> column =
+        HColumn<UUID, String> column =
                 HFactory.createColumn(
                         TimeUUIDUtils.getUniqueTimeUUIDinMillis(),
                         tag,
@@ -85,9 +85,9 @@ public class CassandraTrendRepository implements TrendRepository {
         return result;
     }
 
-    @Cacheable(value="domain-tags-cache", key="#domain")
+    @Cacheable(value = "domain-tags-cache", key = "#domain")
     public Collection<String> getDomainTags(String domain, int size) {
-    	Assert.hasLength(domain);
+        Assert.hasLength(domain);
 
         final ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
@@ -101,7 +101,7 @@ public class CassandraTrendRepository implements TrendRepository {
         String tag = null;
         for (HColumn<UUID, String> column : query.getColumns()) {
             tag = column.getValue();
-          	result.put(tag.toLowerCase(), tag);
+            result.put(tag.toLowerCase(), tag);
         }
         return result.values();
     }

@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Domain implements Serializable, Comparable<Domain> {
 
-	private String name;
+    private String name;
 
     private int numberOfUsers;
 

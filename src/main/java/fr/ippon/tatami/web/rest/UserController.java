@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.FriendshipService;
-import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.StatsService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;

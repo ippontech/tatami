@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
                 AtmosphereResourceLifecycleInterceptor.class})
 public class OnlineUsersServlet extends HttpServlet {
 
-	private AuthenticationService authenticationService;
+    private AuthenticationService authenticationService;
 
     private Map<String, User> onlineUsers = new ConcurrentHashMap<String, User>();
 

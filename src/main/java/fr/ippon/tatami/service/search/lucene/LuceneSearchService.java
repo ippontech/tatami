@@ -43,12 +43,20 @@ public class LuceneSearchService implements SearchService {
     private IndexWriter userIndexWriter;
 
     @Inject
+    @Named("groupIndexWriter")
+    private IndexWriter groupIndexWriter;
+
+    @Inject
     @Named("statusSearcherManager")
     private SearcherManager statusSearcherManager;
 
     @Inject
     @Named("userSearcherManager")
     private SearcherManager userSearcherManager;
+
+    @Inject
+    @Named("groupSearcherManager")
+    private SearcherManager groupSearcherManager;
 
     @Inject
     private GroupDetailsRepository groupDetailsRepository;
@@ -72,6 +80,8 @@ public class LuceneSearchService implements SearchService {
             statusIndexWriter.close();
             userIndexWriter.commit();
             userIndexWriter.close();
+            groupIndexWriter.commit();
+            groupIndexWriter.close();
         } catch (IOException e) {
             log.error("I/O error while closing the Lucene index : " + e.getMessage());
             if (log.isDebugEnabled()) {
@@ -88,6 +98,8 @@ public class LuceneSearchService implements SearchService {
             statusIndexWriter.commit();
             userIndexWriter.deleteAll();
             userIndexWriter.commit();
+            groupIndexWriter.deleteAll();
+            groupIndexWriter.commit();
             return true;
         } catch (IOException e) {
             log.error("I/O error while deleting the Lucene index : " + e.getMessage());
@@ -257,7 +269,7 @@ public class LuceneSearchService implements SearchService {
                 log.debug("Lucene indexed user : " + user);
             }
         } catch (IOException e) {
-            log.error("The status wasn't added to the index: " + user, e);
+            log.error("The user wasn't added to the index: " + user, e);
         }
     }
 
@@ -270,7 +282,7 @@ public class LuceneSearchService implements SearchService {
             userIndexWriter.commit();
             log.info(users.size() + " users indexed!");
         } catch (IOException e) {
-            log.error("Batch status insert failed ! ", e);
+            log.error("Batch user insert failed ! ", e);
         }
     }
 
@@ -349,5 +361,102 @@ public class LuceneSearchService implements SearchService {
             }
         }
         return logins;
+    }
+
+
+    @Override
+    public void addGroup(Group group) {
+        try {
+            internalAddGroup(group);
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene indexed group : " + group);
+            }
+        } catch (IOException e) {
+            log.error("The group wasn't added to the index: " + group, e);
+        }
+    }
+
+    @Override
+    public void removeGroup(Group group) {
+        Term term = new Term("groupId", group.getGroupId());
+        try {
+            userIndexWriter.deleteDocuments(term);
+            if (log.isDebugEnabled()) {
+                log.debug("Lucene deleted group : " + group.getGroupId());
+            }
+        } catch (IOException e) {
+            log.error("Lucene had an I/O error while deleting group " + group.getGroupId() + " : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public Collection<Group> searchGroups(String domain, String query, int size) {
+        IndexSearcher searcher = null;
+        Collection<Group> groups = new ArrayList<Group>();
+        try {
+            searcher = groupSearcherManager.acquire();
+
+            MultiFieldQueryParser parser =
+                    new MultiFieldQueryParser(Version.LUCENE_36,
+                            new String[]{"name", "description"},
+                            analyzer);
+
+            parser.setDateResolution(DateTools.Resolution.SECOND);
+            parser.setDefaultOperator(QueryParser.Operator.AND);
+            Query luceneQuery = parser.parse(query);
+
+            TermsFilter filter = new TermsFilter();
+            Term domainTerm = new Term("domain", domain);
+            filter.addTerm(domainTerm);
+
+            TopDocs topDocs = searcher.search(luceneQuery, filter, size);
+            int totalHits = topDocs.totalHits;
+            if (totalHits == 0) {
+                return new ArrayList<Group>();
+            }
+
+            ScoreDoc[] scoreDocArray = topDocs.scoreDocs;
+            for (int i = 0; i < scoreDocArray.length; i++) {
+                int documentId = scoreDocArray[i].doc;
+                Document document = searcher.doc(documentId);
+                String groupId = document.get("groupId");
+                Group group = groupDetailsRepository.getGroupDetails(groupId);
+                groups.add(group);
+            }
+        } catch (ParseException e) {
+            log.error("A Lucene query could not be parsed : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            log.error("A Lucene query had a I/O error : " + e.getMessage());
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                groupSearcherManager.release(searcher);
+            } catch (IOException e) {
+                log.error("The Lucene searcher could not be given back to the searcherManager pool. " +
+                        e.getMessage());
+
+                if (log.isDebugEnabled()) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return groups;
+    }
+
+    private void internalAddGroup(Group group) throws IOException {
+        Document document = new Document();
+        document.add(new Field("domain", group.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+        document.add(new Field("groupId", group.getGroupId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field("name", group.getName(), Field.Store.YES, Field.Index.ANALYZED));
+        document.add(new Field("description", group.getDescription(), Field.Store.YES, Field.Index.ANALYZED));
+        groupIndexWriter.addDocument(document);
     }
 }

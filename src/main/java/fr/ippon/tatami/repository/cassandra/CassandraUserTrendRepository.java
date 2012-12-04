@@ -75,10 +75,10 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
         return result;
     }
 
-	@Override
-	public Collection<String> getUserRecentTags(String login, Date endDate,
-			int nbRecentTags) {
-		ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
+    @Override
+    public Collection<String> getUserRecentTags(String login, Date endDate,
+                                                int nbRecentTags) {
+        ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(USER_TRENDS_CF)
                 .setKey(login)
@@ -92,5 +92,5 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
             result.put(tag.toLowerCase(), tag);
         }
         return result.values();
-	}
+    }
 }

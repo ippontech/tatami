@@ -83,10 +83,10 @@ public class UserService {
         final Collection<User> users = new ArrayList<User>();
         User user = null;
         for (String login : logins) {
-        	user = userRepository.findUserByLogin(login);
-        	if (user != null) {
-        		users.add(user);
-        	}
+            user = userRepository.findUserByLogin(login);
+            if (user != null) {
+                users.add(user);
+            }
         }
         return users;
     }

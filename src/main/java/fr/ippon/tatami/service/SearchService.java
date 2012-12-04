@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
@@ -14,7 +15,7 @@ public interface SearchService {
 
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int DEFAULT_TOP_N_SEARCH_USER = 8;
-    
+
     /**
      * Reset the search engine.
      * <p/>
@@ -68,4 +69,10 @@ public interface SearchService {
 
     Collection<String> searchUserByPrefix(String domain,
                                           String prefix);
+
+    void addGroup(Group group);
+
+    void removeGroup(Group group);
+
+    Collection<Group> searchGroups(String domain, String query, int size);
 }

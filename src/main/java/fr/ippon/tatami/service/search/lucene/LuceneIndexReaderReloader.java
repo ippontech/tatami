@@ -27,12 +27,20 @@ public class LuceneIndexReaderReloader {
     private IndexWriter userIndexWriter;
 
     @Inject
+    @Named("groupIndexWriter")
+    private IndexWriter groupIndexWriter;
+
+    @Inject
     @Named("statusSearcherManager")
     private SearcherManager statusSearcherManager;
 
     @Inject
     @Named("userSearcherManager")
     private SearcherManager userSearcherManager;
+
+    @Inject
+    @Named("groupSearcherManager")
+    private SearcherManager groupSearcherManager;
 
     @PostConstruct
     public void init() {
@@ -44,8 +52,10 @@ public class LuceneIndexReaderReloader {
         try {
             statusIndexWriter.commit();
             userIndexWriter.commit();
+            groupIndexWriter.commit();
             statusSearcherManager.maybeRefresh();
             userSearcherManager.maybeRefresh();
+            groupSearcherManager.maybeRefresh();
         } catch (IOException e) {
             log.error("Lucene IndexReader reloader I/O error : " + e.getMessage());
             if (log.isDebugEnabled()) {

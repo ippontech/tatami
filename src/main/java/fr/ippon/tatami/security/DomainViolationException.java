@@ -7,7 +7,7 @@ package fr.ippon.tatami.security;
  */
 public class DomainViolationException extends RuntimeException {
 
-	public DomainViolationException() {
+    public DomainViolationException() {
     }
 
     public DomainViolationException(String s) {

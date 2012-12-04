@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,7 +46,7 @@ public class TrendController {
     }
 
     /**
-     * GET  /users/trends -> 
+     * GET  /users/trends ->
      */
     @RequestMapping(value = "/rest/user/trends",
             method = RequestMethod.GET,

@@ -2,6 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Domain;
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
@@ -49,6 +50,9 @@ public class AdminService {
     private StatusRepository statusRepository;
 
     @Inject
+    private GroupService groupService;
+
+    @Inject
     private Environment env;
 
     @Inject
@@ -69,9 +73,9 @@ public class AdminService {
         properties.put("search.engine", env.getProperty("search.engine"));
         properties.put("lucene.path", env.getProperty("lucene.path"));
         properties.put("elasticsearch.indexName", env.getProperty("elasticsearch.indexName"));
-		properties.put("elasticsearch.cluster.name", env.getProperty("elasticsearch.cluster.name"));
-		properties.put("elasticsearch.cluster.nodes", env.getProperty("elasticsearch.cluster.nodes"));
-		properties.put("elasticsearch.cluster.default.communication.port", env.getProperty("elasticsearch.cluster.default.communication.port"));
+        properties.put("elasticsearch.cluster.name", env.getProperty("elasticsearch.cluster.name"));
+        properties.put("elasticsearch.cluster.nodes", env.getProperty("elasticsearch.cluster.nodes"));
+        properties.put("elasticsearch.cluster.default.communication.port", env.getProperty("elasticsearch.cluster.default.communication.port"));
         return properties;
     }
 
@@ -94,9 +98,10 @@ public class AdminService {
         }
 
         //Rebuild the user Index
-        log.debug("Rebuilding the user Index");
+        log.debug("Rebuilding the user & group Indexes");
         long fullIndexStartTime = Calendar.getInstance().getTimeInMillis();
         Collection<Domain> domains = domainRepository.getAllDomains();
+        int groupCount = 0;
         for (Domain domain : domains) {
             int paginationId = 0;
             boolean moreUsers = true;
@@ -110,12 +115,19 @@ public class AdminService {
                 paginationId += Constants.PAGINATION_SIZE;
                 Collection<User> users = new ArrayList<User>();
                 for (String login : logins) {
-                    users.add(userRepository.findUserByLogin(login));
+                    User user = userRepository.findUserByLogin(login);
+                    users.add(user);
+                    Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
+                    for (Group group : groups) {
+                        searchService.addGroup(group);
+                        groupCount++;
+                    }
                 }
                 searchService.addUsers(users);
                 log.info("The search engine indexed " + logins.size() + " users.");
             }
         }
+        log.info("The search engine indexed " + groupCount + " groups.");
 
         //Rebuild the status Index
         log.info("Rebuilding the status Index");

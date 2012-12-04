@@ -34,8 +34,8 @@ public class MentionsController {
             produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listMentionStatus(@RequestParam(required = false) Integer count,
-                                                @RequestParam(required = false) String since_id,
-                                                @RequestParam(required = false) String max_id) {
+                                                   @RequestParam(required = false) String since_id,
+                                                   @RequestParam(required = false) String max_id) {
 
         if (count == null) {
             count = 20;

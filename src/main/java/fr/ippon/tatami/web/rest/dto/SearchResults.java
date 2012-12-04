@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ public class SearchResults implements Serializable {
     private Collection<String> tags;
 
     private Collection<User> users;
+
+    private Collection<Group> groups;
 
     public Collection<String> getTags() {
         return tags;
@@ -28,5 +31,13 @@ public class SearchResults implements Serializable {
 
     public void setUsers(Collection<User> users) {
         this.users = users;
+    }
+
+    public Collection<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Collection<Group> groups) {
+        this.groups = groups;
     }
 }

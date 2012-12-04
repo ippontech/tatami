@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
@@ -199,7 +200,7 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public Collection<String> searchUserByPrefix(String domain, String prefix) {
         QueryBuilder qb = QueryBuilders.prefixQuery("username", prefix);
         String dataType = User.class.getSimpleName().toLowerCase();
@@ -231,20 +232,20 @@ public class ElasticsearchSearchService implements SearchService {
         final List<String> logins = new ArrayList<String>(hitsNumber.intValue());
         Map<String, Object> user = null;
         try {
-        	String username = null;
-        	String login = null;
+            String username = null;
+            String login = null;
             for (int i = 0; i < searchHitsArray.length; i++) {
-            	user = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
+                user = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
                 username = (String) user.get("username");
                 login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
                 logins.add(login);
             }
         } catch (JsonParseException e) {
-        	log.error("Json parse exception", e);
+            log.error("Json parse exception", e);
         } catch (JsonMappingException e) {
-        	log.error("Json mapping exception", e);
+            log.error("Json mapping exception", e);
         } catch (IOException e) {
-        	log.error("IO exception", e);
+            log.error("IO exception", e);
         }
 
         return logins;
@@ -252,6 +253,21 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public void removeUser(User user) {
+        //TODO
+    }
+
+    @Override
+    public void addGroup(Group group) {
+        //TODO
+    }
+
+    @Override
+    public Collection<Group> searchGroups(String domain, String query, int size) {
+        return null;  //TODO
+    }
+
+    @Override
+    public void removeGroup(Group group) {
         //TODO
     }
 

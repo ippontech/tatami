@@ -73,9 +73,9 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
-                                                 @RequestParam(required = false) Integer count,
-                                                 @RequestParam(required = false) String since_id,
-                                                 @RequestParam(required = false) String max_id) {
+                                                    @RequestParam(required = false) Integer count,
+                                                    @RequestParam(required = false) String since_id,
+                                                    @RequestParam(required = false) String max_id) {
 
         if (log.isDebugEnabled()) {
             log.debug("REST request to get statuses for group : " + groupId);

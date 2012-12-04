@@ -1,5 +1,7 @@
 package fr.ippon.tatami.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * A group.
  */
@@ -13,6 +15,7 @@ public class Group implements Comparable<Group> {
 
     private String description;
 
+    @JsonIgnore
     private String domain;
 
     private long counter;

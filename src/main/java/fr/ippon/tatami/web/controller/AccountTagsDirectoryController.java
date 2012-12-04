@@ -1,21 +1,20 @@
 package fr.ippon.tatami.web.controller;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
 
 @Controller
 public class AccountTagsDirectoryController {
 
-	@Inject
+    @Inject
     private UserService userService;
 
     @Inject
@@ -34,7 +33,7 @@ public class AccountTagsDirectoryController {
         ModelAndView mv = new ModelAndView("tags_directory");
         return mv;
     }
-    
+
     @RequestMapping(value = "/account/tags/popular",
             method = RequestMethod.GET)
     public ModelAndView getPopularTags() {

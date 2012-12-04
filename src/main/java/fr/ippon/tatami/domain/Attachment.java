@@ -1,12 +1,12 @@
 package fr.ippon.tatami.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "Attachment")

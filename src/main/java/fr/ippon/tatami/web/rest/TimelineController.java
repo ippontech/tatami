@@ -167,8 +167,8 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
-                                         @RequestParam(required = false) String since_id,
-                                         @RequestParam(required = false) String max_id) {
+                                            @RequestParam(required = false) String since_id,
+                                            @RequestParam(required = false) String max_id) {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
@@ -183,9 +183,9 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listStatusForUser(@RequestParam("screen_name") String username,
-                                                @RequestParam(required = false) Integer count,
-                                                @RequestParam(required = false) String since_id,
-                                                @RequestParam(required = false) String max_id) {
+                                                   @RequestParam(required = false) Integer count,
+                                                   @RequestParam(required = false) String since_id,
+                                                   @RequestParam(required = false) String max_id) {
 
         if (count == null || count == 0) {
             count = 20; //Default value

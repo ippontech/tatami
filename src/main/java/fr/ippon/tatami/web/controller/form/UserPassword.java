@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class UserPassword implements Serializable {
 
-	private String oldPassword;
+    private String oldPassword;
 
     private String newPassword;
 

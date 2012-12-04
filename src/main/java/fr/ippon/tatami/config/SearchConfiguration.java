@@ -122,6 +122,11 @@ public class SearchConfiguration {
         return internalDirectory("user");
     }
 
+    @Bean(name = "groupDirectory")
+    public Directory groupDirectory() {
+        return internalDirectory("group");
+    }
+
     private Directory internalDirectory(String directoryName) {
         if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
             log.info("Initializing Lucene " + directoryName + " directory");
@@ -155,6 +160,13 @@ public class SearchConfiguration {
     @DependsOn({"userDirectory"})
     public IndexWriter userIndexWriter() {
         Directory directory = userDirectory();
+        return internalIndexWriter(directory);
+    }
+
+    @Bean
+    @DependsOn({"groupDirectory"})
+    public IndexWriter groupIndexWriter() {
+        Directory directory = groupDirectory();
         return internalIndexWriter(directory);
     }
 
@@ -195,6 +207,12 @@ public class SearchConfiguration {
     @DependsOn({"userIndexWriter"})
     public SearcherManager userSearcherManager() {
         return internalSearcherManager(userIndexWriter());
+    }
+
+    @Bean
+    @DependsOn({"groupIndexWriter"})
+    public SearcherManager groupSearcherManager() {
+        return internalSearcherManager(groupIndexWriter());
     }
 
     private SearcherManager internalSearcherManager(IndexWriter indexWriter) {

@@ -118,6 +118,7 @@ public class AccountGroupsController {
         if (!isGroupManagedByCurrentUser) {
             return new ModelAndView("redirect:/tatami/account/groups");
         }
+        group.setDomain(authenticationService.getCurrentUser().getDomain());
         group.setName(group.getName().replace("<", " "));
         group.setDescription(group.getDescription().replace("<", " "));
         groupService.editGroup(group);
