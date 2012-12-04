@@ -197,8 +197,5 @@
   </li>
 </script>
 
-<script type="text/template" id="tags-directory-template">
-  		<p class="tags-cloud">#<@= tags.tag @>&nbsp;<span class="label label-success">Follow</span></p>
-</script>
 
 

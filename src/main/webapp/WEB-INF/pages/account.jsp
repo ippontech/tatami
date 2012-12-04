@@ -31,22 +31,22 @@
                     <div class="tabbable alert alert-status">
                         <ul class="nav nav-pills nav-stacked nomargin">
                             <li class="active">
-                                <a href="#">
+                                <a href="/tatami/account/">
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups">
+                                <a href="/tatami/account/groups/#/account-groups">
                                     <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory">
+                                <a href="/tatami/account/tags/directory/#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
+                                <a href="/tatami/account/directory/#/account-user">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>

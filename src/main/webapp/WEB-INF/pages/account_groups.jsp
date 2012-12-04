@@ -35,17 +35,17 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="#">
+                                <a href="#/account-groups">
                                     <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory">
+                                <a href="/tatami/account/tags/directory/#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
+                                <a href="/tatami/account/directory/#/account-users">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
@@ -71,11 +71,12 @@
                     <div class="row-fluid">
                         <div class="tab-content span12 alert alert-status adminMenu">
 								<ul class="nav nav-pills">
-									<li class="active"><a href="/tatami/account/groups"><fmt:message
+									<li class="active"><a href="#/account-groups"><fmt:message
 												key="tatami.menu.groups.my.groups" /></a></li>
-									<li><a href="/tatami/account/groups/directory"><fmt:message
+									<li><a href="#/popular-groups"><fmt:message
 												key="tatami.menu.groups.popular" /></a></li>
 								</ul>
+
 								<c:if test="${success == 'true'}">
                                 <div class="alert alert-success">
                                     <fmt:message key="tatami.group.add.success"/>
@@ -139,61 +140,9 @@
                                 </fieldset>
                             </form:form>
                             </div>
-                            <c:if test="${not empty groups}">
-                                <br>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th><fmt:message
-                                                key="tatami.group.name"/></th>
-                                        <th><fmt:message
-                                                key="tatami.group.add.access"/></th>
-                                        <th><fmt:message
-                                                key="tatami.group.counter"/></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${groups}" var="group">
-                                            <tr>
-                                                <td>
-                                                        ${group.name}
-                                                </td>
-                                                <td>
-                                                    <c:if test="${group.publicGroup}">
-                                                        <span class="label label-warning"><fmt:message
-                                                                key="tatami.group.add.public"/></span>
-                                                    </c:if>
-                                                    <c:if test="${not group.publicGroup}">
-                                                        <span class="label label-info"><fmt:message
-                                                                key="tatami.group.add.private"/></span>
-                                                    </c:if>
-                                                </td>
-                                                <td>
-                                                        ${group.counter}
-                                                </td>
-                                                <td>
-                                                    <c:forEach items="${groupsAdmin}" var="groupAdmin">
-                                                        <c:if test="${groupAdmin == group}">
-                                                            <c:set var="found" value="true" scope="request" />
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:if test="${found}">
-                                                        <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
-                                                            <fmt:message key="tatami.group.edit.link"/>
-                                                        </button>
-                                                    </c:if>
-                                                    <c:if test="${!found}">
-                                                        <button type="submit" class="btn-small btn-info">
-                                                            <fmt:message key="tatami.group.edit.quit"/>
-                                                        </button>
-                                                    </c:if>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </c:if>
+
+							<div id="admin-content"></div>
+
                         </div>
                     </div>
                 </div>
@@ -210,11 +159,14 @@
 </div>
 
 <jsp:include page="includes/footer.jsp"/>
+<jsp:include page="includes/templates-admin.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "groups";
 </script>
+<script src="/js/tatami-admin.js"></script>
+
 </body>
 </html>

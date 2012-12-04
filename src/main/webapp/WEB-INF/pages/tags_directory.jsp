@@ -35,17 +35,17 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups">
+                                <a href="/tatami/account/groups/#/account-groups">
                                     <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="/tatami/account/tags/directory">
+                                <a href="#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
+                                <a href="/tatami/account/directory/#/account-user">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
@@ -71,13 +71,13 @@
                     <div class="row-fluid"> 
                         <div class="tab-content span12 alert alert-status adminMenu">
 								<ul class="nav nav-pills">
-									<li class="active"><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
-									<li><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+									<li class="active"><a href="#/account-tags"><fmt:message
+												key="tatami.menu.tags.directory.followed" /></a></li>
+									<li><a href="#/popular-tags"><fmt:message
+												key="tatami.menu.tags.directory.follow" /></a></li>
 								</ul>
-								<div id="tags-followed-content">
-									
-								</div>  
-                        </div>
+								<div id="admin-content"></div>
+							</div>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
         </c:otherwise>
     </c:choose>
 </div>
-<jsp:include page="includes/templates-profile.jsp"/>
+<jsp:include page="includes/templates-admin.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
@@ -101,7 +101,6 @@
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-tags-directory.js"></script>
-
+<script src="/js/tatami-admin.js"></script>
 </body>
 </html>

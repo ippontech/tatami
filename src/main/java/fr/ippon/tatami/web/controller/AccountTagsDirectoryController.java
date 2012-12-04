@@ -34,12 +34,4 @@ public class AccountTagsDirectoryController {
         ModelAndView mv = new ModelAndView("tags_directory");
         return mv;
     }
-    
-    @RequestMapping(value = "/account/tags/popular",
-            method = RequestMethod.GET)
-    public ModelAndView getPopularTags() {
-
-        ModelAndView mv = new ModelAndView("popular_tags");
-        return mv;
-    }
 }
