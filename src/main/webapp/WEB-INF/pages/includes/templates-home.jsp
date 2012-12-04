@@ -76,9 +76,9 @@
             <@ }); @>
         </select>
     </div>
-    <%--<div>
+    <div>
        <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
-    </div>--%>
+    </div>
     <div id="updateStatusPrivate" class="control-group">
       <label class="checkbox">
           <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>

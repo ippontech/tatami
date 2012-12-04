@@ -1,36 +1,14 @@
 package fr.ippon.tatami.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "Attachment")
 public class Attachment {
 
-    @Id
     private String attachmentId;
 
-    @NotNull
-    @Column(name = "filename")
     private String filename;
 
-    @Column(name = "extension")
-    private String extension;
+    private byte[] content;
 
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "removed")
-    @JsonIgnore
-    private Boolean removed;
+    private int size;
 
     public String getAttachmentId() {
         return attachmentId;
@@ -38,6 +16,14 @@ public class Attachment {
 
     public void setAttachmentId(String attachmentId) {
         this.attachmentId = attachmentId;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     public String getFilename() {
@@ -48,36 +34,12 @@ public class Attachment {
         this.filename = filename;
     }
 
-    public String getExtension() {
-        return extension;
+    public int getSize() {
+        return size;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Boolean getRemoved() {
-        return removed;
-    }
-
-    public void setRemoved(Boolean removed) {
-        this.removed = removed;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     @Override
@@ -102,9 +64,7 @@ public class Attachment {
         return "Attachment{" +
                 "attachmentId='" + attachmentId + '\'' +
                 ", filename='" + filename + '\'' +
-                ", extension='" + extension + '\'' +
-                ", type='" + type + '\'' +
-                ", removed=" + removed +
+                ", size=" + size +
                 '}';
     }
 }

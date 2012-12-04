@@ -65,4 +65,6 @@ public class ColumnFamilyKeys {
 
     public final static String ATTACHMENT_CF = "Attachment";
 
+    public final static String USER_ATTACHMENT_CF = "UserAttachments";
+
 }

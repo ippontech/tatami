@@ -147,7 +147,6 @@ app.View.UpdateView = Backbone.View.extend({
           animation:true,
           placement:'right'
       });
-      /*
       $('#updateStatusFileupload').fileupload({
           dataType: 'json',
           progressall: function (e, data) {
@@ -161,7 +160,6 @@ app.View.UpdateView = Backbone.View.extend({
               });
           }
       });
-      */
     return $(this.el);
   }
 });
