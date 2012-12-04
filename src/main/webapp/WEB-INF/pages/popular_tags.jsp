@@ -69,7 +69,7 @@
                 </div>
                 <div class="span8">
                     <div class="row-fluid">
-                        <div class="tab-content span12 alert alert-status">
+                        <div class="tab-content span12 alert alert-status adminMenu">
 								<ul class="nav nav-pills">
 									<li><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
 									<li class="active"><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
