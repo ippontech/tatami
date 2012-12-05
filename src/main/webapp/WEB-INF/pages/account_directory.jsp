@@ -30,7 +30,7 @@
                     <div class="tabbable alert alert-status">
                         <ul class="nav nav-pills nav-stacked nomargin">
                             <li>
-                                <a href="/tatami/account/#/account-user">
+                                <a href="/tatami/account/">
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
@@ -45,7 +45,7 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="#">
+                                <a href="#/account-users">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
@@ -71,70 +71,15 @@
                     <div class="row-fluid">
                         <div class="tab-content span12 alert alert-status adminMenu">
 								<ul class="nav nav-pills">
-									<li class="active"><a href="/tatami/account/directory"><fmt:message
+									<li class="active"><a href="#/account-users"><fmt:message
 												key="tatami.user" /></a></li>
-									<li><a href="/tatami/account/directory"><fmt:message
+									<li><a href="#/popular-users"><fmt:message
 												key="tatami.user.popular" /></a></li>
 								</ul>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th><fmt:message
-                                                key="tatami.username"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.user.firstName"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.user.lastName"/></th>
-                                        <th><fmt:message
-                                                key="tatami.badge.status"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.badge.followed"/></th>
-                                        <th><fmt:message
-                                                key="tatami.badge.followers"/></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${users}" var="u">
-                                        <tr>
-                                            <td>
-                                                <a href="/tatami/profile/${u.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${u.username} ${u.firstName} ${u.lastName}">
-                                                    <img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/${u.gravatar}?s=64&d=mm" alt="${u.firstName} ${u.lastName}"/>
-                                                    @${u.username}
-                                                </a>
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.firstName}
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.lastName}
-                                            </td>
-                                            <td>
-                                                ${u.statusCount}
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.friendsCount}
-                                            </td>
-                                            <td>
-                                                ${u.followersCount}
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                                <ul class="pager">
-                                    <c:if test="${paginationPrevious != null}">
-                                        <li>
-                                            <a href="/tatami/account/directory?pagination=${paginationPrevious}"><fmt:message
-                                                    key="tatami.form.previous"/></a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${paginationNext != null}">
-                                        <li>
-                                            <a href="/tatami/account/directory?pagination=${paginationNext}"><fmt:message
-                                                    key="tatami.form.next"/></a>
-                                        </li>
-                                    </c:if>
-                                </ul>
+								
+								<div id="admin-content"></div>
+
+
                             </div>
                         </div>
                     </div>

@@ -148,10 +148,6 @@ public class GroupController {
         Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();      
         myGroups.put("groupsAdmin", groupsAdmin);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Collection admin" + myGroups);
-        }
-      
     	return myGroups;
     }
     

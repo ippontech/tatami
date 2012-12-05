@@ -54,3 +54,43 @@
 	<@ } @>
 </td>
 </script>
+
+
+<script type="text/template" id="global-users-template">
+<thead>
+<tr>
+	<th><fmt:message key="tatami.username"/></th>
+	<th class="hidden-phone"><fmt:message key="tatami.user.firstName"/></th>
+	<th class="hidden-phone"><fmt:message key="tatami.user.lastName"/></th>
+	<th><fmt:message key="tatami.badge.status"/></th>
+	<th class="hidden-phone"><fmt:message key="tatami.badge.followed"/></th>
+	<th><fmt:message key="tatami.badge.followers"/></th>
+</tr>
+</thead>
+</script>
+
+<script type="text/template" id="global-users-template-item">
+	<td>
+	<a href="/tatami/profile/<@= elem.username @>/" title="<fmt:message key="tatami.user.profile.show"/> 
+	<@= elem.username @><@= elem.firstName @><@= elem.lastName @>">
+	<img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/?s=64&d=mm" alt="<@= elem.firstName @><@= elem.lastName @>"/>
+	<@= elem.username @>
+	</a>
+	</td>
+	<td class="hidden-phone">
+	<@= elem.firstName @>
+	</td>
+	<td class="hidden-phone">
+	<@= elem.lastName @>
+	</td>
+	<td>
+	<@= elem.statusCount @>
+	</td>
+	<td class="hidden-phone">
+	<@= elem.friendsCount @>
+	</td>
+	<td>
+	<@= elem.followersCount @>
+	</td>
+</script>
+

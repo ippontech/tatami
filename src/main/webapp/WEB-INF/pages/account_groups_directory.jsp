@@ -35,17 +35,17 @@
                                 </a>
                             </li>
                             <li  class="active">
-                                <a href="/tatami/account/groups/">
+                                <a href="#/account-groups">
                                     <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory/">
+                                <a href="/tatami/account/tags/directory/#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory/">
+                                <a href="/tatami/account/directory/#/account-users">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>

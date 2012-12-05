@@ -27,11 +27,11 @@ public class AccountTagsDirectoryController {
         return userService.getUserByLogin(currentUser.getLogin());
     }
 
-    @RequestMapping(value = "/account/tags/directory",
+    @RequestMapping(value = "/account/tags/directory/",
             method = RequestMethod.GET)
     public ModelAndView getTagDirectory() {
 
-        ModelAndView mv = new ModelAndView("tags_directory");
+        ModelAndView mv = new ModelAndView("account_tags");
         return mv;
     }
 }

@@ -254,6 +254,100 @@ app.View.popularGroups = Backbone.View.extend({
     }
 });
 
+/*
+ * Users 
+ * 
+ */
+
+app.Collection.usersCollection = Backbone.Collection.extend({
+    url : function(){
+        return '/tatami/rest/users';
+    }
+});
+
+app.View.allUser = Backbone.View.extend({	
+	template: _.template($('#global-users-template').html()),
+	
+    initialize: function() {
+        this.model = new app.Collection.usersCollection();
+        this.model.bind('reset', this.render, this);
+        this.model.bind('add', function(model, collection, options) {
+            self.addItem(model, options.index);
+        }, this);
+        this.model.fetch();
+        $(this.el).addClass('table table-striped');
+    },
+    
+    tagName: 'table',
+
+    addItem: function(item, index) {
+    	var el = new app.View.DefaultView({
+    		model: item,
+    		template: _.template($('#global-users-template-item').html()),
+    		tagName: 'tr'
+    	}).render();
+
+        if(index === 0) {
+        	$(this.el).prepend(el);
+        } 
+        else {
+        	$(this.el).append(el);
+        }         
+    },
+
+    render: function() {
+    	$(this.el).empty();
+    	$(this.el).append(this.template());
+        _.each(this.model.models, this.addItem, this);
+        return $(this.el);
+    }
+});
+
+/* TO DO */
+app.Collection.popularUsersCollection = Backbone.Collection.extend({
+    url : function(){
+        return '';
+    }
+});
+
+app.View.popularUsers = Backbone.View.extend({
+	template: _.template($('#global-users-template').html()),
+	
+    initialize: function() {
+        this.model = new app.Collection.usersCollection();
+        this.model.bind('reset', this.render, this);
+        this.model.bind('add', function(model, collection, options) {
+            self.addItem(model, options.index);
+        }, this);
+        this.model.fetch();
+        $(this.el).addClass('table table-striped');
+    },
+    
+    tagName: 'table',
+
+    addItem: function(item, index) {
+    	var el = new app.View.DefaultView({
+    		model: item,
+    		template: _.template($('#global-users-template-item').html()),
+    		tagName: 'tr'
+    	}).render();
+
+        if(index === 0) {
+        	$(this.el).prepend(el);
+        } 
+        else {
+        	$(this.el).append(el);
+        }         
+    },
+
+    render: function() {
+    	$(this.el).empty();
+    	$(this.el).append(this.template());
+        _.each(this.model.models, this.addItem, this);
+        return $(this.el);
+    }
+});
+
 
 var AdminRouter = Backbone.Router.extend({
 	
@@ -288,6 +382,7 @@ var AdminRouter = Backbone.Router.extend({
 		this.selectMenu('popular-groups');
 		$('#admin-content').empty();
 		
+		/*TO DO : replace by true popular groups*/
 		app.views.groups = new app.View.popularGroups();
 		$('#admin-content').append(app.views.groups.render());
 		
@@ -311,11 +406,20 @@ var AdminRouter = Backbone.Router.extend({
 	},
 	
 	account_users: function(){
-		console.log('user followed');
+		this.selectMenu('account-users');
+		$('#admin-content').empty();
+		
+		app.views.allUserView = new app.View.allUser();	
+		$('#admin-content').append(app.views.allUserView.render());	
 	},
 	
 	popular_users: function(){
-		console.log('popular user');
+		this.selectMenu('popular-users');
+		$('#admin-content').empty();
+		
+		/* TO DO : replace by true popular users*/
+		app.views.popularUsers = new app.View.popularUsers();	
+		$('#admin-content').append(app.views.popularUsers.render());	
 	}
 	
 });

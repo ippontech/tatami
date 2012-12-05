@@ -45,7 +45,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory/#/account-user">
+                                <a href="/tatami/account/directory/#/account-users">
                                     <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
@@ -77,7 +77,7 @@
 												key="tatami.menu.tags.directory.follow" /></a></li>
 								</ul>
 								<div id="admin-content"></div>
-							</div>
+						</div>
                     </div>
                 </div>
             </div>
