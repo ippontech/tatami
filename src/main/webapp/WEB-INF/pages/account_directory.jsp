@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -30,13 +30,23 @@
                     <div class="tabbable alert alert-status">
                         <ul class="nav nav-pills nav-stacked nomargin">
                             <li>
-                                <a href="/tatami/account">
+                                <a href="/tatami/account/">
                                     <i class="icon-user"></i> <fmt:message key="tatami.menu.profile"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                <a href="/tatami/account/groups/#/account-groups">
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="#/account-users">
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -49,16 +59,6 @@
                                     <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>
                             </li>
-                            <li class="active">
-                                <a href="#">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/tags/directory">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
-                                </a>
-                            </li>
                             <li>
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
@@ -69,69 +69,17 @@
                 </div>
                 <div class="span8">
                     <div class="row-fluid">
-                        <div class="tab-content span12">
-                                <h2>
-                                    <fmt:message key="tatami.menu.directory"/>
-                                </h2>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th><fmt:message
-                                                key="tatami.username"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.user.firstName"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.user.lastName"/></th>
-                                        <th><fmt:message
-                                                key="tatami.badge.status"/></th>
-                                        <th class="hidden-phone"><fmt:message
-                                                key="tatami.badge.followed"/></th>
-                                        <th><fmt:message
-                                                key="tatami.badge.followers"/></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${users}" var="u">
-                                        <tr>
-                                            <td>
-                                                <a href="/tatami/profile/${u.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${u.username} ${u.firstName} ${u.lastName}">
-                                                    <img class="pull-left nomargin avatar avatar-small" src="https://www.gravatar.com/avatar/${u.gravatar}?s=64&d=mm" alt="${u.firstName} ${u.lastName}"/>
-                                                    @${u.username}
-                                                </a>
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.firstName}
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.lastName}
-                                            </td>
-                                            <td>
-                                                ${u.statusCount}
-                                            </td>
-                                            <td class="hidden-phone">
-                                                ${u.friendsCount}
-                                            </td>
-                                            <td>
-                                                ${u.followersCount}
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                                <ul class="pager">
-                                    <c:if test="${paginationPrevious != null}">
-                                        <li>
-                                            <a href="/tatami/account/directory?pagination=${paginationPrevious}"><fmt:message
-                                                    key="tatami.form.previous"/></a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${paginationNext != null}">
-                                        <li>
-                                            <a href="/tatami/account/directory?pagination=${paginationNext}"><fmt:message
-                                                    key="tatami.form.next"/></a>
-                                        </li>
-                                    </c:if>
-                                </ul>
+                        <div class="tab-content span12 alert alert-status adminMenu">
+								<ul class="nav nav-pills">
+									<li class="active"><a href="#/account-users"><fmt:message
+												key="tatami.user" /></a></li>
+									<li><a href="#/popular-users"><fmt:message
+												key="tatami.user.popular" /></a></li>
+								</ul>
+								
+								<div id="admin-content"></div>
+
+
                             </div>
                         </div>
                     </div>
@@ -150,11 +98,13 @@
 
 
 <jsp:include page="includes/footer.jsp"/>
+<jsp:include page="includes/templates-admin.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "directory";
 </script>
+<script src="/js/tatami-admin.js"></script>
 </body>
 </html>
