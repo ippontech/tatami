@@ -140,8 +140,11 @@
                                 </fieldset>
                             </form:form>
                             </div>
-
-							<div id="admin-content"></div>
+							
+							<div id="admin-content">
+							
+							
+							</div>
 
                         </div>
                     </div>

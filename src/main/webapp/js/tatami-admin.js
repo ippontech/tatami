@@ -19,6 +19,20 @@ else {
 }
 
 
+/** Global Template **/
+app.View.DefaultView = Backbone.View.extend({
+    initialize: function() {
+
+    },
+
+    render: function() {
+        var $el = $(this.el);
+        $el.html(this.options.template({elem:this.model.toJSON()}));
+        return $(this.el);
+    }
+});
+
+
 /*
  * Tags directory, delivery tags following
  * 
@@ -34,19 +48,6 @@ app.Model.DeletedTagModel = Backbone.Model.extend({
 	url : function(){
 		return '/tatami/rest/tagmemberships/destroy';
 	}
-});
-
-app.View.TagsItemView = Backbone.View.extend({
-    initialize: function() {
-
-    },
-
-    render: function() {
-    	var template = _.template($('#tags-followed-template-item').html());
-        var $el = $(this.el);
-        $el.html(template({tags:this.model.toJSON()}));
-        return $(this.el);
-    }
 });
 
 app.View.TagsView = Backbone.View.extend({
@@ -67,8 +68,9 @@ app.View.TagsView = Backbone.View.extend({
     	var el = null;
     	
     	if(item.attributes.followed === true){
-    		el = new app.View.TagsItemView({
-                model: item
+    		el = new app.View.DefaultView({
+                model: item,
+                template: _.template($('#tags-followed-template-item').html()),
             }).render();
     	}
         
@@ -98,14 +100,8 @@ app.View.TagsView = Backbone.View.extend({
     },   
 
     render: function() {
-    	var template =_.template($('#tags-followed-template').html());
     	$(this.el).empty();
-        if(this.model.length > 0) {
-        	_.each(this.model.models, this.addItem, this);
-        }    
-        else {
-        	$(this.el).html(template);
-        }
+        _.each(this.model.models, this.addItem, this);
         return $(this.el);
     },
 
@@ -123,19 +119,6 @@ app.Collection.TagCollection = Backbone.Collection.extend({
     }
 });
 
-app.View.PopularTagsView = Backbone.View.extend({
-    initialize: function() {
-
-    },
-
-    render: function() {
-    	var template = _.template($('#popular-tags-template-item').html());
-        var $el = $(this.el);
-        $el.html(template({tags:this.model.toJSON()}));
-        return $(this.el);
-    }
-});
-
 app.View.TagsPopularView = Backbone.View.extend({
     initialize: function() {
         this.model = new app.Collection.TagCollection();
@@ -147,8 +130,9 @@ app.View.TagsPopularView = Backbone.View.extend({
     },
 
     addItem: function(item, index) {
-    	var el = new app.View.PopularTagsView({
-    		model: item
+    	var el = new app.View.DefaultView({
+    		model: item,
+    		template: _.template($('#popular-tags-template-item').html())
     	}).render();
 
         if(index === 0) {
@@ -160,15 +144,8 @@ app.View.TagsPopularView = Backbone.View.extend({
     },
 
     render: function() {
-    	var template = _.template($('#popular-tags-template').html());
-    	
     	$(this.el).empty();
-        if(this.model.length > 0) {
-        	_.each(this.model.models, this.addItem, this);
-        }    
-        else {
-        	$(this.el).html(template);
-        }
+        _.each(this.model.models, this.addItem, this);
         return $(this.el);
     }
 
@@ -184,52 +161,26 @@ app.Collection.GroupsCollection = Backbone.Collection.extend({
     url : function(){
         return '/tatami/rest/groups';
     },
-    parse: function(response){
-    	
+    parse: function(response){  	
     	var admin = response.groupsAdmin;
-    	var groups = response.groups;
-    
-    	for(var i = 0; i < groups.length; i++)
+    	var groups = response.groups;  
+ 
+    	for(var i in groups)
     	{
-    		for(var x = 0; x < admin.length; x++)
+    		for(var x in admin)
         	{
-        		
-    			if(admin[x].groupId == groups[i].groupId){
-    				
-    				console.log('vous etes admin');
-    				
-    				groups[i].admin = true;
-    				
-    			}
-    			
-    			
-    			//console.log(admin[x].groupId);
+    			if(groups[i].groupId == admin[x].groupId){
+    				groups[i].admin = true;	
+    			} 		
         	}
-    	  		
-    		console.log(groups[i]);
-    		
-    	}
-    	
-    	//return response;
-    }
-});
-
-app.View.MyOwnGroupsView = Backbone.View.extend({
-    initialize: function() {
-
-    },
-
-    tagName: 'tr',
-    
-    render: function() {
-    	var template = _.template($('#own-groups-template-item').html());
-        var $el = $(this.el);
-        $el.html(template({groups:this.model.toJSON()}));
-        return $(this.el);
+    	} 	
+    	return groups;
     }
 });
 
 app.View.myGroups = Backbone.View.extend({	
+	template: _.template($('#own-groups-template').html()),
+	
     initialize: function() {
         this.model = new app.Collection.GroupsCollection();
         this.model.bind('reset', this.render, this);
@@ -243,8 +194,10 @@ app.View.myGroups = Backbone.View.extend({
     tagName: 'table',
 
     addItem: function(item, index) {
-    	var el = new app.View.MyOwnGroupsView({
-    		model: item
+    	var el = new app.View.DefaultView({
+    		model: item,
+    		template: _.template($('#own-groups-template-item').html()),
+    		tagName: 'tr'
     	}).render();
 
         if(index === 0) {
@@ -257,8 +210,46 @@ app.View.myGroups = Backbone.View.extend({
 
     render: function() {
     	$(this.el).empty();
+    	$(this.el).append(this.template());
         _.each(this.model.models, this.addItem, this);
+        return $(this.el);
+    }
+});
 
+app.View.popularGroups = Backbone.View.extend({	
+	template: _.template($('#own-groups-template').html()),
+	
+    initialize: function() {
+        this.model = new app.Collection.GroupsCollection();
+        this.model.bind('reset', this.render, this);
+        this.model.bind('add', function(model, collection, options) {
+            self.addItem(model, options.index);
+        }, this);
+        this.model.fetch();
+        $(this.el).addClass('table table-striped');
+    },
+    
+    tagName: 'table',
+
+    addItem: function(item, index) {
+    	var el = new app.View.DefaultView({
+    		model: item,
+    		template: _.template($('#own-groups-template-item').html()),
+    		tagName: 'tr'
+    	}).render();
+
+        if(index === 0) {
+        	$(this.el).prepend(el);
+        } 
+        else {
+        	$(this.el).append(el);
+        }         
+    },
+
+    render: function() {
+    	$(this.el).empty();
+    	$(this.el).append(this.template());
+        _.each(this.model.models, this.addItem, this);
         return $(this.el);
     }
 });
@@ -296,6 +287,10 @@ var AdminRouter = Backbone.Router.extend({
 	popular_groups: function(){
 		this.selectMenu('popular-groups');
 		$('#admin-content').empty();
+		
+		app.views.groups = new app.View.popularGroups();
+		$('#admin-content').append(app.views.groups.render());
+		
 	},
 
 	account_tags: function(){
