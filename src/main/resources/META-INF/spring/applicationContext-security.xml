@@ -51,7 +51,7 @@
 
     <authentication-manager>
         <authentication-provider ref="ldapAuthenticationProvider"/>
-        <!--authentication-provider ref="daoAuthenticationProvider"/-->
+        <authentication-provider ref="daoAuthenticationProvider">
     </authentication-manager>
 
     <beans:bean id="daoAuthenticationProvider"

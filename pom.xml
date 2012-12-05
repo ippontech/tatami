@@ -40,17 +40,18 @@
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
                 <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.admin.users>pierre.rust@orange.com</tatami.admin.users>
+                <tatami.url>http://127.0.0.1:8080</tatami.url>
+                <!--tatami.url>http://p-cda-tatami:8080</tatami.url-->
+                <tatami.admin.users>pierre.rust@orange.com,david.blanchet@orange.com</tatami.admin.users>
                 <tatami.ldapauth.domain>orange.com</tatami.ldapauth.domain>
                 <tatami.ldapauth.url>ldap://rd.francetelecom.fr</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>OU=Annuaire,DC=rd,DC=francetelecom,DC=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(mailNickname={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
+                <tatami.smtp.host>mailhost.rd.francetelecom.fr</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.from>pierre.rust@orange.com</tatami.smtp.from>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
@@ -373,6 +374,8 @@
                         </exclusion>
                     </exclusions>
                 </dependency>
+
+            
             </dependencies>
         </profile>
     </profiles>
@@ -569,6 +572,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -627,6 +640,11 @@
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
         </dependency>
+                <dependency>
+                    <groupId>rome</groupId>
+                    <artifactId>rome</artifactId>
+                    <version>1.0</version>
+                </dependency>        
 
         <!-- Test dependencies -->
         <dependency>

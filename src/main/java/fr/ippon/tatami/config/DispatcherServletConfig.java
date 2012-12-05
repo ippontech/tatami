@@ -1,5 +1,6 @@
 package fr.ippon.tatami.config;
 
+import fr.ippon.tatami.web.syndic.SyndicViewer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,6 +45,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         Map<String, String> mediaTypes = new HashMap<String, String>();
         mediaTypes.put("html", "text/html");
         mediaTypes.put("json", "application/json");
+        //mediaTypes.put("rss", "application/rss+xml");
         viewResolver.setMediaTypes(mediaTypes);
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
@@ -53,7 +55,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         urlBasedViewResolver.setPrefix("/WEB-INF/pages/");
         urlBasedViewResolver.setSuffix(".jsp");
         viewResolvers.add(urlBasedViewResolver);
-
+        
         viewResolver.setViewResolvers(viewResolvers);
 
         List<View> defaultViews = new ArrayList<View>();
@@ -62,6 +64,13 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         return viewResolver;
     }
+    
+    @Bean
+    public SyndicViewer syndicViewer()
+    {
+        return new SyndicViewer();
+    }
+    
 
     @Bean
     public SessionLocaleResolver localeResolver() {
