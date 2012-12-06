@@ -131,9 +131,18 @@ public class TimelineService {
     }
 
     public Collection<StatusDTO> buildStatusList(Map<String, SharedStatusInfo> line) {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> usergroups = groupService.getGroupsForUser(currentUser);
-        Map<String, SharedStatusInfo> favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
+        User currentUser = null;
+        Collection<Group> usergroups;
+        Map<String, SharedStatusInfo> favoriteLine; 
+        if (authenticationService.hasAuthenticatedUser() ) {
+            currentUser = authenticationService.getCurrentUser();
+            usergroups = groupService.getGroupsForUser(currentUser);
+            favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
+        }
+        else {
+            usergroups = Collections.emptyList();
+            favoriteLine = Collections.emptyMap();            
+        }
         Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
         for (String statusId : line.keySet()) {
             SharedStatusInfo sharedStatusInfo = line.get(statusId);
@@ -147,10 +156,11 @@ public class TimelineService {
                 User statusUser = userService.getUserByLogin(status.getLogin());
                 if (statusUser != null) {
                     // Security check
-                    if (!statusUser.getDomain().equals(currentUser.getDomain())) {
+                    // FIXME is it really ok to bypass the security check when no user 
+                    // is logged in ?
+                    if (( currentUser != null) && !statusUser.getDomain().equals(currentUser.getDomain())) {
                         throw new DomainViolationException("User " + currentUser + " tried to access " +
                                 " status : " + status);
-
                     }
 
                     StatusDTO statusDTO = new StatusDTO();
@@ -270,6 +280,23 @@ public class TimelineService {
         return buildStatusList(line);
     }
 
+     /**
+     * The timeline contains the user's status merged with his friends status.
+     * getUserTimeline returns the time line for an arbitrary user (and not only 
+     * the logged-in users).
+     *
+     * @param login of the user we want the timeline of
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
+     */
+    public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String since_id, String max_id) {
+        Map<String, SharedStatusInfo> line =
+                timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+
+        return buildStatusList(line);
+    }
+
+    
     /**
      * The userline contains the user's own status
      *
