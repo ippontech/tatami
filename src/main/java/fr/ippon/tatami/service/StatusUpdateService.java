@@ -294,7 +294,7 @@ public class StatusUpdateService {
         timelineRepository.addStatusToTimeline(mentionedLogin, status);
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
-        if (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true)) {
+        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
             if (status.getStatusPrivate() == true) { // Private status
                 mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
             } else {
