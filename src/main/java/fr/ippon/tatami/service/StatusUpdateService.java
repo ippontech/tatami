@@ -25,7 +25,7 @@ public class StatusUpdateService {
 
     private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
-    private static final Pattern PATTERN_HASHTAG = Pattern.compile("#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
+    private static final Pattern PATTERN_HASHTAG = Pattern.compile("(^|\\s)#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
     @Inject
     private FollowerRepository followerRepository;
@@ -224,7 +224,7 @@ public class StatusUpdateService {
     private void manageStatusTags(Status status, Group group) {
         Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
         while (m.find()) {
-            String tag = m.group(1);
+            String tag = m.group(2);
             if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
                 if (log.isDebugEnabled()) {
                     log.debug("Found tag : " + tag);
