@@ -35,7 +35,7 @@ public class SyndicTimelineController {
     
     
     /**
-     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user "jdubois"
+     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user username
      */
     @RequestMapping(value = "/syndic/statuses/user_timeline",
             method = RequestMethod.GET,
@@ -50,12 +50,13 @@ public class SyndicTimelineController {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's status (username=" + username + ").");
+            log.debug("RSS request to get someone's status (username=" + username + ").");
         }
-        Collection<StatusDTO> statuses  = timelineService.getUserline(username, count, since_id, max_id);
+        Collection<StatusDTO> statuses  = timelineService.getUserTimeline(username, count, since_id, max_id);
         
         ModelAndView mav = new ModelAndView("syndicView");
         mav.addObject("feedContent", statuses);
+        mav.addObject("channelName", "Test Channel Name   ");
         return mav;
         
     }

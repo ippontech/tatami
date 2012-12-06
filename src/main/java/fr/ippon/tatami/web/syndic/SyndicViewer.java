@@ -4,6 +4,7 @@
  */
 package fr.ippon.tatami.web.syndic;
 
+import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.feed.rss.Content;
 
@@ -22,6 +23,23 @@ import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
  */
 public class SyndicViewer  extends AbstractRssFeedView  {
 
+    
+    /**
+     *
+     * @param model
+     */
+    @Override
+    protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) 
+    {
+        // this is mandatory : a feed with no title is invalid and is not rendered 
+        // by the actual view implementation
+        // TODO : use somothing meaningfull ...
+        feed.setTitle("TODO title");
+        feed.setDescription("TODO description");
+        feed.setLink("TODO link");
+        
+    }
+    
     @Override
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 		@SuppressWarnings("unchecked")
@@ -42,10 +60,9 @@ public class SyndicViewer  extends AbstractRssFeedView  {
  
 			items.add(item);
 		}
- 
-		return items;
+               
+          	return items;
         }
-    
     
     
 }

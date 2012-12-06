@@ -45,7 +45,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         Map<String, String> mediaTypes = new HashMap<String, String>();
         mediaTypes.put("html", "text/html");
         mediaTypes.put("json", "application/json");
-        //mediaTypes.put("rss", "application/rss+xml");
+        mediaTypes.put("rss", "application/rss+xml");
         viewResolver.setMediaTypes(mediaTypes);
 
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
@@ -60,13 +60,14 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         List<View> defaultViews = new ArrayList<View>();
         defaultViews.add(new MappingJacksonJsonView());
+        defaultViews.add(syndicView());
         viewResolver.setDefaultViews(defaultViews);
 
         return viewResolver;
     }
     
     @Bean
-    public SyndicViewer syndicViewer()
+    public SyndicViewer syndicView()
     {
         return new SyndicViewer();
     }
