@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -35,8 +35,18 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                <a href="/tatami/account/groups/#/account-groups">
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="#/account-tags">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/directory/#/account-users">
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -50,16 +60,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="/tatami/account/tags/directory">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
@@ -68,16 +68,16 @@
                     </div>
                 </div>
                 <div class="span8">
-                    <div class="row-fluid">
-                        <div class="tab-content span12">
+                    <div class="row-fluid"> 
+                        <div class="tab-content span12 alert alert-status adminMenu">
 								<ul class="nav nav-pills">
-									<li><a href="/tatami/account/tags/directory"><fmt:message key="tatami.menu.tags.directory.followed"/></a></li>
-									<li class="active"><a href="/tatami/account/tags/popular"><fmt:message key="tatami.menu.tags.directory.follow"/></a></li>
+									<li class="active"><a href="#/account-tags"><fmt:message
+												key="tatami.menu.tags.directory.followed" /></a></li>
+									<li><a href="#/popular-tags"><fmt:message
+												key="tatami.menu.tags.directory.follow" /></a></li>
 								</ul>
-								<div id="popular-tags-content">
-										
-								</div>    
-                        </div>
+								<div id="admin-content"></div>
+						</div>
                     </div>
                 </div>
             </div>
@@ -91,17 +91,16 @@
         </c:otherwise>
     </c:choose>
 </div>
-<jsp:include page="includes/templates-profile.jsp"/>
+<jsp:include page="includes/templates-admin.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
-    var page = "popular_tags";
+    var page = "tags_directory";
 </script>
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-tags-popular.js"></script>
-
+<script src="/js/tatami-admin.js"></script>
 </body>
 </html>

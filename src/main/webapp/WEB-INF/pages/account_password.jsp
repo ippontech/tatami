@@ -21,7 +21,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -37,8 +37,18 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                <a href="/tatami/account/groups/#/account-groups">
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/directory/#/account-users">
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -47,18 +57,8 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="#">
+                                <a href="/tatami/account/password">
                                     <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/directory">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/tags_directory/">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="span8 container">
-                    <div class="tab-content span12">
+                    <div class="tab-content span12 alert alert-status">
 
                             <c:if test="${success == 'true'}">
                                 <div class="alert alert-success">
