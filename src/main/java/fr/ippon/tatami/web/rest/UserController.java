@@ -1,12 +1,12 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.UserStatusStat;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.FriendshipService;
-import fr.ippon.tatami.service.StatsService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.UserStatusStat;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.FriendshipService;
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.StatsService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 
 /**
  * REST controller for managing users.
@@ -41,6 +45,9 @@ public class UserController {
 
     @Inject
     private AuthenticationService authenticationService;
+    
+    @Inject
+    private SearchService searchService;
 
     /**
      * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
@@ -89,4 +96,46 @@ public class UserController {
         }
         return users.values();
     }
+    
+    /**
+     * GET  /users/searchStatus -> searchStatus user by username<br>
+     * Should return a collection of users matching the query.<br>
+     * The collection doesn't contain the current user even if he matches the query.<br>
+     * If nothing matches, an empty collection (but not null) is returned.<br>
+     *
+     * @param query the query
+     * @return a Collection of User
+     */
+    @RequestMapping(value = "/rest/users/search",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<User> searchUsers(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to find users starting with : " + prefix);
+        }
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        return userService.getUsersByLogin(logins);
+    }
+    
+    /**
+     * Get all users of domain
+     * 
+     */
+    @RequestMapping(value= "/rest/users",
+    		method = RequestMethod.GET,
+    		produces = "application/json")
+    @ResponseBody
+    public Collection<User> getAll(@RequestParam(required = false) Integer pagination){
+    	 if (pagination == null) {
+             pagination = 0;
+         }
+         List<User> users = userService.getUsersForCurrentDomain(pagination);
+    	
+    	return users;
+    }
+    
 }

@@ -136,6 +136,8 @@ app.View.UpdateView = Backbone.View.extend({
           counterText:text_characters_left + " "
       });
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+      
+      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -1180,9 +1182,6 @@ app.Router.HomeRouter = Backbone.Router.extend({
         $('#profileContent').html(profile.render());
         var groupList = new app.View.GroupsListView();
         $('#userGroups').html(groupList.render());
-
-        var userFind = app.views.follow = new app.View.UserFindFormView();
-        $('#profileFind').html(userFind.render());
 
         var follow = app.views.follow = new app.View.FollowView();
         $('#profileFollow').html(follow.render());

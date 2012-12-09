@@ -39,8 +39,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/groups">
-                                        <i class="icon-th"></i> <fmt:message
+                                    <a href="/tatami/account/groups/#/account-groups">
+                                        <i class="icon-th-large"></i> <fmt:message
                                             key="tatami.menu.groups"/></a>
                                 </li>
                                 <li>
@@ -56,14 +56,14 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/tatami/account/directory">
+                                    <a href="/tatami/account/directory/#/account-users">
                                         <i class="icon-globe"></i> <fmt:message
                                             key="tatami.menu.directory"/></a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/tags/directory">
+                                    <a href="/tatami/account/tags/directory/#/account-tags">
                                         <i class="icon-tags"></i> <fmt:message
-                                            key="tatami.menu.tags.directory"/></a>
+                                            key="tatami.menu.tags"/></a>
                                 </li>
                                 <li>
                                     <a href="/tatami/account/status_of_the_day">
@@ -88,7 +88,7 @@
                         </li>
                     </ul>
                     <form class="navbar-search pull-right" id="searchHeader">
-                        <input class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>"
+                        <input id="fullSearchText" class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
                 </sec:authorize>

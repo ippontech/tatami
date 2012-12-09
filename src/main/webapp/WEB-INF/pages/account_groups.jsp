@@ -19,7 +19,7 @@
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
                         <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
-                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
                 </div>
@@ -35,8 +35,18 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="#">
-                                    <i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/>
+                                <a href="#/account-groups">
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/tatami/account/directory/#/account-users">
+                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
                                 </a>
                             </li>
                             <li>
@@ -50,16 +60,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/directory">
-                                    <i class="icon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/tags/directory">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags.directory"/>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="/tatami/account/status_of_the_day">
                                     <i class="icon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
                                 </a>
@@ -69,11 +69,17 @@
                 </div>
                 <div class="span8">
                     <div class="row-fluid">
-                        <div class="tab-content span12">
-                            <c:if test="${success == 'true'}">
+                        <div class="tab-content span12 alert alert-status adminMenu">
+								<ul class="nav nav-pills">
+									<li class="active"><a href="#/account-groups"><fmt:message
+												key="tatami.menu.groups.my.groups" /></a></li>
+									<li><a href="#/popular-groups"><fmt:message
+												key="tatami.menu.groups.popular" /></a></li>
+								</ul>
+
+								<c:if test="${success == 'true'}">
                                 <div class="alert alert-success">
-                                    <fmt:message
-                                            key="tatami.group.add.success"/>
+                                    <fmt:message key="tatami.group.add.success"/>
                                 </div>
                             </c:if>
                             <c:if test="${param.error == 'true'}">
@@ -81,12 +87,9 @@
                                     <fmt:message key="tatami.group.add.error"/>
                                 </div>
                             </c:if>
-                            <h2>
-                                <fmt:message key="tatami.menu.groups"/>
-                            </h2>
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addGroupCollapsible">
+                             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addGroupCollapsible">
                                  <fmt:message key="tatami.group.add"/>
-                            </button>
+                            </button> 
                             <div id="addGroupCollapsible" class="collapse out">
                             <br/>
                             <form:form class="form-horizontal" commandName="group" method="post" acceptCharset="utf-8">
@@ -137,58 +140,12 @@
                                 </fieldset>
                             </form:form>
                             </div>
-                            <c:if test="${not empty groups}">
-                                <legend>
-                                    <fmt:message key="tatami.group.list"/>
-                                </legend>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th><fmt:message
-                                                key="tatami.group.name"/></th>
-                                        <th><fmt:message
-                                                key="tatami.group.add.access"/></th>
-                                        <th><fmt:message
-                                                key="tatami.group.counter"/></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${groups}" var="group">
-                                            <tr>
-                                                <td>
-                                                        ${group.name}
-                                                </td>
-                                                <td>
-                                                    <c:if test="${group.publicGroup}">
-                                                        <span class="label label-warning"><fmt:message
-                                                                key="tatami.group.add.public"/></span>
-                                                    </c:if>
-                                                    <c:if test="${not group.publicGroup}">
-                                                        <span class="label label-info"><fmt:message
-                                                                key="tatami.group.add.private"/></span>
-                                                    </c:if>
-                                                </td>
-                                                <td>
-                                                        ${group.counter}
-                                                </td>
-                                                <td>
-                                                    <c:forEach items="${groupsAdmin}" var="groupAdmin">
-                                                        <c:if test="${groupAdmin == group}">
-                                                            <c:set var="found" value="true" scope="request" />
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:if test="${found}">
-                                                        <button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=${group.groupId}'">
-                                                            <fmt:message key="tatami.group.edit.link"/>
-                                                        </button>
-                                                    </c:if>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </c:if>
+							
+							<div id="admin-content">
+							
+							
+							</div>
+
                         </div>
                     </div>
                 </div>
@@ -205,11 +162,14 @@
 </div>
 
 <jsp:include page="includes/footer.jsp"/>
+<jsp:include page="includes/templates-admin.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "groups";
 </script>
+<script src="/js/tatami-admin.js"></script>
+
 </body>
 </html>

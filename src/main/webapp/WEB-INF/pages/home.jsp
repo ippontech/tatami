@@ -29,9 +29,6 @@
                     </div>
                 </div>
 
-                <div id="profileFind" class="alert alert-status">
-                </div>
-
                 <div id="profileFollow" class="alert alert-status">
                 </div>
 

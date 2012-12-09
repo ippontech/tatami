@@ -1,12 +1,11 @@
 package fr.ippon.tatami.web.controller;
 
-import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.GroupService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.dto.UserGroupDTO;
-import fr.ippon.tatami.web.controller.form.UserGroupMembership;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -16,8 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
-import java.util.Collection;
+import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.GroupService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.controller.form.UserGroupMembership;
 
 /**
  * @author Julien Dubois
@@ -195,6 +200,25 @@ public class AccountGroupsController {
                 "redirect:/tatami/account/groups/edit?memberRemove=true&groupId="
                         + currentGroup.getGroupId());
     }
+    
+    
+    @RequestMapping(value = "/account/groups/directory",
+            method = RequestMethod.GET)
+    public ModelAndView getGroupsDirectory() { 	
+        ModelAndView mv = new ModelAndView("account_groups_directory");
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<Group> userList = new ArrayList<Group>();
+        List<User> list = userService.getUsersForCurrentDomain(0);
+        for(User usr : list){
+        	Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin(usr.getLogin());        	
+        	if(currentUser.getLogin() != usr.getLogin()){
+        		userList.addAll(groups);
+        	}
+        } 
+        mv.addObject("groups", userList);
+        mv.addObject("user", currentUser);
+        return mv;
+    }
 
     /**
      * Common code for all "GET" requests.
@@ -203,6 +227,8 @@ public class AccountGroupsController {
         ModelAndView mv = new ModelAndView();
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
+        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
+        mv.addObject("groupsAdmin", groupsAdmin);
         mv.addObject("user", user);
         mv.addObject("group", new Group());
         return mv;
