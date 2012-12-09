@@ -36,13 +36,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/groups/#/account-groups">
-                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
+                                <a href="/tatami/account/preferences">
+                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory/#/account-tags">
-                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
+                                <a href="/tatami/account/password">
+                                    <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
                                 </a>
                             </li>
                             <li>
@@ -51,13 +51,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/preferences">
-                                    <i class="icon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
+                                <a href="/tatami/account/groups/#/account-groups">
+                                    <i class="icon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/password">
-                                    <i class="icon-lock"></i> <fmt:message key="tatami.menu.password"/>
+                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                    <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
                             <li>
