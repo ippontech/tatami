@@ -34,9 +34,9 @@
 </td>
 <td>
 	<@ if (elem.publicGroup) { @>
-<span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
+        <span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
 	<@ } else { @> 
-<span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
+        <span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
 	<@ } @>
 </td>
 <td>
@@ -44,7 +44,7 @@
 </td>
 <td>
 	<@ if (elem.admin === true) { @>
-	<button type="submit" class="btn-small btn-info" onclick="window.location = 'groups/edit?groupId=<@= elem.groupId @>'"> 
+	<button type="submit" class="btn-small btn-info" onclick="window.location = 'edit?groupId=<@= elem.groupId @>'">
 		<fmt:message key="tatami.group.edit.link"/>
 	</button>
 	<@ } else { @> 

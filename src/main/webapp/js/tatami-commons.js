@@ -1,6 +1,7 @@
 var patterns = {
 	login: /(^|[^\w])@[\w]*$/gim,
-	hash: /(^|[^\w])#[\w]*$/gim
+	hash: /(^|[^\w])#[\w]*$/gim,
+    char: /([a-zA-Z]+)/
 };
 
 _.templateSettings = {
@@ -650,24 +651,41 @@ $(function() {
  */
 function Suggester(element) {
     this.source = function (raw_query, process) {
-  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
+  		var query2;
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
     	var query = raw_query.substring(0, caretPosition);
 	  	var matchLogin = query.match(patterns.login);
 	  	var matchHash = query.match(patterns.hash);
-	  	if (matchLogin == null && matchHash == null) {
+        var chars = query.match(patterns.char);
+
+	  	if (matchLogin == null && matchHash == null && chars == null) {
 	  		if (this.shown) {
 	  			this.hide();
-	  		};
+	  		}
 	  		return;
 	  	}
-	  	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
+
+	  	//var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
+
+        if(matchLogin == null && matchHash == null){
+            query2 = chars[0];
+        }else if(matchLogin == null){
+            query2 = matchHash[0];
+        }else if(matchHash == null){
+            query2 =  matchLogin[0];
+        }
 
 	  	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
-	  	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
-	
-	  	if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
+	  	//query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
 
-	  	switch (query2.charAt(0)) {
+
+        if(query2.charAt(0) != '#' && query2.charAt(0) != '@'){
+            query2 = query2.substring(0, query2.length);
+        }
+
+	  	//if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
+
+        switch (query2.charAt(0)) {
 		  case '@' :
 			q = query2.substring(1, query2.length);
 			return $.get('/tatami/rest/search/users', {q:q}, function (data) {
@@ -688,6 +706,12 @@ function Suggester(element) {
 		        return process(results);
 		    });
 			break;
+          default :
+            q = query2;
+            return $.get('/tatami/rest/search/all', {q:q}, function (data) {
+                return process(data);
+            });
+            break;
 		}
     };
     this.matcher = function (item) {

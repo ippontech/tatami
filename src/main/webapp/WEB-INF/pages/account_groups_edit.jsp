@@ -55,7 +55,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                <a href="/tatami/account/tags/#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
@@ -101,7 +101,7 @@
                                 </div>
                             </c:if>
                             <ul class="breadcrumb">
-                                <li><a href="../groups"><fmt:message key="tatami.menu.groups"/></a> <span class="divider">/</span></li>
+                                <li><a href="../groups/"><fmt:message key="tatami.menu.groups"/></a> <span class="divider">/</span></li>
                                 <li class="active">${group.name}</li>
                             </ul>
                             <div class="btn-group" data-toggle="buttons-checkbox">
