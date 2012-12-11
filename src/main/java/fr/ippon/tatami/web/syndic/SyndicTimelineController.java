@@ -41,7 +41,7 @@ public class SyndicTimelineController {
             method = RequestMethod.GET,
             produces = "application/rss+xml")
     @ResponseBody
-    public ModelAndView listStatusForUser(@RequestParam("screen_name") String username,
+    public ModelAndView listStatusForUser(@RequestParam("login") String login,
                                                 @RequestParam(required = false) Integer count,
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {
@@ -50,11 +50,16 @@ public class SyndicTimelineController {
             count = 20; //Default value
         }
         if (log.isDebugEnabled()) {
-            log.debug("RSS request to get someone's status (username=" + username + ").");
+            log.debug("RSS request to get someone's status (username=" + login + ").");
         }
-        Collection<StatusDTO> statuses  = timelineService.getUserTimeline(username, count, since_id, max_id);
+        Collection<StatusDTO> statuses  = timelineService.getUserTimeline(login, count, since_id, max_id);
         
         ModelAndView mav = new ModelAndView("syndicView");
+        // TODO: i18n
+        mav.addObject("feedTitle", "Timeline for user " + login);
+        mav.addObject("feedDescription", "Tatami timeline for user " + login);
+        // FIXME ? local addr ?
+        mav.addObject("feedLink", "/tatami");
         mav.addObject("feedContent", statuses);
         mav.addObject("channelName", "Test Channel Name   ");
         return mav;
