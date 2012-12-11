@@ -1,6 +1,6 @@
 package fr.ippon.tatami.config;
 
-import fr.ippon.tatami.web.syndic.SyndicViewer;
+import fr.ippon.tatami.web.syndic.SyndicView;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -67,9 +67,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     }
     
     @Bean
-    public SyndicViewer syndicView()
+    public SyndicView syndicView()
     {
-        return new SyndicViewer();
+        return new SyndicView();
     }
     
 

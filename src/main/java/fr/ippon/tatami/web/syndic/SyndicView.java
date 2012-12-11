@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
  *
  * @author tksh1670
  */
-public class SyndicViewer  extends AbstractRssFeedView  {
+public class SyndicView  extends AbstractRssFeedView  {
 
     
     /**
@@ -31,13 +31,16 @@ public class SyndicViewer  extends AbstractRssFeedView  {
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) 
     {
-        // this is mandatory : a feed with no title is invalid and is not rendered 
+        // this is mandatory: a feed with no title is invalid and is not rendered 
         // by the actual view implementation
-        // TODO : use somothing meaningfull ...
-        feed.setTitle("TODO title");
-        feed.setDescription("TODO description");
-        feed.setLink("TODO link");
+
+	String title = (String) model.get("feedTitle");
+	String description = (String) model.get("feedDescription");
+	String link = (String) model.get("feedLink");
         
+        feed.setTitle(title);
+        feed.setDescription(description);
+        feed.setLink(link);
     }
     
     @Override
