@@ -80,5 +80,19 @@
            overflowToDisk="false">
     </cache>
 
+    <cache name="suggest-users-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="1800"
+           overflowToDisk="false">
+    </cache>
+
+    <cache name="suggest-groups-cache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToLiveSeconds="1800"
+           overflowToDisk="false">
+    </cache>
+
 </ehcache>
 

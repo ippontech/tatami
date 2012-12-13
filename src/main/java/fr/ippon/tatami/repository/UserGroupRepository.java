@@ -1,6 +1,7 @@
 package fr.ippon.tatami.repository;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The User group Repository.
@@ -15,7 +16,7 @@ public interface UserGroupRepository {
 
     void removeGroup(String login, String groupId);
 
-    Collection<String> findGroups(String login);
+    List<String> findGroups(String login);
 
     Collection<String> findGroupsAsAdmin(String login);
 }

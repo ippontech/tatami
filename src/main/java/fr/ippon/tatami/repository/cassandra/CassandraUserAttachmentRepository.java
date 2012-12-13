@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.repository.UserAttachmentRepository;
-import fr.ippon.tatami.repository.UserTagRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
@@ -17,8 +16,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_TAGS_CF;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_ATTACHMENT_CF;
 

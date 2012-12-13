@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.Attachment;
-import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.AttachmentRepository;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
@@ -77,7 +76,7 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         Attachment attachment = new Attachment();
         attachment.setAttachmentId(attachmentId);
         ColumnQuery<String, String, byte[]> query = HFactory.createColumnQuery(keyspaceOperator,
-                StringSerializer.get(),  StringSerializer.get(), BytesArraySerializer.get());
+                StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
 
         HColumn<String, byte[]> column =
                 query.setColumnFamily(ATTACHMENT_CF)
