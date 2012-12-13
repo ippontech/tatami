@@ -62,7 +62,7 @@
 </script>
 
 <script type="text/template" id="update-template">
-  <fieldset>
+  <fieldset class="span12">
     <div class="control-group">
       <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content"></textarea>
       <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
@@ -76,8 +76,8 @@
             <@ }); @>
         </select>
     </div>
-    <div>
-       <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
+    <div class="control-group">
+       <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple class="span12">
     </div>
     <div id="updateStatusPrivate" class="control-group">
       <label class="checkbox">
