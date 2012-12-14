@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.repository.AttachmentRepository;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
-import me.prettyprint.cassandra.serializers.IntegerSerializer;
+import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
@@ -49,7 +49,7 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                 attachement.getFilename(), StringSerializer.get(), StringSerializer.get()));
 
         mutator.insert(attachementId, ATTACHMENT_CF, HFactory.createColumn(SIZE,
-                attachement.getSize(), StringSerializer.get(), IntegerSerializer.get()));
+                attachement.getSize(), StringSerializer.get(), LongSerializer.get()));
 
     }
 
@@ -75,17 +75,33 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         }
         Attachment attachment = new Attachment();
         attachment.setAttachmentId(attachmentId);
-        ColumnQuery<String, String, byte[]> query = HFactory.createColumnQuery(keyspaceOperator,
+        ColumnQuery<String, String, byte[]> queryAttachement = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
 
-        HColumn<String, byte[]> column =
-                query.setColumnFamily(ATTACHMENT_CF)
+        HColumn<String, byte[]> columnAttachement =
+                queryAttachement.setColumnFamily(ATTACHMENT_CF)
                         .setKey(attachmentId)
                         .setName(CONTENT)
                         .execute()
                         .get();
 
-        attachment.setContent(column.getValue());
+        attachment.setContent(columnAttachement.getValue());
+
+        ColumnQuery<String, String, Long> querySize = HFactory.createColumnQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), LongSerializer.get());
+
+        HColumn<String, Long> columnSize =
+                querySize.setColumnFamily(ATTACHMENT_CF)
+                        .setKey(attachmentId)
+                        .setName(SIZE)
+                        .execute()
+                        .get();
+
+        if (columnSize.getValue() != null) {
+            attachment.setSize(columnSize.getValue());
+        } else {
+            attachment.setSize(0);
+        }
 
         return attachment;
     }

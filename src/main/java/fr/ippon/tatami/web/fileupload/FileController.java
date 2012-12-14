@@ -8,28 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class FileUploadController {
+public class FileController {
 
-    private static Logger logger = Logger.getLogger(FileUploadController.class);
+    private static Logger log = Logger.getLogger(FileController.class);
 
     @Inject
     private AttachmentService attachmentService;
-
-    @RequestMapping(value = "/rest/fileupload/message", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    StatusResponse message(@RequestBody Message message) {
-        // Do custom steps here
-        // i.e. Persist the message to the database
-        logger.debug("Service processing...done");
-
-        return new StatusResponse(true, "Message received");
-    }
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     public
@@ -37,16 +27,15 @@ public class FileUploadController {
     List<UploadedFile> upload(
             @RequestParam("uploadFile") MultipartFile file) throws IOException {
 
-        // Do custom steps here
-        // i.e. Save the file to a temporary location or database
-        logger.info("Saving attachment...");
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
         attachment.setFilename(file.getName());
+        attachment.setSize(file.getSize());
+
 
         attachmentService.createAttachment(attachment);
 
-        logger.info("Created attachement : " + attachment.getAttachmentId());
+        log.debug("Created attachement : " + attachment.getAttachmentId());
 
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile u = new UploadedFile(file.getOriginalFilename(),
@@ -55,5 +44,16 @@ public class FileUploadController {
 
         uploadedFiles.add(u);
         return uploadedFiles;
+    }
+
+    @RequestMapping(value = "/file/{attachmentId}", method = RequestMethod.GET)
+    public void download(@PathVariable("attachmentId") String attachmentId, HttpServletResponse response) {
+        try {
+            byte[] fileContent = attachmentService.getAttachementById(attachmentId).getContent();
+            response.getOutputStream().write(fileContent);
+            response.flushBuffer();
+        } catch (IOException e) {
+            log.info("Error writing file to output stream. " + e.getMessage());
+        }
     }
 }
