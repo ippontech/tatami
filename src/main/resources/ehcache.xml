@@ -1,97 +1,56 @@
-<ehcache>
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         name="CM1"
+         updateCheck="false"
+         maxBytesLocalHeap="${ehcache.maxBytesLocalHeap}">
 
     <diskStore path="java.io.tmpdir"/>
 
     <defaultCache
-            maxElementsInMemory="1000"
             eternal="false"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
-            overflowToDisk="true"
+            overflowToDisk="false"
             />
 
-    <cache name="status-cache"
-           maxElementsInMemory="100000"
-           eternal="false"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="status-cache"/>
 
-    <cache name="user-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="user-cache"/>
 
-    <cache name="user-prefix-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="user-prefix-cache"/>
 
-    <cache name="group-user-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="group-user-cache"/>
 
-    <cache name="group-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="group-cache"/>
 
-    <cache name="favorites-cache"
-           maxElementsInMemory="50000"
-           eternal="false"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false">
-    </cache>
+    <cache name="favorites-cache"/>
 
     <cache name="dayline-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
+           timeToLiveSeconds="60">
     </cache>
 
     <cache name="trends-cache"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="300"
-           overflowToDisk="false">
+           timeToLiveSeconds="300">
     </cache>
 
     <cache name="user-trends-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="300"
-           overflowToDisk="false">
+           timeToLiveSeconds="300">
     </cache>
 
     <cache name="domain-tags-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="300"
-           overflowToDisk="false">
+           timeToLiveSeconds="300">
     </cache>
 
     <cache name="suggest-users-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="1800"
-           overflowToDisk="false">
+           timeToLiveSeconds="1800">
     </cache>
 
     <cache name="suggest-groups-cache"
-           maxElementsInMemory="5000"
-           eternal="false"
-           timeToLiveSeconds="1800"
-           overflowToDisk="false">
+           timeToLiveSeconds="1800">
+    </cache>
+
+    <cache name="attachment-cache"
+           maxBytesLocalHeap="50%"
+           eternal="false">
     </cache>
 
 </ehcache>
