@@ -87,6 +87,18 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
 
         attachment.setContent(columnAttachement.getValue());
 
+        ColumnQuery<String, String, String> queryFilename = HFactory.createColumnQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get());
+
+        HColumn<String, String> columnFilename =
+                queryFilename.setColumnFamily(ATTACHMENT_CF)
+                        .setKey(attachmentId)
+                        .setName(FILENAME)
+                        .execute()
+                        .get();
+
+        attachment.setFilename(columnFilename.getValue());
+
         ColumnQuery<String, String, Long> querySize = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), LongSerializer.get());
 

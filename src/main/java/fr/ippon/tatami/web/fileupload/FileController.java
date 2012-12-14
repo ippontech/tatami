@@ -3,10 +3,12 @@ package fr.ippon.tatami.web.fileupload;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.service.AttachmentService;
 import org.apache.log4j.Logger;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,8 +20,18 @@ public class FileController {
 
     private static Logger log = Logger.getLogger(FileController.class);
 
+    private String tatamiUrl;
+
+    @Inject
+    private Environment env;
+
     @Inject
     private AttachmentService attachmentService;
+
+    @PostConstruct
+    public void init() {
+        this.tatamiUrl = env.getProperty("tatami.url");
+    }
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     public
@@ -31,7 +43,7 @@ public class FileController {
         attachment.setContent(file.getBytes());
         attachment.setFilename(file.getName());
         attachment.setSize(file.getSize());
-
+        attachment.setFilename(file.getOriginalFilename());
 
         attachmentService.createAttachment(attachment);
 
@@ -40,13 +52,13 @@ public class FileController {
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile u = new UploadedFile(file.getOriginalFilename(),
                 Long.valueOf(file.getSize()).intValue(),
-                "http://localhost:8080/spring-fileupload-tutorial/resources/" + file.getOriginalFilename());
+                tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
 
         uploadedFiles.add(u);
         return uploadedFiles;
     }
 
-    @RequestMapping(value = "/file/{attachmentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/{attachmentId}/*", method = RequestMethod.GET)
     public void download(@PathVariable("attachmentId") String attachmentId, HttpServletResponse response) {
         try {
             byte[] fileContent = attachmentService.getAttachementById(attachmentId).getContent();

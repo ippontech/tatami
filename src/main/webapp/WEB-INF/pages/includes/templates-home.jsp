@@ -77,7 +77,11 @@
         </select>
     </div>
     <div>
-       <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple>
+        <div id="dropzone" class="fade well"><fmt:message key="tatami.status.update.drop.file"/></div>
+        <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+        <div id="fileUploadResults">
+
+        </div>
     </div>
     <div id="updateStatusPrivate" class="control-group">
       <label class="checkbox">
