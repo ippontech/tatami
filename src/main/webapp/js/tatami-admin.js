@@ -11,7 +11,7 @@ if(!window.app){
     View: {},
     Collection: {},
     Model: {},
-    Router: {},
+    Router: {}
   }, Backbone.Events);
 }
 else {
@@ -70,7 +70,7 @@ app.View.TagsView = Backbone.View.extend({
     	if(item.attributes.followed === true){
     		el = new app.View.DefaultView({
                 model: item,
-                template: _.template($('#tags-followed-template-item').html()),
+                template: _.template($('#tags-followed-template-item').html())
             }).render();
     	}
         
@@ -103,8 +103,7 @@ app.View.TagsView = Backbone.View.extend({
     	$(this.el).empty();
         _.each(this.model.models, this.addItem, this);
         return $(this.el);
-    },
-
+    }
 });
 
 
@@ -367,7 +366,7 @@ var AdminRouter = Backbone.Router.extend({
 		"popular-tags":"popular_tags",
 		"account-users":"account_users",
 		"popular-users":"popular_users",	
-		"*action": "account_groups",
+		"*action": "account_groups"
 	},
 	
 	account_groups: function(){
