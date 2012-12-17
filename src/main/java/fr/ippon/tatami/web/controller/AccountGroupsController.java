@@ -1,11 +1,12 @@
 package fr.ippon.tatami.web.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.GroupService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
+import fr.ippon.tatami.web.controller.form.UserGroupMembership;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.GroupService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.dto.UserGroupDTO;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.controller.form.UserGroupMembership;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Julien Dubois
@@ -200,21 +197,21 @@ public class AccountGroupsController {
                 "redirect:/tatami/account/groups/edit?memberRemove=true&groupId="
                         + currentGroup.getGroupId());
     }
-    
-    
+
+
     @RequestMapping(value = "/account/groups/directory",
             method = RequestMethod.GET)
-    public ModelAndView getGroupsDirectory() { 	
+    public ModelAndView getGroupsDirectory() {
         ModelAndView mv = new ModelAndView("account_groups_directory");
         User currentUser = authenticationService.getCurrentUser();
         Collection<Group> userList = new ArrayList<Group>();
         List<User> list = userService.getUsersForCurrentDomain(0);
-        for(User usr : list){
-        	Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin(usr.getLogin());        	
-        	if(currentUser.getLogin() != usr.getLogin()){
-        		userList.addAll(groups);
-        	}
-        } 
+        for (User usr : list) {
+            Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin(usr.getLogin());
+            if (currentUser.getLogin() != usr.getLogin()) {
+                userList.addAll(groups);
+            }
+        }
         mv.addObject("groups", userList);
         mv.addObject("user", currentUser);
         return mv;

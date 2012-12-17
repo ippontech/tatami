@@ -4,6 +4,7 @@ import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 
@@ -129,7 +130,7 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
         friendshipService.setAuthenticationService(mockAuthenticationService);
-        userService.setAuthenticationService(mockAuthenticationService);
+        ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
     }
 
 }

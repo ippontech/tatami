@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Manages the user's frienships.
@@ -109,7 +110,7 @@ public class FriendshipService {
         }
     }
 
-    public Collection<String> getFriendIdsForUser(String login) {
+    public List<String> getFriendIdsForUser(String login) {
         if (log.isDebugEnabled()) {
             log.debug("Retrieving friends for user : " + login);
         }

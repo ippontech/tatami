@@ -4,6 +4,7 @@ import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 
@@ -119,7 +120,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         User authenticateUser = constructAUser(login);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
-        userService.setAuthenticationService(mockAuthenticationService);
+        ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
     }
 
 }

@@ -32,7 +32,7 @@ public class TrendController {
     private TrendService trendService;
 
     /**
-     * GET  /tags -> get the latest status with no tags
+     * GET  /trends -> get the tag trends
      */
     @RequestMapping(value = "/rest/trends",
             method = RequestMethod.GET,
@@ -46,7 +46,7 @@ public class TrendController {
     }
 
     /**
-     * GET  /users/trends ->
+     * GET  /users/trends ->  get the user trends
      */
     @RequestMapping(value = "/rest/user/trends",
             method = RequestMethod.GET,

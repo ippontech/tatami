@@ -3,7 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.repository.FriendRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 
@@ -31,7 +31,7 @@ public class CassandraFriendRepository extends AbstractCassandraFriendRepository
     }
 
     @Override
-    public Collection<String> findFriendsForUser(String login) {
+    public List<String> findFriendsForUser(String login) {
         return super.findFriends(login);
     }
 
