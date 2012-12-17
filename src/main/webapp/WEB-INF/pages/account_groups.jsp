@@ -55,7 +55,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/tatami/account/tags/directory/#/account-tags">
+                                <a href="/tatami/account/tags/#/account-tags">
                                     <i class="icon-tags"></i> <fmt:message key="tatami.menu.tags"/>
                                 </a>
                             </li>
