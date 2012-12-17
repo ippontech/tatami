@@ -1,12 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.SearchService;
+import fr.ippon.tatami.service.SuggestionService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -15,14 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.UserStatusStat;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.FriendshipService;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.StatsService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * REST controller for managing users.
@@ -35,19 +29,16 @@ public class UserController {
     private final Log log = LogFactory.getLog(UserController.class);
 
     @Inject
-    private StatsService statsService;
-
-    @Inject
     private UserService userService;
 
     @Inject
-    private FriendshipService friendshipService;
+    private AuthenticationService authenticationService;
 
     @Inject
-    private AuthenticationService authenticationService;
-    
-    @Inject
     private SearchService searchService;
+
+    @Inject
+    private SuggestionService suggestionService;
 
     /**
      * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
@@ -72,31 +63,10 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> suggestions() {
-        User currentUser = authenticationService.getCurrentUser();
-        String currentLogin = currentUser.getLogin();
-        String currentUsername = DomainUtil.getUsernameFromLogin(currentLogin);
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get the last active users list (except " + currentUsername + ").");
-        }
-
-        Collection<String> exceptions = friendshipService.getFriendIdsForUser(currentLogin);
-        exceptions.add(currentLogin);
-
-        Collection<UserStatusStat> stats = statsService.getDayline();
-        Map<String, User> users = new HashMap<String, User>();
-        for (UserStatusStat stat : stats) {
-            User potentialFriend = userService.getUserByUsername(stat.getUsername());
-            if (exceptions.contains(potentialFriend.getLogin())) {
-                continue;
-            }
-            users.put(potentialFriend.getUsername(), potentialFriend);
-            if (users.size() == 3) {
-                break;    // suggestions list limit
-            }
-        }
-        return users.values();
+        String login = authenticationService.getCurrentUser().getLogin();
+        return suggestionService.suggestUsers(login);
     }
-    
+
     /**
      * GET  /users/searchStatus -> searchStatus user by username<br>
      * Should return a collection of users matching the query.<br>
@@ -120,22 +90,21 @@ public class UserController {
         Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
         return userService.getUsersByLogin(logins);
     }
-    
+
     /**
-     * Get all users of domain
-     * 
+     * GET  /users -> Get all users of domain
      */
-    @RequestMapping(value= "/rest/users",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+    @RequestMapping(value = "/rest/users",
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public Collection<User> getAll(@RequestParam(required = false) Integer pagination){
-    	 if (pagination == null) {
-             pagination = 0;
-         }
-         List<User> users = userService.getUsersForCurrentDomain(pagination);
-    	
-    	return users;
+    public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
+        if (pagination == null) {
+            pagination = 0;
+        }
+        List<User> users = userService.getUsersForCurrentDomain(pagination);
+        return users;
     }
-    
+
+
 }

@@ -1,14 +1,17 @@
 package fr.ippon.tatami.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Attachment {
 
     private String attachmentId;
 
     private String filename;
 
+    @JsonIgnore
     private byte[] content;
 
-    private int size;
+    private long size;
 
     public String getAttachmentId() {
         return attachmentId;
@@ -34,11 +37,11 @@ public class Attachment {
         this.filename = filename;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(long size) {
         this.size = size;
     }
 

@@ -46,30 +46,6 @@ public class TagController {
     private AuthenticationService authenticationService;
 
     /**
-     * GET  /tags -> get the tags list
-     */
-    @RequestMapping(value = "/rest/tags",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tag> getTags() {
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        List<Trend> trends = trendService.getCurrentTrends(domain);
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
-        Collection<Tag> tags = new ArrayList<Tag>();
-        for (Trend trend : trends) {
-            Tag tag = new Tag();
-            tag.setName(trend.getTag());
-            if (followedTags.contains(trend.getTag())) {
-                tag.setFollowed(true);
-            }
-            tags.add(tag);
-        }
-        return tags;
-    }
-
-    /**
      * GET  /statuses/tag_timeline -> get the latest status for a given tag
      */
     @RequestMapping(value = "/rest/statuses/tag_timeline",
@@ -139,5 +115,50 @@ public class TagController {
             tag.setFollowed(true);
         }
         return tag;
+    }
+
+    /**
+     * GET  /tagmemberships/list -> get the tags followed by the current user
+     */
+    @RequestMapping(value = "/rest/tagmemberships/list",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tag> getFollowedTags() {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Collection<Tag> tags = new ArrayList<Tag>();
+        for (String followedTag : followedTags) {
+            Tag tag = new Tag();
+            tag.setName(followedTag);
+            tag.setFollowed(true);
+            tags.add(tag);
+        }
+        return tags;
+    }
+
+    /**
+     * GET  /tags/popular -> get the list of popular tags
+     */
+    @RequestMapping(value = "/rest/tags/popular",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tag> getPopularTags() {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        List<Trend> trends = trendService.getCurrentTrends(domain);
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Collection<Tag> tags = new ArrayList<Tag>();
+        for (Trend trend : trends) {
+            Tag tag = new Tag();
+            tag.setName(trend.getTag());
+            if (followedTags.contains(trend.getTag())) {
+                tag.setFollowed(true);
+            }
+            tags.add(tag);
+        }
+        return tags;
     }
 }

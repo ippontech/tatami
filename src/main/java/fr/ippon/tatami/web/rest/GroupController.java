@@ -1,28 +1,22 @@
 package fr.ippon.tatami.web.rest;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
-import javax.inject.Inject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
+import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * REST controller for managing groups.
@@ -46,8 +40,11 @@ public class GroupController {
     @Inject
     private UserService userService;
 
+    @Inject
+    private SuggestionService suggestionService;
+
     /**
-     * GET  /group/ -> returns nothing, as no group is selected
+     * GET  /group/:groupId -> returns the group with the requested id
      */
     @RequestMapping(value = "/rest/groups/{groupId}",
             method = RequestMethod.GET,
@@ -131,24 +128,35 @@ public class GroupController {
         Collection<Group> groups = groupService.getGroupsForUser(user);
         return groups;
     }
-    
+
     /**
-     *  Get groups of current user
+     * Get groups of the current user.
      */
-    
     @RequestMapping(value = "/rest/groups",
-    		method = RequestMethod.GET,
-    		produces = "application/json")
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public HashMap<String, Collection<Group>> getGroups() {
-    	User currentUser = authenticationService.getCurrentUser();   	    	
-    	HashMap<String, Collection<Group>> myGroups = new HashMap<String, Collection<Group>>();
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);        
-        myGroups.put("groups", groups);       
-        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();      
+        User currentUser = authenticationService.getCurrentUser();
+        HashMap<String, Collection<Group>> myGroups = new HashMap<String, Collection<Group>>();
+        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+        myGroups.put("groups", groups);
+        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
         myGroups.put("groupsAdmin", groupsAdmin);
 
-    	return myGroups;
+        return myGroups;
     }
-    
+
+    /**
+     * GET  /groupmemberships/suggestions -> suggest groups to join
+     */
+    @RequestMapping(value = "/rest/groupmemberships/suggestions",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Group> suggestions() {
+        String login = authenticationService.getCurrentUser().getLogin();
+        return suggestionService.suggestGroups(login);
+    }
+
 }

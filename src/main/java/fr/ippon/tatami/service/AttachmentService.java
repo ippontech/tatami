@@ -1,7 +1,6 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Attachment;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.AttachmentRepository;
 import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.security.AuthenticationService;

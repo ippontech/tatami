@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Abstract class for managing friends : users or tags that a user follows.
@@ -44,9 +44,9 @@ public abstract class AbstractCassandraFriendRepository {
         mutator.delete(key, getFriendsCF(), friendKey, StringSerializer.get());
     }
 
-    protected Collection<String> findFriends(String key) {
+    protected List<String> findFriends(String key) {
         ColumnFamilyResult<String, String> result = friendsTemplate.queryColumns(key);
-        Collection<String> friends = new ArrayList<String>();
+        List<String> friends = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
             friends.add(columnName);
         }

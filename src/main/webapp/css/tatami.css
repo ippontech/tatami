@@ -86,6 +86,38 @@ form {
     height: 20px;
 }
 
+#updateStatusFileupload {
+    display: none;
+}
+
+#dropzone {
+    width: 60%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #808080;
+    display: none;
+}
+#dropzone.in {
+    width: 80%;
+    height: 100px;
+    line-height: 100px;
+    font-size: larger;
+}
+#dropzone.hover {
+}
+#dropzone.fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
+}
+
 .trends {
     color: #0088CC;
     text-decoration: none;
