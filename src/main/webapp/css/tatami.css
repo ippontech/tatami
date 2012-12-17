@@ -335,3 +335,6 @@ table {
 	margin:0px;
 }
 
+.typeahead-item{
+    width: 200px;
+}

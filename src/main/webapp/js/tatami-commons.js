@@ -44,9 +44,9 @@ var app = window.app = _.extend({
                         status.destroy();
                     }
                 });
-            },
+            }
 
-    },
+    }
 
   }, Backbone.Events);
 
@@ -265,7 +265,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
             animation: true,
             placement: 'bottom',
             trigger: 'manual',
-            content: 'test',
+            content: 'test'
         });
         shareBtn.popover('show');
         setTimeout(function () {
@@ -649,86 +649,64 @@ $(function() {
  * TypeAhead configuration to handle live login and hashtags suggestions
  * @param element the container to hook
  */
+
+app.Collection.searchAll = Backbone.Collection.extend({
+
+   url: function(){
+      return '/tatami/rest/search/all';
+   }
+});
+
 function Suggester(element) {
-    this.source = function (raw_query, process) {
-  		var query2;
-        var caretPosition = Suggester.getCaretPos(element.get()[0]);
-    	var query = raw_query.substring(0, caretPosition);
-	  	var matchLogin = query.match(patterns.login);
-	  	var matchHash = query.match(patterns.hash);
-        var chars = query.match(patterns.char);
 
-	  	if (matchLogin == null && matchHash == null && chars == null) {
-	  		if (this.shown) {
-	  			this.hide();
-	  		}
-	  		return;
-	  	}
+    this.source = function(query,process){
+        var self = this;
+        var model = new app.Collection.searchAll();
+        model.fetch({
+           data:{
+             q: query
+           },
+           success:function(model){
+               model = model.toJSON();
+               return process(model);
+           }
 
-	  	//var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
-
-        if(matchLogin == null && matchHash == null){
-            query2 = chars[0];
-        }else if(matchLogin == null){
-            query2 = matchHash[0];
-        }else if(matchHash == null){
-            query2 =  matchLogin[0];
-        }
-
-	  	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
-	  	//query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
-
-
-        if(query2.charAt(0) != '#' && query2.charAt(0) != '@'){
-            query2 = query2.substring(0, query2.length);
-        }
-
-	  	//if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
-
-        switch (query2.charAt(0)) {
-		  case '@' :
-			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/search/users', {q:q}, function (data) {
-		        var results = [];
-		        for (var i = 0; i < data.length; i++) {
-		            results[i] = '@' + data[i].username;
-		        }
-		        return process(results);
-		    });
-			break;
-		  case '#' :
-			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
-		        var results = [];
-		        for (var i = 0; i < data.length; i++) {
-		            results[i] = '#' + data[i];
-		        }
-		        return process(results);
-		    });
-			break;
-          default :
-            q = query2;
-            return $.get('/tatami/rest/search/all', {q:q}, function (data) {
-                return process(data);
-            });
-            break;
-		}
+        });
     };
+
     this.matcher = function (item) {
-    	return true;
+        return item;
     };
-  	this.updater = function (item) {
-  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
-		var firstPart = element.val().substring(0, caretPosition);
-		var secondPart = element.val().substring(caretPosition, element.val().length);
-		var firstChar = item.charAt(0);
-		var newText = item;
-		if (firstPart.lastIndexOf(firstChar) > -1) {
-			newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
-		}
-		return newText;
-  	};
-};
+
+    this.sorter = function (items) {
+        var results = [];
+
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            v = '#'+v;
+            results.push(v);
+        });
+
+        items.users.forEach(function(v){
+            v.username = '@'+v.username;
+            results.push(v.username);
+        });
+
+        items.groups.forEach(function(v){
+            results.push(v);
+        });
+
+        return results;
+
+    };
+
+    this.highlighter = function (item) {
+        return item;
+    };
+
+}
+
 Suggester.getCaretPos = function(element) {
 	var caretPos = 0;	// IE Support
 	if (document.selection) {
