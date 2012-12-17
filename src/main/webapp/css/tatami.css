@@ -362,8 +362,25 @@ table {
 	margin:0px;
 }
 
-.typeahead-item{
-    width: 200px;
+.hasCategory{
+    width: 280px;
+}
+
+.hasCategory .item{
+    min-height: 25px;
+    height: auto;
+    _height: 25px;
+}
+
+.hasCategory .category{
+    cursor: default;
+    height: auto;
+    background: #EDEDED;
+    margin-bottom: 5px;
+}
+
+.hasCategory li:hover{
+    background: #fff;
 }
 
 .nav-collapse .dropdown-menu .divider {
@@ -372,5 +389,5 @@ table {
   border-bottom: 1px solid #111111;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255,0.1)
 }

@@ -1854,22 +1854,36 @@
     }
 
   , render: function (items) {
-      var that = this
-
+      var that = this;
       items = $(items).map(function (i, item) {
-        i = $(that.options.item).attr('data-value', item)
-        i.find('a').html(that.highlighter(item))
-        return i[0]
-      })
 
-      items.first().addClass('active')
-      this.$menu.html(items)
+        switch(item){
+            case 'tags':
+            case 'users':
+            case 'groups':
+                i = $(that.options.item).addClass('category');
+                i.find('a').html(that.highlighter(item));
+                break;
+            default:
+                i = $(that.options.item).attr('data-value', item);
+                i.addClass('item');
+                i.find('a').html(that.highlighter(item));
+                break;
+        }
+
+
+        return i[0]
+      });
+
+      //items.first().addClass('active');
+      this.$menu.html(items);
+
       return this
     }
 
   , next: function (event) {
       var active = this.$menu.find('.active').removeClass('active')
-        , next = active.next()
+        , next = active.next();
 
       if (!next.length) {
         next = $(this.$menu.find('li')[0])
@@ -1880,7 +1894,7 @@
 
   , prev: function (event) {
       var active = this.$menu.find('.active').removeClass('active')
-        , prev = active.prev()
+        , prev = active.prev();
 
       if (!prev.length) {
         prev = this.$menu.find('li').last()
@@ -1893,7 +1907,7 @@
       this.$element
         .on('blur',     $.proxy(this.blur, this))
         .on('keypress', $.proxy(this.keypress, this))
-        .on('keyup',    $.proxy(this.keyup, this))
+        .on('keyup',    $.proxy(this.keyup, this));
 
       if (this.eventSupported('keydown')) {
         this.$element.on('keydown', $.proxy(this.keydown, this))
@@ -2012,7 +2026,7 @@
   $.fn.typeahead.defaults = {
     source: []
   , items: 8
-  , menu: '<ul class="typeahead dropdown-menu"></ul>'
+  , menu: '<ul class="typeahead dropdown-menu hasCategory"></ul>'
   , item: '<li><a href="#"></a></li>'
   , minLength: 1
   }

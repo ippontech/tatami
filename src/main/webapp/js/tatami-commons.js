@@ -683,22 +683,23 @@ function Suggester(element) {
 
         items = items[0];
 
+        (items.tags.length != 0)? results.push('tags') : '';
         items.tags.forEach(function(v){
             v = '#'+v;
             results.push(v);
         });
 
+        (items.users.length != 0)? results.push('users') : '';
         items.users.forEach(function(v){
             v.username = '@'+v.username;
             results.push(v.username);
         });
 
+        (items.groups.length != 0)? results.push('groups') : '';
         items.groups.forEach(function(v){
             results.push(v);
         });
-
         return results;
-
     };
 
     this.highlighter = function (item) {
