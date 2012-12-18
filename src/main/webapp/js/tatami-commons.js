@@ -706,13 +706,13 @@ function Suggester(element) {
 
         switch(item){
             case 'tags':
-                item = '<i class="icon-tags"></i>';
+                item = '<i class="icon-tags"></i><strong> '+ capitalizeLetter(item) +'</strong>';
             break;
             case 'users':
-                item = '<i class="icon-user"></i>';
+                item = '<i class="icon-user"></i><strong> '+ capitalizeLetter(item) +'</strong>';
                 break;
             case 'groups':
-                item = '<i class="icon-th-large"></i>';
+                item = '<i class="icon-th-large"></i><strong> '+ capitalizeLetter(item) +'</strong>';
                 break;
         }
 
@@ -798,3 +798,9 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-menu', function (e) {e.stopPropagation();})
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
+
+//Capitalize
+function capitalizeLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
