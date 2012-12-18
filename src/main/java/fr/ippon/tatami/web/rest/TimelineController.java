@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -68,9 +69,25 @@ public class TimelineController {
         if (status.getStatusPrivate() == null) {
             status.setStatusPrivate(false);
         }
+        Collection<String> attachmentIds = new ArrayList<String>();
+        if (status.getAttachment1Id() != null) {
+            attachmentIds.add(status.getAttachment1Id());
+        }
+        if (status.getAttachment2Id() != null) {
+            attachmentIds.add(status.getAttachment2Id());
+        }
+        if (status.getAttachment3Id() != null) {
+            attachmentIds.add(status.getAttachment3Id());
+        }
+        if (status.getAttachment4Id() != null) {
+            attachmentIds.add(status.getAttachment4Id());
+        }
+        if (status.getAttachment5Id() != null) {
+            attachmentIds.add(status.getAttachment5Id());
+        }
         if (status.getStatusPrivate() == true || status.getGroupId() == null || status.getGroupId().equals("")) {
             log.info("private=" + status.getStatusPrivate());
-            statusUpdateService.postStatus(escapedContent, status.getStatusPrivate());
+            statusUpdateService.postStatus(escapedContent, status.getStatusPrivate(), attachmentIds);
         } else {
             User currentUser = authenticationService.getCurrentUser();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
@@ -87,7 +104,7 @@ public class TimelineController {
                             "group ID = " + status.getGroupId());
                 }
             } else {
-                statusUpdateService.postStatusToGroup(escapedContent, group);
+                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
             }
         }
     }

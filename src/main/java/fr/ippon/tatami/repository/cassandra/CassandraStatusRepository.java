@@ -16,9 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import javax.validation.*;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Cassandra implementation of the status repository.
@@ -53,6 +51,7 @@ public class CassandraStatusRepository implements StatusRepository {
                                String domain,
                                boolean statusPrivate,
                                Group group,
+                               Collection<String> attachmentIds,
                                String content,
                                String discussionId,
                                String replyTo,
@@ -67,6 +66,22 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setStatusPrivate(statusPrivate);
         if (group != null) {
             status.setGroupId(group.getGroupId());
+        }
+        Iterator<String> attachmentIterator = attachmentIds.iterator();
+        if (attachmentIterator.hasNext()) {
+            status.setAttachment1Id(attachmentIterator.next());
+        }
+        if (attachmentIterator.hasNext()) {
+            status.setAttachment2Id(attachmentIterator.next());
+        }
+        if (attachmentIterator.hasNext()) {
+            status.setAttachment3Id(attachmentIterator.next());
+        }
+        if (attachmentIterator.hasNext()) {
+            status.setAttachment4Id(attachmentIterator.next());
+        }
+        if (attachmentIterator.hasNext()) {
+            status.setAttachment5Id(attachmentIterator.next());
         }
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());

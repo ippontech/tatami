@@ -158,7 +158,9 @@ app.View.UpdateView = Backbone.View.extend({
           dropZone: $('#dropzone'),
           done: function (e, data) {
               $.each(data.result, function (index, file) {
-                  $('<p/>').text(file.name).appendTo($("#fileUploadResults"));
+                  $("<p>" + file.name +
+                      "<input type='hidden' name='attachment" + (index + 1) +
+                      "Id' value='" + file.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
           }
       });

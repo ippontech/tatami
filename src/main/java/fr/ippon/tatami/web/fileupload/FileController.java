@@ -50,11 +50,13 @@ public class FileController {
         log.debug("Created attachement : " + attachment.getAttachmentId());
 
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-        UploadedFile u = new UploadedFile(file.getOriginalFilename(),
+        UploadedFile uploadedFile = new UploadedFile(
+                attachment.getAttachmentId(),
+                file.getOriginalFilename(),
                 Long.valueOf(file.getSize()).intValue(),
                 tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
 
-        uploadedFiles.add(u);
+        uploadedFiles.add(uploadedFile);
         return uploadedFiles;
     }
 
