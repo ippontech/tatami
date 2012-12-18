@@ -33,41 +33,41 @@
                             </a>
                             <ul class="dropdown-menu closed">
                                 <li>
-                                    <a href="/tatami/account">
+                                    <a href="/tatami/account/#/profile">
                                         <i class="icon-user"></i> <fmt:message
                                             key="tatami.menu.profile"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/preferences">
+                                    <a href="/tatami/account/#/preferences">
                                         <i class="icon-picture"></i> <fmt:message
                                             key="tatami.menu.preferences"/></a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/password">
+                                    <a href="/tatami/account/#/password">
                                         <i class="icon-lock"></i> <fmt:message
                                             key="tatami.menu.password"/>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/tatami/account/directory/#/account-users">
+                                    <a href="/tatami/account/#/users">
                                         <i class="icon-globe"></i> <fmt:message
                                             key="tatami.menu.directory"/></a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/groups/#/account-groups">
+                                    <a href="/tatami/account/#/groups">
                                         <i class="icon-th-large"></i> <fmt:message
                                             key="tatami.menu.groups"/></a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/tags/directory/#/account-tags">
+                                    <a href="/tatami/account/#/tags">
                                         <i class="icon-tags"></i> <fmt:message
                                             key="tatami.menu.tags"/></a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/tatami/account/status_of_the_day">
+                                    <a href="/tatami/account/#/status_of_the_day">
                                         <i class="icon-signal"></i> <fmt:message
                                             key="tatami.menu.status.of.the.day"/></a>
                                 </li>

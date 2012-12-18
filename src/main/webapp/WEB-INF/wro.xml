@@ -19,5 +19,7 @@
         <js>/js/jquery.ui.widget.js</js>
         <js>/js/jquery.iframe-transport.js</js>
         <js>/js/jquery.fileupload.js</js>
+        <js>/js/raphael-min.js</js>
+        <js>/js/jquery-raphael-tatami-pie.js</js>
     </group>
 </groups>

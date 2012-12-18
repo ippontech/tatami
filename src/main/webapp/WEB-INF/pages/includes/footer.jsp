@@ -15,6 +15,8 @@
     <script src="/js/jquery.ui.widget.js"></script>
     <script src="/js/jquery.iframe-transport.js"></script>
     <script src="/js/jquery.fileupload.js"></script>
+    <script src="/js/raphael-min.js"></script>
+    <script src="/js/jquery-raphael-tatami-pie.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/all.js"></script>
