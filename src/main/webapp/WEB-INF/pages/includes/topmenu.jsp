@@ -89,9 +89,33 @@
                         </li>
                     </ul>
                     <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>"
+                        <input id="fullSearchText" class="search-query span2" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
+                </sec:authorize>
+
+                <sec:authorize access="!isAuthenticated()">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="icon-flag icon-white"></i> 
+                                <fmt:message key="tatami.menu.language"/>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu closed">
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=en">
+                                        <fmt:message key="tatami.menu.language.en"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=fr">
+                                        <fmt:message key="tatami.menu.language.fr"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </sec:authorize>
                 <ul class="nav pull-left">
                     <li class="dropdown">
@@ -112,61 +136,35 @@
                                         key="tatami.menu.tos"/>
                                 </a>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">
-                                    <i class="icon-flag"></i> <fmt:message key="tatami.menu.language"/></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="<%=request.getContextPath()%>?language=en">
-                                            <fmt:message key="tatami.menu.language.en"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<%=request.getContextPath()%>?language=fr">
-                                            <fmt:message key="tatami.menu.language.fr"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/tatami/license">
+                                    <i class="icon-info-sign"></i> <fmt:message
+                                        key="tatami.menu.license"/>
+                                </a>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">
-                                    <i class="icon-circle-arrow-down"></i> <fmt:message key="tatami.menu.product"/></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="/tatami/license">
-                                            <i class="icon-info-sign"></i> <fmt:message
-                                                key="tatami.menu.license"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://github.com/ippontech/tatami" target="_blank">
-                                            <i class="icon-wrench"></i> <fmt:message key="tatami.github.fork"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <li>
+                                <a href="https://github.com/ippontech/tatami" target="_blank">
+                                    <i class="icon-wrench"></i> <fmt:message key="tatami.github.fork"/>
+                                </a>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">
-                                    <i class="icon-thumbs-up"></i> Ippon Technologies</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="http://www.ippon.fr" target="_blank">
-                                            <i class="icon-exclamation-sign"></i> <fmt:message
-                                                key="tatami.ippon.website"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="http://blog.ippon.fr" target="_blank">
-                                            <i class="icon-pencil"></i> <fmt:message key="tatami.ippon.blog"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://twitter.com/ippontech" target="_blank">
-                                            <i class="icon-bullhorn"></i> <fmt:message
-                                                key="tatami.ippon.twitter.follow"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="http://www.ippon.fr" target="_blank">
+                                    <i class="icon-exclamation-sign"></i> <fmt:message
+                                        key="tatami.ippon.website"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://blog.ippon.fr" target="_blank">
+                                    <i class="icon-pencil"></i> <fmt:message key="tatami.ippon.blog"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/ippontech" target="_blank">
+                                    <i class="icon-bullhorn"></i> <fmt:message
+                                        key="tatami.ippon.twitter.follow"/>
+                                </a>
                             </li>
                         </ul>
                     </li>

@@ -3,14 +3,14 @@
 <groups xmlns="http://www.isdc.ro/wro">
     <group name='all'>
         <css>/css/reset.css</css>
-        <css>/css/bootstrap-responsive-min.css</css>
+        <css>/css/bootstrap-responsive.css</css>
         <css>/css/tatami.css</css>
 
-        <js>/js/jquery.min.js</js>
+        <js>/js/jquery.js</js>
         <js>/js/jquery-ui.min.js</js>
-        <js>/js/bootstrap-min.js</js>
-        <js>/js/underscore-min.js</js>
-        <js>/js/backbone-min.js</js>
+        <js>/js/bootstrap.js</js>
+        <js>/js/underscore.js</js>
+        <js>/js/backbone.js</js>
         <js>/js/jquery-charcount.js</js>
         <js>/js/jquery-timeago.js</js>
         <js>/js/jquery-tatami-infinitiScroll.js</js>

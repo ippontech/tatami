@@ -80,8 +80,8 @@
                                 <fmt:message key="tatami.account.update.title"/>
                             </h2>
 
-                            <form:form class="form-horizontal" commandName="user" method="post" acceptCharset="utf-8">
-                                <fieldset>
+                            <form:form class="form-horizontal row-fluid" commandName="user" method="post" acceptCharset="utf-8">
+                                <fieldset class="span12">
                                     <legend><fmt:message key="tatami.account.update.legend"/></legend>
 
                                     <div class="control-group">
@@ -89,7 +89,7 @@
                                                 key="tatami.user.email"/></label>
 
                                         <div class="controls">
-                                            <form:input type="text" disabled="true" path="login"/>
+                                            <form:input type="text" disabled="true" path="login" class="span12"/>
                                         </div>
                                     </div>
 
@@ -114,7 +114,7 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="firstName"
-                                                        size="15" maxlength="40" class="input-xlarge"
+                                                        size="15" maxlength="40" class="input-xlarge span12"
                                                         path="firstName"/>
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="lastName"
-                                                        size="15" maxlength="40" class="input-xlarge"
+                                                        size="15" maxlength="40" class="input-xlarge span12"
                                                         path="lastName"/>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                         <div class="controls">
                                             <form:input type="text"
                                                         id="jobTitle"
-                                                        size="15" maxlength="100" class="input-xlarge"
+                                                        size="15" maxlength="100" class="input-xlarge span12"
                                                         path="jobTitle"/>
                                         </div>
                                     </div>
@@ -149,24 +149,24 @@
 
                                         <div class="controls">
                                             <form:input type="text"
-                                                        size="10" maxlength="20" class="input-xlarge"
+                                                        size="10" maxlength="20" class="input-xlarge span12"
                                                         path="phoneNumber"/>
                                         </div>
                                     </div>
 
                                     <div class="form-actions">
-                                        <button type="submit" class="input-xlarge btn btn-primary">
+                                        <button type="submit" class="input-xlarge btn btn-primary btn-block">
                                             <fmt:message key="tatami.form.save"/>
                                         </button>
                                     </div>
                                 </fieldset>
 
                             </form:form>
-                            <form class="form-horizontal" action="/tatami/account/suppress" method="post">
-                                <fieldset>
+                            <form class="form-horizontal row-fluid" action="/tatami/account/suppress" method="post">
+                                <fieldset class="span12">
                                     <legend><fmt:message key="tatami.user.suppress"/></legend>
                                     <div class="form-actions">
-                                        <button type="submit" class="input-xlarge btn btn-danger" onclick="return(confirm('<fmt:message key="tatami.user.suppress.confirmation"/>'));">
+                                        <button type="submit" class="input-xlarge btn btn-danger btn-block" onclick="return(confirm('<fmt:message key="tatami.user.suppress.confirmation"/>'));">
                                             <fmt:message key="tatami.user.suppress"/>
                                         </button>
                                     </div>

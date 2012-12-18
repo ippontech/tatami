@@ -139,6 +139,9 @@ form {
     background-color: #fcfcfc;
     border-color: #E6E6E6;
 }
+.alert-status h4 {
+    color: #0088CC;
+}
 
 .alert-discuss {
   color: #000000;
@@ -355,18 +358,32 @@ table {
 	margin-top:20px;
 }
 
-.nav-collapse .dropdown-menu.closed {
-    display: none;
-}
-
-.nav-collapse .open .dropdown-menu.closed {
-    display: block;
-}
-
 .user-profile {
 	margin:0px;
 }
 
-.typeahead-item{
-    width: 200px;
+.hasCategory{
+    width: 280px;
+}
+
+.hasCategory .item{
+    min-height: 25px;
+    height: auto;
+}
+
+.hasCategory .category{
+    cursor: default;
+    height: auto;
+    background: #EDEDED;
+    padding: 5px;
+
+}
+
+.nav-collapse .dropdown-menu .divider {
+  display: block;
+  height: 0px;
+  border-bottom: 1px solid #111111;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255,0.1)
 }

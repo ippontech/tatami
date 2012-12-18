@@ -683,26 +683,66 @@ function Suggester(element) {
 
         items = items[0];
 
+        (items.tags.length != 0)? results.push('tags') : '';
         items.tags.forEach(function(v){
             v = '#'+v;
             results.push(v);
         });
 
+        (items.users.length != 0)? results.push('users') : '';
         items.users.forEach(function(v){
             v.username = '@'+v.username;
             results.push(v.username);
         });
 
+        (items.groups.length != 0)? results.push('groups') : '';
         items.groups.forEach(function(v){
             results.push(v);
         });
-
         return results;
-
     };
 
     this.highlighter = function (item) {
+
+        switch(item){
+            case 'tags':
+                item = '<i class="icon-tags"></i><strong> '+ capitalizeLetter(item) +'</strong>';
+            break;
+            case 'users':
+                item = '<i class="icon-user"></i><strong> '+ capitalizeLetter(item) +'</strong>';
+                break;
+            case 'groups':
+                item = '<i class="icon-th-large"></i><strong> '+ capitalizeLetter(item) +'</strong>';
+                break;
+        }
+
         return item;
+    };
+
+    this.render = function(items){
+        var that = this;
+        items = $(items).map(function (i, item) {
+
+            switch(item){
+                case 'tags':
+                case 'users':
+                case 'groups':
+                    i = $(that.options.group);
+                    i.html(that.highlighter(item));
+                    break;
+                default:
+                    i = $(that.options.item).attr('data-value', item);
+                    i.addClass('item');
+                    i.find('a').html(that.highlighter(item));
+                    break;
+            }
+
+            return i[0]
+        });
+
+        this.$menu.html(items);
+
+        return this
     };
 
 }
@@ -758,3 +798,9 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-menu', function (e) {e.stopPropagation();})
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
+
+//Capitalize
+function capitalizeLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
