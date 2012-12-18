@@ -1755,6 +1755,7 @@
     this.source = this.options.source
     this.$menu = $(this.options.menu)
     this.shown = false
+    this.render = this.options.render || this.render
     this.listen()
   }
 
@@ -1854,31 +1855,17 @@
     }
 
   , render: function (items) {
-      var that = this;
-      items = $(items).map(function (i, item) {
+       var that = this
 
-        switch(item){
-            case 'tags':
-            case 'users':
-            case 'groups':
-                i = $(that.options.item).addClass('category');
-                i.find('a').html(that.highlighter(item));
-                break;
-            default:
-                i = $(that.options.item).attr('data-value', item);
-                i.addClass('item');
-                i.find('a').html(that.highlighter(item));
-                break;
-        }
+       items = $(items).map(function (i, item) {
+           i = $(that.options.item).attr('data-value', item)
+           i.find('a').html(that.highlighter(item))
+           return i[0]
+       })
 
-
-        return i[0]
-      });
-
-      //items.first().addClass('active');
-      this.$menu.html(items);
-
-      return this
+       items.first().addClass('active')
+       this.$menu.html(items)
+       return this
     }
 
   , next: function (event) {
@@ -2028,6 +2015,7 @@
   , items: 8
   , menu: '<ul class="typeahead dropdown-menu hasCategory"></ul>'
   , item: '<li><a href="#"></a></li>'
+  , group:'<li class="category"></li>'
   , minLength: 1
   }
 

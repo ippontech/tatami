@@ -703,7 +703,46 @@ function Suggester(element) {
     };
 
     this.highlighter = function (item) {
+
+        switch(item){
+            case 'tags':
+                item = '<i class="icon-tags"></i>';
+            break;
+            case 'users':
+                item = '<i class="icon-user"></i>';
+                break;
+            case 'groups':
+                item = '<i class="icon-th-large"></i>';
+                break;
+        }
+
         return item;
+    };
+
+    this.render = function(items){
+        var that = this;
+        items = $(items).map(function (i, item) {
+
+            switch(item){
+                case 'tags':
+                case 'users':
+                case 'groups':
+                    i = $(that.options.group);
+                    i.html(that.highlighter(item));
+                    break;
+                default:
+                    i = $(that.options.item).attr('data-value', item);
+                    i.addClass('item');
+                    i.find('a').html(that.highlighter(item));
+                    break;
+            }
+
+            return i[0]
+        });
+
+        this.$menu.html(items);
+
+        return this
     };
 
 }

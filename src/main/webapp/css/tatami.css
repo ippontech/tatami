@@ -369,18 +369,14 @@ table {
 .hasCategory .item{
     min-height: 25px;
     height: auto;
-    _height: 25px;
 }
 
 .hasCategory .category{
     cursor: default;
     height: auto;
     background: #EDEDED;
-    margin-bottom: 5px;
-}
+    padding: 5px;
 
-.hasCategory li:hover{
-    background: #fff;
 }
 
 .nav-collapse .dropdown-menu .divider {
