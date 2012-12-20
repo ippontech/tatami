@@ -238,7 +238,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
     this.views.status = new app.View.TimeLineItemInnerView({
       model : this.model,
       discuss : this.options.discuss
-    })
+    });
 
     this.model.bind('change', this.refreshFavorite, this);
     this.model.bind('destroy', this.remove, this);
@@ -311,7 +311,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
 
           var discussionIsPresent = false;
-          _.forEach(model.get('discussionStatuses'),function(model, index, collection){
+          _.forEach(model.get('discussionStatuses'),function(model){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
               self.views.discussBefore.model.add(model);
@@ -660,7 +660,6 @@ app.Collection.searchAll = Backbone.Collection.extend({
 function Suggester(element) {
 
     this.source = function(query,process){
-        var self = this;
         var model = new app.Collection.searchAll();
         model.fetch({
            data:{
@@ -726,7 +725,8 @@ Suggester.getCaretPos = function(element) {
  */
 function NotificationManager() {
 	var n;
-};
+}
+
 NotificationManager.setNotification = function(title, msg, reload) {
 	if (title == null || msg == null) {return 0;}
 	if (!window.webkitNotifications) {return 0;}
@@ -736,7 +736,7 @@ NotificationManager.setNotification = function(title, msg, reload) {
 	}
 	if (NotificationManager.n != null) {NotificationManager.n.cancel();}
 	NotificationManager.n = window.webkitNotifications.createNotification('/favicon.ico', title, msg);
-	NotificationManager.n.onclick = function(x) {
+	NotificationManager.n.onclick = function() {
 		window.focus();
 		if (reload) {window.location.reload();}
 		this.cancel();

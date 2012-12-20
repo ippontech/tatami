@@ -26,7 +26,7 @@
     </sec:authorize>
     <c:if test="${wro4jEnabled eq false}">
         <link href="/css/reset.css" rel="stylesheet">
-        <link href="/css/bootstrap-responsive-min.css" rel="stylesheet">
+        <link href="/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/css/tatami.css" rel="stylesheet">
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
