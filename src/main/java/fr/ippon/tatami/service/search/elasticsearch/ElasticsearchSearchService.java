@@ -262,8 +262,8 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Collection<Group> searchGroups(String domain, String query, int size) {
-        return null;  //TODO
+    public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

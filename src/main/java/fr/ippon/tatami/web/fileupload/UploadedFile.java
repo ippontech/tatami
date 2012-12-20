@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class UploadedFile implements Serializable {
 
+    private String attachmentId;
     private String name;
     private Integer size;
     private String url;
@@ -15,22 +16,32 @@ public class UploadedFile implements Serializable {
         super();
     }
 
-    public UploadedFile(String name, Integer size, String url) {
+    public UploadedFile(String attachmentId, String name, Integer size, String url) {
         super();
+        this.attachmentId = attachmentId;
         this.name = name;
         this.size = size;
         this.url = url;
     }
 
-    public UploadedFile(String name, Integer size, String url,
+    public UploadedFile(String attachmentId, String name, Integer size, String url,
                         String thumbnail_url, String delete_url, String delete_type) {
         super();
+        this.attachmentId = attachmentId;
         this.name = name;
         this.size = size;
         this.url = url;
         this.thumbnail_url = thumbnail_url;
         this.delete_url = delete_url;
         this.delete_type = delete_type;
+    }
+
+    public String getAttachmentId() {
+        return attachmentId;
+    }
+
+    public void setAttachmentId(String attachmentId) {
+        this.attachmentId = attachmentId;
     }
 
     public String getName() {
@@ -84,6 +95,7 @@ public class UploadedFile implements Serializable {
     @Override
     public String toString() {
         return "UploadedFile{" +
+                "attachmentId='" + attachmentId + '\'' +
                 "name='" + name + '\'' +
                 ", size=" + size +
                 ", url='" + url + '\'' +

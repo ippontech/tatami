@@ -374,3 +374,7 @@ table {
 .alert .close {
   right: -6px;
 }
+
+.typeahead-item{
+    width: 200px;
+}

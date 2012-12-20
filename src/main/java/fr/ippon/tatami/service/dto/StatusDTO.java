@@ -50,6 +50,16 @@ public class StatusDTO {
 
     private boolean publicGroup;
 
+    private String attachment1Id;
+
+    private String attachment2Id;
+
+    private String attachment3Id;
+
+    private String attachment4Id;
+
+    private String attachment5Id;
+
     private String content;
 
     private Date statusDate;
@@ -145,6 +155,46 @@ public class StatusDTO {
 
     public void setPublicGroup(boolean publicGroup) {
         this.publicGroup = publicGroup;
+    }
+
+    public String getAttachment1Id() {
+        return attachment1Id;
+    }
+
+    public void setAttachment1Id(String attachment1Id) {
+        this.attachment1Id = attachment1Id;
+    }
+
+    public String getAttachment2Id() {
+        return attachment2Id;
+    }
+
+    public void setAttachment2Id(String attachment2Id) {
+        this.attachment2Id = attachment2Id;
+    }
+
+    public String getAttachment3Id() {
+        return attachment3Id;
+    }
+
+    public void setAttachment3Id(String attachment3Id) {
+        this.attachment3Id = attachment3Id;
+    }
+
+    public String getAttachment4Id() {
+        return attachment4Id;
+    }
+
+    public void setAttachment4Id(String attachment4Id) {
+        this.attachment4Id = attachment4Id;
+    }
+
+    public String getAttachment5Id() {
+        return attachment5Id;
+    }
+
+    public void setAttachment5Id(String attachment5Id) {
+        this.attachment5Id = attachment5Id;
     }
 
     public String getContent() {
@@ -266,10 +316,15 @@ public class StatusDTO {
                 "statusId='" + statusId + '\'' +
                 ", timelineId='" + timelineId + '\'' +
                 ", username='" + username + '\'' +
-                ", statusPrivate='" + statusPrivate + '\'' +
+                ", statusPrivate=" + statusPrivate +
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", publicGroup=" + publicGroup +
+                ", attachment1Id='" + attachment1Id + '\'' +
+                ", attachment2Id='" + attachment2Id + '\'' +
+                ", attachment3Id='" + attachment3Id + '\'' +
+                ", attachment4Id='" + attachment4Id + '\'' +
+                ", attachment5Id='" + attachment5Id + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", iso8601StatusDate='" + iso8601StatusDate + '\'' +

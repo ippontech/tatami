@@ -1,6 +1,7 @@
 var patterns = {
 	login: /(^|[^\w])@[\w]*$/gim,
-	hash: /(^|[^\w])#[\w]*$/gim
+	hash: /(^|[^\w])#[\w]*$/gim,
+    char: /([a-zA-Z]+)/
 };
 
 _.templateSettings = {
@@ -43,9 +44,9 @@ var app = window.app = _.extend({
                         status.destroy();
                     }
                 });
-            },
+            }
 
-    },
+    }
 
   }, Backbone.Events);
 
@@ -237,7 +238,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
     this.views.status = new app.View.TimeLineItemInnerView({
       model : this.model,
       discuss : this.options.discuss
-    })
+    });
 
     this.model.bind('change', this.refreshFavorite, this);
     this.model.bind('destroy', this.remove, this);
@@ -264,7 +265,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
             animation: true,
             placement: 'bottom',
             trigger: 'manual',
-            content: 'test',
+            content: 'test'
         });
         shareBtn.popover('show');
         setTimeout(function () {
@@ -310,7 +311,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
 
           var discussionIsPresent = false;
-          _.forEach(model.get('discussionStatuses'),function(model, index, collection){
+          _.forEach(model.get('discussionStatuses'),function(model){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
               self.views.discussBefore.model.add(model);
@@ -648,63 +649,63 @@ $(function() {
  * TypeAhead configuration to handle live login and hashtags suggestions
  * @param element the container to hook
  */
+
+app.Collection.searchAll = Backbone.Collection.extend({
+
+   url: function(){
+      return '/tatami/rest/search/all';
+   }
+});
+
 function Suggester(element) {
-    this.source = function (raw_query, process) {
-  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
-    	var query = raw_query.substring(0, caretPosition);
-	  	var matchLogin = query.match(patterns.login);
-	  	var matchHash = query.match(patterns.hash);
-	  	if (matchLogin == null && matchHash == null) {
-	  		if (this.shown) {
-	  			this.hide();
-	  		};
-	  		return;
-	  	}
-	  	var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
 
-	  	// Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
-	  	query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
-	
-	  	if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
+    this.source = function(query,process){
+        var model = new app.Collection.searchAll();
+        model.fetch({
+           data:{
+             q: query
+           },
+           success:function(model){
+               model = model.toJSON();
+               return process(model);
+           }
 
-	  	switch (query2.charAt(0)) {
-		  case '@' :
-			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/search/users', {q:q}, function (data) {
-		        var results = [];
-		        for (var i = 0; i < data.length; i++) {
-		            results[i] = '@' + data[i].username;
-		        }
-		        return process(results);
-		    });
-			break;
-		  case '#' :
-			q = query2.substring(1, query2.length);
-			return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
-		        var results = [];
-		        for (var i = 0; i < data.length; i++) {
-		            results[i] = '#' + data[i];
-		        }
-		        return process(results);
-		    });
-			break;
-		}
+        });
     };
+
     this.matcher = function (item) {
-    	return true;
+        return item;
     };
-  	this.updater = function (item) {
-  		var caretPosition = Suggester.getCaretPos(element.get()[0]);
-		var firstPart = element.val().substring(0, caretPosition);
-		var secondPart = element.val().substring(caretPosition, element.val().length);
-		var firstChar = item.charAt(0);
-		var newText = item;
-		if (firstPart.lastIndexOf(firstChar) > -1) {
-			newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
-		}
-		return newText;
-  	};
-};
+
+    this.sorter = function (items) {
+        var results = [];
+
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            v = '#'+v;
+            results.push(v);
+        });
+
+        items.users.forEach(function(v){
+            v.username = '@'+v.username;
+            results.push(v.username);
+        });
+
+        items.groups.forEach(function(v){
+            results.push(v);
+        });
+
+        return results;
+
+    };
+
+    this.highlighter = function (item) {
+        return item;
+    };
+
+}
+
 Suggester.getCaretPos = function(element) {
 	var caretPos = 0;	// IE Support
 	if (document.selection) {
@@ -724,7 +725,8 @@ Suggester.getCaretPos = function(element) {
  */
 function NotificationManager() {
 	var n;
-};
+}
+
 NotificationManager.setNotification = function(title, msg, reload) {
 	if (title == null || msg == null) {return 0;}
 	if (!window.webkitNotifications) {return 0;}
@@ -734,7 +736,7 @@ NotificationManager.setNotification = function(title, msg, reload) {
 	}
 	if (NotificationManager.n != null) {NotificationManager.n.cancel();}
 	NotificationManager.n = window.webkitNotifications.createNotification('/favicon.ico', title, msg);
-	NotificationManager.n.onclick = function(x) {
+	NotificationManager.n.onclick = function() {
 		window.focus();
 		if (reload) {window.location.reload();}
 		this.cancel();

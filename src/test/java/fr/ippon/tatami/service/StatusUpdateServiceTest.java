@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.hamcrest.Matchers.is;
@@ -32,7 +33,7 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
-        statusUpdateService.postStatus(content, false);
+        statusUpdateService.postStatus(content, false, new ArrayList<String>());
 
         /* verify */
         Collection<StatusDTO> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
