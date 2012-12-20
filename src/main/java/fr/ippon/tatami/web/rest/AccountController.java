@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
@@ -10,6 +11,9 @@ import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -123,7 +127,6 @@ public class AccountController {
         }
         HashMap<String, Object> preferences = null;
         try {
-
             User currentUser = authenticationService.getCurrentUser();
             if((String) newPreferences.get("theme") == ""){
                 throw new Exception("Theme can't be null");
@@ -138,6 +141,18 @@ public class AccountController {
             preferences.put("mentionEmail", currentUser.getPreferencesMentionEmail());
 
             userService.updateUser(currentUser);
+
+            userService.updateThemePreferences((String) newPreferences.get("theme"));
+            TatamiUserDetails userDetails =
+                    (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            userDetails.setTheme((String) newPreferences.get("theme"));
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails,
+                            userDetails.getPassword(),
+                            userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             if (log.isDebugEnabled()) {
                 log.debug("User updated : " + currentUser);
