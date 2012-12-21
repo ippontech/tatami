@@ -237,20 +237,26 @@
 <script type="text/template" id="users-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/users">Users</a>
+            <a href ="#/users">
+                <fmt:message key="tatami.account.users.friend"/>
+            </a>
         </li>
         <li>
-            <a href ="#/users/popular">Popular</a>
+            <a href ="#/users/popular">
+                <fmt:message key="tatami.account.users.popular"/>
+            </a>
         </li>
     </ul>
 </script>
 
 <script type="text/template" id="users-header">
+    <!--
     <tr>
         <th>Username</th>
         <th>Real name</th>
         <th>Action</th>
     </tr>
+    -->
 </script>
 
 <script type="text/template" id="users-item">
