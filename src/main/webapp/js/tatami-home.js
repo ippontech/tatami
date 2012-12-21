@@ -99,6 +99,8 @@ app.View.UpdateView = Backbone.View.extend({
 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#dropzone").hide();
+          $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
           $("#updateStatusBtn").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
@@ -126,6 +128,7 @@ app.View.UpdateView = Backbone.View.extend({
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtn").fadeIn();
+          $("#dropzone").fadeIn();
       });
       $("#updateStatusContent").charCount({
           css:'counter',
@@ -153,14 +156,36 @@ app.View.UpdateView = Backbone.View.extend({
           dataType: 'json',
           progressall: function (e, data) {
               var progress = parseInt(data.loaded / data.total * 100, 10);
-              console.log(progress + '%');
           },
+          dropZone: $('#dropzone'),
           done: function (e, data) {
-              console.log("done uploading");
               $.each(data.result, function (index, file) {
-                  $('<p/>').text(file.name).appendTo(document.body);
+                  $("<p>" + file.name +
+                      "<input type='hidden' name='attachment" + (index + 1) +
+                      "Id' value='" + file.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
           }
+      });
+      $(document).bind('dragover', function (e) {
+          var dropZone = $('#dropzone'),
+              timeout = window.dropZoneTimeout;
+          if (!timeout) {
+              dropZone.addClass('in');
+          } else {
+              clearTimeout(timeout);
+          }
+          if (e.target === dropZone[0]) {
+              dropZone.addClass('hover');
+          } else {
+              dropZone.removeClass('hover');
+          }
+          window.dropZoneTimeout = setTimeout(function () {
+              window.dropZoneTimeout = null;
+              dropZone.removeClass('in hover');
+          }, 100);
+      });
+      $(document).bind('drop dragover', function (e) {
+          e.preventDefault();
       });
     return $(this.el);
   }

@@ -86,6 +86,38 @@ form {
     height: 20px;
 }
 
+#updateStatusFileupload {
+    display: none;
+}
+
+#dropzone {
+    width: 60%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #808080;
+    display: none;
+}
+#dropzone.in {
+    width: 80%;
+    height: 100px;
+    line-height: 100px;
+    font-size: larger;
+}
+#dropzone.hover {
+}
+#dropzone.fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
+}
+
 .trends {
     color: #0088CC;
     text-decoration: none;
@@ -106,6 +138,9 @@ form {
     color: #000000;
     background-color: #fcfcfc;
     border-color: #E6E6E6;
+}
+.alert-status h4 {
+    color: #0088CC;
 }
 
 .alert-discuss {
@@ -323,15 +358,23 @@ table {
 	margin-top:20px;
 }
 
-.nav-collapse .dropdown-menu.closed {
-    display: none;
-}
-
-.nav-collapse .open .dropdown-menu.closed {
-    display: block;
-}
-
 .user-profile {
 	margin:0px;
 }
 
+.nav-collapse .dropdown-menu .divider {
+  display: block;
+  height: 0px;
+  border-bottom: 1px solid #111111;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1); 
+}
+
+.alert .close {
+  right: -6px;
+}
+
+.typeahead-item{
+    width: 200px;
+}

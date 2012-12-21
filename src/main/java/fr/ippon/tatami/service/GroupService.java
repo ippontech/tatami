@@ -109,7 +109,7 @@ public class GroupService {
         User currentUser = authenticationService.getCurrentUser();
         return getGroupsWhereUserIsAdmin(currentUser);
     }
-    
+
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin(String login) {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(login);

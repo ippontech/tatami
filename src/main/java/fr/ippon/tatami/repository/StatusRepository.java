@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 
 /**
  * The Status Repository.
@@ -17,6 +18,7 @@ public interface StatusRepository {
                         String domain,
                         boolean statusPrivate,
                         Group group,
+                        Collection<String> attachmentIds,
                         String content,
                         String discussionId,
                         String replyTo,

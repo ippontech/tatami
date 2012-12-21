@@ -1,7 +1,6 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.StatusDTO;
@@ -9,6 +8,7 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.hamcrest.Matchers.is;
@@ -33,7 +33,7 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
-        statusUpdateService.postStatus(content, false);
+        statusUpdateService.postStatus(content, false, new ArrayList<String>());
 
         /* verify */
         Collection<StatusDTO> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);

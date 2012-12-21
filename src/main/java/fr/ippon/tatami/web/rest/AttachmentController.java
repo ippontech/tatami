@@ -25,7 +25,7 @@ public class AttachmentController {
             produces = "application/json")
     @ResponseBody
     public Collection<String> getAttachments() {
-          return attachmentService.getAttachmentIdsForCurrentUser();
+        return attachmentService.getAttachmentIdsForCurrentUser();
     }
 
     /**
@@ -36,6 +36,6 @@ public class AttachmentController {
             produces = "application/json")
     @ResponseBody
     public Attachment getAttachmentById(@PathVariable("attachmentId") String attachmentId) {
-          return attachmentService.getAttachementById(attachmentId);
+        return attachmentService.getAttachementById(attachmentId);
     }
 }

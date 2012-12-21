@@ -1,5 +1,8 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
@@ -8,9 +11,6 @@ import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -262,8 +262,8 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Collection<Group> searchGroups(String domain, String query, int size) {
-        return null;  //TODO
+    public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

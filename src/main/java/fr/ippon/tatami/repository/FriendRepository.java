@@ -1,6 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * The Friend Repository.
@@ -13,5 +13,5 @@ public interface FriendRepository {
 
     void removeFriend(String login, String friendLogin);
 
-    Collection<String> findFriendsForUser(String login);
+    List<String> findFriendsForUser(String login);
 }

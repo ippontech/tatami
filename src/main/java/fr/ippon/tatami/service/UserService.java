@@ -287,8 +287,4 @@ public class UserService {
         }
         return login;
     }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 }

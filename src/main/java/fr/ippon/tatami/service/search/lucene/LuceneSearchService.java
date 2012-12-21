@@ -393,20 +393,15 @@ public class LuceneSearchService implements SearchService {
     }
 
     @Override
-    public Collection<Group> searchGroups(String domain, String query, int size) {
+    @Cacheable("group-prefix-cache")
+    public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
         IndexSearcher searcher = null;
         Collection<Group> groups = new ArrayList<Group>();
         try {
             searcher = groupSearcherManager.acquire();
 
-            MultiFieldQueryParser parser =
-                    new MultiFieldQueryParser(Version.LUCENE_36,
-                            new String[]{"name", "description"},
-                            analyzer);
-
-            parser.setDateResolution(DateTools.Resolution.SECOND);
-            parser.setDefaultOperator(QueryParser.Operator.AND);
-            Query luceneQuery = parser.parse(query);
+            Term prefixTerm = new Term("name-not-analyzed", prefix);
+            Query luceneQuery = new PrefixQuery(prefixTerm);
 
             TermsFilter filter = new TermsFilter();
             Term domainTerm = new Term("domain", domain);
@@ -425,11 +420,6 @@ public class LuceneSearchService implements SearchService {
                 String groupId = document.get("groupId");
                 Group group = groupDetailsRepository.getGroupDetails(groupId);
                 groups.add(group);
-            }
-        } catch (ParseException e) {
-            log.error("A Lucene query could not be parsed : " + e.getMessage());
-            if (log.isDebugEnabled()) {
-                e.printStackTrace();
             }
         } catch (IOException e) {
             log.error("A Lucene query had a I/O error : " + e.getMessage());
@@ -455,6 +445,7 @@ public class LuceneSearchService implements SearchService {
         Document document = new Document();
         document.add(new Field("domain", group.getDomain(), Field.Store.NO, Field.Index.NOT_ANALYZED));
         document.add(new Field("groupId", group.getGroupId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field("name-not-analyzed", group.getName().toLowerCase(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field("name", group.getName(), Field.Store.YES, Field.Index.ANALYZED));
         document.add(new Field("description", group.getDescription(), Field.Store.YES, Field.Index.ANALYZED));
         groupIndexWriter.addDocument(document);

@@ -189,6 +189,11 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
+                        statusDTO.setAttachment1Id(status.getAttachment1Id());
+                        statusDTO.setAttachment2Id(status.getAttachment2Id());
+                        statusDTO.setAttachment3Id(status.getAttachment3Id());
+                        statusDTO.setAttachment4Id(status.getAttachment4Id());
+                        statusDTO.setAttachment5Id(status.getAttachment5Id());
                         statusDTO.setContent(status.getContent());
                         statusDTO.setUsername(status.getUsername());
                         if (status.getStatusPrivate() == null) {

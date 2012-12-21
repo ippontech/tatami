@@ -100,11 +100,15 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     public Collection<String> searchRecentTags(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         Collection<String> tags;
         if (query != null && !query.equals("")) {
-            tags = trendService.searchTags(domain, query, 5);
+            if (this.log.isDebugEnabled()) {
+                this.log.debug("REST request to find tags starting with : " + prefix);
+            }
+            tags = trendService.searchTags(domain, prefix, 5);
         } else {
             tags = new ArrayList<String>();
         }
@@ -121,11 +125,15 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     public Collection<Group> searchGroups(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         Collection<Group> groups;
         if (query != null && !query.equals("")) {
-            groups = searchService.searchGroups(domain, query, 3);
+            if (this.log.isDebugEnabled()) {
+                this.log.debug("REST request to find groups starting with : " + prefix);
+            }
+            groups = searchService.searchGroupByPrefix(domain, prefix, 5);
         } else {
             groups = new ArrayList<Group>();
         }

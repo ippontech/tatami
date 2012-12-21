@@ -21,13 +21,11 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
@@ -41,13 +39,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver ContentNegotiatingViewResolver() {
         ContentNegotiatingViewResolver viewResolver = new ContentNegotiatingViewResolver();
-
-        Map<String, String> mediaTypes = new HashMap<String, String>();
-        mediaTypes.put("html", "text/html");
-        mediaTypes.put("json", "application/json");
-        mediaTypes.put("rss", "application/rss+xml");
-        viewResolver.setMediaTypes(mediaTypes);
-
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
 
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
@@ -59,7 +50,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         viewResolver.setViewResolvers(viewResolvers);
 
         List<View> defaultViews = new ArrayList<View>();
-        defaultViews.add(new MappingJacksonJsonView());
+        defaultViews.add(new MappingJackson2JsonView());
         defaultViews.add(syndicView());
         viewResolver.setDefaultViews(defaultViews);
 

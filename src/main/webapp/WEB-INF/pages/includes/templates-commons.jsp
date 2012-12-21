@@ -71,6 +71,13 @@
   </tr>
   <tr>
       <td>
+          <@ if (status.attachment1Id != null) { @>
+              <i class="icon-file"/> <a href="/tatami/file/<@= status.attachment1Id @>/" target="_blank"><@= status.attachment1Id @></a>
+          <@ } @>
+      </td>
+  </tr>
+  <tr>
+      <td>
           <@ if (status.groupId != null) { @>
               <a href="/tatami/#/groups/<@= status.groupId @>">
               <@ if (status.publicGroup === true) { @>

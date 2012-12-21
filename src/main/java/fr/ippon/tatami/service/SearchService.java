@@ -74,5 +74,5 @@ public interface SearchService {
 
     void removeGroup(Group group);
 
-    Collection<Group> searchGroups(String domain, String query, int size);
+    Collection<Group> searchGroupByPrefix(String domain, String prefix, int size);
 }

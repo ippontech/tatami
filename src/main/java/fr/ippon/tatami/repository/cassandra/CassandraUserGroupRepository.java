@@ -55,7 +55,7 @@ public class CassandraUserGroupRepository implements UserGroupRepository {
     }
 
     @Override
-    public Collection<String> findGroups(String login) {
+    public List<String> findGroups(String login) {
         List<String> groups = new ArrayList<String>();
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())

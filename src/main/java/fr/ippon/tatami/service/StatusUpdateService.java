@@ -90,12 +90,12 @@ public class StatusUpdateService {
     @Inject
     private UserRepository userRepository;
 
-    public void postStatus(String content, boolean statusPrivate) {
-        createStatus(content, statusPrivate, null, "", "", "");
+    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
     }
 
-    public void postStatusToGroup(String content, Group group) {
-        createStatus(content, false, group, "", "", "");
+    public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
+        createStatus(content, false, group, "", "", "", attachmentIds);
     }
 
     public void replyToStatus(String content, String replyTo) {
@@ -137,6 +137,17 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername) {
 
+        return createStatus(content, statusPrivate, group, discussionId, replyTo, replyToUsername, new ArrayList<String>());
+    }
+
+    private Status createStatus(String content,
+                                boolean statusPrivate,
+                                Group group,
+                                String discussionId,
+                                String replyTo,
+                                String replyToUsername,
+                                Collection<String> attachmentIds) {
+
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
         if (log.isDebugEnabled()) {
@@ -153,6 +164,7 @@ public class StatusUpdateService {
                         domain,
                         statusPrivate,
                         group,
+                        attachmentIds,
                         content,
                         discussionId,
                         replyTo,
