@@ -562,11 +562,11 @@ follow: function() {
 
   m.save(null, {
     success: function(){
-      self.set(owner, true);
+      self.set(self.options.owner, true);
       self.delegateEvents();
     },
     error: function(){
-      self.set(owner, false);
+      self.set(self.options.owner, false);
       self.delegateEvents();
     }
   });
@@ -582,11 +582,11 @@ unfollow: function() {
 
   m.save(null, {
     success: function(){
-      self.set(owner, false);
+      self.set(self.options.owner, false);
       self.delegateEvents();
     },
     error: function(){
-      self.set(owner, true);
+      self.set(self.options.owner, true);
       self.delegateEvents();
     }
   });

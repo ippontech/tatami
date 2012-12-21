@@ -353,7 +353,7 @@ app.View.isFollowMe = Backbone.View.extend({
         return $.get('/tatami/rest/followers/lookup', {screen_name:this.options.authenticateUser}, function (data) {
 
             for(var i in data){
-                if(data[i].username == _this.options.currrentUser){
+                if(data[i].username === _this.options.currrentUser){
                     $(_this.el).append(_this.template());
                 }
             }

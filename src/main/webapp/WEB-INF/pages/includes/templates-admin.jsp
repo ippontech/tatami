@@ -233,3 +233,35 @@
     </fieldset>
 
 </script>
+
+<script type="text/template" id="users-menu">
+    <ul class="nav nav-tabs">
+        <li>
+            <a href ="#/users">Users</a>
+        </li>
+        <li>
+            <a href ="#/users/popular">Popular</a>
+        </li>
+    </ul>
+</script>
+
+<script type="text/template" id="users-header">
+    <tr>
+        <th>Username</th>
+        <th>Real name</th>
+        <th>Action</th>
+    </tr>
+</script>
+
+<script type="text/template" id="users-item">
+    <td>
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= firstName @> <@= lastName @>
+    </td>
+    <td class="follow"/>
+</script>

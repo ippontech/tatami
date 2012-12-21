@@ -16,6 +16,10 @@ body {
   margin: 0px;
 }
 
+table {
+  display: inline-table;
+}
+
 /*
   Profile Stats table desktop
 */
@@ -28,6 +32,10 @@ body {
 .profile-infos td, .profile-infos th {
   text-align: center;
   padding: 0px;
+}
+
+.profile-title {
+  margin-left: 78px;
 }
 
 /*
