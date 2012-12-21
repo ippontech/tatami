@@ -99,6 +99,8 @@ app.View.UpdateView = Backbone.View.extend({
 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#dropzone").hide();
+          $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
           $("#updateStatusBtn").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
