@@ -60,10 +60,17 @@ public class UserService {
     private RegistrationRepository registrationRepository;
 
     @Inject
+    private RssUidRepository rssUidRepository;
+
+    @Inject
     private SearchService searchService;
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
+    }
+
+    public String getLoginByRssUid(String rssUid) {
+        return rssUidRepository.getLoginByRssUid(rssUid);
     }
 
     public User getUserByUsername(String username) {
@@ -290,5 +297,48 @@ public class UserService {
 
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
+    }
+
+    public void updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
+
+        User currentUser = authenticationService.getCurrentUser();
+        
+        if (booleanPreferencesRssTimeline) {
+            // Activate rss feed publication.
+            String rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
+            currentUser.setRssUid(rssUid);
+            if (log.isDebugEnabled()) {
+                log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
+            }
+
+            try {
+                userRepository.updateUser(currentUser);
+            } catch (ConstraintViolationException cve) {
+                log.info("Constraint violated while updating preferences : " + cve);
+                throw cve;
+            }
+
+        } else {
+
+            // Remove current rssUid from both CF!
+            String rssUid = currentUser.getRssUid();
+            if ((rssUid != null) && (!rssUid.isEmpty())) {
+                rssUidRepository.removeRssUid(rssUid);
+                currentUser.setRssUid("");
+                if (log.isDebugEnabled()) {
+                    log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
+                }
+
+                try {
+                    userRepository.updateUser(currentUser);
+                } catch (ConstraintViolationException cve) {
+                    log.info("Constraint violated while updating preferences : " + cve);
+                    throw cve;
+                }
+            }
+        }
+
+
+
     }
 }

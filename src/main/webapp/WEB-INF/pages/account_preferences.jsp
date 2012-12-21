@@ -111,18 +111,24 @@
                             <p>&nbsp;</p>
 
                             <h3>
-                                <fmt:message key="tatami.preferences.email"/>
+                                <fmt:message key="tatami.preferences.notifications"/>
                             </h3>
 
-                            <form class="form-horizontal" action="preferences/email/update" method="post" accept-charset="utf-8">
+                            <form class="form-horizontal" action="preferences/notifications/update" method="post" accept-charset="utf-8">
 
                                 <fieldset>
 
                                     <div class="control-group">
                                         <div class="controls">
                                             <label class="checkbox">
-                                                <input name="preferencesMentionEmail" type="checkbox" <c:if test="${user.preferencesMentionEmail}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.email.mention"/>
+                                                <input name="preferencesMentionEmail" type="checkbox" <c:if test="${user.preferencesMentionEmail}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
                                             </label>
+                                        </div>
+                                        <div class="controls">
+                                            <label class="checkbox">
+                                                <input name="preferencesRssTimeline" type="checkbox" <c:if test="${not empty user.rssUid}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                                            </label>
+                                        <c:if test="${not empty user.rssUid}"><a href="/tatami/syndic/${user.rssUid}" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a></c:if>
                                         </div>
                                     </div>
 

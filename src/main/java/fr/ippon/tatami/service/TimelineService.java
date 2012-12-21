@@ -60,7 +60,7 @@ public class TimelineService {
 
     @Inject
     private FollowerRepository followerRepository;
-
+    
     @Inject
     private AuthenticationService authenticationService;
 
@@ -283,13 +283,14 @@ public class TimelineService {
      /**
      * The timeline contains the user's status merged with his friends status.
      * getUserTimeline returns the time line for an arbitrary user (and not only 
-     * the logged-in users).
+     * the logged-in users)
      *
-     * @param login of the user we want the timeline of
+     * @param login  of the user we want the timeline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
     public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String since_id, String max_id) {
+        
         Map<String, SharedStatusInfo> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
 
