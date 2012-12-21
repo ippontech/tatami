@@ -57,10 +57,10 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
 (function($) {
   $.fn.pie = function(values, labels) {
     this.each(function(){
-        $(this).empty();
         var w = $(this).width();
         var h =  w * 0.75;
         var r = Math.min(h/2, w/2) * 0.8;
+        $(this).empty();
         Raphael(this, w, h).pieChart(w/2, h/2, r, values, labels, "#fff");
     });
     return this;

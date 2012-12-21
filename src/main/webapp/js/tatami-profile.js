@@ -430,7 +430,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
 
   status: function() {
     this.selectMenu('status');
-    $('#tab-content').empty();
+    $('#accountContent').empty();
 
     if(!app.views.status) {
       var statuscollection = new app.Collection.StatusCollection();
