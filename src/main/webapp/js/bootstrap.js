@@ -1756,6 +1756,7 @@
     this.$menu = $(this.options.menu);
     this.shown = false;
     this.render = this.options.render || this.render;
+    this.select = this.options.select || this.select;
     this.listen()
   }
 
@@ -2012,7 +2013,7 @@
 
   $.fn.typeahead.defaults = {
     source: []
-  , items: 8
+  , items: 32
   , menu: '<ul class="typeahead dropdown-menu hasCategory"></ul>'
   , item: '<li class="item"><a href="#"></a></li>'
   , group: '<li class="category"></li>'

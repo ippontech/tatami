@@ -822,6 +822,7 @@ $("#fullSearchText").typeahead({
         items.groups.forEach(function(v){
             var obj = {};
             obj.label = v.name;
+            obj.id = v.groupId;
             obj.category = "groups";
             data.push(obj);
         });
@@ -862,8 +863,8 @@ $("#fullSearchText").typeahead({
 
             }
             i = $(self.options.item).attr('data-value', item.label);
+            (item.id) ? i.attr('rel',item.id) : '';
             i.find('a').html(item.label);
-            //i.first().addClass('first');
             $(i).appendTo( self.$menu );
 
         });
@@ -871,6 +872,27 @@ $("#fullSearchText").typeahead({
         $(this.$menu).children('li.category').next().addClass('first');
 
         return this
+    },
+
+    select: function () {
+        var val = this.$menu.find('.active').attr('data-value');
+        var id =  this.$menu.find('.active').attr('rel');
+        this.$element.val(this.updater(val)).change();
+
+        switch(val.charAt(0)){
+            case '#':
+                window.location = '/tatami/#/tags/'+val.substr(1);
+                break;
+            case '@':
+                window.location = '/tatami/profile/'+val.substr(1)+'/';
+                break;
+            default:
+                window.location = '/tatami/#/groups/'+id;
+                break;
+        }
+
+        return this.hide()
     }
 
 });
+
