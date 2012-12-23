@@ -364,26 +364,36 @@ table {
 
 .hasCategory{
     width: 280px;
+    background: #EDEDED;
+    padding: 0px;
 }
 
 .hasCategory .item{
-    min-height: 25px;
-    height: auto;
+    height: 30px;
+    margin-left: 40px;
+    background: #FFFFFF;
 }
 
 .hasCategory .category{
     cursor: default;
     height: auto;
     background: #EDEDED;
-    padding: 5px;
-
+    padding: 5px 5px 5px 13px;
+    width:30px;
 }
 
-.nav-collapse .dropdown-menu .divider {
-  display: block;
-  height: 0px;
-  border-bottom: 1px solid #111111;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255,0.1)
+.hasCategory li.first{
+    margin-top:-31px;
+}
+
+.hasCategory li.first, .hasCategory .category{
+    border-top: 1px solid #CCCCCC;
+}
+
+.hasCategory li.item.active a{
+    height: 24px;
+}
+
+.hasCategory li:first-child{
+    border-top: none;
 }

@@ -137,8 +137,6 @@ app.View.UpdateView = Backbone.View.extend({
           counterText:text_characters_left + " "
       });
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
-      
-      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -1305,7 +1303,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
       $('#tab-content').empty();
       $('#tab-content').append(app.views.search.render());
     }
-  },
+  }
 });
 
 $(function() {

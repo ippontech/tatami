@@ -650,102 +650,65 @@ $(function() {
  * @param element the container to hook
  */
 
-app.Collection.searchAll = Backbone.Collection.extend({
-
-   url: function(){
-      return '/tatami/rest/search/all';
-   }
-});
 
 function Suggester(element) {
+    this.source = function (raw_query, process) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var query = raw_query.substring(0, caretPosition);
+        var matchLogin = query.match(patterns.login);
+        var matchHash = query.match(patterns.hash);
+        if (matchLogin == null && matchHash == null) {
+            if (this.shown) {
+                this.hide();
+            };
+            return;
+        }
+        var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
 
-    this.source = function(query,process){
-        var self = this;
-        var model = new app.Collection.searchAll();
-        model.fetch({
-           data:{
-             q: query
-           },
-           success:function(model){
-               model = model.toJSON();
-               return process(model);
-           }
+        // Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
+        query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
 
-        });
-    };
+        if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
 
-    this.matcher = function (item) {
-        return item;
-    };
-
-    this.sorter = function (items) {
-        var results = [];
-
-        items = items[0];
-
-        (items.tags.length != 0)? results.push('tags') : '';
-        items.tags.forEach(function(v){
-            v = '#'+v;
-            results.push(v);
-        });
-
-        (items.users.length != 0)? results.push('users') : '';
-        items.users.forEach(function(v){
-            v.username = '@'+v.username;
-            results.push(v.username);
-        });
-
-        (items.groups.length != 0)? results.push('groups') : '';
-        items.groups.forEach(function(v){
-            results.push(v);
-        });
-        return results;
-    };
-
-    this.highlighter = function (item) {
-
-        switch(item){
-            case 'tags':
-                item = '<i class="icon-tags"></i><strong> '+ capitalizeLetter(item) +'</strong>';
-            break;
-            case 'users':
-                item = '<i class="icon-user"></i><strong> '+ capitalizeLetter(item) +'</strong>';
+        switch (query2.charAt(0)) {
+            case '@' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/users', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '@' + data[i].username;
+                    }
+                    return process(results);
+                });
                 break;
-            case 'groups':
-                item = '<i class="icon-th-large"></i><strong> '+ capitalizeLetter(item) +'</strong>';
+            case '#' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '#' + data[i];
+                    }
+                    return process(results);
+                });
                 break;
         }
-
-        return item;
     };
-
-    this.render = function(items){
-        var that = this;
-        items = $(items).map(function (i, item) {
-
-            switch(item){
-                case 'tags':
-                case 'users':
-                case 'groups':
-                    i = $(that.options.group);
-                    i.html(that.highlighter(item));
-                    break;
-                default:
-                    i = $(that.options.item).attr('data-value', item);
-                    i.addClass('item');
-                    i.find('a').html(that.highlighter(item));
-                    break;
-            }
-
-            return i[0]
-        });
-
-        this.$menu.html(items);
-
-        return this
+    this.matcher = function (item) {
+        return true;
     };
-
+    this.updater = function (item) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var firstPart = element.val().substring(0, caretPosition);
+        var secondPart = element.val().substring(caretPosition, element.val().length);
+        var firstChar = item.charAt(0);
+        var newText = item;
+        if (firstPart.lastIndexOf(firstChar) > -1) {
+            newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
+        }
+        return newText;
+    };
 }
+
 
 Suggester.getCaretPos = function(element) {
 	var caretPos = 0;	// IE Support
@@ -804,3 +767,110 @@ function capitalizeLetter(string)
 {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+/*
+* Search engine
+*
+*
+*/
+
+app.Collection.searchEngine = Backbone.Collection.extend({
+    url: function(){
+        return '/tatami/rest/search/all';
+    }
+});
+
+$("#fullSearchText").typeahead({
+
+    source: function(query,process){
+        var model = new app.Collection.searchEngine();
+        model.fetch({
+            data:{
+                q: query
+            },
+            success:function(model){
+                model = model.toJSON();
+                return process(model);
+            }
+
+        });
+    },
+
+    matcher: function (item) {
+        return item;
+    },
+
+    sorter: function (items) {
+        var data = [];
+
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            var obj = {};
+            obj.label = '#'+v;
+            obj.category = "tags";
+            data.push(obj);
+        });
+
+        items.users.forEach(function(v){
+            var obj = {};
+            obj.label = '@'+v.username;
+            obj.category = "users";
+            data.push(obj);
+        });
+
+        items.groups.forEach(function(v){
+            var obj = {};
+            obj.label = v.name;
+            obj.category = "groups";
+            data.push(obj);
+        });
+
+        JSON.stringify(data);
+
+        return data;
+    },
+
+    highlighter: function (item) {
+        switch(item){
+            case 'tags':
+                item = '<i class="icon-tags"></i>';
+                break;
+            case 'users':
+                item = '<i class="icon-user"></i>';
+                break;
+            case 'groups':
+                item = '<i class="icon-th-large"></i>';
+                break;
+        }
+
+        return item;
+    },
+
+    render: function(items){
+        var self = this,
+        currentCategory = "";
+        this.$menu.empty();
+
+        $.each( items, function( index, item ) {
+            if ( item.category != currentCategory ) {
+
+                currentCategory = item.category;
+                g = $(self.options.group).append(self.highlighter(item.category));
+                g.addClass(currentCategory);
+                self.$menu.append(g);
+
+            }
+            i = $(self.options.item).attr('data-value', item.label);
+            i.find('a').html(item.label);
+            //i.first().addClass('first');
+            $(i).appendTo( self.$menu );
+
+        });
+
+        $(this.$menu).children('li.category').next().addClass('first');
+
+        return this
+    }
+
+});

@@ -40,7 +40,7 @@ app.View.DefaultView = Backbone.View.extend({
 
 app.Collection.TagCollection = Backbone.Collection.extend({
     url : function(){
-        return '/tatami/rest/tags';
+        return '/tatami/rest/tagmemberships/list';
     }
 });
 
@@ -114,7 +114,7 @@ app.View.TagsView = Backbone.View.extend({
 
 app.Collection.TagCollection = Backbone.Collection.extend({
     url : function(){
-        return '/tatami/rest/tags';
+        return '/tatami/rest/tags/popular';
     }
 });
 
@@ -422,7 +422,6 @@ var AdminRouter = Backbone.Router.extend({
 	}
 	
 });
-
 
 
 $(function() {
