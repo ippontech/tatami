@@ -815,6 +815,7 @@ $("#fullSearchText").typeahead({
         items.users.forEach(function(v){
             var obj = {};
             obj.label = '@'+v.username;
+            obj.fullName = v.firstName+' '+ v.lastName;
             obj.category = "users";
             data.push(obj);
         });
@@ -855,15 +856,26 @@ $("#fullSearchText").typeahead({
 
         $.each( items, function( index, item ) {
             if ( item.category != currentCategory ) {
-
                 currentCategory = item.category;
                 g = $(self.options.group).append(self.highlighter(item.category));
                 g.addClass(currentCategory);
                 self.$menu.append(g);
-
             }
             i = $(self.options.item).attr('data-value', item.label);
-            (item.id) ? i.attr('rel',item.id) : '';
+
+            switch(item.category){
+                case 'users':
+                    i.addClass('users');
+                    i.find('a').before('<img src="/img/ippon-logo.png" width="30px" height="30px">');
+                    i.find('a').wrap('<h4></h4>');
+                    i.append('<p>'+item.fullName+'</p>');
+                    break;
+                case 'groups':
+                    i.attr('rel',item.id);
+                    break;
+            }
+
+
             i.find('a').html(item.label);
             $(i).appendTo( self.$menu );
 
@@ -876,7 +888,7 @@ $("#fullSearchText").typeahead({
 
     select: function () {
         var val = this.$menu.find('.active').attr('data-value');
-        var id =  this.$menu.find('.active').attr('rel');
+        var groupId =  this.$menu.find('.active').attr('rel');
         this.$element.val(this.updater(val)).change();
 
         switch(val.charAt(0)){
@@ -887,7 +899,7 @@ $("#fullSearchText").typeahead({
                 window.location = '/tatami/profile/'+val.substr(1)+'/';
                 break;
             default:
-                window.location = '/tatami/#/groups/'+id;
+                window.location = '/tatami/#/groups/'+groupId;
                 break;
         }
 
