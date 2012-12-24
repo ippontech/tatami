@@ -857,26 +857,29 @@ $("#fullSearchText").typeahead({
         $.each( items, function( index, item ) {
             if ( item.category != currentCategory ) {
                 currentCategory = item.category;
-                g = $(self.options.group).append(self.highlighter(item.category));
+                var g = $(self.options.group).append(self.highlighter(item.category));
                 g.addClass(currentCategory);
                 self.$menu.append(g);
             }
-            i = $(self.options.item).attr('data-value', item.label);
-
+            var i;
             switch(item.category){
                 case 'users':
-                    i.addClass('users');
-                    i.find('a').before('<img src="/img/ippon-logo.png" width="30px" height="30px">');
-                    i.find('a').wrap('<h4></h4>');
-                    i.append('<p>'+item.fullName+'</p>');
+                    i = $(self.options.users).attr('data-value', item.label);
+                    i.find('img').attr('src','/img/ippon-logo.png');
+                    i.find('a').append(item.fullName);
+                    i.find('p').append(item.label);
                     break;
                 case 'groups':
+                    i = $(self.options.item).attr('data-value', item.label);
                     i.attr('rel',item.id);
                     break;
+                default:
+                    i = $(self.options.item).attr('data-value', item.label);
+                    i.find('a').html(item.label);
+                    break;
+
             }
 
-
-            i.find('a').html(item.label);
             $(i).appendTo( self.$menu );
 
         });
