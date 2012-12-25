@@ -824,6 +824,7 @@ $("#fullSearchText").typeahead({
             var obj = {};
             obj.label = v.name;
             obj.id = v.groupId;
+            obj.nb = v.counter;
             obj.category = "groups";
             data.push(obj);
         });
@@ -857,7 +858,7 @@ $("#fullSearchText").typeahead({
         $.each( items, function( index, item ) {
             if ( item.category != currentCategory ) {
                 currentCategory = item.category;
-                var g = $(self.options.group).append(self.highlighter(item.category));
+                var g = $(self.options.category).append(self.highlighter(item.category));
                 g.addClass(currentCategory);
                 self.$menu.append(g);
             }
@@ -865,16 +866,19 @@ $("#fullSearchText").typeahead({
             switch(item.category){
                 case 'users':
                     i = $(self.options.users).attr('data-value', item.label);
-                    i.find('img').attr('src','/img/ippon-logo.png');
+                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/3/000/026/068/1f7f0a8.png');
                     i.find('a').append(item.fullName);
                     i.find('p').append(item.label);
                     break;
                 case 'groups':
-                    i = $(self.options.item).attr('data-value', item.label);
+                    i = $(self.options.groups).attr('data-value', item.label);
+                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/1/000/050/17d/023936c.png');
+                    i.find('a').append(item.label);
+                    i.find('p').append(item.nb+' Membres');
                     i.attr('rel',item.id);
                     break;
                 default:
-                    i = $(self.options.item).attr('data-value', item.label);
+                    i = $(self.options.tags).attr('data-value', item.label);
                     i.find('a').html(item.label);
                     break;
 
