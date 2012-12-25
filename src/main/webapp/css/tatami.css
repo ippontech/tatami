@@ -237,9 +237,17 @@ form {
   font-weight: bold;
 }
 
-.status .well {
+/*.status .well {
   padding: 5px;
   margin-bottom: 0px;
+}*/
+
+.status .well {
+    padding: 5px;
+    margin-bottom: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
 .timeago {
@@ -402,7 +410,10 @@ table {
 .hasCategory li.item img{
     display: block;
     float: left;
-    margin: 0 8px 0 3px;
+    margin: 2px 8px 0 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 .hasCategory li.item h4{
@@ -421,8 +432,8 @@ table {
     height: auto;
     line-height: 11px;
 }
-.hasCategory li.item.users{
-    padding: 3px 0 4px 0;
+.hasCategory li.item.users, .hasCategory li.item.groups{
+    padding: 3px 0 4px 5px;
 }
 
 .hasCategory li.item.active,
@@ -441,4 +452,19 @@ table {
 }
 .hasCategory li.item a:hover{
     text-decoration: none;
+}
+
+.hasCategory li.tags a{
+    padding: 3px 10px;
+}
+
+.hasCategory li.groups p{
+    margin-left: 10px;
+    margin-top: -2px;
+}
+
+.box-info{
+    background: none;
+    border: none;
+    box-shadow: none;
 }

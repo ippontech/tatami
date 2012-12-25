@@ -128,6 +128,13 @@ app.View.UpdateView = Backbone.View.extend({
           $("#updateStatusBtn").fadeIn();
           $("#dropzone").fadeIn();
       });
+
+      $("#updateStatusContent").blur(function(){
+          $(this).css("height", "20px");
+          $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").fadeOut();
+      });
+
+
       $("#updateStatusContent").charCount({
           css:'counter',
           cssWarning:'counter_warning',
