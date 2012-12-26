@@ -130,10 +130,11 @@ app.View.UpdateView = Backbone.View.extend({
       });
 
       $("#updateStatusContent").blur(function(){
-          $(this).css("height", "20px");
-          $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").fadeOut();
+          if($(this).val().length == 0){
+              $(this).css("height", "20px");
+              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+          }
       });
-
 
       $("#updateStatusContent").charCount({
           css:'counter',

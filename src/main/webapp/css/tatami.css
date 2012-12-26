@@ -21,7 +21,6 @@ body {
 */
 
 .profile-infos {
-  text-align: center;
   margin-bottom: 0px
 }
 
@@ -140,7 +139,7 @@ form {
     border-color: #E6E6E6;
 }
 .alert-status h4 {
-    color: #0088CC;
+    color: #252525;
 }
 
 .alert-discuss {
@@ -369,20 +368,20 @@ table {
 .user-profile {
 	margin:0px;
 }
-
+/**
+** Search Engine
+**/
 .hasCategory{
     width: 280px;
     background: #EDEDED;
     padding: 0px;
 }
-
 .hasCategory .item{
     height: 33px;
     margin-left: 40px;
     background: #FFFFFF;
     cursor: pointer;
 }
-
 .hasCategory .category{
     cursor: default;
     height: auto;
@@ -390,23 +389,18 @@ table {
     padding: 5px 5px 5px 13px;
     width:30px;
 }
-
 .hasCategory li.first{
     margin-top:-31px;
 }
-
 .hasCategory li.first, .hasCategory .category{
     border-top: 1px solid #CCCCCC;
 }
-
 .hasCategory li.item.active a{
     height: 24px;
 }
-
 .hasCategory li:first-child{
     border-top: none;
 }
-
 .hasCategory li.item img{
     display: block;
     float: left;
@@ -415,16 +409,13 @@ table {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
 .hasCategory li.item h4{
     font-size: 12px;
     margin: 0 1px 0 0;
 }
-
 .hasCategory li.item h4 a{
     color:#000;
 }
-
 .hasCategory li.item p{
     font-size: 11px;
     margin: 0;
@@ -435,7 +426,6 @@ table {
 .hasCategory li.item.users, .hasCategory li.item.groups{
     padding: 3px 0 4px 5px;
 }
-
 .hasCategory li.item.active,
 .hasCategory li.item:hover {
     color: #ffffff;
@@ -453,18 +443,26 @@ table {
 .hasCategory li.item a:hover{
     text-decoration: none;
 }
-
 .hasCategory li.tags a{
     padding: 3px 10px;
 }
-
 .hasCategory li.groups p{
     margin-left: 10px;
     margin-top: -2px;
 }
-
 .box-info{
     background: none;
     border: none;
     box-shadow: none;
 }
+
+/** tatami template  **/
+.tatami .navbar-inner{
+   background-color: #252525;
+   background-image: url('/img/tatami_navbar.png');
+   background-repeat: repeat-x;
+}
+.tatami.navbar-inverse .nav li.dropdown.open > .dropdown-toggle{
+    background-color: transparent;
+}
+
