@@ -215,11 +215,17 @@ app.View.myGroups = Backbone.View.extend({
     }
 });
 
-app.View.popularGroups = Backbone.View.extend({	
+app.Collection.recommendedGroups = Backbone.Collection.extend({
+    url : function(){
+        return '/tatami/rest/groupmemberships/suggestions';
+    }
+});
+
+app.View.recommendedGroups = Backbone.View.extend({
 	template: _.template($('#own-groups-template').html()),
 	
     initialize: function() {
-        this.model = new app.Collection.GroupsCollection();
+        this.model = new app.Collection.recommendedGroups();
         this.model.bind('reset', this.render, this);
         this.model.bind('add', function(model, collection, options) {
             self.addItem(model, options.index);
@@ -382,7 +388,7 @@ var AdminRouter = Backbone.Router.extend({
 		$('#admin-content').empty();
 		
 		/*TO DO : replace by true popular groups*/
-		app.views.groups = new app.View.popularGroups();
+		app.views.groups = new app.View.recommendedGroups();
 		$('#admin-content').append(app.views.groups.render());
 		
 	},
