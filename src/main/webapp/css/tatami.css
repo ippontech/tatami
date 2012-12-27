@@ -482,4 +482,5 @@ table {
    background-image: url('/img/tatami_navbar.png');
    background-repeat: repeat-x;
    border-color: transparent;
+   box-shadow: none;
 }

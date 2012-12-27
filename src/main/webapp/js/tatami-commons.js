@@ -762,15 +762,8 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
 
-//Capitalize
-function capitalizeLetter(string)
-{
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 /*
 * Search engine
-*
 *
 */
 
@@ -884,7 +877,7 @@ $("#fullSearchText").typeahead({
 
             }
 
-            $(i).appendTo( self.$menu );
+            self.$menu.append(i);
 
         });
 
@@ -914,4 +907,3 @@ $("#fullSearchText").typeahead({
     }
 
 });
-
