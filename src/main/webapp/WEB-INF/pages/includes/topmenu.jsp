@@ -1,7 +1,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="tatami navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -89,7 +89,7 @@
                         </li>
                     </ul>
                     <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query span2" placeholder="<fmt:message key="tatami.menu.search"/>"
+                        <input id="fullSearchText" class="search-query span2" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
                 </sec:authorize>

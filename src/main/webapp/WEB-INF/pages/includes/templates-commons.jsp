@@ -165,11 +165,11 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn"><fmt:message key="tatami.user.follow"/></span>
+  <span class="btn btn-mini"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
+  <span class="btn btn-mini btn-primary"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="edit-profile">

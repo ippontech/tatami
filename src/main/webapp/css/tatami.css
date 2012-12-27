@@ -21,13 +21,16 @@ body {
 */
 
 .profile-infos {
-  text-align: center;
   margin-bottom: 0px
 }
 
 .profile-infos td, .profile-infos th {
   text-align: center;
   padding: 0px;
+}
+
+.table.profile-infos td{
+    border-top: none;
 }
 
 /*
@@ -140,7 +143,7 @@ form {
     border-color: #E6E6E6;
 }
 .alert-status h4 {
-    color: #0088CC;
+    color: #252525;
 }
 
 .alert-discuss {
@@ -237,9 +240,17 @@ form {
   font-weight: bold;
 }
 
-.status .well {
+/*.status .well {
   padding: 5px;
   margin-bottom: 0px;
+}*/
+
+.status .well {
+    padding: 5px;
+    margin-bottom: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
 .timeago {
@@ -360,6 +371,94 @@ table {
 
 .user-profile {
 	margin:0px;
+    color:#252525;
+}
+/**
+** Search Engine
+**/
+.hasCategory{
+    width: 280px;
+    background: #EDEDED;
+    padding: 0px;
+}
+.hasCategory .item{
+    height: 33px;
+    margin-left: 40px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+.hasCategory .category{
+    cursor: default;
+    height: auto;
+    background: #EDEDED;
+    padding: 5px 5px 5px 13px;
+    width:30px;
+}
+.hasCategory li.first{
+    margin-top:-31px;
+}
+.hasCategory li.first, .hasCategory .category{
+    border-top: 1px solid #CCCCCC;
+}
+.hasCategory li.item.active a{
+    height: 24px;
+}
+.hasCategory li:first-child{
+    border-top: none;
+}
+.hasCategory li.item img{
+    display: block;
+    float: left;
+    margin: 2px 8px 0 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.hasCategory li.item h4{
+    font-size: 12px;
+    margin: 0 1px 0 0;
+}
+.hasCategory li.item h4 a{
+    color:#000;
+}
+.hasCategory li.item p{
+    font-size: 11px;
+    margin: 0;
+    overflow: hidden;
+    height: auto;
+    line-height: 11px;
+}
+.hasCategory li.item.users, .hasCategory li.item.groups{
+    padding: 3px 0 4px 5px;
+}
+.hasCategory li.item.active,
+.hasCategory li.item:hover {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    outline: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+}
+.hasCategory li.item a:hover{
+    text-decoration: none;
+}
+.hasCategory li.tags a{
+    padding: 3px 10px;
+}
+.hasCategory li.groups p{
+    margin-left: 10px;
+    margin-top: -2px;
+}
+.box-info{
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
 .nav-collapse .dropdown-menu .divider {
@@ -377,4 +476,9 @@ table {
 
 .typeahead-item{
     width: 200px;
+}/** tatami template  **/
+.tatami .navbar-inner{
+   background-color: #252525;
+   background-image: url('/img/tatami_navbar.png');
+   background-repeat: repeat-x;
 }

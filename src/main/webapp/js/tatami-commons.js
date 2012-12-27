@@ -311,7 +311,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
 
           var discussionIsPresent = false;
-          _.forEach(model.get('discussionStatuses'),function(model){
+          _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
               self.views.discussBefore.model.add(model);
@@ -650,60 +650,63 @@ $(function() {
  * @param element the container to hook
  */
 
-app.Collection.searchAll = Backbone.Collection.extend({
-
-   url: function(){
-      return '/tatami/rest/search/all';
-   }
-});
 
 function Suggester(element) {
+    this.source = function (raw_query, process) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var query = raw_query.substring(0, caretPosition);
+        var matchLogin = query.match(patterns.login);
+        var matchHash = query.match(patterns.hash);
+        if (matchLogin == null && matchHash == null) {
+            if (this.shown) {
+                this.hide();
+            };
+            return;
+        }
+        var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
 
-    this.source = function(query,process){
-        var model = new app.Collection.searchAll();
-        model.fetch({
-           data:{
-             q: query
-           },
-           success:function(model){
-               model = model.toJSON();
-               return process(model);
-           }
+        // Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
+        query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
 
-        });
+        if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
+
+        switch (query2.charAt(0)) {
+            case '@' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/users', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '@' + data[i].username;
+                    }
+                    return process(results);
+                });
+                break;
+            case '#' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '#' + data[i];
+                    }
+                    return process(results);
+                });
+                break;
+        }
     };
-
     this.matcher = function (item) {
-        return item;
+        return true;
     };
-
-    this.sorter = function (items) {
-        var results = [];
-
-        items = items[0];
-
-        items.tags.forEach(function(v){
-            v = '#'+v;
-            results.push(v);
-        });
-
-        items.users.forEach(function(v){
-            v.username = '@'+v.username;
-            results.push(v.username);
-        });
-
-        items.groups.forEach(function(v){
-            results.push(v);
-        });
-
-        return results;
-
+    this.updater = function (item) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var firstPart = element.val().substring(0, caretPosition);
+        var secondPart = element.val().substring(caretPosition, element.val().length);
+        var firstChar = item.charAt(0);
+        var newText = item;
+        if (firstPart.lastIndexOf(firstChar) > -1) {
+            newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
+        }
+        return newText;
     };
-
-    this.highlighter = function (item) {
-        return item;
-    };
-
 }
 
 Suggester.getCaretPos = function(element) {
@@ -758,3 +761,157 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-menu', function (e) {e.stopPropagation();})
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
+
+//Capitalize
+function capitalizeLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/*
+* Search engine
+*
+*
+*/
+
+app.Collection.searchEngine = Backbone.Collection.extend({
+    url: function(){
+        return '/tatami/rest/search/all';
+    }
+});
+
+$("#fullSearchText").typeahead({
+
+    source: function(query,process){
+        var model = new app.Collection.searchEngine();
+        model.fetch({
+            data:{
+                q: query
+            },
+            success:function(model){
+                model = model.toJSON();
+                return process(model);
+            }
+
+        });
+    },
+
+    matcher: function (item) {
+        return item;
+    },
+
+    sorter: function (items) {
+        var data = [];
+
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            var obj = {};
+            obj.label = '#'+v;
+            obj.category = "tags";
+            data.push(obj);
+        });
+
+        items.users.forEach(function(v){
+            var obj = {};
+            obj.label = '@'+v.username;
+            obj.fullName = v.firstName+' '+ v.lastName;
+            obj.category = "users";
+            data.push(obj);
+        });
+
+        items.groups.forEach(function(v){
+            var obj = {};
+            obj.label = v.name;
+            obj.id = v.groupId;
+            obj.nb = v.counter;
+            obj.category = "groups";
+            data.push(obj);
+        });
+
+        JSON.stringify(data);
+
+        return data;
+    },
+
+    highlighter: function (item) {
+        switch(item){
+            case 'tags':
+                item = '<i class="icon-tags"></i>';
+                break;
+            case 'users':
+                item = '<i class="icon-user"></i>';
+                break;
+            case 'groups':
+                item = '<i class="icon-th-large"></i>';
+                break;
+        }
+
+        return item;
+    },
+
+    render: function(items){
+        var self = this,
+        currentCategory = "";
+        this.$menu.empty();
+
+        $.each( items, function( index, item ) {
+            if ( item.category != currentCategory ) {
+                currentCategory = item.category;
+                var g = $(self.options.category).append(self.highlighter(item.category));
+                g.addClass(currentCategory);
+                self.$menu.append(g);
+            }
+            var i;
+            switch(item.category){
+                case 'users':
+                    i = $(self.options.users).attr('data-value', item.label);
+                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/3/000/026/068/1f7f0a8.png');
+                    i.find('a').append(item.fullName);
+                    i.find('p').append(item.label);
+                    break;
+                case 'groups':
+                    i = $(self.options.groups).attr('data-value', item.label);
+                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/1/000/050/17d/023936c.png');
+                    i.find('a').append(item.label);
+                    i.find('p').append(item.nb+' Membres');
+                    i.attr('rel',item.id);
+                    break;
+                default:
+                    i = $(self.options.tags).attr('data-value', item.label);
+                    i.find('a').html(item.label);
+                    break;
+
+            }
+
+            $(i).appendTo( self.$menu );
+
+        });
+
+        $(this.$menu).children('li.category').next().addClass('first');
+
+        return this
+    },
+
+    select: function () {
+        var val = this.$menu.find('.active').attr('data-value');
+        var groupId =  this.$menu.find('.active').attr('rel');
+        this.$element.val(this.updater(val)).change();
+
+        switch(val.charAt(0)){
+            case '#':
+                window.location = '/tatami/#/tags/'+val.substr(1);
+                break;
+            case '@':
+                window.location = '/tatami/profile/'+val.substr(1)+'/';
+                break;
+            default:
+                window.location = '/tatami/#/groups/'+groupId;
+                break;
+        }
+
+        return this.hide()
+    }
+
+});
+

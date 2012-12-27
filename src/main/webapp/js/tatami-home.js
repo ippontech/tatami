@@ -130,6 +130,14 @@ app.View.UpdateView = Backbone.View.extend({
           $("#updateStatusBtn").fadeIn();
           $("#dropzone").fadeIn();
       });
+
+      $("#updateStatusContent").blur(function(){
+          if($(this).val().length == 0){
+              $(this).css("height", "20px");
+              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+          }
+      });
+
       $("#updateStatusContent").charCount({
           css:'counter',
           cssWarning:'counter_warning',
@@ -139,8 +147,6 @@ app.View.UpdateView = Backbone.View.extend({
           counterText:text_characters_left + " "
       });
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
-      
-      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -1309,7 +1315,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
       $('#tab-content').empty();
       $('#tab-content').append(app.views.search.render());
     }
-  },
+  }
 });
 
 $(function() {

@@ -1746,15 +1746,17 @@
   * ================================= */
 
   var Typeahead = function (element, options) {
-    this.$element = $(element)
-    this.options = $.extend({}, $.fn.typeahead.defaults, options)
-    this.matcher = this.options.matcher || this.matcher
-    this.sorter = this.options.sorter || this.sorter
-    this.highlighter = this.options.highlighter || this.highlighter
-    this.updater = this.options.updater || this.updater
-    this.source = this.options.source
-    this.$menu = $(this.options.menu)
-    this.shown = false
+    this.$element = $(element);
+    this.options = $.extend({}, $.fn.typeahead.defaults, options);
+    this.matcher = this.options.matcher || this.matcher;
+    this.sorter = this.options.sorter || this.sorter;
+    this.highlighter = this.options.highlighter || this.highlighter;
+    this.updater = this.options.updater || this.updater;
+    this.source = this.options.source;
+    this.$menu = $(this.options.menu);
+    this.shown = false;
+    this.render = this.options.render || this.render;
+    this.select = this.options.select || this.select;
     this.listen()
   }
 
@@ -1854,22 +1856,22 @@
     }
 
   , render: function (items) {
-      var that = this
+       var that = this
 
-      items = $(items).map(function (i, item) {
-        i = $(that.options.item).attr('data-value', item)
-        i.find('a').html(that.highlighter(item))
-        return i[0]
-      })
+       items = $(items).map(function (i, item) {
+           i = $(that.options.item).attr('data-value', item)
+           i.find('a').html(that.highlighter(item))
+           return i[0]
+       })
 
-      items.first().addClass('active')
-      this.$menu.html(items)
-      return this
+       items.first().addClass('active')
+       this.$menu.html(items)
+       return this
     }
 
   , next: function (event) {
       var active = this.$menu.find('.active').removeClass('active')
-        , next = active.next()
+        , next = active.next();
 
       if (!next.length) {
         next = $(this.$menu.find('li')[0])
@@ -1880,7 +1882,7 @@
 
   , prev: function (event) {
       var active = this.$menu.find('.active').removeClass('active')
-        , prev = active.prev()
+        , prev = active.prev();
 
       if (!prev.length) {
         prev = this.$menu.find('li').last()
@@ -1893,7 +1895,7 @@
       this.$element
         .on('blur',     $.proxy(this.blur, this))
         .on('keypress', $.proxy(this.keypress, this))
-        .on('keyup',    $.proxy(this.keyup, this))
+        .on('keyup',    $.proxy(this.keyup, this));
 
       if (this.eventSupported('keydown')) {
         this.$element.on('keydown', $.proxy(this.keydown, this))
@@ -2011,9 +2013,13 @@
 
   $.fn.typeahead.defaults = {
     source: []
-  , items: 8
-  , menu: '<ul class="typeahead dropdown-menu"></ul>'
+  , items: 32
+  , menu: '<ul class="typeahead dropdown-menu hasCategory"></ul>'
   , item: '<li><a href="#"></a></li>'
+  , category: '<li class="category"></li>'
+  , users: '<li class="item users"><img src="#" width="30px" height="30px"><h4><a href="#"></a></h4><p></p></li>'
+  , tags: '<li class="item tags"><a href="#"></a></li>'
+  , groups: '<li class="item groups"><img src="#" width="30px" height="30px"><h4><a href="#"></a></h4><p></p></li>'
   , minLength: 1
   }
 
