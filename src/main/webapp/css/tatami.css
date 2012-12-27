@@ -29,6 +29,10 @@ body {
   padding: 0px;
 }
 
+.table.profile-infos td{
+    border-top: none;
+}
+
 /*
   Profile Stats table tablet
 */
@@ -367,6 +371,7 @@ table {
 
 .user-profile {
 	margin:0px;
+    color:#252525;
 }
 /**
 ** Search Engine
@@ -464,5 +469,9 @@ table {
 }
 .tatami.navbar-inverse .nav li.dropdown.open > .dropdown-toggle{
     background-color: transparent;
+}
+
+#follow-action .btn{
+    font-weight: bold;
 }
 
