@@ -866,13 +866,13 @@ $("#fullSearchText").typeahead({
             switch(item.category){
                 case 'users':
                     i = $(self.options.users).attr('data-value', item.label);
-                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/3/000/026/068/1f7f0a8.png');
+                    i.find('img').attr('src','/img/default_image_profile.png');
                     i.find('a').append(item.fullName);
                     i.find('p').append(item.label);
                     break;
                 case 'groups':
                     i = $(self.options.groups).attr('data-value', item.label);
-                    i.find('img').attr('src','http://media.licdn.com/mpr/mpr/shrink_40_40/p/1/000/050/17d/023936c.png');
+                    i.find('img').attr('src','/img/default_image_profile.png');
                     i.find('a').append(item.label);
                     i.find('p').append(item.nb+' Membres');
                     i.attr('rel',item.id);
