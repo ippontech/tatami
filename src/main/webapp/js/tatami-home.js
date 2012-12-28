@@ -148,6 +148,8 @@ app.View.UpdateView = Backbone.View.extend({
       });
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+
       $("#updateStatusBtn").popover({
           animation:true,
           placement:'bottom',

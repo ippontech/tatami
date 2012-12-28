@@ -2016,10 +2016,6 @@
   , items: 32
   , menu: '<ul class="typeahead dropdown-menu hasCategory"></ul>'
   , item: '<li><a href="#"></a></li>'
-  , category: '<li class="category"></li>'
-  , users: '<li class="item users"><img src="#" width="30px" height="30px"><h4><a href="#"></a></h4><p></p></li>'
-  , tags: '<li class="item tags"><a href="#"></a></li>'
-  , groups: '<li class="item groups"><img src="#" width="30px" height="30px"><h4><a href="#"></a></h4><p></p></li>'
   , minLength: 1
   }
 

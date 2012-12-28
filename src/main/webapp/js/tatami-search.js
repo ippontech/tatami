@@ -61,7 +61,7 @@ app.View.switchSearchAgent = Backbone.View.extend({
 	
 	events:{
 		'click .user-selected':'render',
-		'click .tags-selected':'render',
+		'click .tags-selected':'render'
 	},
 	
 	render: function(e){
@@ -80,3 +80,134 @@ app.View.switchSearchAgent = Backbone.View.extend({
 });
 
 var agent = new app.View.switchSearchAgent();
+
+app.Collection.searchEngine = Backbone.Collection.extend({
+    url: function(){
+        return '/tatami/rest/search/all';
+    }
+});
+
+function SearchEngine(query){
+    var category = _.template($('#search-category').html()),
+           users = _.template($('#search-users').html()),
+            tags = _.template($('#search-tags').html()),
+          groups = _.template($('#search-groups').html());
+
+    this.source = function(query,process){
+        var model = new app.Collection.searchEngine();
+        model.fetch({
+            data:{q: query},
+            success:function(model){
+                model = model.toJSON();
+                return process(model);
+            }
+        });
+    },
+
+    this.matcher = function (item) {
+        return item;
+    },
+
+    this.sorter = function (items) {
+        var data = [];
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            var obj = {};
+            obj.label = '#'+v;
+            obj.category = "tags";
+            data.push(obj);
+        });
+
+        items.users.forEach(function(v){
+            var obj = {};
+            obj.label = '@'+v.username;
+            obj.fullName = v.firstName+' '+ v.lastName;
+            obj.category = "users";
+            data.push(obj);
+        });
+
+        items.groups.forEach(function(v){
+           var obj = {};
+           obj.label = v.name;
+           obj.id = v.groupId;
+           obj.nb = v.counter;
+           obj.category = "groups";
+           data.push(obj);
+        });
+
+        return data;
+    },
+
+    this.highlighter = function (item) {
+       switch(item){
+           case 'tags':
+               item = '<i class="icon-tags"></i>';
+               break;
+           case 'users':
+               item = '<i class="icon-user"></i>';
+               break;
+           case 'groups':
+               item = '<i class="icon-th-large"></i>';
+           break;
+       }
+       return item;
+    },
+
+    this.render = function(items){
+        var self = this,
+        currentCategory = "";
+        this.$menu.empty();
+
+        $.each( items, function( index, item ) {
+            var menu, i;
+
+            if ( item.category != currentCategory ) {
+                    currentCategory = item.category;
+                    menu = category({current: item.category, category: self.highlighter(item.category)});
+            }
+            self.$menu.append(menu);
+
+            switch(currentCategory){
+                case 'users':
+                    i = users({user: item.label, img: '/img/default_image_profile.png', fullname: item.fullName});
+                break;
+                case 'groups':
+                    i = groups({group: item.label, id: item.id, img:'/img/default_image_profile.png', nb: item.nb});
+                break;
+                default:
+                    i = tags({tag: item.label});
+                break;
+            }
+            self.$menu.append(i);
+        });
+
+        $(this.$menu).children('li.category').next().addClass('first');
+
+        return this
+    },
+
+    this.select = function () {
+        var val = this.$menu.find('.active').attr('data-value');
+        var groupId =  this.$menu.find('.active').attr('rel');
+        this.$element.val(this.updater(val)).change();
+
+        switch(val.charAt(0)){
+            case '#':
+               window.location = '/tatami/#/tags/'+val.substr(1);
+            break;
+            case '@':
+               window.location = '/tatami/profile/'+val.substr(1)+'/';
+               break;
+            default:
+               window.location = '/tatami/#/groups/'+groupId;
+            break;
+        }
+        return this.hide()
+    }
+
+}
+
+$(function(){
+   $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+})
