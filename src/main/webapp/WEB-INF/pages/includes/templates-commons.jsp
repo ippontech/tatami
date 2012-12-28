@@ -213,7 +213,7 @@
 </script>
 
 <script type="text/template" id="search-groups">
-    <li class="item groups" data-value="<@= group @>" rel="<@= id @>"><img src="<@= img @>" width="30px" height="30px"><h4><a href="#"><@= group @></a></h4><p><@= nb @></p></li>
+    <li class="item groups" data-value="<@= group @>" rel="<@= id @>"><img src="<@= img @>" width="30px" height="30px"><h4><a href="#"><@= group @></a></h4><p><@= nb @> <fmt:message key="tatami.group.counter"/></p></li>
 </script>
 
 <script type="text/template" id="search-category">

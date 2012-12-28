@@ -88,11 +88,6 @@ app.Collection.searchEngine = Backbone.Collection.extend({
 });
 
 function SearchEngine(query){
-    var category = _.template($('#search-category').html()),
-           users = _.template($('#search-users').html()),
-            tags = _.template($('#search-tags').html()),
-          groups = _.template($('#search-groups').html());
-
     this.source = function(query,process){
         var model = new app.Collection.searchEngine();
         model.fetch({
@@ -155,9 +150,14 @@ function SearchEngine(query){
     },
 
     this.render = function(items){
-        var self = this,
-        currentCategory = "";
         this.$menu.empty();
+
+        var category = _.template($('#search-category').html()),
+            users = _.template($('#search-users').html()),
+            tags = _.template($('#search-tags').html()),
+            groups = _.template($('#search-groups').html()),
+            self = this,
+            currentCategory = "";
 
         $.each( items, function( index, item ) {
             var menu, i;
