@@ -115,7 +115,7 @@ Launching UI Tests from maven :
 
 Launching UI Tests from maven with Chrome :
 
-- install ChromerDriver in your system
+- install ChromeDriver in your system
 - configure the property "webdriver.chrome.driver" in your settings pointing to your chrome driver install directory
 - add `-Dgeb.env=chrome` to the maven command above
 
