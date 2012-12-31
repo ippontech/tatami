@@ -311,7 +311,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           self.views.discussAfter.model.reset();
 
           var discussionIsPresent = false;
-          _.forEach(model.get('discussionStatuses'),function(model){
+          _.forEach(model.get('discussionStatuses'),function(model, index, collection){
             var initDate = self.model.get('statusDate');
             if (model.statusDate < initDate){
               self.views.discussBefore.model.add(model);
@@ -650,60 +650,63 @@ $(function() {
  * @param element the container to hook
  */
 
-app.Collection.searchAll = Backbone.Collection.extend({
-
-   url: function(){
-      return '/tatami/rest/search/all';
-   }
-});
 
 function Suggester(element) {
+    this.source = function (raw_query, process) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var query = raw_query.substring(0, caretPosition);
+        var matchLogin = query.match(patterns.login);
+        var matchHash = query.match(patterns.hash);
+        if (matchLogin == null && matchHash == null) {
+            if (this.shown) {
+                this.hide();
+            };
+            return;
+        }
+        var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
 
-    this.source = function(query,process){
-        var model = new app.Collection.searchAll();
-        model.fetch({
-           data:{
-             q: query
-           },
-           success:function(model){
-               model = model.toJSON();
-               return process(model);
-           }
+        // Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
+        query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
 
-        });
+        if (query2.length < 2) {return;} // should at least contains @ or # and another character to continue.
+
+        switch (query2.charAt(0)) {
+            case '@' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/users', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '@' + data[i].username;
+                    }
+                    return process(results);
+                });
+                break;
+            case '#' :
+                q = query2.substring(1, query2.length);
+                return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
+                    var results = [];
+                    for (var i = 0; i < data.length; i++) {
+                        results[i] = '#' + data[i];
+                    }
+                    return process(results);
+                });
+                break;
+        }
     };
-
     this.matcher = function (item) {
-        return item;
+        return true;
     };
-
-    this.sorter = function (items) {
-        var results = [];
-
-        items = items[0];
-
-        items.tags.forEach(function(v){
-            v = '#'+v;
-            results.push(v);
-        });
-
-        items.users.forEach(function(v){
-            v.username = '@'+v.username;
-            results.push(v.username);
-        });
-
-        items.groups.forEach(function(v){
-            results.push(v);
-        });
-
-        return results;
-
+    this.updater = function (item) {
+        var caretPosition = Suggester.getCaretPos(element.get()[0]);
+        var firstPart = element.val().substring(0, caretPosition);
+        var secondPart = element.val().substring(caretPosition, element.val().length);
+        var firstChar = item.charAt(0);
+        var newText = item;
+        if (firstPart.lastIndexOf(firstChar) > -1) {
+            newText = firstPart.substring(0, firstPart.lastIndexOf(firstChar)) + item + ' ' + secondPart;
+        }
+        return newText;
     };
-
-    this.highlighter = function (item) {
-        return item;
-    };
-
 }
 
 Suggester.getCaretPos = function(element) {
@@ -758,3 +761,15 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-menu', function (e) {e.stopPropagation();})
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
+
+/*
+* Search engine
+*
+*/
+app.Collection.searchEngine = Backbone.Collection.extend({
+    url: function(){
+        return '/tatami/rest/search/all';
+    }
+});
+
+
