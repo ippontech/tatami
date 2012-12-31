@@ -403,12 +403,12 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
-      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
       
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',
-          trigger: 'manual',
+          trigger: 'manual'
       });
       jQuery("abbr.timeago").timeago();
       var trends = new app.View.TrendsView();

@@ -165,11 +165,11 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn"><fmt:message key="tatami.user.follow"/></span>
+  <span class="btn btn-mini"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
+  <span class="btn btn-mini btn-primary"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="edit-profile">
@@ -204,5 +204,18 @@
   </li>
 </script>
 
+<script type="text/template" id="search-tags">
+    <li class="item tags" data-value="<@= tag @>"><a href="#"><@= tag @></a></li>
+</script>
 
+<script type="text/template" id="search-users">
+    <li class="item users" data-value="<@= user @>"><img src="<@= img @>" width="30px" height="30px"><h4><a href="#"><@= fullname @></a></h4><p><@= user @></p></li>
+</script>
 
+<script type="text/template" id="search-groups">
+    <li class="item groups" data-value="<@= group @>" rel="<@= id @>"><img src="<@= img @>" width="30px" height="30px"><h4><a href="#"><@= group @></a></h4><p><@= nb @> <fmt:message key="tatami.group.counter"/></p></li>
+</script>
+
+<script type="text/template" id="search-category">
+    <li class="category <@= current @>"><@= category @></li>
+</script>

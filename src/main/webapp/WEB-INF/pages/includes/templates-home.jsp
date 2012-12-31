@@ -14,7 +14,7 @@
 
 <script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
-  <div class="well margin-top20">
+  <div class="well margin-top20 box-info">
     <div class="row-fluid">
       <table class="table profile-infos">
         <thead>
@@ -28,7 +28,7 @@
               <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
                 <fmt:message key="tatami.badge.followed"/>
               <a>
-              </th>
+            </th>
             <th>
               <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
                 <fmt:message key="tatami.badge.followers"/>
@@ -40,17 +40,29 @@
           <tr>
             <td>
               <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
-                <span class="badge badge-info"><@= profile.statusCount @></span>
+                  <@ if(profile.statusCount != 0) { @>
+                  <span class="badge badge-info"><@= profile.statusCount @></span>
+                  <@ } else { @>
+                  <span class="badge"><@= profile.statusCount @></span>
+                  <@ } @>
               <a>
             </td>
             <td>
               <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
-                <span class="badge badge-info"><@= profile.friendsCount @></span>
+                  <@ if(profile.friendsCount != 0) { @>
+                  <span class="badge badge-info"><@= profile.friendsCount @></span>
+                  <@ } else { @>
+                  <span class="badge"><@= profile.friendsCount @></span>
+                  <@ } @>
               </a>
             </td>
             <td>
               <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
-                <span class="badge badge-info"><@= profile.followersCount @></span>
+                  <@ if(profile.followersCount != 0) { @>
+                  <span class="badge badge-info"><@= profile.followersCount @></span>
+                  <@ } else { @>
+                  <span class="badge"><@= profile.followersCount @></span>
+                  <@ } @>
               </a>
             </td>
           </tr>
