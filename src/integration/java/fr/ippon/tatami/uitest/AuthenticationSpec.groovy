@@ -103,7 +103,7 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		waitFor { at GoogleOpenIdPage }
 		
 
-		when: "Authorize localhost to reveive openid authentication on google" 
+		when: "Authorize localhost to receive openid authentication on google" 
 		rememberChoicesCB.value(false)
 		approveButton.click()
 		 
