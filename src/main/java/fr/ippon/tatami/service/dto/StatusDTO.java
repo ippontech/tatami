@@ -54,6 +54,8 @@ public class StatusDTO {
 
     private Collection<Attachment> attachments;
 
+    private Collection<String> attachmentIds;
+
     private String content;
 
     private Date statusDate;
@@ -149,6 +151,14 @@ public class StatusDTO {
 
     public void setPublicGroup(boolean publicGroup) {
         this.publicGroup = publicGroup;
+    }
+
+    public Collection<String> getAttachmentIds() {
+        return attachmentIds;
+    }
+
+    public void setAttachmentIds(Collection<String> attachmentIds) {
+        this.attachmentIds = attachmentIds;
     }
 
     public Collection<Attachment> getAttachments() {
@@ -282,6 +292,7 @@ public class StatusDTO {
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", publicGroup=" + publicGroup +
+                ", attachmentIds=" + attachmentIds +
                 ", attachments=" + attachments +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
