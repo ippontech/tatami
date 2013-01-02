@@ -240,17 +240,9 @@ form {
   font-weight: bold;
 }
 
-/*.status .well {
+.status .well {
   padding: 5px;
   margin-bottom: 0px;
-}*/
-
-.status .well {
-    padding: 5px;
-    margin-bottom: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
 }
 
 .timeago {
