@@ -160,16 +160,15 @@ function SearchEngine(query){
                  self.$menu.append(menu);
             }
 
-
             switch(currentCategory){
                 case 'users':
-                    i = users({user: item.label, img: '/img/default_image_profile.png', fullname: item.fullName});
+                    i = users({user: item});
                 break;
                 case 'groups':
-                    i = groups({group: item.label, id: item.id, img:'/img/default_image_profile.png', nb: item.nb});
+                    i = groups({group: item});
                 break;
                 default:
-                    i = tags({tag: item.label});
+                    i = tags({tag: item});
                 break;
             }
             self.$menu.append(i);
@@ -181,8 +180,8 @@ function SearchEngine(query){
     },
 
     this.select = function () {
-        var val = this.$menu.find('.active').attr('data-value');
-        var groupId =  this.$menu.find('.active').attr('rel');
+        var val = this.$menu.find('.active').attr('data-value'),
+            groupId =  this.$menu.find('.active').attr('rel');
         this.$element.val(this.updater(val)).change();
 
         switch(val.charAt(0)){
