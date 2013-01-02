@@ -81,21 +81,12 @@ app.View.switchSearchAgent = Backbone.View.extend({
 
 var agent = new app.View.switchSearchAgent();
 
-app.Collection.searchEngine = Backbone.Collection.extend({
-    url: function(){
-        return '/tatami/rest/search/all';
-    }
-});
-
 function SearchEngine(query){
     this.source = function(query,process){
-        var model = new app.Collection.searchEngine();
-        model.fetch({
-            data:{q: query},
-            success:function(model){
-                model = model.toJSON();
-                return process(model);
-            }
+        $.getJSON('/tatami/rest/search/all', {q: query}, function(model){
+            var data = [];
+            data.push(model);
+            return process(data);
         });
     },
 
