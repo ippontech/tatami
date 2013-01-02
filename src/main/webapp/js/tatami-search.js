@@ -150,14 +150,16 @@ function SearchEngine(query){
             self = this,
             currentCategory = "";
 
-        $.each( items, function( index, item ) {
+        _.each(items, function(item) {
+
             var menu, i;
 
             if ( item.category != currentCategory ) {
-                    currentCategory = item.category;
-                    menu = category({current: item.category, category: self.highlighter(item.category)});
+                 currentCategory = item.category;
+                 menu = category({current: item.category, category: self.highlighter(item.category)});
+                 self.$menu.append(menu);
             }
-            self.$menu.append(menu);
+
 
             switch(currentCategory){
                 case 'users':
@@ -173,7 +175,7 @@ function SearchEngine(query){
             self.$menu.append(i);
         });
 
-        $(this.$menu).children('li.category').next().addClass('first');
+        this.$menu.children('li.category').next().addClass('first');
 
         return this
     },
