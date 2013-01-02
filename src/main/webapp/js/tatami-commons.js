@@ -765,14 +765,5 @@ $(function (){
   .on('touchstart.dropdown', '.dropdown-submenu', function (e) {e.preventDefault();});
 });
 
-/*
-* Search engine
-*
-*/
-app.Collection.searchEngine = Backbone.Collection.extend({
-    url: function(){
-        return '/tatami/rest/search/all';
-    }
-});
 
 
