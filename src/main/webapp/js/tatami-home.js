@@ -88,8 +88,14 @@ app.View.UpdateView = Backbone.View.extend({
 
     var status = new app.Model.StatusUpdateModel();
 
-    _.each($(e.target).serializeArray(), function(value){
-      status.set(value.name, value.value);
+    _.each($(e.target).serializeArray(), function(data) {
+      console.log(data);
+      if (data.name == "attachmentIds[]") {
+          console.log("val=" + data.value);
+          status.get("attachmentIds").push(data.value);
+      } else {
+        status.set(data.name, data.value);
+      }
     });
 
     status.save(null,{
@@ -167,10 +173,15 @@ app.View.UpdateView = Backbone.View.extend({
           },
           dropZone: $('#dropzone'),
           done: function (e, data) {
-              $.each(data.result, function (index, file) {
-                  $("<p>" + file.name +
-                      "<input type='hidden' name='attachment" + (index + 1) +
-                      "Id' value='" + file.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
+              $.each(data.result, function (index, attachment) {
+                  var size = "";
+                  if (attachment.size < 1000000) {
+                      size = (attachment.size / 1000).toFixed(0) + "K";
+                  } else {
+                      size = (attachment.size / 1000000).toFixed(2) + "M";
+                  }
+                  $("<p>" + attachment.name + " (" + size + ")" +
+                      "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
           }
       });

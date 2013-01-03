@@ -61,33 +61,15 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postStatus(@RequestBody Status status) {
+    public void postStatus(@RequestBody StatusDTO status) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
         }
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
-        if (status.getStatusPrivate() == null) {
-            status.setStatusPrivate(false);
-        }
-        Collection<String> attachmentIds = new ArrayList<String>();
-        if (status.getAttachment1Id() != null) {
-            attachmentIds.add(status.getAttachment1Id());
-        }
-        if (status.getAttachment2Id() != null) {
-            attachmentIds.add(status.getAttachment2Id());
-        }
-        if (status.getAttachment3Id() != null) {
-            attachmentIds.add(status.getAttachment3Id());
-        }
-        if (status.getAttachment4Id() != null) {
-            attachmentIds.add(status.getAttachment4Id());
-        }
-        if (status.getAttachment5Id() != null) {
-            attachmentIds.add(status.getAttachment5Id());
-        }
-        if (status.getStatusPrivate() == true || status.getGroupId() == null || status.getGroupId().equals("")) {
-            log.info("private=" + status.getStatusPrivate());
-            statusUpdateService.postStatus(escapedContent, status.getStatusPrivate(), attachmentIds);
+        Collection<String> attachmentIds = status.getAttachmentIds();
+        if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+            log.info("private=" + status.isStatusPrivate());
+            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
         } else {
             User currentUser = authenticationService.getCurrentUser();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);

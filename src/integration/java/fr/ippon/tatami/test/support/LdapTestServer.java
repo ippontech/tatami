@@ -109,7 +109,7 @@ public class LdapTestServer {
 			for (LdifEntry entry : ldifReader) {
 				injectEntry(entry, service);
 			}
-			// ldifReader.close();
+			is.close();
 
 		}
 
@@ -159,12 +159,15 @@ public class LdapTestServer {
 
 	/**
 	 * Main class. We just do a lookup on the server to check that it's available.
+	 *
+	 * FIXME : in Eclipse : when running this classes as "Java Application", target/test-classes is not added in the classpath 
+	 * resulting in a java.lang.ClassNotFoundException ...
 	 * 
 	 * @param args
 	 *            Not used.
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception // throws Exception
+	public static void main(String[] args) throws Exception
 	{
 		FileUtils.deleteDirectory(workingDir);
 
