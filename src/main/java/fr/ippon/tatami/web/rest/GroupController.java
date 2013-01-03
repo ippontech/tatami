@@ -54,7 +54,6 @@ public class GroupController {
     public Group getGroup(@PathVariable("groupId") String groupId) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         Group publicGroup = groupService.getGroupById(domain, groupId);
         Group group = null;
 
@@ -62,12 +61,6 @@ public class GroupController {
             group = publicGroup;
         }
 
-        for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(groupId)) {
-                group = testGroup;
-                break;
-            }
-        }
         if (group == null) {
             if (log.isInfoEnabled()) {
                 log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
@@ -102,21 +95,13 @@ public class GroupController {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Group publicGroup = groupService.getGroupById(domain, groupId);
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        boolean userIsMemberOfGroup = false;
         boolean isPublicGroup = false;
 
         if(publicGroup.isPublicGroup()) {
             isPublicGroup = true;
         }
 
-        for (Group group : groups) {
-            if (group.getGroupId().equals(groupId)) {
-                userIsMemberOfGroup = true;
-                break;
-            }
-        }
-        if (!userIsMemberOfGroup && !isPublicGroup) {
+        if (!isPublicGroup) {
             if (log.isInfoEnabled()) {
                 log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                         "group ID = " + groupId);
