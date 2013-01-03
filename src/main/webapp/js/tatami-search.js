@@ -126,27 +126,14 @@ function SearchEngine(query){
     },
 
     this.highlighter = function (item) {
-       switch(item){
-           case 'tags':
-               item = '<i class="icon-tags"></i>';
-               break;
-           case 'users':
-               item = '<i class="icon-user"></i>';
-               break;
-           case 'groups':
-               item = '<i class="icon-th-large"></i>';
-           break;
-       }
-       return item;
+       return true;
     },
 
     this.render = function(items){
         this.$menu.empty();
 
         var category = _.template($('#search-category').html()),
-            users = _.template($('#search-users').html()),
-            tags = _.template($('#search-tags').html()),
-            groups = _.template($('#search-groups').html()),
+            templateItems = _.template($('#search-category-item').html()),
             self = this,
             currentCategory = "";
 
@@ -156,19 +143,19 @@ function SearchEngine(query){
 
             if ( item.category != currentCategory ) {
                  currentCategory = item.category;
-                 menu = category({current: item.category, category: self.highlighter(item.category)});
+                 menu = category({cat: item});
                  self.$menu.append(menu);
             }
 
             switch(currentCategory){
                 case 'users':
-                    i = users({user: item});
+                    i = templateItems({item: item});
                 break;
                 case 'groups':
-                    i = groups({group: item});
+                    i = templateItems({item: item});
                 break;
                 default:
-                    i = tags({tag: item});
+                    i = templateItems({item: item});
                 break;
             }
             self.$menu.append(i);
