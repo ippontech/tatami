@@ -58,12 +58,14 @@ public class GroupController {
         Group publicGroup = groupService.getGroupById(domain, groupId);
         Group group = null;
 
+        if(publicGroup.isPublicGroup()) {
+            group = publicGroup;
+        }
+
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(groupId)) {
                 group = testGroup;
                 break;
-            } else if(publicGroup.isPublicGroup()) {
-                group = publicGroup;
             }
         }
         if (group == null) {
@@ -104,12 +106,14 @@ public class GroupController {
         boolean userIsMemberOfGroup = false;
         boolean isPublicGroup = false;
 
+        if(publicGroup.isPublicGroup()) {
+            isPublicGroup = true;
+        }
+
         for (Group group : groups) {
             if (group.getGroupId().equals(groupId)) {
                 userIsMemberOfGroup = true;
                 break;
-            }else if(publicGroup.isPublicGroup()) {
-                isPublicGroup = true;
             }
         }
         if (!userIsMemberOfGroup && !isPublicGroup) {
