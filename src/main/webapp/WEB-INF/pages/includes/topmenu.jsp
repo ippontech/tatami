@@ -173,3 +173,5 @@
         </div>
     </div>
 </div>
+
+<jsp:include page="template-search-engine.jsp"/>
