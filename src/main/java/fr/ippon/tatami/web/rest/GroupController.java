@@ -64,6 +64,7 @@ public class GroupController {
                 break;
             } else if(publicGroup.isPublicGroup()) {
                 group = publicGroup;
+                break;
             }
         }
         if (group == null) {
@@ -110,6 +111,7 @@ public class GroupController {
                 break;
             }else if(publicGroup.isPublicGroup()) {
                 isPublicGroup = true;
+                break;
             }
         }
         if (!userIsMemberOfGroup && !isPublicGroup) {
