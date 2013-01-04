@@ -764,6 +764,9 @@
                             <value>${jetty.port}</value>
                         </systemProperty>
                     </systemProperties>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
                 </configuration>
             </plugin>
             <plugin>
