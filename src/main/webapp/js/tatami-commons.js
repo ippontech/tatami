@@ -17,6 +17,7 @@ marked.setOptions({
 
 var app = window.app = _.extend({
         views:{},
+        collections: {},
         View:{},
         Collection:{},
         Model:{},
@@ -565,11 +566,11 @@ follow: function() {
 
   m.save(null, {
     success: function(){
-      self.set(owner, true);
+      self.set(self.options.owner, true);
       self.delegateEvents();
     },
     error: function(){
-      self.set(owner, false);
+      self.set(self.options.owner, false);
       self.delegateEvents();
     }
   });
@@ -585,11 +586,11 @@ unfollow: function() {
 
   m.save(null, {
     success: function(){
-      self.set(owner, false);
+      self.set(self.options.owner, false);
       self.delegateEvents();
     },
     error: function(){
-      self.set(owner, true);
+      self.set(self.options.owner, true);
       self.delegateEvents();
     }
   });
@@ -637,6 +638,21 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
     });
     if(search)
       window.location = '/tatami/#/search/status/' + search;
+  }
+});
+
+/*
+Tags
+*/
+app.Model.FollowTagModel = Backbone.Model.extend({
+  url : function(){
+    return '/tatami/rest/tagmemberships/create';
+  }
+});
+
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+  url : function(){
+    return '/tatami/rest/tagmemberships/destroy';
   }
 });
 

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.config;
 
+import org.apache.commons.lang.CharEncoding;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -72,6 +73,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
+        messageSource.setDefaultEncoding(CharEncoding.UTF_8);
         if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
             messageSource.setCacheSeconds(1);
         }

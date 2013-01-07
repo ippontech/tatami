@@ -16,6 +16,10 @@ body {
   margin: 0px;
 }
 
+table {
+  display: inline-table;
+}
+
 /*
   Profile Stats table desktop
 */
@@ -468,11 +472,4 @@ table {
 
 .typeahead-item{
     width: 200px;
-}/** tatami template  **/
-.tatami.navbar-inverse .navbar-inner{
-   background-color: transparent;
-   background-image: url('/img/tatami_navbar.png');
-   background-repeat: repeat-x;
-   border-color: transparent;
-   box-shadow: none;
 }
