@@ -1,11 +1,7 @@
 package fr.ippon.tatami.web.controller.form;
 
 /**
- * Created with IntelliJ IDEA.
- * User: godu
- * Date: 21/12/12
- * Time: 14:55
- * To change this template use File | Settings | File Templates.
+ * Stores a user's preferences.
  */
 public class Preferences {
 
