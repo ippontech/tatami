@@ -55,20 +55,26 @@ public class GroupController {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Group publicGroup = groupService.getGroupById(domain, groupId);
-        Group group = null;
-
-        if(publicGroup.isPublicGroup()) {
-            group = publicGroup;
-        }
-
-        if (group == null) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
+        if (publicGroup != null && publicGroup.isPublicGroup()) {
+            return publicGroup;
+        } else {
+            Group result = null;
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(groupId)) {
+                    result = testGroup;
+                    break;
+                }
             }
-            return null;
+            if (result == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + groupId);
+                }
+                return null;
+            }
+            return result;
         }
-        return group;
     }
 
     /**
@@ -92,23 +98,12 @@ public class GroupController {
         if (count == null) {
             count = 20;
         }
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Group publicGroup = groupService.getGroupById(domain, groupId);
-        boolean isPublicGroup = false;
-
-        if(publicGroup.isPublicGroup()) {
-            isPublicGroup = true;
-        }
-
-        if (!isPublicGroup) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
-            }
+        Group group = this.getGroup(groupId);
+        if (group == null) {
             return new ArrayList<StatusDTO>();
+        } else {
+            return timelineService.getGroupline(groupId, count, since_id, max_id);
         }
-        return timelineService.getGroupline(groupId, count, since_id, max_id);
     }
 
     /**
