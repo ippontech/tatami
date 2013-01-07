@@ -5,9 +5,8 @@
 package fr.ippon.tatami.web.syndic;
 
 import com.sun.syndication.feed.rss.Channel;
-import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.feed.rss.Content;
-
+import com.sun.syndication.feed.rss.Item;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +18,7 @@ import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 
 /**
  *
- * @author tksh1670
+ * @author Pierre Rust
  */
 public class SyndicView  extends AbstractRssFeedView  {
 
@@ -41,24 +40,32 @@ public class SyndicView  extends AbstractRssFeedView  {
         feed.setTitle(title);
         feed.setDescription(description);
         feed.setLink(link);
+        feed.setEncoding("UTF-8");
+        super.buildFeedMetadata(model, feed, request);
     }
     
     @Override
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 		@SuppressWarnings("unchecked")
 		Collection<StatusDTO> listContent = (Collection<StatusDTO>) model.get("feedContent");
+                String statusBaseLink = (String) model.get("statusBaseLink");
 		List<Item> items = new ArrayList<Item>(listContent.size());
  
 		for(StatusDTO tempContent : listContent ){
  
 			Item item = new Item();
  
+                        String statusText = tempContent.getContent();
 			Content content = new Content();
-			content.setValue(tempContent.getContent());
+			content.setValue(statusText);
 			item.setContent(content);
- 
-			item.setTitle(tempContent.getUsername());
-			item.setLink("TODO");
+                        StringBuilder linkBuilder = new StringBuilder(statusBaseLink);
+                        linkBuilder.append(tempContent.getUsername())
+                                .append("/#/status/")
+                                .append(tempContent.getStatusId());
+                                
+			item.setTitle(statusText.substring(0,Math.min(30, statusText.length())));
+			item.setLink(linkBuilder.toString() ); 
 			item.setPubDate(tempContent.getStatusDate());
  
 			items.add(item);

@@ -70,7 +70,11 @@ public class User {
     @Column(name = "preferences_mention_email")
     @JsonIgnore
     private Boolean preferencesMentionEmail;
-
+    
+    @Column(name = "rssUid")
+    @JsonIgnore
+    private String rssUid;
+     
     private long statusCount;
 
     private long friendsCount;
@@ -233,5 +237,19 @@ public class User {
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';
+    }
+
+    /**
+     * @return the rssUid
+     */
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    /**
+     * @param rssUid the rssUid to set
+     */
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
     }
 }

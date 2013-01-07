@@ -4,14 +4,16 @@
  */
 package fr.ippon.tatami.web.syndic;
 
-import fr.ippon.tatami.service.GroupService;
-import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import java.util.Collection;
+import java.util.Locale;
 import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,42 +30,49 @@ public class SyndicTimelineController {
     private TimelineService timelineService;
 
     @Inject
-    private StatusUpdateService statusUpdateService;
+    private UserService userService;
 
     @Inject
-    private GroupService groupService;    
-    
-    
+    private MessageSource messageSource;
+
     /**
-     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user username
+     * GET  /syndic/{rssUid} -> get the latest statuses from user username
+     * corresponding to the uid
      */
-    @RequestMapping(value = "/syndic/statuses/user_timeline",
+    @RequestMapping(value = "/syndic/{rssUid}",
             method = RequestMethod.GET,
             produces = "application/rss+xml")
     @ResponseBody
-    public ModelAndView listStatusForUser(@RequestParam("login") String login,
-                                                @RequestParam(required = false) Integer count,
-                                                @RequestParam(required = false) String since_id,
-                                                @RequestParam(required = false) String max_id) {
+    public ModelAndView listStatusForUser(@PathVariable String rssUid) {
 
-        if (count == null || count == 0) {
-            count = 20; //Default value
+        String login = userService.getLoginByRssUid(rssUid);
+
+        if (login == null) {
+            throw new UnknownRssChannelException("Could not find requested rss channel");
         }
+        int count = 20; //Default value
+
         if (log.isDebugEnabled()) {
             log.debug("RSS request to get someone's status (username=" + login + ").");
         }
-        Collection<StatusDTO> statuses  = timelineService.getUserTimeline(login, count, since_id, max_id);
-        
+        Collection<StatusDTO> statuses = timelineService.getUserTimeline(login, count, null,null);
+
         ModelAndView mav = new ModelAndView("syndicView");
-        // TODO: i18n
-        mav.addObject("feedTitle", "Timeline for user " + login);
-        mav.addObject("feedDescription", "Tatami timeline for user " + login);
-        // FIXME ? local addr ?
-        mav.addObject("feedLink", "/tatami");
+
+        //  i18n
+        Locale locale = LocaleContextHolder.getLocale();
+        Object[] params = {login};
+        String feedTitle = messageSource.getMessage("tatami.rss.timeline.title", params, locale);
+        String feedDesc = messageSource.getMessage("tatami.rss.timeline.description", params, locale);
+
+        mav.addObject("feedTitle", feedTitle);
+        mav.addObject("feedDescription", feedDesc);
+        mav.addObject("statusBaseLink", "/tatami/profile/");
+
+        // the link must point the actual content and not to the rss channel
+        mav.addObject("feedLink", "/tatami/" );
         mav.addObject("feedContent", statuses);
-        mav.addObject("channelName", "Test Channel Name   ");
         return mav;
-        
+
     }
-    
 }
