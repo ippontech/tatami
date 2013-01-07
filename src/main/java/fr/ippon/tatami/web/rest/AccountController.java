@@ -7,6 +7,7 @@ import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.controller.form.Preferences;
 import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -121,32 +122,32 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
-    public HashMap<String, Object> setPreferences(@RequestBody HashMap<String, Object> newPreferences, HttpServletResponse response) {
+    public Preferences setPreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to set account's preferences");
         }
-        HashMap<String, Object> preferences = null;
+        Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
             if(newPreferences.getTheme() == ""){
                 throw new Exception("Theme can't be null");
             }
-            currentUser.setTheme((String) newPreferences.get("theme"));
-            currentUser.setPreferencesMentionEmail((Boolean) newPreferences.get("mentionEmail"));
+            currentUser.setTheme((String) newPreferences.getTheme());
+            currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
 
-            this.log.debug(newPreferences.get("mentionEmail") + "" + (Boolean) newPreferences.get("mentionEmail"));
-            preferences = new HashMap<String, Object>();
+            this.log.debug(newPreferences.getMentionEmail() + "" + (Boolean) newPreferences.getMentionEmail());
+            preferences = new Preferences();
 
-            preferences.put("theme", currentUser.getTheme());
-            preferences.put("mentionEmail", currentUser.getPreferencesMentionEmail());
+            preferences.setTheme(currentUser.getTheme());
+            preferences.setMentionEmail(currentUser.getPreferencesMentionEmail());
 
             userService.updateUser(currentUser);
 
-            userService.updateThemePreferences((String) newPreferences.get("theme"));
+            userService.updateThemePreferences((String) newPreferences.getTheme());
             TatamiUserDetails userDetails =
                     (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            userDetails.setTheme((String) newPreferences.get("theme"));
+            userDetails.setTheme((String) newPreferences.getTheme());
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(userDetails,
                             userDetails.getPassword(),
