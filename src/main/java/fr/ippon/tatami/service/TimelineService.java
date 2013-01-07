@@ -68,9 +68,6 @@ public class TimelineService {
     private GroupService groupService;
 
     @Inject
-    private AttachmentRepository attachmentRepository;
-
-    @Inject
     private SearchService searchService;
 
     public StatusDTO getStatus(String statusId) {
@@ -182,14 +179,8 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
-                        if (status.getAttachment1Id() != null) {
-                            Collection<Attachment> attachments = new ArrayList<Attachment>();
-                            addAttachment(attachments, status.getAttachment1Id());
-                            addAttachment(attachments, status.getAttachment2Id());
-                            addAttachment(attachments, status.getAttachment3Id());
-                            addAttachment(attachments, status.getAttachment4Id());
-                            addAttachment(attachments, status.getAttachment5Id());
-                            statusDTO.setAttachments(attachments);
+                        if (status.getHasAttachements() != null && status.getHasAttachements() == true) {
+                            statusDTO.setAttachments(status.getAttachments());
                         }
                         statusDTO.setContent(status.getContent());
                         statusDTO.setUsername(status.getUsername());
@@ -224,15 +215,6 @@ public class TimelineService {
             }
         }
         return statuses;
-    }
-
-    private void addAttachment(Collection<Attachment> attachments, String attachmentId) {
-        if (attachmentId != null) {
-            Attachment attachment =
-                    attachmentRepository.findAttachmentById(attachmentId);
-
-            attachments.add(attachment);
-        }
     }
 
     /**

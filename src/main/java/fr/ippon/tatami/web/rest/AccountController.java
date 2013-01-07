@@ -3,8 +3,6 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetails;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
@@ -16,13 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
 
 /**
@@ -128,7 +127,7 @@ public class AccountController {
         HashMap<String, Object> preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
-            if((String) newPreferences.get("theme") == ""){
+            if ((String) newPreferences.get("theme") == "") {
                 throw new Exception("Theme can't be null");
             }
             currentUser.setTheme((String) newPreferences.get("theme"));
@@ -157,12 +156,10 @@ public class AccountController {
             if (log.isDebugEnabled()) {
                 log.debug("User updated : " + currentUser);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             this.log.debug("Error during setting preferences", e);
             response.setStatus(500);
-        }
-        finally {
+        } finally {
             return preferences;
         }
     }
@@ -228,8 +225,7 @@ public class AccountController {
                 log.debug("User password updated : " + currentUser);
             }
             return null;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(500);
             return e.getMessage();
         }

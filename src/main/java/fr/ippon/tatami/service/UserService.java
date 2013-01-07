@@ -109,6 +109,7 @@ public class UserService {
         user.setUsername(currentUser.getUsername());
         user.setDomain(currentUser.getDomain());
         user.setGravatar(GravatarUtil.getHash(user.getLogin()));
+        user.setAttachementsSize(currentUser.getAttachementsSize());
         try {
             userRepository.updateUser(user);
             searchService.removeUser(user);

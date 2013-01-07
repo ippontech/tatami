@@ -1,7 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -21,7 +20,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
