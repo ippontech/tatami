@@ -9,6 +9,7 @@ var app;
 if(!window.app){
   app = window.app = _.extend({
     views: {},
+    collections: {},
     View: {},
     Collection: {},
     Model: {},

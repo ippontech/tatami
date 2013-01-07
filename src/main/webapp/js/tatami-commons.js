@@ -17,6 +17,7 @@ marked.setOptions({
 
 var app = window.app = _.extend({
         views:{},
+        collections: {},
         View:{},
         Collection:{},
         Model:{},
@@ -634,6 +635,21 @@ app.View.SearchFormHeaderView = Backbone.View.extend({
     });
     if(search)
       window.location = '/tatami/#/search/status/' + search;
+  }
+});
+
+/*
+Tags
+*/
+app.Model.FollowTagModel = Backbone.Model.extend({
+  url : function(){
+    return '/tatami/rest/tagmemberships/create';
+  }
+});
+
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+  url : function(){
+    return '/tatami/rest/tagmemberships/destroy';
   }
 });
 

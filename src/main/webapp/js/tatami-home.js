@@ -8,6 +8,7 @@ var app;
 if(!window.app){
   app = window.app = _.extend({
     views: {},
+    collections: {},
     View: {},
     Collection: {},
     Model: {},
@@ -803,17 +804,6 @@ app.View.GroupsView = Backbone.View.extend({
 /*
 Tags
 */
-app.Model.FollowTagModel = Backbone.Model.extend({
-	url : function(){
-		return '/tatami/rest/tagmemberships/create';
-	}
-});
-
-app.Model.UnFollowTagModel = Backbone.Model.extend({
-	url : function(){
-		return '/tatami/rest/tagmemberships/destroy';
-	}
-});
 
 app.View.TagsSearchView = Backbone.View.extend({
   tagfollow: _.template($('#tag-search-form-follow').html()),
