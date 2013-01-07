@@ -8,6 +8,7 @@ import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -53,22 +54,28 @@ public class GroupController {
     @ResponseBody
     public Group getGroup(@PathVariable("groupId") String groupId) {
         User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        Group group = null;
-        for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(groupId)) {
-                group = testGroup;
-                break;
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Group publicGroup = groupService.getGroupById(domain, groupId);
+        if (publicGroup != null && publicGroup.isPublicGroup()) {
+            return publicGroup;
+        } else {
+            Group result = null;
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(groupId)) {
+                    result = testGroup;
+                    break;
+                }
             }
-        }
-        if (group == null) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
+            if (result == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + groupId);
+                }
+                return null;
             }
-            return null;
+            return result;
         }
-        return group;
     }
 
     /**
@@ -159,23 +166,12 @@ public class GroupController {
         if (count == null) {
             count = 20;
         }
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        boolean userIsMemberOfGroup = false;
-        for (Group group : groups) {
-            if (group.getGroupId().equals(groupId)) {
-                userIsMemberOfGroup = true;
-                break;
-            }
-        }
-        if (!userIsMemberOfGroup) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
-            }
+        Group group = this.getGroup(groupId);
+        if (group == null) {
             return new ArrayList<StatusDTO>();
+        } else {
+            return timelineService.getGroupline(groupId, count, since_id, max_id);
         }
-        return timelineService.getGroupline(groupId, count, since_id, max_id);
     }
 
     /**

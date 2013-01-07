@@ -68,6 +68,9 @@ public class TimelineService {
     private GroupService groupService;
 
     @Inject
+    private AttachmentRepository attachmentRepository;
+
+    @Inject
     private SearchService searchService;
 
     public StatusDTO getStatus(String statusId) {
@@ -179,11 +182,15 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
-                        statusDTO.setAttachment1Id(status.getAttachment1Id());
-                        statusDTO.setAttachment2Id(status.getAttachment2Id());
-                        statusDTO.setAttachment3Id(status.getAttachment3Id());
-                        statusDTO.setAttachment4Id(status.getAttachment4Id());
-                        statusDTO.setAttachment5Id(status.getAttachment5Id());
+                        if (status.getAttachment1Id() != null) {
+                            Collection<Attachment> attachments = new ArrayList<Attachment>();
+                            addAttachment(attachments, status.getAttachment1Id());
+                            addAttachment(attachments, status.getAttachment2Id());
+                            addAttachment(attachments, status.getAttachment3Id());
+                            addAttachment(attachments, status.getAttachment4Id());
+                            addAttachment(attachments, status.getAttachment5Id());
+                            statusDTO.setAttachments(attachments);
+                        }
                         statusDTO.setContent(status.getContent());
                         statusDTO.setUsername(status.getUsername());
                         if (status.getStatusPrivate() == null) {
@@ -217,6 +224,15 @@ public class TimelineService {
             }
         }
         return statuses;
+    }
+
+    private void addAttachment(Collection<Attachment> attachments, String attachmentId) {
+        if (attachmentId != null) {
+            Attachment attachment =
+                    attachmentRepository.findAttachmentById(attachmentId);
+
+            attachments.add(attachment);
+        }
     }
 
     /**

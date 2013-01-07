@@ -122,7 +122,7 @@
 <script type="text/template" id="account-users-menu">
     <h2>Annuaire des utilisateurs</h2>
     <div class="row-fluid">
-        <button
+        <button></button>
     </div>
 </script>
 

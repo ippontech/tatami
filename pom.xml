@@ -171,11 +171,12 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
+                <ehcache.maxBytesLocalHeap>32M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
                 <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
-                <tatami.smtp.host>localhost</tatami.smtp.host>
-                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.host></tatami.smtp.host>
+                <tatami.smtp.port></tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
@@ -390,8 +391,8 @@
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.0-5</hector.version>
-        <hector.mapper.version>3.0-04</hector.mapper.version>
+        <hector.version>1.1-2</hector.version>
+        <hector.mapper.version>3.1-07</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
@@ -403,18 +404,18 @@
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.3</commons.io.version>
         <junit.version>4.9</junit.version>
-        <cassandra.unit.version>1.0.3.1</cassandra.unit.version>
+        <cassandra.unit.version>1.1.1.2</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
 
         <selenium.version>2.25.0</selenium.version>
 
         <!-- Maven plugins -->
-        <maven.compiler.version>2.4</maven.compiler.version>
-        <maven.enforcer.version>1.0.1</maven.enforcer.version>
-        <maven.surefire.version>2.12</maven.surefire.version>
-        <maven.war.version>2.2</maven.war.version>
-        <maven.jetty.version>8.1.5.v20120716</maven.jetty.version>
-        <maven.cassandra.version>1.0.0-1</maven.cassandra.version>
+        <maven.compiler.version>3.0</maven.compiler.version>
+        <maven.enforcer.version>1.2</maven.enforcer.version>
+        <maven.surefire.version>2.13</maven.surefire.version>
+        <maven.war.version>2.3</maven.war.version>
+        <maven.jetty.version>8.1.8.v20121106</maven.jetty.version>
+        <maven.cassandra.version>1.1.0-1</maven.cassandra.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
     </properties>
     <repositories>
@@ -450,18 +451,33 @@
             <version>${elasticsearch.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>1.1.8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>${httpclient.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.prettyprint</groupId>
+            <groupId>org.hectorclient</groupId>
             <artifactId>hector-core</artifactId>
             <version>${hector.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>servlet-api</artifactId>
                     <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -476,9 +492,15 @@
             <version>${persistence.api.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.prettyprint</groupId>
+            <groupId>org.hectorclient</groupId>
             <artifactId>hector-object-mapper</artifactId>
             <version>${hector.mapper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.openjpa</groupId>
@@ -527,7 +549,7 @@
             <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
-            <groupId>jstl</groupId>
+            <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
@@ -742,6 +764,9 @@
                             <value>${jetty.port}</value>
                         </systemProperty>
                     </systemProperties>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
                 </configuration>
             </plugin>
             <plugin>

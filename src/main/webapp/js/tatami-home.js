@@ -89,8 +89,14 @@ app.View.UpdateView = Backbone.View.extend({
 
     var status = new app.Model.StatusUpdateModel();
 
-    _.each($(e.target).serializeArray(), function(value){
-      status.set(value.name, value.value);
+    _.each($(e.target).serializeArray(), function(data) {
+      console.log(data);
+      if (data.name == "attachmentIds[]") {
+          console.log("val=" + data.value);
+          status.get("attachmentIds").push(data.value);
+      } else {
+        status.set(data.name, data.value);
+      }
     });
 
     status.save(null,{
@@ -100,6 +106,8 @@ app.View.UpdateView = Backbone.View.extend({
 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#dropzone").hide();
+          $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
           $("#updateStatusBtn").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
@@ -129,6 +137,14 @@ app.View.UpdateView = Backbone.View.extend({
           $("#updateStatusBtn").fadeIn();
           $("#dropzone").fadeIn();
       });
+
+      $("#updateStatusContent").blur(function(){
+          if($(this).val().length == 0){
+              $(this).css("height", "20px");
+              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+          }
+      });
+
       $("#updateStatusContent").charCount({
           css:'counter',
           cssWarning:'counter_warning',
@@ -138,8 +154,8 @@ app.View.UpdateView = Backbone.View.extend({
           counterText:text_characters_left + " "
       });
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
-      
-      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
       $("#updateStatusBtn").popover({
           animation:true,
@@ -158,10 +174,15 @@ app.View.UpdateView = Backbone.View.extend({
           },
           dropZone: $('#dropzone'),
           done: function (e, data) {
-              $.each(data.result, function (index, file) {
-                  $("<p>" + file.name +
-                      "<input type='hidden' name='attachment" + (index + 1) +
-                      "Id' value='" + file.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
+              $.each(data.result, function (index, attachment) {
+                  var size = "";
+                  if (attachment.size < 1000000) {
+                      size = (attachment.size / 1000).toFixed(0) + "K";
+                  } else {
+                      size = (attachment.size / 1000000).toFixed(2) + "M";
+                  }
+                  $("<p>" + attachment.name + " (" + size + ")" +
+                      "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
           }
       });
@@ -1297,7 +1318,7 @@ app.Router.HomeRouter = Backbone.Router.extend({
       $('#tab-content').empty();
       $('#tab-content').append(app.views.search.render());
     }
-  },
+  }
 });
 
 $(function() {
