@@ -96,6 +96,7 @@ public class CassandraDomainRepository implements DomainRepository {
             Domain domain = new Domain();
             domain.setName(row.getKey());
             domain.setNumberOfUsers(row.getColumnSlice().getColumns().size());
+
             domains.add(domain);
         }
         return domains;

@@ -90,6 +90,9 @@ public class StatusUpdateService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private StatusAttachmentRepository statusAttachmentRepository;
+
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
     }
@@ -169,6 +172,13 @@ public class StatusUpdateService {
                         discussionId,
                         replyTo,
                         replyToUsername);
+
+        if (attachmentIds.size() > 0) {
+            for (String attachmentId : attachmentIds) {
+                statusAttachmentRepository.addAttachementId(status.getStatusId(),
+                        attachmentId);
+            }
+        }
 
         // add status to the timeline
         timelineRepository.addStatusToTimeline(currentLogin, status);
