@@ -244,6 +244,7 @@ public class User {
                 ", openIdUrl='" + openIdUrl + '\'' +
                 ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
+                ", rssUid=" + rssUid +
                 ", attachementsSize=" + attachementsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +

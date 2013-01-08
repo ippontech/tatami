@@ -6,7 +6,7 @@ package fr.ippon.tatami.repository;
  * The RSS uid is used to build an anonymous url to a RSS channel
  * representing an user timeline.
  * 
- * @author Julien Dubois
+ * @author Pierre Rust
  */
 public interface RssUidRepository {
 

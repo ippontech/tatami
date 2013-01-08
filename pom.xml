@@ -41,18 +41,15 @@
                 <log4j.loglevel>DEBUG</log4j.loglevel>
                 <ehcache.maxBytesLocalHeap>32M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://127.0.0.1:8080</tatami.url>
-                <!--tatami.url>http://p-cda-tatami:8080</tatami.url-->
-                <tatami.admin.users>pierre.rust@orange.com,david.blanchet@orange.com</tatami.admin.users>
-                <tatami.ldapauth.domain>orange.com</tatami.ldapauth.domain>
-                <tatami.ldapauth.url>ldap://rd.francetelecom.fr</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>OU=Annuaire,DC=rd,DC=francetelecom,DC=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(mailNickname={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host>mailhost.rd.francetelecom.fr</tatami.smtp.host>
-                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://localhost:389</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+                <tatami.smtp.host></tatami.smtp.host>
+                <tatami.smtp.port></tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>pierre.rust@orange.com</tatami.smtp.from>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
