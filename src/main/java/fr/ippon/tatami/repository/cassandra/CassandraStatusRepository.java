@@ -72,7 +72,7 @@ public class CassandraStatusRepository implements StatusRepository {
         if (group != null) {
             status.setGroupId(group.getGroupId());
         }
-        if (attachmentIds.size() > 0) {
+        if (attachmentIds != null && attachmentIds.size() > 0) {
             status.setHasAttachements(true);
         }
         status.setContent(content);

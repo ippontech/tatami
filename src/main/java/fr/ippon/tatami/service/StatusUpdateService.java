@@ -173,7 +173,7 @@ public class StatusUpdateService {
                         replyTo,
                         replyToUsername);
 
-        if (attachmentIds.size() > 0) {
+        if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
                 statusAttachmentRepository.addAttachementId(status.getStatusId(),
                         attachmentId);
