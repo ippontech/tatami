@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service.dto;
 
+import fr.ippon.tatami.domain.Attachment;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -7,6 +8,7 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -50,15 +52,9 @@ public class StatusDTO {
 
     private boolean publicGroup;
 
-    private String attachment1Id;
+    private Collection<Attachment> attachments;
 
-    private String attachment2Id;
-
-    private String attachment3Id;
-
-    private String attachment4Id;
-
-    private String attachment5Id;
+    private Collection<String> attachmentIds;
 
     private String content;
 
@@ -157,44 +153,20 @@ public class StatusDTO {
         this.publicGroup = publicGroup;
     }
 
-    public String getAttachment1Id() {
-        return attachment1Id;
+    public Collection<String> getAttachmentIds() {
+        return attachmentIds;
     }
 
-    public void setAttachment1Id(String attachment1Id) {
-        this.attachment1Id = attachment1Id;
+    public void setAttachmentIds(Collection<String> attachmentIds) {
+        this.attachmentIds = attachmentIds;
     }
 
-    public String getAttachment2Id() {
-        return attachment2Id;
+    public Collection<Attachment> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment2Id(String attachment2Id) {
-        this.attachment2Id = attachment2Id;
-    }
-
-    public String getAttachment3Id() {
-        return attachment3Id;
-    }
-
-    public void setAttachment3Id(String attachment3Id) {
-        this.attachment3Id = attachment3Id;
-    }
-
-    public String getAttachment4Id() {
-        return attachment4Id;
-    }
-
-    public void setAttachment4Id(String attachment4Id) {
-        this.attachment4Id = attachment4Id;
-    }
-
-    public String getAttachment5Id() {
-        return attachment5Id;
-    }
-
-    public void setAttachment5Id(String attachment5Id) {
-        this.attachment5Id = attachment5Id;
+    public void setAttachments(Collection<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     public String getContent() {
@@ -320,11 +292,8 @@ public class StatusDTO {
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", publicGroup=" + publicGroup +
-                ", attachment1Id='" + attachment1Id + '\'' +
-                ", attachment2Id='" + attachment2Id + '\'' +
-                ", attachment3Id='" + attachment3Id + '\'' +
-                ", attachment4Id='" + attachment4Id + '\'' +
-                ", attachment5Id='" + attachment5Id + '\'' +
+                ", attachmentIds=" + attachmentIds +
+                ", attachments=" + attachments +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", iso8601StatusDate='" + iso8601StatusDate + '\'' +

@@ -9,6 +9,7 @@ var app;
 if(!window.app){
     app = window.app = _.extend({
         views: {},
+        collections: {},
         View: {},
         Collection: {},
         Model: {},
@@ -61,7 +62,7 @@ app.View.switchSearchAgent = Backbone.View.extend({
 	
 	events:{
 		'click .user-selected':'render',
-		'click .tags-selected':'render',
+		'click .tags-selected':'render'
 	},
 	
 	render: function(e){
@@ -80,3 +81,113 @@ app.View.switchSearchAgent = Backbone.View.extend({
 });
 
 var agent = new app.View.switchSearchAgent();
+
+function SearchEngine(query){
+    this.source = function(query,process){
+        $.getJSON('/tatami/rest/search/all', {q: query}, function(model){
+            var data = [];
+            data.push(model);
+            return process(data);
+        });
+    },
+
+    this.matcher = function (item) {
+        return item;
+    },
+
+    this.sorter = function (items) {
+        var data = [];
+        items = items[0];
+
+        items.tags.forEach(function(v){
+            var obj = {};
+            obj.label = '#'+v;
+            obj.category = "tags";
+            data.push(obj);
+        });
+
+        items.users.forEach(function(v){
+            var obj = {};
+            obj.label = '@'+v.username;
+            obj.fullName = v.firstName+' '+ v.lastName;
+            obj.category = "users";
+            data.push(obj);
+        });
+
+        items.groups.forEach(function(v){
+           var obj = {};
+           obj.label = v.name;
+           obj.id = v.groupId;
+           obj.nb = v.counter;
+           obj.category = "groups";
+           data.push(obj);
+        });
+
+        return data;
+    },
+
+    this.highlighter = function (item) {
+       return true;
+    },
+
+    this.render = function(items){
+        this.$menu.empty();
+
+        var category = _.template($('#search-category').html()),
+            templateItems = _.template($('#search-category-item').html()),
+            self = this,
+            currentCategory = "";
+
+        _.each(items, function(item) {
+
+            var menu, i;
+
+            if ( item.category != currentCategory ) {
+                 currentCategory = item.category;
+                 menu = category({cat: item});
+                 self.$menu.append(menu);
+            }
+
+            switch(currentCategory){
+                case 'users':
+                    i = templateItems({item: item});
+                break;
+                case 'groups':
+                    i = templateItems({item: item});
+                break;
+                default:
+                    i = templateItems({item: item});
+                break;
+            }
+            self.$menu.append(i);
+        });
+
+        this.$menu.children('li.category').next().addClass('first');
+
+        return this
+    },
+
+    this.select = function () {
+        var val = this.$menu.find('.active').attr('data-value'),
+            groupId =  this.$menu.find('.active').attr('rel');
+        this.$element.val(this.updater(val)).change();
+
+        switch(val.charAt(0)){
+            case '#':
+               window.location = '/tatami/#/tags/'+val.substr(1);
+            break;
+            case '@':
+               window.location = '/tatami/profile/'+val.substr(1)+'/';
+               break;
+            default:
+               window.location = '/tatami/#/groups/'+groupId;
+            break;
+        }
+        return this.hide()
+    }
+
+}
+
+$(function(){
+   $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+})

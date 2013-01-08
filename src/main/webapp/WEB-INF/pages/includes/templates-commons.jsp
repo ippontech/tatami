@@ -71,8 +71,11 @@
   </tr>
   <tr>
       <td>
-          <@ if (status.attachment1Id != null) { @>
-              <i class="icon-file"/> <a href="/tatami/file/<@= status.attachment1Id @>/" target="_blank"><@= status.attachment1Id @></a>
+          <@ if (status.attachments != null) { @>
+              <@ _.each(status.attachments, function(attachment) { @>
+                  <i class="icon-file"/> <a href="/tatami/file/<@= attachment.attachmentId @>/" target="_blank"><@= attachment.filename @></a>
+                    (<@ if (attachment.size < 1000000) { @><@= (attachment.size / 1000).toFixed(0) @>K<@ } else { @><@= (attachment.size / 1000000).toFixed(2) @>M<@ } @>)<br/>
+              <@ }); @>
           <@ } @>
       </td>
   </tr>
@@ -165,11 +168,11 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn"><fmt:message key="tatami.user.follow"/></span>
+  <span class="btn btn-block"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary"><fmt:message key="tatami.user.followed"/></span>
+  <span class="btn btn-primary btn-block"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="edit-profile">
@@ -203,6 +206,3 @@
      </a>
   </li>
 </script>
-
-
-

@@ -20,14 +20,21 @@
                   <div class="alert alert-status">
                     <div class="row-fluid">
                       <div class="span4 text-center">
-                        <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
-                          <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="${user.firstName} ${user.lastName}">
-                          <h4>${user.firstName} ${user.lastName}</h4>
-                          <span class="pull-left">@${user.username}</span>
-                          <span id="is-follow-you"></span>
+                        <a class="pull-left" href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
+                          <img class="nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="${user.firstName} ${user.lastName}">
                         </a>
-                        <br/>
-                        <div id='follow-action'></div>
+                        <div class="profile-title">
+                          <div>
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
+                              <h4>${user.firstName} ${user.lastName}</h4>
+                            </a>
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
+                              @${user.username}
+                            </a>
+                          </div>
+                          <div id="is-follow-you"></div>
+                          <div id='follow-action'></div>
+                        </div>
                       </div>
                       <div class="span8">
                         <table class="table profile-infos hidden-phone nomargin">

@@ -8,12 +8,14 @@ import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,22 +54,95 @@ public class GroupController {
     @ResponseBody
     public Group getGroup(@PathVariable("groupId") String groupId) {
         User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        Group group = null;
-        for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(groupId)) {
-                group = testGroup;
-                break;
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Group publicGroup = groupService.getGroupById(domain, groupId);
+        if (publicGroup != null && publicGroup.isPublicGroup()) {
+            return publicGroup;
+        } else {
+            Group result = null;
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(groupId)) {
+                    result = testGroup;
+                    break;
+                }
             }
+            if (result == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + groupId);
+                }
+                return null;
+            }
+            return result;
         }
-        if (group == null) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
+    }
+
+    /**
+     * PUT  /group/:groupId -> update the group with the requested id
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}",
+            method = RequestMethod.PUT,
+            produces = "application/json")
+    @ResponseBody
+    public Group updateGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit,  HttpServletResponse response) {
+        Group group = getGroup(groupId);
+
+        if(group != null){
+            Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();
+            boolean isGroupManagedByCurrentUser = false;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(group.getGroupId())) {
+                    isGroupManagedByCurrentUser = true;
+                    break;
+                }
             }
+            if (!isGroupManagedByCurrentUser) {
+                response.setStatus(403);
+                return null;
+            }
+            group.setDomain(authenticationService.getCurrentUser().getDomain());
+            group.setName(groupEdit.getName());
+            group.setDescription(groupEdit.getDescription());
+            groupService.editGroup(group);
+            return group;
+        }
+        else {
+            response.setStatus(404);
             return null;
         }
-        return group;
+    }
+
+    /**
+     * DELETE  /group/:groupId -> Remove the group with the requested id
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}",
+            method = RequestMethod.DELETE,
+            produces = "application/json")
+    @ResponseBody
+    public void removeGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit,  HttpServletResponse response) {
+        Group group = getGroup(groupId);
+
+        if(group != null){
+            Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();
+            boolean isGroupManagedByCurrentUser = false;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(group.getGroupId())) {
+                    isGroupManagedByCurrentUser = true;
+                    break;
+                }
+            }
+            if (!isGroupManagedByCurrentUser) {
+                response.setStatus(403);
+                return;
+            }
+            //groupService.(group);
+            return;
+        }
+        else {
+            response.setStatus(404);
+            return;
+        }
     }
 
     /**
@@ -91,23 +166,12 @@ public class GroupController {
         if (count == null) {
             count = 20;
         }
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        boolean userIsMemberOfGroup = false;
-        for (Group group : groups) {
-            if (group.getGroupId().equals(groupId)) {
-                userIsMemberOfGroup = true;
-                break;
-            }
-        }
-        if (!userIsMemberOfGroup) {
-            if (log.isInfoEnabled()) {
-                log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                        "group ID = " + groupId);
-            }
+        Group group = this.getGroup(groupId);
+        if (group == null) {
             return new ArrayList<StatusDTO>();
+        } else {
+            return timelineService.getGroupline(groupId, count, since_id, max_id);
         }
-        return timelineService.getGroupline(groupId, count, since_id, max_id);
     }
 
     /**
@@ -136,15 +200,43 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public HashMap<String, Collection<Group>> getGroups() {
+    public Collection<Group> getGroups() {
         User currentUser = authenticationService.getCurrentUser();
-        HashMap<String, Collection<Group>> myGroups = new HashMap<String, Collection<Group>>();
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-        myGroups.put("groups", groups);
-        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
-        myGroups.put("groupsAdmin", groupsAdmin);
 
-        return myGroups;
+        return groups;
+    }
+
+    /**
+     * Get groups of the current user.
+     */
+    @RequestMapping(value = "/rest/admin/groups",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Group> getAdminGroups() {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
+
+        return groupsAdmin;
+    }
+
+    /**
+     * POST create new group.
+     */
+    @RequestMapping(value = "/rest/groups",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @ResponseBody
+    public Group createGroup(HttpServletResponse response, @RequestBody Group group) {
+        User currentUser = authenticationService.getCurrentUser();
+        if ( group.getName() != null && !group.getName().equals("")) {
+            groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
+        }
+        else {
+            response.setStatus(500);
+        }
+        return group;
     }
 
     /**

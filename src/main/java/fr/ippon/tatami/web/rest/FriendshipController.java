@@ -38,6 +38,20 @@ public class FriendshipController {
     }
 
     /**
+     * GET /friendships -> follow user
+     */
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Boolean followUser(@RequestParam("screen_name") String username) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get friendship status : " + username);
+        }
+        return friendshipService.isFollowing(username);
+    }
+
+    /**
      * POST /friendships/destroy -> unfollow user
      */
     @RequestMapping(value = "/rest/friendships/destroy",

@@ -70,7 +70,7 @@ public class AccountPreferencesController {
             booleanPreferencesMentionEmail = true;
         }
         userService.updateEmailPreferences(booleanPreferencesMentionEmail);
-        
+
         boolean booleanPreferencesRssTimeline = false;
         if (preferencesRssTimeline != null && preferencesRssTimeline.equals("on")) {
             booleanPreferencesRssTimeline = true;

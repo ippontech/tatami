@@ -295,32 +295,44 @@ public class UserService {
         return login;
     }
 
-    public void updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
+    /**
+     * activate of de-activate rss publication for the timeline
+     *
+     * @param booleanPreferencesRssTimeline
+     * @return the rssUid used for rss publication, empty if no publication
+     */
+    public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
 
         User currentUser = authenticationService.getCurrentUser();
-        
-        if (booleanPreferencesRssTimeline) {
-            // Activate rss feed publication.
-            String rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
-            currentUser.setRssUid(rssUid);
-            if (log.isDebugEnabled()) {
-                log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
-            }
+        String rssUid = currentUser.getRssUid();
+        if (booleanPreferencesRssTimeline ) {
+            // if we already have an rssUid it means it's already activated :
+            // nothing to do, we do not want to change it
 
-            try {
-                userRepository.updateUser(currentUser);
-            } catch (ConstraintViolationException cve) {
-                log.info("Constraint violated while updating preferences : " + cve);
-                throw cve;
+            if ( (rssUid == null) || rssUid.isEmpty())
+            {
+                // Activate rss feed publication.
+                rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
+                currentUser.setRssUid(rssUid);
+                if (log.isDebugEnabled()) {
+                    log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
+                }
+
+                try {
+                    userRepository.updateUser(currentUser);
+                } catch (ConstraintViolationException cve) {
+                    log.info("Constraint violated while updating preferences : " + cve);
+                    throw cve;
+                }
             }
 
         } else {
 
             // Remove current rssUid from both CF!
-            String rssUid = currentUser.getRssUid();
             if ((rssUid != null) && (!rssUid.isEmpty())) {
                 rssUidRepository.removeRssUid(rssUid);
-                currentUser.setRssUid("");
+                rssUid = "";
+                currentUser.setRssUid(rssUid);
                 if (log.isDebugEnabled()) {
                     log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
                 }
@@ -333,8 +345,6 @@ public class UserService {
                 }
             }
         }
-
-
-
+        return rssUid;
     }
 }

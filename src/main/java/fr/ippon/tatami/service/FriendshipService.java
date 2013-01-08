@@ -169,6 +169,29 @@ public class FriendshipService {
         return isFollowed;
     }
 
+    /**
+     * Finds if  the current user user follow the "userLogin".
+     */
+    public boolean isFollowing(String userLogin) {
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving if you follow this user : " + userLogin);
+        }
+        boolean isFollowing = false;
+        User user = authenticationService.getCurrentUser();
+        if (null != user && !userLogin.equals(user.getLogin())) {
+            Collection<User> users = getFriendsForUser(user.getUsername());
+            if (null != users && users.size() > 0) {
+                for (User follower : users) {
+                    if (follower.getUsername().equals(userLogin)) {
+                        isFollowing = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isFollowing;
+    }
+
     private String getLoginFromUsername(String username) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());

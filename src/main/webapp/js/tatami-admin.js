@@ -8,6 +8,7 @@ var app;
 if(!window.app){
   app = window.app = _.extend({
     views: {},
+    collections: {},
     View: {},
     Collection: {},
     Model: {},
@@ -130,7 +131,7 @@ app.View.Preferences = Backbone.View.extend({
     },
 
     events: {
-        'submit': 'submit', 
+        'submit': 'submit',
         'change [name="theme"]' : function(e){this.switchTheme($(e.target).val());}
     },
 
@@ -156,7 +157,7 @@ app.View.Preferences = Backbone.View.extend({
 
         this.model.set('theme', form.find('[name="theme"]').val());
         this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
-
+        this.model.set('rssUidActive', form.find('[name="rssUidActive"]')[0].checked);
 
         var self = this;
         self.model.save(null, {
@@ -187,7 +188,7 @@ app.View.Password = Backbone.View.extend({
         this.model.fetch({
             error:_.bind(this.disable, this)
         });
-        
+
         this.$el.empty();
 
         this.$el.html(this.template());
@@ -212,7 +213,7 @@ app.View.Password = Backbone.View.extend({
             newPasswordConfirmation[0].setCustomValidity($('#account-password-newPasswordConfirmation').text());
             return;
         }
-        newPasswordConfirmation[0].setCustomValidity("");
+        newPasswordConfirmation[0].setCustomValidity('');
         return;
     },
 
@@ -246,13 +247,19 @@ app.View.Password = Backbone.View.extend({
 
 app.View.TabContainer = Backbone.View.extend({
     initialize: function(){
-        this.views = {};
+        this.$el.addClass('row-fluid');
 
+        this.views = {};
         this.views.tab = new app.View.Tab({
             model : this.model,
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         })
+    },
+
+    selectMenu: function(menu) {
+        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
     },
 
     render: function(){
@@ -267,6 +274,8 @@ app.View.TabContainer = Backbone.View.extend({
 
 app.View.Tab = Backbone.View.extend({
     initialize: function() {
+        this.$el.addClass('table');
+
         this.template = this.options.template;
         this.model.bind('reset', this.render, this);
         this.model.bind('add', this.addItem, this);
@@ -293,38 +302,56 @@ app.Collection.TabUser = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
         this.options.url = {
-            owned: '/tatami/rest/users/suggestions',
-            popular: '/tatami/rest/users'
+            owned: '/tatami/rest/friends/lookup',
+            recommended: '/tatami/rest/users/suggestions'
         }
     },
-    popular: function(){
-        this.url = this.options.url.popular;
+    recommended: function(){
+        this.url = this.options.url.recommended;
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
-        this.fetch();
+        this.fetch({
+            data: {
+                screen_name : username
+            }
+        });
     }
 });
 
 app.View.User = Backbone.View.extend({
     initialize: function(){
-
+        app.views = {};
     },
 
-    template:_.template('<td><@= username @></td><td><@= firstName @></td>'),
+    template:_.template($('#users-item').html()),
     tagName: 'tr',
 
     events:{
-        'click': 'show'
     },
 
-    show: function(){
-        console.log(this.model.toJSON());
+    renderFollow: function(){
+        var user = this.model.get('username');
+        var self = this;
+        $.get('/tatami/rest/friendships',
+            {screen_name:user},
+            function (follow) {
+                app.views.followButton = new app.View.FollowButtonView({
+                    username: user,
+                    followed: follow,
+                    owner: (user === username)
+                });
+                self.$el.find('.follow').html(app.views.followButton.render());
+            },
+            'json'
+        );
     },
 
     render: function(){
+
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderFollow();
         this.delegateEvents();
         return this.$el;
     }
@@ -335,11 +362,11 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/tagmemberships/list',
-            popular: '/tatami/rest/tags/popular'
+            recommended: '/tatami/rest/tags/popular'
         }
     },
-    popular: function(){
-        this.url = this.options.url.popular;
+    recommended: function(){
+        this.url = this.options.url.recommended;
         this.fetch();
     },
     owned: function(){
@@ -350,14 +377,32 @@ app.Collection.TabTag = Backbone.Collection.extend({
 
 app.View.Tag = Backbone.View.extend({
     initialize: function(){
+        this.model.bind('change', this.render, this);
 
     },
 
-    template:_.template('<td><@= name @></td>'),
+    template:_.template($('#tags-item').html()),
     tagName: 'tr',
 
     events:{
-        'click': 'show'
+        'click': 'show',
+        'click .follow': 'follow'
+    },
+
+    follow: function(){
+        var self = this;
+
+        if(this.model.get('followed')){
+            var m = new app.Model.UnFollowTagModel(this.model.toJSON());
+        }
+        else {
+            var m = new app.Model.FollowTagModel(this.model.toJSON());
+        }
+        m.save(null, {
+            success : function(){
+                self.model.set('followed', !self.model.get('followed'));
+            }
+        });
     },
 
     show: function(){
@@ -368,6 +413,69 @@ app.View.Tag = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.delegateEvents();
         return this.$el;
+    }
+});
+
+app.Model.Group = Backbone.Model.extend({
+    urlRoot: '/tatami/rest/groups',
+    idAttribute: 'groupId',
+    defaults: {
+        name: '',
+        description: '',
+        publicGroup: true
+    }
+});
+
+app.Collection.AdminGroup = Backbone.Collection.extend({
+    url: '/tatami/rest/admin/groups'
+});
+
+app.View.AddGroup = Backbone.View.extend({
+    tagName: 'form',
+
+    initialize: function(){
+        this.$el.addClass('form-horizontal row-fluid');
+
+        this.model = new app.Model.Group();
+        this.$el.html(this.template(this.model.toJSON()));
+    },
+
+    template:_.template($('#groups-form').html()),
+
+    events:{
+        'click .show': 'toggle',
+        'submit': 'submit',
+        'reset': 'toggle'
+    },
+
+    toggle: function(){
+        this.$el.find('fieldset').toggle();
+    },
+
+    render: function(){
+        this.delegateEvents();
+        return this.$el;
+    },
+
+    submit: function(e){
+        e.preventDefault();
+
+        var form = $(e.target);
+
+        this.model.set('name', form.find('[name="name"]').val());
+        this.model.set('description', form.find('[name="description"]').val());
+        this.model.set('publicGroup', form.find('[name="publicGroup"]:checked').val() === 'public');
+
+        var self = this;
+        self.model.save(null, {
+            success: function(){
+                $(e.target)[0].reset();
+                self.$el.find('.return').append($('#form-success').html());
+            },
+            error: function(){
+                self.$el.find('.return').append($('#form-error').html());
+            }
+        });
     }
 });
 
@@ -376,39 +484,25 @@ app.Collection.TabGroup = Backbone.Collection.extend({
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/groups',
-            popular: '/tatami/rest/groupmemberships/suggestions'
+            recommended: '/tatami/rest/groupmemberships/suggestions'
         }
     },
-    popular: function(){
-        this.url = this.options.url.popular;
-        this.parse = function(response){
-            return response;
-        }
+    recommended: function(){
+        this.url = this.options.url.recommended;
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
-        this.parse = function(response){
-            var admin = response.groupsAdmin;
-            var groups = response.groups;
-
-            groups.forEach(function(group){
-                group.admin = _.some(admins, function(admin){
-                    return ( group.groupId === admin.groupId );
-                })
-            });
-            return groups;
-        }
         this.fetch();
     }
 });
 
 app.View.Group = Backbone.View.extend({
     initialize: function(){
-
+        app.collections.adminGroups.bind('reset', this.render, this);
     },
 
-    template:_.template('<td><@= name @></td><td><@= count @></td>'),
+    template:_.template($('#groups-item').html()),
     tagName: 'tr',
 
     events:{
@@ -416,14 +510,72 @@ app.View.Group = Backbone.View.extend({
     },
 
     show: function(){
-        console.log(this.model.toJSON());
+        var self = this;
+        var data = this.model.toJSON();
+        data.admin = app.collections.adminGroups.some(function(group){
+            return (group.get('id') === self.model.get('id'));
+        });
     },
 
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        var self = this;
+
+        var data = this.model.toJSON();
+        data.admin = app.collections.adminGroups.some(function(group){
+            return (group.get('id') === self.model.get('id'));
+        });
+        this.$el.html(this.template(data));
         this.delegateEvents();
         return this.$el;
     }
+});
+
+app.View.EditGroup = Backbone.View.extend({
+    tagName: 'form',
+
+    initialize: function(){
+        this.$el.addClass('form-horizontal row-fluid');
+
+        this.model = new app.Model.Group({
+            groupId: this.options.groupId
+        });
+        this.model.bind('change', this.render, this);
+        this.model.fetch();
+    },
+
+    template:_.template($('#groups-form').html()),
+
+    events:{
+        'submit': 'submit'
+    },
+
+    render: function(){
+        this.delegateEvents();
+        return this.$el.html(this.template(this.model.toJSON()));;
+    },
+
+    submit: function(e){
+        e.preventDefault();
+
+        var form = $(e.target);
+
+        this.model.set('name', form.find('[name="name"]').val());
+        this.model.set('description', form.find('[name="description"]').val());
+
+        var self = this;
+        self.model.save(null, {
+            success: function(){
+                self.$el.find('.return').append($('#form-success').html());
+            },
+            error: function(){
+                self.$el.find('.return').append($('#form-error').html());
+            }
+        });
+    }
+});
+
+app.View.ListUserGroup = Backbone.View.extend({
+
 });
 
 /*
@@ -464,11 +616,11 @@ app.View.DailyStatsView = Backbone.View.extend({
  */
 
 app.Router.AdminRouter = Backbone.Router.extend({
-    
+
     initialize: function(){
         this.views = [];
     },
-    
+
     selectMenu: function(menu) {
         $('.adminMenu a').parent().removeClass('active');
         $('.adminMenu a[href="/tatami/account/#/' + menu + '"]').parent().addClass('active');
@@ -490,11 +642,12 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'preferences': 'preferences',
         'password': 'password',
         'groups': 'groups',
-        'groups/popular': 'popularGroups',
+        'groups/recommended': 'recommendedGroups',
+        'groups/:id': 'editGroup',
         'tags':'tags',
-        'tags/popular':'popularTags',
+        'tags/recommended':'recommendedTags',
         'users':'users',
-        'users/popular':'popularUsers',
+        'users/recommended':'recommendedUsers',
         'status_of_the_day' : 'status_of_the_day',
         '*action': 'profile'
     },
@@ -545,34 +698,59 @@ app.Router.AdminRouter = Backbone.Router.extend({
             app.views.groups = new app.View.TabContainer({
                 model: new app.Collection.TabGroup(),
                 ViewModel: app.View.Group,
-                MenuTemplate: _.template('<a href ="#/groups">Groups</a><a href ="#/groups/popular">Popular</a>'),
-                TabHeaderTemplate :_.template('<tr><td>Name</td></tr>')
+                MenuTemplate: _.template($('#groups-menu').html()),
+                TabHeaderTemplate : _.template($('#groups-header').html())
             });
+        if(!app.collections.adminGroups) app.collections.adminGroups = new app.Collection.AdminGroup();
+        app.collections.adminGroups.fetch();
         return app.views.groups;
     },
-    
+
+    initAddGroup: function(){
+        if(!app.views.addgroup)
+            app.views.addgroup = new app.View.AddGroup();
+        return app.views.addgroup;
+    },
+
     groups: function(){
         var view = this.initGroups();
         this.selectMenu('groups');
 
         view.model.owned();
 
+        var addview = this.initAddGroup();
+
         if(this.views.indexOf(view)===-1){
             this.resetView();
+            this.addView(addview);
             this.addView(view);
         }
+        view.selectMenu('groups');
     },
-    
-    popularGroups: function(){
+
+    recommendedGroups: function(){
         var view = this.initGroups();
         this.selectMenu('groups');
 
-        view.model.popular();
+        view.model.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
         }
+        view.selectMenu('groups/recommended');
+    },
+
+    editGroup: function(id){
+        this.selectMenu('');
+
+        this.resetView();
+        this.addView(new app.View.EditGroup({
+            groupId : id
+        }));
+        this.addView(new app.View.ListUserGroup({
+            groupId : id
+        }));
     },
 
     initTags: function(){
@@ -580,8 +758,8 @@ app.Router.AdminRouter = Backbone.Router.extend({
             app.views.tags = new app.View.TabContainer({
                 model: new app.Collection.TabTag(),
                 ViewModel: app.View.Tag,
-                MenuTemplate: _.template('<a href ="#/tags">Tags</a><a href ="#/tags/popular">Popular</a>'),
-                TabHeaderTemplate :_.template('<tr><td>Name</td></tr>')
+                MenuTemplate: _.template($('#tags-menu').html()),
+                TabHeaderTemplate : _.template($('#tags-header').html())
             });
         return app.views.tags;
     },
@@ -596,18 +774,20 @@ app.Router.AdminRouter = Backbone.Router.extend({
             this.resetView();
             this.addView(view);
         }
+        view.selectMenu('tags');
     },
 
-    popularTags: function(){
+    recommendedTags: function(){
         var view = this.initTags();
         this.selectMenu('tags');
 
-        view.model.popular();
+        view.model.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
         }
+        view.selectMenu('tags/recommended');
     },
 
     initUsers: function(){
@@ -615,12 +795,12 @@ app.Router.AdminRouter = Backbone.Router.extend({
             app.views.users = new app.View.TabContainer({
                 model: new app.Collection.TabUser(),
                 ViewModel: app.View.User,
-                MenuTemplate: _.template('<a href ="#/users">Users</a><a href ="#/users/popular">Popular</a>'),
-                TabHeaderTemplate :_.template('<tr><td>Username</td><td>Firstname</td></tr>')
+                MenuTemplate: _.template($('#users-menu').html()),
+                TabHeaderTemplate :_.template($('#users-header').html())
             });
         return app.views.users;
     },
-    
+
     users: function(){
         var view = this.initUsers();
         this.selectMenu('users');
@@ -631,18 +811,20 @@ app.Router.AdminRouter = Backbone.Router.extend({
             this.resetView();
             this.addView(view);
         }
+        view.selectMenu('users');
     },
-    
-    popularUsers: function(){
+
+    recommendedUsers: function(){
         var view = this.initUsers();
         this.selectMenu('users');
 
-        view.model.popular();
+        view.model.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
         }
+        view.selectMenu('users/recommended');
     },
 
     status_of_the_day: function(){
@@ -654,13 +836,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.resetView();
         this.addView(view);
     }
-    
+
 });
 
-
-
 $(function() {
-    
+
     app.router = new app.Router.AdminRouter();
     Backbone.history.start();
 

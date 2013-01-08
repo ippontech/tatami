@@ -1,6 +1,8 @@
 package fr.ippon.tatami.config;
 
 import fr.ippon.tatami.web.syndic.SyndicView;
+
+import org.apache.commons.lang.CharEncoding;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -46,7 +48,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         urlBasedViewResolver.setPrefix("/WEB-INF/pages/");
         urlBasedViewResolver.setSuffix(".jsp");
         viewResolvers.add(urlBasedViewResolver);
-        
+
         viewResolver.setViewResolvers(viewResolvers);
 
         List<View> defaultViews = new ArrayList<View>();
@@ -56,13 +58,12 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         return viewResolver;
     }
-    
+
     @Bean
     public SyndicView syndicView()
     {
         return new SyndicView();
     }
-    
 
     @Bean
     public SessionLocaleResolver localeResolver() {
@@ -81,6 +82,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
+        messageSource.setDefaultEncoding(CharEncoding.UTF_8);
         if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
             messageSource.setCacheSeconds(1);
         }

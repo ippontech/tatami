@@ -9,6 +9,7 @@ var app;
 if(!window.app){
   app = window.app = _.extend({
     views: {},
+    collections: {},
     View: {},
     Collection: {},
     Model: {},
@@ -353,7 +354,7 @@ app.View.isFollowMe = Backbone.View.extend({
         return $.get('/tatami/rest/followers/lookup', {screen_name:this.options.authenticateUser}, function (data) {
 
             for(var i in data){
-                if(data[i].username == _this.options.currrentUser){
+                if(data[i].username === _this.options.currrentUser){
                     $(_this.el).append(_this.template());
                 }
             }
@@ -403,12 +404,12 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
-      $("#fullSearchText").typeahead(new Suggester($("#fullSearchText")));
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
       
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',
-          trigger: 'manual',
+          trigger: 'manual'
       });
       jQuery("abbr.timeago").timeago();
       var trends = new app.View.TrendsView();
