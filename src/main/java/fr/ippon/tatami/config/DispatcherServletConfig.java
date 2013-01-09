@@ -1,5 +1,7 @@
 package fr.ippon.tatami.config;
 
+import fr.ippon.tatami.web.syndic.SyndicView;
+
 import org.apache.commons.lang.CharEncoding;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -51,9 +53,16 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
         List<View> defaultViews = new ArrayList<View>();
         defaultViews.add(new MappingJackson2JsonView());
+        defaultViews.add(syndicView());
         viewResolver.setDefaultViews(defaultViews);
 
         return viewResolver;
+    }
+
+    @Bean
+    public SyndicView syndicView()
+    {
+        return new SyndicView();
     }
 
     @Bean
