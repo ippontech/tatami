@@ -61,14 +61,22 @@ public class AccountPreferencesController {
         return "redirect:/tatami/account/preferences?success=true";
     }
 
-    @RequestMapping(value = "/account/preferences/email/update",
+    @RequestMapping(value = "/account/preferences/notifications/update",
             method = RequestMethod.POST)
-    public String updateEmailPreferences(@RequestParam(required = false) String preferencesMentionEmail) {
+    public String updateNotificationsPreferences(@RequestParam(required = false) String preferencesMentionEmail,
+        @RequestParam(required=false) String preferencesRssTimeline) {
         boolean booleanPreferencesMentionEmail = false;
         if (preferencesMentionEmail != null && preferencesMentionEmail.equals("on")) {
             booleanPreferencesMentionEmail = true;
         }
         userService.updateEmailPreferences(booleanPreferencesMentionEmail);
+
+        boolean booleanPreferencesRssTimeline = false;
+        if (preferencesRssTimeline != null && preferencesRssTimeline.equals("on")) {
+            booleanPreferencesRssTimeline = true;
+        }
+        userService.updateRssTimelinePreferences(booleanPreferencesRssTimeline);
+
         return "redirect:/tatami/account/preferences?success=true";
     }
 }

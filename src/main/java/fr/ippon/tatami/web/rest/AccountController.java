@@ -112,6 +112,10 @@ public class AccountController {
         preferences.put("theme", user.getTheme());
         preferences.put("mentionEmail", user.getPreferencesMentionEmail());
 
+        String rssUid = user.getRssUid();
+        preferences.put("rssUid", rssUid);
+        preferences.put("rssUidActive", (rssUid != null) ? rssUid : "");
+        
         return preferences;
     }
 
@@ -129,18 +133,22 @@ public class AccountController {
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
-            if(newPreferences.getTheme() == ""){
+            if(newPreferences.getTheme().isEmpty()){
                 throw new Exception("Theme can't be null");
             }
             currentUser.setTheme((String) newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
+
+            String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
+            currentUser.setRssUid(rssUid);
 
             this.log.debug(newPreferences.getMentionEmail() + "" + (Boolean) newPreferences.getMentionEmail());
             preferences = new Preferences();
 
             preferences.setTheme(currentUser.getTheme());
             preferences.setMentionEmail(currentUser.getPreferencesMentionEmail());
-
+            preferences.setRssUid(rssUid);
+            preferences.setRssUidActive(!rssUid.isEmpty());
             userService.updateUser(currentUser);
 
             userService.updateThemePreferences((String) newPreferences.getTheme());

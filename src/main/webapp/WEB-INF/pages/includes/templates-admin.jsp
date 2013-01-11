@@ -157,14 +157,20 @@
     <fieldset>
 
         <legend>
-            <fmt:message key="tatami.preferences.email"/>
+            <fmt:message key="tatami.preferences.notifications"/>
         </legend>
 
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked <@ } @>/> <fmt:message key="tatami.preferences.email.mention"/>
+                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
+            </div>
+            <div class="controls">
+                <label class="checkbox">
+                    <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                </label>
+                <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
             </div>
         </div>
     </fieldset>
@@ -175,7 +181,7 @@
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-        
+
         <div class="return"/>
     </fieldset>
 
@@ -338,7 +344,7 @@
                     <label class="radio">
                     <input type="radio" name="publicGroup" value="private" <@ if (!publicGroup) { @> checked<@ } @> required>
                     <fmt:message key="tatami.group.add.private"/>
-                    </label>         
+                    </label>
                 </div>
             </div>
 

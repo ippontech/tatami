@@ -70,7 +70,11 @@ public class User {
     @Column(name = "preferences_mention_email")
     @JsonIgnore
     private Boolean preferencesMentionEmail;
-
+    
+    @Column(name = "rssUid")
+    @JsonIgnore
+    private String rssUid;
+     
     @Column(name = "attachementsSize")
     private long attachementsSize;
 
@@ -240,10 +244,25 @@ public class User {
                 ", openIdUrl='" + openIdUrl + '\'' +
                 ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
+                ", rssUid=" + rssUid +
                 ", attachementsSize=" + attachementsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';
+    }
+
+    /**
+     * @return the rssUid
+     */
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    /**
+     * @param rssUid the rssUid to set
+     */
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
     }
 }

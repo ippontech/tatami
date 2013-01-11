@@ -42,7 +42,9 @@
                 <ehcache.maxBytesLocalHeap>32M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://localhost:389</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host></tatami.smtp.host>
                 <tatami.smtp.port></tatami.smtp.port>
                 <tatami.smtp.user></tatami.smtp.user>
@@ -374,6 +376,8 @@
                         </exclusion>
                     </exclusions>
                 </dependency>
+
+            
             </dependencies>
         </profile>
     </profiles>
@@ -417,6 +421,7 @@
         <maven.jetty.version>8.1.8.v20121106</maven.jetty.version>
         <maven.cassandra.version>1.1.0-1</maven.cassandra.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
         <repository>
@@ -589,6 +594,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -652,6 +667,11 @@
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
         </dependency>
+                <dependency>
+                    <groupId>rome</groupId>
+                    <artifactId>rome</artifactId>
+                    <version>1.0</version>
+                </dependency>        
 
         <!-- Test dependencies -->
         <dependency>

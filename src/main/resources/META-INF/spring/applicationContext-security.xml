@@ -16,6 +16,7 @@
 
     <http pattern="/tatami/static/**" security="none"/>
     <http pattern="/tatami/login*" security="none"/>
+    <http pattern="/tatami/syndic/**" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
@@ -51,7 +52,7 @@
 
     <authentication-manager>
         <authentication-provider ref="ldapAuthenticationProvider"/>
-        <authentication-provider ref="daoAuthenticationProvider"/>
+        <authentication-provider ref="daoAuthenticationProvider" />
     </authentication-manager>
 
     <beans:bean id="daoAuthenticationProvider"
@@ -73,8 +74,8 @@
                 <beans:constructor-arg ref="ldapContextSource"/>
                 <beans:property name="userSearch">
                     <beans:bean class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
-                        <beans:constructor-arg value=""/>
-                        <beans:constructor-arg value="(uid={0})"/>
+                        <beans:constructor-arg value="${tatami.ldapauth.searchbase}"/>
+                        <beans:constructor-arg value="${tatami.ldapauth.searchfilter}"/>
                         <beans:constructor-arg ref="ldapContextSource"/>
                     </beans:bean>
                 </beans:property>

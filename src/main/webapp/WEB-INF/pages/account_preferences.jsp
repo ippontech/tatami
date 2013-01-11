@@ -97,7 +97,7 @@
                                                 <fmt:message
                                                 key="tatami.preferences.theme.current"/>
                                             </label>
-                                            <div class="controls">    
+                                            <div class="controls">
                                                 <select class="input-xlarge span12" name="theme" onchange="this.form.submit();">
                                                     <option value="bootstrap" <c:if test="${user.theme ==
                                                     'bootstrap'}">selected="true"</c:if>>Bootstrap</option>
@@ -123,7 +123,7 @@
                                                     'superhero'}">selected="true"</c:if>>Superhero</option>
                                                     <option value="united" <c:if test="${user.theme ==
                                                     'united'}">selected="true"</c:if>>United</option>
-                                                </select>           
+                                                </select>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -134,17 +134,23 @@
                                     <fmt:message key="tatami.preferences.email"/>
                                 </h3>
 
-                                <form class="row-fluid form-horizontal" action="preferences/email/update" method="post" accept-charset="utf-8">
+                                <form class="row-fluid form-horizontal" action="preferences/notifications/update" method="post" accept-charset="utf-8">
 
                                     <fieldset class="span12">
 
-                                        <div class="control-group">
-                                            <div class="controls">
-                                                <label class="checkbox">
-                                                    <input name="preferencesMentionEmail" type="checkbox" <c:if test="${user.preferencesMentionEmail}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.email.mention"/>
-                                                </label>
-                                            </div>
-                                        </div>
+										<div class="control-group">
+											<div class="controls">
+												<label class="checkbox">
+													<input name="preferencesMentionEmail" type="checkbox" <c:if test="${user.preferencesMentionEmail}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
+												</label>
+											</div>
+											<div class="controls">
+												<label class="checkbox">
+													<input name="preferencesRssTimeline" type="checkbox" <c:if test="${not empty user.rssUid}">checked="true"</c:if>/> <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+												</label>
+											<c:if test="${not empty user.rssUid}"><a href="/tatami/syndic/${user.rssUid}" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a></c:if>
+											</div>
+										</div>
 
                                         <div class="form-actions">
                                             <button type="submit" class="input-xlarge btn btn-primary">
