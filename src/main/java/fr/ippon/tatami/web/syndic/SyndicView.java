@@ -31,8 +31,17 @@ public class SyndicView extends AbstractRssFeedView {
         // by the actual view implementation
 
         String title = (String) model.get("feedTitle");
+        if (title == null) {
+            title = "This RSS feed does not exist.";
+        }
         String description = (String) model.get("feedDescription");
+        if (description == null) {
+            description = "Either you typed a wrong URL, or the feed was removed by the user to which it belongs.";
+        }
         String link = (String) model.get("feedLink");
+        if (link == null) {
+            link = "";
+        }
 
         feed.setTitle(title);
         feed.setDescription(description);
@@ -43,11 +52,12 @@ public class SyndicView extends AbstractRssFeedView {
 
     @Override
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        @SuppressWarnings("unchecked")
+        List<Item> items = new ArrayList<Item>();
         Collection<StatusDTO> listContent = (Collection<StatusDTO>) model.get("feedContent");
+        if (listContent == null) {
+            return items;
+        }
         String statusBaseLink = (String) model.get("statusBaseLink");
-        List<Item> items = new ArrayList<Item>(listContent.size());
-
         for (StatusDTO tempContent : listContent) {
 
             Item item = new Item();
