@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 /**
- * @author tksh1670
+ * @author Pierre Rust
  */
 @Controller
 public class SyndicTimelineController {
