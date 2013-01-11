@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public class SyndicView extends AbstractRssFeedView {
 
-
     /**
      * @param model
      */

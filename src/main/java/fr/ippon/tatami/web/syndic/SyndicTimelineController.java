@@ -27,7 +27,8 @@ import java.util.Locale;
  */
 @Controller
 public class SyndicTimelineController {
-    private final Log log = LogFactory.getLog(fr.ippon.tatami.web.rest.TimelineController.class);
+
+    private final Log log = LogFactory.getLog(SyndicTimelineController.class);
 
     @Inject
     private TimelineService timelineService;
