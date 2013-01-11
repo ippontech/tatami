@@ -490,7 +490,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      self.addItem(model, options.index);
+      self.addItem(model, options.at);
     }, this);
   },
 
