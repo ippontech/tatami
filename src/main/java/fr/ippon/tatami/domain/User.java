@@ -70,11 +70,11 @@ public class User {
     @Column(name = "preferences_mention_email")
     @JsonIgnore
     private Boolean preferencesMentionEmail;
-    
+
     @Column(name = "rssUid")
     @JsonIgnore
     private String rssUid;
-     
+
     @Column(name = "attachementsSize")
     private long attachementsSize;
 

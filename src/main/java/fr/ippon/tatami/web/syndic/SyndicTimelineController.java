@@ -7,19 +7,22 @@ package fr.ippon.tatami.web.syndic;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import java.util.Collection;
-import java.util.Locale;
-import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.Locale;
+
 /**
- *
  * @author tksh1670
  */
 @Controller
@@ -55,7 +58,7 @@ public class SyndicTimelineController {
         if (log.isDebugEnabled()) {
             log.debug("RSS request to get someone's status (username=" + login + ").");
         }
-        Collection<StatusDTO> statuses = timelineService.getUserTimeline(login, count, null,null);
+        Collection<StatusDTO> statuses = timelineService.getUserTimeline(login, count, null, null);
 
         ModelAndView mav = new ModelAndView("syndicView");
 
@@ -70,7 +73,7 @@ public class SyndicTimelineController {
         mav.addObject("statusBaseLink", "/tatami/profile/");
 
         // the link must point the actual content and not to the rss channel
-        mav.addObject("feedLink", "/tatami/" );
+        mav.addObject("feedLink", "/tatami/");
         mav.addObject("feedContent", statuses);
         return mav;
 

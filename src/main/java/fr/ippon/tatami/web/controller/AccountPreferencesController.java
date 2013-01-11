@@ -64,7 +64,7 @@ public class AccountPreferencesController {
     @RequestMapping(value = "/account/preferences/notifications/update",
             method = RequestMethod.POST)
     public String updateNotificationsPreferences(@RequestParam(required = false) String preferencesMentionEmail,
-        @RequestParam(required=false) String preferencesRssTimeline) {
+                                                 @RequestParam(required = false) String preferencesRssTimeline) {
         boolean booleanPreferencesMentionEmail = false;
         if (preferencesMentionEmail != null && preferencesMentionEmail.equals("on")) {
             booleanPreferencesMentionEmail = true;

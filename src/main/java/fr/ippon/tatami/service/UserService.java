@@ -306,12 +306,11 @@ public class UserService {
 
         User currentUser = authenticationService.getCurrentUser();
         String rssUid = currentUser.getRssUid();
-        if (booleanPreferencesRssTimeline ) {
+        if (booleanPreferencesRssTimeline) {
             // if we already have an rssUid it means it's already activated :
             // nothing to do, we do not want to change it
 
-            if ( (rssUid == null) || rssUid.isEmpty())
-            {
+            if ((rssUid == null) || rssUid.isEmpty()) {
                 // Activate rss feed publication.
                 rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
                 currentUser.setRssUid(rssUid);

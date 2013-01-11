@@ -29,11 +29,11 @@ public class Preferences {
         return rssUid;
     }
 
-    public Boolean getRssUidActive(){
+    public Boolean getRssUidActive() {
         return rssUidActive;
     }
 
-    public void setRssUidActive(boolean rssUidActive){
+    public void setRssUidActive(boolean rssUidActive) {
         this.rssUidActive = rssUidActive;
     }
 

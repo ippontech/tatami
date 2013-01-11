@@ -1,9 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.RSS_CF;
 import fr.ippon.tatami.repository.RssUidRepository;
 import fr.ippon.tatami.service.util.RandomUtil;
-import javax.inject.Inject;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -14,12 +12,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
+
+import static fr.ippon.tatami.config.ColumnFamilyKeys.RSS_CF;
+
 /**
  * Cassandra implementation of the RssUid repository.
  * <p/>
  * Structure : - Key = "rss_uid" - Name = key - Value = login
  *
- * 
  * @author Pierre Rust
  */
 @Repository
@@ -46,10 +47,10 @@ public class CassandraRssUidRepository implements RssUidRepository {
         ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
         HColumn<String, String> column =
                 query.setColumnFamily(RSS_CF)
-                .setKey(ROW_KEY)
-                .setName(rssUid)
-                .execute()
-                .get();
+                        .setKey(ROW_KEY)
+                        .setName(rssUid)
+                        .execute()
+                        .get();
 
         if (column != null) {
             return column.getValue();
@@ -57,10 +58,9 @@ public class CassandraRssUidRepository implements RssUidRepository {
             return null;
         }
     }
-    
+
     @Override
-    public void removeRssUid(String rssUid)
-    {
+    public void removeRssUid(String rssUid) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(ROW_KEY, RSS_CF, rssUid, StringSerializer.get());
     }
