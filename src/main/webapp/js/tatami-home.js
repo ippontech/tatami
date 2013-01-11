@@ -468,7 +468,13 @@ app.View.TimeLineNewView = Backbone.View.extend({
     // Update Title
     if (this.temp.length > 0) {
       document.title = "Tatami (" + this.temp.length + ")";
-      NotificationManager.setNotification("Tatami notification", (this.temp.length) + " unread statuses", true);
+      var notificationText = "";
+      if (this.temp.length == 1) {
+        notificationText = "1 unread status";
+      } else {
+        notificationText = (this.temp.length) + " unread statuses";
+      }
+      NotificationManager.setNotification("Tatami notification", notificationText, true);
     } else {
       document.title = "Tatami";
     }
