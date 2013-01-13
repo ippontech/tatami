@@ -104,6 +104,7 @@ app.View.UpdateView = Backbone.View.extend({
 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#updateStatusEditorTab").hide();
           $("#dropzone").hide();
           $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
@@ -130,16 +131,23 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
+          $("#updateStatusPreview").css("height", "225px");
+	  $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtn").fadeIn();
           $("#dropzone").fadeIn();
+	  var converter1 = Markdown.getSanitizingConverter();
+          var editor1 = new Markdown.Editor(converter1);
+          editor1.run();
+                
+
       });
 
       $("#updateStatusContent").blur(function(){
           if($(this).val().length == 0){
               $(this).css("height", "20px");
-              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+              $("#updateStatusEditorTab, #dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
           }
       });
 

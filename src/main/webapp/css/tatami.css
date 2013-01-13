@@ -69,6 +69,11 @@ form {
     height: 20px;
 }
 
+#updateStatusEditorTab {
+    display: none;
+    margin-bottom: 0px;
+}
+
 #contentGroup {
     display: none;
 }
