@@ -6,6 +6,8 @@ import org.apache.thrift.transport.TTransportException;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 
+import fr.ippon.tatami.plugin.config.PluginsConfiguration;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -20,7 +22,8 @@ import java.io.IOException;
         AsyncConfiguration.class,
         CacheConfiguration.class,
         CassandraConfiguration.class,
-        SearchConfiguration.class})
+        SearchConfiguration.class,
+        PluginsConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationConfiguration {
 

@@ -436,6 +436,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>fr.ippon.tatami</groupId>
+            <artifactId>plugin-api</artifactId>
+            <version>0.1</version>
+            <!-- We use a system scope dependency to avoid changes in the way people build or run Tatami
+                 It's probable that will fix this in the future-->
+            <scope>system</scope>
+            <systemPath>${project.basedir}/plugin-api/plugin-api-0.1.jar</systemPath>
+        </dependency>
+    
+        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.2.2</version>
