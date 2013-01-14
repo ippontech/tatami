@@ -476,10 +476,18 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
           status:model,
           discuss:(this.options.discuss)
       }));
+      
+      $('a[data-toggle="tab"]').on('show', function (e) {
+          if (e.target.id === 'replyPreviewTab') {
+            var converter =  new Markdown.getSanitizingConverter();
+            $('#replyPreview').html(
+                converter.makeHtml($("#replyEdit").val()));
+          }
+      });
 
       $(this.el).find("abbr.timeago").timeago();
-      var element = $(this.el).find("textarea.reply");
-      $(this.el).find("textarea.reply").typeahead(new Suggester(element));
+      var element = $(this.el).find("textarea.replyEdit");
+      $(this.el).find("textarea.replyEdit").typeahead(new Suggester(element));
       return $(this.el);
   }
 });

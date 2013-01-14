@@ -256,6 +256,19 @@ form {
 .status-content a {
   font-weight: bold;
 }
+/** replay to status */
+
+#replyEditorTab {
+  margin-bottom : 5px;
+}
+#replyEdit {
+  height : 120px;
+}
+
+#replyPreview {
+  margin-bottom : 10px;
+  height : 110px;
+}
 
 .status .well {
   padding: 5px;
