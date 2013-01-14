@@ -78,8 +78,8 @@
     <div class="control-group">
       <div class="tabbable">
         <ul id="updateStatusEditorTab" class="nav nav-tabs" >
-	  <li class="active"><a href="#updateStatusEditPane" data-toggle="tab">editor TODO</a></li>
-	  <li><a href="#updateStatusPreviewPane" data-toggle="tab">preview TODO </a></li>
+	  <li class="active"><a href="#updateStatusEditPane" id="updateStatusEditTab" data-toggle="tab">editor TODO</a></li>
+	  <li><a href="#updateStatusPreviewPane" id="updateStatusPreviewTab" data-toggle="tab">preview TODO </a></li>
 	</ul>
 	<div class="tab-content">
 	  <div class="tab-pane active" id="updateStatusEditPane">
@@ -87,7 +87,7 @@
 	    <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
 	  </div>
 	  <div class="tab-pane" id="updateStatusPreviewPane">
-	    <p id="updateStatusPreview">tes test test sjbq bqsk</p>
+	    <p id="updateStatusPreview" class="well status-content">tes test test sjbq bqsk</p>
 	  </div>
 	</div>
       </div>

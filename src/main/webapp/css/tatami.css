@@ -71,7 +71,11 @@ form {
 
 #updateStatusEditorTab {
     display: none;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
+}
+
+#updateStatusPreview {
+    margin-top : 3px;
 }
 
 #contentGroup {

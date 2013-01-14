@@ -101,7 +101,7 @@ app.View.UpdateView = Backbone.View.extend({
       success: function(model, response) {
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
-
+          $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show'); 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
           $("#updateStatusEditorTab").hide();
@@ -131,17 +131,21 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
-          $("#updateStatusPreview").css("height", "225px");
+          $("#updateStatusPreview").css("height", "220px");
 	  $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtn").fadeIn();
           $("#dropzone").fadeIn();
-	  var converter1 = Markdown.getSanitizingConverter();
-          var editor1 = new Markdown.Editor(converter1);
-          editor1.run();
-                
+      });
 
+      $('a[data-toggle="tab"]').on('show', function (e) {
+          if (e.target.id === 'updateStatusPreviewTab') {
+            //var converter = new Markdown.Converter();
+            var converter =  new Markdown.getSanitizingConverter();
+            $('#updateStatusPreview').html(
+                converter.makeHtml($("#updateStatusContent").val()));
+          }
       });
 
       $("#updateStatusContent").blur(function(){
