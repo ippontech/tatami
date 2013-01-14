@@ -86,6 +86,10 @@ form {
     display: none;
 }
 
+#updateStatusBtns {
+    display:none;
+}
+
 .counter{
     font-size:80%;
     font-style: italic;

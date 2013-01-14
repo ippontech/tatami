@@ -108,7 +108,7 @@ app.View.UpdateView = Backbone.View.extend({
           $("#dropzone").hide();
           $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
-          $("#updateStatusBtn").hide();
+          $("#updateStatusBtns").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
           $("#statusUpdate").popover('show');
           $("#updateStatusContent").change();
@@ -135,13 +135,12 @@ app.View.UpdateView = Backbone.View.extend({
 	  $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
-          $("#updateStatusBtn").fadeIn();
+          $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
-            //var converter = new Markdown.Converter();
             var converter =  new Markdown.getSanitizingConverter();
             $('#updateStatusPreview').html(
                 converter.makeHtml($("#updateStatusContent").val()));
@@ -151,7 +150,7 @@ app.View.UpdateView = Backbone.View.extend({
       $("#updateStatusContent").blur(function(){
           if($(this).val().length == 0){
               $(this).css("height", "20px");
-              $("#updateStatusEditorTab, #dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+              $("#updateStatusEditorTab, #dropzone, #updateStatusBtns, #updateStatusPrivate, #contentGroup").hide();
           }
       });
 
@@ -167,7 +166,7 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
-      $("#updateStatusBtn").popover({
+      $("#updateStatusBtns").popover({
           animation:true,
           placement:'bottom',
           trigger:'manual'

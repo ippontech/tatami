@@ -87,7 +87,7 @@
 	    <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
 	  </div>
 	  <div class="tab-pane" id="updateStatusPreviewPane">
-	    <p id="updateStatusPreview" class="well status-content">tes test test sjbq bqsk</p>
+	    <p id="updateStatusPreview" class="well status-content"></p>
 	  </div>
 	</div>
       </div>
