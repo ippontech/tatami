@@ -78,8 +78,8 @@
     <div class="control-group">
       <div class="tabbable">
         <ul id="updateStatusEditorTab" class="nav nav-tabs" >
-	  <li class="active"><a href="#updateStatusEditPane" id="updateStatusEditTab" data-toggle="tab">editor TODO</a></li>
-	  <li><a href="#updateStatusPreviewPane" id="updateStatusPreviewTab" data-toggle="tab">preview TODO </a></li>
+	  <li class="active"><a href="#updateStatusEditPane" id="updateStatusEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
+	  <li><a href="#updateStatusPreviewPane" id="updateStatusPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
 	</ul>
 	<div class="tab-content">
 	  <div class="tab-pane active" id="updateStatusEditPane">
@@ -113,7 +113,7 @@
           <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
       </label>
     </div>
-    <div class="control-group">
+    <div class="control-group" id="updateStatusBtns">
         <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
