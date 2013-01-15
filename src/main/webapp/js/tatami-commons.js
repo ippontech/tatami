@@ -539,8 +539,10 @@ initialize: function() {
 
 set: function(owner, followed) {
   if(owner){
-	  this.events = {};
-	  this.editMyProfile();
+	  this.events = {
+          "click .btn": "editMyProfile"
+      };
+	  this.editMyProfileRender();
   } 
   else if(!owner && followed) {
     this.events = {
@@ -554,6 +556,10 @@ set: function(owner, followed) {
     };
     this.followRender();
   }
+},
+
+editMyProfile: function() {
+  window.location = '/tatami/account';
 },
 
 follow: function() {
@@ -604,7 +610,7 @@ followedRender: function() {
   $(this.el).html(this.templateFollowed());
 },
 
-editMyProfile: function() {
+editMyProfileRender: function() {
   $(this.el).html(this.templateUserEdit());
 },
 
