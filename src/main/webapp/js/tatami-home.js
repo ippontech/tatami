@@ -19,6 +19,12 @@ else {
   app = window.app;
 }
 
+marked.setOptions({
+    gfm:true,
+    pedantic:false,
+    sanitize:true
+});
+
 /*
   Profile
 */
@@ -141,9 +147,8 @@ app.View.UpdateView = Backbone.View.extend({
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
-            var converter =  new Markdown.getSanitizingConverter();
             $('#updateStatusPreview').html(
-                converter.makeHtml($("#updateStatusContent").val()));
+                marked($("#updateStatusContent").val()));
           }
       });
 

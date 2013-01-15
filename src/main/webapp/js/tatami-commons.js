@@ -479,9 +479,8 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
       
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'replyPreviewTab') {
-            var converter =  new Markdown.getSanitizingConverter();
             $('#replyPreview').html(
-                converter.makeHtml($("#replyEdit").val()));
+                marked($("#replyEdit").val()));
           }
       });
 
