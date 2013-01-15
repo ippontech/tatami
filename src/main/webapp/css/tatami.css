@@ -69,12 +69,25 @@ form {
     height: 20px;
 }
 
+#updateStatusEditorTab {
+    display: none;
+    margin-bottom: 5px;
+}
+
+#updateStatusPreview {
+    margin-top : 3px;
+}
+
 #contentGroup {
     display: none;
 }
 
 #updateStatusPrivate {
     display: none;
+}
+
+#updateStatusBtns {
+    display:none;
 }
 
 .counter{
@@ -242,6 +255,19 @@ form {
 
 .status-content a {
   font-weight: bold;
+}
+/** replay to status */
+
+#replyEditorTab {
+  margin-bottom : 5px;
+}
+#replyEdit {
+  height : 120px;
+}
+
+#replyPreview {
+  margin-bottom : 10px;
+  height : 110px;
 }
 
 .status .well {

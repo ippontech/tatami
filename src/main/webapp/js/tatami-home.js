@@ -19,6 +19,12 @@ else {
   app = window.app;
 }
 
+marked.setOptions({
+    gfm:true,
+    pedantic:false,
+    sanitize:true
+});
+
 /*
   Profile
 */
@@ -101,13 +107,14 @@ app.View.UpdateView = Backbone.View.extend({
       success: function(model, response) {
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
-
+          $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show'); 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#updateStatusEditorTab").hide();
           $("#dropzone").hide();
           $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
-          $("#updateStatusBtn").hide();
+          $("#updateStatusBtns").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
           $("#statusUpdate").popover('show');
           $("#updateStatusContent").change();
@@ -130,16 +137,25 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
+          $("#updateStatusPreview").css("height", "220px");
+	  $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
-          $("#updateStatusBtn").fadeIn();
+          $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
+      });
+
+      $('a[data-toggle="tab"]').on('show', function (e) {
+          if (e.target.id === 'updateStatusPreviewTab') {
+            $('#updateStatusPreview').html(
+                marked($("#updateStatusContent").val()));
+          }
       });
 
       $("#updateStatusContent").blur(function(){
           if($(this).val().length == 0){
               $(this).css("height", "20px");
-              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+              $("#updateStatusEditorTab, #dropzone, #updateStatusBtns, #updateStatusPrivate, #contentGroup").hide();
           }
       });
 
@@ -155,7 +171,7 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
-      $("#updateStatusBtn").popover({
+      $("#updateStatusBtns").popover({
           animation:true,
           placement:'bottom',
           trigger:'manual'

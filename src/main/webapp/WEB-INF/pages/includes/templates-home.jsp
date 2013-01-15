@@ -76,8 +76,21 @@
 <script type="text/template" id="update-template">
   <fieldset class="span12">
     <div class="control-group">
-      <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content"></textarea>
-      <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
+      <div class="tabbable">
+        <ul id="updateStatusEditorTab" class="nav nav-tabs" >
+	  <li class="active"><a href="#updateStatusEditPane" id="updateStatusEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
+	  <li><a href="#updateStatusPreviewPane" id="updateStatusPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
+	</ul>
+	<div class="tab-content">
+	  <div class="tab-pane active" id="updateStatusEditPane">
+	    <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content"></textarea>
+	    <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
+	  </div>
+	  <div class="tab-pane" id="updateStatusPreviewPane">
+	    <p id="updateStatusPreview" class="well status-content"></p>
+	  </div>
+	</div>
+      </div>
     </div>
     <div id="statusUpdate" data-content="<fmt:message key="tatami.status.update.success"/>"/>
     <div id="contentGroup" class="control-group"><i class="icon-th"/> <fmt:message key="tatami.group.name"/> :&nbsp;
@@ -100,7 +113,7 @@
           <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
       </label>
     </div>
-    <div class="control-group">
+    <div class="control-group" id="updateStatusBtns">
         <button id="updateStatusBtn" type='submit' class="btn btn-primary btn-block"><fmt:message key="tatami.status.update"/></button>
     </div>
   </fieldset>
