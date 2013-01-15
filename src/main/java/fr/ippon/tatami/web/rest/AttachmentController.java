@@ -3,12 +3,10 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.service.AttachmentService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
@@ -24,8 +22,24 @@ public class AttachmentController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<String> getAttachments() {
-        return attachmentService.getAttachmentIdsForCurrentUser();
+    public Collection<Attachment> getAttachments(
+            @RequestParam(required = false) Integer pagination) {
+
+        if (pagination == null) {
+            pagination = 0;
+        }
+
+        Collection<String> attachmentIds =
+                attachmentService.getAttachmentIdsForCurrentUser(pagination);
+
+        Collection<Attachment> attachments =
+                new ArrayList<Attachment>();
+
+        for (String attachmentId : attachmentIds) {
+            attachments.add(attachmentService.getAttachementById(attachmentId));
+        }
+
+        return attachments;
     }
 
     /**
