@@ -53,9 +53,11 @@ public class AttachmentService {
         return attachmentRepository.findAttachmentById(attachmentId);
     }
 
-    public Collection<String> getAttachmentIdsForCurrentUser() {
-        Collection<String> attachmentIds = userAttachmentRepository.findAttachementIds(
-                authenticationService.getCurrentUser().getLogin());
+    public Collection<String> getAttachmentIdsForCurrentUser(int pagination) {
+        Collection<String> attachmentIds =
+                userAttachmentRepository.
+                        findAttachementIds(authenticationService.getCurrentUser().getLogin(),
+                                pagination);
 
         return attachmentIds;
     }

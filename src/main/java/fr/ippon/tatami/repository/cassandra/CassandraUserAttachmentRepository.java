@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.repository.UserAttachmentRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -7,6 +8,7 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
@@ -60,11 +62,18 @@ public class CassandraUserAttachmentRepository
     }
 
     @Override
-    public Collection<String> findAttachementIds(String login) {
+    public Collection<String> findAttachementIds(String login, int pagination) {
         ColumnFamilyResult<String, String> result = attachmentsTemplate.queryColumns(login);
+        int index = 0;
         Collection<String> attachementIds = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
-            attachementIds.add(columnName);
+            if (index > pagination + Constants.PAGINATION_SIZE) {
+                break;
+            }
+            if (index >= pagination) {
+                attachementIds.add(columnName);
+            }
+            index++;
         }
         return attachementIds;
     }
