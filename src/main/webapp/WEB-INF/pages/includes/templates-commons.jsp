@@ -111,8 +111,21 @@
               <div><fmt:message key="tatami.status.reply"/></div>
               <fieldset>
                   <div class="control-group">
-                      <textarea class="reply span12" required="required" maxlength="750"
+		    <div class="tabbable">
+		      <ul id="replyEditorTab" class="nav nav-tabs" >
+			<li class="active"><a href="#replyEditPane" id="replyEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
+			<li><a href="#replyPreviewPane" id="replyPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
+		     </ul>
+		    <div class="tab-content">
+		      <div class="tab-pane active" id="replyEditPane">
+	
+			<textarea id="replyEdit" class="reply span12" required="required" maxlength="750"
                                 name="content">@<@= status.username @> </textarea>
+		      </div>
+		      <div class="tab-pane" id="replyPreviewPane">
+			<p id="replyPreview" class="well status-content"></p>
+		      </div>
+		    </div>  
                   </div>
                   <div>
                       <input type='submit' class="span12 btn btn-primary"
@@ -168,15 +181,15 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn btn-block"><fmt:message key="tatami.user.follow"/></span>
+  <span class="btn btn-block span4"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary btn-block"><fmt:message key="tatami.user.followed"/></span>
+  <span class="btn btn-primary btn-block span4"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="edit-profile">
-  <a href="/tatami/account"><fmt:message key="tatami.user.profile.edit"/></a>
+  <span class="btn btn-primary btn-info span6"><fmt:message key="tatami.user.profile.edit"/></span>
 </script>
 
 <script type="text/template" id="user-item">
