@@ -442,3 +442,21 @@
         <@ } @>
     </td>
 </script>
+
+<script type="text/template" id="header-files">
+<thead>
+    <tr>
+     <th></th>
+     <th></th>
+     <th></th>
+    </tr>
+</thead>
+</script>
+
+<script type="text/template" id="files-item">
+<tr>
+    <td><@= name @></td>
+    <td><@= id @></td>
+    <td><@= size @></td>
+</tr>
+</script>

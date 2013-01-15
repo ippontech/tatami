@@ -142,7 +142,6 @@ app.View.Preferences = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
@@ -551,7 +550,7 @@ app.View.EditGroup = Backbone.View.extend({
 
     render: function(){
         this.delegateEvents();
-        return this.$el.html(this.template(this.model.toJSON()));;
+        return this.$el.html(this.template(this.model.toJSON()));
     },
 
     submit: function(e){
@@ -612,6 +611,46 @@ app.View.DailyStatsView = Backbone.View.extend({
 });
 
 /*
+  Files
+ */
+
+app.Collection.FilesCollection = Backbone.Collection.extend({
+   url: '/tatami/rest/attachments'
+});
+
+app.View.FilesView = Backbone.View.extend({
+   template: _.template($('#files-item').html()),
+
+   tagName: 'table',
+
+   initialize: function(){
+      this.model = new app.Collection.FilesCollection();
+      this.model.fetch({
+          success: _.bind(this.render, this)
+      });
+   },
+
+   render: function(){
+      var data = this.model.toJSON();
+      var self = this;
+      data.forEach(function(m){
+          console.log(m);
+          self.$el.append(self.template({
+              name: m.filename,
+              id: m.attachmentId,
+              size: m.size
+
+          }));
+      });
+
+      this.delegateEvents();
+      return this.$el;
+   }
+
+});
+
+
+/*
  Router
  */
 
@@ -649,6 +688,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'users':'users',
         'users/recommended':'recommendedUsers',
         'status_of_the_day' : 'status_of_the_day',
+        'files' : 'files',
         '*action': 'profile'
     },
 
@@ -835,7 +875,19 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
         this.resetView();
         this.addView(view);
+    },
+
+    files: function(){
+        this.selectMenu('files');
+
+        if(!app.views.files){
+            app.views.files = new app.View.FilesView();
+        }
+
+        this.resetView();
+        this.addView(app.views.files);
     }
+
 
 });
 
