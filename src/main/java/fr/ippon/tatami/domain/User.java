@@ -188,6 +188,14 @@ public class User {
         this.attachementsSize = attachementsSize;
     }
 
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -250,19 +258,5 @@ public class User {
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';
-    }
-
-    /**
-     * @return the rssUid
-     */
-    public String getRssUid() {
-        return rssUid;
-    }
-
-    /**
-     * @param rssUid the rssUid to set
-     */
-    public void setRssUid(String rssUid) {
-        this.rssUid = rssUid;
     }
 }
