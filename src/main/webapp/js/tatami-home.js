@@ -205,6 +205,9 @@ app.View.UpdateView = Backbone.View.extend({
       $(document).bind('drop dragover', function (e) {
           e.preventDefault();
       });
+      $('#dropzone').bind('click', function(){
+         $('#updateStatusFileupload').click();
+      });
     return $(this.el);
   }
 });
