@@ -615,36 +615,41 @@ app.View.DailyStatsView = Backbone.View.extend({
  */
 
 app.Collection.FilesCollection = Backbone.Collection.extend({
-   url: '/tatami/rest/attachments'
+    initialize: function(){
+        this.options= {};
+        this.options.url = {
+            owned: '/tatami/rest/attachments'
+        }
+    },
+    owned: function(){
+        this.url = this.options.url.owned;
+        this.fetch();
+    }
 });
 
 app.View.FilesView = Backbone.View.extend({
    template: _.template($('#files-item').html()),
 
-   tagName: 'table',
-
    initialize: function(){
-      this.model = new app.Collection.FilesCollection();
-      this.model.fetch({
-          success: _.bind(this.render, this)
-      });
+
+   },
+
+   tagName: 'tr',
+
+   events:{
+      'click .btn':'deleted'
    },
 
    render: function(){
-      var data = this.model.toJSON();
-      var self = this;
-      data.forEach(function(m){
-          console.log(m);
-          self.$el.append(self.template({
-              name: m.filename,
-              id: m.attachmentId,
-              size: m.size
-
-          }));
-      });
-
+      this.$el.html(this.template(this.model.toJSON()));
       this.delegateEvents();
       return this.$el;
+   },
+
+   deleted: function(e){
+       e.preventDefault();
+
+       //TO DO
    }
 
 });
@@ -877,15 +882,29 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.addView(view);
     },
 
+    initFiles: function(){
+        if(!app.views.files)
+            app.views.files = new app.View.TabContainer({
+                model: new app.Collection.FilesCollection(),
+                ViewModel: app.View.FilesView,
+                MenuTemplate: _.template($('#files-menu').html()),
+                TabHeaderTemplate: _.template($('#files-header').html())
+            });
+
+        return app.views.files;
+    },
+
     files: function(){
+        var view = this.initFiles();
         this.selectMenu('files');
 
-        if(!app.views.files){
-            app.views.files = new app.View.FilesView();
-        }
+        view.model.owned();
 
-        this.resetView();
-        this.addView(app.views.files);
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        this.selectMenu('files');
     }
 
 

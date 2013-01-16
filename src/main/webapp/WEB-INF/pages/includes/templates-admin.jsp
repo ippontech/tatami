@@ -443,20 +443,28 @@
     </td>
 </script>
 
-<script type="text/template" id="header-files">
+<script type="text/template" id="files-menu">
+    <h2><fmt:message key="tatami.menu.files"/></h2>
+</script>
+
+<script type="text/template" id="files-header">
 <thead>
     <tr>
-     <th></th>
-     <th></th>
+     <th><fmt:message key="tatami.user.file.name"/></th>
+     <th>id</th>
+     <th><fmt:message key="tatami.user.file.size"/></th>
      <th></th>
     </tr>
 </thead>
 </script>
 
 <script type="text/template" id="files-item">
-<tr>
-    <td><@= name @></td>
-    <td><@= id @></td>
+    <td><@= filename @></td>
+    <td class="<@= attachmentId @>"><@= attachmentId @></td>
     <td><@= size @></td>
-</tr>
+    <td>
+        <span class="btn btn-primary btn-block">
+                <fmt:message key="tatami.user.status.delete"/>
+        </span>
+    </td>
 </script>
