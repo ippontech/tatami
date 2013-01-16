@@ -15,6 +15,28 @@ marked.setOptions({
     sanitize:true
 });
 
+$.fn.typeahead.Constructor.prototype.show  =function () {
+  var pos = $.extend({}, this.$element.position(), {
+    height: this.$element[0].offsetHeight
+  });
+
+  var padding = parseInt( this.$element.css('padding-left'), 10 );
+
+  this.$menu
+    .insertAfter(this.$element)
+    .css({
+      top: pos.top + pos.height,
+      left: pos.left + padding
+    })
+    .show();
+
+  this.shown = true;
+
+  this.$menu.css('min-width', this.$element.width() + 'px' );
+
+  return this;
+};
+
 var app = window.app = _.extend({
         views:{},
         collections: {},

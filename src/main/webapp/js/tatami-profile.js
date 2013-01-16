@@ -381,8 +381,8 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     });
     
     app.views.isfollowMe = new app.View.isFollowMe({
-    	authenticateUser: authenticatedUsername,
-    	currrentUser : username
+      authenticateUser: authenticatedUsername,
+      currrentUser : username
     });
     
     app.views.update = new app.View.ProfileUpdateView();

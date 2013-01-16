@@ -254,7 +254,7 @@ app.View.TabContainer = Backbone.View.extend({
             model : this.model,
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
-        })
+        });
     },
     
     selectMenu: function(menu) {
@@ -304,7 +304,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/friends/lookup',
             recommended: '/tatami/rest/users/suggestions'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
@@ -363,7 +363,7 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/tagmemberships/list',
             recommended: '/tatami/rest/tags/popular'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
@@ -391,12 +391,12 @@ app.View.Tag = Backbone.View.extend({
 
     follow: function(){
         var self = this;
-
+        var m;
         if(this.model.get('followed')){
-            var m = new app.Model.UnFollowTagModel(this.model.toJSON());
+            m = new app.Model.UnFollowTagModel(this.model.toJSON());
         }
         else {
-            var m = new app.Model.FollowTagModel(this.model.toJSON());
+            m = new app.Model.FollowTagModel(this.model.toJSON());
         }
         m.save(null, {
             success : function(){
@@ -460,7 +460,7 @@ app.View.AddGroup = Backbone.View.extend({
     submit: function(e){
         e.preventDefault();
 
-        var form = $(e.target); 
+        var form = $(e.target);
 
         this.model.set('name', form.find('[name="name"]').val());
         this.model.set('description', form.find('[name="description"]').val());
@@ -485,7 +485,7 @@ app.Collection.TabGroup = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/groups',
             recommended: '/tatami/rest/groupmemberships/suggestions'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
@@ -532,10 +532,11 @@ app.View.Group = Backbone.View.extend({
 
 app.View.EditGroup = Backbone.View.extend({
     tagName: 'form',
+    attributes : {
+        'class' : 'form-horizontal row-fluid'
+    },
 
     initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-
         this.model = new app.Model.Group({
             groupId: this.options.groupId
         });
@@ -551,13 +552,13 @@ app.View.EditGroup = Backbone.View.extend({
 
     render: function(){
         this.delegateEvents();
-        return this.$el.html(this.template(this.model.toJSON()));;
+        return this.$el.html(this.template(this.model.toJSON()));
     },
 
     submit: function(e){
         e.preventDefault();
 
-        var form = $(e.target); 
+        var form = $(e.target);
 
         this.model.set('name', form.find('[name="name"]').val());
         this.model.set('description', form.find('[name="description"]').val());
@@ -575,8 +576,185 @@ app.View.EditGroup = Backbone.View.extend({
 });
 
 app.View.ListUserGroup = Backbone.View.extend({
+    tagName : 'table',
+    attributes : {
+        'class' : 'table'
+    },
+    initialize : function(){
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
 
+        this.collection.fetch();
+    },
+
+    addItem : function(model){
+        var view = new app.View.ListUserGroupItem({
+            model : model
+        });
+        view.render();
+        this.$el.append(view.el);
+    },
+    render : function(){
+        var tableView = this;
+
+        this.$el.empty();
+        this.collection.forEach(this.addItem, this);
+
+        return this;
+    }
 });
+
+app.View.ListUserGroupItem = Backbone.View.extend({
+    tagName : 'tr',
+
+    template : _.template($('#usergroup-item').html()),
+    
+    initialize : function(){
+        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);
+    },
+
+    events : {
+        'click .delete' : 'removeUser'
+    },
+
+    removeUser : function(){
+        this.model.destroy();
+    },
+    
+    render : function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+    
+});
+
+app.Model.UserSearch = Backbone.Model.extend({
+    toString : function(){
+        return this.get('username');
+    },
+    toLowerCase : function(){
+        return this.toString().toLowerCase();
+    },
+    replace : function(a, b, c){
+        return this.toString().replace(a, b, c);
+    }
+});
+
+app.Collection.UserSearch = Backbone.Collection.extend({
+    url : '/tatami/rest/users/search',
+
+    model : app.Model.UserSearch,
+
+    search : function(q, callback) {
+        var self = this;
+        this.fetch({
+            data : {
+                q : q
+            },
+            success : function(collection){
+                var result = self.removeAlreadyMember();
+                callback(result);
+            }
+        });
+    },
+
+    removeAlreadyMember : function(){
+        var collectionFilter = this.options.filter;
+        if(typeof collectionFilter != 'undefined'){
+            return this.filter(function(result){
+                var isAlreadyMember = collectionFilter.find(function(user){
+                    var isEqual = user.get('username') === result.get('username');
+                    return isEqual;
+                });
+                return !isAlreadyMember;
+            });
+        } else {
+            return this.toArray();
+        }
+    }
+});
+
+app.View.AddUserGroup = Backbone.View.extend({
+    tagName : 'form',
+    attributes : {
+        'class' : 'form-horizontal row-fluid'
+    },
+    initialize: function(){
+        this.$el.html(this.template());
+        var self = this;
+
+        window.collection = this.collection;
+
+        var search = new app.Collection.UserSearch();
+        search.options = {
+            filter : this.collection
+        };
+        this.$el.find('[name="username"]').typeahead({
+            source : function(query, callback){
+                search.search(query, function(results){
+                    return callback(results);
+                });
+            },
+            highlighter: function (item) {
+              var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+              return '<img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/' + item.get('gravatar') + '?s=32&d=mm" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                return '<strong>' + match + '</strong>';
+              }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
+            }
+        });
+    },
+
+    template:_.template($('#groups-form-adduser').html()),
+
+    events:{
+        'submit': 'submit'
+    },
+
+    render: function(){
+        return this;
+    },
+
+    submit: function(e){
+        e.preventDefault();
+
+        var form = $(e.target);
+
+        var data = {
+            'username' : form.find('[name="username"]').val()
+        };
+
+        var self = this;
+        self.collection.create(data, {
+            success: function(model){
+                self.$el.find('.return').append($('#groups-form-adduser-success').html());
+            },
+            error: function(model){
+                self.$el.find('.return').append($('#groups-form-adduser-error').html());
+                model.destroy();
+            }
+        });
+    }
+});
+
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        gravatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
+    }
+});
+
+
 
 /*
  Statistics
@@ -748,7 +926,17 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.addView(new app.View.EditGroup({
             groupId : id
         }));
+        var collection = new app.Collection.ListUserGroupCollection();
+        collection.options = {
+            groupId : id
+        };
+
+        this.addView(new app.View.AddUserGroup({
+            collection : collection
+        }));
+
         this.addView(new app.View.ListUserGroup({
+            collection : collection,
             groupId : id
         }));
     },
