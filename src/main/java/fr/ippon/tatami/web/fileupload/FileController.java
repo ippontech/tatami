@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.fileupload;
 
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.service.AttachmentService;
+import fr.ippon.tatami.service.exception.StorageSizeException;
 import org.apache.log4j.Logger;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class FileController {
     public
     @ResponseBody
     List<UploadedFile> upload(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+            @RequestParam("uploadFile") MultipartFile file) throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());

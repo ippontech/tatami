@@ -377,6 +377,49 @@
 
 </script>
 
+<script type="text/template" id="groups-form-adduser">
+    <fieldset>
+        <legend>
+                <fmt:message key="tatami.group.edit.member.add"/>
+        </legend>
+        <div class="control-group">
+            <label class="control-label" for="username">
+                <fmt:message key="tatami.username"/>
+            </label>
+
+            <div class="controls">
+                <input name="username" type="text" required="required" class="input-xlarge span12"/>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success span12">
+                <fmt:message key="tatami.form.save"/>
+            </button>
+        </div>
+
+    </fieldset>
+
+    <br/>
+    <div class="return"/>
+    <br/>
+</script>
+
+<script type="text/template" id="groups-form-adduser-success">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.group.edit.member.add.success"/>
+    </div>
+</script>
+
+<script type="text/template" id="groups-form-adduser-error">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.group.edit.member.add.error"/>
+    </div>
+
+</script>
+
 <script type="text/template" id="groups-header">
     <!--
     <tr>
@@ -439,6 +482,32 @@
             <span class="btn btn-block">
                 <fmt:message key="tatami.user.follow"/>
             </span>
+        <@ } @>
+    </td>
+</script>
+
+<script type="text/template" id="usergroup-item">
+    <td>
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= firstName @> <@= lastName @>
+    </td>
+    <td>
+        <@ if(role === 'ADMIN'){ @>
+            <fmt:message key="tatami.group.role.admin"/>
+        <@ } else { @>
+            <fmt:message key="tatami.group.role.member"/>
+        <@ } @>
+    </td>
+    <td>
+        <@ if (window.username !== username) { @>
+            <button type="button" class="btn btn-success input-block-level delete">
+                <fmt:message key="tatami.group.edit.member.delete"/>
+            </button>
         <@ } @>
     </td>
 </script>

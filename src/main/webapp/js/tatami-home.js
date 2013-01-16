@@ -159,6 +159,10 @@ app.View.UpdateView = Backbone.View.extend({
           }
       });
 
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+
       $("#updateStatusContent").charCount({
           css:'counter',
           cssWarning:'counter_warning',
@@ -167,9 +171,6 @@ app.View.UpdateView = Backbone.View.extend({
           warning:50,
           counterText:text_characters_left + " "
       });
-      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
-
-      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
       $("#updateStatusBtns").popover({
           animation:true,

@@ -8,6 +8,7 @@ import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -245,6 +246,91 @@ public class GroupController {
     public Collection<Group> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
         return suggestionService.suggestGroups(login);
+    }
+
+
+    /**
+     * GET  /groups/{groupId}/members/ -> members of the group
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/members/",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId ) {
+
+        User currentUser = authenticationService.getCurrentUser();
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+
+        Collection<UserGroupDTO> users = null;
+
+        if ( currentUser == null ) {
+            response.setStatus(401); // Authentication required
+        }
+        else if ( currentGroup == null ) {
+            response.setStatus(404); // Resource not found
+        }
+        else {
+            users = groupService.getMembersForGroup(groupId);
+        }
+        return users;
+    }
+
+
+    /**
+     * POST  /groups/{groupId}/members/ -> add a member to group
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+            method = RequestMethod.PUT,
+            produces = "application/json")
+    @ResponseBody
+    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username ) {
+
+        User currentUser = authenticationService.getCurrentUser();
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        User userToAdd = userService.getUserByUsername(username);
+
+        UserGroupDTO dto = null;
+
+        if ( currentUser == null ) {
+            response.setStatus(401); // Authentication required
+        }
+        else if ( currentGroup == null || userToAdd == null ) {
+            response.setStatus(404); // Resource not found
+        }
+        else {
+            groupService.addMemberToGroup(userToAdd, currentGroup);
+            dto = groupService.getMemberForGroup(groupId, userToAdd);
+        }
+        return dto;
+    }
+
+
+    /**
+     * DELETE  /groups/{groupId}/members/{userUsername} -> remove a member to group
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+            method = RequestMethod.DELETE,
+            produces = "application/json")
+    @ResponseBody
+    public UserGroupDTO removeUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username ) {
+
+        User currentUser = authenticationService.getCurrentUser();
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        User userToremove = userService.getUserByUsername(username);
+
+        UserGroupDTO dto = null;
+
+        if ( currentUser == null ) {
+            response.setStatus(401); // Authentication required
+        }
+        else if ( currentGroup == null || userToremove == null ) {
+            response.setStatus(404); // Resource not found
+        }
+        else {
+            groupService.removeMemberFromGroup(userToremove, currentGroup);
+            dto = groupService.getMemberForGroup(groupId, userToremove);
+        }
+        return dto;
     }
 
 }
