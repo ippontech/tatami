@@ -498,10 +498,17 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
           status:model,
           discuss:(this.options.discuss)
       }));
+      
+      $('a[data-toggle="tab"]').on('show', function (e) {
+          if (e.target.id === 'replyPreviewTab') {
+            $('#replyPreview').html(
+                marked($("#replyEdit").val()));
+          }
+      });
 
       $(this.el).find("abbr.timeago").timeago();
-      var element = $(this.el).find("textarea.reply");
-      $(this.el).find("textarea.reply").typeahead(new Suggester(element));
+      var element = $(this.el).find("textarea.replyEdit");
+      $(this.el).find("textarea.replyEdit").typeahead(new Suggester(element));
       return $(this.el);
   }
 });
@@ -512,7 +519,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      self.addItem(model, options.index);
+      self.addItem(model, options.at);
     }, this);
   },
 
@@ -561,8 +568,10 @@ initialize: function() {
 
 set: function(owner, followed) {
   if(owner){
-	  this.events = {};
-	  this.editMyProfile();
+	  this.events = {
+          "click .btn": "editMyProfile"
+      };
+	  this.editMyProfileRender();
   } 
   else if(!owner && followed) {
     this.events = {
@@ -576,6 +585,10 @@ set: function(owner, followed) {
     };
     this.followRender();
   }
+},
+
+editMyProfile: function() {
+  window.location = '/tatami/account';
 },
 
 follow: function() {
@@ -626,7 +639,7 @@ followedRender: function() {
   $(this.el).html(this.templateFollowed());
 },
 
-editMyProfile: function() {
+editMyProfileRender: function() {
   $(this.el).html(this.templateUserEdit());
 },
 

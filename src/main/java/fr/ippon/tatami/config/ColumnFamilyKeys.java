@@ -39,6 +39,8 @@ public class ColumnFamilyKeys {
 
     public final static String REGISTRATION_CF = "Registration";
 
+    public final static String RSS_CF = "Rss";
+
     public final static String TRENDS_CF = "Trends";
 
     public final static String TAG_FOLLOWERS_CF = "TagFollowers";
@@ -66,5 +68,9 @@ public class ColumnFamilyKeys {
     public final static String ATTACHMENT_CF = "Attachment";
 
     public final static String USER_ATTACHMENT_CF = "UserAttachments";
+
+    public final static String STATUS_ATTACHMENT_CF = "StatusAttachments";
+
+    public final static String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
 
 }

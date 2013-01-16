@@ -131,7 +131,7 @@ app.View.Preferences = Backbone.View.extend({
     },
 
     events: {
-        'submit': 'submit', 
+        'submit': 'submit',
         'change [name="theme"]' : function(e){this.switchTheme($(e.target).val());}
     },
 
@@ -157,7 +157,7 @@ app.View.Preferences = Backbone.View.extend({
 
         this.model.set('theme', form.find('[name="theme"]').val());
         this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
-
+        this.model.set('rssUidActive', form.find('[name="rssUidActive"]')[0].checked);
 
         var self = this;
         self.model.save(null, {
@@ -188,7 +188,7 @@ app.View.Password = Backbone.View.extend({
         this.model.fetch({
             error:_.bind(this.disable, this)
         });
-        
+
         this.$el.empty();
 
         this.$el.html(this.template());
@@ -256,7 +256,7 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
     },
-    
+
     selectMenu: function(menu) {
         this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
         this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
@@ -794,11 +794,11 @@ app.View.DailyStatsView = Backbone.View.extend({
  */
 
 app.Router.AdminRouter = Backbone.Router.extend({
-    
+
     initialize: function(){
         this.views = [];
     },
-    
+
     selectMenu: function(menu) {
         $('.adminMenu a').parent().removeClass('active');
         $('.adminMenu a[href="/tatami/account/#/' + menu + '"]').parent().addClass('active');
@@ -889,7 +889,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
             app.views.addgroup = new app.View.AddGroup();
         return app.views.addgroup;
     },
-    
+
     groups: function(){
         var view = this.initGroups();
         this.selectMenu('groups');
@@ -905,7 +905,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         }
         view.selectMenu('groups');
     },
-    
+
     recommendedGroups: function(){
         var view = this.initGroups();
         this.selectMenu('groups');
@@ -988,7 +988,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
             });
         return app.views.users;
     },
-    
+
     users: function(){
         var view = this.initUsers();
         this.selectMenu('users');
@@ -1001,7 +1001,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         }
         view.selectMenu('users');
     },
-    
+
     recommendedUsers: function(){
         var view = this.initUsers();
         this.selectMenu('users');
@@ -1024,11 +1024,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.resetView();
         this.addView(view);
     }
-    
+
 });
 
 $(function() {
-    
+
     app.router = new app.Router.AdminRouter();
     Backbone.history.start();
 

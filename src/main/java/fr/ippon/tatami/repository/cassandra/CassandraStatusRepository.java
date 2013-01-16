@@ -1,10 +1,9 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
-import fr.ippon.tatami.repository.DiscussionRepository;
-import fr.ippon.tatami.repository.SharesRepository;
-import fr.ippon.tatami.repository.StatusRepository;
+import fr.ippon.tatami.repository.*;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hom.EntityManagerImpl;
 import org.apache.commons.lang.StringUtils;
@@ -42,6 +41,12 @@ public class CassandraStatusRepository implements StatusRepository {
     @Inject
     private SharesRepository sharesRepository;
 
+    @Inject
+    private StatusAttachmentRepository statusAttachmentRepository;
+
+    @Inject
+    private AttachmentRepository attachmentRepository;
+
     private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static Validator validator = factory.getValidator();
 
@@ -67,21 +72,8 @@ public class CassandraStatusRepository implements StatusRepository {
         if (group != null) {
             status.setGroupId(group.getGroupId());
         }
-        Iterator<String> attachmentIterator = attachmentIds.iterator();
-        if (attachmentIterator.hasNext()) {
-            status.setAttachment1Id(attachmentIterator.next());
-        }
-        if (attachmentIterator.hasNext()) {
-            status.setAttachment2Id(attachmentIterator.next());
-        }
-        if (attachmentIterator.hasNext()) {
-            status.setAttachment3Id(attachmentIterator.next());
-        }
-        if (attachmentIterator.hasNext()) {
-            status.setAttachment4Id(attachmentIterator.next());
-        }
-        if (attachmentIterator.hasNext()) {
-            status.setAttachment5Id(attachmentIterator.next());
+        if (attachmentIds != null && attachmentIds.size() > 0) {
+            status.setHasAttachements(true);
         }
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());
@@ -114,6 +106,22 @@ public class CassandraStatusRepository implements StatusRepository {
             return null;
         }
         status.setDetailsAvailable(computeDetailsAvailable(status));
+        if (status.getHasAttachements() != null && status.getHasAttachements() == true) {
+            Collection<String> attachmentIds = statusAttachmentRepository.findAttachementIds(statusId);
+            Collection<Attachment> attachements = new ArrayList<Attachment>();
+            for (String attachmentId : attachmentIds) {
+                Attachment attachment = attachmentRepository.findAttachmentById(attachmentId);
+                if (attachment != null) {
+                    // We copy everyting excepted the attachment content, as we do not want it in the status cache
+                    Attachment attachmentCopy = new Attachment();
+                    attachmentCopy.setAttachmentId(attachmentId);
+                    attachmentCopy.setSize(attachment.getSize());
+                    attachmentCopy.setFilename(attachment.getFilename());
+                    attachements.add(attachment);
+                }
+            }
+            status.setAttachments(attachements);
+        }
         return status;
     }
 

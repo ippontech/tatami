@@ -393,6 +393,11 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           $(this).css("height", "200px");
           $("#updateStatusBtn").fadeIn();
       });
+      
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+
       $("#updateStatusContent").charCount({
           css: 'counter',
           cssWarning: 'counter_warning',
@@ -401,11 +406,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           warning: 50,
           counterText: text_characters_left + " "
       });
-      
-      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
-      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
-      
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',

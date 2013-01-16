@@ -51,6 +51,11 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
+                                    <a href="/tatami/account/#/files">
+                                        <i class="icon-file"></i> <fmt:message
+                                            key="tatami.menu.files"/></a>
+                                </li>
+                                <li>
                                     <a href="/tatami/account/#/users">
                                         <i class="icon-globe"></i> <fmt:message
                                             key="tatami.menu.directory"/></a>

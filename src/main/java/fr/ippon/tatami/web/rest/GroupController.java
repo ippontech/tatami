@@ -19,7 +19,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * REST controller for managing groups.
@@ -86,10 +85,10 @@ public class GroupController {
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
-    public Group updateGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit,  HttpServletResponse response) {
+    public Group updateGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit, HttpServletResponse response) {
         Group group = getGroup(groupId);
 
-        if(group != null){
+        if (group != null) {
             Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();
             boolean isGroupManagedByCurrentUser = false;
             for (Group testGroup : groups) {
@@ -107,8 +106,7 @@ public class GroupController {
             group.setDescription(groupEdit.getDescription());
             groupService.editGroup(group);
             return group;
-        }
-        else {
+        } else {
             response.setStatus(404);
             return null;
         }
@@ -121,10 +119,10 @@ public class GroupController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    public void removeGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit,  HttpServletResponse response) {
+    public void removeGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit, HttpServletResponse response) {
         Group group = getGroup(groupId);
 
-        if(group != null){
+        if (group != null) {
             Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();
             boolean isGroupManagedByCurrentUser = false;
             for (Group testGroup : groups) {
@@ -139,8 +137,7 @@ public class GroupController {
             }
             //groupService.(group);
             return;
-        }
-        else {
+        } else {
             response.setStatus(404);
             return;
         }
@@ -231,10 +228,9 @@ public class GroupController {
     @ResponseBody
     public Group createGroup(HttpServletResponse response, @RequestBody Group group) {
         User currentUser = authenticationService.getCurrentUser();
-        if ( group.getName() != null && !group.getName().equals("")) {
+        if (group.getName() != null && !group.getName().equals("")) {
             groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
-        }
-        else {
+        } else {
             response.setStatus(500);
         }
         return group;

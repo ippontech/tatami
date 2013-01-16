@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -40,20 +41,10 @@ public class Status {
     @Column(name = "statusPrivate")
     private Boolean statusPrivate;
 
-    @Column(name = "attachment1Id")
-    private String attachment1Id;
+    @Column(name = "hasAttachements")
+    private Boolean hasAttachements;
 
-    @Column(name = "attachment2Id")
-    private String attachment2Id;
-
-    @Column(name = "attachment3Id")
-    private String attachment3Id;
-
-    @Column(name = "attachment4Id")
-    private String attachment4Id;
-
-    @Column(name = "attachment5Id")
-    private String attachment5Id;
+    private Collection<Attachment> attachments;
 
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
@@ -135,44 +126,20 @@ public class Status {
         this.statusPrivate = statusPrivate;
     }
 
-    public String getAttachment1Id() {
-        return attachment1Id;
+    public Boolean getHasAttachements() {
+        return hasAttachements;
     }
 
-    public void setAttachment1Id(String attachment1Id) {
-        this.attachment1Id = attachment1Id;
+    public void setHasAttachements(Boolean hasAttachements) {
+        this.hasAttachements = hasAttachements;
     }
 
-    public String getAttachment2Id() {
-        return attachment2Id;
+    public Collection<Attachment> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment2Id(String attachment2Id) {
-        this.attachment2Id = attachment2Id;
-    }
-
-    public String getAttachment3Id() {
-        return attachment3Id;
-    }
-
-    public void setAttachment3Id(String attachment3Id) {
-        this.attachment3Id = attachment3Id;
-    }
-
-    public String getAttachment4Id() {
-        return attachment4Id;
-    }
-
-    public void setAttachment4Id(String attachment4Id) {
-        this.attachment4Id = attachment4Id;
-    }
-
-    public String getAttachment5Id() {
-        return attachment5Id;
-    }
-
-    public void setAttachment5Id(String attachment5Id) {
-        this.attachment5Id = attachment5Id;
+    public void setAttachments(Collection<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     public String getContent() {
@@ -257,11 +224,7 @@ public class Status {
                 ", domain='" + domain + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", statusPrivate=" + statusPrivate +
-                ", attachment1Id='" + attachment1Id + '\'' +
-                ", attachment2Id='" + attachment2Id + '\'' +
-                ", attachment3Id='" + attachment3Id + '\'' +
-                ", attachment4Id='" + attachment4Id + '\'' +
-                ", attachment5Id='" + attachment5Id + '\'' +
+                ", hasAttachements='" + hasAttachements + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", discussionId='" + discussionId + '\'' +

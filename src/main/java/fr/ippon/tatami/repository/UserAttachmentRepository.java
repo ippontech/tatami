@@ -11,5 +11,5 @@ public interface UserAttachmentRepository {
 
     void removeAttachementId(String login, String attachementId);
 
-    Collection<String> findAttachementIds(String login);
+    Collection<String> findAttachementIds(String login, int pagination);
 }

@@ -3,8 +3,6 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetails;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.Preferences;
@@ -17,13 +15,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
 
 /**
@@ -112,6 +111,10 @@ public class AccountController {
         preferences.put("theme", user.getTheme());
         preferences.put("mentionEmail", user.getPreferencesMentionEmail());
 
+        String rssUid = user.getRssUid();
+        preferences.put("rssUid", rssUid);
+        preferences.put("rssUidActive", (rssUid != null) ? rssUid : "");
+
         return preferences;
     }
 
@@ -129,18 +132,22 @@ public class AccountController {
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
-            if(newPreferences.getTheme() == ""){
+            if (newPreferences.getTheme().isEmpty()) {
                 throw new Exception("Theme can't be null");
             }
             currentUser.setTheme((String) newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
+
+            String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
+            currentUser.setRssUid(rssUid);
 
             this.log.debug(newPreferences.getMentionEmail() + "" + (Boolean) newPreferences.getMentionEmail());
             preferences = new Preferences();
 
             preferences.setTheme(currentUser.getTheme());
             preferences.setMentionEmail(currentUser.getPreferencesMentionEmail());
-
+            preferences.setRssUid(rssUid);
+            preferences.setRssUidActive(!rssUid.isEmpty());
             userService.updateUser(currentUser);
 
             userService.updateThemePreferences((String) newPreferences.getTheme());
@@ -158,12 +165,10 @@ public class AccountController {
             if (log.isDebugEnabled()) {
                 log.debug("User updated : " + currentUser);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             this.log.debug("Error during setting preferences", e);
             response.setStatus(500);
-        }
-        finally {
+        } finally {
             return preferences;
         }
     }
@@ -229,8 +234,7 @@ public class AccountController {
                 log.debug("User password updated : " + currentUser);
             }
             return null;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(500);
             return e.getMessage();
         }

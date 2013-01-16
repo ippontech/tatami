@@ -19,6 +19,12 @@ else {
   app = window.app;
 }
 
+marked.setOptions({
+    gfm:true,
+    pedantic:false,
+    sanitize:true
+});
+
 /*
   Profile
 */
@@ -90,9 +96,7 @@ app.View.UpdateView = Backbone.View.extend({
     var status = new app.Model.StatusUpdateModel();
 
     _.each($(e.target).serializeArray(), function(data) {
-      console.log(data);
       if (data.name == "attachmentIds[]") {
-          console.log("val=" + data.value);
           status.get("attachmentIds").push(data.value);
       } else {
         status.set(data.name, data.value);
@@ -103,13 +107,14 @@ app.View.UpdateView = Backbone.View.extend({
       success: function(model, response) {
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
-
+          $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show'); 
           $("#updateStatusContent").css("height", "20px");
           $("#contentGroup").hide();
+          $("#updateStatusEditorTab").hide();
           $("#dropzone").hide();
           $("#fileUploadResults").empty();
           $("#updateStatusPrivate").hide();
-          $("#updateStatusBtn").hide();
+          $("#updateStatusBtns").hide();
           $("#statusUpdate").popover({placement: 'bottom'});
           $("#statusUpdate").popover('show');
           $("#updateStatusContent").change();
@@ -132,18 +137,31 @@ app.View.UpdateView = Backbone.View.extend({
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
+          $("#updateStatusPreview").css("height", "220px");
+	  $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
-          $("#updateStatusBtn").fadeIn();
+          $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
+      });
+
+      $('a[data-toggle="tab"]').on('show', function (e) {
+          if (e.target.id === 'updateStatusPreviewTab') {
+            $('#updateStatusPreview').html(
+                marked($("#updateStatusContent").val()));
+          }
       });
 
       $("#updateStatusContent").blur(function(){
           if($(this).val().length == 0){
               $(this).css("height", "20px");
-              $("#dropzone, #updateStatusBtn, #updateStatusPrivate, #contentGroup").hide();
+              $("#updateStatusEditorTab, #dropzone, #updateStatusBtns, #updateStatusPrivate, #contentGroup").hide();
           }
       });
+
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
       $("#updateStatusContent").charCount({
           css:'counter',
@@ -153,11 +171,8 @@ app.View.UpdateView = Backbone.View.extend({
           warning:50,
           counterText:text_characters_left + " "
       });
-      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
-      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
-
-      $("#updateStatusBtn").popover({
+      $("#updateStatusBtns").popover({
           animation:true,
           placement:'bottom',
           trigger:'manual'
@@ -206,6 +221,9 @@ app.View.UpdateView = Backbone.View.extend({
       });
       $(document).bind('drop dragover', function (e) {
           e.preventDefault();
+      });
+      $('#dropzone').bind('click', function(){
+         $('#updateStatusFileupload').click();
       });
     return $(this.el);
   }
@@ -470,7 +488,13 @@ app.View.TimeLineNewView = Backbone.View.extend({
     // Update Title
     if (this.temp.length > 0) {
       document.title = "Tatami (" + this.temp.length + ")";
-      NotificationManager.setNotification("Tatami notification", (this.temp.length) + " unread statuses", true);
+      var notificationText = "";
+      if (this.temp.length == 1) {
+        notificationText = "1 unread status";
+      } else {
+        notificationText = (this.temp.length) + " unread statuses";
+      }
+      NotificationManager.setNotification("Tatami notification", notificationText, true);
     } else {
       document.title = "Tatami";
     }

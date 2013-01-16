@@ -71,6 +71,13 @@ public class User {
     @JsonIgnore
     private Boolean preferencesMentionEmail;
 
+    @Column(name = "rssUid")
+    @JsonIgnore
+    private String rssUid;
+
+    @Column(name = "attachementsSize")
+    private long attachementsSize;
+
     private long statusCount;
 
     private long friendsCount;
@@ -173,6 +180,22 @@ public class User {
         this.preferencesMentionEmail = preferencesMentionEmail;
     }
 
+    public long getAttachementsSize() {
+        return attachementsSize;
+    }
+
+    public void setAttachementsSize(long attachementsSize) {
+        this.attachementsSize = attachementsSize;
+    }
+
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -229,6 +252,8 @@ public class User {
                 ", openIdUrl='" + openIdUrl + '\'' +
                 ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
+                ", rssUid=" + rssUid +
+                ", attachementsSize=" + attachementsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
