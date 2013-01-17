@@ -96,7 +96,7 @@ app.Collection.StatusCollection = Backbone.Collection.extend({
 app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update',
   defaults: {
-    'attachmentIds': new Array(),
+    'attachmentIds': new Array()
   }
 });
 

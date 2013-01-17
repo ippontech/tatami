@@ -52,4 +52,19 @@ public class AttachmentController {
     public Attachment getAttachmentById(@PathVariable("attachmentId") String attachmentId) {
         return attachmentService.getAttachementById(attachmentId);
     }
+
+
+    /**
+     * POST /attachment/destroy -> delete a specific attachment
+     */
+    @RequestMapping(value = "/rest/attachment/destroy",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public void DeleteAttachment (@RequestBody Attachment attachment) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to delete file  : " + attachment);
+        }
+        attachmentService.deleteAttachment(attachment);
+    }
 }

@@ -378,7 +378,7 @@
 </script>
 
 <script type="text/template" id="groups-form-adduser">
-    <fieldset @>
+    <fieldset>
         <legend>
                 <fmt:message key="tatami.group.edit.member.add"/>
         </legend>
@@ -509,5 +509,31 @@
                 <fmt:message key="tatami.group.edit.member.delete"/>
             </button>
         <@ } @>
+    </td>
+</script>
+
+<script type="text/template" id="files-menu">
+    <h2><fmt:message key="tatami.menu.files"/></h2>
+</script>
+
+<script type="text/template" id="files-header">
+<thead>
+    <tr>
+     <th><fmt:message key="tatami.user.file.name"/></th>
+     <th>id</th>
+     <th><fmt:message key="tatami.user.file.size"/></th>
+     <th></th>
+    </tr>
+</thead>
+</script>
+
+<script type="text/template" id="files-item">
+    <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
+    <td class="<@= attachmentId @>"><@= attachmentId @></td>
+    <td><@= size @></td>
+    <td>
+        <span class="btn btn-primary btn-block">
+                <fmt:message key="tatami.user.status.delete"/>
+        </span>
     </td>
 </script>
