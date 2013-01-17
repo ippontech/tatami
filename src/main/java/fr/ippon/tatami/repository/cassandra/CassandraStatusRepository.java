@@ -110,7 +110,7 @@ public class CassandraStatusRepository implements StatusRepository {
             Collection<String> attachmentIds = statusAttachmentRepository.findAttachementIds(statusId);
             Collection<Attachment> attachements = new ArrayList<Attachment>();
             for (String attachmentId : attachmentIds) {
-                Attachment attachment = attachmentRepository.findAttachmentById(attachmentId);
+                Attachment attachment = attachmentRepository.findAttachmentMetadataById(attachmentId);
                 if (attachment != null) {
                     // We copy everyting excepted the attachment content, as we do not want it in the status cache
                     Attachment attachmentCopy = new Attachment();
