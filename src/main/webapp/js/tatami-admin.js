@@ -753,8 +753,6 @@ app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
     }
 });
 
-
-
 /*
  Statistics
  */
@@ -788,8 +786,8 @@ app.View.DailyStatsView = Backbone.View.extend({
     }
 });
 
-/*
-  Files
+/**
+ * Files
  */
 
 app.Collection.FilesCollection = Backbone.Collection.extend({

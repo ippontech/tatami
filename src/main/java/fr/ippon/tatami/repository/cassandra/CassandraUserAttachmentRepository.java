@@ -34,7 +34,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_ATTACHMENT_CF;
 public class CassandraUserAttachmentRepository
         implements UserAttachmentRepository {
 
-    ColumnFamilyTemplate<String, String> attachmentsTemplate;
+    private ColumnFamilyTemplate<String, String> attachmentsTemplate;
 
     @Inject
     private Keyspace keyspaceOperator;

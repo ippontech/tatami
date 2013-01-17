@@ -82,6 +82,11 @@ form {
     display: none;
 }
 
+.attachmentBar {
+    height: 18px;
+    background: green;
+}
+
 #updateStatusPrivate {
     display: none;
 }
