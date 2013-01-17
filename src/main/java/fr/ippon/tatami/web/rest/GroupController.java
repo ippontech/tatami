@@ -256,20 +256,18 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId ) {
+    public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
 
         Collection<UserGroupDTO> users = null;
 
-        if ( currentUser == null ) {
+        if (currentUser == null) {
             response.setStatus(401); // Authentication required
-        }
-        else if ( currentGroup == null ) {
+        } else if (currentGroup == null) {
             response.setStatus(404); // Resource not found
-        }
-        else {
+        } else {
             users = groupService.getMembersForGroup(groupId);
         }
         return users;
@@ -283,7 +281,7 @@ public class GroupController {
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
-    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username ) {
+    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
@@ -291,13 +289,11 @@ public class GroupController {
 
         UserGroupDTO dto = null;
 
-        if ( currentUser == null ) {
+        if (currentUser == null) {
             response.setStatus(401); // Authentication required
-        }
-        else if ( currentGroup == null || userToAdd == null ) {
+        } else if (currentGroup == null || userToAdd == null) {
             response.setStatus(404); // Resource not found
-        }
-        else {
+        } else {
             groupService.addMemberToGroup(userToAdd, currentGroup);
             dto = groupService.getMemberForGroup(groupId, userToAdd);
         }
@@ -312,7 +308,7 @@ public class GroupController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    public UserGroupDTO removeUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username ) {
+    public UserGroupDTO removeUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
@@ -320,13 +316,11 @@ public class GroupController {
 
         UserGroupDTO dto = null;
 
-        if ( currentUser == null ) {
+        if (currentUser == null) {
             response.setStatus(401); // Authentication required
-        }
-        else if ( currentGroup == null || userToremove == null ) {
+        } else if (currentGroup == null || userToremove == null) {
             response.setStatus(404); // Resource not found
-        }
-        else {
+        } else {
             groupService.removeMemberFromGroup(userToremove, currentGroup);
             dto = groupService.getMemberForGroup(groupId, userToremove);
         }

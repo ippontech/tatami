@@ -61,10 +61,7 @@ public class AttachmentController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public void DeleteAttachment (@RequestBody Attachment attachment) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to delete file  : " + attachment);
-        }
+    public void DeleteAttachment(@RequestBody Attachment attachment) {
         attachmentService.deleteAttachment(attachment);
     }
 }

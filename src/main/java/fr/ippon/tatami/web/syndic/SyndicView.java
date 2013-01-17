@@ -77,9 +77,6 @@ public class SyndicView extends AbstractRssFeedView {
 
             items.add(item);
         }
-
         return items;
     }
-
-
 }
