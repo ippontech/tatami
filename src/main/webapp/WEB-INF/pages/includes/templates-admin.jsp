@@ -457,12 +457,12 @@
     <ul class="nav nav-tabs">
         <li>
             <a href ="#/tags">
-                <fmt:message key="tatami.account.groups.mygroups"/>
+                <fmt:message key="tatami.menu.tags.directory.followed"/>
             </a>
         </li>
         <li>
             <a href ="#/tags/recommended">
-                <fmt:message key="tatami.account.groups.recommended"/>
+                <fmt:message key="tatami.menu.tags.directory.follow"/>
             </a>
         </li>
     </ul>
