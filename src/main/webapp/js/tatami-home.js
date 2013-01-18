@@ -435,8 +435,9 @@ app.View.TimeLineNewView = Backbone.View.extend({
   refresh: function(callback){
     var self = this;
 
-    var sc = _.clone(this.model);
-    delete sc._callbacks;
+    var sc = this.model.clone();
+    sc.off();
+    sc.url = this.model.url;
 
     var data = {};
     if( typeof this.temp.first() !== 'undefined')
@@ -556,8 +557,9 @@ app.View.TimeLineNextView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
-      delete sc._callbacks;
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
 
       sc.fetch({
         data: {
