@@ -59,6 +59,10 @@ If you want to debug remotely the application with your IDE, set up your MAVEN_O
 export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 ```
 
+### Cassandra troubleshooting
+
+On Mac OS X, you should use JDK 6 and not JDK 7, see [issue #281](https://github.com/ippontech/tatami/issues/281#issuecomment-12430701).
+
 Installation for production use
 ---------------------------------------
 
