@@ -213,10 +213,7 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     public Collection<Group> getAdminGroups() {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<Group> groupsAdmin = groupService.getGroupsWhereCurrentUserIsAdmin();
-
-        return groupsAdmin;
+        return groupService.getGroupsWhereCurrentUserIsAdmin();
     }
 
     /**
