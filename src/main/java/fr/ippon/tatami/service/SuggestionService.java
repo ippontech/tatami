@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserGroupRepository;
@@ -80,7 +81,9 @@ public class SuggestionService {
         String domain = DomainUtil.getDomainFromLogin(login);
         for (String mostFollowedGroup : mostFollowedGroups) {
             Group suggestion = groupService.getGroupById(domain, mostFollowedGroup);
-            suggestions.add(suggestion);
+            if (suggestion.isPublicGroup()) { // Only suggest public groups for the moment
+                suggestions.add(suggestion);
+            }
         }
         return suggestions;
     }
