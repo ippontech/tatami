@@ -81,4 +81,21 @@ public class AttachmentService {
 
         return attachmentIds;
     }
+
+    public void deleteAttachment(Attachment attachment) {
+        if (log.isDebugEnabled()) {
+            log.debug("Removing attachment : " + attachment);
+        }
+        User currentUser = authenticationService.getCurrentUser();
+
+        for (String attachmentIdTest : userAttachmentRepository.findAttachementIds(currentUser.getLogin())) {
+            if (attachmentIdTest.equals(attachment.getAttachmentId())) {
+                userAttachmentRepository.removeAttachementId(currentUser.getLogin(), attachment.getAttachmentId());
+                attachmentRepository.deleteAttachment(attachment);
+                long newAttachementsSize = currentUser.getAttachementsSize() - attachment.getSize();
+                currentUser.setAttachementsSize(newAttachementsSize);
+                break;
+            }
+        }
+    }
 }

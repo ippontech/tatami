@@ -73,8 +73,8 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         if (log.isDebugEnabled()) {
             log.debug("Finding attachment : " + attachmentId);
         }
-        Attachment attachment = new Attachment();
-        attachment.setAttachmentId(attachmentId);
+        Attachment attachment = this.findAttachmentMetadataById(attachmentId);
+
         ColumnQuery<String, String, byte[]> queryAttachement = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
 
@@ -86,6 +86,16 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                         .get();
 
         attachment.setContent(columnAttachement.getValue());
+        return attachment;
+    }
+
+    @Override
+    public Attachment findAttachmentMetadataById(String attachmentId) {
+        if (attachmentId == null) {
+            return null;
+        }
+        Attachment attachment = new Attachment();
+        attachment.setAttachmentId(attachmentId);
 
         ColumnQuery<String, String, String> queryFilename = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get());

@@ -82,6 +82,11 @@ form {
     display: none;
 }
 
+.attachmentBar {
+    height: 18px;
+    background: green;
+}
+
 #updateStatusPrivate {
     display: none;
 }
@@ -398,8 +403,9 @@ table {
 /**
 ** Search Engine
 **/
-.hasCategory{
-    width: 280px;
+
+.typeahead.dropdown-menu.hasCategory{
+    /*width: 280px;*/
     background: #EDEDED;
     padding: 0px;
 }
@@ -413,17 +419,18 @@ table {
     cursor: default;
     height: auto;
     background: #EDEDED;
-    padding: 5px 5px 5px 13px;
+    padding: 6px 5px 5px 13px;
     width:30px;
 }
 .hasCategory li.first{
     margin-top:-31px;
 }
 .hasCategory li.first, .hasCategory .category{
-    border-top: 1px solid #CCCCCC;
+    /*border-top: 1px solid #CCCCCC;*/
 }
 .hasCategory li.item.active a{
     height: 24px;
+    padding:0;
 }
 .hasCategory li:first-child{
     border-top: none;
@@ -442,6 +449,7 @@ table {
 }
 .hasCategory li.item h4 a{
     color:#000;
+    padding:0;
 }
 .hasCategory li.item p{
     font-size: 11px;

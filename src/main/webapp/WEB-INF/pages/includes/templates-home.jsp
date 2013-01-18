@@ -102,6 +102,9 @@
         </select>
     </div>
     <div>
+        <div id="attachmentBar" class="progress progress-striped active" style="display: none;">
+            <div class="bar" style="width: 0%;"></div>
+        </div>
         <div id="dropzone" class="fade well"><fmt:message key="tatami.status.update.drop.file"/></div>
         <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
         <div id="fileUploadResults">

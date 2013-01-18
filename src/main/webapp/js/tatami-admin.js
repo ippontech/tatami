@@ -142,7 +142,6 @@ app.View.Preferences = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
@@ -754,8 +753,6 @@ app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
     }
 });
 
-
-
 /*
  Statistics
  */
@@ -788,6 +785,51 @@ app.View.DailyStatsView = Backbone.View.extend({
         return this.$el;
     }
 });
+
+/**
+ * Files
+ */
+
+app.Collection.FilesCollection = Backbone.Collection.extend({
+    initialize: function(){
+        this.options= {};
+        this.options.url = {
+            owned: '/tatami/rest/attachments'
+        }
+    },
+    owned: function(){
+        this.url = this.options.url.owned;
+        this.fetch();
+    }
+});
+
+app.View.FilesView = Backbone.View.extend({
+   template: _.template($('#files-item').html()),
+
+   initialize: function(){
+
+   },
+
+   tagName: 'tr',
+
+   events:{
+      'click .btn':'deleted'
+   },
+
+   render: function(){
+      this.$el.html(this.template(this.model.toJSON()));
+      this.delegateEvents();
+      return this.$el;
+   },
+
+   deleted: function(e){
+       e.preventDefault();
+
+       //TO DO
+   }
+
+});
+
 
 /*
  Router
@@ -827,6 +869,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'users':'users',
         'users/recommended':'recommendedUsers',
         'status_of_the_day' : 'status_of_the_day',
+        'files' : 'files',
         '*action': 'profile'
     },
 
@@ -1022,7 +1065,33 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
         this.resetView();
         this.addView(view);
+    },
+
+    initFiles: function(){
+        if(!app.views.files)
+            app.views.files = new app.View.TabContainer({
+                model: new app.Collection.FilesCollection(),
+                ViewModel: app.View.FilesView,
+                MenuTemplate: _.template($('#files-menu').html()),
+                TabHeaderTemplate: _.template($('#files-header').html())
+            });
+
+        return app.views.files;
+    },
+
+    files: function(){
+        var view = this.initFiles();
+        this.selectMenu('files');
+
+        view.model.owned();
+
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        this.selectMenu('files');
     }
+
 
 });
 

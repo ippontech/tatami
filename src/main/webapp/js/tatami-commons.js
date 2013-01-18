@@ -96,7 +96,7 @@ app.Collection.StatusCollection = Backbone.Collection.extend({
 app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update',
   defaults: {
-    'attachmentIds': new Array(),
+    'attachmentIds': new Array()
   }
 });
 
@@ -519,8 +519,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      debugger;
-      self.addItem(model, options.at);
+      self.addItem(model, collection.indexOf(model));
     }, this);
   },
 

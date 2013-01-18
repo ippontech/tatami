@@ -138,7 +138,7 @@ app.View.UpdateView = Backbone.View.extend({
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
           $("#updateStatusPreview").css("height", "220px");
-	  $("#updateStatusEditorTab").fadeIn();
+	      $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtns").fadeIn();
@@ -185,10 +185,19 @@ app.View.UpdateView = Backbone.View.extend({
       $('#updateStatusFileupload').fileupload({
           dataType: 'json',
           progressall: function (e, data) {
+              $('#attachmentBar').show();
               var progress = parseInt(data.loaded / data.total * 100, 10);
+              $('#attachmentBar .bar').css(
+                  'width',
+                  progress + '%'
+              );
           },
           dropZone: $('#dropzone'),
           done: function (e, data) {
+              $('#attachmentBar').hide();
+              $('#attachmentBar .bar').css(
+                  'width','0%'
+              );
               $.each(data.result, function (index, attachment) {
                   var size = "";
                   if (attachment.size < 1000000) {
@@ -199,6 +208,15 @@ app.View.UpdateView = Backbone.View.extend({
                   $("<p>" + attachment.name + " (" + size + ")" +
                       "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
+          },
+          fail: function (e, data) {
+              $('#attachmentBar').hide();
+              $('#attachmentBar .bar').css(
+                  'width','0%'
+              );
+              if (data.errorThrown == "Forbidden") {
+                  $("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
+              }
           }
       });
       $(document).bind('dragover', function (e) {
