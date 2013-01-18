@@ -507,3 +507,11 @@ table {
 .typeahead-item{
     width: 200px;
 }
+
+.avatar-float-left {
+  margin-left: -73px;
+}
+
+.avatar-float-left-container {
+  padding-left: 73px;
+}

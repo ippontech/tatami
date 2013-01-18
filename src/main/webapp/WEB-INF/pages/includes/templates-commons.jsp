@@ -181,15 +181,15 @@
 </script>
 
 <script type="text/template" id="follow-button">
-  <span class="btn btn-block span4"><fmt:message key="tatami.user.follow"/></span>
+  <span class="btn btn-block input-block-level"><fmt:message key="tatami.user.follow"/></span>
 </script>
 
 <script type="text/template" id="followed-button">
-  <span class="btn btn-primary btn-block span4"><fmt:message key="tatami.user.followed"/></span>
+  <span class="btn btn-primary btn-block input-block-level"><fmt:message key="tatami.user.followed"/></span>
 </script>
 
 <script type="text/template" id="edit-profile">
-  <span class="btn btn-primary btn-info span6"><fmt:message key="tatami.user.profile.edit"/></span>
+  <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
 </script>
 
 <script type="text/template" id="user-item">
