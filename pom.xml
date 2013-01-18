@@ -67,7 +67,7 @@
                 <log4j.loglevel>WARN</log4j.loglevel>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
-                <tatami.url>https://tatami.ippon.fr</tatami.url>
+                <tatami.url>http://sandbox.tatamisoft.com/</tatami.url>
                 <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
@@ -89,7 +89,7 @@
                     <plugin>
                         <groupId>ro.isdc.wro4j</groupId>
                         <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>1.4.7</version>
+                        <version>${maven.wro4j.version}</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
@@ -100,6 +100,7 @@
                         </executions>
                         <configuration>
                             <targetGroups>all</targetGroups>
+                            <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
                             <ignoreMissingResources>false</ignoreMissingResources>
@@ -108,7 +109,7 @@
                             <dependency>
                                 <groupId>ro.isdc.wro4j</groupId>
                                 <artifactId>wro4j-extensions</artifactId>
-                                <version>1.4.7</version>
+                                <version>${maven.wro4j.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -145,7 +146,7 @@
                     <plugin>
                         <groupId>ro.isdc.wro4j</groupId>
                         <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>1.4.7</version>
+                        <version>${maven.wro4j.version}</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
@@ -156,6 +157,7 @@
                         </executions>
                         <configuration>
                             <targetGroups>all</targetGroups>
+                            <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
                             <ignoreMissingResources>false</ignoreMissingResources>
@@ -164,7 +166,7 @@
                             <dependency>
                                 <groupId>ro.isdc.wro4j</groupId>
                                 <artifactId>wro4j-extensions</artifactId>
-                                <version>1.4.7</version>
+                                <version>${maven.wro4j.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -382,8 +384,6 @@
                         </exclusion>
                     </exclusions>
                 </dependency>
-
-            
             </dependencies>
         </profile>
     </profiles>
@@ -426,6 +426,7 @@
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.8.v20121106</maven.jetty.version>
         <maven.cassandra.version>1.1.0-1</maven.cassandra.version>
+        <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
@@ -521,7 +522,7 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
