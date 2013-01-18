@@ -250,7 +250,7 @@ app.View.TabContainer = Backbone.View.extend({
 
         this.views = {};
         this.views.tab = new app.View.Tab({
-            model : this.model,
+            collection : this.collection,
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         });
@@ -276,8 +276,8 @@ app.View.Tab = Backbone.View.extend({
         this.$el.addClass('table');
 
         this.template = this.options.template;
-        this.model.bind('reset', this.render, this);
-        this.model.bind('add', this.addItem, this);
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
     },
 
     tagName: 'table',
@@ -291,7 +291,7 @@ app.View.Tab = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         this.$el.append(this.template());
-        this.model.forEach(this.addItem, this);
+        this.collection.forEach(this.addItem, this);
         this.delegateEvents();
         return this.$el;
     }
@@ -470,6 +470,7 @@ app.View.AddGroup = Backbone.View.extend({
             success: function(){
                 $(e.target)[0].reset();
                 self.$el.find('.return').append($('#form-success').html());
+                self.trigger('success');
             },
             error: function(){
                 self.$el.find('.return').append($('#form-error').html());
@@ -488,10 +489,18 @@ app.Collection.TabGroup = Backbone.Collection.extend({
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(data, options){
+            return data.filter(function(model){
+                return model.publicGroup;
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(data, options){
+            return data;
+        };
         this.fetch();
     }
 });
@@ -916,7 +925,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initGroups: function(){
         if(!app.views.groups)
             app.views.groups = new app.View.TabContainer({
-                model: new app.Collection.TabGroup(),
+                collection: new app.Collection.TabGroup(),
                 ViewModel: app.View.Group,
                 MenuTemplate: _.template($('#groups-menu').html()),
                 TabHeaderTemplate : _.template($('#groups-header').html())
@@ -926,9 +935,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         return app.views.groups;
     },
 
-    initAddGroup: function(){
-        if(!app.views.addgroup)
+    initAddGroup: function(listView){
+        if(!app.views.addgroup){
             app.views.addgroup = new app.View.AddGroup();
+            app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
+        }
         return app.views.addgroup;
     },
 
@@ -936,9 +947,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initGroups();
         this.selectMenu('groups');
 
-        view.model.owned();
+        view.collection.owned();
 
-        var addview = this.initAddGroup();
+        var addview = this.initAddGroup(view);
+
+        addview.collection = view.collection;
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -952,10 +965,15 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initGroups();
         this.selectMenu('groups');
 
-        view.model.recommended();
+        view.collection.recommended();
+
+        var addview = this.initAddGroup(view);
+
+        addview.collection = view.collection;
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
+            this.addView(addview);
             this.addView(view);
         }
         view.selectMenu('groups/recommended');
@@ -986,7 +1004,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initTags: function(){
         if(!app.views.tags)
             app.views.tags = new app.View.TabContainer({
-                model: new app.Collection.TabTag(),
+                collection: new app.Collection.TabTag(),
                 ViewModel: app.View.Tag,
                 MenuTemplate: _.template($('#tags-menu').html()),
                 TabHeaderTemplate : _.template($('#tags-header').html())
@@ -998,7 +1016,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initTags();
         this.selectMenu('tags');
 
-        view.model.owned();
+        view.collection.owned();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -1011,7 +1029,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initTags();
         this.selectMenu('tags');
 
-        view.model.recommended();
+        view.collection.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -1023,7 +1041,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initUsers: function(){
         if(!app.views.users)
             app.views.users = new app.View.TabContainer({
-                model: new app.Collection.TabUser(),
+                collection: new app.Collection.TabUser(),
                 ViewModel: app.View.User,
                 MenuTemplate: _.template($('#users-menu').html()),
                 TabHeaderTemplate :_.template($('#users-header').html())
@@ -1035,7 +1053,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initUsers();
         this.selectMenu('users');
 
-        view.model.owned();
+        view.collection.owned();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -1048,7 +1066,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initUsers();
         this.selectMenu('users');
 
-        view.model.recommended();
+        view.collection.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -1070,7 +1088,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initFiles: function(){
         if(!app.views.files)
             app.views.files = new app.View.TabContainer({
-                model: new app.Collection.FilesCollection(),
+                collection: new app.Collection.FilesCollection(),
                 ViewModel: app.View.FilesView,
                 MenuTemplate: _.template($('#files-menu').html()),
                 TabHeaderTemplate: _.template($('#files-header').html())
@@ -1083,7 +1101,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initFiles();
         this.selectMenu('files');
 
-        view.model.owned();
+        view.collection.owned();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
