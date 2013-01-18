@@ -34,33 +34,33 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void createAttachment(Attachment attachement) {
+    public void createAttachment(Attachment attachment) {
         if (log.isDebugEnabled()) {
-            log.debug("Creating attachment : " + attachement);
+            log.debug("Creating attachment : " + attachment);
         }
-        String attachementId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
-        attachement.setAttachmentId(attachementId);
+        String attachmentId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
+        attachment.setAttachmentId(attachmentId);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 
-        mutator.insert(attachementId, ATTACHMENT_CF, HFactory.createColumn(CONTENT,
-                attachement.getContent(), StringSerializer.get(), BytesArraySerializer.get()));
+        mutator.insert(attachmentId, ATTACHMENT_CF, HFactory.createColumn(CONTENT,
+                attachment.getContent(), StringSerializer.get(), BytesArraySerializer.get()));
 
-        mutator.insert(attachementId, ATTACHMENT_CF, HFactory.createColumn(FILENAME,
-                attachement.getFilename(), StringSerializer.get(), StringSerializer.get()));
+        mutator.insert(attachmentId, ATTACHMENT_CF, HFactory.createColumn(FILENAME,
+                attachment.getFilename(), StringSerializer.get(), StringSerializer.get()));
 
-        mutator.insert(attachementId, ATTACHMENT_CF, HFactory.createColumn(SIZE,
-                attachement.getSize(), StringSerializer.get(), LongSerializer.get()));
+        mutator.insert(attachmentId, ATTACHMENT_CF, HFactory.createColumn(SIZE,
+                attachment.getSize(), StringSerializer.get(), LongSerializer.get()));
 
     }
 
     @Override
     @CacheEvict(value = "attachment-cache", key = "#attachment.attachmentId")
-    public void deleteAttachment(Attachment attachement) {
+    public void deleteAttachment(Attachment attachment) {
         if (log.isDebugEnabled()) {
-            log.debug("Deleting attachement : " + attachement);
+            log.debug("Deleting attachment : " + attachment);
         }
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addDeletion(attachement.getAttachmentId(), ATTACHMENT_CF);
+        mutator.addDeletion(attachment.getAttachmentId(), ATTACHMENT_CF);
         mutator.execute();
     }
 
@@ -75,17 +75,17 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         }
         Attachment attachment = this.findAttachmentMetadataById(attachmentId);
 
-        ColumnQuery<String, String, byte[]> queryAttachement = HFactory.createColumnQuery(keyspaceOperator,
+        ColumnQuery<String, String, byte[]> queryAttachment = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
 
-        HColumn<String, byte[]> columnAttachement =
-                queryAttachement.setColumnFamily(ATTACHMENT_CF)
+        HColumn<String, byte[]> columnAttachment =
+                queryAttachment.setColumnFamily(ATTACHMENT_CF)
                         .setKey(attachmentId)
                         .setName(CONTENT)
                         .execute()
                         .get();
 
-        attachment.setContent(columnAttachement.getValue());
+        attachment.setContent(columnAttachment.getValue());
         return attachment;
     }
 

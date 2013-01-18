@@ -47,25 +47,25 @@ public class CassandraStatusAttachmentRepository
     }
 
     @Override
-    public void addAttachementId(String statusId, String attachementId) {
+    public void addAttachmentId(String statusId, String attachmentId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(statusId, STATUS_ATTACHMENT_CF, HFactory.createColumn(attachementId,
+        mutator.insert(statusId, STATUS_ATTACHMENT_CF, HFactory.createColumn(attachmentId,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override
-    public void removeAttachementId(String statusId, String attachementId) {
+    public void removeAttachmentId(String statusId, String attachmentId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(statusId, STATUS_ATTACHMENT_CF, attachementId, StringSerializer.get());
+        mutator.delete(statusId, STATUS_ATTACHMENT_CF, attachmentId, StringSerializer.get());
     }
 
     @Override
-    public Collection<String> findAttachementIds(String statusId) {
+    public Collection<String> findAttachmentIds(String statusId) {
         ColumnFamilyResult<String, String> result = attachmentsTemplate.queryColumns(statusId);
-        Collection<String> attachementIds = new ArrayList<String>();
+        Collection<String> attachmentIds = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
-            attachementIds.add(columnName);
+            attachmentIds.add(columnName);
         }
-        return attachementIds;
+        return attachmentIds;
     }
 }

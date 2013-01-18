@@ -3,13 +3,13 @@ package fr.ippon.tatami.repository;
 import java.util.Collection;
 
 /**
- * Stores attachement IDs for a status.
+ * Stores attachment IDs for a status.
  */
 public interface StatusAttachmentRepository {
 
-    void addAttachementId(String statusId, String attachementId);
+    void addAttachmentId(String statusId, String attachmentId);
 
-    void removeAttachementId(String statusId, String attachementId);
+    void removeAttachmentId(String statusId, String attachmentId);
 
-    Collection<String> findAttachementIds(String statusId);
+    Collection<String> findAttachmentIds(String statusId);
 }

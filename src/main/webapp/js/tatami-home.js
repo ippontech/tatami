@@ -94,7 +94,7 @@ app.View.UpdateView = Backbone.View.extend({
     e.preventDefault();
 
     var status = new app.Model.StatusUpdateModel();
-
+    status.set("attachmentIds", new Array());
     _.each($(e.target).serializeArray(), function(data) {
       if (data.name == "attachmentIds[]") {
           status.get("attachmentIds").push(data.value);

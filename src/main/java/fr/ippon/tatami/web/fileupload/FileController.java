@@ -48,7 +48,7 @@ public class FileController {
 
         attachmentService.createAttachment(attachment);
 
-        log.debug("Created attachement : " + attachment.getAttachmentId());
+        log.debug("Created attachment : " + attachment.getAttachmentId());
 
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile uploadedFile = new UploadedFile(
@@ -64,7 +64,7 @@ public class FileController {
     @RequestMapping(value = "/file/{attachmentId}/*", method = RequestMethod.GET)
     public void download(@PathVariable("attachmentId") String attachmentId, HttpServletResponse response) {
         try {
-            byte[] fileContent = attachmentService.getAttachementById(attachmentId).getContent();
+            byte[] fileContent = attachmentService.getAttachmentById(attachmentId).getContent();
             response.getOutputStream().write(fileContent);
             response.flushBuffer();
         } catch (IOException e) {

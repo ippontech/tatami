@@ -73,7 +73,7 @@ public class CassandraStatusRepository implements StatusRepository {
             status.setGroupId(group.getGroupId());
         }
         if (attachmentIds != null && attachmentIds.size() > 0) {
-            status.setHasAttachements(true);
+            status.setHasAttachments(true);
         }
         status.setContent(content);
         status.setStatusDate(Calendar.getInstance().getTime());
@@ -106,9 +106,9 @@ public class CassandraStatusRepository implements StatusRepository {
             return null;
         }
         status.setDetailsAvailable(computeDetailsAvailable(status));
-        if (status.getHasAttachements() != null && status.getHasAttachements() == true) {
-            Collection<String> attachmentIds = statusAttachmentRepository.findAttachementIds(statusId);
-            Collection<Attachment> attachements = new ArrayList<Attachment>();
+        if (status.getHasAttachments() != null && status.getHasAttachments() == true) {
+            Collection<String> attachmentIds = statusAttachmentRepository.findAttachmentIds(statusId);
+            Collection<Attachment> attachments = new ArrayList<Attachment>();
             for (String attachmentId : attachmentIds) {
                 Attachment attachment = attachmentRepository.findAttachmentMetadataById(attachmentId);
                 if (attachment != null) {
@@ -117,10 +117,10 @@ public class CassandraStatusRepository implements StatusRepository {
                     attachmentCopy.setAttachmentId(attachmentId);
                     attachmentCopy.setSize(attachment.getSize());
                     attachmentCopy.setFilename(attachment.getFilename());
-                    attachements.add(attachment);
+                    attachments.add(attachment);
                 }
             }
-            status.setAttachments(attachements);
+            status.setAttachments(attachments);
         }
         return status;
     }

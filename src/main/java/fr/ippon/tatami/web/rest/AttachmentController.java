@@ -36,7 +36,7 @@ public class AttachmentController {
                 new ArrayList<Attachment>();
 
         for (String attachmentId : attachmentIds) {
-            attachments.add(attachmentService.getAttachementById(attachmentId));
+            attachments.add(attachmentService.getAttachmentById(attachmentId));
         }
 
         return attachments;
@@ -50,7 +50,7 @@ public class AttachmentController {
             produces = "application/json")
     @ResponseBody
     public Attachment getAttachmentById(@PathVariable("attachmentId") String attachmentId) {
-        return attachmentService.getAttachementById(attachmentId);
+        return attachmentService.getAttachmentById(attachmentId);
     }
 
 

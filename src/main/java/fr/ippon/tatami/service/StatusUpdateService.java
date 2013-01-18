@@ -175,7 +175,7 @@ public class StatusUpdateService {
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
-                statusAttachmentRepository.addAttachementId(status.getStatusId(),
+                statusAttachmentRepository.addAttachmentId(status.getStatusId(),
                         attachmentId);
             }
         }
