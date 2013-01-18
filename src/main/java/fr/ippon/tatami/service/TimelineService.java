@@ -188,7 +188,7 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
-                        if (status.getHasAttachements() != null && status.getHasAttachements() == true) {
+                        if (status.getHasAttachments() != null && status.getHasAttachments() == true) {
                             statusDTO.setAttachments(status.getAttachments());
                         }
                         statusDTO.setContent(status.getContent());
