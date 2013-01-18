@@ -51,8 +51,8 @@
     </cache>
 
     <cache name="attachment-cache"
-           maxBytesLocalHeap="50%"
-           eternal="false">
+           maxBytesLocalHeap="75%"
+           timeToIdleSeconds="600">
     </cache>
 
 </ehcache>

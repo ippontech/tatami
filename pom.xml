@@ -39,7 +39,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>32M</ehcache.maxBytesLocalHeap>
+                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
                 <tatami.ldapauth.url>ldap://localhost:389</tatami.ldapauth.url>
@@ -173,7 +173,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>32M</ehcache.maxBytesLocalHeap>
+                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
                 <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
