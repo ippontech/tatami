@@ -344,8 +344,8 @@ app.View.SuggestView = Backbone.View.extend({
 
   render: function() {
     $(this.el).empty();
-    if(this.model.length > 0)
-      _.each(this.model.models, this.addItem, this);
+    if(this.model.length > 0) {
+      this.model.forEach(this.addItem, this);}
     else
       $(this.el).html(this.template());
     return $(this.el);
@@ -439,10 +439,10 @@ app.View.TimeLineNewView = Backbone.View.extend({
     delete sc._callbacks;
 
     var data = {};
-    if( typeof _.first(self.temp.models) !== 'undefined')
-      data.since_id = _.first(self.temp.models).get('timelineId');
-    else if(typeof _.first(self.model.models) !== 'undefined')
-      data.since_id = _.first(self.model.models).get('timelineId');
+    if( typeof this.temp.first() !== 'undefined')
+      data.since_id = this.temp.first().get('timelineId');
+    else if(typeof this.model.first() !== 'undefined')
+      data.since_id = this.model.first().get('timelineId');
 
     sc.fetch({
       data:data,
@@ -476,7 +476,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
     NotificationManager.setAllowNotification();
     this.progress();
     var self = this;
-    if (this.model.models.length === 0) {
+    if (this.model.length === 0) {
       this.model.fetch({
         success:function () {
           self.render();
@@ -543,10 +543,10 @@ app.View.TimeLineNextView = Backbone.View.extend({
   nextStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         success: function(){
-          if(self.model.models.length > 0)
+          if(self.model.length > 0)
             self.render();
           else
             self.remove();
@@ -561,12 +561,10 @@ app.View.TimeLineNextView = Backbone.View.extend({
 
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('timelineId')
+          max_id: this.model.last().get('timelineId')
         },
         success: function(){
-          _.each(sc.models, function(model, key) {
-            self.model.push(model);
-          });
+          sc.forEach(self.model.push, self.model);
           if(sc.length > 0)
             self.render();
           else
@@ -1175,9 +1173,7 @@ app.View.SearchNextView = Backbone.View.extend({
       },
       success: function(){
         self.model.options.page++;
-        _.each(sc.models, function(model, key) {
-          self.model.push(model);
-        });
+        sc.forEach(self.model.push, self.model);
         if(sc.length > 0 && sc.length%self.model.options.rpp === 0)
           self.render();
         else

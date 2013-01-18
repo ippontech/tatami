@@ -224,7 +224,7 @@ app.View.TrendsView = Backbone.View.extend({
     render: function() {
         $(this.el).empty();
         if(this.model.length > 0)
-            _.each(this.model.models, this.addItem, this);
+            this.model.forEach(this.addItem, this);
         else
             $(this.el).html(this.template());
         return $(this.el);
@@ -525,7 +525,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
   render: function() {
     $(this.el).empty();
-    _.each(this.model.models, this.addItem, this);
+    this.model.forEach(this.addItem, this);
     return $(this.el);
   },
 

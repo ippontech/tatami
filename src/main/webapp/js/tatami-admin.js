@@ -291,7 +291,7 @@ app.View.Tab = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         this.$el.append(this.template());
-        _.each(this.model.models, this.addItem, this);
+        this.model.forEach(this.addItem, this);
         this.delegateEvents();
         return this.$el;
     }
