@@ -265,13 +265,13 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
-        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= username @> <@= firstName @> <@=lastName@>">
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
     </td>
     <td>
-        <@= firstName @> <@= lastName @>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
     </td>
     <td class="follow"/>
 </script>
@@ -502,13 +502,13 @@
 
 <script type="text/template" id="usergroup-item">
     <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/">
             <@= username @>
         </a>
     </td>
     <td>
-        <@= firstName @> <@= lastName @>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
     </td>
     <td>
         <@ if(role === 'ADMIN'){ @>
