@@ -256,19 +256,17 @@
 </script>
 
 <script type="text/template" id="users-header">
-    <!--
     <tr>
-        <th>Username</th>
-        <th>Real name</th>
-        <th>Action</th>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="users-item">
     <td>
         <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
-        <a href="/tatami/profile/<@= username @>/">
+        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= username @> <@= firstName @> <@=lastName@>">
             <@= username @>
         </a>
     </td>
@@ -421,16 +419,25 @@
 </script>
 
 <script type="text/template" id="groups-header">
-    <!--
     <tr>
-        <th></th>
+        <th><fmt:message key="tatami.group.name"/></th>
+        <th><fmt:message key="tatami.group.add.access"/></th>
+        <th><fmt:message key="tatami.group.counter"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="groups-item">
     <td>
-        <span title="<@= description @>"><@= name @></span>
+        
+        <a href="/tatami/#/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
+    </td>
+    <td>
+        <@ if(publicGroup) { @>
+            <span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
+        <@ } else { @>
+            <span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
+        <@ } @>
     </td>
     <td>
         <@= counter @>
@@ -462,16 +469,15 @@
 </script>
 
 <script type="text/template" id="tags-header">
-    <!--
     <tr>
-        <th></th>
+        <th><fmt:message key="tatami.tag"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="tags-item">
     <td>
-        <@= name @>
+        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
     </td>
     <td class="follow">
         <@ if (followed) { @>
@@ -484,6 +490,14 @@
             </span>
         <@ } @>
     </td>
+</script>
+
+<script type="text/template" id="usergroup-header">
+    <tr>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th><fmt:message key="tatami.group.role"/></th>
+    </tr>
 </script>
 
 <script type="text/template" id="usergroup-item">

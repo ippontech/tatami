@@ -596,7 +596,7 @@ app.View.ListUserGroup = Backbone.View.extend({
     render : function(){
         var tableView = this;
 
-        this.$el.empty();
+        this.$el.html($('#usergroup-header').html());
         this.collection.forEach(this.addItem, this);
 
         return this;
