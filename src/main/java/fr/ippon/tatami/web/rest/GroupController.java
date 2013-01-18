@@ -224,7 +224,6 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     public Group createGroup(HttpServletResponse response, @RequestBody Group group) {
-        User currentUser = authenticationService.getCurrentUser();
         if (group.getName() != null && !group.getName().equals("")) {
             groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
         } else {
