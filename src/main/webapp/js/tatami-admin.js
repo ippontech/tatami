@@ -843,7 +843,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
                 model: model
             });
         }
-
         this.resetView();
         this.addView(app.views.profile.edit);
         this.addView(app.views.profile.destroy);

@@ -214,8 +214,8 @@ app.View.TrendsView = Backbone.View.extend({
         this.model = new app.Collection.TrendsCollection();
 
         this.model.bind('reset', this.render, this);
-        this.model.bind('add', function(model, collection, options) {
-            self.addItem(model, options.index);
+        this.model.bind('add', function(model, collection) {
+            self.addItem(model, collection.indexOf(model));
         }, this);
 
         this.model.fetch();
@@ -519,6 +519,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
+      debugger;
       self.addItem(model, options.at);
     }, this);
   },
