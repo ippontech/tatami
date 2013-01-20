@@ -104,6 +104,7 @@
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
                             <ignoreMissingResources>false</ignoreMissingResources>
+                            <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
                         </configuration>
                         <dependencies>
                             <dependency>
