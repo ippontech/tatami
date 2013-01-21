@@ -45,7 +45,7 @@ public class AttachmentController {
     /**
      * GET  /attachment/{attachmentId} -> get a specific attachment
      */
-    @RequestMapping(value = "/rest/attachment/{attachmentId}",
+    @RequestMapping(value = "/rest/attachments/{attachmentId}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -57,11 +57,12 @@ public class AttachmentController {
     /**
      * POST /attachment/destroy -> delete a specific attachment
      */
-    @RequestMapping(value = "/rest/attachment/destroy",
-            method = RequestMethod.GET,
+    @RequestMapping(value = "/rest/attachments/{attachmentId}",
+            method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    public void DeleteAttachment(@RequestBody Attachment attachment) {
+    public void DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
+        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         attachmentService.deleteAttachment(attachment);
     }
 }

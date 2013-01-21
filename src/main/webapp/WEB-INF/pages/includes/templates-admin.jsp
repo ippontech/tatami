@@ -553,7 +553,7 @@
 <script type="text/template" id="files-item">
     <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
     <td><@= filename @></td>
-    <td><@= size @></td>
+    <td><@= (size/1000) @></td>
     <td>
         <span class="btn btn-primary btn-block">
                 <fmt:message key="tatami.user.status.delete"/>
