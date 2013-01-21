@@ -816,7 +816,7 @@
                         <file>
                             <name>.settings/org.eclipse.core.resources.prefs</name>
                             <content>
-                                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+                                <![CDATA[eclipse.preferences.version=1${line.separator}encoding//src/main/webapp/WEB-INF/messages/messages_en.properties=UTF-8${line.separator}encoding//src/main/webapp/WEB-INF/messages/messages_fr.properties=UTF-8${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
                             </content>
                         </file>
                     </additionalConfig>
