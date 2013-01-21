@@ -374,10 +374,6 @@ form {
 @media (min-width: 1200px) {
 }
 
-table {
-  table-layout: fixed;
-}
-
 .tags-followed {
 	margin:0px 10px 10px 0px;
 	padding:5px;

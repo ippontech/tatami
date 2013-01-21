@@ -386,7 +386,7 @@
             </label>
 
             <div class="controls">
-                <input name="username" type="text" required="required" class="input-xlarge span12"/>
+                <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge span12"/>
             </div>
         </div>
 
@@ -442,15 +442,24 @@
     <td>
         <@= counter @>
     </td>
-    <td>
-        <@ if (admin) { @>
-            <a class="btn btn-primary btn-block" href="#/groups/<@= groupId@>">
-                <fmt:message key="tatami.group.edit.link"/>
-            </a>
-        <@ } else { @>
+</script>
 
-        <@ } @>
-    </td>
+<script type="text/template" id="groups-admin">
+    <a class="btn btn-primary btn-block" href="#/groups/<@= groupId@>">
+        <fmt:message key="tatami.group.edit.link"/>
+    </a>
+</script>
+
+<script type="text/template" id="groups-join">
+    <button type="button" class="btn btn-block">
+        <fmt:message key="tatami.group.join.group"/>
+    </button>
+</script>
+
+<script type="text/template" id="groups-leave">
+    <button type="button" class="btn btn-danger btn-block">
+        <fmt:message key="tatami.group.edit.quit"/>
+    </button>
 </script>
 
 <script type="text/template" id="tags-menu">
@@ -533,8 +542,8 @@
 <script type="text/template" id="files-header">
 <thead>
     <tr>
+     <th><fmt:message key="tatami.user.file.preview"/></th>
      <th><fmt:message key="tatami.user.file.name"/></th>
-     <th>id</th>
      <th><fmt:message key="tatami.user.file.size"/></th>
      <th></th>
     </tr>
@@ -543,7 +552,7 @@
 
 <script type="text/template" id="files-item">
     <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
-    <td class="<@= attachmentId @>"><@= attachmentId @></td>
+    <td><@= filename @></td>
     <td><@= size @></td>
     <td>
         <span class="btn btn-primary btn-block">

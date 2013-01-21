@@ -426,6 +426,7 @@ app.Model.Group = Backbone.Model.extend({
 });
 
 app.Collection.AdminGroup = Backbone.Collection.extend({
+    model : app.Model.Group,
     url: '/tatami/rest/admin/groups'
 });
 
@@ -480,6 +481,7 @@ app.View.AddGroup = Backbone.View.extend({
 });
 
 app.Collection.TabGroup = Backbone.Collection.extend({
+    model : app.Model.Group,
     initialize: function(){
         this.options= {};
         this.options.url = {
@@ -507,34 +509,119 @@ app.Collection.TabGroup = Backbone.Collection.extend({
 
 app.View.Group = Backbone.View.extend({
     initialize: function(){
-        app.collections.adminGroups.bind('reset', this.render, this);
+        this.actionsView = new app.View.ActionsGroup({
+            model : this.model
+        });
     },
 
     template:_.template($('#groups-item').html()),
     tagName: 'tr',
 
     events:{
-        'click': 'show'
-    },
-
-    show: function(){
-        var self = this;
-        var data = this.model.toJSON();
-        data.admin = app.collections.adminGroups.some(function(group){
-            return (group.get('id') === self.model.get('id'));
-        });
     },
 
     render: function(){
         var self = this;
 
         var data = this.model.toJSON();
-        data.admin = app.collections.adminGroups.some(function(group){
-            return (group.get('id') === self.model.get('id'));
-        });
         this.$el.html(this.template(data));
+        this.$el.append(this.actionsView.$el);
         this.delegateEvents();
         return this.$el;
+    }
+});
+
+app.View.ActionsGroup = Backbone.View.extend({
+    tagName : 'td',
+    template : {
+        join : _.template($('#groups-join').html()),
+        leave : _.template($('#groups-leave').html()),
+        admin : _.template($('#groups-admin').html())
+    },
+
+    initialize : function(){
+        var self = this;
+
+        //app.collections.adminGroups.bind('reset', this.render, this);
+
+        this.collection = new app.Collection.ListUserGroupCollection();
+        this.collection.options = {
+            groupId : this.model.id
+        };
+        this.collection.on('reset', this.render, this);
+        this.collection.fetch();
+
+        this.actionModel = new app.Model.ListUserGroupModel({
+            username : username
+        });
+        this.actionModel.urlRoot = function() {
+            return '/tatami/rest/groups/' + self.model.id + '/members/';
+        };
+    },
+
+    events : {
+    },
+
+    renderAdmin : function() {
+        this.$el.html(this.template.admin(this.model.toJSON()));
+        this.delegateEvents({
+            'click' : 'onClickAdmin'
+        });
+    },
+
+    onClickAdmin : function() {
+        /*app.router.navigate('/groups/' + this.model.id, {
+            trigger:true
+        });*/
+    },
+
+    renderMember : function() {
+        this.$el.html(this.template.leave(this.model.toJSON()));
+        this.delegateEvents({
+            'click' : 'onClickMember'
+        });
+    },
+
+    onClickMember : function() {
+        this.actionModel.destroy({
+            success : _.bind(this.renderNotMember, this)
+        });
+    },
+
+    renderNotMember : function() {
+        if(this.model.get('publicGroup')){
+            this.$el.html(this.template.join(this.model.toJSON()));
+            this.delegateEvents({
+                'click' : 'onClickNotMember'
+            });
+        }
+        else {
+            this.$el.empty();
+        }
+    },
+
+    onClickNotMember : function() {
+        this.actionModel.save(null, {
+            success : _.bind(this.renderMember, this)
+        });
+    },
+
+    render : function(){
+        var template = null;
+
+        var self = this;
+        var isAdmin = app.collections.adminGroups.some(function(group){
+            return (group.id === self.model.id);
+        });
+        if (isAdmin) this.renderAdmin();
+        else {
+            var isMember = this.collection.some(function(member){
+                return (member.id === username);
+            });
+            if (isMember) this.renderMember();
+            else this.renderNotMember();
+        }
+        return this;
     }
 });
 
