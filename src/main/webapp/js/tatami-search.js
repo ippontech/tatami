@@ -110,6 +110,7 @@ function SearchEngine(query){
             var obj = {};
             obj.label = '@'+v.username;
             obj.fullName = v.firstName+' '+ v.lastName;
+            obj.gravatar = v.gravatar;
             obj.category = "users";
             data.push(obj);
         });
@@ -164,7 +165,7 @@ function SearchEngine(query){
 
         this.$menu.children('li.category').next().addClass('first');
 
-        return this
+        return this;
     },
 
     this.select = function () {
@@ -183,7 +184,7 @@ function SearchEngine(query){
                window.location = '/tatami/#/groups/'+groupId;
             break;
         }
-        return this.hide()
+        return this.hide();
     }
 
 }

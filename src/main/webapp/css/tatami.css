@@ -405,6 +405,15 @@ form {
     background: #EDEDED;
     padding: 0px;
 }
+
+
+@media (min-width: 979px) { 
+  .typeahead.dropdown-menu.hasCategory{
+    margin-left: -53px;
+  }
+}
+
+
 .hasCategory .item{
     height: 33px;
     margin-left: 40px;
