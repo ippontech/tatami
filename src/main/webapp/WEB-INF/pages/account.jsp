@@ -102,6 +102,8 @@
     var page = "account";
 </script>
 <script src="/js/tatami-commons.js"></script>
+<script src="/js/raphael-min.js"></script>
+<script src="/js/jquery-raphael-tatami-pie.js"></script>
 <script src="/js/tatami-admin.js"></script>
 </body>
 </html>

@@ -15,11 +15,9 @@
         <js>/js/jquery-timeago.js</js>
         <js>/js/jquery-tatami-infinitiScroll.js</js>
         <js>/js/marked.js</js>
-        <js>/js/tatami-search.js</js>
         <js>/js/jquery.ui.widget.js</js>
         <js>/js/jquery.iframe-transport.js</js>
         <js>/js/jquery.fileupload.js</js>
-        <js>/js/raphael-min.js</js>
-        <js>/js/jquery-raphael-tatami-pie.js</js>
+        <js>/js/tatami-search.js</js>
     </group>
 </groups>
