@@ -799,16 +799,19 @@ app.View.DailyStatsView = Backbone.View.extend({
  * Files
  */
 
-app.Collection.FilesCollection = Backbone.Collection.extend({
+app.Model.FileModel = Backbone.Model.extend({
+    idAttribute: 'attachmentId',
     initialize: function(){
-        this.options= {};
-        this.options.url = {
-            owned: '/tatami/rest/attachments'
-        }
-    },
-    owned: function(){
-        this.url = this.options.url.owned;
-        this.fetch();
+
+    }
+});
+
+app.Collection.FilesCollection = Backbone.Collection.extend({
+    model: app.Model.FileModel,
+    url: '/tatami/rest/attachments',
+
+    initialize: function(){
+
     }
 });
 
@@ -816,25 +819,23 @@ app.View.FilesView = Backbone.View.extend({
    template: _.template($('#files-item').html()),
 
    initialize: function(){
-
+       this.model.bind('change', this.render, this);
+       this.model.bind('destroy', this.remove, this);
    },
 
    tagName: 'tr',
 
    events:{
-      'click .btn':'deleted'
+      'click .btn':'removeImage'
    },
 
    render: function(){
       this.$el.html(this.template(this.model.toJSON()));
-      this.delegateEvents();
       return this.$el;
    },
 
-   deleted: function(e){
-       e.preventDefault();
-
-       //TO DO
+   removeImage: function(){
+       this.model.destroy();
    }
 
 });
@@ -1101,7 +1102,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initFiles();
         this.selectMenu('files');
 
-        view.collection.owned();
+        view.collection.fetch();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
