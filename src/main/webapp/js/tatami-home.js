@@ -757,7 +757,7 @@ app.View.FavoritePanelView = Backbone.View.extend({
 
     this.views.refresh.refreshStatus();
 
-    this.on('refresh', this.views.refresh.newStatus, this.views.refresh);
+    this.on('refresh', this.views.refresh.refreshStatus, this.views.refresh);
 
     app.on('refreshFavorite', this.views.refresh.refreshStatus, this.views.refresh);
   },
