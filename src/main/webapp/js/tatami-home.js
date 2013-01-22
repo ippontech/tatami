@@ -133,11 +133,11 @@ app.View.UpdateView = Backbone.View.extend({
   },
 
   disable : function(){
-    this.$el.find('[type="submit"').attr('disabled', 'disabled');
+    this.$el.find('[type="submit"]').attr('disabled', 'disabled');
   },
 
   enable : function(){
-    this.$el.find('[type="submit"').removeAttr('disabled');
+    this.$el.find('[type="submit"]').removeAttr('disabled');
   },
 
   render: function() {
