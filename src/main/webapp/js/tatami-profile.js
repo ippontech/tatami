@@ -96,7 +96,7 @@ app.View.StatusNewView = Backbone.View.extend({
   newStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         data: {
           screen_name: self.model.options.username
@@ -109,15 +109,18 @@ app.View.StatusNewView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
       sc.fetch({
         data: {
-          since_id: _.first(self.model.models).get('timelineId'),
+          since_id: self.model.first().get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){
           sc.models.reverse();
-          _.each(sc.models, function(model, key) {
+          sc.models.forEach(function(model, key) {
             self.model.unshift(model);
           });
           self.render();
@@ -159,13 +162,13 @@ app.View.StatusNextView = Backbone.View.extend({
   nextStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         data: {
           screen_name: self.model.options.username
         },
         success: function(){
-          if(self.model.models.length > 0)
+          if(self.model.length > 0)
             self.render();
           else
             self.remove();
@@ -175,14 +178,17 @@ app.View.StatusNextView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('timelineId'),
+          max_id: self.model.last().get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){
-          _.each(sc.models, function(model, key) {
+          sc.models.forEach(function(model, key) {
             self.model.push(model);
           });
           if(sc.length > 0)
@@ -296,7 +302,7 @@ app.View.UserListView = Backbone.View.extend({
 
   render: function() {
     $(this.el).empty();
-    _.each(this.model.models, this.addItem, this);
+    this.model.forEach(this.addItem, this);
     return $(this.el);
   },
 
