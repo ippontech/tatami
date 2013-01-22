@@ -410,6 +410,8 @@
         <junit.version>4.9</junit.version>
         <cassandra.unit.version>1.1.1.2</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
+        <rome.version>1.0</rome.version>
+        <pegdown.version>1.2.1</pegdown.version>
 
         <selenium.version>2.25.0</selenium.version>
 
@@ -667,11 +669,16 @@
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
         </dependency>
-                <dependency>
-                    <groupId>rome</groupId>
-                    <artifactId>rome</artifactId>
-                    <version>1.0</version>
-                </dependency>        
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>${rome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>${pegdown.version}</version>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>

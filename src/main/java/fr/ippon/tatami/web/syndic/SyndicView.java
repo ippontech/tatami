@@ -6,8 +6,16 @@ package fr.ippon.tatami.web.syndic;
 
 import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Content;
+import com.sun.syndication.feed.rss.Description;
 import com.sun.syndication.feed.rss.Item;
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndContentImpl;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.pegdown.PegDownProcessor;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +30,8 @@ import java.util.Map;
  */
 public class SyndicView extends AbstractRssFeedView {
 
+
+    private final Log log = LogFactory.getLog(SyndicView.class);
     /**
      * @param model
      */
@@ -47,6 +57,7 @@ public class SyndicView extends AbstractRssFeedView {
         feed.setDescription(description);
         feed.setLink(link);
         feed.setEncoding("UTF-8");
+
         super.buildFeedMetadata(model, feed, request);
     }
 
@@ -63,9 +74,22 @@ public class SyndicView extends AbstractRssFeedView {
             Item item = new Item();
 
             String statusText = tempContent.getContent();
+
+            PegDownProcessor processor = new PegDownProcessor();
+            String htmlText = processor.markdownToHtml(statusText);
+            if (log.isDebugEnabled()) {
+                log.debug("feed html content " + htmlText );
+            }
+            // TODO : url handling
+            // inside status : users, tags and groups
+            // in the feed : absolute link
+
             Content content = new Content();
-            content.setValue(statusText);
+            content.setType(Content.HTML);
+            content.setValue(htmlText);
             item.setContent(content);
+
+
             StringBuilder linkBuilder = new StringBuilder(statusBaseLink);
             linkBuilder.append(tempContent.getUsername())
                     .append("/#/status/")
