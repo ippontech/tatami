@@ -107,10 +107,6 @@ form {
     font-style: italic;
 }
 
-#updateStatusGroup {
-    height: 20px;
-}
-
 #updateStatusFileupload {
     display: none;
 }
