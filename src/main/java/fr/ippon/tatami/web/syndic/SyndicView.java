@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Pierre Rust
@@ -80,16 +82,15 @@ public class SyndicView extends AbstractRssFeedView {
             if (log.isDebugEnabled()) {
                 log.debug("feed html content " + htmlText );
             }
-            // TODO : url handling
-            // inside status : users, tags and groups
-            // in the feed : absolute link
+            // url handling  for mention & tags
+            htmlText = convertLinks(htmlText);
 
             Content content = new Content();
             content.setType(Content.HTML);
             content.setValue(htmlText);
             item.setContent(content);
 
-
+            // build link for the status
             StringBuilder linkBuilder = new StringBuilder(statusBaseLink);
             linkBuilder.append(tempContent.getUsername())
                     .append("/#/status/")
@@ -103,6 +104,32 @@ public class SyndicView extends AbstractRssFeedView {
         }
 
         return items;
+    }
+
+    /**
+     *  convert #tag and @mention to html links
+     * @param htmlText
+     * @return html with converted links
+     */
+    private String convertLinks(String htmlText) {
+        // inside status : users (mention) & tags
+        // the regexp are converted from tatami customized marked.js
+        Pattern p = Pattern.compile("@([A-Za-z0-9!#$%'*+\\/=?\\^_`{|}~\\-]+(?:\\.[A-Za-z0-9!#$%'*+\\/=?\\^_`{|}~\\-]+)*)");
+        Matcher m = p.matcher(htmlText);
+        StringBuffer mentionSb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(mentionSb, "<a href='/tatami/profile/$1/' >$0</a>");
+        }
+        m.appendTail(mentionSb);
+
+        p = Pattern.compile("#([^\\s!\"&#$%'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+(?:\\.[^\\s !\"&#$%'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)*)");
+        m = p.matcher(mentionSb.toString());
+        StringBuffer tagSb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(tagSb, "<a href='/tatami/#/tags/$1' >$0</a>");
+        }
+        m.appendTail(tagSb);
+        return tagSb.toString();
     }
 
 
