@@ -92,6 +92,7 @@ app.View.UpdateView = Backbone.View.extend({
   addStatus: function(e) {
     var self = this;
     e.preventDefault();
+    this.disable();
 
     var status = new app.Model.StatusUpdateModel();
     status.set("attachmentIds", new Array());
@@ -102,7 +103,6 @@ app.View.UpdateView = Backbone.View.extend({
         status.set(data.name, data.value);
       }
     });
-
     status.save(null,{
       success: function(model, response) {
           e.target.reset();
@@ -123,11 +123,21 @@ app.View.UpdateView = Backbone.View.extend({
           setTimeout(function () {
               $("#statusUpdate").popover('hide');
           }, 3000);
+          self.enable();
       },
       error: function(model, response) {
-        $(self.el).find('.control-group').addClass('error');
+          $(self.el).find('.control-group').addClass('error');
+          self.enable();
       }
     });
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"').removeAttr('disabled');
   },
 
   render: function() {

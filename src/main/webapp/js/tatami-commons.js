@@ -468,7 +468,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
 
   sendReply: function(e) {
     e.preventDefault();
-
+    this.disable();
     var self = this;
 
     var dm = new app.Model.Discussion({
@@ -485,9 +485,21 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
         
         app.trigger('refreshProfile');
         app.trigger('refreshTimeline');
+        self.enable();
+      },
+      error: function(){
+        self.enable();
       }
     });
 
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"').removeAttr('disabled');
   },
 
   render: function() {

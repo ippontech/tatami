@@ -45,6 +45,7 @@ app.View.ProfileUpdateView = Backbone.View.extend({
   addStatus: function(e) {
     var self = this;
     e.preventDefault();
+    this.disable();
 
     var status = new app.Model.StatusUpdateModel();
 
@@ -65,12 +66,21 @@ app.View.ProfileUpdateView = Backbone.View.extend({
           setTimeout(function () {
               $("#updateStatusBtn").popover('hide');
           }, 3000);
-
+          self.enable();
       },
       error: function(model, response) {
         $(self.el).find('.control-group').addClass('error');
+        self.enable();
       }
     });
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"').removeAttr('disabled');
   },
 
   render: function() {
