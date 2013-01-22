@@ -29,17 +29,6 @@ marked.setOptions({
   Profile
 */
 
-app.Model.ProfileModel = Backbone.Model.extend({
-  defaults: {
-    'gravatar': '',
-    'firstName': '',
-    'lastName': ''
-  },
-  url : function(){
-    return '/tatami/rest/users/show?screen_name=' + username;
-  }
-});
-
 app.View.ProfileInfoView = Backbone.View.extend({
   template: _.template($('#profile-infos-template').html()),
 

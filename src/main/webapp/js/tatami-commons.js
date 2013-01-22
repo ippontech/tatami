@@ -553,6 +553,23 @@ app.View.TimeLineView = Backbone.View.extend({
     }
   }
 });
+/*
+  Profile
+*/
+
+app.Model.ProfileModel = Backbone.Model.extend({
+  defaults: {
+    'gravatar': '',
+    'firstName': '',
+    'lastName': '',
+    'statusCount': 0,
+    'friendsCount': 0,
+    'followersCount': 0
+  },
+  url : function(){
+    return '/tatami/rest/users/show?screen_name=' + username;
+  }
+});
 
 /*
 Friendship
@@ -615,6 +632,7 @@ follow: function() {
     success: function(){
       self.set(self.options.owner, true);
       self.delegateEvents();
+      app.trigger('refreshProfile');
     },
     error: function(){
       self.set(self.options.owner, false);
@@ -635,6 +653,7 @@ unfollow: function() {
     success: function(){
       self.set(self.options.owner, false);
       self.delegateEvents();
+      app.trigger('refreshProfile');
     },
     error: function(){
       self.set(self.options.owner, true);

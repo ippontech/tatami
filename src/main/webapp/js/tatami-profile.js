@@ -384,6 +384,21 @@ app.View.isFollowMe = Backbone.View.extend({
 
 });
 
+app.View.ProfileStatsView = Backbone.View.extend({
+  template: _.template($('#profile-stats-template').html()),
+
+  initialize: function() {
+    this.model.bind('change', this.render, this);
+    app.on('refreshProfile', this.model.fetch, this.model);
+  },
+
+  render: function() {
+    debugger;
+    this.$el.html(this.template({profile:this.model.toJSON()}));
+    return this.$el;
+  }
+});
+
 /*
   Initialization
 */
@@ -399,6 +414,11 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     app.views.isfollowMe = new app.View.isFollowMe({
       authenticateUser: authenticatedUsername,
       currrentUser : username
+    });
+
+    app.views.stats = new app.View.ProfileStatsView({
+      el : $('.profile-infos'),
+      model : new app.Model.ProfileModel()
     });
     
     app.views.update = new app.View.ProfileUpdateView();
