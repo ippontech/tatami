@@ -6,12 +6,7 @@ package fr.ippon.tatami.web.syndic;
 
 import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Content;
-import com.sun.syndication.feed.rss.Description;
 import com.sun.syndication.feed.rss.Item;
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndContentImpl;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * View used to generate the RSS stream corresponding to the timeline
+ *
  * @author Pierre Rust
  */
 public class SyndicView extends AbstractRssFeedView {
@@ -102,9 +99,9 @@ public class SyndicView extends AbstractRssFeedView {
 
             items.add(item);
         }
-
         return items;
     }
+
 
     /**
      *  convert #tag and @mention to html links

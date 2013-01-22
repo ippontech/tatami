@@ -23,7 +23,7 @@
 
     <filter>
         <filter-name>GzipFilter</filter-name>
-        <filter-class>net.sf.ehcache.constructs.web.filter.GzipFilter</filter-class>
+        <filter-class>fr.ippon.tatami.web.filter.TatamiGzipFilter</filter-class>
     </filter>
 
     <filter-mapping>

@@ -41,8 +41,8 @@ public class Status {
     @Column(name = "statusPrivate")
     private Boolean statusPrivate;
 
-    @Column(name = "hasAttachements")
-    private Boolean hasAttachements;
+    @Column(name = "hasAttachments")
+    private Boolean hasAttachments;
 
     private Collection<Attachment> attachments;
 
@@ -126,12 +126,12 @@ public class Status {
         this.statusPrivate = statusPrivate;
     }
 
-    public Boolean getHasAttachements() {
-        return hasAttachements;
+    public Boolean getHasAttachments() {
+        return hasAttachments;
     }
 
-    public void setHasAttachements(Boolean hasAttachements) {
-        this.hasAttachements = hasAttachements;
+    public void setHasAttachments(Boolean hasAttachments) {
+        this.hasAttachments = hasAttachments;
     }
 
     public Collection<Attachment> getAttachments() {
@@ -224,7 +224,7 @@ public class Status {
                 ", domain='" + domain + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", statusPrivate=" + statusPrivate +
-                ", hasAttachements='" + hasAttachements + '\'' +
+                ", hasAttachments='" + hasAttachments + '\'' +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", discussionId='" + discussionId + '\'' +

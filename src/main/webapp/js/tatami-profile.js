@@ -45,6 +45,7 @@ app.View.ProfileUpdateView = Backbone.View.extend({
   addStatus: function(e) {
     var self = this;
     e.preventDefault();
+    this.disable();
 
     var status = new app.Model.StatusUpdateModel();
 
@@ -65,12 +66,21 @@ app.View.ProfileUpdateView = Backbone.View.extend({
           setTimeout(function () {
               $("#updateStatusBtn").popover('hide');
           }, 3000);
-
+          self.enable();
       },
       error: function(model, response) {
         $(self.el).find('.control-group').addClass('error');
+        self.enable();
       }
     });
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"]').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"]').removeAttr('disabled');
   },
 
   render: function() {
@@ -96,7 +106,7 @@ app.View.StatusNewView = Backbone.View.extend({
   newStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         data: {
           screen_name: self.model.options.username
@@ -109,15 +119,18 @@ app.View.StatusNewView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
       sc.fetch({
         data: {
-          since_id: _.first(self.model.models).get('timelineId'),
+          since_id: self.model.first().get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){
           sc.models.reverse();
-          _.each(sc.models, function(model, key) {
+          sc.models.forEach(function(model, key) {
             self.model.unshift(model);
           });
           self.render();
@@ -159,13 +172,13 @@ app.View.StatusNextView = Backbone.View.extend({
   nextStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         data: {
           screen_name: self.model.options.username
         },
         success: function(){
-          if(self.model.models.length > 0)
+          if(self.model.length > 0)
             self.render();
           else
             self.remove();
@@ -175,14 +188,17 @@ app.View.StatusNextView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('timelineId'),
+          max_id: self.model.last().get('timelineId'),
           screen_name: self.model.options.username
         },
         success: function(){
-          _.each(sc.models, function(model, key) {
+          sc.models.forEach(function(model, key) {
             self.model.push(model);
           });
           if(sc.length > 0)
@@ -284,7 +300,7 @@ app.View.UserListView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      self.addItem(model, options.index);
+      self.addItem(model, collection.indexOf(model));
     }, this);
 
     this.model.fetch({
@@ -296,7 +312,7 @@ app.View.UserListView = Backbone.View.extend({
 
   render: function() {
     $(this.el).empty();
-    _.each(this.model.models, this.addItem, this);
+    this.model.forEach(this.addItem, this);
     return $(this.el);
   },
 
@@ -368,6 +384,21 @@ app.View.isFollowMe = Backbone.View.extend({
 
 });
 
+app.View.ProfileStatsView = Backbone.View.extend({
+  template: _.template($('#profile-stats-template').html()),
+
+  initialize: function() {
+    this.model.bind('change', this.render, this);
+    app.on('refreshProfile', this.model.fetch, this.model);
+  },
+
+  render: function() {
+    debugger;
+    this.$el.html(this.template({profile:this.model.toJSON()}));
+    return this.$el;
+  }
+});
+
 /*
   Initialization
 */
@@ -381,8 +412,13 @@ app.Router.ProfileRouter = Backbone.Router.extend({
     });
     
     app.views.isfollowMe = new app.View.isFollowMe({
-    	authenticateUser: authenticatedUsername,
-    	currrentUser : username
+      authenticateUser: authenticatedUsername,
+      currrentUser : username
+    });
+
+    app.views.stats = new app.View.ProfileStatsView({
+      el : $('.profile-infos'),
+      model : new app.Model.ProfileModel()
     });
     
     app.views.update = new app.View.ProfileUpdateView();
@@ -393,6 +429,11 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           $(this).css("height", "200px");
           $("#updateStatusBtn").fadeIn();
       });
+      
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+
       $("#updateStatusContent").charCount({
           css: 'counter',
           cssWarning: 'counter_warning',
@@ -401,11 +442,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           warning: 50,
           counterText: text_characters_left + " "
       });
-      
-      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
-      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
-      
       $("#updateStatusBtn").popover({
           animation: true,
           placement: 'bottom',

@@ -19,16 +19,16 @@
                 <div class="span12">
                   <div class="alert alert-status">
                     <div class="row-fluid">
-                      <div class="span4 text-center">
-                        <a class="pull-left" href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
-                          <img class="nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="${user.firstName} ${user.lastName}">
+                      <div class="span4 text-center avatar-float-left-container">
+                        <a class="pull-left avatar-float-left" href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                          <img class="nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="@${user.username} ${user.firstName} ${user.lastName}">
                         </a>
                         <div class="profile-title">
                           <div>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
                               <h4>${user.firstName} ${user.lastName}</h4>
                             </a>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
                               @${user.username}
                             </a>
                           </div>

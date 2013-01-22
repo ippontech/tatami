@@ -36,7 +36,7 @@ public class AttachmentController {
                 new ArrayList<Attachment>();
 
         for (String attachmentId : attachmentIds) {
-            attachments.add(attachmentService.getAttachementById(attachmentId));
+            attachments.add(attachmentService.getAttachmentById(attachmentId));
         }
 
         return attachments;
@@ -45,11 +45,24 @@ public class AttachmentController {
     /**
      * GET  /attachment/{attachmentId} -> get a specific attachment
      */
-    @RequestMapping(value = "/rest/attachment/{attachmentId}",
+    @RequestMapping(value = "/rest/attachments/{attachmentId}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
     public Attachment getAttachmentById(@PathVariable("attachmentId") String attachmentId) {
-        return attachmentService.getAttachementById(attachmentId);
+        return attachmentService.getAttachmentById(attachmentId);
+    }
+
+
+    /**
+     * POST /attachment/destroy -> delete a specific attachment
+     */
+    @RequestMapping(value = "/rest/attachments/{attachmentId}",
+            method = RequestMethod.DELETE,
+            produces = "application/json")
+    @ResponseBody
+    public void DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
+        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        attachmentService.deleteAttachment(attachment);
     }
 }

@@ -75,8 +75,8 @@ public class User {
     @JsonIgnore
     private String rssUid;
 
-    @Column(name = "attachementsSize")
-    private long attachementsSize;
+    @Column(name = "attachmentsSize")
+    private long attachmentsSize;
 
     private long statusCount;
 
@@ -180,12 +180,20 @@ public class User {
         this.preferencesMentionEmail = preferencesMentionEmail;
     }
 
-    public long getAttachementsSize() {
-        return attachementsSize;
+    public long getAttachmentsSize() {
+        return attachmentsSize;
     }
 
-    public void setAttachementsSize(long attachementsSize) {
-        this.attachementsSize = attachementsSize;
+    public void setAttachmentsSize(long attachmentsSize) {
+        this.attachmentsSize = attachmentsSize;
+    }
+
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
     }
 
     public long getStatusCount() {
@@ -245,24 +253,10 @@ public class User {
                 ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", rssUid=" + rssUid +
-                ", attachementsSize=" + attachementsSize +
+                ", attachmentsSize=" + attachmentsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
                 '}';
-    }
-
-    /**
-     * @return the rssUid
-     */
-    public String getRssUid() {
-        return rssUid;
-    }
-
-    /**
-     * @param rssUid the rssUid to set
-     */
-    public void setRssUid(String rssUid) {
-        this.rssUid = rssUid;
     }
 }

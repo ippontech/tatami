@@ -15,6 +15,28 @@ marked.setOptions({
     sanitize:true
 });
 
+$.fn.typeahead.Constructor.prototype.show  =function () {
+  var pos = $.extend({}, this.$element.position(), {
+    height: this.$element[0].offsetHeight
+  });
+
+  var padding = parseInt( this.$element.css('padding-left'), 10 );
+
+  this.$menu
+    .insertAfter(this.$element)
+    .css({
+      top: pos.top + pos.height,
+      left: pos.left + padding
+    })
+    .show();
+
+  this.shown = true;
+
+  this.$menu.css('min-width', this.$element.width() + 'px' );
+
+  return this;
+};
+
 var app = window.app = _.extend({
         views:{},
         collections: {},
@@ -74,7 +96,7 @@ app.Collection.StatusCollection = Backbone.Collection.extend({
 app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update',
   defaults: {
-    'attachmentIds': new Array(),
+    'attachmentIds': new Array()
   }
 });
 
@@ -192,8 +214,8 @@ app.View.TrendsView = Backbone.View.extend({
         this.model = new app.Collection.TrendsCollection();
 
         this.model.bind('reset', this.render, this);
-        this.model.bind('add', function(model, collection, options) {
-            self.addItem(model, options.index);
+        this.model.bind('add', function(model, collection) {
+            self.addItem(model, collection.indexOf(model));
         }, this);
 
         this.model.fetch();
@@ -202,7 +224,7 @@ app.View.TrendsView = Backbone.View.extend({
     render: function() {
         $(this.el).empty();
         if(this.model.length > 0)
-            _.each(this.model.models, this.addItem, this);
+            this.model.forEach(this.addItem, this);
         else
             $(this.el).html(this.template());
         return $(this.el);
@@ -446,7 +468,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
 
   sendReply: function(e) {
     e.preventDefault();
-
+    this.disable();
     var self = this;
 
     var dm = new app.Model.Discussion({
@@ -463,9 +485,21 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
         
         app.trigger('refreshProfile');
         app.trigger('refreshTimeline');
+        self.enable();
+      },
+      error: function(){
+        self.enable();
       }
     });
 
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"]').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"]').removeAttr('disabled');
   },
 
   render: function() {
@@ -497,13 +531,13 @@ app.View.TimeLineView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      self.addItem(model, options.at);
+      self.addItem(model, collection.indexOf(model));
     }, this);
   },
 
   render: function() {
     $(this.el).empty();
-    _.each(this.model.models, this.addItem, this);
+    this.model.forEach(this.addItem, this);
     return $(this.el);
   },
 
@@ -517,6 +551,23 @@ app.View.TimeLineView = Backbone.View.extend({
     } else {
       $(this.el).append(el);
     }
+  }
+});
+/*
+  Profile
+*/
+
+app.Model.ProfileModel = Backbone.Model.extend({
+  defaults: {
+    'gravatar': '',
+    'firstName': '',
+    'lastName': '',
+    'statusCount': 0,
+    'friendsCount': 0,
+    'followersCount': 0
+  },
+  url : function(){
+    return '/tatami/rest/users/show?screen_name=' + username;
   }
 });
 
@@ -581,6 +632,7 @@ follow: function() {
     success: function(){
       self.set(self.options.owner, true);
       self.delegateEvents();
+      app.trigger('refreshProfile');
     },
     error: function(){
       self.set(self.options.owner, false);
@@ -601,6 +653,7 @@ unfollow: function() {
     success: function(){
       self.set(self.options.owner, false);
       self.delegateEvents();
+      app.trigger('refreshProfile');
     },
     error: function(){
       self.set(self.options.owner, true);

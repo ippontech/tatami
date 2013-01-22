@@ -3,10 +3,10 @@
 
 
 <script type="text/template" id="profile-infos-template">
-  <div class="span12 profile-infos">
-    <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
-      <img class="pull-left avatar" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= profile.firstName @> <@= profile.lastName @>"/>
-      <h4><@=profile.firstName@> <@=profile.lastName@></h4>
+  <div class="span12 profile-infos avatar-float-left-container">
+    <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
+      <img class="pull-left avatar avatar-float-left" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
+      <h4><@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @></h4>
       @<@=profile.username@>
     </a>
   </div>
@@ -20,17 +20,17 @@
         <thead>
           <tr>
             <th>
-              <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                 <fmt:message key="tatami.badge.status"/>
               <a>
             </th>
             <th>
-              <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                 <fmt:message key="tatami.badge.followed"/>
               <a>
             </th>
             <th>
-              <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                 <fmt:message key="tatami.badge.followers"/>
               <a>
             </th>
@@ -39,7 +39,7 @@
         <tbody>
           <tr>
             <td>
-              <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/status" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                   <@ if(profile.statusCount != 0) { @>
                   <span class="badge badge-info"><@= profile.statusCount @></span>
                   <@ } else { @>
@@ -48,7 +48,7 @@
               <a>
             </td>
             <td>
-              <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/followed" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                   <@ if(profile.friendsCount != 0) { @>
                   <span class="badge badge-info"><@= profile.friendsCount @></span>
                   <@ } else { @>
@@ -57,7 +57,7 @@
               </a>
             </td>
             <td>
-              <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> @<@= profile.username @> <@= profile.firstName @> <@= profile.lastName @>">
+              <a href="/tatami/profile/<@= profile.username @>/#/followers" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
                   <@ if(profile.followersCount != 0) { @>
                   <span class="badge badge-info"><@= profile.followersCount @></span>
                   <@ } else { @>
@@ -102,6 +102,9 @@
         </select>
     </div>
     <div>
+        <div id="attachmentBar" class="progress progress-striped active" style="display: none;">
+            <div class="bar" style="width: 0%;"></div>
+        </div>
         <div id="dropzone" class="fade well"><fmt:message key="tatami.status.update.drop.file"/></div>
         <input id="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
         <div id="fileUploadResults">

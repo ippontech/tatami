@@ -142,7 +142,6 @@ app.View.Preferences = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
@@ -251,10 +250,10 @@ app.View.TabContainer = Backbone.View.extend({
 
         this.views = {};
         this.views.tab = new app.View.Tab({
-            model : this.model,
+            collection : this.collection,
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
-        })
+        });
     },
 
     selectMenu: function(menu) {
@@ -277,8 +276,8 @@ app.View.Tab = Backbone.View.extend({
         this.$el.addClass('table');
 
         this.template = this.options.template;
-        this.model.bind('reset', this.render, this);
-        this.model.bind('add', this.addItem, this);
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
     },
 
     tagName: 'table',
@@ -292,7 +291,7 @@ app.View.Tab = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         this.$el.append(this.template());
-        _.each(this.model.models, this.addItem, this);
+        this.collection.forEach(this.addItem, this);
         this.delegateEvents();
         return this.$el;
     }
@@ -304,7 +303,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/friends/lookup',
             recommended: '/tatami/rest/users/suggestions'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
@@ -363,7 +362,7 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/tagmemberships/list',
             recommended: '/tatami/rest/tags/popular'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
@@ -391,12 +390,12 @@ app.View.Tag = Backbone.View.extend({
 
     follow: function(){
         var self = this;
-
+        var m;
         if(this.model.get('followed')){
-            var m = new app.Model.UnFollowTagModel(this.model.toJSON());
+            m = new app.Model.UnFollowTagModel(this.model.toJSON());
         }
         else {
-            var m = new app.Model.FollowTagModel(this.model.toJSON());
+            m = new app.Model.FollowTagModel(this.model.toJSON());
         }
         m.save(null, {
             success : function(){
@@ -427,6 +426,7 @@ app.Model.Group = Backbone.Model.extend({
 });
 
 app.Collection.AdminGroup = Backbone.Collection.extend({
+    model : app.Model.Group,
     url: '/tatami/rest/admin/groups'
 });
 
@@ -471,6 +471,7 @@ app.View.AddGroup = Backbone.View.extend({
             success: function(){
                 $(e.target)[0].reset();
                 self.$el.find('.return').append($('#form-success').html());
+                self.trigger('success');
             },
             error: function(){
                 self.$el.find('.return').append($('#form-error').html());
@@ -480,62 +481,157 @@ app.View.AddGroup = Backbone.View.extend({
 });
 
 app.Collection.TabGroup = Backbone.Collection.extend({
+    model : app.Model.Group,
     initialize: function(){
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/groups',
             recommended: '/tatami/rest/groupmemberships/suggestions'
-        }
+        };
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(data, options){
+            return data.filter(function(model){
+                return model.publicGroup;
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(data, options){
+            return data;
+        };
         this.fetch();
     }
 });
 
 app.View.Group = Backbone.View.extend({
     initialize: function(){
-        app.collections.adminGroups.bind('reset', this.render, this);
+        this.actionsView = new app.View.ActionsGroup({
+            model : this.model
+        });
     },
 
     template:_.template($('#groups-item').html()),
     tagName: 'tr',
 
     events:{
-        'click': 'show'
-    },
-
-    show: function(){
-        var self = this;
-        var data = this.model.toJSON();
-        data.admin = app.collections.adminGroups.some(function(group){
-            return (group.get('id') === self.model.get('id'));
-        });
     },
 
     render: function(){
         var self = this;
 
         var data = this.model.toJSON();
-        data.admin = app.collections.adminGroups.some(function(group){
-            return (group.get('id') === self.model.get('id'));
-        });
         this.$el.html(this.template(data));
+        this.$el.append(this.actionsView.$el);
         this.delegateEvents();
         return this.$el;
     }
 });
 
+app.View.ActionsGroup = Backbone.View.extend({
+    tagName : 'td',
+    template : {
+        join : _.template($('#groups-join').html()),
+        leave : _.template($('#groups-leave').html()),
+        admin : _.template($('#groups-admin').html())
+    },
+
+    initialize : function(){
+        var self = this;
+
+        //app.collections.adminGroups.bind('reset', this.render, this);
+
+        this.collection = new app.Collection.ListUserGroupCollection();
+        this.collection.options = {
+            groupId : this.model.id
+        };
+        this.collection.on('reset', this.render, this);
+        this.collection.fetch();
+
+        this.actionModel = new app.Model.ListUserGroupModel({
+            username : username
+        });
+        this.actionModel.urlRoot = function() {
+            return '/tatami/rest/groups/' + self.model.id + '/members/';
+        };
+    },
+
+    events : {
+    },
+
+    renderAdmin : function() {
+        this.$el.html(this.template.admin(this.model.toJSON()));
+        this.delegateEvents({
+            'click' : 'onClickAdmin'
+        });
+    },
+
+    onClickAdmin : function() {
+        /*app.router.navigate('/groups/' + this.model.id, {
+            trigger:true
+        });*/
+    },
+
+    renderMember : function() {
+        this.$el.html(this.template.leave(this.model.toJSON()));
+        this.delegateEvents({
+            'click' : 'onClickMember'
+        });
+    },
+
+    onClickMember : function() {
+        this.actionModel.destroy({
+            success : _.bind(this.renderNotMember, this)
+        });
+    },
+
+    renderNotMember : function() {
+        if(this.model.get('publicGroup')){
+            this.$el.html(this.template.join(this.model.toJSON()));
+            this.delegateEvents({
+                'click' : 'onClickNotMember'
+            });
+        }
+        else {
+            this.$el.empty();
+        }
+    },
+
+    onClickNotMember : function() {
+        this.actionModel.save(null, {
+            success : _.bind(this.renderMember, this)
+        });
+    },
+
+    render : function(){
+        var template = null;
+
+        var self = this;
+        var isAdmin = app.collections.adminGroups.some(function(group){
+            return (group.id === self.model.id);
+        });
+        if (isAdmin) this.renderAdmin();
+        else {
+            var isMember = this.collection.some(function(member){
+                return (member.id === username);
+            });
+            if (isMember) this.renderMember();
+            else this.renderNotMember();
+        }
+        return this;
+    }
+});
+
 app.View.EditGroup = Backbone.View.extend({
     tagName: 'form',
+    attributes : {
+        'class' : 'form-horizontal row-fluid'
+    },
 
     initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-
         this.model = new app.Model.Group({
             groupId: this.options.groupId
         });
@@ -551,7 +647,7 @@ app.View.EditGroup = Backbone.View.extend({
 
     render: function(){
         this.delegateEvents();
-        return this.$el.html(this.template(this.model.toJSON()));;
+        return this.$el.html(this.template(this.model.toJSON()));
     },
 
     submit: function(e){
@@ -575,7 +671,182 @@ app.View.EditGroup = Backbone.View.extend({
 });
 
 app.View.ListUserGroup = Backbone.View.extend({
+    tagName : 'table',
+    attributes : {
+        'class' : 'table'
+    },
+    initialize : function(){
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
 
+        this.collection.fetch();
+    },
+
+    addItem : function(model){
+        var view = new app.View.ListUserGroupItem({
+            model : model
+        });
+        view.render();
+        this.$el.append(view.el);
+    },
+    render : function(){
+        var tableView = this;
+
+        this.$el.html($('#usergroup-header').html());
+        this.collection.forEach(this.addItem, this);
+
+        return this;
+    }
+});
+
+app.View.ListUserGroupItem = Backbone.View.extend({
+    tagName : 'tr',
+
+    template : _.template($('#usergroup-item').html()),
+    
+    initialize : function(){
+        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);
+    },
+
+    events : {
+        'click .delete' : 'removeUser'
+    },
+
+    removeUser : function(){
+        this.model.destroy();
+    },
+    
+    render : function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+    
+});
+
+app.Model.UserSearch = Backbone.Model.extend({
+    toString : function(){
+        return this.get('username');
+    },
+    toLowerCase : function(){
+        return this.toString().toLowerCase();
+    },
+    replace : function(a, b, c){
+        return this.toString().replace(a, b, c);
+    }
+});
+
+app.Collection.UserSearch = Backbone.Collection.extend({
+    url : '/tatami/rest/users/search',
+
+    model : app.Model.UserSearch,
+
+    search : function(q, callback) {
+        var self = this;
+        this.fetch({
+            data : {
+                q : q
+            },
+            success : function(collection){
+                var result = self.removeAlreadyMember();
+                callback(result);
+            }
+        });
+    },
+
+    removeAlreadyMember : function(){
+        var collectionFilter = this.options.filter;
+        if(typeof collectionFilter != 'undefined'){
+            return this.filter(function(result){
+                var isAlreadyMember = collectionFilter.find(function(user){
+                    var isEqual = user.get('username') === result.get('username');
+                    return isEqual;
+                });
+                return !isAlreadyMember;
+            });
+        } else {
+            return this.toArray();
+        }
+    }
+});
+
+app.View.AddUserGroup = Backbone.View.extend({
+    tagName : 'form',
+    attributes : {
+        'class' : 'form-horizontal row-fluid'
+    },
+    initialize: function(){
+        this.$el.html(this.template());
+        var self = this;
+
+        window.collection = this.collection;
+
+        var search = new app.Collection.UserSearch();
+        search.options = {
+            filter : this.collection
+        };
+        this.$el.find('[name="username"]').typeahead({
+            source : function(query, callback){
+                search.search(query, function(results){
+                    return callback(results);
+                });
+            },
+            highlighter: function (item) {
+              var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+              return '<img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/' + item.get('gravatar') + '?s=32&d=mm" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                return '<strong>' + match + '</strong>';
+              }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
+            }
+        });
+    },
+
+    template:_.template($('#groups-form-adduser').html()),
+
+    events:{
+        'submit': 'submit'
+    },
+
+    render: function(){
+        return this;
+    },
+
+    submit: function(e){
+        e.preventDefault();
+
+        var form = $(e.target);
+
+        var data = {
+            'username' : form.find('[name="username"]').val()
+        };
+
+        var self = this;
+        self.collection.create(data, {
+            success: function(model){
+                self.$el.find('.return').append($('#groups-form-adduser-success').html());
+            },
+            error: function(model){
+                self.$el.find('.return').append($('#groups-form-adduser-error').html());
+                model.destroy();
+            }
+        });
+    }
+});
+
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        gravatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
+    }
 });
 
 /*
@@ -610,6 +881,52 @@ app.View.DailyStatsView = Backbone.View.extend({
         return this.$el;
     }
 });
+
+/**
+ * Files
+ */
+
+app.Model.FileModel = Backbone.Model.extend({
+    idAttribute: 'attachmentId',
+    initialize: function(){
+
+    }
+});
+
+app.Collection.FilesCollection = Backbone.Collection.extend({
+    model: app.Model.FileModel,
+    url: '/tatami/rest/attachments',
+
+    initialize: function(){
+
+    }
+});
+
+app.View.FilesView = Backbone.View.extend({
+   template: _.template($('#files-item').html()),
+
+   initialize: function(){
+       this.model.bind('change', this.render, this);
+       this.model.bind('destroy', this.remove, this);
+   },
+
+   tagName: 'tr',
+
+   events:{
+      'click .btn':'removeImage'
+   },
+
+   render: function(){
+      this.$el.html(this.template(this.model.toJSON()));
+      return this.$el;
+   },
+
+   removeImage: function(){
+       this.model.destroy();
+   }
+
+});
+
 
 /*
  Router
@@ -649,6 +966,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'users':'users',
         'users/recommended':'recommendedUsers',
         'status_of_the_day' : 'status_of_the_day',
+        'files' : 'files',
         '*action': 'profile'
     },
 
@@ -665,7 +983,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
                 model: model
             });
         }
-
         this.resetView();
         this.addView(app.views.profile.edit);
         this.addView(app.views.profile.destroy);
@@ -696,7 +1013,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initGroups: function(){
         if(!app.views.groups)
             app.views.groups = new app.View.TabContainer({
-                model: new app.Collection.TabGroup(),
+                collection: new app.Collection.TabGroup(),
                 ViewModel: app.View.Group,
                 MenuTemplate: _.template($('#groups-menu').html()),
                 TabHeaderTemplate : _.template($('#groups-header').html())
@@ -706,9 +1023,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         return app.views.groups;
     },
 
-    initAddGroup: function(){
-        if(!app.views.addgroup)
+    initAddGroup: function(listView){
+        if(!app.views.addgroup){
             app.views.addgroup = new app.View.AddGroup();
+            app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
+        }
         return app.views.addgroup;
     },
 
@@ -716,9 +1035,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initGroups();
         this.selectMenu('groups');
 
-        view.model.owned();
+        view.collection.owned();
 
-        var addview = this.initAddGroup();
+        var addview = this.initAddGroup(view);
+
+        addview.collection = view.collection;
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -732,10 +1053,15 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initGroups();
         this.selectMenu('groups');
 
-        view.model.recommended();
+        view.collection.recommended();
+
+        var addview = this.initAddGroup(view);
+
+        addview.collection = view.collection;
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
+            this.addView(addview);
             this.addView(view);
         }
         view.selectMenu('groups/recommended');
@@ -748,7 +1074,17 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.addView(new app.View.EditGroup({
             groupId : id
         }));
+        var collection = new app.Collection.ListUserGroupCollection();
+        collection.options = {
+            groupId : id
+        };
+
+        this.addView(new app.View.AddUserGroup({
+            collection : collection
+        }));
+
         this.addView(new app.View.ListUserGroup({
+            collection : collection,
             groupId : id
         }));
     },
@@ -756,7 +1092,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initTags: function(){
         if(!app.views.tags)
             app.views.tags = new app.View.TabContainer({
-                model: new app.Collection.TabTag(),
+                collection: new app.Collection.TabTag(),
                 ViewModel: app.View.Tag,
                 MenuTemplate: _.template($('#tags-menu').html()),
                 TabHeaderTemplate : _.template($('#tags-header').html())
@@ -768,7 +1104,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initTags();
         this.selectMenu('tags');
 
-        view.model.owned();
+        view.collection.owned();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -781,7 +1117,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initTags();
         this.selectMenu('tags');
 
-        view.model.recommended();
+        view.collection.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -793,7 +1129,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
     initUsers: function(){
         if(!app.views.users)
             app.views.users = new app.View.TabContainer({
-                model: new app.Collection.TabUser(),
+                collection: new app.Collection.TabUser(),
                 ViewModel: app.View.User,
                 MenuTemplate: _.template($('#users-menu').html()),
                 TabHeaderTemplate :_.template($('#users-header').html())
@@ -805,7 +1141,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initUsers();
         this.selectMenu('users');
 
-        view.model.owned();
+        view.collection.owned();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -818,7 +1154,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         var view = this.initUsers();
         this.selectMenu('users');
 
-        view.model.recommended();
+        view.collection.recommended();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
@@ -835,7 +1171,33 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
         this.resetView();
         this.addView(view);
+    },
+
+    initFiles: function(){
+        if(!app.views.files)
+            app.views.files = new app.View.TabContainer({
+                collection: new app.Collection.FilesCollection(),
+                ViewModel: app.View.FilesView,
+                MenuTemplate: _.template($('#files-menu').html()),
+                TabHeaderTemplate: _.template($('#files-header').html())
+            });
+
+        return app.views.files;
+    },
+
+    files: function(){
+        var view = this.initFiles();
+        this.selectMenu('files');
+
+        view.collection.fetch();
+
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        this.selectMenu('files');
     }
+
 
 });
 

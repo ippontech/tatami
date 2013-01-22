@@ -99,21 +99,14 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public HashMap<String, Object> getPreferences() {
+    public Preferences getPreferences() {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get account's preferences");
         }
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
 
-        HashMap<String, Object> preferences = new HashMap<String, Object>();
-
-        preferences.put("theme", user.getTheme());
-        preferences.put("mentionEmail", user.getPreferencesMentionEmail());
-
-        String rssUid = user.getRssUid();
-        preferences.put("rssUid", rssUid);
-        preferences.put("rssUidActive", (rssUid != null) ? rssUid : "");
+        Preferences preferences = new Preferences(user);
 
         return preferences;
     }
@@ -142,12 +135,8 @@ public class AccountController {
             currentUser.setRssUid(rssUid);
 
             this.log.debug(newPreferences.getMentionEmail() + "" + (Boolean) newPreferences.getMentionEmail());
-            preferences = new Preferences();
+            preferences = new Preferences(currentUser);
 
-            preferences.setTheme(currentUser.getTheme());
-            preferences.setMentionEmail(currentUser.getPreferencesMentionEmail());
-            preferences.setRssUid(rssUid);
-            preferences.setRssUidActive(!rssUid.isEmpty());
             userService.updateUser(currentUser);
 
             userService.updateThemePreferences((String) newPreferences.getTheme());

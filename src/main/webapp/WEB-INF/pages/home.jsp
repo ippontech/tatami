@@ -22,7 +22,7 @@
                 <!-- Groups -->
                 <div id="groupsList" class="alert alert-status">
                     <div>
-                        <label><i class="icon-th"></i> <fmt:message key="tatami.menu.groups"/></label>
+                        <i class="icon-th"></i> <strong><fmt:message key="tatami.menu.groups"/></strong>
                         <div class="row-fluid" id="userGroups">
 
                         </div>
@@ -34,7 +34,7 @@
 
                 <div id="profileTrends" class="alert alert-status">
                     <div>
-                        <label><i class="icon-fire"></i> <fmt:message key="tatami.trends.title"/></label>
+                        <i class="icon-fire"></i> <strong><fmt:message key="tatami.trends.title"/></strong>
                     </div>
                     <div class="row-fluid">
                         <div id="trends">

@@ -71,4 +71,6 @@ public class ColumnFamilyKeys {
 
     public final static String STATUS_ATTACHMENT_CF = "StatusAttachments";
 
+    public final static String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
+
 }

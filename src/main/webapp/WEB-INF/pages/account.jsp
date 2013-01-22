@@ -16,10 +16,10 @@
     <c:choose>
         <c:when test="${not empty user}">
 
-            <div class="nomargin well row">
+            <div class="nomargin well row avatar-float-left-container">
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
-                        <img class="pull-left nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
+                        <img class="pull-left nomargin avatar avatar-float-left" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
                         <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>
@@ -102,6 +102,8 @@
     var page = "account";
 </script>
 <script src="/js/tatami-commons.js"></script>
+<script src="/js/raphael-min.js"></script>
+<script src="/js/jquery-raphael-tatami-pie.js"></script>
 <script src="/js/tatami-admin.js"></script>
 </body>
 </html>

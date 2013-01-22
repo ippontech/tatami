@@ -94,7 +94,7 @@
                         </li>
                     </ul>
                     <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query span3" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
+                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
                 </sec:authorize>

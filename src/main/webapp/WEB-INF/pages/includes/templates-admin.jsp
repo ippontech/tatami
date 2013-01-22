@@ -256,24 +256,22 @@
 </script>
 
 <script type="text/template" id="users-header">
-    <!--
     <tr>
-        <th>Username</th>
-        <th>Real name</th>
-        <th>Action</th>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= firstName @> <@= lastName @>">
-        <a href="/tatami/profile/<@= username @>/">
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
     </td>
     <td>
-        <@= firstName @> <@= lastName @>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
     </td>
     <td class="follow"/>
 </script>
@@ -377,58 +375,118 @@
 
 </script>
 
+<script type="text/template" id="groups-form-adduser">
+    <fieldset>
+        <legend>
+                <fmt:message key="tatami.group.edit.member.add"/>
+        </legend>
+        <div class="control-group">
+            <label class="control-label" for="username">
+                <fmt:message key="tatami.username"/>
+            </label>
+
+            <div class="controls">
+                <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge span12"/>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success span12">
+                <fmt:message key="tatami.form.save"/>
+            </button>
+        </div>
+
+    </fieldset>
+
+    <br/>
+    <div class="return"/>
+    <br/>
+</script>
+
+<script type="text/template" id="groups-form-adduser-success">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.group.edit.member.add.success"/>
+    </div>
+</script>
+
+<script type="text/template" id="groups-form-adduser-error">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.group.edit.member.add.error"/>
+    </div>
+
+</script>
+
 <script type="text/template" id="groups-header">
-    <!--
     <tr>
-        <th></th>
+        <th><fmt:message key="tatami.group.name"/></th>
+        <th><fmt:message key="tatami.group.add.access"/></th>
+        <th><fmt:message key="tatami.group.counter"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="groups-item">
     <td>
-        <span title="<@= description @>"><@= name @></span>
+        
+        <a href="/tatami/#/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
+    </td>
+    <td>
+        <@ if(publicGroup) { @>
+            <span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
+        <@ } else { @>
+            <span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
+        <@ } @>
     </td>
     <td>
         <@= counter @>
     </td>
-    <td>
-        <@ if (admin) { @>
-            <a class="btn btn-primary btn-block" href="#/groups/<@= groupId@>">
-                <fmt:message key="tatami.group.edit.link"/>
-            </a>
-        <@ } else { @>
+</script>
 
-        <@ } @>
-    </td>
+<script type="text/template" id="groups-admin">
+    <a class="btn btn-primary btn-block" href="#/groups/<@= groupId@>">
+        <fmt:message key="tatami.group.edit.link"/>
+    </a>
+</script>
+
+<script type="text/template" id="groups-join">
+    <button type="button" class="btn btn-block">
+        <fmt:message key="tatami.group.join.group"/>
+    </button>
+</script>
+
+<script type="text/template" id="groups-leave">
+    <button type="button" class="btn btn-danger btn-block">
+        <fmt:message key="tatami.group.edit.quit"/>
+    </button>
 </script>
 
 <script type="text/template" id="tags-menu">
     <ul class="nav nav-tabs">
         <li>
             <a href ="#/tags">
-                <fmt:message key="tatami.account.groups.mygroups"/>
+                <fmt:message key="tatami.account.tags.mytags"/>
             </a>
         </li>
         <li>
             <a href ="#/tags/recommended">
-                <fmt:message key="tatami.account.groups.recommended"/>
+                <fmt:message key="tatami.account.tags.recommended"/>
             </a>
         </li>
     </ul>
 </script>
 
 <script type="text/template" id="tags-header">
-    <!--
     <tr>
-        <th></th>
+        <th><fmt:message key="tatami.tag"/></th>
+        <th/>
     </tr>
-    -->
 </script>
 
 <script type="text/template" id="tags-item">
     <td>
-        <@= name @>
+        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
     </td>
     <td class="follow">
         <@ if (followed) { @>
@@ -440,5 +498,65 @@
                 <fmt:message key="tatami.user.follow"/>
             </span>
         <@ } @>
+    </td>
+</script>
+
+<script type="text/template" id="usergroup-header">
+    <tr>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th><fmt:message key="tatami.group.role"/></th>
+    </tr>
+</script>
+
+<script type="text/template" id="usergroup-item">
+    <td>
+        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
+    </td>
+    <td>
+        <@ if(role === 'ADMIN'){ @>
+            <fmt:message key="tatami.group.role.admin"/>
+        <@ } else { @>
+            <fmt:message key="tatami.group.role.member"/>
+        <@ } @>
+    </td>
+    <td>
+        <@ if (window.username !== username) { @>
+            <button type="button" class="btn btn-success input-block-level delete">
+                <fmt:message key="tatami.group.edit.member.delete"/>
+            </button>
+        <@ } @>
+    </td>
+</script>
+
+<script type="text/template" id="files-menu">
+    <h2><fmt:message key="tatami.menu.files"/></h2>
+</script>
+
+<script type="text/template" id="files-header">
+<thead>
+    <tr>
+     <th><fmt:message key="tatami.user.file.preview"/></th>
+     <th><fmt:message key="tatami.user.file.name"/></th>
+     <th><fmt:message key="tatami.user.file.size"/></th>
+     <th></th>
+    </tr>
+</thead>
+</script>
+
+<script type="text/template" id="files-item">
+    <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
+    <td><@= filename @></td>
+    <td><@= (size/1000) @></td>
+    <td>
+        <span class="btn btn-primary btn-block">
+                <fmt:message key="tatami.user.status.delete"/>
+        </span>
     </td>
 </script>

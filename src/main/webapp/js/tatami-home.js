@@ -29,17 +29,6 @@ marked.setOptions({
   Profile
 */
 
-app.Model.ProfileModel = Backbone.Model.extend({
-  defaults: {
-    'gravatar': '',
-    'firstName': '',
-    'lastName': ''
-  },
-  url : function(){
-    return '/tatami/rest/users/show?screen_name=' + username;
-  }
-});
-
 app.View.ProfileInfoView = Backbone.View.extend({
   template: _.template($('#profile-infos-template').html()),
 
@@ -92,9 +81,10 @@ app.View.UpdateView = Backbone.View.extend({
   addStatus: function(e) {
     var self = this;
     e.preventDefault();
+    this.disable();
 
     var status = new app.Model.StatusUpdateModel();
-
+    status.set("attachmentIds", new Array());
     _.each($(e.target).serializeArray(), function(data) {
       if (data.name == "attachmentIds[]") {
           status.get("attachmentIds").push(data.value);
@@ -102,7 +92,6 @@ app.View.UpdateView = Backbone.View.extend({
         status.set(data.name, data.value);
       }
     });
-
     status.save(null,{
       success: function(model, response) {
           e.target.reset();
@@ -123,11 +112,21 @@ app.View.UpdateView = Backbone.View.extend({
           setTimeout(function () {
               $("#statusUpdate").popover('hide');
           }, 3000);
+          self.enable();
       },
       error: function(model, response) {
-        $(self.el).find('.control-group').addClass('error');
+          $(self.el).find('.control-group').addClass('error');
+          self.enable();
       }
     });
+  },
+
+  disable : function(){
+    this.$el.find('[type="submit"]').attr('disabled', 'disabled');
+  },
+
+  enable : function(){
+    this.$el.find('[type="submit"]').removeAttr('disabled');
   },
 
   render: function() {
@@ -138,7 +137,7 @@ app.View.UpdateView = Backbone.View.extend({
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
           $("#updateStatusPreview").css("height", "220px");
-	  $("#updateStatusEditorTab").fadeIn();
+	      $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtns").fadeIn();
@@ -159,6 +158,10 @@ app.View.UpdateView = Backbone.View.extend({
           }
       });
 
+      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
+
+      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
+
       $("#updateStatusContent").charCount({
           css:'counter',
           cssWarning:'counter_warning',
@@ -167,9 +170,6 @@ app.View.UpdateView = Backbone.View.extend({
           warning:50,
           counterText:text_characters_left + " "
       });
-      $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
-
-      $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
 
       $("#updateStatusBtns").popover({
           animation:true,
@@ -184,10 +184,19 @@ app.View.UpdateView = Backbone.View.extend({
       $('#updateStatusFileupload').fileupload({
           dataType: 'json',
           progressall: function (e, data) {
+              $('#attachmentBar').show();
               var progress = parseInt(data.loaded / data.total * 100, 10);
+              $('#attachmentBar .bar').css(
+                  'width',
+                  progress + '%'
+              );
           },
           dropZone: $('#dropzone'),
           done: function (e, data) {
+              $('#attachmentBar').hide();
+              $('#attachmentBar .bar').css(
+                  'width','0%'
+              );
               $.each(data.result, function (index, attachment) {
                   var size = "";
                   if (attachment.size < 1000000) {
@@ -198,6 +207,15 @@ app.View.UpdateView = Backbone.View.extend({
                   $("<p>" + attachment.name + " (" + size + ")" +
                       "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo($("#fileUploadResults"));
               });
+          },
+          fail: function (e, data) {
+              $('#attachmentBar').hide();
+              $('#attachmentBar .bar').css(
+                  'width','0%'
+              );
+              if (data.errorThrown == "Forbidden") {
+                  $("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
+              }
           }
       });
       $(document).bind('dragover', function (e) {
@@ -317,7 +335,7 @@ app.View.SuggestView = Backbone.View.extend({
 
     this.model.bind('reset', this.render, this);
     this.model.bind('add', function(model, collection, options) {
-      self.addItem(model, options.index);
+      self.addItem(model, collection.indexOf(model));
     }, this);
 
     this.model.fetch();
@@ -325,8 +343,8 @@ app.View.SuggestView = Backbone.View.extend({
 
   render: function() {
     $(this.el).empty();
-    if(this.model.length > 0)
-      _.each(this.model.models, this.addItem, this);
+    if(this.model.length > 0) {
+      this.model.forEach(this.addItem, this);}
     else
       $(this.el).html(this.template());
     return $(this.el);
@@ -416,14 +434,15 @@ app.View.TimeLineNewView = Backbone.View.extend({
   refresh: function(callback){
     var self = this;
 
-    var sc = _.clone(this.model);
-    delete sc._callbacks;
+    var sc = this.model.clone();
+    sc.off();
+    sc.url = this.model.url;
 
     var data = {};
-    if( typeof _.first(self.temp.models) !== 'undefined')
-      data.since_id = _.first(self.temp.models).get('timelineId');
-    else if(typeof _.first(self.model.models) !== 'undefined')
-      data.since_id = _.first(self.model.models).get('timelineId');
+    if( typeof this.temp.first() !== 'undefined')
+      data.since_id = this.temp.first().get('timelineId');
+    else if(typeof this.model.first() !== 'undefined')
+      data.since_id = this.model.first().get('timelineId');
 
     sc.fetch({
       data:data,
@@ -457,7 +476,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
     NotificationManager.setAllowNotification();
     this.progress();
     var self = this;
-    if (this.model.models.length === 0) {
+    if (this.model.length === 0) {
       this.model.fetch({
         success:function () {
           self.render();
@@ -524,10 +543,10 @@ app.View.TimeLineNextView = Backbone.View.extend({
   nextStatus: function(done, context){
     this.progress();
     var self = this;
-    if(this.model.models.length === 0)
+    if(this.model.length === 0)
       this.model.fetch({
         success: function(){
-          if(self.model.models.length > 0)
+          if(self.model.length > 0)
             self.render();
           else
             self.remove();
@@ -537,17 +556,16 @@ app.View.TimeLineNextView = Backbone.View.extend({
         }
       });
     else{
-      var sc = _.clone(this.model);
-      delete sc._callbacks;
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
 
       sc.fetch({
         data: {
-          max_id: _.last(self.model.models).get('timelineId')
+          max_id: this.model.last().get('timelineId')
         },
         success: function(){
-          _.each(sc.models, function(model, key) {
-            self.model.push(model);
-          });
+          sc.forEach(self.model.push, self.model);
           if(sc.length > 0)
             self.render();
           else
@@ -738,7 +756,7 @@ app.View.FavoritePanelView = Backbone.View.extend({
 
     this.views.refresh.refreshStatus();
 
-    this.on('refresh', this.views.refresh.newStatus, this.views.refresh);
+    this.on('refresh', this.views.refresh.refreshStatus, this.views.refresh);
 
     app.on('refreshFavorite', this.views.refresh.refreshStatus, this.views.refresh);
   },
@@ -1156,9 +1174,7 @@ app.View.SearchNextView = Backbone.View.extend({
       },
       success: function(){
         self.model.options.page++;
-        _.each(sc.models, function(model, key) {
-          self.model.push(model);
-        });
+        sc.forEach(self.model.push, self.model);
         if(sc.length > 0 && sc.length%self.model.options.rpp === 0)
           self.render();
         else

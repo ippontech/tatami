@@ -71,6 +71,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, ATTACHMENT_CF, 0);
             addColumnFamily(cluster, USER_ATTACHMENT_CF, 0);
             addColumnFamily(cluster, STATUS_ATTACHMENT_CF, 0);
+            addColumnFamily(cluster, DOMAIN_CONFIGURATION_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);

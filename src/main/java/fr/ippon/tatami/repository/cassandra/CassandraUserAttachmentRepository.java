@@ -8,7 +8,6 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
@@ -35,7 +34,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_ATTACHMENT_CF;
 public class CassandraUserAttachmentRepository
         implements UserAttachmentRepository {
 
-    ColumnFamilyTemplate<String, String> attachmentsTemplate;
+    private ColumnFamilyTemplate<String, String> attachmentsTemplate;
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -49,32 +48,42 @@ public class CassandraUserAttachmentRepository
     }
 
     @Override
-    public void addAttachementId(String login, String attachementId) {
+    public void addAttachmentId(String login, String attachmentId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, USER_ATTACHMENT_CF, HFactory.createColumn(attachementId,
+        mutator.insert(login, USER_ATTACHMENT_CF, HFactory.createColumn(attachmentId,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override
-    public void removeAttachementId(String login, String attachementId) {
+    public void removeAttachmentId(String login, String attachmentId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, USER_ATTACHMENT_CF, attachementId, StringSerializer.get());
+        mutator.delete(login, USER_ATTACHMENT_CF, attachmentId, StringSerializer.get());
     }
 
     @Override
-    public Collection<String> findAttachementIds(String login, int pagination) {
+    public Collection<String> findAttachmentIds(String login, int pagination) {
         ColumnFamilyResult<String, String> result = attachmentsTemplate.queryColumns(login);
+        Collection<String> attachmentIds = new ArrayList<String>();
         int index = 0;
-        Collection<String> attachementIds = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
             if (index > pagination + Constants.PAGINATION_SIZE) {
                 break;
             }
             if (index >= pagination) {
-                attachementIds.add(columnName);
+                attachmentIds.add(columnName);
             }
             index++;
         }
-        return attachementIds;
+        return attachmentIds;
+    }
+
+    @Override
+    public Collection<String> findAttachmentIds(String login) {
+        ColumnFamilyResult<String, String> result = attachmentsTemplate.queryColumns(login);
+        Collection<String> attachmentIds = new ArrayList<String>();
+        for (String columnName : result.getColumnNames()) {
+            attachmentIds.add(columnName);
+        }
+        return attachmentIds;
     }
 }
