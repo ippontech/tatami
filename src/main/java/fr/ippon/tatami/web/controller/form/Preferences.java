@@ -1,17 +1,26 @@
 package fr.ippon.tatami.web.controller.form;
 
+import fr.ippon.tatami.domain.User;
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Stores a user's preferences.
  */
 public class Preferences {
 
-    Boolean mentionEmail = false;
+    public Preferences(){};
 
+    public Preferences(User user){
+        this.setMentionEmail(user.getPreferencesMentionEmail());
+        this.setTheme(user.getTheme());
+        StringUtils.isEmpty(user.getRssUid());
+        this.setRssUidActive(!StringUtils.isEmpty(user.getRssUid()));
+    }
+
+    Boolean mentionEmail = false;
     Boolean rssUidActive = false;
 
     String theme = "";
-
-    String rssUid;
 
     public Boolean getMentionEmail() {
         return mentionEmail;
@@ -21,16 +30,8 @@ public class Preferences {
         this.mentionEmail = mentionEmail;
     }
 
-    public void setRssUid(String rssUid) {
-        this.rssUid = rssUid;
-    }
-
-    public String getRssUid() {
-        return rssUid;
-    }
-
     public Boolean getRssUidActive() {
-        return rssUidActive;
+        return this.rssUidActive;
     }
 
     public void setRssUidActive(boolean rssUidActive) {
