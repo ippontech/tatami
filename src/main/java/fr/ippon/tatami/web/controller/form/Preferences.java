@@ -8,19 +8,26 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Preferences {
 
-    public Preferences(){};
-
-    public Preferences(User user){
-        this.setMentionEmail(user.getPreferencesMentionEmail());
-        this.setTheme(user.getTheme());
-        StringUtils.isEmpty(user.getRssUid());
-        this.setRssUidActive(!StringUtils.isEmpty(user.getRssUid()));
-    }
-
-    Boolean mentionEmail = false;
-    Boolean rssUidActive = false;
+    private Boolean mentionEmail = false;
 
     String theme = "";
+
+    private Boolean rssUidActive = false;
+
+    private String rssUid;
+
+    public Preferences() {
+
+    }
+
+    public Preferences(User user) {
+        this.mentionEmail = user.getPreferencesMentionEmail();
+        this.theme = user.getTheme();
+        if (!StringUtils.isEmpty(user.getRssUid())) {
+            this.rssUidActive = true;
+            this.rssUid = user.getRssUid();
+        }
+    }
 
     public Boolean getMentionEmail() {
         return mentionEmail;
@@ -47,4 +54,11 @@ public class Preferences {
         this.theme = theme;
     }
 
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
 }
