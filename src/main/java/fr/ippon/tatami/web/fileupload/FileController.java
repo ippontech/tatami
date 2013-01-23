@@ -81,17 +81,16 @@ public class FileController {
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
         response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
 
-        // ETag support
-        response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
-        String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
-        if (requestETag != null && requestETag.equals(attachmentId)) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+        // Put the file in the response
+        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        if (attachment == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
-
-            // Put the file in the response
-            Attachment attachment = attachmentService.getAttachmentById(attachmentId);
-            if (attachment == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            // ETag support
+            response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
+            String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
+            if (requestETag != null && requestETag.equals(attachmentId)) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             } else {
                 try {
                     byte[] fileContent = attachment.getContent();
