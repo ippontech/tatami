@@ -107,7 +107,11 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                         .execute()
                         .get();
 
-        attachment.setFilename(columnFilename.getValue());
+        if (columnFilename != null && columnFilename.getValue() != null) {
+            attachment.setFilename(columnFilename.getValue());
+        } else {
+            return null;
+        }
 
         ColumnQuery<String, String, Long> querySize = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), LongSerializer.get());
@@ -119,10 +123,10 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                         .execute()
                         .get();
 
-        if (columnSize.getValue() != null) {
+        if (columnSize != null && columnSize.getValue() != null) {
             attachment.setSize(columnSize.getValue());
         } else {
-            attachment.setSize(0);
+            return null;
         }
 
         return attachment;
