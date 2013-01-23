@@ -75,6 +75,10 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         }
         Attachment attachment = this.findAttachmentMetadataById(attachmentId);
 
+        if (attachment == null) {
+            return null;
+        }
+
         ColumnQuery<String, String, byte[]> queryAttachment = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
 

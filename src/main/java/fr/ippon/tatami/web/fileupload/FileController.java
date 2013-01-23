@@ -87,14 +87,24 @@ public class FileController {
         if (requestETag != null && requestETag.equals(attachmentId)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         } else {
-            try {
-                // Put the file in the response
-                byte[] fileContent = attachmentService.getAttachmentById(attachmentId).getContent();
-                response.getOutputStream().write(fileContent);
-                response.flushBuffer();
-            } catch (IOException e) {
-                log.info("Error writing file to output stream. " + e.getMessage());
+
+            // Put the file in the response
+            Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+            if (attachment == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                try {
+                    byte[] fileContent = attachment.getContent();
+                    response.getOutputStream().write(fileContent);
+                } catch (IOException e) {
+                    log.info("Error writing file to output stream. " + e.getMessage());
+                }
             }
+        }
+        try {
+            response.flushBuffer();
+        } catch (IOException e) {
+            log.info("Error flushing the output stream. " + e.getMessage());
         }
     }
 }
