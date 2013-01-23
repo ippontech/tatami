@@ -8,6 +8,9 @@ import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Content;
 import com.sun.syndication.feed.rss.Item;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.pegdown.PegDownProcessor;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +19,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
+ * View used to generate the RSS stream corresponding to the timeline
+ *
  * @author Pierre Rust
  */
 public class SyndicView extends AbstractRssFeedView {
 
+
+    private final Log log = LogFactory.getLog(SyndicView.class);
     /**
      * @param model
      */
@@ -47,6 +56,7 @@ public class SyndicView extends AbstractRssFeedView {
         feed.setDescription(description);
         feed.setLink(link);
         feed.setEncoding("UTF-8");
+
         super.buildFeedMetadata(model, feed, request);
     }
 
@@ -63,9 +73,21 @@ public class SyndicView extends AbstractRssFeedView {
             Item item = new Item();
 
             String statusText = tempContent.getContent();
+
+            PegDownProcessor processor = new PegDownProcessor();
+            String htmlText = processor.markdownToHtml(statusText);
+            if (log.isDebugEnabled()) {
+                log.debug("feed html content " + htmlText );
+            }
+            // url handling  for mention & tags
+            htmlText = convertLinks(htmlText);
+
             Content content = new Content();
-            content.setValue(statusText);
+            content.setType(Content.HTML);
+            content.setValue(htmlText);
             item.setContent(content);
+
+            // build link for the status
             StringBuilder linkBuilder = new StringBuilder(statusBaseLink);
             linkBuilder.append(tempContent.getUsername())
                     .append("/#/status/")
@@ -79,4 +101,33 @@ public class SyndicView extends AbstractRssFeedView {
         }
         return items;
     }
+
+
+    /**
+     *  convert #tag and @mention to html links
+     * @param htmlText
+     * @return html with converted links
+     */
+    private String convertLinks(String htmlText) {
+        // inside status : users (mention) & tags
+        // the regexp are converted from tatami customized marked.js
+        Pattern p = Pattern.compile("@([A-Za-z0-9!#$%'*+\\/=?\\^_`{|}~\\-]+(?:\\.[A-Za-z0-9!#$%'*+\\/=?\\^_`{|}~\\-]+)*)");
+        Matcher m = p.matcher(htmlText);
+        StringBuffer mentionSb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(mentionSb, "<a href='/tatami/profile/$1/' >$0</a>");
+        }
+        m.appendTail(mentionSb);
+
+        p = Pattern.compile("#([^\\s!\"&#$%'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+(?:\\.[^\\s !\"&#$%'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)*)");
+        m = p.matcher(mentionSb.toString());
+        StringBuffer tagSb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(tagSb, "<a href='/tatami/#/tags/$1' >$0</a>");
+        }
+        m.appendTail(tagSb);
+        return tagSb.toString();
+    }
+
+
 }
