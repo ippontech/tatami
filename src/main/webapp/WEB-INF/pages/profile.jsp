@@ -25,10 +25,10 @@
                         </a>
                         <div class="profile-title">
                           <div>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username}">
                               <h4>${user.firstName} ${user.lastName}</h4>
                             </a>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username}">
                               @${user.username}
                             </a>
                           </div>
