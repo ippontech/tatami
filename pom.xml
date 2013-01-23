@@ -42,7 +42,7 @@
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host></tatami.smtp.host>
@@ -68,7 +68,7 @@
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://sandbox.tatamisoft.com/</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -126,7 +126,7 @@
                 <ehcache.maxBytesLocalHeap>1G</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
