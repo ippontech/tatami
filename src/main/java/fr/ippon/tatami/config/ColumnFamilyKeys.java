@@ -41,6 +41,8 @@ public class ColumnFamilyKeys {
 
     public final static String RSS_CF = "Rss";
 
+    public final static String MAILDIGEST_CF = "MailDigest";
+
     public final static String TRENDS_CF = "Trends";
 
     public final static String TAG_FOLLOWERS_CF = "TagFollowers";

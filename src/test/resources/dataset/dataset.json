@@ -235,6 +235,11 @@
             "comparatorType":"UTF8Type"
         },
         {
+            "name" : "MailDigest",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type"
+        },
+        {
             "name":"Counter",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
