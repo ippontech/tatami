@@ -1,7 +1,9 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.env.Environment;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Send e-mails.
@@ -184,6 +188,32 @@ public class MailService {
         sendEmail(mentionnedUser, subject, text);
     }
 
+    @Async
+    public void sendDailyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
+                                     Collection<User> suggestedUsers ) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending daily digest e-mail to User '" + user.getLogin() + "'");
+        }
+        String subject = "daily Digest";
+        String text = "daily digest";
+
+        sendEmail(user, subject, text);
+    }
+
+
+    @Async
+    public void sendWeeklyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
+                                     Collection<User> suggestedUsers,
+                                     Collection<Group>  suggestedGroup) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending weekly digest e-mail to User '" + user.getLogin() + "'");
+        }
+        String subject = "weekly Digest";
+        String text = "weekly digest";
+
+        sendEmail(user, subject, text);
+    }
+
     private void sendEmail(User user, String subject, String text) {
         if (host != null && !host.equals("")) {
             JavaMailSenderImpl sender = new JavaMailSenderImpl();
@@ -212,4 +242,5 @@ public class MailService {
             log.debug("SMTP server is not configured in /META-INF/tatami/tatami.properties");
         }
     }
+
 }
