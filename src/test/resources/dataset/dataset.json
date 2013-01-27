@@ -232,7 +232,65 @@
         {
             "name":"Domain",
             "keyType":"UTF8Type",
-            "comparatorType":"UTF8Type"
+            "comparatorType":"UTF8Type",
+            "rows" : [
+                {
+                    "key":"ippon.fr",
+                    "columns":[
+                        {
+                            "name":"jdubois",
+                            "value":""
+                        },
+                        {
+                            "name":"uuser@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWantToFollow@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWillBeFollowed@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoFollow@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoIsFollowed@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWantToForget@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userToForget@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWithStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoPostStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoReadStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
+                            "value":""
+                        }
+                    ]
+                }
+
+
+
+            ]
         },
         {
             "name" : "MailDigest",

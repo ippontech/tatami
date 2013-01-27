@@ -47,18 +47,16 @@ public class MailDigestService {
     private SuggestionService suggestionService;
 
 
-
-
     //@Scheduled(cron="*/5 * * * * MON-FRI")
-    // FIXME for test only, every 5 sec
-    @Scheduled(fixedRate=5000)
+    // FIXME for test only, every 10 sec
+    //@Scheduled(fixedRate=10000)
     public void dailyDigest() {
+        log.info("Starting Daily digest mail process ");
         Set<Domain> domains =  domainRepository.getAllDomains();
 
         for (Domain d : domains) {
 
             int pagination = 0;
-
             List<String> logins;
             do {
                 logins = mailDigestRepository.getLoginsRegisteredToDigest(
@@ -72,6 +70,33 @@ public class MailDigestService {
             } while (logins.size() >0 );
         }
     }
+
+
+    //@Scheduled(cron="*/5 * * * * MON-FRI")
+    // FIXME for test only, every 10 sec
+    //@Scheduled(fixedRate=10000)
+    public void weeklyDigest() {
+        log.info("Starting Weekly digest mail process ");
+
+        Set<Domain> domains =  domainRepository.getAllDomains();
+
+        for (Domain d : domains) {
+
+            int pagination = 0;
+            List<String> logins;
+            do {
+                logins = mailDigestRepository.getLoginsRegisteredToDigest(
+                        DigestType.WEEKLY_DIGEST, d.getName(), pagination);
+                pagination = pagination + logins.size();
+
+                for (String login : logins ) {
+                    handleWeeklyDigestPageForLogin(login);
+                }
+
+            } while (logins.size() >0 );
+        }
+    }
+
 
     /**
      * fetch all necessary info for a daily digest mail
@@ -140,6 +165,10 @@ public class MailDigestService {
             Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, max_id);
             statuses.size();
             int count = 0;
+            if (statuses.isEmpty()) {
+                dateReached = true;
+            }
+
             for (StatusDTO status : statuses )  {
 
                 if (status.getStatusDate().before(since_date)) {
