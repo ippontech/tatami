@@ -1757,7 +1757,7 @@
     this.shown = false;
     this.render = this.options.render || this.render;
     this.select = this.options.select || this.select;
-    this.listen()
+    this.listen();
   }
 
   Typeahead.prototype = {
@@ -1902,8 +1902,9 @@
       }
 
       this.$menu
-        .on('click', $.proxy(this.click, this))
-        .on('mouseenter', 'li', $.proxy(this.mouseenter, this))
+        .on('mousedown', 'li', $.proxy(this.click, this))
+        .on('mouseenter', 'li', $.proxy(this.mouseenter, this));
+
     }
 
   , eventSupported: function(eventName) {
@@ -1983,9 +1984,9 @@
     }
 
   , click: function (e) {
-      e.stopPropagation()
-      e.preventDefault()
-      this.select()
+      this.select();
+      e.stopPropagation();
+      e.preventDefault();
     }
 
   , mouseenter: function (e) {
