@@ -350,6 +350,28 @@
                 <i class="icon-warning-sign"></i>
                 <fmt:message key="tatami.group.add.public.alert"/>
             </div>
+        <@ } else { @>
+            <div class="control-group">
+                <label class="control-label" for="archivedGroup">
+                    <fmt:message key="tatami.group.archive"/>
+                </label>
+
+                <div class="controls">
+                    <label class="radio">
+                        <input type="radio" name="archivedGroup" value="true" <@ if (archivedGroup) { @> checked<@ } @> required>
+                        <fmt:message key="tatami.group.archive.true"/>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="archivedGroup" value="false" <@ if (!archivedGroup) { @> checked<@ } @> required>
+                        <fmt:message key="tatami.group.archive.false"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="alert">
+                <i class="icon-warning-sign"></i>
+                <fmt:message key="tatami.group.archive.alert"/>
+            </div>
         <@ } @>
 
         <div class="form-actions">

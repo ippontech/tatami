@@ -421,7 +421,8 @@ app.Model.Group = Backbone.Model.extend({
     defaults: {
         name: '',
         description: '',
-        publicGroup: true
+        publicGroup: true,
+        archivedGroup: false
     }
 });
 
@@ -666,6 +667,7 @@ app.View.EditGroup = Backbone.View.extend({
 
         this.model.set('name', form.find('[name="name"]').val());
         this.model.set('description', form.find('[name="description"]').val());
+        this.model.set('archivedGroup', form.find('[name="archivedGroup"]:checked').val() === 'true');
 
         var self = this;
         self.model.save(null, {
