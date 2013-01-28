@@ -144,7 +144,7 @@
             </label>
             <div class="controls">
                 <select class="input-xlarge span12" name="theme">
-                    <@ ['bootstrap', 'amelia', 'cerulean', 'cosmo', 'cyborg', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united'].forEach(function(theme){ @>
+                    <@ ['bootstrap', 'cerulean', 'cosmo', 'journal', 'readable', 'simplex', 'spacelab', 'spruce', 'superhero', 'united'].forEach(function(theme){ @>
                         <option value="<@= theme @>" <@ if(preferences.theme === theme) { @>selected="true" <@ } @>>
                             <@= function(string){ return string.charAt(0).toUpperCase() + string.slice(1) }(theme) @>
                             </option>
