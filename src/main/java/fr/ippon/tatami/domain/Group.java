@@ -12,6 +12,8 @@ public class Group implements Comparable<Group> {
 
     private boolean publicGroup;
 
+    private boolean archivedGroup;
+
     private String name;
 
     private String description;
@@ -35,6 +37,14 @@ public class Group implements Comparable<Group> {
 
     public void setPublicGroup(boolean publicGroup) {
         this.publicGroup = publicGroup;
+    }
+
+    public boolean isArchivedGroup() {
+        return archivedGroup;
+    }
+
+    public void setArchivedGroup(boolean archivedGroup) {
+        this.archivedGroup = archivedGroup;
     }
 
     public String getName() {
@@ -105,6 +115,7 @@ public class Group implements Comparable<Group> {
         return "Group{" +
                 "groupId='" + groupId + '\'' +
                 ", publicGroup=" + publicGroup +
+                ", archivedGroup=" + archivedGroup +
                 ", name='" + name + '\'' +
                 ", domain='" + domain + '\'' +
                 ", counter=" + counter +
