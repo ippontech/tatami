@@ -134,16 +134,15 @@ public class AccountController {
             String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
             currentUser.setRssUid(rssUid);
 
-            this.log.debug(newPreferences.getMentionEmail() + "" + (Boolean) newPreferences.getMentionEmail());
             preferences = new Preferences(currentUser);
 
             userService.updateUser(currentUser);
 
-            userService.updateThemePreferences((String) newPreferences.getTheme());
+            userService.updateThemePreferences(newPreferences.getTheme());
             TatamiUserDetails userDetails =
                     (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            userDetails.setTheme((String) newPreferences.getTheme());
+            userDetails.setTheme(newPreferences.getTheme());
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(userDetails,
                             userDetails.getPassword(),
