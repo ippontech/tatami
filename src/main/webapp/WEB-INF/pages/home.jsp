@@ -29,10 +29,10 @@
                     </div>
                 </div>
 
-                <div id="profileFollow" class="alert alert-status">
+                <div id="profileFollow" class="alert alert-status hidden-phone">
                 </div>
 
-                <div id="profileTrends" class="alert alert-status">
+                <div id="profileTrends" class="alert alert-status hidden-phone">
                     <div>
                         <i class="icon-fire"></i> <strong><fmt:message key="tatami.trends.title"/></strong>
                     </div>
