@@ -618,8 +618,17 @@ app.View.ActionsGroup = Backbone.View.extend({
             var isMember = this.collection.some(function(member){
                 return (member.id === username);
             });
-            if (isMember) this.renderMember();
-            else this.renderNotMember();
+            var isPublic = false;
+            if (this.model.get('publicGroup')){
+                isPublic = true;
+            }
+            if (isPublic) {
+                if (isMember) {
+                    this.renderMember();
+                } else {
+                    this.renderNotMember();
+                }
+            }
         }
         return this;
     }
