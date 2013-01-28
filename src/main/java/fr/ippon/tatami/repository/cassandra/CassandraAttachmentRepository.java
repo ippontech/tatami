@@ -39,10 +39,12 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
 
     @Override
     public void createAttachment(Attachment attachment) {
+
+        String attachmentId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
         if (log.isDebugEnabled()) {
             log.debug("Creating attachment : " + attachment);
         }
-        String attachmentId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
+
         attachment.setAttachmentId(attachmentId);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 

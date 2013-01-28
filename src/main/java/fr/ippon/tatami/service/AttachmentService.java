@@ -14,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 @Service
@@ -38,10 +37,6 @@ public class AttachmentService {
     private AuthenticationService authenticationService;
 
     public String createAttachment(Attachment attachment) throws StorageSizeException {
-        attachmentRepository.createAttachment(attachment);
-        String attachmentId = attachment.getAttachmentId();
-        userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
-                attachmentId);
 
         User currentUser = authenticationService.getCurrentUser();
         DomainConfiguration domainConfiguration =
@@ -58,15 +53,16 @@ public class AttachmentService {
             throw new StorageSizeException("User storage exceeded for user " + currentUser.getLogin());
         }
 
-        currentUser.setAttachmentsSize(newAttachmentsSize);
-        try {
-            userRepository.updateUser(currentUser);
-        } catch (ConstraintViolationException cve) {
-            log.info("Constraint violated while updating user " + currentUser + " : " + cve);
-            throw cve;
-        }
+        attachmentRepository.createAttachment(attachment);
 
-        return attachmentId;
+        userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
+                attachment.getAttachmentId());
+
+        currentUser.setAttachmentsSize(newAttachmentsSize);
+
+        userRepository.updateUser(currentUser);
+
+        return attachment.getAttachmentId();
     }
 
     public Attachment getAttachmentById(String attachmentId) {
