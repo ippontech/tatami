@@ -30,7 +30,7 @@
         <link href="/css/tatami.css" rel="stylesheet">
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
-        <link href="/tatami/static/${version}/all.css" rel="stylesheet">
+        <link href="/tatami/static-wro4j/${version}/all.css" rel="stylesheet">
     </c:if>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

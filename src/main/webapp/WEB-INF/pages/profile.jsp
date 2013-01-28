@@ -148,8 +148,14 @@
     var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>
 
-<script src="/js/tatami-commons.js"></script>
-<script src="/js/tatami-profile.js"></script>
+<c:if test="${wro4jEnabled eq false}">
+    <script src="/js/tatami-commons.js"></script>
+    <script src="/js/tatami-profile.js"></script>
+</c:if>
+<c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static/${version}/tatami-commons.js"></script>
+    <script src="/tatami/static/${version}/tatami-profile.js"></script>
+</c:if>
 
 </body>
 </html>
