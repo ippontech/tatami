@@ -112,13 +112,13 @@ public class AccountController {
     }
 
     /**
-     * GET  /account/preferences -> get account's preferences
+     * POST  /account/preferences -> update account's preferences
      */
     @RequestMapping(value = "/rest/account/preferences",
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
-    public Preferences setPreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
+    public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to set account's preferences");
         }
@@ -155,7 +155,7 @@ public class AccountController {
                 log.debug("User updated : " + currentUser);
             }
         } catch (Exception e) {
-            this.log.debug("Error during setting preferences", e);
+            log.debug("Error during setting preferences", e);
             response.setStatus(500);
         } finally {
             return preferences;
