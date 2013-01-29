@@ -517,6 +517,13 @@ form {
   padding-left: 73px;
 }
 
-p.quota{
- text-align: center;
+span.quota{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
+
+#accountContent .progress {
+    position:relative;
 }

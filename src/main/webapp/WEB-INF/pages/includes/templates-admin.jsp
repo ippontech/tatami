@@ -559,8 +559,14 @@
 
 <script type="text/template" id="files-quota">
     <div class="progress">
-        <div class="bar bar-success" style="width: <@= Math.round((quota[0]*100)/quota[1]) @>%;"></div>
-        <p class="quota"><@= Math.round((quota[0]*100)/quota[1]) @>%</p>
+        <@ if(quota < 50){@>
+        <div class="bar bar-success" style="width: <@= quota @>%;"></div>
+        <@ }else if(quota > 50 && quota < 80) {@>
+        <div class="bar bar-warning" style="width: <@= quota @>%;"></div>
+        <@ }else{@>
+        <div class="bar bar-danger" style="width: <@= quota @>%;"></div>
+        <@ } @>
+        <span class="quota"><@= quota @>%</span>
     </div>
 </script>
 
