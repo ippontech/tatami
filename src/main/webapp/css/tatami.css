@@ -516,3 +516,7 @@ form {
 .avatar-float-left-container {
   padding-left: 73px;
 }
+
+p.quota{
+ text-align: center;
+}
