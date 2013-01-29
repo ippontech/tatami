@@ -1,0 +1,16 @@
+#parse("common.vm")
+#msg("userPrivateMessage.greeting") ${user.Username},
+
+#msg("userPrivateMessage.text1") @${status.Username} :
+
+${status.Content}
+
+#msg("userPrivateMessage.text2")
+
+${statusUrl}
+
+#msg("userPrivateMessage.text3")
+
+#msg("email.signature")
+
+
