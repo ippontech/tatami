@@ -2,6 +2,7 @@ package fr.ippon.tatami.test.application;
 
 import fr.ippon.tatami.config.AsyncConfiguration;
 import fr.ippon.tatami.config.CassandraConfiguration;
+import fr.ippon.tatami.config.MailConfiguration;
 import fr.ippon.tatami.config.SearchConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +17,8 @@ import java.io.IOException;
 @ComponentScan(basePackages = {"fr.ippon.tatami.repository", "fr.ippon.tatami.service", "fr.ippon.tatami.security"})
 @Import(value = {AsyncConfiguration.class,
         CassandraConfiguration.class,
-        SearchConfiguration.class})
+        SearchConfiguration.class,
+        MailConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationTestConfiguration {
 

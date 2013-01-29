@@ -23,7 +23,6 @@ import java.util.Properties;
  * @author Pierre Rust
  */
 @Configuration
-@PropertySource({"classpath:/META-INF/tatami/tatami.properties"})
 public class MailConfiguration {
 
     private final Log log = LogFactory.getLog(MailConfiguration.class);
@@ -54,13 +53,7 @@ public class MailConfiguration {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/META-INF/tatami/mails/messages/messages");
         messageSource.setDefaultEncoding(CharEncoding.UTF_8);
-        if ("true".equals(env.getProperty("tatami.message.reloading.enabled"))) {
-            log.info("loading reloadable mail messages resources");
-            messageSource.setCacheSeconds(1);
-        } else
-        {
-            log.info("loading non-reloadable mail messages resources");
-        }
+        log.info("loading non-reloadable mail messages resources");
         return messageSource;
     }
 
