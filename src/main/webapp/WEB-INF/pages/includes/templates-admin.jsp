@@ -535,6 +535,13 @@
     </td>
 </script>
 
+<script type="text/template" id="files-quota">
+    <div class="progress">
+        <div class="bar bar-success" style="width: <@= Math.round((quota[0]*100)/quota[1]) @>%;"></div>
+        <p class="quota"><@= Math.round((quota[0]*100)/quota[1]) @>%</p>
+    </div>
+</script>
+
 <script type="text/template" id="files-menu">
     <h2><fmt:message key="tatami.menu.files"/></h2>
 </script>

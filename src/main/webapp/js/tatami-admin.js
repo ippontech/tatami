@@ -927,6 +927,27 @@ app.View.FilesView = Backbone.View.extend({
 
 });
 
+app.Model.QuotaModel = Backbone.Model.extend({
+   url : '/tatami/rest/attachments/quota'
+});
+
+
+app.View.QuotaFiles = Backbone.View.extend({
+   template: _.template($('#files-quota').html()),
+
+   initialize: function(){
+       this.model = new app.Model.QuotaModel();
+       this.model.bind('change', this.render, this);
+       this.model.fetch();
+   },
+
+   render: function(){
+      this.$el.html(this.template({quota:this.model.toJSON()}));
+      return this.$el;
+   }
+});
+
+
 
 /*
  Router
@@ -1187,6 +1208,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
     files: function(){
         var view = this.initFiles();
+        var viewQuota = new app.View.QuotaFiles();
         this.selectMenu('files');
 
         view.collection.fetch();
@@ -1194,8 +1216,10 @@ app.Router.AdminRouter = Backbone.Router.extend({
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
+            this.addView(viewQuota);
         }
         this.selectMenu('files');
+
     }
 
 

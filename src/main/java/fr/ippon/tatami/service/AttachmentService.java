@@ -9,12 +9,18 @@ import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
+import org.apache.avro.reflect.Stringable;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.elasticsearch.common.util.concurrent.jsr166e.LongAdder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import javax.persistence.metamodel.CollectionAttribute;
 import java.util.Collection;
+
 
 @Service
 public class AttachmentService {
@@ -93,5 +99,25 @@ public class AttachmentService {
                 break;
             }
         }
+    }
+
+    public Collection<Long> getDomainQuota(){
+        User currentUser = authenticationService.getCurrentUser();
+        DomainConfiguration domainConfiguration =
+                domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
+
+        Long domainQuota = domainConfiguration.getStorageSizeAsLong();
+        Long userQuota = currentUser.getAttachmentsSize();
+
+        Collection<Long> globalDomainQuota = new ArrayList<Long>();
+
+        globalDomainQuota.add(userQuota);
+        globalDomainQuota.add(domainQuota);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Domain quota attachments : " + domainQuota);
+        }
+
+        return globalDomainQuota;
     }
 }
