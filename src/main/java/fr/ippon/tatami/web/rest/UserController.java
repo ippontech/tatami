@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.List;
 
@@ -104,6 +105,26 @@ public class UserController {
         }
         List<User> users = userService.getUsersForCurrentDomain(pagination);
         return users;
+    }
+
+
+    /**
+     * POST  /users -> Register new user
+     */
+    @RequestMapping(value = "/rest/users",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @ResponseBody
+    public void register(@RequestParam String email, HttpServletResponse response) {
+        email = email.toLowerCase();
+        if (userService.getUserByLogin(email) != null) {
+            response.setStatus(500);
+            return;
+        }
+        User user = new User();
+        user.setLogin(email);
+        userService.registerUser(user);
+        return;
     }
 
 
