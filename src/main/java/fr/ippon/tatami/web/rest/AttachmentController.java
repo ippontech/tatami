@@ -57,7 +57,7 @@ public class AttachmentController {
     }
 
     /**
-     * POST /attachment/{attachmentId} -> delete a specific attachment
+     * DELETE /attachment/{attachmentId} -> delete a specific attachment
      */
     @RequestMapping(value = "/rest/attachments/{attachmentId}",
             method = RequestMethod.DELETE,
