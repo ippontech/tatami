@@ -516,3 +516,14 @@ form {
 .avatar-float-left-container {
   padding-left: 73px;
 }
+
+span.quota{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
+
+#accountContent .progress {
+    position:relative;
+}

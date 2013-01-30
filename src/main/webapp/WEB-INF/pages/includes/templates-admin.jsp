@@ -557,6 +557,19 @@
     </td>
 </script>
 
+<script type="text/template" id="files-quota">
+    <div class="progress">
+        <@ if(quota < 50){@>
+        <div class="bar bar-success" style="width: <@= quota @>%;"></div>
+        <@ }else if(quota > 50 && quota < 80) {@>
+        <div class="bar bar-warning" style="width: <@= quota @>%;"></div>
+        <@ }else{@>
+        <div class="bar bar-danger" style="width: <@= quota @>%;"></div>
+        <@ } @>
+        <span class="quota"><@= quota @>%</span>
+    </div>
+</script>
+
 <script type="text/template" id="files-menu">
     <h2><fmt:message key="tatami.menu.files"/></h2>
 </script>
