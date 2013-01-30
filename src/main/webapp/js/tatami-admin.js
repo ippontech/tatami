@@ -938,6 +938,39 @@ app.View.FilesView = Backbone.View.extend({
 
 });
 
+app.View.FilePagination = Backbone.View.extend({
+    template: _.template($('#files-pagination').html()),
+
+    initialize: function(){
+        _.bindAll(this, 'previous', 'next');
+       this.collection.fetch();
+    },
+
+    events:{
+       'click li.previous':'previous',
+       'click li.next':'next'
+    },
+
+    previous: function(){
+        (this.options.page < 0) ? this.options.page = 0 : this.options.page = this.options.page - 1;
+        this.collection.reset();
+        this.collection.fetch({data: {pagination: this.options.page}});
+        console.log(this.options.page);
+    },
+
+    next: function(){
+        (this.options.page > 50 ) ? this.options.page = 0 : this.options.page = this.options.page + 1;
+        this.collection.reset();
+        this.collection.fetch({data: {pagination: this.options.page}});
+        console.log(this.options.page);
+    },
+
+    render: function(){
+        this.$el.append(this.template());
+    }
+});
+
+
 app.Model.QuotaModel = Backbone.Model.extend({
    url : '/tatami/rest/attachments/quota'
 });
@@ -1220,21 +1253,24 @@ app.Router.AdminRouter = Backbone.Router.extend({
     },
 
     files: function(){
-        var view = this.initFiles();
-        var viewQuota = new app.View.QuotaFiles();
-        this.selectMenu('files');
+        var view = this.initFiles(),
+            viewQuota = new app.View.QuotaFiles(),
+            pagination = new app.View.FilePagination({
+                collection: view.collection,
+                page: 0
+            });
 
-        view.collection.fetch();
+        this.selectMenu('files');
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
+            this.addView(pagination);
             this.addView(viewQuota);
         }
         this.selectMenu('files');
 
     }
-
 
 });
 
