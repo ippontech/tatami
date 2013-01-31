@@ -20,7 +20,8 @@ import java.io.IOException;
         AsyncConfiguration.class,
         CacheConfiguration.class,
         CassandraConfiguration.class,
-        SearchConfiguration.class})
+        SearchConfiguration.class,
+        MailConfiguration.class})
 @ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
 public class ApplicationConfiguration {
 
