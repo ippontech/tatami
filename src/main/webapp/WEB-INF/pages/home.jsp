@@ -1,5 +1,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,10 +30,10 @@
                     </div>
                 </div>
 
-                <div id="profileFollow" class="alert alert-status">
+                <div id="profileFollow" class="alert alert-status hidden-phone">
                 </div>
 
-                <div id="profileTrends" class="alert alert-status">
+                <div id="profileTrends" class="alert alert-status hidden-phone">
                     <div>
                         <i class="icon-fire"></i> <strong><fmt:message key="tatami.trends.title"/></strong>
                     </div>
@@ -96,8 +97,14 @@
 
     </script>
 
-    <script src="/js/tatami-commons.js"></script>
-    <script src="/js/tatami-home.js"></script>
+    <c:if test="${wro4jEnabled eq false}">
+        <script src="/js/tatami-commons.js"></script>
+        <script src="/js/tatami-home.js"></script>
+    </c:if>
+    <c:if test="${wro4jEnabled eq true}">
+        <script src="/tatami/static/${version}/tatami-commons.js"></script>
+        <script src="/tatami/static/${version}/tatami-home.js"></script>
+    </c:if>
 
 </body>
 </html>

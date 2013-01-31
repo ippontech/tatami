@@ -8,6 +8,7 @@ import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -59,7 +60,7 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    public void postStatus(@RequestBody StatusDTO status) {
+    public void postStatus(@RequestBody StatusDTO status, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
         }
@@ -83,6 +84,13 @@ public class TimelineController {
                     log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                             "group ID = " + status.getGroupId());
                 }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else if (group.isArchivedGroup()) {
+                if (log.isInfoEnabled()) {
+                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
                 statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
             }
@@ -94,12 +102,19 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/discussion",
             method = RequestMethod.POST)
-    public void replyToStatus(@RequestBody Reply reply) {
+    public void replyToStatus(@RequestBody Reply reply, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to reply to status : " + reply);
         }
         String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
-        statusUpdateService.replyToStatus(escapedContent, reply.getStatusId());
+        try {
+            statusUpdateService.replyToStatus(escapedContent, reply.getStatusId());
+        } catch (ArchivedGroupException age) {
+            if (log.isInfoEnabled()) {
+                log.info("Archived group! User tried to reply to a message in an archived group");
+            }
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
     }
 
     /**

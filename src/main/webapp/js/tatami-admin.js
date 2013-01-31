@@ -423,7 +423,8 @@ app.Model.Group = Backbone.Model.extend({
     defaults: {
         name: '',
         description: '',
-        publicGroup: true
+        publicGroup: true,
+        archivedGroup: false
     }
 });
 
@@ -620,8 +621,17 @@ app.View.ActionsGroup = Backbone.View.extend({
             var isMember = this.collection.some(function(member){
                 return (member.id === username);
             });
-            if (isMember) this.renderMember();
-            else this.renderNotMember();
+            var isPublic = false;
+            if (this.model.get('publicGroup')){
+                isPublic = true;
+            }
+            if (isPublic) {
+                if (isMember) {
+                    this.renderMember();
+                } else {
+                    this.renderNotMember();
+                }
+            }
         }
         return this;
     }
@@ -659,6 +669,7 @@ app.View.EditGroup = Backbone.View.extend({
 
         this.model.set('name', form.find('[name="name"]').val());
         this.model.set('description', form.find('[name="description"]').val());
+        this.model.set('archivedGroup', form.find('[name="archivedGroup"]:checked').val() === 'true');
 
         var self = this;
         self.model.save(null, {
@@ -929,6 +940,29 @@ app.View.FilesView = Backbone.View.extend({
 
 });
 
+app.Model.QuotaModel = Backbone.Model.extend({
+   url : '/tatami/rest/attachments/quota'
+});
+
+
+app.View.QuotaFiles = Backbone.View.extend({
+   template: _.template($('#files-quota').html()),
+
+   initialize: function(){
+       this.model = new app.Model.QuotaModel();
+       this.model.bind('change', this.render, this);
+       this.model.fetch();
+   },
+
+   render: function(){
+      var m = this.model;
+      var quota = Math.round((m.get(0)*100)/ m.get(1));
+      this.$el.html(this.template({quota: quota}));
+      return this.$el;
+   }
+});
+
+
 
 /*
  Router
@@ -1189,6 +1223,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
     files: function(){
         var view = this.initFiles();
+        var viewQuota = new app.View.QuotaFiles();
         this.selectMenu('files');
 
         view.collection.fetch();
@@ -1196,8 +1231,10 @@ app.Router.AdminRouter = Backbone.Router.extend({
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
+            this.addView(viewQuota);
         }
         this.selectMenu('files');
+
     }
 
 

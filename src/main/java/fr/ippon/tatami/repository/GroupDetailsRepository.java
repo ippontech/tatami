@@ -13,5 +13,5 @@ public interface GroupDetailsRepository {
 
     Group getGroupDetails(String groupId);
 
-    void editGroupDetails(String groupId, String name, String description);
+    void editGroupDetails(String groupId, String name, String description, boolean archivedGroup);
 }

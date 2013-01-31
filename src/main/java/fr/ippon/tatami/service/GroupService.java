@@ -67,7 +67,11 @@ public class GroupService {
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
-        groupDetailsRepository.editGroupDetails(group.getGroupId(), group.getName(), group.getDescription());
+        groupDetailsRepository.editGroupDetails(group.getGroupId(),
+                group.getName(),
+                group.getDescription(),
+                group.isArchivedGroup());
+
         searchService.removeGroup(group);
         searchService.addGroup(group);
     }
@@ -88,7 +92,6 @@ public class GroupService {
         }
         return userGroupDTOs;
     }
-
 
     public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
@@ -150,6 +153,7 @@ public class GroupService {
         Group groupDetails = groupDetailsRepository.getGroupDetails(groupId);
         group.setName(groupDetails.getName());
         group.setPublicGroup(groupDetails.isPublicGroup());
+        group.setArchivedGroup(groupDetails.isArchivedGroup());
         group.setDescription(groupDetails.getDescription());
         long counter = groupCounterRepository.getGroupCounter(domain, groupId);
         group.setCounter(counter);

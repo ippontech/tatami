@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>2.0.0.alpha.3</version>
+    <version>2.0.0.beta.1</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -64,7 +64,7 @@
             <properties>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
+                <log4j.loglevel>INFO</log4j.loglevel>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://sandbox.tatamisoft.com/</tatami.url>
@@ -419,6 +419,7 @@
         <mockito.version>1.9.0</mockito.version>
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
+        <velocity.version>1.7</velocity.version>
 
         <selenium.version>2.25.0</selenium.version>
 
@@ -687,6 +688,12 @@
             <artifactId>pegdown</artifactId>
             <version>${pegdown.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>

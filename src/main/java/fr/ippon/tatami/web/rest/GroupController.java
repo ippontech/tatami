@@ -96,6 +96,7 @@ public class GroupController {
                 group.setDomain(authenticationService.getCurrentUser().getDomain());
                 group.setName(groupEdit.getName());
                 group.setDescription(groupEdit.getDescription());
+                group.setArchivedGroup(groupEdit.isArchivedGroup());
                 groupService.editGroup(group);
                 return group;
             }

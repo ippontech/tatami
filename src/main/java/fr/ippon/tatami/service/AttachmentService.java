@@ -9,13 +9,18 @@ import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
+import org.apache.avro.reflect.Stringable;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.elasticsearch.common.util.concurrent.jsr166e.LongAdder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import javax.persistence.metamodel.CollectionAttribute;
 import java.util.Collection;
+
 
 @Service
 public class AttachmentService {
@@ -38,10 +43,6 @@ public class AttachmentService {
     private AuthenticationService authenticationService;
 
     public String createAttachment(Attachment attachment) throws StorageSizeException {
-        attachmentRepository.createAttachment(attachment);
-        String attachmentId = attachment.getAttachmentId();
-        userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
-                attachmentId);
 
         User currentUser = authenticationService.getCurrentUser();
         DomainConfiguration domainConfiguration =
@@ -58,15 +59,16 @@ public class AttachmentService {
             throw new StorageSizeException("User storage exceeded for user " + currentUser.getLogin());
         }
 
-        currentUser.setAttachmentsSize(newAttachmentsSize);
-        try {
-            userRepository.updateUser(currentUser);
-        } catch (ConstraintViolationException cve) {
-            log.info("Constraint violated while updating user " + currentUser + " : " + cve);
-            throw cve;
-        }
+        attachmentRepository.createAttachment(attachment);
 
-        return attachmentId;
+        userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
+                attachment.getAttachmentId());
+
+        currentUser.setAttachmentsSize(newAttachmentsSize);
+
+        userRepository.updateUser(currentUser);
+
+        return attachment.getAttachmentId();
     }
 
     public Attachment getAttachmentById(String attachmentId) {
@@ -97,5 +99,25 @@ public class AttachmentService {
                 break;
             }
         }
+    }
+
+    public Collection<Long> getDomainQuota(){
+        User currentUser = authenticationService.getCurrentUser();
+        DomainConfiguration domainConfiguration =
+                domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
+
+        Long domainQuota = domainConfiguration.getStorageSizeAsLong();
+        Long userQuota = currentUser.getAttachmentsSize();
+
+        Collection<Long> globalDomainQuota = new ArrayList<Long>();
+
+        globalDomainQuota.add(userQuota);
+        globalDomainQuota.add(domainQuota);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Domain quota attachments : " + domainQuota);
+        }
+
+        return globalDomainQuota;
     }
 }

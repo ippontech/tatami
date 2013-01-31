@@ -30,6 +30,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
     private final String NAME = "name";
     private final String DESCRIPTION = "description";
     private final String PUBLIC_GROUP = "publicGroup";
+    private final String ARCHIVED_GROUP = "archivedGroup";
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -43,15 +44,19 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
                 description, StringSerializer.get(), StringSerializer.get()));
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(PUBLIC_GROUP,
                 (new Boolean(publicGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
+        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
+                Boolean.FALSE.toString(), StringSerializer.get(), StringSerializer.get()));
     }
 
     @Override
-    public void editGroupDetails(String groupId, String name, String description) {
+    public void editGroupDetails(String groupId, String name, String description, boolean archivedGroup) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(NAME,
                 name, StringSerializer.get(), StringSerializer.get()));
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(DESCRIPTION,
                 description, StringSerializer.get(), StringSerializer.get()));
+        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
+                (new Boolean(archivedGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
     }
 
     @Override
@@ -75,6 +80,10 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
             } else if (column.getName().equals(PUBLIC_GROUP)) {
                 if (column.getValue().equals(Boolean.TRUE.toString())) {
                     group.setPublicGroup(true);
+                }
+            } else if (column.getName().equals(ARCHIVED_GROUP)) {
+                if (column.getValue().equals(Boolean.TRUE.toString())) {
+                    group.setArchivedGroup(true);
                 }
             }
         }

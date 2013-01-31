@@ -487,7 +487,7 @@ create column family Attachment
 
 create column family UserAttachments
   with column_type = 'Standard'
-  and comparator = 'BytesType'
+  and comparator = 'UUIDType'
   and default_validation_class = 'BytesType'
   and key_validation_class = 'BytesType'
   and read_repair_chance = 1.0
@@ -502,7 +502,7 @@ create column family UserAttachments
 
 create column family StatusAttachments
   with column_type = 'Standard'
-  and comparator = 'BytesType'
+  and comparator = 'UUIDType'
   and default_validation_class = 'BytesType'
   and key_validation_class = 'BytesType'
   and read_repair_chance = 1.0
