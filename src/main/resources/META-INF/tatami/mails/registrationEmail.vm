@@ -1,0 +1,11 @@
+#parse("./common.vm")
+#msg("registration.greeting") ${user.Login},
+
+#msg("registration.text1")
+
+${registrationUrl}
+
+#msg("registration.text2")
+
+#msg("email.signature")
+

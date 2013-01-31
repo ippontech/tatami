@@ -419,6 +419,7 @@
         <mockito.version>1.9.0</mockito.version>
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
+        <velocity.version>1.7</velocity.version>
 
         <selenium.version>2.25.0</selenium.version>
 
@@ -687,6 +688,12 @@
             <artifactId>pegdown</artifactId>
             <version>${pegdown.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>
