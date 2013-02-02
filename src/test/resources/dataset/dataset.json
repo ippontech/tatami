@@ -226,6 +226,56 @@
                             "value":"WhoShouldBeFoundBySimilarSearch"
                         }
                     ]
+                },
+                {
+                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"userWhoSubscribeToDigests"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        },
+                        {
+                            "name":"gravatar",
+                            "value":"gravatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoSubscribeToDigests"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoPostForDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"userWhoPostForDigests"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        },
+                        {
+                            "name":"gravatar",
+                            "value":"gravatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoPostForDigests"
+                        }
+                    ]
                 }
             ]
         },
@@ -284,6 +334,14 @@
                         {
                             "name":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
                             "value":""
+                        },
+                        {
+                            "name": "userWhoSubscribeToDigests@ippon.fr",
+                            "value": ""
+                        },
+                        {
+                            "name":"userWhoPostForDigests@ippon.fr",
+                            "value" : ""
                         }
                     ]
                 }
@@ -470,6 +528,40 @@
                         {
                             "name":"FRIENDS_COUNTER",
                             "value":"1"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoPostForDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
                         }
                     ]
                 }

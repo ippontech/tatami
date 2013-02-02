@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,6 +13,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -25,6 +31,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     @Mock
     MailService mailServiceMock;
 
+    // Note : see the mail text in the console, you need to comment out the InjectMocks annotation
+    // the test will fail but it's still useful during development if you want to work on the template
     @Inject
     @InjectMocks
     public MailDigestService mailDigestService;
@@ -32,6 +40,14 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     @Inject
     public UserService userService;
 
+    @Inject
+    public TimelineService timelineService;
+
+    @Inject
+    public StatusUpdateService statusUpdateService;
+
+    @Inject
+    public FriendshipService friendshipService;
 
     @Before
     public void initMocks() {
@@ -62,28 +78,110 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateDailyDigest(){
+    public void shouldGenerateDailyDigestNoMessage(){
 
-        mockAuthenticationOnUserService("jdubois@ippon.fr");
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
+        mockAuthenticationOnUserService("userWhoSubscribeToDigests@ippon.fr");
+        User user = userService.getUserByLogin("userWhoSubscribeToDigests@ippon.fr");
         userService.updateDailyDigestRegistration(true);
 
+        ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
+
         mailDigestService.dailyDigest();
-        verify(mailServiceMock).sendDailyDigestEmail(any(User.class), anyList(), anyInt(),
+
+        verify(mailServiceMock).sendDailyDigestEmail(any(User.class), statuses.capture(), anyInt(),
                 anyCollection());
+        assertThat(statuses.getValue().size() == 0, is(true));
     }
+
+
+    @Test
+    public void shouldGenerateDailyDigestOneMessage(){
+
+        mockAuthenticationOnUserService("userWhoSubscribeToDigests@ippon.fr");
+        User user = userService.getUserByLogin("userWhoSubscribeToDigests@ippon.fr");
+        userService.updateDailyDigestRegistration(true);
+
+        mockAuthenticationOnFriendshipService("userWhoSubscribeToDigests@ippon.fr");
+        friendshipService.followUser("userWhoPostForDigests");
+
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        String content = "voilà un message qui devrait se retrouver dans le digest ! ";
+        statusUpdateService.postStatus(content, false, new ArrayList<String>());
+
+        ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
+
+        mailDigestService.dailyDigest();
+
+        verify(mailServiceMock).sendDailyDigestEmail(any(User.class), statuses.capture(), anyInt(),
+                anyCollection());
+        assertThat(statuses.getValue().size() == 1, is(true));
+    }
+
+
+    @Test
+    public void shouldGenerateDailyDigestWithTwoMessages(){
+
+        mockAuthenticationOnUserService("userWhoSubscribeToDigests@ippon.fr");
+        User user = userService.getUserByLogin("userWhoSubscribeToDigests@ippon.fr");
+        userService.updateDailyDigestRegistration(true);
+
+        mockAuthenticationOnFriendshipService("userWhoSubscribeToDigests@ippon.fr");
+        friendshipService.followUser("userWhoPostForDigests");
+
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        String content2 = "voilà un message 2 qui devrait se retrouver dans le digest ! ";
+        statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+
+        ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
+
+        mailDigestService.dailyDigest();
+
+        verify(mailServiceMock).sendDailyDigestEmail(any(User.class), statuses.capture(), anyInt(),
+                anyCollection());
+        assertThat(statuses.getValue().size() == 2, is(true));
+    }
+
+    @Test
+    public void shouldGenerateDailyDigestWithManyMessages(){
+
+        mockAuthenticationOnUserService("userWhoSubscribeToDigests@ippon.fr");
+        User user = userService.getUserByLogin("userWhoSubscribeToDigests@ippon.fr");
+        userService.updateDailyDigestRegistration(true);
+
+        mockAuthenticationOnFriendshipService("userWhoSubscribeToDigests@ippon.fr");
+        friendshipService.followUser("userWhoPostForDigests");
+
+        mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
+        for (int i=0 ; i< 20 ; i++ ){
+            String content2 = "voilà un message "+ i +" qui devrait se retrouver dans le digest ! ";
+            statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+        }
+
+        ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
+
+        mailDigestService.dailyDigest();
+
+        verify(mailServiceMock).sendDailyDigestEmail(any(User.class), statuses.capture(), anyInt(),
+                anyCollection());
+        assertThat(statuses.getValue().size() == 10, is(true));
+    }
+
 
     @Test
     public void shouldGenerateWeeklyDigest(){
 
-        mockAuthenticationOnUserService("jdubois@ippon.fr");
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
+        mockAuthenticationOnUserService("userWhoSubscribeToDigests@ippon.fr");
+        User user = userService.getUserByLogin("userWhoSubscribeToDigests@ippon.fr");
         userService.updateWeeklyDigestRegistration(true);
 
         mailDigestService.weeklyDigest();
         verify(mailServiceMock).sendWeeklyDigestEmail(any(User.class), anyList(), anyInt(),
                 anyCollection(), anyCollection());
     }
+
 
     private void mockAuthenticationOnUserService(String login) {
         User authenticateUser = constructAUser(login);
@@ -92,4 +190,25 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
     }
 
+    private void mockAuthenticationOnFriendshipService(String login) {
+        User authenticateUser = constructAUser(login);
+        AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+        when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
+        friendshipService.setAuthenticationService(mockAuthenticationService);
+        ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
+    }
+
+    private void mockAuthenticationOnTimelineServiceWithACurrentUser(String login) {
+        User authenticateUser = constructAUser(login);
+        AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+        when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
+        ReflectionTestUtils.setField(timelineService, "authenticationService", mockAuthenticationService);
+    }
+
+    private void mockAuthenticationOnStatusUpdateServiceWithACurrentUser(String login) {
+        User authenticateUser = constructAUser(login);
+        AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
+        when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
+        ReflectionTestUtils.setField(statusUpdateService, "authenticationService", mockAuthenticationService);
+    }
 }

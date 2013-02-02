@@ -1,0 +1,17 @@
+#parse("common.vm")
+#msg("weeklyDigest.greeting") ${user.Login},
+
+#msg("weeklyDigest.text1")
+
+#foreach( $status in $statuses )
+<li>$product</li>
+#end
+
+#foreach( $status in $statuses )
+<li>$product</li>
+#end
+
+
+#msg("weeklyDigest.text2")
+
+#msg("email.signature")

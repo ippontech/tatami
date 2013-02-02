@@ -18,6 +18,8 @@ import java.util.*;
 
 /**
  *
+ * This service generates digest emails for subscribed users.
+ *
  * @author Pierre Rust
  */
 @Service
@@ -47,8 +49,11 @@ public class MailDigestService {
     private SuggestionService suggestionService;
 
 
+    /**
+     * Sends daily digest. Lust be run every day
+     *
+     */
     //@Scheduled(cron="*/5 * * * * MON-FRI")
-    // FIXME for test only, every 10 sec
     //@Scheduled(fixedRate=10000)
     public void dailyDigest() {
         log.info("Starting Daily digest mail process ");
@@ -72,8 +77,12 @@ public class MailDigestService {
     }
 
 
+    /**
+     * Sends weekly digest.
+     * Must be run every day : digests are not sent the same day for all users.
+     *
+     */
     //@Scheduled(cron="*/5 * * * * MON-FRI")
-    // FIXME for test only, every 10 sec
     //@Scheduled(fixedRate=10000)
     public void weeklyDigest() {
         log.info("Starting Weekly digest mail process ");
@@ -99,8 +108,8 @@ public class MailDigestService {
 
 
     /**
-     * fetch all necessary info for a daily digest mail
-     * and delegate the sending operation to mailService
+     * Fetch all necessary info for a daily digest mail
+     * and delegate the sending operation to mailService.
      *
      * @param login
      */
@@ -112,17 +121,22 @@ public class MailDigestService {
         cal.add(Calendar.DATE, -1);
         Date yesterday = cal.getTime();
 
-        List<StatusDTO> digestStatuses = null;
+        List<StatusDTO> digestStatuses = new ArrayList<StatusDTO>(MAX_STATUS_DAILY_DIGEST);
         int nbStatusTotal = getStatusesForDigest(user, yesterday, MAX_STATUS_DAILY_DIGEST, digestStatuses);
 
         Collection<User>  suggestedUsers = suggestionService.suggestUsers(user.getLogin());
+
+        // TODO : we could look for popular messages
+        // especially if the user
+        // does not have anything in it's timeline and there are no suggested users for him
+
 
         mailService.sendDailyDigestEmail(user, digestStatuses, nbStatusTotal, suggestedUsers);
     }
 
     /**
-     * fetch all necessary info for a weekly digest mail
-     * and delegate the sending operation to mailService
+     * Fetch all necessary info for a weekly digest mail
+     * and delegate the sending operation to mailService.
      *
      * @param login
      */
@@ -134,7 +148,7 @@ public class MailDigestService {
         cal.add(Calendar.DATE, -7);
         Date lastWeek = cal.getTime();
 
-        List<StatusDTO> digestStatuses = null;
+        List<StatusDTO> digestStatuses = new ArrayList<StatusDTO>(MAX_STATUS_WEEKLY_DIGEST);
         int nbStatusTotal = getStatusesForDigest(user, lastWeek, MAX_STATUS_WEEKLY_DIGEST, digestStatuses);
 
 
@@ -154,7 +168,7 @@ public class MailDigestService {
      * @param digestStatuses
      * @return
      */
-    private int getStatusesForDigest( User user, Date since_date,
+    private int getStatusesForDigest( final User user, final Date since_date,
                                       int nbStatus, List<StatusDTO> digestStatuses) {
         String max_id = null;
         boolean dateReached = false;
@@ -194,7 +208,7 @@ public class MailDigestService {
             // now select some of theses statuses
             if (allStatuses.size()> nbStatus) {
                 Collections.shuffle(allStatuses);
-                digestStatuses = allStatuses.subList(0, nbStatus);
+                digestStatuses.addAll(allStatuses.subList(0, nbStatus));
                 Collections.sort(digestStatuses, new Comparator<StatusDTO>() {
                     @Override
                     public int compare(StatusDTO statusDTO, StatusDTO statusDTO2) {
@@ -202,7 +216,7 @@ public class MailDigestService {
                     }
                 });
             } else  {
-                digestStatuses = allStatuses;
+                digestStatuses.addAll(allStatuses);
             }
         }
 
