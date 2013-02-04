@@ -16,7 +16,8 @@ public class Preferences {
 
     private String rssUid;
 
-    private String[] themes;
+    private String[] themes = {"bootstrap","cerulean","cosmo","journal","readable","simplex","spacelab",
+            "spruce","superhero","united"};
 
     public Preferences() {
 
@@ -65,7 +66,9 @@ public class Preferences {
     }
 
     public void setThemesList(String themes) {
-        this.themes = themes.split(",");
+        if (themes != null && !themes.isEmpty()) {
+            this.themes = themes.split(",");
+        }
     }
 
     public String[] getThemesList() {
