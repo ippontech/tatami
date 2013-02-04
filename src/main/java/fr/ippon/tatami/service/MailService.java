@@ -202,7 +202,7 @@ public class MailService {
         model.put("statuses", statuses);
         model.put("nbStatus", nbStatus);
         model.put("suggestedUsers", suggestedUsers);
-        model.put("suggestedGroup", suggestedGroup);
+        model.put("suggestedGroups", suggestedGroup);
 
         sendTextFromTemplate( user, model, "weeklyDigest", this.locale);
     }

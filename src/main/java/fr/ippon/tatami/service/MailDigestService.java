@@ -153,19 +153,21 @@ public class MailDigestService {
 
 
         Collection<User>  suggestedUsers = suggestionService.suggestUsers(user.getLogin());
-        Collection<Group>  suggestedGroup = suggestionService.suggestGroups(user.getLogin());
+        Collection<Group>  suggestedGroups = suggestionService.suggestGroups(user.getLogin());
 
         mailService.sendWeeklyDigestEmail(user, digestStatuses, nbStatusTotal,
-                suggestedUsers, suggestedGroup);
+                suggestedUsers, suggestedGroups);
     }
 
     /**
-     * Build a list containing all the status from an user timeline, except it's own, since a given date.
+     * Build a list containing an extract of the status from an user timeline,
+     * except it's own, since a given date.
+     *
      *
      * @param user
-     * @param since_date
-     * @param nbStatus
-     * @param digestStatuses
+     * @param since_date date since
+     * @param nbStatus number of status to include in the extract
+     * @param digestStatuses selected status will be added to this list (ordered by date)
      * @return
      */
     private int getStatusesForDigest( final User user, final Date since_date,
