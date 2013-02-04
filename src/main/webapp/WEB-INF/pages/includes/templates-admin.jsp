@@ -568,6 +568,7 @@
 </script>
 
 <script type="text/template" id="files-quota">
+
     <div class="progress">
         <@ if(quota < 50){@>
         <div class="bar bar-success" style="width: <@= quota @>%;"></div>
@@ -606,4 +607,11 @@
                 <fmt:message key="tatami.user.status.delete"/>
         </span>
     </td>
+</script>
+
+<script type="text/template" id="files-pagination">
+    <ul class="pager">
+        <li><a class="previous" href="#">Previous</a></li>
+        <li><a class="next" href="#">Next</a></li>
+    </ul>
 </script>
