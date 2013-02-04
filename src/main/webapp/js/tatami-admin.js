@@ -254,6 +254,12 @@ app.View.TabContainer = Backbone.View.extend({
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         });
+
+        if(this.options.pagination === true)
+            this.views.paginated = new app.View.FilePagination({
+                collection: this.collection,
+                page: 0
+            });
     },
 
     selectMenu: function(menu) {
@@ -265,7 +271,7 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
-
+        this.$el.append(this.views.paginated.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -928,6 +934,7 @@ app.View.FilesView = Backbone.View.extend({
    },
 
    render: function(){
+
       this.$el.html(this.template(this.model.toJSON()));
       return this.$el;
    },
@@ -944,7 +951,6 @@ app.View.FilePagination = Backbone.View.extend({
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
        this.collection.fetch();
-
     },
 
     events:{
@@ -966,6 +972,9 @@ app.View.FilePagination = Backbone.View.extend({
 
     render: function(){
         this.$el.append(this.template());
+        this.delegateEvents();
+        return this.$el;
+
     }
 });
 
@@ -1245,27 +1254,21 @@ app.Router.AdminRouter = Backbone.Router.extend({
                 collection: new app.Collection.FilesCollection(),
                 ViewModel: app.View.FilesView,
                 MenuTemplate: _.template($('#files-menu').html()),
-                TabHeaderTemplate: _.template($('#files-header').html())
+                TabHeaderTemplate: _.template($('#files-header').html()),
+                pagination: true
             });
 
         return app.views.files;
     },
 
     files: function(){
-        var view = this.initFiles(),
-            //viewQuota = new app.View.QuotaFiles(),
-            pagination = new app.View.FilePagination({
-                collection: view.collection,
-                page: 0
-            });
+        var view = this.initFiles();
 
         this.selectMenu('files');
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
-            this.addView(pagination);
-            //this.addView(viewQuota);
         }
         this.selectMenu('files');
 
