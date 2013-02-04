@@ -25,6 +25,8 @@ public class SuggestionService {
 
     private static final int SUB_SAMPLE_SIZE = 100;
 
+    private static final int SUGGESTIONS_SIZE = 3;
+
     @Inject
     private FriendshipService friendshipService;
 
@@ -56,12 +58,16 @@ public class SuggestionService {
             }
         }
         List<String> mostFollowedUsers = findMostUsedKeys(userCount);
-        Collection<User> suggestions = new ArrayList<User>();
+        List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUser : mostFollowedUsers) {
             User suggestion = userService.getUserByLogin(mostFollowedUser);
-            suggestions.add(suggestion);
+            userSuggestions.add(suggestion);
         }
-        return suggestions;
+        if (userSuggestions.size() > SUGGESTIONS_SIZE) {
+            return userSuggestions.subList(0, SUGGESTIONS_SIZE);
+        } else {
+            return userSuggestions;
+        }
     }
 
     @Cacheable("suggest-groups-cache")
@@ -79,15 +85,19 @@ public class SuggestionService {
             }
         }
         List<String> mostFollowedGroups = findMostUsedKeys(groupCount);
-        Collection<Group> suggestions = new ArrayList<Group>();
+        List<Group> groupSuggestions = new ArrayList<Group>();
         String domain = DomainUtil.getDomainFromLogin(login);
         for (String mostFollowedGroup : mostFollowedGroups) {
             Group suggestion = groupService.getGroupById(domain, mostFollowedGroup);
             if (suggestion.isPublicGroup()) { // Only suggest public groups for the moment
-                suggestions.add(suggestion);
+                groupSuggestions.add(suggestion);
             }
         }
-        return suggestions;
+        if (groupSuggestions.size() > SUGGESTIONS_SIZE) {
+            return groupSuggestions.subList(0, SUGGESTIONS_SIZE);
+        } else {
+            return groupSuggestions;
+        }
     }
 
 

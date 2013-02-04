@@ -99,7 +99,7 @@ public class TrendService {
             }
             trends.add(trend);
         }
-        if (trends.size() > 8) {
+        if (trends.size() > TRENDS_SIZE) {
             return trends.subList(0, TRENDS_SIZE);
         } else {
             return trends;
