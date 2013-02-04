@@ -53,8 +53,7 @@ public class MailDigestService {
      * Sends daily digest. Lust be run every day
      *
      */
-    //@Scheduled(cron="*/5 * * * * MON-FRI")
-    //@Scheduled(fixedRate=10000)
+    @Scheduled(cron="0 0 22 * * ? *")
     public void dailyDigest() {
         log.info("Starting Daily digest mail process ");
         Set<Domain> domains =  domainRepository.getAllDomains();
@@ -71,7 +70,6 @@ public class MailDigestService {
                 for (String login : logins ) {
                     handleDailyDigestPageForLogin(login);
                 }
-
             } while (logins.size() >0 );
         }
     }
@@ -82,8 +80,7 @@ public class MailDigestService {
      * Must be run every day : digests are not sent the same day for all users.
      *
      */
-    //@Scheduled(cron="*/5 * * * * MON-FRI")
-    //@Scheduled(fixedRate=10000)
+    @Scheduled(cron="0 0 23 * * ? *")
     public void weeklyDigest() {
         log.info("Starting Weekly digest mail process ");
 
