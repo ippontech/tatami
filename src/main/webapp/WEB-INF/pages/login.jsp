@@ -46,11 +46,6 @@
             </p>
         </div>
     </div>
-        <div class="row">
-            <div class="alert alert-discuss">
-                <h4><fmt:message key="tatami.beta.alert"/></h4>
-            </div>
-        </div>
     <div class="row">
         <div class="span4">
             <div class="row-fluid">
