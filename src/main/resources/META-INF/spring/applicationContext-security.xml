@@ -27,7 +27,9 @@
         <intercept-url pattern="/tatami/license" access="permitAll()"/>
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
+        <intercept-url pattern="/tatami/rest/users" method="POST" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
+
 
         <form-login
                 login-processing-url="/tatami/authentication"
