@@ -16,6 +16,8 @@ public class Preferences {
 
     private String rssUid;
 
+    private String[] themes;
+
     public Preferences() {
 
     }
@@ -61,4 +63,15 @@ public class Preferences {
     public void setRssUid(String rssUid) {
         this.rssUid = rssUid;
     }
+
+    public void setThemesList(String themes) {
+        this.themes = themes.split(",");
+    }
+
+    public String[] getThemesList() {
+        return themes;
+    }
+
+
+
 }
