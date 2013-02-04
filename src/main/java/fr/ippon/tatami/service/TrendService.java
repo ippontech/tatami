@@ -26,6 +26,8 @@ public class TrendService {
 
     private final Log log = LogFactory.getLog(TrendService.class);
 
+    private static final int TRENDS_SIZE = 8;
+
     @Inject
     private TrendRepository trendRepository;
 
@@ -97,7 +99,11 @@ public class TrendService {
             }
             trends.add(trend);
         }
-        return trends;
+        if (trends.size() > 8) {
+            return trends.subList(0, TRENDS_SIZE);
+        } else {
+            return trends;
+        }
     }
 
 }
