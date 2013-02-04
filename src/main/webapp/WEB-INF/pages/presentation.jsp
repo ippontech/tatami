@@ -87,7 +87,7 @@
                 <li><fmt:message key="tatami.presentation.row4.3"/></li>
             </ul>
         </div>
-        <div class="span4"><img src="/img/ippon-logo-bookmark.png" height="148" width="150" alt="Ippon Technologies"></div>
+        <div class="span4"><img src="/img/company-logo-bookmark.png" height="148" width="150" alt="<fmt:message key="tatami.logo"/>"></div>
 
     </div>
     <div class="row">
