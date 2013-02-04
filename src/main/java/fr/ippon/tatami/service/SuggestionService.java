@@ -5,6 +5,8 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserGroupRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +45,8 @@ public class SuggestionService {
     public Collection<User> suggestUsers(String login) {
         Map<String, Integer> userCount = new HashMap<String, Integer>();
         List<String> friendIds = friendshipService.getFriendIdsForUser(login);
-        friendIds = reduceCollectionSize(friendIds, SAMPLE_SIZE);
-        for (String friendId : friendIds) {
+        List<String> sampleFriendIds = reduceCollectionSize(friendIds, SAMPLE_SIZE);
+        for (String friendId : sampleFriendIds) {
             List<String> friendsOfFriend = friendshipService.getFriendIdsForUser(friendId);
             friendsOfFriend = reduceCollectionSize(friendsOfFriend, SUB_SAMPLE_SIZE);
             for (String friendOfFriend : friendsOfFriend) {
