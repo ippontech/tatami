@@ -601,7 +601,7 @@
 
 <script type="text/template" id="files-pagination">
     <ul class="pager">
-        <li><a class="previous" href="#">Previous</a></li>
-        <li><a class="next" href="#">Next</a></li>
+        <li class="previous"><a href="#">Previous</a></li>
+        <li class="next"><a href="#">Next</a></li>
     </ul>
 </script>

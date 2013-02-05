@@ -255,6 +255,10 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
 
+        this.views.paginate = new app.View.Pagination({
+            collection: this.collection
+        });
+
     },
 
     selectMenu: function(menu) {
@@ -266,6 +270,7 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
+        this.$el.append(this.views.paginate.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -938,33 +943,36 @@ app.View.FilesViewItem = Backbone.View.extend({
 
 });
 
-app.View.FilePagination = Backbone.View.extend({
+app.View.Pagination = Backbone.View.extend({
     template: _.template($('#files-pagination').html()),
 
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
-       this.collection.fetch();
+
+        this.options.page = 0;
     },
 
     events:{
-       'click a.previous':'previous',
-       'click a.next':'next'
+       'click li.previous':'previous',
+       'click li.next':'next'
     },
 
     previous: function(){
-        (this.options.page < this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page - 1;
+        (this.options.page > this.collection.length) ? this.options.page = this.options.page - 50 : this.options.page = 0;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
 
     next: function(){
-        (this.options.page > this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page + 1;
+        (this.options.page < this.collection.length) ? this.options.page = this.options.page + 50 : this.options.page = 0;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
 
     render: function(){
-        this.$el.html(this.template());
+        if(this.collection.length > 50){
+            this.$el.html(this.template());
+        }
         this.delegateEvents();
         return this.$el;
 
@@ -987,8 +995,9 @@ app.View.QuotaFiles = Backbone.View.extend({
    },
 
    render: function(){
-      var m = this.model;
-      var quota = Math.round((m.get(0)*100)/ m.get(1));
+      var quota = this.model.get(0);
+      quota = Math.round(quota);
+
       this.$el.html(this.template({quota: quota}));
       return this.$el;
    }
@@ -1011,9 +1020,8 @@ app.View.FilesView = Backbone.View.extend({
 
         this.views.quota = new app.View.QuotaFiles();
 
-        this.views.paginated = new app.View.FilePagination({
-             collection: this.collection,
-             page: 0
+        this.views.paginated = new app.View.Pagination({
+             collection: this.collection
         });
     },
 
@@ -1285,6 +1293,8 @@ app.Router.AdminRouter = Backbone.Router.extend({
     files: function(){
         this.selectMenu('files');
         var view = this.initFiles();
+
+        view.collection.fetch();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
