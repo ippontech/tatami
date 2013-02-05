@@ -197,6 +197,7 @@ public class UserService {
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
         user.setPhoneNumber("");
+        user.setIsNew(true);
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());

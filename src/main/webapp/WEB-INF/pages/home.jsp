@@ -76,7 +76,6 @@
     </div>
 
     <jsp:include page="includes/templates-home.jsp"/>
-    <jsp:include page="includes/templates-commons.jsp"/>
     <jsp:include page="includes/footer.jsp"/>
 
     <script type="text/javascript">
@@ -96,7 +95,6 @@
 
     </script>
 
-    <script src="/js/tatami-commons.js"></script>
     <script src="/js/tatami-home.js"></script>
 
 </body>

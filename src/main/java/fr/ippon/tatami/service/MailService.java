@@ -68,7 +68,28 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user, subject, text);
+        sendEmail(user.getLogin(), subject, text);
+    }
+
+    @Async
+    public void sendInvitationEmail(String email, User user) {
+        String subject = "Tatami invitation";
+        String url = tatamiUrl;
+        if (log.isDebugEnabled()) {
+            log.debug("Sending invitation e-mail to email '" + email + "'");
+        }
+        String text = "Hello"
+                + ",\n\n"
+                + user.getFirstName() + " " + user.getLastName()
+                + " vous a invité à le rejoindre sur Tatami"
+                + ",\n\n"
+                + "Inscrivez vous sur "
+                + tatamiUrl
+                + "\n\n"
+                + "\n\n"
+                + "Regards,\n\n" + "Ippon Technologies.";
+
+        sendEmail(email, subject, text);
     }
 
     @Async
@@ -92,7 +113,7 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user, subject, text);
+        sendEmail(user.getLogin(), subject, text);
     }
 
     @Async
@@ -111,7 +132,7 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user, subject, text);
+        sendEmail(user.getLogin(), subject, text);
     }
 
     @Async
@@ -130,7 +151,7 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user, subject, text);
+        sendEmail(user.getLogin(), subject, text);
     }
 
     @Async
@@ -155,7 +176,7 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(mentionnedUser, subject, text);
+        sendEmail(mentionnedUser.getLogin(), subject, text);
     }
 
     @Async
@@ -181,10 +202,10 @@ public class MailService {
                 + "\n\n"
                 + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(mentionnedUser, subject, text);
+        sendEmail(mentionnedUser.getLogin(), subject, text);
     }
 
-    private void sendEmail(User user, String subject, String text) {
+    private void sendEmail(String email, String subject, String text) {
         if (host != null && !host.equals("")) {
             JavaMailSenderImpl sender = new JavaMailSenderImpl();
             sender.setHost(host);
@@ -192,14 +213,14 @@ public class MailService {
             sender.setUsername(smtpUser);
             sender.setPassword(smtpPassword);
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(user.getLogin());
+            message.setTo(email);
             message.setFrom(from);
             message.setSubject(subject);
             message.setText(text);
             try {
                 sender.send(message);
                 if (log.isDebugEnabled()) {
-                    log.debug("Sent e-mail to User '" + user.getLogin() + "'!");
+                    log.debug("Sent e-mail to User '" + email + "'!");
                 }
             } catch (MailException e) {
                 log.warn("Warning! SMTP server error, could not send e-mail.");

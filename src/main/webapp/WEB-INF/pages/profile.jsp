@@ -133,7 +133,6 @@
 </div>
 
 <jsp:include page="includes/templates-profile.jsp"/>
-<jsp:include page="includes/templates-commons.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <sec:authentication property="principal.username" var="login"/>
@@ -148,7 +147,6 @@
     var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>
 
-<script src="/js/tatami-commons.js"></script>
 <script src="/js/tatami-profile.js"></script>
 
 </body>

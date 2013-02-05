@@ -91,19 +91,18 @@
     </c:choose>
 </div>
 
-
-<jsp:include page="includes/footer.jsp"/>
 <jsp:include page="includes/templates-admin.jsp"/>
-<jsp:include page="includes/templates-commons.jsp"/>
+<jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
     var login = "<sec:authentication property="principal.username"/>";
     var username = "${user.username}";
     var page = "account";
 </script>
-<script src="/js/tatami-commons.js"></script>
+
 <script src="/js/raphael-min.js"></script>
 <script src="/js/jquery-raphael-tatami-pie.js"></script>
 <script src="/js/tatami-admin.js"></script>
+
 </body>
 </html>

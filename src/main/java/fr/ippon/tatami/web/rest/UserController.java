@@ -105,6 +105,4 @@ public class UserController {
         List<User> users = userService.getUsersForCurrentDomain(pagination);
         return users;
     }
-
-
 }
