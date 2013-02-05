@@ -69,7 +69,7 @@ public class AttachmentController {
     }
 
     /**
-     *  GET /attachment/quota -> get quota for the domain
+     *  GET /attachment/quota -> get quota in % for the domain
      */
     @RequestMapping(value = "/rest/attachments/quota",
             method = RequestMethod.GET,
