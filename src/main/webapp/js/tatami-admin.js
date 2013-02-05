@@ -255,11 +255,6 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
 
-        if(this.options.pagination === true)
-            this.views.paginated = new app.View.FilePagination({
-                collection: this.collection,
-                page: 0
-            });
     },
 
     selectMenu: function(menu) {
@@ -271,7 +266,6 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
-        this.$el.append(this.views.paginated.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -919,7 +913,7 @@ app.Collection.FilesCollection = Backbone.Collection.extend({
     }
 });
 
-app.View.FilesView = Backbone.View.extend({
+app.View.FilesViewItem = Backbone.View.extend({
    template: _.template($('#files-item').html()),
 
    initialize: function(){
@@ -934,7 +928,6 @@ app.View.FilesView = Backbone.View.extend({
    },
 
    render: function(){
-
       this.$el.html(this.template(this.model.toJSON()));
       return this.$el;
    },
@@ -971,7 +964,7 @@ app.View.FilePagination = Backbone.View.extend({
     },
 
     render: function(){
-        this.$el.append(this.template());
+        this.$el.html(this.template());
         this.delegateEvents();
         return this.$el;
 
@@ -1002,6 +995,38 @@ app.View.QuotaFiles = Backbone.View.extend({
 });
 
 
+app.View.FilesView = Backbone.View.extend({
+    MenuTemplate: _.template($('#files-menu').html()),
+    HeaderTemplate: _.template($('#files-header').html()),
+
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+
+        this.views = {};
+        this.views.files = new app.View.Tab({
+            collection : this.collection,
+            ViewModel : app.View.FilesViewItem,
+            template: this.HeaderTemplate
+        });
+
+        this.views.quota = new app.View.QuotaFiles();
+
+        this.views.paginated = new app.View.FilePagination({
+             collection: this.collection,
+             page: 0
+        });
+    },
+
+    render: function(){
+        this.$el.empty();
+        this.$el.append(this.MenuTemplate());
+        this.$el.append(this.views.quota.render());
+        this.$el.append(this.views.files.render());
+        this.$el.append(this.views.paginated.render());
+        this.delegateEvents();
+        return this.$el;
+    }
+});
 
 /*
  Router
@@ -1250,21 +1275,16 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
     initFiles: function(){
         if(!app.views.files)
-            app.views.files = new app.View.TabContainer({
-                collection: new app.Collection.FilesCollection(),
-                ViewModel: app.View.FilesView,
-                MenuTemplate: _.template($('#files-menu').html()),
-                TabHeaderTemplate: _.template($('#files-header').html()),
-                pagination: true
+            app.views.files = new app.View.FilesView({
+                collection: new app.Collection.FilesCollection()
             });
 
         return app.views.files;
     },
 
     files: function(){
-        var view = this.initFiles();
-
         this.selectMenu('files');
+        var view = this.initFiles();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
