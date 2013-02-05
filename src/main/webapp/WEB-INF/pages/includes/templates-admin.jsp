@@ -588,7 +588,7 @@
 </script>
 
 <script type="text/template" id="files-item">
-    <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
+    <td>#</td>
     <td><@= filename @></td>
     <td><@= (size/1000) @> kb</td>
     <td><@= prettyPrintCreationDate @> </td>
