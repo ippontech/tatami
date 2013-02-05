@@ -81,6 +81,10 @@ public class AttachmentService {
                         findAttachmentIds(authenticationService.getCurrentUser().getLogin(),
                                 pagination);
 
+        if (log.isDebugEnabled()) {
+            log.debug("Collection of attachments : " + attachmentIds.size());
+        }
+
         return attachmentIds;
     }
 

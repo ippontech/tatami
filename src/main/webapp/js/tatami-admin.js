@@ -943,28 +943,31 @@ app.View.FilePagination = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
-       this.collection.fetch();
+
+        this.options.page = 0;
     },
 
     events:{
-       'click a.previous':'previous',
-       'click a.next':'next'
+       'click li.previous':'previous',
+       'click li.next':'next'
     },
 
     previous: function(){
-        (this.options.page < this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page - 1;
+        (this.options.page < this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page - 50;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
 
     next: function(){
-        (this.options.page > this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page + 1;
+        (this.options.page > this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page + 50;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
 
     render: function(){
-        this.$el.html(this.template());
+        if(this.collection.length > 50){
+            this.$el.html(this.template());
+        }
         this.delegateEvents();
         return this.$el;
 
@@ -1012,8 +1015,7 @@ app.View.FilesView = Backbone.View.extend({
         this.views.quota = new app.View.QuotaFiles();
 
         this.views.paginated = new app.View.FilePagination({
-             collection: this.collection,
-             page: 0
+             collection: this.collection
         });
     },
 
@@ -1285,6 +1287,8 @@ app.Router.AdminRouter = Backbone.Router.extend({
     files: function(){
         this.selectMenu('files');
         var view = this.initFiles();
+
+        view.collection.fetch();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
