@@ -105,7 +105,7 @@ public class AttachmentService {
         }
     }
 
-    public Collection<Integer> getDomainQuota(){
+    public Collection<Long> getDomainQuota(){
         User currentUser = authenticationService.getCurrentUser();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
@@ -113,9 +113,9 @@ public class AttachmentService {
         Long domainQuota = domainConfiguration.getStorageSizeAsLong();
         Long userQuota = currentUser.getAttachmentsSize();
 
-        int quota = Math.round((userQuota*100)/domainQuota);
+        Long quota = (userQuota*100)/domainQuota;
 
-        Collection<Integer> taux = new ArrayList<Integer>();
+        Collection<Long> taux = new ArrayList<Long>();
         taux.add(quota);
 
         if (log.isDebugEnabled()) {

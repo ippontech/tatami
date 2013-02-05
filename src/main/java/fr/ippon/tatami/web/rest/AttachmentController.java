@@ -75,7 +75,7 @@ public class AttachmentController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Integer> getDomainQuota(){
+    public Collection<Long> getDomainQuota(){
         return attachmentService.getDomainQuota();
     }
 

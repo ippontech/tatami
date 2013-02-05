@@ -996,6 +996,8 @@ app.View.QuotaFiles = Backbone.View.extend({
 
    render: function(){
       var quota = this.model.get(0);
+      quota = Math.round(quota);
+
       this.$el.html(this.template({quota: quota}));
       return this.$el;
    }
