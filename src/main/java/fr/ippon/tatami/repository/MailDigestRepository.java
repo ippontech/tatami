@@ -21,7 +21,7 @@ public interface MailDigestRepository {
      * @param login
      * @param domain
      */
-    void subscribeToDigest(DigestType digestType, String login, String domain);
+    void subscribeToDigest(DigestType digestType, String login, String domain, String day);
 
     /**
      * Un-subscribe an user from a domain.
@@ -30,7 +30,7 @@ public interface MailDigestRepository {
      * @param login
      * @param domain
      */
-    void unsubscribeFromDigest(DigestType digestType, String login, String domain);
+    void unsubscribeFromDigest(DigestType digestType, String login, String domain, String day);
 
     /**
      * Retrieves the list of logins in a domain subscribed to a given digest type.
@@ -40,6 +40,6 @@ public interface MailDigestRepository {
      * @param pagination
      * @return
      */
-    List<String> getLoginsRegisteredToDigest(DigestType digestType, String domain, int pagination);
+    List<String> getLoginsRegisteredToDigest(DigestType digestType, String domain, String day, int pagination);
 
 }

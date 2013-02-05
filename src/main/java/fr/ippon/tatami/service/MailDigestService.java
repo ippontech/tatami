@@ -50,7 +50,7 @@ public class MailDigestService {
 
 
     /**
-     * Sends daily digest. Lust be run every day
+     * Sends daily digest. Must be run every day
      *
      */
     @Scheduled(cron="0 0 22 * * ?")
@@ -58,13 +58,18 @@ public class MailDigestService {
         log.info("Starting Daily digest mail process ");
         Set<Domain> domains =  domainRepository.getAllDomains();
 
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
         for (Domain d : domains) {
+            log.info("Sending daily digest for domain " + d +
+                    " and day "+ day );
+
 
             int pagination = 0;
             List<String> logins;
             do {
                 logins = mailDigestRepository.getLoginsRegisteredToDigest(
-                    DigestType.DAILY_DIGEST, d.getName(), pagination);
+                    DigestType.DAILY_DIGEST, d.getName(), day,  pagination);
                 pagination = pagination + logins.size();
 
                 for (String login : logins ) {
@@ -77,29 +82,44 @@ public class MailDigestService {
 
     /**
      * Sends weekly digest.
-     * Must be run every day : digests are not sent the same day for all users.
+     *
+     * Will run every mondayday and send mails to all registered users
+     *
+     * If this is too many mails, this method could be tuned to
+     * distribute the load on every day of the week by only sending
+     * mails to users who have subscribed that same day.
      *
      */
-    @Scheduled(cron="0 0 23 * * ?")
+    @Scheduled(cron="0 0 01 ? * MON")
     public void weeklyDigest() {
         log.info("Starting Weekly digest mail process ");
 
         Set<Domain> domains =  domainRepository.getAllDomains();
 
-        for (Domain d : domains) {
+        // sent digest for all domains
+        // for users that have register any day of the week
+        for (int i=1 ; i<8 ; ++i ) {
+            String day = String.valueOf(i);
 
-            int pagination = 0;
-            List<String> logins;
-            do {
-                logins = mailDigestRepository.getLoginsRegisteredToDigest(
-                        DigestType.WEEKLY_DIGEST, d.getName(), pagination);
-                pagination = pagination + logins.size();
+            for (Domain d : domains) {
 
-                for (String login : logins ) {
-                    handleWeeklyDigestPageForLogin(login);
-                }
+                log.info("Sending weekly digest for domain " + d +
+                        " and day "+ i );
 
-            } while (logins.size() >0 );
+                int pagination = 0;
+                List<String> logins;
+                do {
+                    logins = mailDigestRepository.getLoginsRegisteredToDigest(
+                            DigestType.WEEKLY_DIGEST, d.getName(),
+                            day,  pagination);
+                    pagination = pagination + logins.size();
+
+                    for (String login : logins ) {
+                        handleWeeklyDigestPageForLogin(login);
+                    }
+
+                } while (logins.size() >0 );
+            }
         }
     }
 
@@ -111,6 +131,8 @@ public class MailDigestService {
      * @param login
      */
     private void handleDailyDigestPageForLogin(String login) {
+        log.info("Preparing weekly digest for user " + login);
+
         User user = userRepository.findUserByLogin(login);
 
         // we want statuses for the past 24 hours
@@ -138,6 +160,8 @@ public class MailDigestService {
      * @param login
      */
     private void handleWeeklyDigestPageForLogin(String login) {
+        log.info("Preparing weekly digest for user " + login);
+
         User user = userRepository.findUserByLogin(login);
 
         // we want statuses for the past week

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -308,12 +309,14 @@ public class UserService {
     public void updateWeeklyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setWeeklyDigestSubscription(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
         if (registration) {
             mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
-                    currentUser.getDomain());
+                    currentUser.getDomain(), day);
         } else {
             mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
-                    currentUser.getDomain());
+                    currentUser.getDomain(), day);
         }
 
         if (log.isDebugEnabled()) {
@@ -335,12 +338,14 @@ public class UserService {
     public void updateDailyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setDailyDigestSubscription(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
         if (registration) {
             mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
-                    currentUser.getDomain());
+                    currentUser.getDomain(), day);
         } else {
             mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
-                    currentUser.getDomain());
+                    currentUser.getDomain(), day);
         }
 
         if (log.isDebugEnabled()) {

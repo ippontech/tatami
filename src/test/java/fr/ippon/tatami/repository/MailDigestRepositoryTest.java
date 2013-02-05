@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.notNullValue;
@@ -33,10 +34,11 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
     public void shouldInsertWeeklySubscription() {
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-        mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, login, domain);
+        mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, login, domain, day);
 
-        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.WEEKLY_DIGEST, domain, 0);
+        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.WEEKLY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
         assertTrue(logins.contains(login));
 
@@ -48,10 +50,12 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
         String digestType = "DAILY";
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-        mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, login, domain);
 
-        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.DAILY_DIGEST, domain, 0);
+        mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, login, domain, day);
+
+        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.DAILY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
         assertTrue(logins.contains(login));
 
@@ -62,10 +66,11 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
     public void shouldRemoveWeeklySubscription() {
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-        mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, login, domain);
+        mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, login, domain, day);
 
-        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.WEEKLY_DIGEST, domain, 0);
+        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.WEEKLY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
         assertTrue(! logins.contains(login));
 
@@ -77,10 +82,11 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
         String digestType = "DAILY";
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-        mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, login, domain);
+        mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, login, domain, day);
 
-        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.DAILY_DIGEST, domain, 0);
+        List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.DAILY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
         assertTrue(! logins.contains(login));
 

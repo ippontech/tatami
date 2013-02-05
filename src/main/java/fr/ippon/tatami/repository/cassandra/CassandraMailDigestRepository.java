@@ -27,6 +27,10 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  * - Key = digestType_[day]_domain
  * - Name = login
  * - Value = time
+ *
+ * Note : in the key, the [day] part is only used for weekly digest and
+ * represents the day the user subscribed to the digest.
+ *
  * @author Pierre Rust
  */
 @Repository
@@ -37,33 +41,33 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    public void subscribeToDigest(DigestType digestType, String login, String domain) {
+    public void subscribeToDigest(DigestType digestType, String login, String domain, String day) {
 
         Calendar cal = Calendar.getInstance();
 
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert( buildKey(digestType, domain,cal), MAILDIGEST_CF,
+        mutator.insert( buildKey(digestType, domain, day), MAILDIGEST_CF,
                 HFactory.createColumn(login, cal.getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
     @Override
-    public void unsubscribeFromDigest(DigestType digestType, String login, String domain) {
+    public void unsubscribeFromDigest(DigestType digestType, String login, String domain, String day) {
 
         Calendar cal = Calendar.getInstance();
 
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(buildKey(digestType, domain,cal), MAILDIGEST_CF, login, StringSerializer.get());
+        mutator.delete(buildKey(digestType, domain, day), MAILDIGEST_CF, login, StringSerializer.get());
     }
 
     @Override
-    public List<String> getLoginsRegisteredToDigest(DigestType digestType, String domain, int pagination) {
+    public List<String> getLoginsRegisteredToDigest(DigestType digestType, String domain,
+                                                    String day, int pagination) {
 
         List<String> logins = new ArrayList<String>();
-        Calendar cal = Calendar.getInstance();
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(MAILDIGEST_CF)
-                .setKey(buildKey(digestType, domain,cal))
+                .setKey(buildKey(digestType, domain, day))
                 .setRange(null, null, false, Integer.MAX_VALUE)
                 .execute()
                 .get();
@@ -86,14 +90,13 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
      *
      * @param digestType
      * @param domain
-     * @param cal
+     * @param day
      * @return the row key
      */
-    private String buildKey(DigestType digestType, String domain, Calendar cal) {
+    private String buildKey(DigestType digestType, String domain, String day) {
         String key;
-        // FIXME : use enum
         if (DigestType.WEEKLY_DIGEST == digestType ) {
-            key = digestType.toString() + "_" + cal.get(Calendar.DAY_OF_WEEK) + "_" + domain;
+            key = digestType.toString() + "_" + day + "_" + domain;
         } else {
             key = digestType + "_" + domain;
         }
