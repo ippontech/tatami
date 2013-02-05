@@ -255,6 +255,10 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
 
+        this.views.paginate = new app.View.Pagination({
+            collection: this.collection
+        });
+
     },
 
     selectMenu: function(menu) {
@@ -266,6 +270,7 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
+        this.$el.append(this.views.paginate.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -938,7 +943,7 @@ app.View.FilesViewItem = Backbone.View.extend({
 
 });
 
-app.View.FilePagination = Backbone.View.extend({
+app.View.Pagination = Backbone.View.extend({
     template: _.template($('#files-pagination').html()),
 
     initialize: function(){
@@ -953,13 +958,13 @@ app.View.FilePagination = Backbone.View.extend({
     },
 
     previous: function(){
-        (this.options.page < this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page - 50;
+        (this.options.page > this.collection.length) ? this.options.page = this.options.page - 50 : this.options.page = 0;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
 
     next: function(){
-        (this.options.page > this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page + 50;
+        (this.options.page < this.collection.length) ? this.options.page = this.options.page + 50 : this.options.page = 0;
         this.collection.fetch({data: {pagination: this.options.page}});
         return false;
     },
@@ -1013,7 +1018,7 @@ app.View.FilesView = Backbone.View.extend({
 
         this.views.quota = new app.View.QuotaFiles();
 
-        this.views.paginated = new app.View.FilePagination({
+        this.views.paginated = new app.View.Pagination({
              collection: this.collection
         });
     },

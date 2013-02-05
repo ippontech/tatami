@@ -193,11 +193,11 @@
 </script>
 
 <script type="text/template" id="user-item">
-  <div class="alert alert-info">
+  <div class="alert alert-status">
     <div class="row-fluid">
       <div class="span12">
         <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
-          <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @></em>
+            <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
         </a>
       </div>    
     </div>
