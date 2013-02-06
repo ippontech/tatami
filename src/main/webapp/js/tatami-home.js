@@ -503,18 +503,21 @@ app.View.TimeLineNewView = Backbone.View.extend({
     $el.html(this.template({status: this.temp.length}));
     this.delegateEvents();
 
-    // Update Title
-    if (this.temp.length > 0) {
+    // filter out non-status (disconnection) and statuses from current user
+    var statuses =  _.filter(this.temp.models,
+          function(s) { return s != undefined && s.attributes.username != undefined && s.attributes.username != username});
+    if (statuses.length > 0) {
+        // Update Title
       document.title = "Tatami (" + this.temp.length + ")";
       var notificationText = "";
-      if (this.temp.length == 1) {
+      if (statuses.length == 1) {
         notificationText = "1 unread status";
       } else {
-        notificationText = (this.temp.length) + " unread statuses";
+        notificationText = (statuses.length) + " unread statuses";
       }
       NotificationManager.setNotification("Tatami notification", notificationText, true);
     } else {
-      document.title = "Tatami";
+        document.title = "Tatami";
     }
 
     return $(this.el);
