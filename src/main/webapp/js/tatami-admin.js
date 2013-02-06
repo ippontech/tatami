@@ -261,6 +261,7 @@ app.View.TabContainer = Backbone.View.extend({
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         });
+
     },
 
     selectMenu: function(menu) {
@@ -272,7 +273,6 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
-
         this.delegateEvents();
         return this.$el;
     }
@@ -428,7 +428,8 @@ app.Model.Group = Backbone.Model.extend({
     defaults: {
         name: '',
         description: '',
-        publicGroup: true
+        publicGroup: true,
+        archivedGroup: false
     }
 });
 
@@ -625,8 +626,17 @@ app.View.ActionsGroup = Backbone.View.extend({
             var isMember = this.collection.some(function(member){
                 return (member.id === username);
             });
-            if (isMember) this.renderMember();
-            else this.renderNotMember();
+            var isPublic = false;
+            if (this.model.get('publicGroup')){
+                isPublic = true;
+            }
+            if (isPublic) {
+                if (isMember) {
+                    this.renderMember();
+                } else {
+                    this.renderNotMember();
+                }
+            }
         }
         return this;
     }
@@ -664,6 +674,7 @@ app.View.EditGroup = Backbone.View.extend({
 
         this.model.set('name', form.find('[name="name"]').val());
         this.model.set('description', form.find('[name="description"]').val());
+        this.model.set('archivedGroup', form.find('[name="archivedGroup"]:checked').val() === 'true');
 
         var self = this;
         self.model.save(null, {
@@ -909,7 +920,7 @@ app.Collection.FilesCollection = Backbone.Collection.extend({
     }
 });
 
-app.View.FilesView = Backbone.View.extend({
+app.View.FilesViewItem = Backbone.View.extend({
    template: _.template($('#files-item').html()),
 
    initialize: function(){
@@ -934,6 +945,95 @@ app.View.FilesView = Backbone.View.extend({
 
 });
 
+app.View.FilePagination = Backbone.View.extend({
+    template: _.template($('#files-pagination').html()),
+
+    initialize: function(){
+        _.bindAll(this, 'previous', 'next');
+       this.collection.fetch();
+    },
+
+    events:{
+       'click a.previous':'previous',
+       'click a.next':'next'
+    },
+
+    previous: function(){
+        (this.options.page < this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page - 1;
+        this.collection.fetch({data: {pagination: this.options.page}});
+        return false;
+    },
+
+    next: function(){
+        (this.options.page > this.collection.length) ? this.options.page = 0 : this.options.page = this.options.page + 1;
+        this.collection.fetch({data: {pagination: this.options.page}});
+        return false;
+    },
+
+    render: function(){
+        this.$el.html(this.template());
+        this.delegateEvents();
+        return this.$el;
+
+    }
+});
+
+
+app.Model.QuotaModel = Backbone.Model.extend({
+   url : '/tatami/rest/attachments/quota'
+});
+
+
+app.View.QuotaFiles = Backbone.View.extend({
+   template: _.template($('#files-quota').html()),
+
+   initialize: function(){
+       this.model = new app.Model.QuotaModel();
+       this.model.bind('change', this.render, this);
+       this.model.fetch();
+   },
+
+   render: function(){
+      var m = this.model;
+      var quota = Math.round((m.get(0)*100)/ m.get(1));
+      this.$el.html(this.template({quota: quota}));
+      return this.$el;
+   }
+});
+
+
+app.View.FilesView = Backbone.View.extend({
+    MenuTemplate: _.template($('#files-menu').html()),
+    HeaderTemplate: _.template($('#files-header').html()),
+
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+
+        this.views = {};
+        this.views.files = new app.View.Tab({
+            collection : this.collection,
+            ViewModel : app.View.FilesViewItem,
+            template: this.HeaderTemplate
+        });
+
+        this.views.quota = new app.View.QuotaFiles();
+
+        this.views.paginated = new app.View.FilePagination({
+             collection: this.collection,
+             page: 0
+        });
+    },
+
+    render: function(){
+        this.$el.empty();
+        this.$el.append(this.MenuTemplate());
+        this.$el.append(this.views.quota.render());
+        this.$el.append(this.views.files.render());
+        this.$el.append(this.views.paginated.render());
+        this.delegateEvents();
+        return this.$el;
+    }
+});
 
 /*
  Router
@@ -1182,29 +1282,24 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
     initFiles: function(){
         if(!app.views.files)
-            app.views.files = new app.View.TabContainer({
-                collection: new app.Collection.FilesCollection(),
-                ViewModel: app.View.FilesView,
-                MenuTemplate: _.template($('#files-menu').html()),
-                TabHeaderTemplate: _.template($('#files-header').html())
+            app.views.files = new app.View.FilesView({
+                collection: new app.Collection.FilesCollection()
             });
 
         return app.views.files;
     },
 
     files: function(){
-        var view = this.initFiles();
         this.selectMenu('files');
-
-        view.collection.fetch();
+        var view = this.initFiles();
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
         }
         this.selectMenu('files');
-    }
 
+    }
 
 });
 

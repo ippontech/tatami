@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -56,6 +57,7 @@ public class FileController {
         attachment.setFilename(file.getName());
         attachment.setSize(file.getSize());
         attachment.setFilename(file.getOriginalFilename());
+        attachment.setCreationDate(new Date());
 
         attachmentService.createAttachment(attachment);
 
@@ -81,20 +83,29 @@ public class FileController {
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
         response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
 
-        // ETag support
-        response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
-        String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
-        if (requestETag != null && requestETag.equals(attachmentId)) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+        // Put the file in the response
+        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        if (attachment == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
-            try {
-                // Put the file in the response
-                byte[] fileContent = attachmentService.getAttachmentById(attachmentId).getContent();
-                response.getOutputStream().write(fileContent);
-                response.flushBuffer();
-            } catch (IOException e) {
-                log.info("Error writing file to output stream. " + e.getMessage());
+            // ETag support
+            response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
+            String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
+            if (requestETag != null && requestETag.equals(attachmentId)) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            } else {
+                try {
+                    byte[] fileContent = attachment.getContent();
+                    response.getOutputStream().write(fileContent);
+                } catch (IOException e) {
+                    log.info("Error writing file to output stream. " + e.getMessage());
+                }
             }
+        }
+        try {
+            response.flushBuffer();
+        } catch (IOException e) {
+            log.info("Error flushing the output stream. " + e.getMessage());
         }
     }
 }

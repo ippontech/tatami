@@ -346,6 +346,8 @@ app.View.StatusView = Backbone.View.extend({
           model : model
         });
         self.render();
+
+        self.views.item.detailsAction();
       }
     });
     

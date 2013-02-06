@@ -100,9 +100,18 @@
     var page = "account";
 </script>
 
-<script src="/js/raphael-min.js"></script>
-<script src="/js/jquery-raphael-tatami-pie.js"></script>
-<script src="/js/tatami-admin.js"></script>
+<c:if test="${wro4jEnabled eq false}">
+  <script src="/js/tatami-commons.js"></script>
+  <script src="/js/raphael-min.js"></script>
+  <script src="/js/jquery-raphael-tatami-pie.js"></script>
+  <script src="/js/tatami-admin.js"></script>
+</c:if>
+<c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static/${version}/tatami-commons.js"></script>
+    <script src="/tatami/static/${version}/raphael-min.js"></script>
+    <script src="/tatami/static/${version}/jquery-raphael-tatami-pie.js"></script>
+    <script src="/tatami/static/${version}/tatami-admin.js"></script>
+</c:if>
 
 </body>
 </html>

@@ -25,10 +25,10 @@
                         </a>
                         <div class="profile-title">
                           <div>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username}">
                               <h4>${user.firstName} ${user.lastName}</h4>
                             </a>
-                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
+                            <a href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username}">
                               @${user.username}
                             </a>
                           </div>
@@ -147,7 +147,14 @@
     var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>
 
-<script src="/js/tatami-profile.js"></script>
+<c:if test="${wro4jEnabled eq false}">
+    <script src="/js/tatami-commons.js"></script>
+    <script src="/js/tatami-profile.js"></script>
+</c:if>
+<c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static/${version}/tatami-commons.js"></script>
+    <script src="/tatami/static/${version}/tatami-profile.js"></script>
+</c:if>
 
 </body>
 </html>

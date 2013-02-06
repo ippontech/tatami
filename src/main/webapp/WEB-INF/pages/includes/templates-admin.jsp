@@ -144,7 +144,7 @@
             </label>
             <div class="controls">
                 <select class="input-xlarge span12" name="theme">
-                    <@ ['bootstrap', 'amelia', 'cerulean', 'cosmo', 'cyborg', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united'].forEach(function(theme){ @>
+                    <@ ['bootstrap', 'cerulean', 'cosmo', 'journal', 'readable', 'simplex', 'spacelab', 'spruce', 'superhero', 'united'].forEach(function(theme){ @>
                         <option value="<@= theme @>" <@ if(preferences.theme === theme) { @>selected="true" <@ } @>>
                             <@= function(string){ return string.charAt(0).toUpperCase() + string.slice(1) }(theme) @>
                             </option>
@@ -350,6 +350,28 @@
                 <i class="icon-warning-sign"></i>
                 <fmt:message key="tatami.group.add.public.alert"/>
             </div>
+        <@ } else { @>
+            <div class="control-group">
+                <label class="control-label" for="archivedGroup">
+                    <fmt:message key="tatami.group.archive"/>
+                </label>
+
+                <div class="controls">
+                    <label class="radio">
+                        <input type="radio" name="archivedGroup" value="true" <@ if (archivedGroup) { @> checked<@ } @> required>
+                        <fmt:message key="tatami.group.archive.true"/>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="archivedGroup" value="false" <@ if (!archivedGroup) { @> checked<@ } @> required>
+                        <fmt:message key="tatami.group.archive.false"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="alert">
+                <i class="icon-warning-sign"></i>
+                <fmt:message key="tatami.group.archive.alert"/>
+            </div>
         <@ } @>
 
         <div class="form-actions">
@@ -535,6 +557,20 @@
     </td>
 </script>
 
+<script type="text/template" id="files-quota">
+
+    <div class="progress">
+        <@ if(quota < 50){@>
+        <div class="bar bar-success" style="width: <@= quota @>%;"></div>
+        <@ }else if(quota > 50 && quota < 80) {@>
+        <div class="bar bar-warning" style="width: <@= quota @>%;"></div>
+        <@ }else{@>
+        <div class="bar bar-danger" style="width: <@= quota @>%;"></div>
+        <@ } @>
+        <span class="quota"><@= quota @>%</span>
+    </div>
+</script>
+
 <script type="text/template" id="files-menu">
     <h2><fmt:message key="tatami.menu.files"/></h2>
 </script>
@@ -545,18 +581,27 @@
      <th><fmt:message key="tatami.user.file.preview"/></th>
      <th><fmt:message key="tatami.user.file.name"/></th>
      <th><fmt:message key="tatami.user.file.size"/></th>
+     <th><fmt:message key="tatami.user.file.creation.date"/></th>
      <th></th>
     </tr>
 </thead>
 </script>
 
 <script type="text/template" id="files-item">
-    <td><img src="/tatami/file/<@= attachmentId @>/<@= filename @>" width="70" height="40" /></td>
+    <td>#</td>
     <td><@= filename @></td>
-    <td><@= (size/1000) @></td>
+    <td><@= (size/1000) @> kb</td>
+    <td><@= prettyPrintCreationDate @> </td>
     <td>
         <span class="btn btn-primary btn-block">
                 <fmt:message key="tatami.user.status.delete"/>
         </span>
     </td>
+</script>
+
+<script type="text/template" id="files-pagination">
+    <ul class="pager">
+        <li><a class="previous" href="#">Previous</a></li>
+        <li><a class="next" href="#">Next</a></li>
+    </ul>
 </script>

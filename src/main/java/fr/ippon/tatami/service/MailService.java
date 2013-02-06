@@ -4,18 +4,29 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.app.VelocityEngine;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
+import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Send e-mails.
+ *
+ * Templates are implemented with velocity.
+ * Emails localisation is based on system locale, this could be improved by storing a preferred locale
+ * for each user.
  *
  * @author Julien Dubois
  */
@@ -26,6 +37,9 @@ public class MailService {
 
     @Inject
     private Environment env;
+
+    @Inject
+    private MessageSource mailMessageSource;
 
     private String host;
 
@@ -39,6 +53,15 @@ public class MailService {
 
     private String tatamiUrl;
 
+    private Locale locale;
+
+    // TODO: this can be used for external mail template configuration
+    private String templateRoot = "/META-INF/tatami/mails/";
+    private String templateSuffix = "Email.vm";
+
+    @Inject
+    private VelocityEngine velocityEngine;
+
     @PostConstruct
     public void init() {
         this.host = env.getProperty("smtp.host");
@@ -49,26 +72,25 @@ public class MailService {
         this.smtpPassword = env.getProperty("smtp.password");
         this.from = env.getProperty("smtp.from");
         this.tatamiUrl = env.getProperty("tatami.url");
+
+        // TODO : we should probably let the user choose which language he wants to use for email, and store this as a preference
+        this.locale = Locale.getDefault();
     }
 
     @Async
     public void sendRegistrationEmail(String registrationKey, User user) {
-        String subject = "Tatami activation";
-        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+
+        String registrationUrl = tatamiUrl + "/tatami/register?key=" + registrationKey;
         if (log.isDebugEnabled()) {
             log.debug("Sending registration e-mail to User '" + user.getLogin() +
-                    "', Url='" + url + "'");
+                    "', Url='" + registrationUrl + "' with locale : '"+ locale+"'");
         }
-        String text = "Dear "
-                + user.getLogin()
-                + ",\n\n"
-                + "Your Tatami account has been created, please click on the URL below to activate it : "
-                + "\n\n"
-                + url
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("registrationUrl", registrationUrl);
+
+        sendTextFromTemplate(user.getLogin(), model, "registration", this.locale);
     }
 
     @Async
@@ -78,131 +100,88 @@ public class MailService {
         if (log.isDebugEnabled()) {
             log.debug("Sending invitation e-mail to email '" + email + "'");
         }
-        String text = "Hello"
-                + ",\n\n"
-                + user.getFirstName() + " " + user.getLastName()
-                + " vous a invité à le rejoindre sur Tatami"
-                + ",\n\n"
-                + "Inscrivez vous sur "
-                + tatamiUrl
-                + "\n\n"
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(email, subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("invitationUrl", tatamiUrl);
+
+        sendTextFromTemplate(user.getLogin(), model, "invitationMessage", this.locale);
     }
 
     @Async
     public void sendLostPasswordEmail(String registrationKey, User user) {
-        String subject = "Tatami lost password";
+
         String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
         if (log.isDebugEnabled()) {
             log.debug("Sending lost password e-mail to User '" + user.getLogin() +
-                    "', Url='" + url + "'");
+                    "', Url='" + url  + "' with locale : '"+ locale+"'");
         }
-        String text = "Dear "
-                + user.getLogin()
-                + ",\n\n"
-                + "Someone asked to re-initialize your password."
-                + "\n\n"
-                + "If you want to re-initialize your password, please click on the link below : "
-                + "\n\n"
-                + url
-                + "\n\n"
-                + "If you do not want to re-initialize your password, you can safely ignore this message "
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("reinitUrl", url);
+
+        sendTextFromTemplate(user.getLogin(), model, "lostPassword", this.locale);
     }
 
     @Async
     public void sendValidationEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending validation e-mail to User '" + user.getLogin() +
-                    "', non-encrypted Password='" + password + "'");
+                    "', non-encrypted Password='" + password + "' with locale : '"+ locale+"'");
         }
-        String subject = "Tatami account validated";
-        String text = "Dear "
-                + user.getLogin()
-                + ",\n\n"
-                + "Your Tatami account has been validated, here is your password : "
-                + "\n\n"
-                + password
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("password", password);
+
+        sendTextFromTemplate(user.getLogin(), model, "validation", this.locale);
     }
 
     @Async
     public void sendPasswordReinitializedEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
-                    "', non-encrypted Password='" + password + "'");
+                    "', non-encrypted Password='" + password  + "' with locale : '"+ locale+"'");
         }
-        String subject = "Tatami password re-initialized";
-        String text = "Dear "
-                + user.getLogin()
-                + ",\n\n"
-                + "Your Tatami password has been re-initialized, here is your new password : "
-                + "\n\n"
-                + password
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(user.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("password", password);
+
+       sendTextFromTemplate(user.getLogin(), model, "passwordReinitialized", this.locale);
     }
 
     @Async
     public void sendUserPrivateMessageEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
-            log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() + "'");
+            log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() +
+                    "' with locale : '"+ locale+"'");
         }
-        String subject = "You have received a private message on Tatami";
         String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
-        String text = "Dear @"
-                + mentionnedUser.getUsername()
-                + ",\n\n"
-                + "You have received a private message on Tatami from "
-                + "@"
-                + status.getUsername()
-                + ": \n\n"
-                + status.getContent()
-                + "\n\n"
-                + "You can see this status on Tatami :"
-                + "\n\n"
-                + url
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(mentionnedUser.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", mentionnedUser);
+        model.put("status", status);
+        model.put("statusUrl" , url);
+
+        sendTextFromTemplate(mentionnedUser.getLogin(), model, "userPrivateMessage", this.locale);
     }
 
     @Async
     public void sendUserMentionEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
-            log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() + "'");
+            log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin()  +
+                    "' with locale : '"+ locale+"'");
         }
-        String subject = "You have been mentionned on Tatami";
         String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
-        String text = "Dear @"
-                + mentionnedUser.getUsername()
-                + ",\n\n"
-                + "You have been mentionned on Tatami : "
-                + "\n\n"
-                + "@"
-                + status.getUsername()
-                + "\n\n"
-                + status.getContent()
-                + "\n\n"
-                + "You can see this status on Tatami :"
-                + "\n\n"
-                + url
-                + "\n\n"
-                + "Regards,\n\n" + "Ippon Technologies.";
 
-        sendEmail(mentionnedUser.getLogin(), subject, text);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", mentionnedUser);
+        model.put("status", status);
+        model.put("statusUrl" , url);
+
+        sendTextFromTemplate( mentionnedUser.getLogin(), model, "userMention", this.locale);
     }
 
     private void sendEmail(String email, String subject, String text) {
@@ -232,5 +211,27 @@ public class MailService {
         } else {
             log.debug("SMTP server is not configured in /META-INF/tatami/tatami.properties");
         }
+    }
+
+    /**
+     * generate and send the mail corresponding to the given template
+     *
+     * @param email
+     * @param model
+     * @param template
+     * @param locale
+     */
+    private void sendTextFromTemplate(String email, Map<String, Object> model, String template, Locale locale) {
+        model.put("messages", mailMessageSource);
+        model.put("locale", locale);
+
+        String subject =  mailMessageSource.getMessage(template+".title", null, locale);
+        String text =VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateRoot+ template+ templateSuffix,
+                "utf-8", model);
+        if (log.isDebugEnabled()) {
+            log.debug("e-mail text  '" + text);
+        }
+
+        sendEmail(email, subject, text);
     }
 }

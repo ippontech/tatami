@@ -23,7 +23,7 @@
     <script src="/js/tatami-search.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
-    <script src="/tatami/static/${version}/all.js"></script>
+    <script src="/tatami/static-wro4j/${version}/all.js"></script>
 </c:if>
 
 <sec:authorize access="isAuthenticated()">

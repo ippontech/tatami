@@ -524,3 +524,14 @@ form {
   -ms-filter: blur(5px);
   filter: blur(5px);
 }
+
+span.quota{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
+
+#accountContent .progress {
+    position:relative;
+}

@@ -32,7 +32,6 @@ public class StatusDTO {
             .appendYear(4, 4)
             .toFormatter();
 
-
     private String statusId;
 
     /**

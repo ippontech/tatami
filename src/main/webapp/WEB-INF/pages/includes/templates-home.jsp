@@ -4,7 +4,7 @@
 
 <script type="text/template" id="profile-infos-template">
   <div class="span12 profile-infos avatar-float-left-container">
-    <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username,profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>">
+    <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username].filter(function(value){return value;}).join(' ') @>">
       <img class="pull-left avatar avatar-float-left" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
       <h4><@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @></h4>
       @<@=profile.username@>
@@ -97,7 +97,9 @@
         <select class="btn-block" id="updateStatusGroup" name="groupId">
             <option value=""></option>
             <@ groupsCollection.each(function(group) { @>
-                <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
+                <@ if (group.get('archivedGroup') == false) { @>
+                  <option value="<@= group.get('groupId') @>"><@= group.get('name') @></option>
+                <@ } @>
             <@ }); @>
         </select>
     </div>
@@ -239,7 +241,9 @@
     <div class="row-fluid">
         <ul class="nav nav-stacked nav-pills">
             <@ groupsCollection.each(function(group) { @>
-            <li id="group-list-<@= group.get('groupId') @>"><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
+              <@ if (group.get('archivedGroup') == false) { @>
+                <li id="group-list-<@= group.get('groupId') @>"><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
+              <@ } @>
             <@ }); @>
         </ul>
     </div>

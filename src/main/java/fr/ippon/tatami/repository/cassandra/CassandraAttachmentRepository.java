@@ -3,6 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.repository.AttachmentRepository;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.DateSerializer;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
+import java.util.Date;
+
 import static fr.ippon.tatami.config.ColumnFamilyKeys.ATTACHMENT_CF;
 
 @Repository
@@ -29,16 +32,19 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
     private final String CONTENT = "content";
     private final String FILENAME = "filename";
     private final String SIZE = "size";
+    private final String CREATION_DATE = "creation_date";
 
     @Inject
     private Keyspace keyspaceOperator;
 
     @Override
     public void createAttachment(Attachment attachment) {
+
+        String attachmentId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
         if (log.isDebugEnabled()) {
             log.debug("Creating attachment : " + attachment);
         }
-        String attachmentId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
+
         attachment.setAttachmentId(attachmentId);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 
@@ -50,6 +56,9 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
 
         mutator.insert(attachmentId, ATTACHMENT_CF, HFactory.createColumn(SIZE,
                 attachment.getSize(), StringSerializer.get(), LongSerializer.get()));
+
+        mutator.insert(attachmentId, ATTACHMENT_CF, HFactory.createColumn(CREATION_DATE,
+                attachment.getCreationDate(), StringSerializer.get(), DateSerializer.get()));
 
     }
 
@@ -74,6 +83,10 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
             log.debug("Finding attachment : " + attachmentId);
         }
         Attachment attachment = this.findAttachmentMetadataById(attachmentId);
+
+        if (attachment == null) {
+            return null;
+        }
 
         ColumnQuery<String, String, byte[]> queryAttachment = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
@@ -107,7 +120,11 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                         .execute()
                         .get();
 
-        attachment.setFilename(columnFilename.getValue());
+        if (columnFilename != null && columnFilename.getValue() != null) {
+            attachment.setFilename(columnFilename.getValue());
+        } else {
+            return null;
+        }
 
         ColumnQuery<String, String, Long> querySize = HFactory.createColumnQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), LongSerializer.get());
@@ -119,10 +136,26 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
                         .execute()
                         .get();
 
-        if (columnSize.getValue() != null) {
+        if (columnSize != null && columnSize.getValue() != null) {
             attachment.setSize(columnSize.getValue());
         } else {
-            attachment.setSize(0);
+            return null;
+        }
+
+        ColumnQuery<String, String, Date> queryCreationDate = HFactory.createColumnQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), DateSerializer.get());
+
+        HColumn<String, Date> columnCreationDate =
+                queryCreationDate.setColumnFamily(ATTACHMENT_CF)
+                        .setKey(attachmentId)
+                        .setName(CREATION_DATE)
+                        .execute()
+                        .get();
+
+        if (columnCreationDate != null && columnCreationDate.getValue() != null) {
+            attachment.setCreationDate(columnCreationDate.getValue());
+        } else {
+            attachment.setCreationDate(new Date());
         }
 
         return attachment;

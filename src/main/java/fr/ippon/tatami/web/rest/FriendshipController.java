@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 /**
- * REST controller for managing frienships.
+ * REST controller for managing friendships.
  *
  * @author Julien Dubois
  */

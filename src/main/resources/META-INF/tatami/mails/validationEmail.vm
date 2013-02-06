@@ -1,0 +1,10 @@
+#parse("common.vm")
+#msg("validation.greeting") ${user.Login},
+
+#msg("validation.text1")
+
+${password}
+
+#msg("validation.text2")
+
+#msg("email.signature")

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>2.0.0.alpha.3</version>
+    <version>2.0.0.beta.1</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -42,7 +42,7 @@
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host></tatami.smtp.host>
@@ -64,11 +64,11 @@
             <properties>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
+                <log4j.loglevel>INFO</log4j.loglevel>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://sandbox.tatamisoft.com/</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -126,7 +126,7 @@
                 <ehcache.maxBytesLocalHeap>1G</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389/dc=ippon,dc=fr</tatami.ldapauth.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -417,6 +417,9 @@
         <junit.version>4.9</junit.version>
         <cassandra.unit.version>1.1.1.2</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
+        <rome.version>1.0</rome.version>
+        <pegdown.version>1.2.1</pegdown.version>
+        <velocity.version>1.7</velocity.version>
 
         <selenium.version>2.25.0</selenium.version>
 
@@ -675,11 +678,22 @@
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
         </dependency>
-                <dependency>
-                    <groupId>rome</groupId>
-                    <artifactId>rome</artifactId>
-                    <version>1.0</version>
-                </dependency>        
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>${rome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>${pegdown.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>

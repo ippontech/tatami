@@ -57,7 +57,7 @@ public class SyndicTimelineController {
         int count = 20; //Default value
 
         if (log.isDebugEnabled()) {
-            log.debug("RSS request to get someone's status (username=" + login + ").");
+            log.debug("RSS request to get someone's status (login=" + login + ").");
         }
         Collection<StatusDTO> statuses = timelineService.getUserTimeline(login, count, null, null);
 
@@ -76,7 +76,7 @@ public class SyndicTimelineController {
         // the link must point the actual content and not to the rss channel
         mav.addObject("feedLink", "/tatami/");
         mav.addObject("feedContent", statuses);
-        return mav;
 
+        return mav;
     }
 }
