@@ -60,6 +60,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, DOMAIN_CF, 0);
             addColumnFamily(cluster, REGISTRATION_CF, 0);
             addColumnFamily(cluster, RSS_CF, 0);
+            addColumnFamily(cluster, MAILDIGEST_CF, 0);
             addColumnFamily(cluster, SHARES_CF, 0);
             addColumnFamily(cluster, DISCUSSION_CF, 0);
             addColumnFamily(cluster, USER_TAGS_CF, 0);

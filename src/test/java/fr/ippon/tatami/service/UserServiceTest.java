@@ -9,8 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import javax.inject.Inject;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -114,6 +113,48 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userToBeTheSame.getStatusCount(), is(0L));
         assertThat(userToBeTheSame.getFollowersCount(), is(0L));
         assertThat(userToBeTheSame.getFriendsCount(), is(0L));
+    }
+
+
+    @Test
+    public void shouldRegisterUserToWeeklyEmailDigest() {
+        String login = "uuser@ippon.fr";
+        String firstName = "FirstName";
+        String lastName = "LastName";
+        User userToUpdate = constructAUser(login, firstName, lastName);
+
+        mockAuthenticationOnUserService(login);
+
+        userService.updateWeeklyDigestRegistration(true);
+        User updatedUser = userService.getUserByLogin(login);
+
+        assertTrue(updatedUser.getWeeklyDigestSubscription());
+
+        userService.updateWeeklyDigestRegistration(false);
+        updatedUser = userService.getUserByLogin(login);
+
+        assertFalse(updatedUser.getWeeklyDigestSubscription());
+    }
+
+
+    @Test
+    public void shouldRegisterUserToDailyEmailDigest() {
+        String login = "uuser@ippon.fr";
+        String firstName = "FirstName";
+        String lastName = "LastName";
+        User userToUpdate = constructAUser(login, firstName, lastName);
+
+        mockAuthenticationOnUserService(login);
+
+        userService.updateDailyDigestRegistration(true);
+        User updatedUser = userService.getUserByLogin(login);
+
+        assertTrue(updatedUser.getDailyDigestSubscription());
+
+        userService.updateDailyDigestRegistration(false);
+        updatedUser = userService.getUserByLogin(login);
+
+        assertFalse(updatedUser.getDailyDigestSubscription());
     }
 
     private void mockAuthenticationOnUserService(String login) {
