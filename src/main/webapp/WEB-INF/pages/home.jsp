@@ -77,7 +77,6 @@
     </div>
 
     <jsp:include page="includes/templates-home.jsp"/>
-    <jsp:include page="includes/templates-commons.jsp"/>
     <jsp:include page="includes/footer.jsp"/>
 
     <script type="text/javascript">

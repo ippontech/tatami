@@ -193,11 +193,11 @@
 </script>
 
 <script type="text/template" id="user-item">
-  <div class="alert alert-info">
+  <div class="alert alert-status">
     <div class="row-fluid">
       <div class="span12">
         <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
-          <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @></em>
+            <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
         </a>
       </div>    
     </div>
@@ -218,4 +218,95 @@
      #<@= trend.tag @> <i class="<@ if (trend.trendingUp === true) { @>icon-arrow-up<@ } else { @>icon-arrow-down<@ } @>"/>
      </a>
   </li>
+</script>
+
+<script type="text/template" id="welcome">
+  <div class="modal-header">
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <@ if (previous) { @><input type="button" class="pull-left" value="<fmt:message key="tatami.form.previous"/>"/><@ } @>
+      <@ if (next) { @><input type="button" class="pull-right" value="<fmt:message key="tatami.form.next"/>"/><@ } @>
+      <@ if (finish) { @><input type="button" class="pull-right" value="<fmt:message key="tatami.form.finish"/>"/><@ } @>
+    </div>
+</script>
+
+<script type="text/template" id="welcome-profile-header">
+  <h2><fmt:message key="tatami.welcome.profile.header.title"/></h2>
+  <p><fmt:message key="tatami.welcome.profile.header.description"/></p>
+</script>
+
+<script type="text/template" id="welcome-profile">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="firstName"><fmt:message key="tatami.user.firstName"/></label>
+      <div class="controls">
+        <input type="text" class="input-block-level" name="firstName" placeholder="<fmt:message key="tatami.user.firstName"/>" value="<@= firstName @>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="lastName"><fmt:message key="tatami.user.lastName"/></label>
+      <div class="controls">
+        <input type="text" class="input-block-level" name="lastName" placeholder="<fmt:message key="tatami.user.lastName"/>" value="<@= lastName @>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="jobTitle"><fmt:message key="tatami.user.jobTitle"/></label>
+      <div class="controls">
+        <input type="text" class="input-block-level" name="jobTitle" placeholder="<fmt:message key="tatami.user.jobTitle"/>" value="<@= jobTitle @>">
+      </div>
+    </div>
+  </fieldset>
+</script>
+
+<script type="text/template" id="welcome-profile-error">
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <fmt:message key="tatami.welcome.profile.error"/>
+  </div>
+</script>
+
+<script type="text/template" id="welcome-tags-header">
+  <h2><fmt:message key="tatami.welcome.tags.header.title"/></h2>
+  <p><fmt:message key="tatami.welcome.tags.header.description"/></p>
+</script>
+
+<script type="text/template" id="welcome-tags-success">
+  <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    Success : <@= name @>
+  </div>
+</script>
+
+<script type="text/template" id="welcome-tags-error">
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    Error : <@= name @>
+  </div>
+</script>
+
+<script type="text/template" id="welcome-friends-header">
+  <h2><fmt:message key="tatami.welcome.friends.header.title"/></h2>
+  <p><fmt:message key="tatami.welcome.friends.header.description"/></p>
+</script>
+
+<script type="text/template" id="welcome-friends-body">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="mails"><fmt:message key="tatami.welcome.friends.body.emails"/></label>
+      <div class="controls">
+        <textarea class="input-block-level" name="mails" placeholder="<fmt:message key="tatami.welcome.friends.body.emails"/>" />
+      </div>
+    </div>
+    <ul>
+    </ul>
+  </fieldset>
+</script>
+
+<script type="text/template" id="welcome-friends-error">
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    Error : <@= email @>
+  </div>
 </script>

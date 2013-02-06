@@ -132,6 +132,8 @@ public class AccountController {
             }
             currentUser.setTheme((String) newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
+            currentUser.setDailyDigestSubscription((Boolean) newPreferences.getDailyDigest());
+            currentUser.setWeeklyDigestSubscription((Boolean) newPreferences.getWeeklyDigest());
 
             String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
             currentUser.setRssUid(rssUid);
@@ -231,5 +233,22 @@ public class AccountController {
             response.setStatus(500);
             return e.getMessage();
         }
+    }
+
+    /**
+     * GET  /visit -> Get all users of domain
+     */
+    @RequestMapping(value = "/rest/visit",
+            method = RequestMethod.DELETE,
+            produces = "application/json")
+    @ResponseBody
+    public void finish() {
+        User currentUser = authenticationService.getCurrentUser();
+
+        currentUser.setIsNew(!currentUser.getIsNew());
+
+        userService.updateUser(currentUser);
+
+        return;
     }
 }

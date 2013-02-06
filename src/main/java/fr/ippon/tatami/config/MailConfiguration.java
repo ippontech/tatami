@@ -38,6 +38,13 @@ public class MailConfiguration {
 
         props.put("resource.loader", "class");
         props.put("class.resource.loader.class","org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+
+        // necessary to get logs on templates's error
+        props.put("runtime.log.logsystem.class","org.apache.velocity.runtime.log.Log4JLogChute");
+        props.put("runtime.log.error.stacktrace", "true");
+        props.put("runtime.log.warn.stacktrace","true");
+        props.put("runtime.log.info.stacktrace","true");
+        props.put("runtime.log.invalid.reference","true");
         // TODO : FileResourceLoader could be used to externalize templates
 
         // enable relative includes

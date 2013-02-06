@@ -96,7 +96,7 @@ app.Collection.StatusCollection = Backbone.Collection.extend({
 app.Model.StatusUpdateModel = Backbone.Model.extend({
   url : '/tatami/rest/statuses/update',
   defaults: {
-    'attachmentIds': new Array()
+    'attachmentIds': []
   }
 });
 
@@ -154,6 +154,10 @@ app.Collection.Discussion = Backbone.Collection.extend({
 
 app.Collection.SharesCollection = Backbone.Collection.extend({
 
+});
+
+app.Collection.TrendsCollection = Backbone.Collection.extend({
+    url : '/tatami/rest/trends'
 });
 
 app.View.SharesView = Backbone.View.extend({
@@ -303,7 +307,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
     var statusId = this.model.get('statusId');
     var self = this;
 
-    if (this.details != true) {
+    if (this.details !== true) {
       var statusDetails = new app.Model.StatusDetails(this.model);
 
 
@@ -348,7 +352,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
             discussionIsPresent = true;
           });
           if(discussionIsPresent) {
-        	self.views.discussCurrent.model.add(self.model);
+          self.views.discussCurrent.model.add(self.model);
           }
           self.views.shares.model.reset();
           _.forEach(model.get('sharedByLogins'), function(value) {
@@ -597,11 +601,11 @@ initialize: function() {
 
 set: function(owner, followed) {
   if(owner){
-	  this.events = {
+  this.events = {
           "click .btn": "editMyProfile"
       };
-	  this.editMyProfileRender();
-  } 
+    this.editMyProfileRender();
+  }
   else if(!owner && followed) {
     this.events = {
       "click .btn": "unfollow"
@@ -742,13 +746,13 @@ function Suggester(element) {
         var query = raw_query.substring(0, caretPosition);
         var matchLogin = query.match(patterns.login);
         var matchHash = query.match(patterns.hash);
-        if (matchLogin == null && matchHash == null) {
+        if (typeof matchLogin === 'undefined' && typeof matchHash === 'undefined') {
             if (this.shown) {
                 this.hide();
-            };
+            }
             return;
         }
-        var query2 = (matchLogin == null) ? matchHash[0] : matchLogin[0];
+        var query2 = (typeof matchLogin !== 'undefined') ? matchHash[0] : matchLogin[0];
 
         // Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
         query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
@@ -765,7 +769,6 @@ function Suggester(element) {
                     }
                     return process(results);
                 });
-                break;
             case '#' :
                 q = query2.substring(1, query2.length);
                 return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
@@ -775,7 +778,6 @@ function Suggester(element) {
                     }
                     return process(results);
                 });
-                break;
         }
     };
     this.matcher = function (item) {
@@ -816,13 +818,13 @@ function NotificationManager() {
 }
 
 NotificationManager.setNotification = function(title, msg, reload) {
-	if (title == null || msg == null) {return 0;}
-	if (!window.webkitNotifications) {return 0;}
-	if (window.webkitNotifications.checkPermission() != 0) {
+	if ( typeof title === 'undefined' || typeof msg === 'undefined') {return 0;}
+	if (typeof  window.webkitNotifications === 'undefined') {return 0;}
+	if (window.webkitNotifications.checkPermission() !== 0) {
         NotificationManager.setAllowNotification();
 		return 0;
 	}
-	if (NotificationManager.n != null) {NotificationManager.n.cancel();}
+	if (typeof NotificationManager.n !== 'undefined') {NotificationManager.n.cancel();}
 	NotificationManager.n = window.webkitNotifications.createNotification('/favicon.ico', title, msg);
 	NotificationManager.n.onclick = function() {
 		window.focus();
@@ -832,8 +834,8 @@ NotificationManager.setNotification = function(title, msg, reload) {
 	NotificationManager.n.show();
 };
 NotificationManager.setAllowNotification = function(callback) {
-	if (!window.webkitNotifications) {return 0;}
-	if (callback != null) {
+	if (typeof  window.webkitNotifications === 'undefined') {return 0;}
+	if (typeof  callback !== 'undefined') {
 		window.webkitNotifications.requestPermission(callback);
 	} else {
 		window.webkitNotifications.requestPermission();
@@ -848,4 +850,491 @@ $(function (){
 });
 
 
+app.Model.AccountProfile = Backbone.Model.extend({
+    url: '/tatami/rest/account/profile',
+    idAttribute: 'username',
+    defaults : {
+        username : window.username,
+        firstName : '',
+        lastName : '',
+        jobTitle : '',
+        phoneNumber : ''
+    }
+});
 
+app.Model.FollowUser = Backbone.Model.extend({
+    url: '/tatami/rest/friendships'
+});
+
+app.Model.CheckUser = Backbone.Model.extend({
+    url: '/tatami/rest/friendships/check'
+});
+
+app.Model.Visit = Backbone.Model.extend({
+    url: '/tatami/rest/visit',
+    idAttribute: 'username'
+});
+
+app.View.WelcomeProfil = Backbone.View.extend({
+  initialize : function(){
+    this.header = document.createElement('div');
+    this.$header = $(this.header);
+    this.render();
+  },
+
+  model : new app.Model.AccountProfile(),
+
+  template : {
+    header : _.template($('#welcome-profile-header').html()),
+    body : _.template($('#welcome-profile').html()),
+    error : _.template($('#welcome-profile-error').html())
+  },
+
+  attributes : {
+    'class' : 'form-horizontal row-fluid'
+  },
+
+  tagName : 'form',
+
+  next : function(){
+    var self = this;
+
+    _.each(this.$el.serializeArray(), function(value){
+      self.model.set(value.name, value.value);
+    });
+
+    this.model.save(null, {
+      success : function(model){
+        self.trigger('next');
+      },
+      error : function(model){
+        self.$el.append(self.template.error());
+      }
+    });
+  },
+
+  previous : function(){
+    this.trigger('previous');
+  },
+
+  render: function(){
+    var self = this;
+
+    this.$header.html(this.template.header());
+    this.model.fetch({
+      success : function(model){
+        self.$el.html(self.template.body(model.toJSON()));
+      },
+      error : function(model){
+        self.$el.html(self.template.body(model.toJSON()));
+        self.$el.append(self.template.error());
+      }
+    });
+    return this;
+  },
+
+  destroy : function(){
+      this.$header.remove();
+      this.remove();
+      this.trigger('remove', this);
+  }
+});
+
+app.View.WelcomeTag = Backbone.View.extend({
+  initialize : function(){
+    this.header = document.createElement('div');
+    this.$header = $(this.header);
+    this.render();
+  },
+
+  collection : new app.Collection.TrendsCollection(),
+
+  template : {
+    header : _.template($('#welcome-tags-header').html()),
+    success : _.template($('#welcome-tags-success').html()),
+    error : _.template($('#welcome-tags-error').html())
+  },
+
+  next : function(){
+    this.trigger('next');
+  },
+
+  previous : function(){
+    this.trigger('previous');
+  },
+
+  followTag : function(tag){
+    var self = this;
+
+    new app.Model.FollowTagModel({
+      name : tag
+    }).save(null, {
+      success: function(model){
+        self.$el.append(self.template.success(model.toJSON()));
+      },
+      error: function(model){
+        self.$el.append(self.template.success(model.toJSON()));
+      }
+    });
+  },
+
+  render: function(){
+    this.$header.html(this.template.header());
+
+    var fill = d3.scale.category20();
+
+    var self = this;
+
+    var angleMax = 0;
+    var angleMin = 0;
+    var position = 0;
+
+
+    var width = function(){
+      return self.$el.width();
+    };
+    var height = function(){
+      return self.$el.width() * 9/16;
+    };
+
+    function draw(words) {
+      $(self.$el[0].childNodes).remove();
+
+      d3.select(self.$el[0]).append("svg")
+          .attr("width", width())
+          .attr("height", height())
+        .append("g")
+          .attr("transform", "translate(" + width()/2 + "," + height()/2 + ")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", '"Helvetica Neue", Helvetica, Arial, sans-serif')
+          //.style("fill", function(d, i) { return (~~(Math.random()*2)===0)?'#5bb75b':'#f89406';})
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .on('dblclick', function(d){ self.followTag(d.text); })
+          .text(function(d) { return d.text; });
+    }
+
+
+    var resize = _.debounce(function() {
+      generate(self.collection);
+    }, 125);
+
+    function generate(collection){
+      if(width() !== 0 && height() !== 0){
+        d3.layout.cloud().size([width(), height()])
+          .words(collection.map(function(model){ return model.toJSON(); }))
+          .text(function(d) { return d.tag; })
+          .rotate(function(d) { return angleMin + ~~(Math.random() * position )  / ( position - 1 ) * (angleMax - angleMin);})
+          .font('"Helvetica Neue", Helvetica, Arial, sans-serif')
+          .fontSize(function(d) { return (d.trendingUp)? 90: 30; })
+          .on("word", function(s){
+            //console.log(s);
+          })
+          .on("end", draw)
+          .start();
+      }
+      else {
+        resize();
+      }
+
+      $(window).resize(resize);
+
+      $(self.$el[0].childNodes).bind('remove', function(){
+        layout.stop();
+        $(window).off('resize', resize);
+      });
+    }
+
+    this.collection.fetch({
+      success : function(collection){
+        if(collection.length > 0)
+          generate(collection);
+        else
+          self.destroy();
+      }
+    });
+
+
+
+    return this;
+  },
+
+  destroy : function(){
+      this.$header.remove();
+      this.remove();
+      this.trigger('remove', this);
+  }
+});
+
+app.View.WelcomeFriend = Backbone.View.extend({
+  initialize : function(){
+    this.header = document.createElement('div');
+    this.$header = $(this.header);
+    this.render();
+  },
+
+  collection : new app.Collection.TrendsCollection(),
+
+  template : {
+    header : _.template($('#welcome-friends-header').html()),
+    body : _.template($('#welcome-friends-body').html()),
+    error : _.template($('#welcome-friends-error').html())
+  },
+
+  attributes : {
+    'class' : 'form-horizontal row-fluid'
+  },
+
+  tagName : 'form',
+
+  next : function(){
+    var self = this;
+
+    var emails = this.el.querySelector('[name=mails]').value;
+    emails = this.toMails(emails);
+
+    var callback = _.after(emails.length, function(){
+      self.trigger('next');
+    });
+
+    this.check(emails, function(){
+      self.follow(emails, function(){
+        self.trigger('next');
+      });
+    });
+  },
+
+  check : function(mails, callback){
+    var self = this;
+
+    var cb = _.after(mails.length, function(){
+      callback();
+    });
+
+    mails.forEach(function(mail){
+      new app.Model.CheckUser({
+        email : mail
+      }).save(null, {
+        success : cb,
+        error : function(model){
+          self.$el.append(self.template.error(model.toJSON()));
+        }
+      });
+    });
+  },
+
+  follow : function(mails, callback){
+    var self = this;
+
+    var cb = _.after(mails.length, function(){
+      callback();
+    });
+
+    mails.forEach(function(mail){
+      new app.Model.FollowUser({
+        email : mail
+      }).save(null, {
+        success : cb,
+        error : function(model){
+          self.$el.append(self.template.error(model.toJSON()));
+        }
+      });
+    });
+  },
+
+  previous : function(){
+    this.trigger('previous');
+  },
+
+  events : {
+    'keyup textarea' : 'showMails'
+  },
+
+  showMails : function(e){
+    var self = this;
+    if(!this.$mails) {
+      this.mails = this.el.getElementsByTagName('ul')[0];
+      this.$mails = $(this.mails);
+    }
+
+    var value = e.target.value;
+    this.$mails.empty();
+    this.toMails(value).forEach(function(value){
+      var li = document.createElement('li');
+      li.innerText = value;
+      self.$mails.append(li);
+    });
+  },
+
+  toMails : function(string){
+    return string.split(/[,\n]/).map(function(value){
+      return value.trim();
+    }).filter(function(value){
+      var isEmail = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/gmi;
+      return isEmail.test(value);
+    });
+  },
+
+  render: function(){
+    this.$header.html(this.template.header());
+    this.$el.html(this.template.body());
+
+    return this;
+  },
+
+  destroy : function(){
+      this.$header.remove();
+      this.remove();
+      this.trigger('remove', this);
+  }
+});
+
+app.View.Welcome = Backbone.View.extend({
+  
+  template : _.template($('#welcome').html()),
+
+  attributes : {
+    id : 'modal-welcome',
+    'class' : 'modal fade hide',
+    'data-backdrop' : 'static'
+  },
+
+  toHide : [$('#tatami-topmenu'), $('#mainPanel')],
+
+  model : new app.Model.Visit(),
+
+  initialize : function() {
+    var self = this;
+    this.$el.on('show', function(){
+      self.toHide.forEach(function(element){
+        element.addClass('blur');
+      });
+    });
+    this.$el.on('shown', function(){
+      self.setMaxHeigth();
+    });
+    this.$el.on('hide', function(){
+      self.toHide.forEach(function(element){
+        element.removeClass('blur');
+      });
+    });
+
+    $(window).resize(_.debounce(_.bind(this.setMaxHeigth, this)));
+
+    this.currentTab = _.first(this.tabs);
+
+    this.render();
+  },
+
+  setMaxHeigth : function(){
+    var windowHeight = $(window).height();
+    var heightModal = windowHeight * 0.8;
+    var headerHeight = this.$el.find('.modal-header').outerHeight(true);
+    var footerHeight = this.$el.find('.modal-footer').outerHeight(true);
+    
+    var height = heightModal - headerHeight - footerHeight;
+
+    this.$el.find('.modal-body').css('max-height', height + 'px');
+  },
+
+  setRouter: function(router){
+    var self = this;
+
+    router.welcome = function(){
+      self.show();
+    };
+
+    this.render();
+  },
+
+  tabs : [new app.View.WelcomeProfil(), new app.View.WelcomeTag(), new app.View.WelcomeFriend()],
+
+  events : {
+    'click input.pull-left' : 'previous',
+    'click input.pull-right' : 'next'
+  },
+
+  previous : function(){
+    if(this.currentTab){
+      this.currentTab.previous();
+    }
+  },
+
+  next : function(){
+    if(this.currentTab){
+      this.currentTab.next();
+    }
+  },
+
+  bindPrevious : function(){
+    var self = this;
+    if(this.currentTab) this.currentTab.off('previous');
+    if(this.currentTab && _.first(this.tabs) !== this.currentTab) this.currentTab.on('previous', function(){
+      var index = _.indexOf(self.tabs, self.currentTab);
+      self.currentTab = self.tabs[index-1];
+      self.render();
+    });
+  },
+
+  bindNext : function(){
+    var self = this;
+    if(this.currentTab) this.currentTab.off('next');
+    if(this.currentTab && _.last(this.tabs) !== this.currentTab) this.currentTab.on('next', function(){
+      var index = _.indexOf(self.tabs, self.currentTab);
+      self.currentTab = self.tabs[index+1];
+      self.render();
+    });
+    else if(this.currentTab && _.last(this.tabs) === this.currentTab) this.currentTab.on('next', function(){
+      self.model.set('username', window.username);
+      self.model.destroy({
+        success : function(){
+          self.destroy();
+        }
+      });
+    });
+  },
+
+  bindDestroy : function(){
+    var self = this;
+    this.tabs.forEach(function(view){
+      view.on('remove', function(view){
+        var index = self.tabs.indexOf(view);
+        self.tabs.splice(index, 1);
+      });
+    });
+  },
+
+  destroy : function(){
+    this.tabs.forEach(function(tab){
+      tab.destroy();
+    });
+    this.$el.modal('hide');
+    this.remove();
+  },
+
+  render : function(){
+    this.$el.html(this.template({
+      next : (_.last(this.tabs) !== this.currentTab),
+      previous : (_.first(this.tabs) !== this.currentTab),
+      finish : (_.last(this.tabs) === this.currentTab)
+    }));
+
+    this.bindNext();
+    this.bindPrevious();
+    this.bindDestroy();
+
+    if(this.currentTab){
+      this.$el.find('div.modal-header').html(this.currentTab.$header);
+      this.$el.find('div.modal-body').html(this.currentTab.$el);
+    }
+
+    this.$el.modal('show');
+
+    return this;
+  }
+});

@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
+import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,6 +66,9 @@ public class UserService {
 
     @Inject
     private SearchService searchService;
+
+    @Inject
+    private MailDigestRepository mailDigestRepository;
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
@@ -197,6 +202,7 @@ public class UserService {
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
         user.setPhoneNumber("");
+        user.setIsNew(true);
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
@@ -294,6 +300,64 @@ public class UserService {
             }
         }
         return login;
+    }
+
+    /**
+     * update registration to weekly digest email.
+     *
+     * @param registration
+     */
+    public void updateWeeklyDigestRegistration(boolean registration) {
+        User currentUser = authenticationService.getCurrentUser();
+        currentUser.setWeeklyDigestSubscription(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+        if (registration) {
+            mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+                    currentUser.getDomain(), day);
+        } else {
+            mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+                    currentUser.getDomain(), day);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Updating weekly digest preferences : weeklyDigest=" + registration);
+        }
+        try {
+            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating preferences : " + cve);
+            throw cve;
+        }
+    }
+
+    /**
+     * update registration to daily digest email.
+     *
+     * @param registration
+     */
+    public void updateDailyDigestRegistration(boolean registration) {
+        User currentUser = authenticationService.getCurrentUser();
+        currentUser.setDailyDigestSubscription(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+        if (registration) {
+            mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+                    currentUser.getDomain(), day);
+        } else {
+            mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+                    currentUser.getDomain(), day);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Updating daily digest preferences : dailyDigest=" + registration);
+        }
+        try {
+            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating preferences : " + cve);
+            throw cve;
+        }
     }
 
     /**
