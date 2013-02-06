@@ -395,7 +395,6 @@ app.View.ProfileStatsView = Backbone.View.extend({
   },
 
   render: function() {
-    debugger;
     this.$el.html(this.template({profile:this.model.toJSON()}));
     return this.$el;
   }

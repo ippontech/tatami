@@ -229,4 +229,21 @@ public class AccountController {
             return e.getMessage();
         }
     }
+
+    /**
+     * GET  /visit -> Get all users of domain
+     */
+    @RequestMapping(value = "/rest/visit",
+            method = RequestMethod.DELETE,
+            produces = "application/json")
+    @ResponseBody
+    public void finish() {
+        User currentUser = authenticationService.getCurrentUser();
+
+        currentUser.setIsNew(!currentUser.getIsNew());
+
+        userService.updateUser(currentUser);
+
+        return;
+    }
 }
