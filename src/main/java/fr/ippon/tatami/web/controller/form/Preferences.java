@@ -10,6 +10,10 @@ public class Preferences {
 
     private Boolean mentionEmail = false;
 
+    private Boolean weeklyDigest = false;
+
+    private Boolean dailyDigest  = false;
+
     String theme = "";
 
     private Boolean rssUidActive = false;
@@ -22,6 +26,8 @@ public class Preferences {
 
     public Preferences(User user) {
         this.mentionEmail = user.getPreferencesMentionEmail();
+        this.weeklyDigest = user.getWeeklyDigestSubscription();
+        this.dailyDigest = user.getDailyDigestSubscription();
         this.theme = user.getTheme();
         if (!StringUtils.isEmpty(user.getRssUid())) {
             this.rssUidActive = true;
@@ -60,5 +66,21 @@ public class Preferences {
 
     public void setRssUid(String rssUid) {
         this.rssUid = rssUid;
+    }
+
+    public Boolean getWeeklyDigest() {
+        return weeklyDigest;
+    }
+
+    public void setWeeklyDigest(Boolean weeklyDigest) {
+        this.weeklyDigest = weeklyDigest;
+    }
+
+    public Boolean getDailyDigest() {
+        return dailyDigest;
+    }
+
+    public void setDailyDigest(Boolean dailyDigest) {
+        this.dailyDigest = dailyDigest;
     }
 }

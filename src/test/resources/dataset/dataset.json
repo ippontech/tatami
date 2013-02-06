@@ -226,11 +226,132 @@
                             "value":"WhoShouldBeFoundBySimilarSearch"
                         }
                     ]
+                },
+                {
+                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"userWhoSubscribeToDigests"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        },
+                        {
+                            "name":"gravatar",
+                            "value":"gravatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoSubscribeToDigests"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoPostForDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"userWhoPostForDigests"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        },
+                        {
+                            "name":"gravatar",
+                            "value":"gravatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoPostForDigests"
+                        }
+                    ]
                 }
             ]
         },
         {
             "name":"Domain",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "rows" : [
+                {
+                    "key":"ippon.fr",
+                    "columns":[
+                        {
+                            "name":"jdubois",
+                            "value":""
+                        },
+                        {
+                            "name":"uuser@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWantToFollow@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWillBeFollowed@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoFollow@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoIsFollowed@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoWantToForget@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userToForget@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWithStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoPostStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoReadStatus@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name": "userWhoSubscribeToDigests@ippon.fr",
+                            "value": ""
+                        },
+                        {
+                            "name":"userWhoPostForDigests@ippon.fr",
+                            "value" : ""
+                        }
+                    ]
+                }
+
+
+
+            ]
+        },
+        {
+            "name" : "MailDigest",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type"
         },
@@ -407,6 +528,40 @@
                         {
                             "name":"FRIENDS_COUNTER",
                             "value":"1"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoPostForDigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
                         }
                     ]
                 }

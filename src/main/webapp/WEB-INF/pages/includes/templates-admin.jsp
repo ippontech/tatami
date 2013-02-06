@@ -168,6 +168,16 @@
             </div>
             <div class="controls">
                 <label class="checkbox">
+                    <input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
+                </label>
+            </div>
+            <div class="controls">
+                <label class="checkbox">
+                    <input name="weeklyDigest" type="checkbox" <@ if(preferences.weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
+                </label>
+            </div>
+            <div class="controls">
+                <label class="checkbox">
                     <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
                 </label>
                 <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
@@ -601,7 +611,7 @@
 
 <script type="text/template" id="files-pagination">
     <ul class="pager">
-        <li><a class="previous" href="#">Previous</a></li>
-        <li><a class="next" href="#">Next</a></li>
+        <li class="previous"><a href="#">Previous</a></li>
+        <li class="next"><a href="#">Next</a></li>
     </ul>
 </script>

@@ -81,6 +81,10 @@ public class AttachmentService {
                         findAttachmentIds(authenticationService.getCurrentUser().getLogin(),
                                 pagination);
 
+        if (log.isDebugEnabled()) {
+            log.debug("Collection of attachments : " + attachmentIds.size());
+        }
+
         return attachmentIds;
     }
 
@@ -109,15 +113,15 @@ public class AttachmentService {
         Long domainQuota = domainConfiguration.getStorageSizeAsLong();
         Long userQuota = currentUser.getAttachmentsSize();
 
-        Collection<Long> globalDomainQuota = new ArrayList<Long>();
+        Long quota = (userQuota*100)/domainQuota;
 
-        globalDomainQuota.add(userQuota);
-        globalDomainQuota.add(domainQuota);
+        Collection<Long> taux = new ArrayList<Long>();
+        taux.add(quota);
 
         if (log.isDebugEnabled()) {
-            log.debug("Domain quota attachments : " + domainQuota);
+            log.debug("Domain quota attachments : " + quota);
         }
 
-        return globalDomainQuota;
+        return taux;
     }
 }
