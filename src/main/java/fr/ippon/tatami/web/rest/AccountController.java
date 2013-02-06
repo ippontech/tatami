@@ -107,6 +107,8 @@ public class AccountController {
         User user = userService.getUserByLogin(currentUser.getLogin());
 
         Preferences preferences = new Preferences(user);
+        String themes = env.getProperty("tatami.authorized.theme");
+        preferences.setThemesList(themes);
 
         return preferences;
     }
@@ -159,6 +161,9 @@ public class AccountController {
             log.debug("Error during setting preferences", e);
             response.setStatus(500);
         } finally {
+            String themes = env.getProperty("tatami.authorized.theme");
+            preferences.setThemesList(themes);
+
             return preferences;
         }
     }

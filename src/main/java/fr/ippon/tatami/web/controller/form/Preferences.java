@@ -20,6 +20,9 @@ public class Preferences {
 
     private String rssUid;
 
+    private String[] themes = {"bootstrap","cerulean","cosmo","journal","readable","simplex","spacelab",
+            "spruce","superhero","united"};
+
     public Preferences() {
 
     }
@@ -66,6 +69,16 @@ public class Preferences {
 
     public void setRssUid(String rssUid) {
         this.rssUid = rssUid;
+    }
+
+    public void setThemesList(String themes) {
+        if (themes != null && !themes.isEmpty()) {
+            this.themes = themes.split(",");
+        }
+    }
+
+    public String[] getThemesList() {
+        return themes;
     }
 
     public Boolean getWeeklyDigest() {
