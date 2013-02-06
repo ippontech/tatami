@@ -91,7 +91,22 @@ public class MailService {
         model.put("user", user);
         model.put("registrationUrl", registrationUrl);
 
-        sendTextFromTemplate(user, model, "registration", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "registration", this.locale);
+    }
+
+    @Async
+    public void sendInvitationEmail(String email, User user) {
+        String subject = "Tatami invitation";
+        String url = tatamiUrl;
+        if (log.isDebugEnabled()) {
+            log.debug("Sending invitation e-mail to email '" + email + "'");
+        }
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("invitationUrl", tatamiUrl);
+
+        sendTextFromTemplate(user.getLogin(), model, "invitationMessage", this.locale);
     }
 
     @Async
@@ -107,7 +122,7 @@ public class MailService {
         model.put("user", user);
         model.put("reinitUrl", url);
 
-        sendTextFromTemplate(user, model, "lostPassword", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "lostPassword", this.locale);
     }
 
     @Async
@@ -121,7 +136,7 @@ public class MailService {
         model.put("user", user);
         model.put("password", password);
 
-        sendTextFromTemplate(user, model, "validation", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "validation", this.locale);
     }
 
     @Async
@@ -135,7 +150,7 @@ public class MailService {
         model.put("user", user);
         model.put("password", password);
 
-       sendTextFromTemplate(user, model, "passwordReinitialized", this.locale);
+       sendTextFromTemplate(user.getLogin(), model, "passwordReinitialized", this.locale);
     }
 
     @Async
@@ -151,7 +166,7 @@ public class MailService {
         model.put("status", status);
         model.put("statusUrl" , url);
 
-        sendTextFromTemplate(mentionnedUser, model, "userPrivateMessage", this.locale);
+        sendTextFromTemplate(mentionnedUser.getLogin(), model, "userPrivateMessage", this.locale);
     }
 
     @Async
@@ -167,7 +182,7 @@ public class MailService {
         model.put("status", status);
         model.put("statusUrl" , url);
 
-        sendTextFromTemplate( mentionnedUser, model, "userMention", this.locale);
+        sendTextFromTemplate( mentionnedUser.getLogin(), model, "userMention", this.locale);
     }
 
     @Async
@@ -184,7 +199,7 @@ public class MailService {
         model.put("nbStatus", nbStatus);
         model.put("suggestedUsers", suggestedUsers);
 
-        sendTextFromTemplate( user, model, "dailyDigest", this.locale);
+        sendTextFromTemplate( user.getLogin(), model, "dailyDigest", this.locale);
     }
 
 
@@ -204,10 +219,10 @@ public class MailService {
         model.put("suggestedUsers", suggestedUsers);
         model.put("suggestedGroups", suggestedGroup);
 
-        sendTextFromTemplate( user, model, "weeklyDigest", this.locale);
+        sendTextFromTemplate( user.getLogin(), model, "weeklyDigest", this.locale);
     }
 
-    private void sendEmail(User user, String subject, String text) {
+    private void sendEmail(String email, String subject, String text) {
         if (host != null && !host.equals("")) {
             JavaMailSenderImpl sender = new JavaMailSenderImpl();
             sender.setHost(host);
@@ -215,14 +230,14 @@ public class MailService {
             sender.setUsername(smtpUser);
             sender.setPassword(smtpPassword);
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(user.getLogin());
+            message.setTo(email);
             message.setFrom(from);
             message.setSubject(subject);
             message.setText(text);
             try {
                 sender.send(message);
                 if (log.isDebugEnabled()) {
-                    log.debug("Sent e-mail to User '" + user.getLogin() + "'!");
+                    log.debug("Sent e-mail to User '" + email + "'!");
                 }
             } catch (MailException e) {
                 log.warn("Warning! SMTP server error, could not send e-mail.");
@@ -239,12 +254,12 @@ public class MailService {
     /**
      * generate and send the mail corresponding to the given template
      *
-     * @param user
+     * @param email
      * @param model
      * @param template
      * @param locale
      */
-    private void sendTextFromTemplate(User user, Map<String, Object> model, String template, Locale locale) {
+    private void sendTextFromTemplate(String email, Map<String, Object> model, String template, Locale locale) {
         model.put("messages", mailMessageSource);
         model.put("locale", locale);
 
@@ -255,7 +270,7 @@ public class MailService {
             log.debug("e-mail text  '" + text);
         }
 
-        sendEmail(user, subject, text);
+        sendEmail(email, subject, text);
     }
 
 }

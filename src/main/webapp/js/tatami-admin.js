@@ -23,7 +23,14 @@ else {
 
 app.Model.AccountProfile = Backbone.Model.extend({
     url: '/tatami/rest/account/profile',
-    idAttribute: 'username'
+    idAttribute: 'username',
+    defaults : {
+        username : window.username,
+        firstName : '',
+        lastName : '',
+        jobTitle : '',
+        phoneNumber : ''
+    }
 });
 
 app.View.AccountProfile = Backbone.View.extend({

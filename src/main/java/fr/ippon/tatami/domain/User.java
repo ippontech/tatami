@@ -86,6 +86,11 @@ public class User {
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
+    @Column(name = "isNew")
+    @NotNull
+    @JsonIgnore
+    private Boolean isNew = true;
+
     private long statusCount;
 
     private long friendsCount;
@@ -188,6 +193,14 @@ public class User {
         this.preferencesMentionEmail = preferencesMentionEmail;
     }
 
+    public Boolean getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(Boolean isNew) {
+        this.isNew = isNew;
+    }
+
     public long getAttachmentsSize() {
         return attachmentsSize;
     }
@@ -284,6 +297,7 @@ public class User {
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
+                ", isNew=" + isNew +
                 '}';
     }
 }

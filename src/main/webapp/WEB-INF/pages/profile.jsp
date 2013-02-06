@@ -133,7 +133,6 @@
 </div>
 
 <jsp:include page="includes/templates-profile.jsp"/>
-<jsp:include page="includes/templates-commons.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <sec:authentication property="principal.username" var="login"/>
