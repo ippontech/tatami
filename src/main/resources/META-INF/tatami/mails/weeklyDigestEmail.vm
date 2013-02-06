@@ -1,0 +1,62 @@
+#parse("common.vm")
+#msg("weeklyDigest.greeting") ${user.Login},
+
+#if ($statuses.size() == 1)
+#msg("weeklyDigest.textOneMessages1")
+
+
+    #msg("weeklyDigest.from") @$statuses[0].Username
+    $statuses[0].Content
+#elseif ($statuses.size() > 1)
+#if (${nbStatus} >10 )
+#msg("weeklyDigest.textSeveralMessagesSelection1") ${nbStatus} #msg("weeklyDigest.textSeveralMessagesSelection2")
+#else
+#msg("weeklyDigest.textSeveralMessages1") ${nbStatus} #msg("weeklyDigest.textSeveralMessages2")
+#end
+
+#foreach( $status in $statuses )
+    * #msg("weeklyDigest.from") @$status.Username
+        $status.Content
+
+#end
+#msg("weeklyDigest.textSeveralMessages3")
+
+#else
+#msg("weeklyDigest.textNoMessage")
+#end
+
+#if ($suggestedUsers.size()== 1)
+#msg("weeklyDigest.oneSuggestedUsers1")
+
+#elseif ($suggestedUsers.size() > 1)
+#msg("weeklyDigest.suggestedUsers1")
+
+#foreach( $suggestedUser in $suggestedUsers )
+    * $suggestedUser.Username
+#end
+#else
+#msg("weeklyDigest.noSuggestedUsers")
+#end
+
+#if ($suggestedGroups.size()== 1)
+#msg("weeklyDigest.oneSuggestedGroups1")
+
+#elseif ($suggestedGroups.size() > 1)
+#msg("weeklyDigest.suggestedGroups1")
+
+#foreach( $suggestedGroup in $suggestedGroups )
+    * $suggestedGroup.Name
+      $suggestedGroup.Description
+#end
+#else
+#msg("weeklyDigest.noSuggestedGroups")
+#end
+
+#msg("weeklyDigest.urlText")
+
+$tatamiUrl
+
+#msg("weeklyDigest.endText1")
+
+
+#msg("email.signature")

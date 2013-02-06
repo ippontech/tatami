@@ -75,6 +75,14 @@ public class User {
     @JsonIgnore
     private String rssUid;
 
+    @Column(name = "weekly_digest_subscription")
+    @JsonIgnore
+    private Boolean weeklyDigestSubscription;
+
+    @Column(name = "daily_digest_subscription")
+    @JsonIgnore
+    private Boolean dailyDigestSubscription;
+
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
@@ -220,6 +228,23 @@ public class User {
         this.followersCount = followersCount;
     }
 
+    public Boolean getWeeklyDigestSubscription() {
+        return weeklyDigestSubscription;
+    }
+
+    public void setWeeklyDigestSubscription(Boolean weeklyDigestSubscription) {
+        this.weeklyDigestSubscription = weeklyDigestSubscription;
+    }
+
+    public Boolean getDailyDigestSubscription() {
+        return dailyDigestSubscription;
+    }
+
+    public void setDailyDigestSubscription(Boolean dailyDigestSubscription) {
+        this.dailyDigestSubscription = dailyDigestSubscription;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -253,6 +278,8 @@ public class User {
                 ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", rssUid=" + rssUid +
+                ", dailyDigestSubscription=" + dailyDigestSubscription +
+                ", weeklyDigestSubscription=" + weeklyDigestSubscription +
                 ", attachmentsSize=" + attachmentsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +

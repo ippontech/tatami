@@ -1,7 +1,9 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
@@ -17,9 +19,8 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * Send e-mails.
@@ -169,6 +170,43 @@ public class MailService {
         sendTextFromTemplate( mentionnedUser, model, "userMention", this.locale);
     }
 
+    @Async
+    public void sendDailyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
+                                     Collection<User> suggestedUsers ) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending daily digest e-mail to User '" + user.getLogin() + "'");
+        }
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("tatamiUrl", tatamiUrl + "/tatami/");
+        model.put("statuses", statuses);
+        model.put("nbStatus", nbStatus);
+        model.put("suggestedUsers", suggestedUsers);
+
+        sendTextFromTemplate( user, model, "dailyDigest", this.locale);
+    }
+
+
+    @Async
+    public void sendWeeklyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
+                                     Collection<User> suggestedUsers,
+                                     Collection<Group>  suggestedGroup) {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending weekly digest e-mail to User '" + user.getLogin() + "'");
+        }
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        model.put("tatamiUrl", tatamiUrl + "/tatami/");
+        model.put("statuses", statuses);
+        model.put("nbStatus", nbStatus);
+        model.put("suggestedUsers", suggestedUsers);
+        model.put("suggestedGroups", suggestedGroup);
+
+        sendTextFromTemplate( user, model, "weeklyDigest", this.locale);
+    }
+
     private void sendEmail(User user, String subject, String text) {
         if (host != null && !host.equals("")) {
             JavaMailSenderImpl sender = new JavaMailSenderImpl();
@@ -219,4 +257,5 @@ public class MailService {
 
         sendEmail(user, subject, text);
     }
+
 }

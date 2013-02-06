@@ -130,6 +130,8 @@ public class AccountController {
             }
             currentUser.setTheme((String) newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
+            currentUser.setDailyDigestSubscription((Boolean) newPreferences.getDailyDigest());
+            currentUser.setWeeklyDigestSubscription((Boolean) newPreferences.getWeeklyDigest());
 
             String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
             currentUser.setRssUid(rssUid);

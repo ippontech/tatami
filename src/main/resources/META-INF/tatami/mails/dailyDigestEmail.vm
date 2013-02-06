@@ -1,0 +1,49 @@
+#parse("common.vm")
+#msg("dailyDigest.greeting") ${user.Login},
+
+#if ($statuses.size() == 1)
+#msg("dailyDigest.textOneMessages1")
+
+
+   #msg("dailyDigest.from") @$statuses[0].Username
+   $statuses[0].Content
+#elseif ($statuses.size() > 1)
+#if (${nbStatus} >10 )
+#msg("dailyDigest.textSeveralMessagesSelection1") ${nbStatus} #msg("dailyDigest.textSeveralMessagesSelection2")
+#else
+#msg("dailyDigest.textSeveralMessages1") ${nbStatus} #msg("dailyDigest.textSeveralMessages2")
+#end
+
+#foreach( $status in $statuses )
+ * #msg("dailyDigest.from") @$status.Username
+   $status.Content
+
+#end
+#msg("dailyDigest.textSeveralMessages3")
+
+#else
+#msg("dailyDigest.textNoMessage")
+#end
+
+#if ($suggestedUsers.size()== 1)
+    #msg("dailyDigest.oneSuggestedUsers1")
+
+#elseif ($suggestedUsers.size() > 1)
+#msg("dailyDigest.suggestedUsers1")
+
+#foreach( $suggestedUser in $suggestedUsers )
+ * $suggestedUser.Username
+#end
+#else
+#msg("dailyDigest.noSuggestedUsers")
+#end
+
+
+#msg("dailyDigest.urlText")
+
+$tatamiUrl
+
+#msg("dailyDigest.endText1")
+
+
+#msg("email.signature")
