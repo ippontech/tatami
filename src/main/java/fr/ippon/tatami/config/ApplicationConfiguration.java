@@ -11,7 +11,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 
 @Configuration
-@PropertySource({"classpath:/META-INF/tatami/tatami.properties"})
+@PropertySource({"classpath:/META-INF/tatami/tatami.properties",
+        "classpath:/META-INF/tatami/customization.properties"})
 @ComponentScan(basePackages = {
         "fr.ippon.tatami.repository",
         "fr.ippon.tatami.service",

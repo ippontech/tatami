@@ -38,7 +38,8 @@ import java.util.List;
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
-@PropertySource({"classpath:/META-INF/tatami/tatami.properties"})
+@PropertySource({"classpath:/META-INF/tatami/tatami.properties",
+        "classpath:/META-INF/tatami/customization.properties"})
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     private final Log log = LogFactory.getLog(DispatcherServletConfig.class);
