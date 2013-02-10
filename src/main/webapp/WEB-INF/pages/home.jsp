@@ -78,6 +78,8 @@
 
     <jsp:include page="includes/templates-home.jsp"/>
     <jsp:include page="includes/footer.jsp"/>
+<!-- Help tour -->
+    <jsp:include page="includes/help-home.jsp"/>
 
     <script type="text/javascript">
         var login = "<sec:authentication property="principal.username"/>";
