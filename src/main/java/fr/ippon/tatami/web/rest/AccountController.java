@@ -176,9 +176,6 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public void isPasswordManagedByLDAP(HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's password");
-        }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
