@@ -26,8 +26,3 @@
     <script src="/tatami/static-wro4j/${version}/all.js"></script>
 </c:if>
 
-<sec:authorize access="isAuthenticated()">
-    <script>
-        var isNew = ${user.isNew}; 
-    </script>
-</sec:authorize>
