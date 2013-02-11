@@ -51,7 +51,7 @@
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
                 <tatami.connection.security>any</tatami.connection.security>
                 <tatami.search.engine>lucene</tatami.search.engine>
