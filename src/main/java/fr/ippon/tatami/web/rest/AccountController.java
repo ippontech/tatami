@@ -72,7 +72,7 @@ public class AccountController {
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
         if (log.isDebugEnabled()) {
@@ -159,11 +159,10 @@ public class AccountController {
             }
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             String themes = env.getProperty("tatami.authorized.theme");
             preferences.setThemesList(themes);
-
             return preferences;
         }
     }
@@ -181,17 +180,11 @@ public class AccountController {
             this.log.debug("REST request to get account's password");
         }
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
-
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-
         String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
-
         if (domain.equalsIgnoreCase(domainHandledByLdap)) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
-
-        return;
     }
 
     /**
@@ -205,7 +198,6 @@ public class AccountController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to set account's password");
         }
-        HashMap<String, Object> preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -230,7 +222,7 @@ public class AccountController {
             }
             return null;
         } catch (Exception e) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return e.getMessage();
         }
     }
@@ -244,11 +236,7 @@ public class AccountController {
     @ResponseBody
     public void finish() {
         User currentUser = authenticationService.getCurrentUser();
-
         currentUser.setIsNew(!currentUser.getIsNew());
-
         userService.updateUser(currentUser);
-
-        return;
     }
 }
