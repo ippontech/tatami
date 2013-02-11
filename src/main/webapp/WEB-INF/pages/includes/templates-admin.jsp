@@ -588,7 +588,6 @@
 <script type="text/template" id="files-header">
 <thead>
     <tr>
-     <th><fmt:message key="tatami.user.file.preview"/></th>
      <th><fmt:message key="tatami.user.file.name"/></th>
      <th><fmt:message key="tatami.user.file.size"/></th>
      <th><fmt:message key="tatami.user.file.creation.date"/></th>
@@ -598,7 +597,6 @@
 </script>
 
 <script type="text/template" id="files-item">
-    <td>#</td>
     <td><@= filename @></td>
     <td><@= (size/1000) @> kb</td>
     <td><@= prettyPrintCreationDate @> </td>
