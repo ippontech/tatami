@@ -207,6 +207,8 @@ public class UserService {
         user.setJobTitle("");
         user.setPhoneNumber("");
         user.setIsNew(true);
+        user.setPreferencesMentionEmail(true);
+        user.setWeeklyDigestSubscription(true);
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
