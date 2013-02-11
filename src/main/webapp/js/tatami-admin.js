@@ -162,6 +162,7 @@ app.View.Preferences = Backbone.View.extend({
         var form = $(e.target);
 
         this.model.set('theme', form.find('[name="theme"]').val());
+        this.model.set('themesList', '');
         this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
         this.model.set('dailyDigest', form.find('[name="dailyDigest"]')[0].checked);
         this.model.set('weeklyDigest', form.find('[name="weeklyDigest"]')[0].checked);
