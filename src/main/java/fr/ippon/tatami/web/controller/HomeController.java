@@ -73,6 +73,9 @@ public class HomeController {
         if (user == null) {
             return "redirect:/tatami/login?action=lostPasswordFailure";
         }
+        if (userService.isDomainHandledByLDAP(user.getDomain())) {
+            return "redirect:/tatami/login?action=ldapPasswordFailure";
+        }
         userService.lostPassword(user);
         return "redirect:/tatami/login?action=lostPassword";
     }

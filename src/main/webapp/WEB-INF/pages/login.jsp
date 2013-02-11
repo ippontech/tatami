@@ -12,31 +12,6 @@
 <jsp:include page="includes/topmenu.jsp"/>
 
 <div id="mainPanel" class="container">
-    <c:if test="${action eq 'register'}">
-        <div class="alert alert-info">
-            <fmt:message key="tatami.register.msg"/>
-        </div>
-    </c:if>
-    <c:if test="${action eq 'registerFailure'}">
-        <div class="alert alert-error">
-            <fmt:message key="tatami.register.msg.error"/>
-        </div>
-    </c:if>
-    <c:if test="${action eq 'loginFailure'}">
-        <div class="alert alert-error">
-            <fmt:message key="tatami.authentification.error"/>
-        </div>
-    </c:if>
-    <c:if test="${action eq 'lostPassword'}">
-        <div class="alert alert-info">
-            <fmt:message key="tatami.lost.password.msg"/>
-        </div>
-    </c:if>
-    <c:if test="${action eq 'lostPasswordFailure'}">
-        <div class="alert alert-error">
-            <fmt:message key="tatami.lost.password.msg.error"/>
-        </div>
-    </c:if>
 
     <div class="row">
         <div class="hero-unit">
@@ -46,6 +21,38 @@
             </p>
         </div>
     </div>
+
+    <c:if test="${action eq 'register'}">
+    <div class="alert alert-info">
+        <fmt:message key="tatami.register.msg"/>
+    </div>
+    </c:if>
+    <c:if test="${action eq 'registerFailure'}">
+    <div class="alert alert-error">
+        <fmt:message key="tatami.register.msg.error"/>
+    </div>
+    </c:if>
+    <c:if test="${action eq 'loginFailure'}">
+    <div class="alert alert-error">
+        <fmt:message key="tatami.authentification.error"/>
+    </div>
+    </c:if>
+    <c:if test="${action eq 'lostPassword'}">
+    <div class="alert alert-info">
+        <fmt:message key="tatami.lost.password.msg"/>
+    </div>
+    </c:if>
+    <c:if test="${action eq 'lostPasswordFailure'}">
+    <div class="alert alert-error">
+        <fmt:message key="tatami.lost.password.msg.error"/>
+    </div>
+    </c:if>
+    <c:if test="${action eq 'ldapPasswordFailure'}">
+    <div class="alert alert-error">
+        <fmt:message key="tatami.ldap.password.msg.error"/>
+    </div>
+    </c:if>
+
     <div class="row">
         <div class="span4">
             <div class="row-fluid">
