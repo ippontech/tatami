@@ -7,7 +7,6 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -19,12 +18,11 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-
 import java.util.*;
 
 /**
  * Send e-mails.
- *
+ * <p/>
  * Templates are implemented with velocity.
  * Emails localisation is based on system locale, this could be improved by storing a preferred locale
  * for each user.
@@ -84,7 +82,7 @@ public class MailService {
         String registrationUrl = tatamiUrl + "/tatami/register?key=" + registrationKey;
         if (log.isDebugEnabled()) {
             log.debug("Sending registration e-mail to User '" + user.getLogin() +
-                    "', Url='" + registrationUrl + "' with locale : '"+ locale+"'");
+                    "', Url='" + registrationUrl + "' with locale : '" + locale + "'");
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -115,7 +113,7 @@ public class MailService {
         String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
         if (log.isDebugEnabled()) {
             log.debug("Sending lost password e-mail to User '" + user.getLogin() +
-                    "', Url='" + url  + "' with locale : '"+ locale+"'");
+                    "', Url='" + url + "' with locale : '" + locale + "'");
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -129,7 +127,7 @@ public class MailService {
     public void sendValidationEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending validation e-mail to User '" + user.getLogin() +
-                    "', non-encrypted Password='" + password + "' with locale : '"+ locale+"'");
+                    "', non-encrypted Password='" + password + "' with locale : '" + locale + "'");
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -143,28 +141,28 @@ public class MailService {
     public void sendPasswordReinitializedEmail(User user, String password) {
         if (log.isDebugEnabled()) {
             log.debug("Sending password re-initialization e-mail to User '" + user.getLogin() +
-                    "', non-encrypted Password='" + password  + "' with locale : '"+ locale+"'");
+                    "', non-encrypted Password='" + password + "' with locale : '" + locale + "'");
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
         model.put("password", password);
 
-       sendTextFromTemplate(user.getLogin(), model, "passwordReinitialized", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "passwordReinitialized", this.locale);
     }
 
     @Async
     public void sendUserPrivateMessageEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
             log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() +
-                    "' with locale : '"+ locale+"'");
+                    "' with locale : '" + locale + "'");
         }
         String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);
         model.put("status", status);
-        model.put("statusUrl" , url);
+        model.put("statusUrl", url);
 
         sendTextFromTemplate(mentionnedUser.getLogin(), model, "userPrivateMessage", this.locale);
     }
@@ -172,22 +170,22 @@ public class MailService {
     @Async
     public void sendUserMentionEmail(Status status, User mentionnedUser) {
         if (log.isDebugEnabled()) {
-            log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin()  +
-                    "' with locale : '"+ locale+"'");
+            log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() +
+                    "' with locale : '" + locale + "'");
         }
         String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);
         model.put("status", status);
-        model.put("statusUrl" , url);
+        model.put("statusUrl", url);
 
-        sendTextFromTemplate( mentionnedUser.getLogin(), model, "userMention", this.locale);
+        sendTextFromTemplate(mentionnedUser.getLogin(), model, "userMention", this.locale);
     }
 
     @Async
-    public void sendDailyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
-                                     Collection<User> suggestedUsers ) {
+    public void sendDailyDigestEmail(User user, List<StatusDTO> statuses, int nbStatus,
+                                     Collection<User> suggestedUsers) {
         if (log.isDebugEnabled()) {
             log.debug("Sending daily digest e-mail to User '" + user.getLogin() + "'");
         }
@@ -199,14 +197,14 @@ public class MailService {
         model.put("nbStatus", nbStatus);
         model.put("suggestedUsers", suggestedUsers);
 
-        sendTextFromTemplate( user.getLogin(), model, "dailyDigest", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "dailyDigest", this.locale);
     }
 
 
     @Async
-    public void sendWeeklyDigestEmail(User user,  List<StatusDTO> statuses, int nbStatus,
-                                     Collection<User> suggestedUsers,
-                                     Collection<Group>  suggestedGroup) {
+    public void sendWeeklyDigestEmail(User user, List<StatusDTO> statuses, int nbStatus,
+                                      Collection<User> suggestedUsers,
+                                      Collection<Group> suggestedGroup) {
         if (log.isDebugEnabled()) {
             log.debug("Sending weekly digest e-mail to User '" + user.getLogin() + "'");
         }
@@ -219,7 +217,7 @@ public class MailService {
         model.put("suggestedUsers", suggestedUsers);
         model.put("suggestedGroups", suggestedGroup);
 
-        sendTextFromTemplate( user.getLogin(), model, "weeklyDigest", this.locale);
+        sendTextFromTemplate(user.getLogin(), model, "weeklyDigest", this.locale);
     }
 
     private void sendEmail(String email, String subject, String text) {
@@ -263,8 +261,8 @@ public class MailService {
         model.put("messages", mailMessageSource);
         model.put("locale", locale);
 
-        String subject =  mailMessageSource.getMessage(template+".title", null, locale);
-        String text =VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateRoot+ template+ templateSuffix,
+        String subject = mailMessageSource.getMessage(template + ".title", null, locale);
+        String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateRoot + template + templateSuffix,
                 "utf-8", model);
         if (log.isDebugEnabled()) {
             log.debug("e-mail text  '" + text);

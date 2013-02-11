@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 /**
  * @author Julien Dubois
@@ -80,7 +78,6 @@ public class HomeController {
     }
 
 
-
     @RequestMapping(value = "/tos", method = RequestMethod.GET)
     public String termsOfService() {
         return "terms_of_service";
@@ -89,7 +86,7 @@ public class HomeController {
     /**
      * This maps any GET request to /tatami/[subpath]
      * to the jsp named [subpath].jsp.
-     *
+     * <p/>
      * It allows adding easily new pages with tatamiCustomization
      *
      * @param subPath

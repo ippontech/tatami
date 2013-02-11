@@ -5,12 +5,10 @@ import fr.ippon.tatami.domain.DigestType;
 import org.junit.Test;
 
 import javax.inject.Inject;
-
 import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -72,7 +70,7 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
 
         List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.WEEKLY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
-        assertTrue(! logins.contains(login));
+        assertTrue(!logins.contains(login));
 
     }
 
@@ -88,7 +86,7 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
 
         List<String> logins = mailDigestRepository.getLoginsRegisteredToDigest(DigestType.DAILY_DIGEST, domain, day, 0);
         assertThat(logins, notNullValue());
-        assertTrue(! logins.contains(login));
+        assertTrue(!logins.contains(login));
 
     }
 

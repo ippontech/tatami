@@ -19,7 +19,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-
 import java.util.Date;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.ATTACHMENT_CF;

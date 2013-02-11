@@ -7,7 +7,6 @@ import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -59,7 +58,6 @@ public class AccountPasswordController {
         mv.addObject("success", success);
         return mv;
     }
-
 
 
     @RequestMapping(value = "/account/password",

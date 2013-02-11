@@ -7,7 +7,6 @@ import org.junit.Test;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.notNullValue;
