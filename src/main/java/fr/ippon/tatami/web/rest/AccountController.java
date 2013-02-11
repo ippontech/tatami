@@ -140,6 +140,8 @@ public class AccountController {
             preferences = new Preferences(currentUser);
 
             userService.updateUser(currentUser);
+            userService.updateDailyDigestRegistration(newPreferences.getDailyDigest());
+            userService.updateWeeklyDigestRegistration(newPreferences.getWeeklyDigest());
 
             userService.updateThemePreferences(newPreferences.getTheme());
             TatamiUserDetails userDetails =
