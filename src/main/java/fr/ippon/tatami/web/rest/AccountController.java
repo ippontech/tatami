@@ -169,13 +169,13 @@ public class AccountController {
 
 
     /**
-     * GET  /account/password
+     * GET  /account/password -> throws an error if the password is managed by LDAP
      */
     @RequestMapping(value = "/rest/account/password",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public void getPreferences(HttpServletResponse response) {
+    public void isPasswordManagedByLDAP(HttpServletResponse response) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get account's password");
         }
