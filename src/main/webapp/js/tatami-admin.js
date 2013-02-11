@@ -149,6 +149,7 @@ app.View.Preferences = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
+        this.model.attributes.themesList = (this.model.attributes.themesList== undefined) ? [] : this.model.attributes.themesList;
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
