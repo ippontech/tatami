@@ -14,6 +14,7 @@
 
     <global-method-security pre-post-annotations="enabled"/>
 
+    <http pattern="/tatami/static-wro4j/**" security="none"/>
     <http pattern="/tatami/static/**" security="none"/>
     <http pattern="/tatami/login*" security="none"/>
     <http pattern="/tatami/syndic/**" security="none"/>
