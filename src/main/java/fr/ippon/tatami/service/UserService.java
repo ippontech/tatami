@@ -11,6 +11,7 @@ import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,9 @@ public class UserService {
 
     @Inject
     private MailDigestRepository mailDigestRepository;
+
+    @Inject
+    Environment env;
 
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
@@ -410,5 +414,13 @@ public class UserService {
             }
         }
         return rssUid;
+    }
+
+    /**
+     * Is the domain managed by a LDAP repository?
+     */
+    public boolean isDomainHandledByLDAP(String domain) {
+        String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
+        return domain.equalsIgnoreCase(domainHandledByLdap);
     }
 }

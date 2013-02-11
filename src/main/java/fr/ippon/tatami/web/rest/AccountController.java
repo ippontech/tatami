@@ -178,8 +178,7 @@ public class AccountController {
     public void isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
-        if (domain.equalsIgnoreCase(domainHandledByLdap)) {
+        if (userService.isDomainHandledByLDAP(domain)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
     }
