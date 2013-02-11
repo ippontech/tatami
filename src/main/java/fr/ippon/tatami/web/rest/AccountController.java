@@ -236,7 +236,7 @@ public class AccountController {
     @ResponseBody
     public void finish() {
         User currentUser = authenticationService.getCurrentUser();
-        currentUser.setIsNew(!currentUser.getIsNew());
+        currentUser.setIsNew(false);
         userService.updateUser(currentUser);
     }
 }
