@@ -395,10 +395,18 @@ app.Collection.TabTag = Backbone.Collection.extend({
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(tags){
+            return tags.filter(function(tag){
+                return !(tag.followed);
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(tags){
+            return tags;
+        };
         this.fetch();
     }
 });
