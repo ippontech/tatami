@@ -267,14 +267,16 @@ app.View.ProfileView = Backbone.View.extend({
     });
 
     app.trigger('refreshProfile');
+
+    this.render();
   },
 
   render: function() {
     $(this.el).empty();
 
-    $(this.el).append(this.views.info.render());
-    $(this.el).append(this.views.stats.render());
-    $(this.el).append(this.views.update.render());
+    $(this.el).append(this.views.info.$el);
+    $(this.el).append(this.views.stats.$el);
+    $(this.el).append(this.views.update.$el);
 
     return $(this.el);
   }
@@ -382,12 +384,13 @@ app.View.FollowView = Backbone.View.extend({
     initialize: function() {
         this.views = {};
         this.views.suggest = new app.View.SuggestView();
+        this.render();
     },
 
     render: function() {
         $(this.el).empty();
         $(this.el).append(this.template());
-        $(this.el).find('#follow-suggest').append(this.views.suggest.render());
+        $(this.el).find('#follow-suggest').append(this.views.suggest.$el);
 
         return $(this.el);
     }
@@ -779,8 +782,8 @@ app.View.GroupsListView = Backbone.View.extend({
 
     initialize: function(){
         this.groupsCollection = new app.Collection.GroupsCollection();
-        this.groupsCollection.fetch();
         this.groupsCollection.bind("reset", this.render, this);
+        this.groupsCollection.fetch();
 
         var self = this;
     },
@@ -991,7 +994,7 @@ app.View.TagsSearchView = Backbone.View.extend({
     
     if(this.model.fetch().length > 0)
     {
-      $(this.el).append(trends.render());
+      $(this.el).append(trends.$el);
     }
 
     return $(this.el);
@@ -1249,15 +1252,15 @@ app.Router.HomeRouter = Backbone.Router.extend({
       var profile = app.views.profile = new app.View.ProfileView({
           model:new app.Model.ProfileModel()
       });
-      $('#profileContent').html(profile.render());
+      $('#profileContent').html(profile.$el);
       var groupList = new app.View.GroupsListView();
-      $('#userGroups').html(groupList.render());
+      $('#userGroups').html(groupList.$el);
 
       var follow = app.views.follow = new app.View.FollowView();
-      $('#profileFollow').html(follow.render());
+      $('#profileFollow').html(follow.$el);
 
       var trends = new app.View.TrendsView();
-      $('#trends').html(trends.render());
+      $('#trends').html(trends.$el);
   },
 
   selectMenu: function(menu) {
