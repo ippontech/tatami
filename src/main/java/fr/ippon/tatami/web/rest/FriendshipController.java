@@ -88,8 +88,14 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<User> getFriends(@RequestParam("screen_name") String username) {
-        return friendshipService.getFriendsForUser(username);
+    public Collection<User> getFriends(@RequestParam("screen_name") String username,
+                                       @RequestParam(required = false) Integer pagination) {
+
+        if (pagination == null) {
+            pagination = 0;
+        }
+
+        return friendshipService.getFriendsForUserWithPagination(username, pagination);
     }
 
     /**
