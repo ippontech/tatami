@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
 
 /**
  * REST controller for managing users.
@@ -72,7 +71,7 @@ public class AccountController {
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
         if (log.isDebugEnabled()) {
@@ -141,6 +140,8 @@ public class AccountController {
             preferences = new Preferences(currentUser);
 
             userService.updateUser(currentUser);
+            userService.updateDailyDigestRegistration(newPreferences.getDailyDigest());
+            userService.updateWeeklyDigestRegistration(newPreferences.getWeeklyDigest());
 
             userService.updateThemePreferences(newPreferences.getTheme());
             TatamiUserDetails userDetails =
@@ -159,39 +160,28 @@ public class AccountController {
             }
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             String themes = env.getProperty("tatami.authorized.theme");
             preferences.setThemesList(themes);
-
             return preferences;
         }
     }
 
 
     /**
-     * GET  /account/password
+     * GET  /account/password -> throws an error if the password is managed by LDAP
      */
     @RequestMapping(value = "/rest/account/password",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public void getPreferences(HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's password");
-        }
+    public void isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
-
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-
-        String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
-
-        if (domain.equalsIgnoreCase(domainHandledByLdap)) {
-            response.setStatus(500);
+        if (userService.isDomainHandledByLDAP(domain)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
-
-        return;
     }
 
     /**
@@ -205,7 +195,6 @@ public class AccountController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to set account's password");
         }
-        HashMap<String, Object> preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -230,7 +219,7 @@ public class AccountController {
             }
             return null;
         } catch (Exception e) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return e.getMessage();
         }
     }
@@ -244,11 +233,7 @@ public class AccountController {
     @ResponseBody
     public void finish() {
         User currentUser = authenticationService.getCurrentUser();
-
-        currentUser.setIsNew(!currentUser.getIsNew());
-
+        currentUser.setIsNew(false);
         userService.updateUser(currentUser);
-
-        return;
     }
 }

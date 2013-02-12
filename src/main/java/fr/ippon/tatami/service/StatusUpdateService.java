@@ -109,7 +109,7 @@ public class StatusUpdateService {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
 
             if (group.isArchivedGroup()) {
-               throw new ArchivedGroupException();
+                throw new ArchivedGroupException();
             }
         }
         if (!originalStatus.getReplyTo().equals("")) {

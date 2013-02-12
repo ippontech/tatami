@@ -88,8 +88,14 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<User> getFriends(@RequestParam("screen_name") String username) {
-        return friendshipService.getFriendsForUser(username);
+    public Collection<User> getFriends(@RequestParam("screen_name") String username,
+                                       @RequestParam(required = false) Integer pagination) {
+
+        if (pagination == null) {
+            pagination = 0;
+        }
+
+        return friendshipService.getFriendsForUserWithPagination(username, pagination);
     }
 
     /**
@@ -111,37 +117,33 @@ public class FriendshipController {
             consumes = "application/json")
     @ResponseBody
     public void followUserByEmailAndUsername(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
-        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())){
+        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
             if (log.isDebugEnabled()) {
                 log.debug("REST request to follow username : " + emailAndUsername.getUsername());
             }
             friendshipService.followUser(emailAndUsername.getUsername());
-        }
-        else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())){
+        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())) {
             if (log.isDebugEnabled()) {
                 log.debug("REST request to follow email : " + emailAndUsername.getEmail());
             }
             User user = userService.getUserByLogin(emailAndUsername.getEmail());
-            if (user != null){
-                try{
+            if (user != null) {
+                try {
                     friendshipService.followUser(user.getUsername());
-                } catch (Exception e ){
+                } catch (Exception e) {
 
                 }
-            }
-            else {
+            } else {
                 User currentUser = authenticationService.getCurrentUser();
                 if (DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
                     mailService.sendInvitationEmail(emailAndUsername.getEmail(), currentUser);
-                }
-                else {
+                } else {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
 
             }
-        }
-        else {
+        } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -156,31 +158,28 @@ public class FriendshipController {
     @ResponseBody
     public void checkFriend(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
         User user;
-        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())){
+        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
             if (log.isDebugEnabled()) {
                 log.debug("REST request to check username : " + emailAndUsername.getUsername());
             }
             user = userService.getUserByUsername(emailAndUsername.getUsername());
-        }
-        else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())){
+        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())) {
             if (log.isDebugEnabled()) {
                 log.debug("REST request to check email : " + emailAndUsername.getEmail());
             }
             user = userService.getUserByLogin(emailAndUsername.getEmail());
-        }
-        else {
+        } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         User currentUser = authenticationService.getCurrentUser();
-        if(user != null && !user.getDomain().equalsIgnoreCase(currentUser.getDomain())
+        if (user != null && !user.getDomain().equalsIgnoreCase(currentUser.getDomain())
                 || user == null && !DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         return;
     }
-
 
 
 }

@@ -12,7 +12,7 @@ public class Preferences {
 
     private Boolean weeklyDigest = false;
 
-    private Boolean dailyDigest  = false;
+    private Boolean dailyDigest = false;
 
     String theme = "";
 
@@ -20,8 +20,8 @@ public class Preferences {
 
     private String rssUid;
 
-    private String[] themes = {"bootstrap","cerulean","cosmo","journal","readable","simplex","spacelab",
-            "spruce","superhero","united"};
+    private String[] themes = {"bootstrap", "cerulean", "cosmo", "journal", "readable", "simplex", "spacelab",
+            "spruce", "superhero", "united"};
 
     public Preferences() {
 

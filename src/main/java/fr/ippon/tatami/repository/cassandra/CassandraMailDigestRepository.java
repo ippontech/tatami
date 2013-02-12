@@ -22,12 +22,12 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
 /**
  * MailDigestRepository implementation for cassandra
- *
+ * <p/>
  * Structure :
  * - Key = digestType_[day]_domain
  * - Name = login
  * - Value = time
- *
+ * <p/>
  * Note : in the key, the [day] part is only used for weekly digest and
  * represents the day the user subscribed to the digest.
  *
@@ -46,7 +46,7 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
         Calendar cal = Calendar.getInstance();
 
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert( buildKey(digestType, domain, day), MAILDIGEST_CF,
+        mutator.insert(buildKey(digestType, domain, day), MAILDIGEST_CF,
                 HFactory.createColumn(login, cal.getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
@@ -87,7 +87,6 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
     }
 
     /**
-     *
      * @param digestType
      * @param domain
      * @param day
@@ -95,7 +94,7 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
      */
     private String buildKey(DigestType digestType, String domain, String day) {
         String key;
-        if (DigestType.WEEKLY_DIGEST == digestType ) {
+        if (DigestType.WEEKLY_DIGEST == digestType) {
             key = digestType.toString() + "_" + day + "_" + domain;
         } else {
             key = digestType + "_" + domain;

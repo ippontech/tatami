@@ -1,6 +1,5 @@
 package fr.ippon.tatami.config;
 
-import fr.ippon.tatami.service.MailService;
 import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,7 +7,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
@@ -37,14 +35,14 @@ public class MailConfiguration {
         Properties props = new Properties();
 
         props.put("resource.loader", "class");
-        props.put("class.resource.loader.class","org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+        props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 
         // necessary to get logs on templates's error
-        props.put("runtime.log.logsystem.class","org.apache.velocity.runtime.log.Log4JLogChute");
+        props.put("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.Log4JLogChute");
         props.put("runtime.log.error.stacktrace", "true");
-        props.put("runtime.log.warn.stacktrace","true");
-        props.put("runtime.log.info.stacktrace","true");
-        props.put("runtime.log.invalid.reference","true");
+        props.put("runtime.log.warn.stacktrace", "true");
+        props.put("runtime.log.info.stacktrace", "true");
+        props.put("runtime.log.invalid.reference", "true");
         // TODO : FileResourceLoader could be used to externalize templates
 
         // enable relative includes

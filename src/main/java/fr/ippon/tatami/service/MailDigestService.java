@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import java.util.*;
 
 /**
- *
  * This service generates digest emails for subscribed users.
  *
  * @author Pierre Rust
@@ -51,74 +50,72 @@ public class MailDigestService {
 
     /**
      * Sends daily digest. Must be run every day
-     *
      */
-    @Scheduled(cron="0 0 22 * * ?")
+    @Scheduled(cron = "0 0 22 * * ?")
     public void dailyDigest() {
         log.info("Starting Daily digest mail process ");
-        Set<Domain> domains =  domainRepository.getAllDomains();
+        Set<Domain> domains = domainRepository.getAllDomains();
 
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         for (Domain d : domains) {
             log.info("Sending daily digest for domain " + d +
-                    " and day "+ day );
+                    " and day " + day);
 
 
             int pagination = 0;
             List<String> logins;
             do {
                 logins = mailDigestRepository.getLoginsRegisteredToDigest(
-                    DigestType.DAILY_DIGEST, d.getName(), day,  pagination);
+                        DigestType.DAILY_DIGEST, d.getName(), day, pagination);
                 pagination = pagination + logins.size();
 
-                for (String login : logins ) {
+                for (String login : logins) {
                     handleDailyDigestPageForLogin(login);
                 }
-            } while (logins.size() >0 );
+            } while (logins.size() > 0);
         }
     }
 
 
     /**
      * Sends weekly digest.
-     *
+     * <p/>
      * Will run every mondayday and send mails to all registered users
-     *
+     * <p/>
      * If this is too many mails, this method could be tuned to
      * distribute the load on every day of the week by only sending
      * mails to users who have subscribed that same day.
-     *
      */
-    @Scheduled(cron="0 0 01 ? * MON")
+    @Scheduled(cron = "0 0 01 ? * MON")
     public void weeklyDigest() {
         log.info("Starting Weekly digest mail process ");
 
-        Set<Domain> domains =  domainRepository.getAllDomains();
+        Set<Domain> domains = domainRepository.getAllDomains();
 
         // sent digest for all domains
         // for users that have register any day of the week
-        for (int i=1 ; i<8 ; ++i ) {
+        for (int i = 1; i < 8; ++i) {
             String day = String.valueOf(i);
 
             for (Domain d : domains) {
 
                 log.info("Sending weekly digest for domain " + d +
-                        " and day "+ i );
+                        " and day " + i);
 
                 int pagination = 0;
                 List<String> logins;
                 do {
                     logins = mailDigestRepository.getLoginsRegisteredToDigest(
                             DigestType.WEEKLY_DIGEST, d.getName(),
-                            day,  pagination);
+                            day, pagination);
                     pagination = pagination + logins.size();
 
-                    for (String login : logins ) {
+                    for (String login : logins) {
                         handleWeeklyDigestPageForLogin(login);
                     }
 
-                } while (logins.size() >0 );
+                } while (logins.size() > 0);
             }
         }
     }
@@ -143,7 +140,7 @@ public class MailDigestService {
         List<StatusDTO> digestStatuses = new ArrayList<StatusDTO>(MAX_STATUS_DAILY_DIGEST);
         int nbStatusTotal = getStatusesForDigest(user, yesterday, MAX_STATUS_DAILY_DIGEST, digestStatuses);
 
-        Collection<User>  suggestedUsers = suggestionService.suggestUsers(user.getLogin());
+        Collection<User> suggestedUsers = suggestionService.suggestUsers(user.getLogin());
 
         // TODO : we could look for popular messages
         // especially if the user
@@ -173,8 +170,8 @@ public class MailDigestService {
         int nbStatusTotal = getStatusesForDigest(user, lastWeek, MAX_STATUS_WEEKLY_DIGEST, digestStatuses);
 
 
-        Collection<User>  suggestedUsers = suggestionService.suggestUsers(user.getLogin());
-        Collection<Group>  suggestedGroups = suggestionService.suggestGroups(user.getLogin());
+        Collection<User> suggestedUsers = suggestionService.suggestUsers(user.getLogin());
+        Collection<Group> suggestedGroups = suggestionService.suggestGroups(user.getLogin());
 
         mailService.sendWeeklyDigestEmail(user, digestStatuses, nbStatusTotal,
                 suggestedUsers, suggestedGroups);
@@ -184,15 +181,14 @@ public class MailDigestService {
      * Build a list containing an extract of the status from an user timeline,
      * except it's own, since a given date.
      *
-     *
      * @param user
-     * @param since_date date since
-     * @param nbStatus number of status to include in the extract
+     * @param since_date     date since
+     * @param nbStatus       number of status to include in the extract
      * @param digestStatuses selected status will be added to this list (ordered by date)
      * @return
      */
-    private int getStatusesForDigest( final User user, final Date since_date,
-                                      int nbStatus, List<StatusDTO> digestStatuses) {
+    private int getStatusesForDigest(final User user, final Date since_date,
+                                     int nbStatus, List<StatusDTO> digestStatuses) {
         String max_id = null;
         boolean dateReached = false;
         List<StatusDTO> allStatuses = new ArrayList<StatusDTO>(50);
@@ -206,16 +202,15 @@ public class MailDigestService {
                 dateReached = true;
             }
 
-            for (StatusDTO status : statuses )  {
+            for (StatusDTO status : statuses) {
 
                 if (status.getStatusDate().before(since_date)) {
                     dateReached = true;
                     break;
-                }   else {
+                } else {
                     // Do not includes user's own status in digest
-                    if ( ! status.getUsername().equals(user.getUsername()))
-                    {
-                        allStatuses.add( status);
+                    if (!status.getUsername().equals(user.getUsername())) {
+                        allStatuses.add(status);
                     }
                 }
                 count++;
@@ -223,13 +218,13 @@ public class MailDigestService {
                     max_id = status.getStatusId();
                 }
             }
-        } while (! dateReached);
+        } while (!dateReached);
 
         int nbStatusTotal = allStatuses.size();
-        if (nbStatusTotal > 0 ) {
+        if (nbStatusTotal > 0) {
 
             // now select some of theses statuses
-            if (allStatuses.size()> nbStatus) {
+            if (allStatuses.size() > nbStatus) {
                 Collections.shuffle(allStatuses);
                 digestStatuses.addAll(allStatuses.subList(0, nbStatus));
                 Collections.sort(digestStatuses, new Comparator<StatusDTO>() {
@@ -238,7 +233,7 @@ public class MailDigestService {
                         return statusDTO.getStatusDate().compareTo(statusDTO2.getStatusDate());
                     }
                 });
-            } else  {
+            } else {
                 digestStatuses.addAll(allStatuses);
             }
         }

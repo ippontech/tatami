@@ -68,7 +68,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(GROUP_DETAILS_CF)
                 .setKey(groupId)
-                .setRange(null, null, false, 3)
+                .setRange(null, null, false, 4)
                 .execute()
                 .get();
 

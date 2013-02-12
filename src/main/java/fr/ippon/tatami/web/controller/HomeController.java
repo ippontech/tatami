@@ -73,10 +73,12 @@ public class HomeController {
         if (user == null) {
             return "redirect:/tatami/login?action=lostPasswordFailure";
         }
+        if (userService.isDomainHandledByLDAP(user.getDomain())) {
+            return "redirect:/tatami/login?action=ldapPasswordFailure";
+        }
         userService.lostPassword(user);
         return "redirect:/tatami/login?action=lostPassword";
     }
-
 
 
     @RequestMapping(value = "/tos", method = RequestMethod.GET)
@@ -87,7 +89,7 @@ public class HomeController {
     /**
      * This maps any GET request to /tatami/[subpath]
      * to the jsp named [subpath].jsp.
-     *
+     * <p/>
      * It allows adding easily new pages with tatamiCustomization
      *
      * @param subPath

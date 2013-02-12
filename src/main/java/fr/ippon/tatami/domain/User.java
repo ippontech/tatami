@@ -87,9 +87,8 @@ public class User {
     private long attachmentsSize;
 
     @Column(name = "isNew")
-    @NotNull
     @JsonIgnore
-    private Boolean isNew = true;
+    private Boolean isNew;
 
     private long statusCount;
 
