@@ -786,6 +786,14 @@ app.View.GroupsListView = Backbone.View.extend({
     },
 
     render: function() {
+        var groupUri = window.location.href.split('/').slice(-1);
+        this.groupsCollection.models.forEach(function(m){
+            if(groupUri == m.get('groupId'))
+                m.set('isActive', 'active');
+        });
+
+
+
         $(this.el).html(this.template({
             groupsCollection: this.groupsCollection}));
         return $(this.el);
