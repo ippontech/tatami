@@ -1010,12 +1010,14 @@ app.View.WelcomeTag = Backbone.View.extend({
         .enter().append("text")
           .style("font-size", function(d) { return d.size + "px"; })
           .style("font-family", '"Helvetica Neue", Helvetica, Arial, sans-serif')
+          .style("cursor", "pointer")
           //.style("fill", function(d, i) { return (~~(Math.random()*2)===0)?'#5bb75b':'#f89406';})
           .attr("text-anchor", "middle")
           .attr("transform", function(d) {
             return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
           })
-          .on('dblclick', function(d){ self.followTag(d.text); })
+          .on('click', function(d){ self.followTag(d.text); })
+          .on('click', function(d){ self.followTag(d.text); })
           .text(function(d) { return d.text; });
     }
 
