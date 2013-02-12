@@ -97,6 +97,14 @@
                         <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
+                    <ul class="nav pull-right" style="display: none" id="help-menu">
+                        <li>
+                            <a href="#" id="help-tour">
+                                <i class="icon-question-sign icon-white" ></i> <fmt:message
+                                    key="tatami.help"/>
+                            </a>
+                        </li>
+                    </ul>
                 </sec:authorize>
 
                 <sec:authorize access="!isAuthenticated()">

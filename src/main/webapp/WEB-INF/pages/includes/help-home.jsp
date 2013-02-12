@@ -5,24 +5,16 @@
 <script src="/js/jquery.cookie.js"></script>
 
 <style>
-    #profileHelp {
+
+    #updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
         width : 400px;
-    }
-    #profileHelp {
-        width : 400px;
-    }
-    #updateStatusContentHelp {
-        width : 400px;
-    }
-    #timelineHelp {
-        width: 400px;
     }
 </style>
 <script >
     jQuery(function($) {
         var tour = new Tour({
             labels: {
-                end: 'End tour',
+                end: '<fmt:message key="tatami.help.end"/>',
                 next: '<fmt:message key="tatami.help.next"/>',
                 prev: '<fmt:message key="tatami.help.previous"/>'
             }
@@ -30,7 +22,7 @@
 
         tour.addStep({
             element: "#tab-content",
-            placement: "bottom",
+            placement: "left",
             stepId: "timelineHelp",
             title: "<fmt:message key="tatami.help.home.timeline.title"/>",
             content: "<fmt:message key="tatami.help.home.timeline.content"/>"
@@ -68,8 +60,15 @@
             content: "<fmt:message key="tatami.help.home.profileTrends.content"/>"
         });
 
-    tour.setCurrentStep(0);
-    tour.start(true);
+
+        $("#help-menu").show();
+
+        $("#help-tour").click(function (e) {
+            e.preventDefault();
+            tour.setCurrentStep(0);
+            tour.start(true);
+            $(this).parents(".alert").alert("close");
+        });
     });
 
 </script>
