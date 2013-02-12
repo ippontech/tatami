@@ -226,9 +226,9 @@
     <div class="modal-body">
     </div>
     <div class="modal-footer">
-      <@ if (previous) { @><input type="button" class="btn pull-left" value="<fmt:message key="tatami.form.previous"/>"/><@ } @>
-      <@ if (next) { @><input type="button" class="btn pull-right" value="<fmt:message key="tatami.form.next"/>"/><@ } @>
-      <@ if (finish) { @><input type="button" class="btn pull-right" value="<fmt:message key="tatami.form.finish"/>"/><@ } @>
+      <@ if (previous) { @><input type="button" class="pull-left" value="<fmt:message key="tatami.form.previous"/>"/><@ } @>
+      <@ if (next) { @><input type="button" class="pull-right" value="<fmt:message key="tatami.form.next"/>"/><@ } @>
+      <@ if (finish) { @><input type="button" class="pull-right" value="<fmt:message key="tatami.form.finish"/>"/><@ } @>
     </div>
 </script>
 
