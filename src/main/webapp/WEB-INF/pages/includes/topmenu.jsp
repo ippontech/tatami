@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
             </a>
             <a class="brand" href="/tatami/">
-                <img src="/img/ippon-logo.png" alt="Ippon Technologies Logo" width="22px" height="23px">
+                <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>" width="22px" height="23px">
                 <fmt:message key="tatami.title"/>
             </a>
 

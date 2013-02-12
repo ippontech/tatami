@@ -80,6 +80,7 @@
     <jsp:include page="includes/footer.jsp"/>
 
     <script type="text/javascript">
+        var isNew = ${user.isNew};
         var login = "<sec:authentication property="principal.username"/>";
         var username = "${user.username}";
         var authenticatedUsername = "${authenticatedUsername}";

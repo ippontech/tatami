@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Provide access to digest subscription info.
- *
+ * <p/>
  * Subscription are organized by digest type and domain (in order to allow
  * domain-level configuration).
  *

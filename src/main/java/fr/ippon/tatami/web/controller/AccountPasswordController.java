@@ -7,7 +7,6 @@ import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -35,9 +34,6 @@ public class AccountPasswordController {
     @Inject
     private AuthenticationService authenticationService;
 
-    @Inject
-    Environment env;
-
     @ModelAttribute("user")
     public User initUser() {
         User currentUser = authenticationService.getCurrentUser();
@@ -55,7 +51,7 @@ public class AccountPasswordController {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
 
-        if (isHandledByLDAP(domain)) {
+        if (userService.isDomainHandledByLDAP(domain)) {
             return new ModelAndView("account_password_ldap");
         }
         ModelAndView mv = new ModelAndView("account_password");
@@ -63,10 +59,6 @@ public class AccountPasswordController {
         return mv;
     }
 
-    private boolean isHandledByLDAP(String domain) {
-        String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
-        return domain.equalsIgnoreCase(domainHandledByLdap);
-    }
 
     @RequestMapping(value = "/account/password",
             method = RequestMethod.POST)

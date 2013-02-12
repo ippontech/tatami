@@ -31,6 +31,7 @@ public class SyndicView extends AbstractRssFeedView {
 
 
     private final Log log = LogFactory.getLog(SyndicView.class);
+
     /**
      * @param model
      */
@@ -77,7 +78,7 @@ public class SyndicView extends AbstractRssFeedView {
             PegDownProcessor processor = new PegDownProcessor();
             String htmlText = processor.markdownToHtml(statusText);
             if (log.isDebugEnabled()) {
-                log.debug("feed html content " + htmlText );
+                log.debug("feed html content " + htmlText);
             }
             // url handling  for mention & tags
             htmlText = convertLinks(htmlText);
@@ -104,7 +105,8 @@ public class SyndicView extends AbstractRssFeedView {
 
 
     /**
-     *  convert #tag and @mention to html links
+     * convert #tag and @mention to html links
+     *
      * @param htmlText
      * @return html with converted links
      */

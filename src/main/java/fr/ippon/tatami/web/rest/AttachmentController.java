@@ -1,14 +1,11 @@
 package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.Attachment;
-import fr.ippon.tatami.domain.DomainConfiguration;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.AttachmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.persistence.metamodel.CollectionAttribute;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -69,13 +66,13 @@ public class AttachmentController {
     }
 
     /**
-     *  GET /attachment/quota -> get quota in % for the domain
+     * GET /attachment/quota -> get quota in % for the domain
      */
     @RequestMapping(value = "/rest/attachments/quota",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Long> getDomainQuota(){
+    public Collection<Long> getDomainQuota() {
         return attachmentService.getDomainQuota();
     }
 

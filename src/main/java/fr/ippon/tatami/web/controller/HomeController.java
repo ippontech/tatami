@@ -6,6 +6,7 @@ import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,22 +73,30 @@ public class HomeController {
         if (user == null) {
             return "redirect:/tatami/login?action=lostPasswordFailure";
         }
+        if (userService.isDomainHandledByLDAP(user.getDomain())) {
+            return "redirect:/tatami/login?action=ldapPasswordFailure";
+        }
         userService.lostPassword(user);
         return "redirect:/tatami/login?action=lostPassword";
     }
 
-    @RequestMapping(value = "/presentation", method = RequestMethod.GET)
-    public String presentation() {
-        return "presentation";
-    }
-
-    @RequestMapping(value = "/license", method = RequestMethod.GET)
-    public String license() {
-        return "license";
-    }
 
     @RequestMapping(value = "/tos", method = RequestMethod.GET)
     public String termsOfService() {
         return "terms_of_service";
     }
+
+    /**
+     * This maps any GET request to /tatami/[subpath]
+     * to the jsp named [subpath].jsp.
+     * <p/>
+     * It allows adding easily new pages with tatamiCustomization
+     *
+     * @param subPath
+     */
+    @RequestMapping(value = "/{subPath}", method = RequestMethod.GET)
+    public String anyOtherSubPath(@PathVariable String subPath) {
+        return subPath;
+    }
+
 }

@@ -12,13 +12,15 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyCollection;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
 /**
@@ -26,7 +28,6 @@ import static org.mockito.Mockito.*;
  */
 
 public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
-
 
     @Mock
     MailService mailServiceMock;
@@ -62,7 +63,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldNotGenerateDailyDigest(){
+    public void shouldNotGenerateDailyDigest() {
 
         // Test data set has no user subscribed to daily Digest
         // no mail should be sent.
@@ -72,7 +73,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldNotGenerateWeeklyDigest(){
+    public void shouldNotGenerateWeeklyDigest() {
 
         // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
@@ -82,10 +83,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateDailyDigestNoMessage(){
+    public void shouldGenerateDailyDigestNoMessage() {
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        User user = userService.getUserByLogin(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
@@ -99,10 +99,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateDailyDigestOneMessage(){
+    public void shouldGenerateDailyDigestOneMessage() {
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        User user = userService.getUserByLogin(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(DAILY_DIGEST_USER);
@@ -124,10 +123,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateDailyDigestWithTwoMessages(){
+    public void shouldGenerateDailyDigestWithTwoMessages() {
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        User user = userService.getUserByLogin(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(DAILY_DIGEST_USER);
@@ -148,10 +146,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateDailyDigestWithManyMessages(){
+    public void shouldGenerateDailyDigestWithManyMessages() {
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        User user = userService.getUserByLogin(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(DAILY_DIGEST_USER);
@@ -159,8 +156,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
-        for (int i=0 ; i< 20 ; i++ ){
-            String content2 = "voilà un message "+ i +" qui devrait se retrouver dans le digest ! ";
+        for (int i = 0; i < 20; i++) {
+            String content2 = "voilà un message " + i + " qui devrait se retrouver dans le digest ! ";
             statusUpdateService.postStatus(content2, false, new ArrayList<String>());
         }
 
@@ -175,10 +172,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigest(){
+    public void shouldGenerateWeeklyDigest() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        User user = userService.getUserByLogin(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
 
         mailDigestService.weeklyDigest();
@@ -188,10 +184,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestNoMessage(){
+    public void shouldGenerateWeeklyDigestNoMessage() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        User user = userService.getUserByLogin(WEEKLY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
@@ -205,10 +200,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestOneMessage(){
+    public void shouldGenerateWeeklyDigestOneMessage() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        User user = userService.getUserByLogin(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(WEEKLY_DIGEST_USER);
@@ -230,10 +224,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestWithTwoMessages(){
+    public void shouldGenerateWeeklyDigestWithTwoMessages() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        User user = userService.getUserByLogin(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(WEEKLY_DIGEST_USER);
@@ -254,10 +247,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateWeeklyDigestWithManyMessages(){
+    public void shouldGenerateWeeklyDigestWithManyMessages() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        User user = userService.getUserByLogin(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
 
         mockAuthenticationOnFriendshipService(WEEKLY_DIGEST_USER);
@@ -265,8 +257,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
-        for (int i=0 ; i< 20 ; i++ ){
-            String content2 = "voilà un message "+ i +" qui devrait se retrouver dans le digest ! ";
+        for (int i = 0; i < 20; i++) {
+            String content2 = "voilà un message " + i + " qui devrait se retrouver dans le digest ! ";
             statusUpdateService.postStatus(content2, false, new ArrayList<String>());
         }
 

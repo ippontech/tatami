@@ -9,16 +9,12 @@ import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
-import org.apache.avro.reflect.Stringable;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.common.util.concurrent.jsr166e.LongAdder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import javax.persistence.metamodel.CollectionAttribute;
 import java.util.Collection;
 
 
@@ -105,7 +101,7 @@ public class AttachmentService {
         }
     }
 
-    public Collection<Long> getDomainQuota(){
+    public Collection<Long> getDomainQuota() {
         User currentUser = authenticationService.getCurrentUser();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
@@ -113,7 +109,7 @@ public class AttachmentService {
         Long domainQuota = domainConfiguration.getStorageSizeAsLong();
         Long userQuota = currentUser.getAttachmentsSize();
 
-        Long quota = (userQuota*100)/domainQuota;
+        Long quota = (userQuota * 100) / domainQuota;
 
         Collection<Long> taux = new ArrayList<Long>();
         taux.add(quota);

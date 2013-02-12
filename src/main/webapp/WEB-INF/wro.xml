@@ -18,9 +18,9 @@
         <js>/js/jquery.ui.widget.js</js>
         <js>/js/jquery.iframe-transport.js</js>
         <js>/js/jquery.fileupload.js</js>
-        <js>/js/tatami-search.js</js>
-        <js>/js/tatami-commons.js</js>
         <js>/js/d3.js</js>
         <js>/js/d3.layout.cloud.js</js>
+        <js>/js/tatami-commons.js</js>
+        <js>/js/tatami-search.js</js>
     </group>
 </groups>
