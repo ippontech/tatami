@@ -262,6 +262,11 @@
                 <fmt:message key="tatami.account.users.recommended"/>
             </a>
         </li>
+        <%--<li>
+            <a href ="#/users/all">
+                <fmt:message key="tatami.account.users.all"/>
+            </a>
+        </li>--%>
     </ul>
 </script>
 
@@ -461,13 +466,14 @@
 
 <script type="text/template" id="groups-item">
     <td>
-        
         <a href="/tatami/#/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
     </td>
     <td>
-        <@ if(publicGroup) { @>
+        <@ if(publicGroup && !archivedGroup) { @>
             <span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
-        <@ } else { @>
+        <@ } else if(publicGroup && archivedGroup || !publicGroup && archivedGroup) { @>
+            <span class="label"><fmt:message key="tatami.group.add.archived"/></span>
+        <@ } else {@>
             <span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
         <@ } @>
     </td>

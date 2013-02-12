@@ -267,7 +267,9 @@ app.View.TabContainer = Backbone.View.extend({
         });
 
         this.views.paginate = new app.View.Pagination({
-            collection: this.collection
+            collection: this.collection,
+            username: username,
+            page: 0
         });
 
     },
@@ -318,7 +320,8 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/friends/lookup',
-            recommended: '/tatami/rest/users/suggestions'
+            recommended: '/tatami/rest/users/suggestions',
+            all: '/tatami/rest/users/'
         };
     },
     recommended: function(){
@@ -332,6 +335,16 @@ app.Collection.TabUser = Backbone.Collection.extend({
                 screen_name : username
             }
         });
+    },
+
+    all: function(){
+      this.url = this.options.url.all;
+      this.fetch({
+          data: {
+              screen_name: username
+          }
+      });
+
     }
 });
 
@@ -959,8 +972,6 @@ app.View.Pagination = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
-
-        this.options.page = 0;
     },
 
     events:{
@@ -970,20 +981,19 @@ app.View.Pagination = Backbone.View.extend({
 
     previous: function(){
         (this.options.page > this.collection.length) ? this.options.page = this.options.page - 50 : this.options.page = 0;
-        this.collection.fetch({data: {pagination: this.options.page}});
+        this.collection.fetch({data:{screen_name:this.options.username, pagination: this.options.page}});
         return false;
     },
 
     next: function(){
         (this.options.page < this.collection.length) ? this.options.page = this.options.page + 50 : this.options.page = 0;
-        this.collection.fetch({data: {pagination: this.options.page}});
+        this.collection.fetch({data:{screen_name:this.options.username, pagination: this.options.page}});
         return false;
     },
 
     render: function(){
-        if(this.collection.length > 50){
-            this.$el.html(this.template());
-        }
+
+        this.$el.html(this.template());
         this.delegateEvents();
         return this.$el;
 
@@ -1032,7 +1042,8 @@ app.View.FilesView = Backbone.View.extend({
         this.views.quota = new app.View.QuotaFiles();
 
         this.views.paginated = new app.View.Pagination({
-             collection: this.collection
+            collection: this.collection,
+            page: 0
         });
     },
 
@@ -1084,6 +1095,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'tags/recommended':'recommendedTags',
         'users':'users',
         'users/recommended':'recommendedUsers',
+        'users/all':'allUsers',
         'status_of_the_day' : 'status_of_the_day',
         'files' : 'files',
         '*action': 'profile'
@@ -1280,6 +1292,19 @@ app.Router.AdminRouter = Backbone.Router.extend({
             this.addView(view);
         }
         view.selectMenu('users/recommended');
+    },
+
+    allUsers: function(){
+        var view = this.initUsers();
+        this.selectMenu('users');
+
+        view.collection.all();
+
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        view.selectMenu('users/all');
     },
 
     status_of_the_day: function(){
