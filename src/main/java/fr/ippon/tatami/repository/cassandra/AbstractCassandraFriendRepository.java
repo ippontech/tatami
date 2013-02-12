@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
@@ -49,6 +50,23 @@ public abstract class AbstractCassandraFriendRepository {
         List<String> friends = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
             friends.add(columnName);
+        }
+        return friends;
+    }
+
+    protected List<String> findFriends(String key, int pagination) {
+        ColumnFamilyResult<String, String> result = friendsTemplate.queryColumns(key);
+        List<String> friends = new ArrayList<String>();
+
+        int index = 0;
+        for (String columnName : result.getColumnNames()) {
+            if(index > pagination + Constants.PAGINATION_SIZE){
+                break;
+            }
+            if(index >= pagination){
+                friends.add(columnName);
+            }
+            index++;
         }
         return friends;
     }

@@ -242,7 +242,7 @@
         <ul class="nav nav-stacked nav-pills">
             <@ groupsCollection.each(function(group) { @>
               <@ if (group.get('archivedGroup') == false) { @>
-                <li id="group-list-<@= group.get('groupId') @>"><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
+                <li id="group-list-<@= group.get('groupId') @>" class="<@= group.get('isActive') @>"><a href="#/groups/<@= group.get('groupId') @>"><i class="icon-chevron-right pull-right"/> <@= group.get('name') @></a></li>
               <@ } @>
             <@ }); @>
         </ul>
