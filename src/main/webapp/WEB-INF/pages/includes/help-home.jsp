@@ -1,63 +1,75 @@
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="/js/bootstrap-tour.js"></script>
 <script src="/js/jquery.cookie.js"></script>
 
 <style>
-  #profileHelp {
-    width : 400px;
-  }
-  #profileHelp {
-    width : 400px;
-  }
-  #updateStatusContentHelp {
-    width : 400px;
-  }
+    #profileHelp {
+        width : 400px;
+    }
+    #profileHelp {
+        width : 400px;
+    }
+    #updateStatusContentHelp {
+        width : 400px;
+    }
+    #timelineHelp {
+        width: 400px;
+    }
 </style>
 <script >
-jQuery(function($) {
-	var tour = new Tour({
-	  labels: {
-            end: 'End tour',
-            next: 'Next fr &raquo;',
-            prev: '&laquo; Prev fr'
-        }
-	});
+    jQuery(function($) {
+        var tour = new Tour({
+            labels: {
+                end: 'End tour',
+                next: '<fmt:message key="tatami.help.next"/>',
+                prev: '<fmt:message key="tatami.help.previous"/>'
+            }
+        });
 
-	tour.addStep({
-	  element: "#profileContent", /* html element next to which the step popover should be shown */
-	  placement: "right",
-          stepId: "profileHelp",
-	  title: "<b>Profile</b>", /* title of the popover */
-	  content: "This is information about your activity on tatami,"+
-		   "it display how many messages you have shared" + 
-		   "how many people you follow, how many people you are following and how many " 
-	});
-	tour.addStep({
-	  element: "#updateStatusContent", 
-	  placement: "bottom",
-          stepId: "updateStatusContentHelp",
-	  title: "<b>Sending messages</b>",
-	  content: "Here is where you write messages you want to share, " +
-                   "<ul><li>all messages are public by default. They will be delivered "+
-                   " to all users who follow you </li>"+
-		   "<li>when writing a message you should use <i>#hashtags</i> : this simply means adding a \'#\' at the begining of important word that can be used to find your message </li>" +
- 		   "<li>when mentionning, or replying to, other users, you should add "+
- 		   "a @ at the beginning of their name : they will be notified that "+ 
-		   " you are talking to them </li>"  +
-		   "</ul>"
-		
-	});
+        tour.addStep({
+            element: "#tab-content",
+            placement: "bottom",
+            stepId: "timelineHelp",
+            title: "<fmt:message key="tatami.help.home.timeline.title"/>",
+            content: "<fmt:message key="tatami.help.home.timeline.content"/>"
+        });
 
+        tour.addStep({
+            element: "#updateStatusContent",
+            placement: "bottom",
+            stepId: "updateStatusContentHelp",
+            title: "<fmt:message key="tatami.help.home.updatestatus.title"/>",
+            content: "<fmt:message key="tatami.help.home.updatestatus.content"/>"
+        });
 
-	tour.addStep({
-	  element: "#groupsList", /* html element next to which the step popover should be shown */
-	  title: "title 2", /* title of the popover */
-	  content: "content 2" /* content of the popover */
-	});
-	tour.setCurrentStep(0);
+        tour.addStep({
+            element: "#groupsList",
+            placement: "right",
+            stepId: "groupsHelp",
+            title: "<fmt:message key="tatami.help.home.groups.title"/>",
+            content: "<fmt:message key="tatami.help.home.groups.content"/>"
+        });
 
-	tour.start(true);
-});
+        tour.addStep({
+            element: "#follow-suggest",
+            placement: "right",
+            stepId: "follow-suggestHelp",
+            title: "<fmt:message key="tatami.help.home.follow-suggest.title"/>",
+            content: "<fmt:message key="tatami.help.home.follow-suggest.content"/>"
+        });
+
+        tour.addStep({
+            element: "#profileTrends",
+            placement: "right",
+            stepId: "profileTrendsHelp",
+            title: "<fmt:message key="tatami.help.home.profileTrends.title"/>",
+            content: "<fmt:message key="tatami.help.home.profileTrends.content"/>"
+        });
+
+    tour.setCurrentStep(0);
+    tour.start(true);
+    });
 
 </script>
