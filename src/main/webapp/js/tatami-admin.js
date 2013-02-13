@@ -980,6 +980,8 @@ app.View.Pagination = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
+
+        this.collection.bind('reset', this.render, this);
     },
 
     events:{
@@ -1000,8 +1002,9 @@ app.View.Pagination = Backbone.View.extend({
     },
 
     render: function(){
+        if(this.collection.length > 50)
+            this.$el.html(this.template());
 
-        this.$el.html(this.template());
         this.delegateEvents();
         return this.$el;
 
