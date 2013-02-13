@@ -66,7 +66,7 @@
   </tr>
   <tr>
       <td>
-          <div class="well status-content"><@=status.markdown@></div>
+          <div class="well status-content fixFFmax-width"><@=status.markdown@></div>
       </td>
   </tr>
   <tr>
@@ -116,14 +116,14 @@
 			<li class="active"><a href="#replyEditPane" id="replyEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
 			<li><a href="#replyPreviewPane" id="replyPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
 		     </ul>
-		    <div class="tab-content">
+		    <div class="tab-content fixFFmax-width">
 		      <div class="tab-pane active" id="replyEditPane">
 	
 			<textarea id="replyEdit" class="reply span12" required="required" maxlength="750"
                                 name="content">@<@= status.username @> </textarea>
 		      </div>
 		      <div class="tab-pane" id="replyPreviewPane">
-			<p id="replyPreview" class="well status-content"></p>
+			<p id="replyPreview" class="well status-content fixFFmax-width"></p>
 		      </div>
 		    </div>  
                   </div>
