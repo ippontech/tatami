@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="/js/bootstrap-tour.js"></script>
-<script src="/js/jquery.cookie.js"></script>
 
 <script >
     jQuery(function($) {
@@ -11,7 +10,8 @@
                 end: '<fmt:message key="tatami.help.end"/>',
                 next: '<fmt:message key="tatami.help.next"/>',
                 prev: '<fmt:message key="tatami.help.previous"/>'
-            }
+            },
+            allowState: false
         });
 
         tour.addStep({
