@@ -1,7 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script src="/js/bootstrap-tour.js"></script>
 
 <script >
     jQuery(function($) {
