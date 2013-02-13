@@ -4,12 +4,6 @@
 <script src="/js/bootstrap-tour.js"></script>
 <script src="/js/jquery.cookie.js"></script>
 
-<style>
-
-    #updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
-        width : 400px;
-    }
-</style>
 <script >
     jQuery(function($) {
         var tour = new Tour({

@@ -535,3 +535,7 @@ span.quota{
 #accountContent .progress {
     position:relative;
 }
+
+#updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
+	width : 400px;
+}
