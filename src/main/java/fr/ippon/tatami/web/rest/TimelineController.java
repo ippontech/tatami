@@ -67,7 +67,9 @@ public class TimelineController {
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
         Collection<String> attachmentIds = status.getAttachmentIds();
         if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
-            log.info("private=" + status.isStatusPrivate());
+            if (log.isDebugEnabled()) {
+                log.debug("Private status");
+            }
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
         } else {
             User currentUser = authenticationService.getCurrentUser();

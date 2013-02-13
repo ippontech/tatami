@@ -44,7 +44,7 @@ public class FriendshipService {
     @Inject
     private AuthenticationService authenticationService;
 
-    public void followUser(String usernameToFollow) {
+    public User followUser(String usernameToFollow) {
         if (log.isDebugEnabled()) {
             log.debug("Following user : " + usernameToFollow);
         }
@@ -62,6 +62,7 @@ public class FriendshipService {
                             log.debug("User " + currentUser.getLogin() +
                                     " already follows user " + followedUser.getLogin());
                         }
+                        break;
                     }
                 }
             }
@@ -70,11 +71,15 @@ public class FriendshipService {
                 counterRepository.incrementFriendsCounter(currentUser.getLogin());
                 followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
                 counterRepository.incrementFollowersCounter(followedUser.getLogin());
-                log.debug("User " + currentUser.getLogin() +
-                        " now follows user " + followedUser.getLogin());
+                if (log.isDebugEnabled()) {
+                    log.debug("User " + currentUser.getLogin() +
+                            " now follows user " + followedUser.getLogin());
+                }
             }
+            return followedUser;
         } else {
             log.debug("Followed user does not exist : " + loginToFollow);
+            return null;
         }
     }
 

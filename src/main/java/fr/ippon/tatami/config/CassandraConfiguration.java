@@ -43,6 +43,7 @@ public class CassandraConfiguration {
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
+        cassandraHostConfigurator.setMaxActive(100);
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
         ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
         consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);

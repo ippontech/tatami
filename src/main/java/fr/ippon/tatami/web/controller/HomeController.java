@@ -5,6 +5,8 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,9 @@ public class HomeController {
 
     @Inject
     private AuthenticationService authenticationService;
+
+    @Inject
+    private Environment env;
 
     @RequestMapping(value = "/")
     public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
@@ -64,6 +69,32 @@ public class HomeController {
         String login = userService.validateRegistration(key);
         mv.addObject("login", login);
         return mv;
+    }
+
+    @RequestMapping(value = "/register/automatic", method = RequestMethod.POST)
+    public String automaticRegistration(@RequestParam String email, @RequestParam String password) {
+        String enabled = env.getProperty("tatami.automatic.registration");
+        if (enabled != null && !enabled.equals("true")) {
+            log.warn("Automatic registration should not have been called.");
+            return "redirect:/tatami/login";
+        }
+        email = email.toLowerCase();
+        if (userService.getUserByLogin(email) != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("User " + email + " already exists.");
+            }
+            return "redirect:/tatami/login";
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Creating user " + email);
+        }
+        User user = new User();
+        user.setLogin(email);
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        String encryptedPassword = encoder.encode(password);
+        user.setPassword(encryptedPassword);
+        userService.createUser(user);
+        return "redirect:/tatami/login";
     }
 
     @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
