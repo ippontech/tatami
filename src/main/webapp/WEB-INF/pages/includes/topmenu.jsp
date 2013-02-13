@@ -93,10 +93,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
-                               name="search" type="text">
-                    </form>
                     <ul class="nav pull-right" style="display: none" id="help-menu">
                         <li>
                             <a href="#" id="help-tour">
@@ -104,7 +100,12 @@
                                     key="tatami.help"/>
                             </a>
                         </li>
-                    </ul>
+                    </ul>					
+                    <form class="navbar-search pull-right" id="searchHeader">
+                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
+                               name="search" type="text">
+                    </form>
+
                 </sec:authorize>
 
                 <sec:authorize access="!isAuthenticated()">
