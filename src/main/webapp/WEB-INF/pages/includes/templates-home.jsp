@@ -81,12 +81,12 @@
 	  <li class="active"><a href="#updateStatusEditPane" id="updateStatusEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
 	  <li><a href="#updateStatusPreviewPane" id="updateStatusPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
 	</ul>
-	<div class="tab-content">
+	<div class="tab-content fixFFmax-width">
 	  <div class="tab-pane active" id="updateStatusEditPane">
 	    <textarea id="updateStatusContent" class="span12" required="required" placeholder="<fmt:message key="tatami.status.update"/>..." maxlength="750" name="content"></textarea>
 	    <span id="contentHelp" class="pull-right" title="<fmt:message key="tatami.status.help.title"/>" data-content="<fmt:message key="tatami.status.help"/>"><i class="icon-question-sign"></i> <fmt:message key="tatami.status.help.title"/></span>
 	  </div>
-	  <div class="tab-pane" id="updateStatusPreviewPane">
+	  <div class="tab-pane fixFFmax-width" id="updateStatusPreviewPane">
 	    <p id="updateStatusPreview" class="well status-content"></p>
 	  </div>
 	</div>

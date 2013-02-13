@@ -535,3 +535,9 @@ span.quota{
 #accountContent .progress {
     position:relative;
 }
+
+.fixFFmax-width{
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
