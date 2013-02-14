@@ -8,6 +8,7 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
     <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-tour.js"></script>
     <script src="/js/underscore.js"></script>
     <script src="/js/backbone.js"></script>
     <script src="/js/jquery-charcount.js"></script>
