@@ -9,6 +9,7 @@
         <js>/js/jquery.js</js>
         <js>/js/jquery-ui.min.js</js>
         <js>/js/bootstrap.js</js>
+        <js>/js/bootstrap-tour.js</js>
         <js>/js/underscore.js</js>
         <js>/js/backbone.js</js>
         <js>/js/jquery-charcount.js</js>
