@@ -67,6 +67,9 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         if (!canHandleAuthentication(authentication)) {
             return null; // this provider is not suitable for this domain
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Authenticating " + authentication.getName() + " with LDAP");
+        }
         String login = authentication.getName().toLowerCase();
         String username = DomainUtil.getUsernameFromLogin(login);
 

@@ -46,11 +46,14 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void followUser(@RequestBody User user) {
+    public void followUser(@RequestBody User user, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow username : " + user.getUsername());
         }
-        friendshipService.followUser(user.getUsername());
+        User followedUser = friendshipService.followUser(user.getUsername());
+        if (followedUser == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     /**

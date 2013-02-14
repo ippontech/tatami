@@ -395,10 +395,18 @@ app.Collection.TabTag = Backbone.Collection.extend({
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(tags){
+            return tags.filter(function(tag){
+                return !(tag.followed);
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(tags){
+            return tags;
+        };
         this.fetch();
     }
 });
@@ -972,6 +980,8 @@ app.View.Pagination = Backbone.View.extend({
 
     initialize: function(){
         _.bindAll(this, 'previous', 'next');
+
+        this.collection.bind('reset', this.render, this);
     },
 
     events:{
@@ -992,8 +1002,9 @@ app.View.Pagination = Backbone.View.extend({
     },
 
     render: function(){
+        if(this.collection.length > 50)
+            this.$el.html(this.template());
 
-        this.$el.html(this.template());
         this.delegateEvents();
         return this.$el;
 

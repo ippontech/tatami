@@ -539,3 +539,9 @@ span.quota{
 #updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
 	width : 400px;
 }
+
+.fixFFmax-width{
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}

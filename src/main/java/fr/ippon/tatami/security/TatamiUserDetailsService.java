@@ -65,15 +65,16 @@ public class TatamiUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
         if (log.isDebugEnabled()) {
             log.debug("Authenticating " + login + " with Cassandra");
         }
-        User userFromCassandra = userService.getUserByLogin(login);
+        String lowercaseLogin = login.toLowerCase();
+        User userFromCassandra = userService.getUserByLogin(lowercaseLogin);
         if (userFromCassandra == null) {
-            throw new UsernameNotFoundException("User " + login + " was not found in Cassandra");
+            throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
         }
-        TatamiUserDetails userDetails = getTatamiUserDetails(login, userFromCassandra.getPassword());
+        TatamiUserDetails userDetails = getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
         String theme = userFromCassandra.getTheme();
         if (theme == null) {
             theme = Constants.DEFAULT_THEME;

@@ -57,6 +57,7 @@
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
             </properties>
         </profile>
         <profile>
@@ -67,7 +68,7 @@
                 <log4j.loglevel>INFO</log4j.loglevel>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://sandbox.tatamisoft.com/</tatami.url>
+                <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
                 <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
                 <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
                 <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
@@ -83,6 +84,7 @@
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
             </properties>
             <build>
                 <plugins>
@@ -141,6 +143,7 @@
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
             </properties>
             <build>
                 <plugins>
@@ -175,6 +178,33 @@
             </build>
         </profile>
         <profile>
+            <id>stress-tests</id>
+            <properties>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <log4j.loglevel>WARN</log4j.loglevel>
+                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+                <tatami.smtp.host></tatami.smtp.host>
+                <tatami.smtp.port></tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
+                <tatami.search.engine>lucene</tatami.search.engine>
+                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
+                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.automatic.registration>true</tatami.automatic.registration>
+            </properties>
+        </profile>
+        <profile>
             <id>uitest</id>
             <properties>
                 <jetty.port>8080</jetty.port>
@@ -198,6 +228,7 @@
                 <tatami.search.engine>lucene</tatami.search.engine>
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
             </properties>
             <build>
                 <testResources>
@@ -428,7 +459,7 @@
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.13</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.8.v20121106</maven.jetty.version>
+        <maven.jetty.version>8.1.9.v20130131</maven.jetty.version>
         <maven.cassandra.version>1.1.0-1</maven.cassandra.version>
         <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
