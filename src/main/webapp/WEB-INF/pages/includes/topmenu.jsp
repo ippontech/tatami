@@ -93,6 +93,39 @@
                             </ul>
                         </li>
                     </ul>
+                    <ul class="nav pull-right" style="display: none" id="help-menu">
+                        <li>
+                            <a href="#" id="help-tour">
+                                <i class="icon-question-sign icon-white" ></i> <fmt:message
+                                    key="tatami.help"/>
+                            </a>
+                        </li>
+                    </ul>
+
+                </sec:authorize>
+
+                <sec:authorize access="!isAuthenticated()">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="icon-flag icon-white"></i> 
+                                <fmt:message key="tatami.menu.language"/>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu closed">
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=en">
+                                        <fmt:message key="tatami.menu.language.en"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=fr">
+                                        <fmt:message key="tatami.menu.language.fr"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </sec:authorize>
                 <ul class="nav pull-left">
                     <li class="dropdown">

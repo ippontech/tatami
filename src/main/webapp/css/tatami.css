@@ -409,7 +409,7 @@ form {
   }
 
   #searchHeader{
-    width: 400px;
+    width: 320px;
   }
 }
 
@@ -538,6 +538,10 @@ span.quota{
 
 #accountContent .progress {
     position:relative;
+}
+
+#updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
+	width : 400px;
 }
 
 .fixFFmax-width{
