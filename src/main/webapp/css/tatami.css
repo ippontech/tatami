@@ -407,6 +407,10 @@ form {
   .typeahead.dropdown-menu.hasCategory{
     margin-left: -53px;
   }
+
+  #searchHeader{
+    width: 400px;
+  }
 }
 
 
