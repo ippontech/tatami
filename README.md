@@ -88,6 +88,17 @@ To deploy Tatami :
 - Deploy the WAR file on your favorite Java EE server
 - The WAR has been tested on Jetty 8 and Tomcat 7, and should work fine on all Java EE servers
 
+Launching stress tests
+---------------------------------------
+
+Stress tests are done with [Apache JMeter](http://jmeter.apache.org/).
+
+- Launch Cassandra
+- Run Tatami from Maven with the `stress-tests` profile : `mvn jetty:run -Pstress-tests`
+- Launch JMeter
+- Run the `src/test/jmeter/tatami-create-users.jmx` script : it will create 200 normal users, which each has 200 follower users
+- Run the stress test : `src/test/jmeter/tatami-stress-test.jmx`
+
 Launching functional tests
 ---------------------------------------
 
