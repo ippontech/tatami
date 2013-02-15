@@ -1012,7 +1012,7 @@ app.View.Pagination = Backbone.View.extend({
 
     render: function(){
         if(this.collection.length > 50)
-            this.$el.html(this.template());
+            //this.$el.html(this.template());
 
         this.delegateEvents();
         return this.$el;
