@@ -37,7 +37,7 @@
                 login-page="/tatami/login"
                 authentication-failure-url="/tatami/login?action=loginFailure"
                 default-target-url="/tatami/"
-                always-use-default-target="true"/>
+                authentication-success-handler-ref="tatamiAuthenticationSuccessHandler"/>
         <http-basic/>
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
