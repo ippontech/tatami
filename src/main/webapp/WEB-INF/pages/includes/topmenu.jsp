@@ -100,11 +100,7 @@
                                     key="tatami.help"/>
                             </a>
                         </li>
-                    </ul>					
-                    <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
-                               name="search" type="text">
-                    </form>
+                    </ul>
 
                 </sec:authorize>
 
@@ -183,6 +179,36 @@
                         </ul>
                     </li>
                 </ul>
+                <sec:authorize access="isAuthenticated()">
+                    <form class="navbar-search pull-right" id="searchHeader">
+                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
+                               name="search" type="text">
+                    </form>
+                </sec:authorize>
+
+                <sec:authorize access="!isAuthenticated()">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="icon-flag icon-white"></i> 
+                                <fmt:message key="tatami.menu.language"/>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu closed">
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=en">
+                                        <fmt:message key="tatami.menu.language.en"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<%=request.getContextPath()%>?language=fr">
+                                        <fmt:message key="tatami.menu.language.fr"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </sec:authorize>
             </div>
         </div>
     </div>
