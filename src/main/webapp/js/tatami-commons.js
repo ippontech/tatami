@@ -1212,6 +1212,9 @@ app.View.Welcome = Backbone.View.extend({
 
   initialize : function() {
     var self = this;
+
+    this.tabs = [new app.View.WelcomeProfil(), new app.View.WelcomeTag(), new app.View.WelcomeFriend()],
+
     this.$el.on('show', function(){
       self.toHide.forEach(function(element){
         element.addClass('blur');
@@ -1253,8 +1256,6 @@ app.View.Welcome = Backbone.View.extend({
 
     this.render();
   },
-
-  tabs : [new app.View.WelcomeProfil(), new app.View.WelcomeTag(), new app.View.WelcomeFriend()],
 
   events : {
     'click input.pull-left' : 'previous',
