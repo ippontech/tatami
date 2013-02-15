@@ -82,18 +82,22 @@ app.View.switchSearchAgent = Backbone.View.extend({
 
 var agent = new app.View.switchSearchAgent();
 
-function SearchEngine(query){
+function SearchEngine(){
+
+
+    this.menu = '<ul class="typeahead dropdown-menu hasCategory"></ul>';
+
     this.source = function(query,process){
         $.getJSON('/tatami/rest/search/all', {q: query}, function(model){
             var data = [];
             data.push(model);
             return process(data);
         });
-    },
+    };
 
     this.matcher = function (item) {
         return item;
-    },
+    };
 
     this.sorter = function (items) {
         var data = [];
@@ -116,20 +120,20 @@ function SearchEngine(query){
         });
 
         items.groups.forEach(function(v){
-           var obj = {};
-           obj.label = v.name;
-           obj.id = v.groupId;
-           obj.nb = v.counter;
-           obj.category = "groups";
-           data.push(obj);
+            var obj = {};
+            obj.label = v.name;
+            obj.id = v.groupId;
+            obj.nb = v.counter;
+            obj.category = "groups";
+            data.push(obj);
         });
 
         return data;
-    },
+    };
 
     this.highlighter = function (item) {
        return true;
-    },
+    };
 
     this.render = function(items){
         this.$menu.empty();
@@ -166,7 +170,7 @@ function SearchEngine(query){
         this.$menu.children('li.category').next().addClass('first');
 
         return this;
-    },
+    };
 
     this.select = function () {
         var val = this.$menu.find('.active').attr('data-value'),
@@ -185,10 +189,36 @@ function SearchEngine(query){
             break;
         }
         return this.hide();
-    }
+    };
+
+    this.next = function (event) {
+      var active = this.$menu.find('.active').removeClass('active')
+        , next = active.next()
+
+      if (!next.length) {
+        next = $(this.$menu.find('li')[0])
+      }
+
+      next.addClass('active')
+
+      if(!next.hasClass('item')) this.next();
+    };
+
+    this.prev = function (event) {
+      var active = this.$menu.find('.active').removeClass('active')
+        , prev = active.prev()
+
+      if (!prev.length) {
+        prev = this.$menu.find('li').last()
+      }
+
+      prev.addClass('active')
+
+      if(!prev.hasClass('item')) this.prev();
+    };
 
 }
 
 $(function(){
-   $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
-})
+   $("#fullSearchText").typeahead(new SearchEngine());
+});
