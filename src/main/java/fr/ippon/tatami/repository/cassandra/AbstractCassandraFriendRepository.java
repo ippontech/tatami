@@ -9,6 +9,8 @@ import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -21,6 +23,8 @@ import java.util.List;
  */
 public abstract class AbstractCassandraFriendRepository {
 
+    private final Log log = LogFactory.getLog(AbstractCassandraFriendRepository.class);
+
     ColumnFamilyTemplate<String, String> friendsTemplate;
 
     @Inject
@@ -32,6 +36,8 @@ public abstract class AbstractCassandraFriendRepository {
                 getFriendsCF(),
                 StringSerializer.get(),
                 StringSerializer.get());
+
+        friendsTemplate.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
     protected void addFriend(String key, String friendKey) {
@@ -50,23 +56,6 @@ public abstract class AbstractCassandraFriendRepository {
         List<String> friends = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {
             friends.add(columnName);
-        }
-        return friends;
-    }
-
-    protected List<String> findFriends(String key, int pagination) {
-        ColumnFamilyResult<String, String> result = friendsTemplate.queryColumns(key);
-        List<String> friends = new ArrayList<String>();
-
-        int index = 0;
-        for (String columnName : result.getColumnNames()) {
-            if(index > pagination + Constants.PAGINATION_SIZE){
-                break;
-            }
-            if(index >= pagination){
-                friends.add(columnName);
-            }
-            index++;
         }
         return friends;
     }
