@@ -1168,7 +1168,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
     this.$mails.empty();
     this.toMails(value).forEach(function(value){
       var li = document.createElement('li');
-      li.innerText = value;
+      li.textContent = value;
       self.$mails.append(li);
     });
   },
