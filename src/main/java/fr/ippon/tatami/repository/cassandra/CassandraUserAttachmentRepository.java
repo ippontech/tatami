@@ -47,6 +47,8 @@ public class CassandraUserAttachmentRepository
                 USER_ATTACHMENT_CF,
                 StringSerializer.get(),
                 UUIDSerializer.get());
+
+        attachmentsTemplate.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
     @Override

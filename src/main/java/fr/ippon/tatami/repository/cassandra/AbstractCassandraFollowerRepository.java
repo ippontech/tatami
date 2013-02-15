@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
@@ -31,6 +32,8 @@ public abstract class AbstractCassandraFollowerRepository {
                 getFollowersCF(),
                 StringSerializer.get(),
                 StringSerializer.get());
+
+        template.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
     protected void addFollower(String key, String followerKey) {

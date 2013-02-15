@@ -266,11 +266,6 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
 
-        this.views.paginate = new app.View.Pagination({
-            collection: this.collection,
-            username: username,
-            page: 0
-        });
 
     },
 
@@ -283,7 +278,6 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
-        this.$el.append(this.views.paginate.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -1067,10 +1061,10 @@ app.View.FilesView = Backbone.View.extend({
 
         this.views.quota = new app.View.QuotaFiles();
 
-        this.views.paginated = new app.View.Pagination({
+        /*this.views.paginated = new app.View.Pagination({
             collection: this.collection,
             page: 0
-        });
+        });*/
     },
 
     render: function(){

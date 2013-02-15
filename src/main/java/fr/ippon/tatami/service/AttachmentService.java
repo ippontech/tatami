@@ -74,8 +74,7 @@ public class AttachmentService {
     public Collection<String> getAttachmentIdsForCurrentUser(int pagination) {
         Collection<String> attachmentIds =
                 userAttachmentRepository.
-                        findAttachmentIds(authenticationService.getCurrentUser().getLogin(),
-                                pagination);
+                        findAttachmentIds(authenticationService.getCurrentUser().getLogin());
 
         if (log.isDebugEnabled()) {
             log.debug("Collection of attachments : " + attachmentIds.size());

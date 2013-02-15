@@ -36,11 +36,6 @@ public class CassandraFriendRepository extends AbstractCassandraFriendRepository
     }
 
     @Override
-    public List<String> findFriendsForUser(String login, int pagination) {
-        return super.findFriends(login, pagination);
-    }
-
-    @Override
     public String getFriendsCF() {
         return FRIENDS_CF;
     }
