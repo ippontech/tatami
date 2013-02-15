@@ -1169,6 +1169,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         if(!app.views.addgroup){
             app.views.addgroup = new app.View.AddGroup();
             app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
+            app.views.addgroup.bind('success', app.collections.adminGroups.fetch, app.collections.adminGroups);
         }
         return app.views.addgroup;
     },
