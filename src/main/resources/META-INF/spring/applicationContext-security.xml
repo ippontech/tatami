@@ -22,7 +22,7 @@
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
-        <remember-me key="tatamiRememberKey"/>
+        <remember-me key="tatamiRememberKey" token-validity-seconds="2592000"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
         <intercept-url pattern="/tatami/tos" access="permitAll()"/>
         <intercept-url pattern="/tatami/license" access="permitAll()"/>
