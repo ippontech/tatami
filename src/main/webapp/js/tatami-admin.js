@@ -326,10 +326,22 @@ app.Collection.TabUser = Backbone.Collection.extend({
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(users){
+            return users.map(function(user){
+                user.followed = false;
+                return user;
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(users){
+            return users.map(function(user){
+                user.followed = true;
+                return user;
+            });
+        };
         this.fetch({
             data: {
                 screen_name : username
@@ -362,18 +374,21 @@ app.View.User = Backbone.View.extend({
     renderFollow: function(){
         var user = this.model.get('username');
         var self = this;
-        $.get('/tatami/rest/friendships',
-            {screen_name:user},
-            function (follow) {
-                app.views.followButton = new app.View.FollowButtonView({
-                    username: user,
-                    followed: follow,
-                    owner: (user === username)
-                });
-                self.$el.find('.follow').html(app.views.followButton.render());
-            },
-            'json'
-        );
+
+
+        function onFinish(follow) {
+            app.views.followButton = new app.View.FollowButtonView({
+                username: user,
+                followed: follow,
+                owner: (user === username)
+            });
+            self.$el.find('.follow').html(app.views.followButton.render());
+        }
+
+        var followed = this.model.get('followed');
+        if(typeof followed === 'undefined')
+            $.get('/tatami/rest/friendships', {screen_name:user}, onFinish, 'json');
+        else onFinish(followed);
     },
 
     render: function(){
