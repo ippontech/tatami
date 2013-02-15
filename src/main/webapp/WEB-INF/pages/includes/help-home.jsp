@@ -14,6 +14,14 @@
         });
 
         tour.addStep({
+            element: "#help-tour",
+            placement: "left",
+            stepId: "presentationHelp",
+            title: "<fmt:message key="tatami.help.home.presentation.title"/>",
+            content: "<fmt:message key="tatami.help.home.presentation.content"/>"
+        });
+
+        tour.addStep({
             element: "#tab-content",
             placement: "left",
             stepId: "timelineHelp",
