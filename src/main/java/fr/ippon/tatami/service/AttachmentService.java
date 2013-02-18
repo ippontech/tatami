@@ -58,7 +58,9 @@ public class AttachmentService {
         userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
                 attachment.getAttachmentId());
 
-        currentUser.setAttachmentsSize(newAttachmentsSize);
+        // Refresh user data, to reduce the risk of errors
+        currentUser = authenticationService.getCurrentUser();
+        currentUser.setAttachmentsSize(currentUser.getAttachmentsSize() + attachment.getSize());
         userRepository.updateUser(currentUser);
         return attachment.getAttachmentId();
     }
