@@ -125,7 +125,7 @@
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>1G</ehcache.maxBytesLocalHeap>
+                <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
                 <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
