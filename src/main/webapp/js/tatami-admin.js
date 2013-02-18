@@ -1060,11 +1060,6 @@ app.View.FilesView = Backbone.View.extend({
         });
 
         this.views.quota = new app.View.QuotaFiles();
-
-        /*this.views.paginated = new app.View.Pagination({
-            collection: this.collection,
-            page: 0
-        });*/
     },
 
     render: function(){
@@ -1072,7 +1067,6 @@ app.View.FilesView = Backbone.View.extend({
         this.$el.append(this.MenuTemplate());
         this.$el.append(this.views.quota.render());
         this.$el.append(this.views.files.render());
-        this.$el.append(this.views.paginated.render());
         this.delegateEvents();
         return this.$el;
     }
