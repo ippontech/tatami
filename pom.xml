@@ -446,7 +446,7 @@
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.3</commons.io.version>
         <junit.version>4.9</junit.version>
-        <cassandra.unit.version>1.1.1.2</cassandra.unit.version>
+        <cassandra.unit.version>1.1.2.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
@@ -460,7 +460,7 @@
         <maven.surefire.version>2.13</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.9.v20130131</maven.jetty.version>
-        <maven.cassandra.version>1.1.0-1</maven.cassandra.version>
+        <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
         <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
@@ -500,7 +500,7 @@
         <dependency>
             <groupId>org.apache.cassandra</groupId>
             <artifactId>cassandra-all</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
