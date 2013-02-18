@@ -54,16 +54,12 @@ public class AttachmentService {
 
             throw new StorageSizeException("User storage exceeded for user " + currentUser.getLogin());
         }
-
         attachmentRepository.createAttachment(attachment);
-
         userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
                 attachment.getAttachmentId());
 
         currentUser.setAttachmentsSize(newAttachmentsSize);
-
         userRepository.updateUser(currentUser);
-
         return attachment.getAttachmentId();
     }
 
@@ -74,8 +70,7 @@ public class AttachmentService {
     public Collection<String> getAttachmentIdsForCurrentUser(int pagination) {
         Collection<String> attachmentIds =
                 userAttachmentRepository.
-                        findAttachmentIds(authenticationService.getCurrentUser().getLogin(),
-                                pagination);
+                        findAttachmentIds(authenticationService.getCurrentUser().getLogin());
 
         if (log.isDebugEnabled()) {
             log.debug("Collection of attachments : " + attachmentIds.size());
@@ -96,6 +91,7 @@ public class AttachmentService {
                 attachmentRepository.deleteAttachment(attachment);
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();
                 currentUser.setAttachmentsSize(newAttachmentsSize);
+                userRepository.updateUser(currentUser);
                 break;
             }
         }

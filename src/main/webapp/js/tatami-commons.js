@@ -746,13 +746,13 @@ function Suggester(element) {
         var query = raw_query.substring(0, caretPosition);
         var matchLogin = query.match(patterns.login);
         var matchHash = query.match(patterns.hash);
-        if (typeof matchLogin === 'undefined' && typeof matchHash === 'undefined') {
+        if (matchLogin === null && matchHash === null) {
             if (this.shown) {
                 this.hide();
             }
             return;
         }
-        var query2 = (typeof matchLogin !== 'undefined') ? matchHash[0] : matchLogin[0];
+        var query2 = (matchLogin === null) ? matchHash[0] : matchLogin[0];
 
         // Didn't find a good reg ex that doesn't catch the character before # or @ : have to cut it down :
         query2 = (query2.charAt(0) != '#' && query2.charAt(0) != '@') ? query2.substring(1, query2.length) : query2;
@@ -1168,7 +1168,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
     this.$mails.empty();
     this.toMails(value).forEach(function(value){
       var li = document.createElement('li');
-      li.innerText = value;
+      li.textContent = value;
       self.$mails.append(li);
     });
   },
@@ -1212,6 +1212,9 @@ app.View.Welcome = Backbone.View.extend({
 
   initialize : function() {
     var self = this;
+
+    this.tabs = [new app.View.WelcomeProfil(), new app.View.WelcomeTag(), new app.View.WelcomeFriend()],
+
     this.$el.on('show', function(){
       self.toHide.forEach(function(element){
         element.addClass('blur');
@@ -1253,8 +1256,6 @@ app.View.Welcome = Backbone.View.extend({
 
     this.render();
   },
-
-  tabs : [new app.View.WelcomeProfil(), new app.View.WelcomeTag(), new app.View.WelcomeFriend()],
 
   events : {
     'click input.pull-left' : 'previous',

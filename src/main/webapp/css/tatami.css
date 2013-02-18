@@ -407,6 +407,10 @@ form {
   .typeahead.dropdown-menu.hasCategory{
     margin-left: -53px;
   }
+
+  #searchHeader{
+    width: 320px;
+  }
 }
 
 
@@ -536,8 +540,12 @@ span.quota{
     position:relative;
 }
 
-#updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
+#presentationHelp, #updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
 	width : 400px;
+}
+
+#timelineHelp {
+    padding-top: 46px;
 }
 
 .fixFFmax-width{

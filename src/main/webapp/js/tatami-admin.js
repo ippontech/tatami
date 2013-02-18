@@ -266,11 +266,6 @@ app.View.TabContainer = Backbone.View.extend({
             template: this.options.TabHeaderTemplate
         });
 
-        this.views.paginate = new app.View.Pagination({
-            collection: this.collection,
-            username: username,
-            page: 0
-        });
 
     },
 
@@ -283,7 +278,6 @@ app.View.TabContainer = Backbone.View.extend({
         this.$el.empty();
         this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
-        this.$el.append(this.views.paginate.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -326,10 +320,22 @@ app.Collection.TabUser = Backbone.Collection.extend({
     },
     recommended: function(){
         this.url = this.options.url.recommended;
+        this.parse = function(users){
+            return users.map(function(user){
+                user.followed = false;
+                return user;
+            });
+        };
         this.fetch();
     },
     owned: function(){
         this.url = this.options.url.owned;
+        this.parse = function(users){
+            return users.map(function(user){
+                user.followed = true;
+                return user;
+            });
+        };
         this.fetch({
             data: {
                 screen_name : username
@@ -362,18 +368,21 @@ app.View.User = Backbone.View.extend({
     renderFollow: function(){
         var user = this.model.get('username');
         var self = this;
-        $.get('/tatami/rest/friendships',
-            {screen_name:user},
-            function (follow) {
-                app.views.followButton = new app.View.FollowButtonView({
-                    username: user,
-                    followed: follow,
-                    owner: (user === username)
-                });
-                self.$el.find('.follow').html(app.views.followButton.render());
-            },
-            'json'
-        );
+
+
+        function onFinish(follow) {
+            app.views.followButton = new app.View.FollowButtonView({
+                username: user,
+                followed: follow,
+                owner: (user === username)
+            });
+            self.$el.find('.follow').html(app.views.followButton.render());
+        }
+
+        var followed = this.model.get('followed');
+        if(typeof followed === 'undefined')
+            $.get('/tatami/rest/friendships', {screen_name:user}, onFinish, 'json');
+        else onFinish(followed);
     },
 
     render: function(){
@@ -1003,7 +1012,7 @@ app.View.Pagination = Backbone.View.extend({
 
     render: function(){
         if(this.collection.length > 50)
-            this.$el.html(this.template());
+            //this.$el.html(this.template());
 
         this.delegateEvents();
         return this.$el;
@@ -1051,11 +1060,6 @@ app.View.FilesView = Backbone.View.extend({
         });
 
         this.views.quota = new app.View.QuotaFiles();
-
-        this.views.paginated = new app.View.Pagination({
-            collection: this.collection,
-            page: 0
-        });
     },
 
     render: function(){
@@ -1063,7 +1067,6 @@ app.View.FilesView = Backbone.View.extend({
         this.$el.append(this.MenuTemplate());
         this.$el.append(this.views.quota.render());
         this.$el.append(this.views.files.render());
-        this.$el.append(this.views.paginated.render());
         this.delegateEvents();
         return this.$el;
     }
@@ -1169,6 +1172,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
         if(!app.views.addgroup){
             app.views.addgroup = new app.View.AddGroup();
             app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
+            app.views.addgroup.bind('success', app.collections.adminGroups.fetch, app.collections.adminGroups);
         }
         return app.views.addgroup;
     },

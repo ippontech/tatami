@@ -140,17 +140,6 @@ public class FriendshipService {
         return friends;
     }
 
-    public Collection<User> getFriendsForUserWithPagination(String username, int pagination) {
-        String login = this.getLoginFromUsername(username);
-        Collection<String> friendLogins = friendRepository.findFriendsForUser(login, pagination);
-        Collection<User> friends = new ArrayList<User>();
-        for (String friendLogin : friendLogins) {
-            User friend = userRepository.findUserByLogin(friendLogin);
-            friends.add(friend);
-        }
-        return friends;
-    }
-
     public Collection<User> getFollowersForUser(String username) {
         String login = this.getLoginFromUsername(username);
         Collection<String> followersLogins = followerRepository.findFollowersForUser(login);

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.repository.StatusAttachmentRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -46,6 +47,8 @@ public class CassandraStatusAttachmentRepository
                 STATUS_ATTACHMENT_CF,
                 StringSerializer.get(),
                 UUIDSerializer.get());
+
+        attachmentsTemplate.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
     @Override

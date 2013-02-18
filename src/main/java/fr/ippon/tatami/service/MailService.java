@@ -94,14 +94,12 @@ public class MailService {
 
     @Async
     public void sendInvitationEmail(String email, User user) {
-        String subject = "Tatami invitation";
-        String url = tatamiUrl;
         if (log.isDebugEnabled()) {
             log.debug("Sending invitation e-mail to email '" + email + "'");
         }
 
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("user", user);
+        model.put("user", user.getLogin());
         model.put("invitationUrl", tatamiUrl);
 
         sendTextFromTemplate(user.getLogin(), model, "invitationMessage", this.locale);
