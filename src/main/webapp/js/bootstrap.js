@@ -1854,6 +1854,7 @@
     this.prev = this.options.prev || this.prev
     this.source = this.options.source
     this.$menu = $(this.options.menu)
+    this.select = this.options.select || this.select
     this.shown = false
     this.listen()
   }
