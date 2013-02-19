@@ -10,9 +10,9 @@
     boolean wro4jEnabled = Constants.WRO4J_ENABLED;
     request.setAttribute("wro4jEnabled", wro4jEnabled);
 %>
-
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title><fmt:message key="tatami.title"/></title>
     <meta name="viewport" content="initial-scale = 1,user-scalable=no,maximum-scale=1.0">
     <meta name="description" content="">
