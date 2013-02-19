@@ -131,14 +131,17 @@ app.View.UpdateView = Backbone.View.extend({
 
   render: function() {
     var $el = $(this.el);
+    var currentGroup = Backbone.history.fragment.split('/').slice(-1);
+
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
           $("#updateStatusPreview").css("height", "220px");
-        $("#updateStatusEditorTab").fadeIn();
+          $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
+          $("#contentGroup #updateStatusGroup").val(currentGroup);
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
