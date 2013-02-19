@@ -10,6 +10,7 @@
     <script src="/js/bootstrap.js"></script>
     <script src="/js/bootstrap-tour.js"></script>
     <script src="/js/underscore.js"></script>
+    <script src="/js/underscore-polyfill.js"></script>
     <script src="/js/backbone.js"></script>
     <script src="/js/jquery-charcount.js"></script>
     <script src="/js/jquery-timeago.js"></script>
