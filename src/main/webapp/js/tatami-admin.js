@@ -980,44 +980,9 @@ app.View.FilesViewItem = Backbone.View.extend({
 
    removeImage: function(){
        this.model.destroy();
+       window.location.reload();
    }
 
-});
-
-app.View.Pagination = Backbone.View.extend({
-    template: _.template($('#files-pagination').html()),
-
-    initialize: function(){
-        _.bindAll(this, 'previous', 'next');
-
-        this.collection.bind('reset', this.render, this);
-    },
-
-    events:{
-       'click li.previous':'previous',
-       'click li.next':'next'
-    },
-
-    previous: function(){
-        (this.options.page > this.collection.length) ? this.options.page = this.options.page - 50 : this.options.page = 0;
-        this.collection.fetch({data:{screen_name:this.options.username, pagination: this.options.page}});
-        return false;
-    },
-
-    next: function(){
-        (this.options.page < this.collection.length) ? this.options.page = this.options.page + 50 : this.options.page = 0;
-        this.collection.fetch({data:{screen_name:this.options.username, pagination: this.options.page}});
-        return false;
-    },
-
-    render: function(){
-        if(this.collection.length > 50)
-            //this.$el.html(this.template());
-
-        this.delegateEvents();
-        return this.$el;
-
-    }
 });
 
 
@@ -1038,10 +1003,10 @@ app.View.QuotaFiles = Backbone.View.extend({
    render: function(){
       var quota = this.model.get(0);
       quota = Math.round(quota);
-
       this.$el.html(this.template({quota: quota}));
       return this.$el;
    }
+
 });
 
 
