@@ -118,12 +118,13 @@ public class UserController {
     public void register(@RequestParam String email, HttpServletResponse response) {
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
         User user = new User();
         user.setLogin(email);
         userService.registerUser(user);
+        response.setStatus(HttpServletResponse.SC_CREATED);
         return;
     }
 
