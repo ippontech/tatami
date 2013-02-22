@@ -100,11 +100,9 @@
     </script>
 
     <c:if test="${wro4jEnabled eq false}">
-        <script src="/js/tatami-commons.js"></script>
         <script src="/js/tatami-home.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
-        <script src="/tatami/static/${version}/tatami-commons.js"></script>
         <script src="/tatami/static/${version}/tatami-home.js"></script>
     </c:if>
 
