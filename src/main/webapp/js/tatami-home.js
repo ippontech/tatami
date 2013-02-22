@@ -19,12 +19,6 @@ else {
   app = window.app;
 }
 
-marked.setOptions({
-    gfm:true,
-    pedantic:false,
-    sanitize:true
-});
-
 /*
   Profile
 */
