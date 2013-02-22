@@ -12,7 +12,7 @@ _.templateSettings = {
 marked.setOptions({
     gfm: true,
     pedantic: false,
-    sanitize: true,
+    sanitize: false,
     highlight: null
 });
 
