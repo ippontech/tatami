@@ -10,9 +10,10 @@ _.templateSettings = {
 };
 
 marked.setOptions({
-    gfm:true,
-    pedantic:false,
-    sanitize:true
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    highlight: null
 });
 
 $.fn.typeahead.Constructor.prototype.show  =function () {

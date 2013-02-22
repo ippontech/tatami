@@ -553,3 +553,7 @@ span.quota{
   table-layout: fixed;
   width: 100%;
 }
+
+.status-content * {
+  max-width: 100%;
+}
