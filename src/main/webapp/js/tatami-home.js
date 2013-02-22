@@ -125,14 +125,17 @@ app.View.UpdateView = Backbone.View.extend({
 
   render: function() {
     var $el = $(this.el);
+    var currentGroup = Backbone.history.fragment.split('/').slice(-1);
+
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").focus(function () {
           $(this).css("height", "200px");
           $("#updateStatusPreview").css("height", "220px");
-        $("#updateStatusEditorTab").fadeIn();
+          $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
+          $("#contentGroup #updateStatusGroup").val(currentGroup);
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
@@ -784,14 +787,6 @@ app.View.GroupsListView = Backbone.View.extend({
     },
 
     render: function() {
-        var groupUri = window.location.href.split('/').slice(-1);
-        this.groupsCollection.models.forEach(function(m){
-            if(groupUri == m.get('groupId'))
-                m.set('isActive', 'active');
-        });
-
-
-
         $(this.el).html(this.template({
             groupsCollection: this.groupsCollection}));
         return $(this.el);
