@@ -18,8 +18,8 @@
                 <ul class="nav pull-left">
                     <li>
                         <a href="/tatami/">
-                            <i class="icon-home icon-white"></i> <fmt:message
-                                key="tatami.home"/>
+                            <i class="icon-home icon-white"></i>
+                            <fmt:message key="tatami.home"/>
                         </a>
                     </li>
                 </ul>
@@ -103,30 +103,6 @@
                     </ul>
 
                 </sec:authorize>
-
-                <sec:authorize access="!isAuthenticated()">
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-flag icon-white"></i> 
-                                <fmt:message key="tatami.menu.language"/>
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu closed">
-                                <li>
-                                    <a href="<%=request.getContextPath()%>?language=en">
-                                        <fmt:message key="tatami.menu.language.en"/>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="<%=request.getContextPath()%>?language=fr">
-                                        <fmt:message key="tatami.menu.language.fr"/>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </sec:authorize>
                 <ul class="nav pull-left">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -145,6 +121,23 @@
                                     <i class="icon-briefcase"></i> <fmt:message
                                         key="tatami.menu.tos"/>
                                 </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">
+                                    <i class="icon-flag"></i>
+                                    <fmt:message key="tatami.menu.language"/></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a tabindex="-1" href="<%=request.getContextPath()%>?language=en">
+                                            <fmt:message key="tatami.menu.language.en"/>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="<%=request.getContextPath()%>?language=fr">
+                                            <fmt:message key="tatami.menu.language.fr"/>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -184,30 +177,6 @@
                         <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
                                name="search" type="text">
                     </form>
-                </sec:authorize>
-
-                <sec:authorize access="!isAuthenticated()">
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-flag icon-white"></i> 
-                                <fmt:message key="tatami.menu.language"/>
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu closed">
-                                <li>
-                                    <a href="<%=request.getContextPath()%>?language=en">
-                                        <fmt:message key="tatami.menu.language.en"/>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="<%=request.getContextPath()%>?language=fr">
-                                        <fmt:message key="tatami.menu.language.fr"/>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </sec:authorize>
             </div>
         </div>
