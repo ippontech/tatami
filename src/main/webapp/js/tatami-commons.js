@@ -291,11 +291,12 @@ app.View.TimeLineItemView = Backbone.View.extend({
 
     sharePopover: function() {
         var shareBtn = this.$el.find('.status-action-share');
+
         shareBtn.popover({
             animation: true,
             placement: 'bottom',
             trigger: 'manual',
-            content: 'test'
+            content: ''
         });
         shareBtn.popover('show');
         setTimeout(function () {
