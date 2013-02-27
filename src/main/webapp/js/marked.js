@@ -613,14 +613,23 @@ InlineLexer.prototype.output = function(src) {
 
     // url (gfm)
     if (cap = this.rules.url.exec(src)) {
+      var html;
       src = src.substring(cap[0].length);
       text = escape(cap[1]);
       href = text;
-      out += '<a href="'
-        + href
-        + '">'
-        + text
-        + '</a>';
+      for(var key in this.options.urls){
+        html = this.options.urls[key](text, href);
+        if(html){
+          out += html;
+          break;
+        }
+      }
+      if(!html)
+        out += '<a href="'
+          + href
+          + '">'
+          + text
+          + '</a>';
       continue;
     }
 
@@ -1084,6 +1093,7 @@ marked.defaults = {
   breaks: false,
   pedantic: false,
   sanitize: false,
+  // urls : [function(text, url){ return 'html'; }]
   smartLists: false,
   silent: false,
   highlight: null,
