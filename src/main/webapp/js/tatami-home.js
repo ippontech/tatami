@@ -68,14 +68,21 @@ app.View.UpdateView = Backbone.View.extend({
   searchChar: '',
 
   initialize: function() {
-    $(this.el).addClass('row-fluid');
+      this.$el.addClass('row-fluid');
       this.groupsCollection = new app.Collection.GroupsCollection();
       this.groupsCollection.fetch();
       this.groupsCollection.bind("reset", this.render, this);
   },
 
   events: {
-    'submit': 'addStatus'
+    'submit': 'addStatus',
+    'keypress textarea': 'storeStatus'
+  },
+
+  storeStatus: function(e){
+      if(window.localStorage){
+          window.localStorage.setItem('status', e.target.value);
+      }
   },
 
   addStatus: function(e) {
@@ -94,6 +101,7 @@ app.View.UpdateView = Backbone.View.extend({
     });
     status.save(null,{
       success: function(model, response) {
+          window.localStorage.removeItem('status');
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
           $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show');
@@ -137,6 +145,9 @@ app.View.UpdateView = Backbone.View.extend({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").focus(function () {
+
+          $(this).val(window.localStorage.getItem('status'));
+
           $(this).css("height", "200px");
           $("#updateStatusPreview").css("height", "220px");
           $("#updateStatusEditorTab").fadeIn();
