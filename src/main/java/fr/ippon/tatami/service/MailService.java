@@ -47,6 +47,8 @@ public class MailService {
     private String smtpUser;
 
     private String smtpPassword;
+    
+    private String smtpTls;
 
     private String from;
 
@@ -69,6 +71,7 @@ public class MailService {
         }
         this.smtpUser = env.getProperty("smtp.user");
         this.smtpPassword = env.getProperty("smtp.password");
+        this.smtpTls = env.getProperty("smtp.tls");
         this.from = env.getProperty("smtp.from");
         this.tatamiUrl = env.getProperty("tatami.url");
 
@@ -225,6 +228,11 @@ public class MailService {
             sender.setPort(port);
             sender.setUsername(smtpUser);
             sender.setPassword(smtpPassword);
+            if (smtpTls != null && !smtpTls.equals("")) {
+                Properties sendProperties = new Properties();
+                sendProperties.setProperty("mail.smtp.starttls.enable", "true");
+                sender.setJavaMailProperties(sendProperties);
+            }
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setFrom(from);
