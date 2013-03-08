@@ -17,6 +17,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
     private String role;
 
+    private Boolean isMember = true;
+
     public String getLogin() {
         return login;
     }
@@ -65,6 +67,14 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
         this.role = role;
     }
 
+    public Boolean getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(Boolean isMember) {
+        this.isMember = isMember;
+    }
+
     @Override
     public int compareTo(UserGroupDTO o) {
         return this.username.compareTo(o.getUsername());
@@ -95,6 +105,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", isMember=" + isMember +
                 ", role='" + role + '\'' +
                 '}';
     }
