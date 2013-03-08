@@ -819,11 +819,27 @@ app.View.GroupDetailsView = Backbone.View.extend({
         });
         $("#groupsList li").removeClass("active");
         $("#group-list-" + this.model.groupId).addClass("active");
+
+        this.views = {};
+
+        var collection = new app.Collection.ListUserGroupCollection();
+        collection.options = {
+            groupId : this.options.groupId
+        };
+
+        this.views.memberList = new app.View.ListUserGroup({
+            collection : collection,
+            groupId : this.options.groupId
+        });
     },
 
     render: function() {
         $(this.el).html(this.template({
             group: this.model}));
+
+        this.$el.find('#group-list-member .modal-body').html(this.views.memberList.el);
+
+        this.views.memberList.collection.fetch();
 
         return $(this.el);
     }
