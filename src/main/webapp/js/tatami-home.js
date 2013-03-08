@@ -450,7 +450,7 @@ app.View.TimeLineNewView = Backbone.View.extend({
           self.temp.unshift(sc.pop());
         }
         self.render();
-        
+
         self.trigger('callbackRefresh');
         self.endRefresh();
       },
@@ -831,6 +831,10 @@ app.View.GroupDetailsView = Backbone.View.extend({
             collection : collection,
             groupId : this.options.groupId
         });
+
+        this.views.buttonJoin = new app.View.ButtonJoinGroup({
+          groupId : this.options.groupId
+        });
     },
 
     render: function() {
@@ -841,8 +845,89 @@ app.View.GroupDetailsView = Backbone.View.extend({
 
         this.views.memberList.collection.fetch();
 
+        this.$el.find('.bouton-join-group').append(this.views.buttonJoin.el);
+
         return $(this.el);
     }
+});
+
+app.View.ButtonJoinGroup = Backbone.View.extend({
+  tagName : 'button',
+  attributes: {
+    class: 'bnt'
+  },
+  template : {
+    join: _.template($('#button-join-group-join').html()),
+    left: _.template($('#button-join-group-left').html()),
+    admin: _.template($('#button-join-group-admin').html())
+  },
+  initialize: function(){
+    var self = this;
+
+    this.model = new app.Model.ListUserGroupModel();
+    this.model.options = {
+      groupId : this.options.groupId,
+      username : username
+    };
+    this.model.url = function(){
+      return "/tatami/rest/groups/" + this.options.groupId + "/members/" + this.options.username;
+    };
+
+    window.model = this.model;
+
+    this.model.fetch({
+      success: function(model){
+        self.render();
+      }
+    });
+  },
+
+  events : {
+    'click': 'onClick'
+  },
+
+  onClick: function(e){
+    var self = this;
+    if (this.model.get('role') === 'ADMIN') {
+      window.location.href = '/tatami/account/#/groups/' + this.options.groupId;
+      return;
+    }
+    if (this.model.get('isMember')){
+      this.model.destroy({
+        success: function(){
+          self.model.set('isMember', false);
+          self.render();
+        }
+      });
+    }
+    else {
+      this.model.save(null, {
+        success: function(){
+          self.model.set('isMember', true);
+          self.render();
+        }
+      });
+    }
+  },
+
+  render: function(){
+    if (this.model.get('role') === 'ADMIN') {
+      this.$el.addClass('btn-primary');
+      this.$el.text(this.template.admin());
+    }
+    else {
+      if (this.model.get('isMember')) {
+        this.$el.addClass('btn-danger');
+        this.$el.text(this.template.left());
+      }
+      else {
+        this.$el.removeClass('btn-danger');
+        this.$el.text(this.template.join());
+      }
+    }
+
+    return this;
+  }
 });
 
 app.View.GroupsView = Backbone.View.extend({
@@ -884,7 +969,7 @@ Tags
 app.View.TagsSearchView = Backbone.View.extend({
   tagfollow: _.template($('#tag-search-form-follow').html()),
   tagfollowed: _.template($('#tag-search-form-followed').html()),
-  
+
   tagName: 'form',
 
   events: {
@@ -896,7 +981,7 @@ app.View.TagsSearchView = Backbone.View.extend({
   initialize: function(){
 
     $(this.el).addClass('alert alert-status');
-    
+
     var self = this;
     this.model.url = function() {
       if(self.options.tag && self.options.tag !== '')
@@ -904,7 +989,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       else
         return '/tatami/rest/statuses/tag_timeline';
     };
-    
+
     this.set(this.options.tag);
   },
 
@@ -936,12 +1021,12 @@ app.View.TagsSearchView = Backbone.View.extend({
   set: function(tag) {
 
     var _this = this;
-    
+
     if(typeof tag === 'undefined' || tag === ''){
       this.emptyRender();
-      
+
     }else {
-      
+
       return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) {
         var followed = data.followed;
         if(followed) {
@@ -953,9 +1038,9 @@ app.View.TagsSearchView = Backbone.View.extend({
       });
     }
   },
-  
+
   follow: function(){
-    
+
     var _this = this;
     this.undelegateEvents();
 
@@ -972,7 +1057,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       }
     });
   },
-  
+
   unfollow: function(){
 
     var _this = this;
@@ -991,7 +1076,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       }
     });
   },
-  
+
   followedRender: function() {
     $(this.el).html(this.tagfollowed({tag: this.options.tag}));
   },
@@ -1005,7 +1090,7 @@ app.View.TagsSearchView = Backbone.View.extend({
 
   render: function () {
     var trends = new app.View.TrendsView();
-    
+
     if(this.model.fetch().length > 0)
     {
       $(this.el).append(trends.$el);
@@ -1020,15 +1105,15 @@ app.View.TagsSearchView = Backbone.View.extend({
 app.View.TagsRefreshView = Backbone.View.extend({
   template: _.template($('#tag-refresh').html()),
   progressTemplate: _.template($('#timeline-progress').html()),
-  
+
   initialize: function(){
-    
+
   },
-  
+
   events: {
     'click': 'refreshTags'
   },
-  
+
   refreshTags: function(){
     this.progress();
     var self = this;
@@ -1041,14 +1126,14 @@ app.View.TagsRefreshView = Backbone.View.extend({
       }
     });
   },
-  
+
   render: function() {
     var $el = $(this.el);
     $el.html(this.template());
     this.delegateEvents();
     return $(this.el);
   },
-  
+
   progress: function() {
     $(this.el).html(this.progressTemplate());
     this.undelegateEvents();
@@ -1059,7 +1144,7 @@ app.View.TagsRefreshView = Backbone.View.extend({
 
 
 app.View.TagsView = Backbone.View.extend({
-  
+
     initialize:function () {
         this.views = {};
 
@@ -1068,7 +1153,7 @@ app.View.TagsView = Backbone.View.extend({
         this.views.refresh = new app.View.TagsRefreshView({
           model:this.model
         });
-        
+
         this.views.search = new app.View.TagsSearchView({
             tag:this.options.tag,
             model:this.model

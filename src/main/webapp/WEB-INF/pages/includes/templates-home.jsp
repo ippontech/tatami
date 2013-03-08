@@ -200,11 +200,11 @@
     <div class="well" style="padding: 0px;">
         <@ if (group.get('name') != undefined) { @>
         <div class="row-fluid">
+          <h2 class="text-center">
+            <@= group.get('name') @>
+          </h2>
           <table class="table profile-infos">
               <tr>
-                  <th>
-                      <fmt:message key="tatami.group.name"/>
-                  </th>
                   <th>
                       <fmt:message key="tatami.group.add.access"/>
                   </th>
@@ -213,11 +213,11 @@
                         <fmt:message key="tatami.group.counter"/>
                       </a>
                   </th>
+                  <th>
+                      Status
+                  </th>
               </tr>
               <tr>
-                  <td>
-                      <@= group.get('name') @>
-                  </td>
                   <td>
                       <@ if (group.get('publicGroup') === true) { @>
                           <span class="label label-warning"><fmt:message
@@ -245,6 +245,7 @@
                           </div>
                       </div>
                   </td>
+                  <td class="bouton-join-group"/>
               </tr>
           </table>
         </div>
@@ -284,4 +285,14 @@
   <div class="row-fluid">
     <input class="span12" name="search" value="<@= search @>" type="text" placeholder="search">
   </div>
+</script>
+
+<script type="text/template" id="button-join-group-join">
+  <fmt:message key="tatami.group.join.group"/>
+</script>
+<script type="text/template" id="button-join-group-left">
+  <fmt:message key="tatami.group.edit.quit"/>
+</script>
+<script type="text/template" id="button-join-group-admin">
+  <fmt:message key="tatami.group.edit.link"/>
 </script>
