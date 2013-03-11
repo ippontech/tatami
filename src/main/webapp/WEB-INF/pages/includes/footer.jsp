@@ -12,6 +12,7 @@
     <script src="/js/underscore.js"></script>
     <script src="/js/underscore-polyfill.js"></script>
     <script src="/js/backbone.js"></script>
+    <script src="/js/backbone.localStorage-min.js"></script>
     <script src="/js/jquery-charcount.js"></script>
     <script src="/js/jquery-timeago.js"></script>
     <script src="/js/jquery-tatami-infinitiScroll.js"></script>

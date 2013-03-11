@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -74,10 +75,11 @@ public class FileController {
         return uploadedFiles;
     }
 
-    @RequestMapping(value = "/file/{attachmentId}/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/{attachmentId}/*",
+            method = RequestMethod.GET)
     public void download(@PathVariable("attachmentId") String attachmentId,
                          HttpServletRequest request,
-                         HttpServletResponse response) {
+                         HttpServletResponse response) throws IOException {
 
         // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
@@ -87,6 +89,7 @@ public class FileController {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         if (attachment == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.sendError(404);
         } else {
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
@@ -102,10 +105,13 @@ public class FileController {
                 }
             }
         }
+
         try {
             response.flushBuffer();
         } catch (IOException e) {
+
             log.info("Error flushing the output stream. " + e.getMessage());
         }
+
     }
 }
