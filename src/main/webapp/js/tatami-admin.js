@@ -727,60 +727,6 @@ app.View.EditGroup = Backbone.View.extend({
     }
 });
 
-app.View.ListUserGroup = Backbone.View.extend({
-    tagName : 'table',
-    attributes : {
-        'class' : 'table'
-    },
-    initialize : function(){
-        this.collection.bind('reset', this.render, this);
-        this.collection.bind('add', this.addItem, this);
-
-        this.collection.fetch();
-    },
-
-    addItem : function(model){
-        var view = new app.View.ListUserGroupItem({
-            model : model
-        });
-        view.render();
-        this.$el.append(view.el);
-    },
-    render : function(){
-        var tableView = this;
-
-        this.$el.html($('#usergroup-header').html());
-        this.collection.forEach(this.addItem, this);
-
-        return this;
-    }
-});
-
-app.View.ListUserGroupItem = Backbone.View.extend({
-    tagName : 'tr',
-
-    template : _.template($('#usergroup-item').html()),
-    
-    initialize : function(){
-        this.model.bind('change', this.render, this);
-        this.model.bind('destroy', this.remove, this);
-    },
-
-    events : {
-        'click .delete' : 'removeUser'
-    },
-
-    removeUser : function(){
-        this.model.destroy();
-    },
-    
-    render : function(){
-        this.$el.html(this.template(this.model.toJSON()));
-        return this;
-    }
-    
-});
-
 app.Model.UserSearch = Backbone.Model.extend({
     toString : function(){
         return this.get('username');
@@ -886,23 +832,6 @@ app.View.AddUserGroup = Backbone.View.extend({
                 model.destroy();
             }
         });
-    }
-});
-
-app.Model.ListUserGroupModel = Backbone.Model.extend({
-    idAttribute : 'username',
-    defaults : {
-        gravatar : '',
-        firstName : '',
-        lastName : '',
-        role : ''
-    }
-});
-
-app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
-    model : app.Model.ListUserGroupModel,
-    url : function() {
-        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
     }
 });
 

@@ -168,19 +168,21 @@
             </p>
 
             <form class="well" action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
-                <div class="row-fluid">
-                    <input class="span12" name="openid_identifier" size="50"
+                <fieldset class="row-fluid">
+                    <div class="controle-group">
+                        <input class="span12" name="openid_identifier" size="50"
                            maxlength="100" type="hidden"
                            value="https://www.google.com/accounts/o8/id"/>
-                    <fieldset class="span12">
-                        <div class="controle-group">
-                            <button id="proceed_google" type="submit" class="span12 btn btn-success">
-                                <fmt:message key="tatami.authentication.google.submit"/>
-                            </button>
-                            <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>
-                        </div>
-                    </fieldset>
-                </div>
+                   </div>
+                    <div class="controle-group">
+                        <button id="proceed_google" type="submit" class="span12 btn btn-success">
+                            <fmt:message key="tatami.authentication.google.submit"/>
+                        </button>
+                    </div>
+                    <div class="controle-group">
+                        <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>
+                    </div>
+                </fieldset>
             </form>
         </div>
     </div>
