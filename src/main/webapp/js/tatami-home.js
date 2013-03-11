@@ -62,14 +62,27 @@ app.View.UpdateView = Backbone.View.extend({
   searchChar: '',
 
   initialize: function() {
-    $(this.el).addClass('row-fluid');
+      this.$el.addClass('row-fluid');
       this.groupsCollection = new app.Collection.GroupsCollection();
       this.groupsCollection.fetch();
       this.groupsCollection.bind("reset", this.render, this);
   },
 
   events: {
-    'submit': 'addStatus'
+    'submit': 'addStatus',
+    'keypress #updateStatusContent': 'storeStatus',
+    'change #updateStatusGroup': 'storeStatus'
+  },
+
+  storeStatus: function(e){
+      var elem = e.target.id
+
+          if(elem == 'updateStatusContent'){
+              window.localStorage.setItem('status', e.target.value);
+          }
+          else if(elem == 'updateStatusGroup'){
+              window.localStorage.setItem('statusGroup', e.target.value);
+          }
   },
 
   addStatus: function(e) {
@@ -130,28 +143,29 @@ app.View.UpdateView = Backbone.View.extend({
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
-      $("#updateStatusContent").focus(function () {
-          $(this).css("height", "200px");
-          $("#updateStatusPreview").css("height", "220px");
+      $("#updateStatusContent").click(function () {
+
+          $(this).css("height", "150px");
+          $("#updateStatusPreview").css("height", "150px");
           $("#updateStatusEditorTab").fadeIn();
           $("#contentGroup").fadeIn();
           $("#contentGroup #updateStatusGroup").val(currentGroup);
           $("#updateStatusPrivate").fadeIn();
           $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
+
+          $(this).val(window.localStorage.getItem('status'));
+          if(currentGroup == "")
+            $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+
+      }).focusout(function(){
+          $("#updateStatusContent").css("height", "20px");
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
             $('#updateStatusPreview').html(
                 marked($("#updateStatusContent").val()));
-          }
-      });
-
-      $("#updateStatusContent").blur(function(){
-          if($(this).val().length === 0){
-              $(this).css("height", "20px");
-              $("#updateStatusEditorTab, #dropzone, #updateStatusBtns, #updateStatusPrivate, #contentGroup").hide();
           }
       });
 
