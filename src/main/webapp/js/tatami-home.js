@@ -19,6 +19,12 @@ else {
   app = window.app;
 }
 
+marked.setOptions({
+    gfm:true,
+    pedantic:false,
+    sanitize:true
+});
+
 /*
   Profile
 */
@@ -86,9 +92,8 @@ app.View.UpdateView = Backbone.View.extend({
   },
 
   addStatus: function(e) {
-    e.preventDefault();
-
     var self = this;
+    e.preventDefault();
     this.disable();
 
     var status = new app.Model.StatusUpdateModel();
@@ -146,7 +151,7 @@ app.View.UpdateView = Backbone.View.extend({
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
-      $("#updateStatusContent").click(function (){
+      $("#updateStatusContent").click(function () {
 
           $(this).css("height", "150px");
           $("#updateStatusPreview").css("height", "150px");
@@ -160,6 +165,7 @@ app.View.UpdateView = Backbone.View.extend({
           $(this).val(window.localStorage.getItem('status'));
           if(currentGroup == "")
             $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+
       });
 
       $('#profileContent').mouseleave(function(){
@@ -198,7 +204,6 @@ app.View.UpdateView = Backbone.View.extend({
       });
       $('#updateStatusFileupload').fileupload({
           dataType: 'json',
-          sequentialUploads: 'true',
           progressall: function (e, data) {
               $('#attachmentBar').show();
               var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -837,115 +842,14 @@ app.View.GroupDetailsView = Backbone.View.extend({
         });
         $("#groupsList li").removeClass("active");
         $("#group-list-" + this.model.groupId).addClass("active");
-
-        this.views = {};
-
-        var collection = new app.Collection.ListUserGroupCollection();
-        collection.options = {
-            groupId : this.options.groupId
-        };
-
-        this.views.memberList = new app.View.ListUserGroup({
-            collection : collection,
-            groupId : this.options.groupId
-        });
-
-        this.views.buttonJoin = new app.View.ButtonJoinGroup({
-          groupId : this.options.groupId
-        });
     },
 
     render: function() {
         $(this.el).html(this.template({
             group: this.model}));
 
-        this.$el.find('#group-list-member .modal-body').html(this.views.memberList.el);
-
-        this.views.memberList.collection.fetch();
-
-        this.$el.find('.bouton-join-group').append(this.views.buttonJoin.el);
-
         return $(this.el);
     }
-});
-
-app.View.ButtonJoinGroup = Backbone.View.extend({
-  tagName : 'button',
-  attributes: {
-    class: 'bnt'
-  },
-  template : {
-    join: _.template($('#button-join-group-join').html()),
-    left: _.template($('#button-join-group-left').html()),
-    admin: _.template($('#button-join-group-admin').html())
-  },
-  initialize: function(){
-    var self = this;
-
-    this.model = new app.Model.ListUserGroupModel();
-    this.model.options = {
-      groupId : this.options.groupId,
-      username : username
-    };
-    this.model.url = function(){
-      return "/tatami/rest/groups/" + this.options.groupId + "/members/" + this.options.username;
-    };
-
-    window.model = this.model;
-
-    this.model.fetch({
-      success: function(model){
-        self.render();
-      }
-    });
-  },
-
-  events : {
-    'click': 'onClick'
-  },
-
-  onClick: function(e){
-    var self = this;
-    if (this.model.get('role') === 'ADMIN') {
-      window.location.href = '/tatami/account/#/groups/' + this.options.groupId;
-      return;
-    }
-    if (this.model.get('isMember')){
-      this.model.destroy({
-        success: function(){
-          self.model.set('isMember', false);
-          self.render();
-        }
-      });
-    }
-    else {
-      this.model.save(null, {
-        success: function(){
-          self.model.set('isMember', true);
-          self.render();
-        }
-      });
-    }
-  },
-
-  render: function(){
-    if (this.model.get('role') === 'ADMIN') {
-      this.$el.addClass('btn-primary');
-      this.$el.text(this.template.admin());
-    }
-    else {
-      if (this.model.get('isMember')) {
-        this.$el.addClass('btn-danger');
-        this.$el.text(this.template.left());
-      }
-      else {
-        this.$el.removeClass('btn-danger');
-        this.$el.text(this.template.join());
-      }
-    }
-
-    return this;
-  }
 });
 
 app.View.GroupsView = Backbone.View.extend({
