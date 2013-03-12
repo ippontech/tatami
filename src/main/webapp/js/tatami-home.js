@@ -86,8 +86,9 @@ app.View.UpdateView = Backbone.View.extend({
   },
 
   addStatus: function(e) {
-    var self = this;
     e.preventDefault();
+
+    var self = this;
     this.disable();
 
     var status = new app.Model.StatusUpdateModel();
@@ -145,7 +146,7 @@ app.View.UpdateView = Backbone.View.extend({
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
-      $("#updateStatusContent").click(function () {
+      $("#updateStatusContent").click(function (){
 
           $(this).css("height", "150px");
           $("#updateStatusPreview").css("height", "150px");
@@ -160,9 +161,9 @@ app.View.UpdateView = Backbone.View.extend({
           if(currentGroup == "")
             $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
 
-      }).focusout(function(){
-          $("#updateStatusContent").css("height", "20px");
       });
+
+
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
