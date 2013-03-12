@@ -70,7 +70,7 @@ app.View.UpdateView = Backbone.View.extend({
 
   events: {
     'submit': 'addStatus',
-    'keypress #updateStatusContent': 'storeStatus',
+    'change #updateStatusContent': 'storeStatus',
     'change #updateStatusGroup': 'storeStatus'
   },
 
@@ -160,8 +160,13 @@ app.View.UpdateView = Backbone.View.extend({
           if(currentGroup == "")
             $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
 
-      }).focusout(function(){
-          $("#updateStatusContent").css("height", "20px");
+      });
+
+      $('#profileContent').mouseleave(function () {
+          if ($("#updateStatusContent").val().length === 0) {
+              window.localStorage.removeItem('status');
+              $("#updateStatusContent").css("height", "20px");
+          }
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
