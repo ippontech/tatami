@@ -169,7 +169,9 @@ app.View.UpdateView = Backbone.View.extend({
       });
 
       $('#profileContent').mouseleave(function(){
-          $("#updateStatusContent").css("height", "20px");
+          var text = $("#updateStatusContent").val();
+          if(text.length === 0)
+            $("#updateStatusContent").css("height", "20px");
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
