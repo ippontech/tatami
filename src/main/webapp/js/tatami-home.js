@@ -164,7 +164,7 @@ app.View.UpdateView = Backbone.View.extend({
 
           $(this).val(window.localStorage.getItem('status'));
           if(currentGroup == "")
-            $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+              $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
 
       });
 
