@@ -108,13 +108,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
+        Object[] interceptors = {localeChangeInterceptor()};
+        requestMappingHandlerMapping.setInterceptors(interceptors);
         return requestMappingHandlerMapping;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-        super.addInterceptors(registry);
     }
 
     @Override
