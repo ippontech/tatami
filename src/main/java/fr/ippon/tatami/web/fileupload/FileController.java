@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -88,7 +89,7 @@ public class FileController {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         if (attachment == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.sendError(404);
+            response.sendRedirect("/tatami/file/file_not_found");
         } else {
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
@@ -112,5 +113,15 @@ public class FileController {
             log.info("Error flushing the output stream. " + e.getMessage());
         }
 
+    }
+
+    @RequestMapping(value = "/file/file_not_found",
+            method = RequestMethod.GET)
+    public ModelAndView FileNotFound() {
+        if (log.isDebugEnabled()) {
+            log.debug("File not found !");
+        }
+        ModelAndView mv = new ModelAndView("errors/file_not_found");
+        return mv;
     }
 }
