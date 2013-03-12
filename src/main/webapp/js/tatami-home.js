@@ -107,6 +107,8 @@ app.View.UpdateView = Backbone.View.extend({
     });
     status.save(null,{
       success: function(model, response) {
+          window.localStorage.removeItem('status');
+          window.localStorage.removeItem('statusGroup');
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
           $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show');
