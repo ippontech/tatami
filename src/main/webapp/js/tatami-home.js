@@ -160,10 +160,11 @@ app.View.UpdateView = Backbone.View.extend({
           $(this).val(window.localStorage.getItem('status'));
           if(currentGroup == "")
             $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
-
       });
 
-
+      $('#profileContent').mouseleave(function(){
+          $("#updateStatusContent").css("height", "20px");
+      });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
