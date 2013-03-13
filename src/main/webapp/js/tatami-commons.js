@@ -1105,6 +1105,8 @@ app.View.WelcomeFriend = Backbone.View.extend({
   initialize : function(){
     this.header = document.createElement('div');
     this.$header = $(this.header);
+    this.error = document.createElement('div');
+    this.$error = $(this.error);
     this.render();
   },
 
@@ -1151,8 +1153,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1170,8 +1173,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1213,6 +1217,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
   render: function(){
     this.$header.html(this.template.header());
     this.$el.html(this.template.body());
+    this.$el.append(this.$error);
 
     return this;
   },

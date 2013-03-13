@@ -307,7 +307,13 @@
 <script type="text/template" id="welcome-friends-error">
   <div class="alert alert-error">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    Error : <@= email @>
+    <@= email @> : <@ if(status === 400) { @>
+      <fmt:message key="tatami.welcome.friends.error.400"/>
+    <@ } else if (status === 404) { @>
+      <fmt:message key="tatami.welcome.friends.error.404"/>
+    <@ } else { @>
+      <fmt:message key="tatami.welcome.friends.error.unknown"/>
+    <@ } @>
   </div>
 </script>
 
