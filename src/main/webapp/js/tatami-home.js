@@ -875,7 +875,7 @@ app.View.GroupDetailsView = Backbone.View.extend({
 app.View.ButtonJoinGroup = Backbone.View.extend({
   tagName : 'button',
   attributes: {
-    class: 'bnt'
+    class: 'btn'
   },
   template : {
     join: _.template($('#button-join-group-join').html()),

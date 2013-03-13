@@ -236,12 +236,13 @@
                       <div id="group-list-member" class="modal hide fade">
                           <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                              <h3 id="myModalLabel">List of member</h3>
+                              <h3 id="myModalLabel"><fmt:message
+                                  key="tatami.group.members.list"/></h3>
                           </div>
                           <div class="modal-body">
                           </div>
                           <div class="modal-footer">
-                              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                              <button class="btn" data-dismiss="modal" aria-hidden="true"><fmt:message key="tatami.login.modal.timeout.close"/></button>
                           </div>
                       </div>
                   </td>
