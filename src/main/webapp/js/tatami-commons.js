@@ -440,7 +440,17 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
     'click .status-action-remove': 'removeAction',
+    'click .replyEditorTab a[data-toggle="tab"]': 'replyChangeTab',
     'submit .reply-form': 'sendReply'
+  },
+
+  replyChangeTab: function(e){
+    var a = e.target;
+    if(a.hasAttribute('data-pane')){
+      var target = a.getAttribute('data-pane');
+      this.$el.find('.tab-pane').removeClass('active');
+      this.$el.find(target+'.tab-pane').addClass('active');
+    }
   },
 
   detailsAction: function () {
@@ -535,6 +545,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
   },
 
   render: function() {
+      var self = this;
       var model = this.model.toJSON();
       model.markdown = marked(model.content);
 
@@ -542,12 +553,10 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
           status:model,
           discuss:(this.options.discuss)
       }));
-      
-      $('a[data-toggle="tab"]').on('show', function (e) {
-          if (e.target.id === 'replyPreviewTab') {
-            $('#replyPreview').html(
-                marked($("#replyEdit").val()));
-          }
+
+      $('a[data-toggle="tab"][data-pane=".replyPreviewPane"]').on('show', function (e) {
+            self.$el.find('.replyPreview').html(
+                marked(self.$el.find('.replyEdit').val()));
       });
 
       $(this.el).find("abbr.timeago").timeago();
