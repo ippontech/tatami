@@ -850,7 +850,8 @@ app.View.GroupDetailsView = Backbone.View.extend({
 
         this.views.memberList = new app.View.ListUserGroup({
             collection : collection,
-            groupId : this.options.groupId
+            groupId : this.options.groupId,
+            admin : false
         });
 
         this.views.buttonJoin = new app.View.ButtonJoinGroup({

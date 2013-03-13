@@ -1381,6 +1381,10 @@ app.View.ListUserGroup = Backbone.View.extend({
         'class' : 'table'
     },
     initialize : function(){
+        this.options = _.defaults(this.options, {
+          admin : true
+        });
+
         this.collection.bind('reset', this.render, this);
         this.collection.bind('add', this.addItem, this);
 
@@ -1388,9 +1392,11 @@ app.View.ListUserGroup = Backbone.View.extend({
     },
 
     addItem : function(model){
-        var view = new app.View.ListUserGroupItem({
+        var view = new app.View.ListUserGroupItem(
+          _.defaults({
             model : model
-        });
+          }, this.options)
+        );
         view.render();
         this.$el.append(view.el);
     },
@@ -1423,7 +1429,9 @@ app.View.ListUserGroupItem = Backbone.View.extend({
     },
 
     render : function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        var locals = this.model.toJSON();
+        locals.admin = this.options.admin;
+        this.$el.html(this.template(locals));
         return this;
     }
 

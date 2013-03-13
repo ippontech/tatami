@@ -342,11 +342,13 @@
             <fmt:message key="tatami.group.role.member"/>
         <@ } @>
     </td>
-    <td>
-        <@ if (window.username !== username) { @>
-            <button type="button" class="btn btn-success input-block-level delete">
-                <fmt:message key="tatami.group.edit.member.delete"/>
-            </button>
-        <@ } @>
-    </td>
+    <@ if(admin){ @>
+        <td>
+            <@ if (window.username !== username) { @>
+                <button type="button" class="btn btn-success input-block-level delete">
+                    <fmt:message key="tatami.group.edit.member.delete"/>
+                </button>
+            <@ } @>
+        </td>
+    <@ } @>
 </script>
