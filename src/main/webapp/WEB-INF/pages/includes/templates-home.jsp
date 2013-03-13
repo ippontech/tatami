@@ -209,7 +209,7 @@
                       <fmt:message key="tatami.group.add.access"/>
                   </th>
                   <th>
-                      <a data-toggle="modal" data-target="#group-list-member" data-background=false>
+                      <a data-toggle="modal" data-target="#group-list-member" data-background=false class="btn-link">
                         <fmt:message key="tatami.group.counter"/>
                       </a>
                   </th>
@@ -228,7 +228,7 @@
                       <@ } @>
                   </td>
                   <td>
-                      <a data-toggle="modal" data-target="#group-list-member" data-background=false>
+                      <a data-toggle="modal" data-target="#group-list-member" data-background=false class="btn-link">
                           <span class="badge badge-info">
                               <@= group.get('counter') @>
                           </span>
