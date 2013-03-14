@@ -115,7 +115,7 @@
     </div>
     <div id="updateStatusPrivate" class="control-group">
       <label class="checkbox">
-          <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
+          <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
       </label>
     </div>
     <div class="control-group" id="updateStatusBtns">

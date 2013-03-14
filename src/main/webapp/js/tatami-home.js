@@ -71,7 +71,8 @@ app.View.UpdateView = Backbone.View.extend({
   events: {
     'submit': 'addStatus',
     'change #updateStatusContent': 'storeStatus',
-    'change #updateStatusGroup': 'storeStatus'
+    'change #updateStatusGroup': 'storeStatus',
+    'change #statusPrivate': 'storeStatus'
   },
 
   storeStatus: function(e){
@@ -79,9 +80,10 @@ app.View.UpdateView = Backbone.View.extend({
 
           if(elem == 'updateStatusContent'){
               window.localStorage.setItem('status', e.target.value);
-          }
-          else if(elem == 'updateStatusGroup'){
+          } else if(elem == 'updateStatusGroup'){
               window.localStorage.setItem('statusGroup', e.target.value);
+          } else if(elem == 'statusPrivate'){
+              window.localStorage.setItem('statusPrivate', e.target.checked);
           }
   },
 
@@ -103,6 +105,8 @@ app.View.UpdateView = Backbone.View.extend({
       success: function(model, response) {
           window.localStorage.removeItem('status');
           window.localStorage.removeItem('statusGroup');
+          window.localStorage.removeItem('statusPrivate');
+          $("#statusPrivate").attr('checked', false);
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
           $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show');
@@ -157,9 +161,12 @@ app.View.UpdateView = Backbone.View.extend({
           $("#dropzone").fadeIn();
 
           $(this).val(window.localStorage.getItem('status'));
-          if(currentGroup == "")
+          if(currentGroup == "") {
             $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
-
+          }
+          if (window.localStorage.getItem('statusPrivate') == "true") {
+            $("#statusPrivate").attr('checked', true);
+          }
       });
 
       $('#profileContent').mouseleave(function () {
