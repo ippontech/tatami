@@ -440,7 +440,17 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
     'click .status-action-remove': 'removeAction',
+    'click .replyEditorTab a[data-toggle="tab"]': 'replyChangeTab',
     'submit .reply-form': 'sendReply'
+  },
+
+  replyChangeTab: function(e){
+    var a = e.target;
+    if(a.hasAttribute('data-pane')){
+      var target = a.getAttribute('data-pane');
+      this.$el.find('.tab-pane').removeClass('active');
+      this.$el.find(target+'.tab-pane').addClass('active');
+    }
   },
 
   detailsAction: function () {
@@ -535,6 +545,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
   },
 
   render: function() {
+      var self = this;
       var model = this.model.toJSON();
       model.markdown = marked(model.content);
 
@@ -542,12 +553,10 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
           status:model,
           discuss:(this.options.discuss)
       }));
-      
-      $('a[data-toggle="tab"]').on('show', function (e) {
-          if (e.target.id === 'replyPreviewTab') {
-            $('#replyPreview').html(
-                marked($("#replyEdit").val()));
-          }
+
+      $('a[data-toggle="tab"][data-pane=".replyPreviewPane"]').on('show', function (e) {
+            self.$el.find('.replyPreview').html(
+                marked(self.$el.find('.replyEdit').val()));
       });
 
       $(this.el).find("abbr.timeago").timeago();
@@ -1105,6 +1114,8 @@ app.View.WelcomeFriend = Backbone.View.extend({
   initialize : function(){
     this.header = document.createElement('div');
     this.$header = $(this.header);
+    this.error = document.createElement('div');
+    this.$error = $(this.error);
     this.render();
   },
 
@@ -1151,8 +1162,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1170,8 +1182,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1213,6 +1226,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
   render: function(){
     this.$header.html(this.template.header());
     this.$el.html(this.template.body());
+    this.$el.append(this.$error);
 
     return this;
   },
@@ -1376,6 +1390,10 @@ app.View.ListUserGroup = Backbone.View.extend({
         'class' : 'table'
     },
     initialize : function(){
+        this.options = _.defaults(this.options, {
+          admin : true
+        });
+
         this.collection.bind('reset', this.render, this);
         this.collection.bind('add', this.addItem, this);
 
@@ -1383,9 +1401,11 @@ app.View.ListUserGroup = Backbone.View.extend({
     },
 
     addItem : function(model){
-        var view = new app.View.ListUserGroupItem({
+        var view = new app.View.ListUserGroupItem(
+          _.defaults({
             model : model
-        });
+          }, this.options)
+        );
         view.render();
         this.$el.append(view.el);
     },
@@ -1418,7 +1438,9 @@ app.View.ListUserGroupItem = Backbone.View.extend({
     },
 
     render : function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        var locals = this.model.toJSON();
+        locals.admin = this.options.admin;
+        this.$el.html(this.template(locals));
         return this;
     }
 
