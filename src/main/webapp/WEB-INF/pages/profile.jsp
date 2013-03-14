@@ -135,14 +135,15 @@
 <jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
-<sec:authentication property="principal.username" var="login"/>
+<sec:authentication property="principal.username" var="currentUserLogin"/>
 <script type="text/javascript">
+    var login = "<sec:authentication property="principal.username"/>";
     var test = "${user.login}";
     var username = "${user.username}";
     var authenticatedUsername = "${authenticatedUsername}";
     var page = "profile";
     var followed = ${followed};
-    var owner = ${user.login eq login};
+    var owner = ${user.login eq currentUserLogin};
 
     var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>

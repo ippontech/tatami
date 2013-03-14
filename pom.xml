@@ -79,7 +79,7 @@
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.smtp.tls></tatami.smtp.tls>                
-                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.google.analytics.key>UA-38621958-2</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.connection.security>any</tatami.connection.security>
