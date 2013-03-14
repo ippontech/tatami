@@ -147,6 +147,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="https://github.com/ippontech/tatami/issues" target="_blank">
+                                    <i class="icon-inbox"></i> <fmt:message key="tatami.github.issues"/>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="https://github.com/ippontech/tatami" target="_blank">
                                     <i class="icon-wrench"></i> <fmt:message key="tatami.github.fork"/>
                                 </a>
