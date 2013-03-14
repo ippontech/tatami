@@ -326,8 +326,8 @@
 </script>
 
 <script type="text/template" id="usergroup-item">
-    <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+    <td style="text-align: left">
+        <img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/">
             <@= username @>
         </a>
