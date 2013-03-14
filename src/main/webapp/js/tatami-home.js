@@ -150,7 +150,6 @@ app.View.UpdateView = Backbone.View.extend({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").click(function () {
-          console.log($(this).css("height"));
           if ($(this).css("height") == "30px") {
               $(this).css("height", "150px");
               $("#updateStatusPreview").css("height", "150px");
