@@ -38,6 +38,29 @@ marked.setOptions({
           cap[2] +
           '"></iframe>';
         }
+      },
+      gist : function(text, url){
+        var cap;
+        if((cap = /^.+gist.github.com\/(([A-z0-9-]+)\/)?([0-9A-z]+)/.exec(url))){
+          $.ajax({
+            url: cap[0] + '.json',
+            dataType: 'jsonp',
+            success: function(response){
+              if(response.stylesheet && $('link[href="' + response.stylesheet + '"]').length === 0){
+                var l = document.createElement("link"),
+                  head = document.getElementsByTagName("head")[0];
+
+                l.type = "text/css";
+                l.rel = "stylesheet";
+                l.href = response.stylesheet;
+                head.insertBefore(l, head.firstChild);
+              }
+              var $elements = $('.gist' + cap[3]);
+              $elements.html(response.div);
+            }
+          });
+          return '<div class="gist' + cap[3] + '"/>';
+        }
       }
     }
 });
