@@ -74,6 +74,11 @@ form {
     margin-top : 3px;
 }
 
+#updateStatusPreview p {
+    overflow-y: scroll;
+    height: 150px;
+}
+
 #contentGroup {
     display: none;
 }
@@ -108,7 +113,6 @@ form {
 }
 
 #dropzone {
-    width: 60%;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -119,13 +123,11 @@ form {
     display: none;
 }
 #dropzone.in {
-    width: 80%;
-    height: 100px;
-    line-height: 100px;
-    font-size: larger;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #0088cc;
 }
-#dropzone.hover {
-}
+
 #dropzone.fade {
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
