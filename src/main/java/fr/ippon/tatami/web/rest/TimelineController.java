@@ -166,7 +166,7 @@ public class TimelineController {
     @RequestMapping(value = "/rest/statuses/share/{statusId}",
             method = RequestMethod.POST)
     @ResponseBody
-    public void favoriteStatus(@PathVariable("statusId") String statusId) {
+    public void shareStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to share status : " + statusId);
         }

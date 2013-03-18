@@ -711,6 +711,12 @@
             ]
         },
         {
+            "name":"Domainline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
             "name":"Status",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",

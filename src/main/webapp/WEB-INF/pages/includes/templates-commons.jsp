@@ -112,18 +112,18 @@
               <fieldset>
                   <div class="control-group">
 		    <div class="tabbable">
-		      <ul id="replyEditorTab" class="nav nav-tabs" >
-			<li class="active"><a href="#replyEditPane" id="replyEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
-			<li><a href="#replyPreviewPane" id="replyPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
+		      <ul class="nav nav-tabs replyEditorTab" >
+			<li class="active"><a data-pane=".replyEditPane" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
+			<li><a data-pane=".replyPreviewPane" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
 		     </ul>
 		    <div class="tab-content fixFFmax-width">
-		      <div class="tab-pane active" id="replyEditPane">
+		      <div class="tab-pane active replyEditPane">
 	
-			<textarea id="replyEdit" class="reply span12" required="required" maxlength="750"
+			<textarea class="reply span12 replyEdit" required="required" maxlength="750"
                                 name="content">@<@= status.username @> </textarea>
 		      </div>
-		      <div class="tab-pane" id="replyPreviewPane">
-			<p id="replyPreview" class="well status-content fixFFmax-width"></p>
+		      <div class="tab-pane replyPreviewPane">
+			<p class="well status-content fixFFmax-width replyPreview"></p>
 		      </div>
 		    </div>  
                   </div>
@@ -307,7 +307,13 @@
 <script type="text/template" id="welcome-friends-error">
   <div class="alert alert-error">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    Error : <@= email @>
+    <@= email @> : <@ if(status === 400) { @>
+      <fmt:message key="tatami.welcome.friends.error.400"/>
+    <@ } else if (status === 404) { @>
+      <fmt:message key="tatami.welcome.friends.error.404"/>
+    <@ } else { @>
+      <fmt:message key="tatami.welcome.friends.error.unknown"/>
+    <@ } @>
   </div>
 </script>
 
@@ -320,8 +326,8 @@
 </script>
 
 <script type="text/template" id="usergroup-item">
-    <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+    <td style="text-align: left">
+        <img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/">
             <@= username @>
         </a>
@@ -336,11 +342,13 @@
             <fmt:message key="tatami.group.role.member"/>
         <@ } @>
     </td>
-    <td>
-        <@ if (window.username !== username) { @>
-            <button type="button" class="btn btn-success input-block-level delete">
-                <fmt:message key="tatami.group.edit.member.delete"/>
-            </button>
-        <@ } @>
-    </td>
+    <@ if(admin){ @>
+        <td>
+            <@ if (window.username !== username) { @>
+                <button type="button" class="btn btn-success input-block-level delete">
+                    <fmt:message key="tatami.group.edit.member.delete"/>
+                </button>
+            <@ } @>
+        </td>
+    <@ } @>
 </script>

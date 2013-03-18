@@ -92,6 +92,9 @@ public class StatusUpdateService {
     private UserRepository userRepository;
 
     @Inject
+    private DomainlineRepository domainlineRepository;
+
+    @Inject
     private StatusAttachmentRepository statusAttachmentRepository;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
@@ -214,6 +217,9 @@ public class StatusUpdateService {
 
             // Add to the searchStatus engine
             searchService.addStatus(status);
+
+            // add status to the company wall
+            addToCompanyWall(status, group);
         }
 
         if (log.isDebugEnabled()) {
@@ -242,6 +248,13 @@ public class StatusUpdateService {
             for (String followerLogin : followersForUser) {
                 timelineRepository.addStatusToTimeline(followerLogin, status);
             }
+        }
+    }
+
+
+    private void addToCompanyWall(Status status, Group group) {
+        if (isPublicGroup(group)) {
+            domainlineRepository.addStatusToDomainline(status, status.getDomain());
         }
     }
 

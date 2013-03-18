@@ -59,6 +59,9 @@ public class TimelineService {
     private GrouplineRepository grouplineRepository;
 
     @Inject
+    private DomainlineRepository domainlineRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -295,6 +298,22 @@ public class TimelineService {
 
         Map<String, SharedStatusInfo> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+
+        return buildStatusList(line);
+    }
+
+    /**
+     * The domainline contains all the public statuses of the domain (status with no group, or
+     * in a public group), for the last 30 days.
+     *
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
+     */
+    public Collection<StatusDTO> getDomainline(int nbStatus, String since_id, String max_id) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line =
+                domainlineRepository.getDomainline(domain, nbStatus, since_id, max_id);
 
         return buildStatusList(line);
     }

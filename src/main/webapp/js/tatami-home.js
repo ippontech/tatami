@@ -76,8 +76,9 @@ app.View.UpdateView = Backbone.View.extend({
 
   events: {
     'submit': 'addStatus',
-    'keypress #updateStatusContent': 'storeStatus',
-    'change #updateStatusGroup': 'storeStatus'
+    'change #updateStatusContent': 'storeStatus',
+    'change #updateStatusGroup': 'storeStatus',
+    'change #statusPrivate': 'storeStatus'
   },
 
   storeStatus: function(e){
@@ -85,9 +86,10 @@ app.View.UpdateView = Backbone.View.extend({
 
           if(elem == 'updateStatusContent'){
               window.localStorage.setItem('status', e.target.value);
-          }
-          else if(elem == 'updateStatusGroup'){
+          } else if(elem == 'updateStatusGroup'){
               window.localStorage.setItem('statusGroup', e.target.value);
+          } else if(elem == 'statusPrivate'){
+              window.localStorage.setItem('statusPrivate', e.target.checked);
           }
   },
 
@@ -109,6 +111,8 @@ app.View.UpdateView = Backbone.View.extend({
       success: function(model, response) {
           window.localStorage.removeItem('status');
           window.localStorage.removeItem('statusGroup');
+          window.localStorage.removeItem('statusPrivate');
+          $("#statusPrivate").attr('checked', false);
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
           $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show');
@@ -162,16 +166,15 @@ app.View.UpdateView = Backbone.View.extend({
           $("#updateStatusBtns").fadeIn();
           $("#dropzone").fadeIn();
 
+      $('#profileContent').mouseleave(function () {
+          if ($("#updateStatusContent").val().length === 0) {
+              window.localStorage.removeItem('status');
+              $("#updateStatusContent").css("height", "30px");
+          }
           $(this).val(window.localStorage.getItem('status'));
           if(currentGroup == "")
               $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
 
-      });
-
-      $('#profileContent').mouseleave(function(){
-          var text = $("#updateStatusContent").val();
-          if(text.length === 0)
-            $("#updateStatusContent").css("height", "20px");
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
@@ -844,14 +847,116 @@ app.View.GroupDetailsView = Backbone.View.extend({
         });
         $("#groupsList li").removeClass("active");
         $("#group-list-" + this.model.groupId).addClass("active");
+
+        this.views = {};
+
+        var collection = new app.Collection.ListUserGroupCollection();
+        collection.options = {
+            groupId : this.options.groupId
+        };
+
+        this.views.memberList = new app.View.ListUserGroup({
+            collection : collection,
+            groupId : this.options.groupId,
+            admin : false
+        });
+
+        this.views.buttonJoin = new app.View.ButtonJoinGroup({
+          groupId : this.options.groupId
+        });
     },
 
     render: function() {
         $(this.el).html(this.template({
             group: this.model}));
 
+        this.$el.find('#group-list-member .modal-body').html(this.views.memberList.el);
+
+        this.views.memberList.collection.fetch();
+
+        this.$el.find('.bouton-join-group').append(this.views.buttonJoin.el);
+
         return $(this.el);
     }
+});
+
+app.View.ButtonJoinGroup = Backbone.View.extend({
+  tagName : 'button',
+  attributes: {
+    class: 'btn'
+  },
+  template : {
+    join: _.template($('#button-join-group-join').html()),
+    left: _.template($('#button-join-group-left').html()),
+    admin: _.template($('#button-join-group-admin').html())
+  },
+  initialize: function(){
+    var self = this;
+
+    this.model = new app.Model.ListUserGroupModel();
+    this.model.options = {
+      groupId : this.options.groupId,
+      username : username
+    };
+    this.model.url = function(){
+      return "/tatami/rest/groups/" + this.options.groupId + "/members/" + this.options.username;
+    };
+
+    window.model = this.model;
+
+    this.model.fetch({
+      success: function(model){
+        self.render();
+      }
+    });
+  },
+
+  events : {
+    'click': 'onClick'
+  },
+
+  onClick: function(e){
+    var self = this;
+    if (this.model.get('role') === 'ADMIN') {
+      window.location.href = '/tatami/account/#/groups/' + this.options.groupId;
+      return;
+    }
+    if (this.model.get('isMember')){
+      this.model.destroy({
+        success: function(){
+          self.model.set('isMember', false);
+          self.render();
+        }
+      });
+    }
+    else {
+      this.model.save(null, {
+        success: function(){
+          self.model.set('isMember', true);
+          self.render();
+        }
+      });
+    }
+  },
+
+  render: function(){
+    if (this.model.get('role') === 'ADMIN') {
+      this.$el.addClass('btn-primary');
+      this.$el.text(this.template.admin());
+    }
+    else {
+      if (this.model.get('isMember')) {
+        this.$el.addClass('btn-danger');
+        this.$el.text(this.template.left());
+      }
+      else {
+        this.$el.removeClass('btn-danger');
+        this.$el.text(this.template.join());
+      }
+    }
+
+    return this;
+  }
 });
 
 app.View.GroupsView = Backbone.View.extend({

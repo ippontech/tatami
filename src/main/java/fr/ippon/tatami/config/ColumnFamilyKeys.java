@@ -75,4 +75,6 @@ public class ColumnFamilyKeys {
 
     public final static String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
 
+    public final static String DOMAINLINE_CF = "Domainline";
+
 }

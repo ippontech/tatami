@@ -48,7 +48,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    @CacheEvict(value = "user-cache", key = "#login")
+    @CacheEvict(value = {"user-cache", "suggest-users-cache"}, key = "#login")
     public void incrementFriendsCounter(String login) {
         incrementCounter(FRIENDS_COUNTER, login);
     }
