@@ -585,7 +585,7 @@ InlineLexer.prototype.output = function(src) {
       }
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -605,7 +605,7 @@ InlineLexer.prototype.output = function(src) {
       }
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -627,7 +627,7 @@ InlineLexer.prototype.output = function(src) {
       if(!html)
         out += '<a href="'
           + href
-          + '">'
+          + '" target="_blank">'
           + text
           + '</a>';
       continue;
