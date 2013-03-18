@@ -192,11 +192,11 @@ public class TimelineController {
     /**
      * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user "jdubois"
      */
-    @RequestMapping(value = "/rest/statuses/user_timeline",
+    @RequestMapping(value = "/rest/statuses/{username}/timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<StatusDTO> listStatusForUser(@RequestParam("screen_name") String username,
+    public Collection<StatusDTO> listStatusForUser(@PathVariable("username") String username,
                                                    @RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String since_id,
                                                    @RequestParam(required = false) String max_id) {

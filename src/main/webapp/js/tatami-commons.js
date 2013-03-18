@@ -743,7 +743,247 @@ render: function() {
 }
 
 });
+/*
+  Timeline
+*/
 
+app.View.TimeLineNewView = Backbone.View.extend({
+  template: _.template($('#timeline-new').html()),
+  progressTemplate: _.template($('#timeline-progress').html()),
+
+  initialize: function(){
+    this.temp = new app.Collection.StatusCollection();
+
+    $(this.el).find("abbr.timeago").timeago();
+
+    this.endRefresh();
+  },
+
+  events: {
+    'click': 'newStatus'
+  },
+
+  startRefresh: function(){
+    if(typeof this.options.refresh === 'undefined')
+      this.refresh();
+    else
+      _.defer(this.options.refresh);
+  },
+
+  endRefresh: function(){
+    this.options.refresh = _.once(_.bind(this.refresh, this));
+    _.delay(this.options.refresh, this.options.interval); // this.options.interval
+  },
+
+  refresh: function(callback){
+    var self = this;
+
+    var sc = this.model.clone();
+    sc.off();
+    sc.url = this.model.url;
+
+    var data = {};
+    if( typeof this.temp.first() !== 'undefined')
+      data.since_id = this.temp.first().get('timelineId');
+    else if(typeof this.model.first() !== 'undefined')
+      data.since_id = this.model.first().get('timelineId');
+
+    sc.fetch({
+      data:data,
+      success:function (model, response) {
+        if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
+          // if the answer is not an array, the session must have expired
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+        while (sc.length > 0) {
+          self.temp.unshift(sc.pop());
+        }
+        self.render();
+
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      error:function () {
+        self.render();
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      statusCode: {
+        302: function() {
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+      }
+    });
+  },
+
+  newStatus: function() {
+    NotificationManager.setAllowNotification();
+    this.progress();
+    var self = this;
+    if (this.model.length === 0) {
+      this.model.fetch({
+        success:function () {
+          self.render();
+        },
+        error:function () {
+          self.render();
+        }
+      });
+    } else {
+      var callback = _.once(_.bind(this.newStatusCallback, this));
+      this.on('callbackRefresh', callback);
+      this.startRefresh();
+    }
+  },
+
+  newStatusCallback: function(){
+    while (this.temp.length > 0)
+      this.model.unshift(this.temp.pop());
+    this.render();
+  },
+
+  render: function() {
+    var $el = $(this.el);
+    $el.html(this.template({status: this.temp.length}));
+    this.delegateEvents();
+
+    // filter out non-status (disconnection) and statuses from current user
+    var statuses =  _.filter(this.temp.models,
+          function(s) { return s != undefined && s.attributes.username != undefined && s.attributes.username != username});
+    if (statuses.length > 0) {
+        // Update Title
+      document.title = "Tatami (" + this.temp.length + ")";
+      var notificationText = "";
+      if (statuses.length == 1) {
+        notificationText = "1 unread status";
+      } else {
+        notificationText = (statuses.length) + " unread statuses";
+      }
+      NotificationManager.setNotification("Tatami notification", notificationText, true);
+    } else {
+        document.title = "Tatami";
+    }
+
+    return $(this.el);
+  },
+
+  progress: function() {
+    $(this.el).html(this.progressTemplate());
+    this.undelegateEvents();
+    return $(this.el);
+  }
+
+});
+
+app.View.TimeLineNextView = Backbone.View.extend({
+  template: _.template($('#timeline-next').html()),
+  progressTemplate: _.template($('#timeline-progress').html()),
+
+  initialize: function(){
+    $(this.el).infinitiScroll();
+  },
+
+  events: {
+    'click': 'nextStatus'
+  },
+
+  nextStatus: function(done, context){
+    this.progress();
+    var self = this;
+    if(this.model.length === 0)
+      this.model.fetch({
+        success: function(){
+          if(self.model.length > 0)
+            self.render();
+          else
+            self.remove();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+    else{
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
+      sc.fetch({
+        data: {
+          max_id: this.model.last().get('timelineId')
+        },
+        success: function(){
+          sc.forEach(self.model.push, self.model);
+          if(sc.length > 0)
+            self.render();
+          else
+            self.remove();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+    }
+  },
+
+  render: function() {
+    var $el = $(this.el);
+    $el.html(this.template());
+    this.delegateEvents();
+
+    return $(this.el);
+  },
+
+  progress: function() {
+    $(this.el).html(this.progressTemplate());
+    this.undelegateEvents(); return $(this.el); }
+
+});
+
+app.View.TimeLinePanelView = Backbone.View.extend({
+
+  initialize: function(){
+    this.views = {};
+    this.views.timeline = new app.View.TimeLineView({
+      model : this.model
+    });
+    this.views.news = new app.View.TimeLineNewView({
+      interval: 20000,
+      model : this.model
+    });
+    this.views.next = new app.View.TimeLineNextView({
+      model : this.model
+    });
+
+    this.views.next.nextStatus();
+
+    this.on('refresh', this.views.news.newStatus, this.views.news);
+    this.on('next', this.views.next.nextStatus, this.views.next);
+
+    app.on('refreshTimeline', this.views.news.newStatus, this.views.news);
+
+    if(this.options.autoRefresh){
+      var self = this;
+      var f = _.bind(function(){
+        self.trigger('refresh');
+        _.delay(f, 20000);
+      });
+      f();
+    }
+  },
+
+  render: function() {
+    $(this.el).empty();
+
+    if(!this.options.autoRefresh){
+      $(this.el).append(this.views.news.render());
+    }
+    $(this.el).append(this.views.timeline.render());
+    $(this.el).append(this.views.next.render());
+
+    return $(this.el);
+  }
+
+});
 
   /*
     Search form in the top menu.
