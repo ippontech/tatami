@@ -76,6 +76,11 @@
                                         <i class="icon-signal"></i> <fmt:message
                                             key="tatami.menu.status.of.the.day"/></a>
                                 </li>
+                                <li>
+                                    <a href="/tatami/company">
+                                        <i class="icon-briefcase"></i> <fmt:message
+                                            key="tatami.menu.company.wall"/></a>
+                                </li>
                                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <li class="divider"></li>
                                     <li>
