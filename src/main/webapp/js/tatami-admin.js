@@ -908,10 +908,7 @@ app.View.FilesViewItem = Backbone.View.extend({
        try{
            this.model.destroy();
        }
-       catch(e)
-       {
-          alert('Error : ' + e);
-       }
+       catch(e){ }
    }
 
 });
