@@ -588,9 +588,6 @@ app.View.ActionsGroup = Backbone.View.extend({
 
     initialize : function(){
         var self = this;
-
-        //app.collections.adminGroups.bind('reset', this.render, this);
-
         this.collection = new app.Collection.ListUserGroupCollection();
         this.collection.options = {
             groupId : this.model.id
@@ -908,8 +905,13 @@ app.View.FilesViewItem = Backbone.View.extend({
    },
 
    removeImage: function(){
-       this.model.destroy();
-       window.location.reload();
+       try{
+           this.model.destroy();
+       }
+       catch(e)
+       {
+          alert('Error : ' + e);
+       }
    }
 
 });

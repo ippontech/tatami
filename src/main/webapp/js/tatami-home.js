@@ -269,7 +269,8 @@ app.View.UpdateView = Backbone.View.extend({
          $('#updateStatusFileupload').click();
       });
     return $(this.el);
-  }
+  });
+}
 });
 
 app.View.ProfileView = Backbone.View.extend({
