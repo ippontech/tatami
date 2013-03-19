@@ -209,6 +209,7 @@ app.View.UpdateView = Backbone.View.extend({
       });
       $('#updateStatusFileupload').fileupload({
           dataType: 'json',
+          sequentialUploads: 'true',
           progressall: function (e, data) {
               $('#attachmentBar').show();
               var progress = parseInt(data.loaded / data.total * 100, 10);
