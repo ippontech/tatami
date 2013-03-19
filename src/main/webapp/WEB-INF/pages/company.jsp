@@ -19,6 +19,7 @@
 
     <script type="text/javascript">
         var page = "company";
+        var login = "<sec:authentication property="principal.username"/>";
         var username = "${user.username}";
         var authenticatedUsername = "${authenticatedUsername}";
     </script>
