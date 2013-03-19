@@ -625,7 +625,7 @@ InlineLexer.prototype.output = function(src) {
         }
       }
       if(!html)
-        out += '<a href="'
+        out += '<a target="_blank" href="'
           + href
           + '" target="_blank">'
           + text
