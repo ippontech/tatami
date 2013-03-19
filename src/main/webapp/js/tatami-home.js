@@ -150,7 +150,7 @@ app.View.UpdateView = Backbone.View.extend({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").click(function () {
-          if ($(this).css("height") == "30px") {
+          if($(this).css("height") == "30px"){
               $(this).css("height", "150px");
               $("#updateStatusPreview").css("height", "150px");
               $("#updateStatusEditorTab").fadeIn();
@@ -162,10 +162,10 @@ app.View.UpdateView = Backbone.View.extend({
 
               $(this).val(window.localStorage.getItem('status'));
               if(currentGroup == "") {
-                $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+                  $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
               }
               if (window.localStorage.getItem('statusPrivate') == "true") {
-                $("#statusPrivate").attr('checked', true);
+                  $("#statusPrivate").attr('checked', true);
               }
           }
       });
