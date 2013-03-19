@@ -588,9 +588,6 @@ app.View.ActionsGroup = Backbone.View.extend({
 
     initialize : function(){
         var self = this;
-
-        //app.collections.adminGroups.bind('reset', this.render, this);
-
         this.collection = new app.Collection.ListUserGroupCollection();
         this.collection.options = {
             groupId : this.model.id
@@ -893,7 +890,6 @@ app.View.FilesViewItem = Backbone.View.extend({
 
    initialize: function(){
        this.model.bind('change', this.render, this);
-       this.model.bind('destroy', this.remove, this);
    },
 
    tagName: 'tr',
@@ -908,8 +904,13 @@ app.View.FilesViewItem = Backbone.View.extend({
    },
 
    removeImage: function(){
-       this.model.destroy();
-       window.location.reload();
+       var self = this;
+       this.model.destroy({
+           success: function(){
+              self.remove();
+              app.trigger('refreshQuota');
+           }
+       });
    }
 
 });
@@ -927,6 +928,12 @@ app.View.QuotaFiles = Backbone.View.extend({
        this.model = new app.Model.QuotaModel();
        this.model.bind('change', this.render, this);
        this.model.fetch();
+
+       var self = this;
+
+       app.on('refreshQuota', function() {
+           self.model.fetch();
+       });
    },
 
    render: function(){
