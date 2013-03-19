@@ -173,7 +173,7 @@ app.View.StatusView = Backbone.View.extend({
     var self = this;
     this.model.fetch({
       success: function(model){
-        self.views.item = new app.View.TimeLinePanelView({
+        self.views.item = new app.View.TimeLineItemView({
           model : model
         });
         self.render();
