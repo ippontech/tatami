@@ -156,25 +156,31 @@ app.View.UpdateView = Backbone.View.extend({
         groupsCollection: this.groupsCollection}));
 
       $("#updateStatusContent").click(function () {
+          if($(this).css("height") == "30px"){
+              $(this).css("height", "150px");
+              $("#updateStatusPreview").css("height", "150px");
+              $("#updateStatusEditorTab").fadeIn();
+              $("#contentGroup").fadeIn();
+              $("#contentGroup #updateStatusGroup").val(currentGroup);
+              $("#updateStatusPrivate").fadeIn();
+              $("#updateStatusBtns").fadeIn();
+              $("#dropzone").fadeIn();
 
-          $(this).css("height", "150px");
-          $("#updateStatusPreview").css("height", "150px");
-          $("#updateStatusEditorTab").fadeIn();
-          $("#contentGroup").fadeIn();
-          $("#contentGroup #updateStatusGroup").val(currentGroup);
-          $("#updateStatusPrivate").fadeIn();
-          $("#updateStatusBtns").fadeIn();
-          $("#dropzone").fadeIn();
+              $(this).val(window.localStorage.getItem('status'));
+              if(currentGroup == "") {
+                  $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+              }
+              if (window.localStorage.getItem('statusPrivate') == "true") {
+                  $("#statusPrivate").attr('checked', true);
+              }
+          }
+      });
 
       $('#profileContent').mouseleave(function () {
           if ($("#updateStatusContent").val().length === 0) {
               window.localStorage.removeItem('status');
               $("#updateStatusContent").css("height", "30px");
           }
-          $(this).val(window.localStorage.getItem('status'));
-          if(currentGroup == "")
-              $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
-
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
@@ -270,8 +276,7 @@ app.View.UpdateView = Backbone.View.extend({
          $('#updateStatusFileupload').click();
       });
     return $(this.el);
-  });
-}
+  }
 });
 
 app.View.ProfileView = Backbone.View.extend({
