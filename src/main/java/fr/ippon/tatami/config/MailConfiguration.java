@@ -25,10 +25,6 @@ public class MailConfiguration {
 
     private final Log log = LogFactory.getLog(MailConfiguration.class);
 
-    @Inject
-    private Environment env;
-
-
     @Bean
     public VelocityEngine velocityEngine() throws IOException {
         VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
