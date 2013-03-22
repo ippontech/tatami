@@ -14,5 +14,5 @@ public interface TrendRepository {
 
     List<String> getRecentTags(String domain, int maxNumber);
 
-    Collection<String> getDomainTags(String domain, int size);
+    Collection<String> getDomainTags(String domain);
 }

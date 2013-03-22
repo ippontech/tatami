@@ -42,12 +42,17 @@ public class TrendService {
 
     public Collection<String> searchTags(String domain, String startWith, int size) {
         Assert.hasLength(startWith);
-        Collection<String> allTags = trendRepository.getDomainTags(domain, size);
+        Collection<String> allTags = trendRepository.getDomainTags(domain);
         Collection<String> matchingTags = new ArrayList<String>();
         String startWithLowered = startWith.toLowerCase();
+        int counter = 0;
         for (String tag : allTags) {
             if (tag.toLowerCase().startsWith(startWithLowered)) {
                 matchingTags.add(tag);
+                counter++;
+            }
+            if (counter == size) {
+                break;
             }
         }
         return matchingTags;
