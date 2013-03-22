@@ -18,6 +18,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import java.util.*;
 
 /**
@@ -221,18 +222,23 @@ public class MailService {
         sendTextFromTemplate(user.getLogin(), model, "weeklyDigest", this.locale);
     }
 
+    public boolean connectSmtpServer() {
+        if (host != null && !host.equals("")) {
+            JavaMailSenderImpl sender = configureJavaMailSender();
+            try {
+                sender.getSession().getTransport().connect();
+                return true;
+            } catch (MessagingException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     private void sendEmail(String email, String subject, String text) {
         if (host != null && !host.equals("")) {
-            JavaMailSenderImpl sender = new JavaMailSenderImpl();
-            sender.setHost(host);
-            sender.setPort(port);
-            sender.setUsername(smtpUser);
-            sender.setPassword(smtpPassword);
-            if (smtpTls != null && !smtpTls.equals("")) {
-                Properties sendProperties = new Properties();
-                sendProperties.setProperty("mail.smtp.starttls.enable", "true");
-                sender.setJavaMailProperties(sendProperties);
-            }
+            JavaMailSenderImpl sender = configureJavaMailSender();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setFrom(from);
@@ -253,6 +259,20 @@ public class MailService {
         } else {
             log.debug("SMTP server is not configured in /META-INF/tatami/tatami.properties");
         }
+    }
+
+    private JavaMailSenderImpl configureJavaMailSender() {
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setHost(host);
+        sender.setPort(port);
+        sender.setUsername(smtpUser);
+        sender.setPassword(smtpPassword);
+        if (smtpTls != null && !smtpTls.equals("")) {
+            Properties sendProperties = new Properties();
+            sendProperties.setProperty("mail.smtp.starttls.enable", "true");
+            sender.setJavaMailProperties(sendProperties);
+        }
+        return sender;
     }
 
     /**

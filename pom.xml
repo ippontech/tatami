@@ -437,7 +437,7 @@
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.1-2</hector.version>
+        <hector.version>1.1-3</hector.version>
         <hector.mapper.version>3.1-07</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
@@ -455,6 +455,7 @@
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
+        <yammer.metrics.version>2.2.0</yammer.metrics.version>
 
         <selenium.version>2.25.0</selenium.version>
 
@@ -495,6 +496,36 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-log4j</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-ehcache</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-servlet</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-web</artifactId>
+            <version>${yammer.metrics.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -668,6 +699,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -684,6 +720,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>

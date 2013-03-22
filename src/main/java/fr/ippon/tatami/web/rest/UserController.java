@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.SearchService;
@@ -48,6 +49,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public User getUser(@RequestParam("screen_name") String username) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
@@ -63,6 +65,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
         return suggestionService.suggestUsers(login);
@@ -81,6 +84,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
@@ -99,6 +103,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
         if (pagination == null) {
             pagination = 0;
@@ -127,6 +132,5 @@ public class UserController {
         response.setStatus(HttpServletResponse.SC_CREATED);
         return;
     }
-
 
 }

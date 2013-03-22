@@ -22,8 +22,9 @@ import java.io.IOException;
         CacheConfiguration.class,
         CassandraConfiguration.class,
         SearchConfiguration.class,
-        MailConfiguration.class})
-@ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
+        MailConfiguration.class,
+        HealthCheckConfiguration.class})
+@ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
 public class ApplicationConfiguration {
 
     private final Log log = LogFactory.getLog(ApplicationConfiguration.class);

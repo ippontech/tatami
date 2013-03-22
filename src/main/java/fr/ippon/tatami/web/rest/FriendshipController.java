@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.FriendshipService;
@@ -103,6 +104,7 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> getFollowers(@RequestParam("screen_name") String username) {
         return friendshipService.getFollowersForUser(username);
     }
@@ -114,6 +116,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
+    @Metered
     public void followUserByEmailAndUsername(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
         if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
             if (log.isDebugEnabled()) {
@@ -154,6 +157,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
+    @Metered
     public void checkFriend(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
         User user;
         if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {

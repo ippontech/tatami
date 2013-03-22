@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
@@ -60,6 +61,7 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
+    @Metered
     public void postStatus(@RequestBody StatusDTO status, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
@@ -180,6 +182,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
                                             @RequestParam(required = false) String since_id,
                                             @RequestParam(required = false) String max_id) {

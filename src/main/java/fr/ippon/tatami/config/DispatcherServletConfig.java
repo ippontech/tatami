@@ -5,10 +5,7 @@ import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.multipart.MultipartResolver;
@@ -40,6 +37,7 @@ import java.util.List;
 @EnableWebMvc
 @PropertySource({"classpath:/META-INF/tatami/tatami.properties",
         "classpath:/META-INF/tatami/customization.properties"})
+@ImportResource("classpath:META-INF/spring/applicationContext-metrics.xml")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     private final Log log = LogFactory.getLog(DispatcherServletConfig.class);

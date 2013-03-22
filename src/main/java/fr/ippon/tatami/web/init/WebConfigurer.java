@@ -1,5 +1,7 @@
 package fr.ippon.tatami.web.init;
 
+import com.yammer.metrics.reporting.AdminServlet;
+import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.DispatcherServletConfig;
 import org.apache.commons.logging.Log;
@@ -87,6 +89,17 @@ public class WebConfigurer implements ServletContextListener {
                 new DelegatingFilterProxy());
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet");
+
+        log.debug("Registering Metrics Filter");
+        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
+                new DefaultWebappMetricsFilter());
+        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+
+        log.debug("Registering Metrics Admin Servlet");
+        ServletRegistration.Dynamic metricsAdminServlet =
+                servletContext.addServlet("metricsAdminServlet", new AdminServlet());
+        metricsAdminServlet.addMapping("/metrics/*");
+        dispatcherServlet.setLoadOnStartup(3);
 
         log.debug("Web application fully configured");
     }

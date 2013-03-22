@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TrendService;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -38,6 +39,7 @@ public class TrendController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public List<Trend> getTrends() {
 
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -52,6 +54,7 @@ public class TrendController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public List<Trend> getUserTrends(@RequestParam("screen_name") String username) {
 
         String currentLogin = authenticationService.getCurrentUser().getLogin();

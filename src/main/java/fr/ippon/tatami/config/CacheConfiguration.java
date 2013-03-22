@@ -12,13 +12,8 @@ public class CacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
-        EhCacheCacheManager cacheManager = new EhCacheCacheManager();
-        cacheManager.setCacheManager(ehCacheManager());
-        return cacheManager;
-    }
-
-    @Bean
-    public net.sf.ehcache.CacheManager ehCacheManager() {
-        return new net.sf.ehcache.CacheManager();
+        EhCacheCacheManager ehCacheManager = new EhCacheCacheManager();
+        ehCacheManager.setCacheManager(new net.sf.ehcache.CacheManager());
+        return ehCacheManager;
     }
 }
