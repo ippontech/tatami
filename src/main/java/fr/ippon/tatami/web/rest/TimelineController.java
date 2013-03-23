@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
+import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -115,7 +116,12 @@ public class TimelineController {
             statusUpdateService.replyToStatus(escapedContent, reply.getStatusId());
         } catch (ArchivedGroupException age) {
             if (log.isInfoEnabled()) {
-                log.info("Archived group! User tried to reply to a message in an archived group");
+                log.info("The user tried to reply to a message in an archived group");
+            }
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }  catch (ReplyStatusException rse) {
+            if (log.isInfoEnabled()) {
+                log.info("Original status ID " + reply.getStatusId() + " does not exist.");
             }
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }

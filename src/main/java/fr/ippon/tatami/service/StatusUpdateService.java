@@ -6,6 +6,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
+import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -105,8 +106,11 @@ public class StatusUpdateService {
         createStatus(content, false, group, "", "", "", attachmentIds);
     }
 
-    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException {
+    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
         Status originalStatus = statusRepository.findStatusById(replyTo);
+        if (originalStatus == null) {
+            throw new ReplyStatusException();
+        }
         Group group = null;
         if (originalStatus.getGroupId() != null) {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
