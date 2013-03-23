@@ -48,7 +48,7 @@ public class MailService {
     private String smtpUser;
 
     private String smtpPassword;
-    
+
     private String smtpTls;
 
     private String from;

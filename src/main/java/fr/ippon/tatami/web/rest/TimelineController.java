@@ -119,7 +119,7 @@ public class TimelineController {
                 log.info("The user tried to reply to a message in an archived group");
             }
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }  catch (ReplyStatusException rse) {
+        } catch (ReplyStatusException rse) {
             if (log.isInfoEnabled()) {
                 log.info("Original status ID " + reply.getStatusId() + " does not exist.");
             }

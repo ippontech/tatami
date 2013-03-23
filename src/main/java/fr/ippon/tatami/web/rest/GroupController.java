@@ -13,9 +13,7 @@ import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.util.CollectionUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -276,8 +274,8 @@ public class GroupController {
             users = groupService.getMembersForGroup(groupId);
         }
 
-        for (UserGroupDTO user : users){
-            if(user.getLogin().equals(currentUser.getLogin())) {
+        for (UserGroupDTO user : users) {
+            if (user.getLogin().equals(currentUser.getLogin())) {
                 return user;
             }
         }
