@@ -73,6 +73,8 @@ public class WebConfigurer implements ServletContextListener {
 
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
+        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
+
         log.debug("Configuring Spring Web application context");
         AnnotationConfigWebApplicationContext dispatcherServletConfig = new AnnotationConfigWebApplicationContext();
         dispatcherServletConfig.setParent(rootContext);
@@ -84,12 +86,6 @@ public class WebConfigurer implements ServletContextListener {
         dispatcherServlet.addMapping("/tatami/*");
         dispatcherServlet.setLoadOnStartup(2);
 
-        log.debug("Registering Spring Security Filter");
-        FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
-                new DelegatingFilterProxy());
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet");
-
         log.debug("Registering Metrics Filter");
         FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
                 new DefaultWebappMetricsFilter());
@@ -100,6 +96,11 @@ public class WebConfigurer implements ServletContextListener {
                 servletContext.addServlet("metricsAdminServlet", new AdminServlet());
         metricsAdminServlet.addMapping("/metrics/*");
         dispatcherServlet.setLoadOnStartup(3);
+
+        log.debug("Registering Spring Security Filter");
+        FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
+                new DelegatingFilterProxy());
+        springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet", "metricsAdminServlet");
 
         log.debug("Web application fully configured");
     }
