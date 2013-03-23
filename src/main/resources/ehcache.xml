@@ -12,13 +12,9 @@
             overflowToDisk="false"
             />
 
-    <cache name="status-cache">
-        <cacheDecoratorFactory class="com.yammer.metrics.ehcache.InstrumentedEhcacheFactory" />
-    </cache>
+    <cache name="status-cache"/>
 
-    <cache name="user-cache">
-        <cacheDecoratorFactory class="com.yammer.metrics.ehcache.InstrumentedEhcacheFactory" />
-    </cache>
+    <cache name="user-cache"/>
 
     <cache name="user-prefix-cache"/>
 
@@ -56,9 +52,7 @@
 
     <cache name="attachment-cache"
            maxBytesLocalHeap="75%"
-           timeToIdleSeconds="600">
-        <cacheDecoratorFactory class="com.yammer.metrics.ehcache.InstrumentedEhcacheFactory" />
-    </cache>
+           timeToIdleSeconds="600"/>
 
 </ehcache>
 

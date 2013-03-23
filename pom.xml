@@ -59,6 +59,7 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
             </properties>
         </profile>
         <profile>
@@ -87,6 +88,7 @@
                 <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
             </properties>
             <build>
                 <plugins>
@@ -147,6 +149,7 @@
                 <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
             </properties>
             <build>
                 <plugins>
@@ -206,6 +209,7 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
             </properties>
         </profile>
         <profile>
@@ -234,6 +238,7 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
             </properties>
             <build>
                 <testResources>

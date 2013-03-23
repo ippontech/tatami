@@ -1,5 +1,7 @@
 package fr.ippon.tatami.config;
 
+import me.prettyprint.cassandra.connection.HOpTimer;
+import me.prettyprint.cassandra.connection.MetricsOpTimer;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
@@ -37,13 +39,18 @@ public class CassandraConfiguration {
 
     @Bean
     public Keyspace keyspaceOperator() {
-
+        log.info("Configuring Cassandra keyspace");
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         cassandraHostConfigurator.setMaxActive(100);
+        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+            log.debug("Cassandra Metrics monitoring enabled");
+            HOpTimer hOpTimer = new MetricsOpTimer(cassandraClusterName);
+            cassandraHostConfigurator.setOpTimer(hOpTimer);
+        }
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
         ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
         consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);

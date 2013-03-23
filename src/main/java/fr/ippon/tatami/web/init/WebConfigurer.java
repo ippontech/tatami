@@ -6,6 +6,7 @@ import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.DispatcherServletConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -86,21 +87,30 @@ public class WebConfigurer implements ServletContextListener {
         dispatcherServlet.addMapping("/tatami/*");
         dispatcherServlet.setLoadOnStartup(2);
 
-        log.debug("Registering Metrics Filter");
-        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
-                new DefaultWebappMetricsFilter());
-        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-        log.debug("Registering Metrics Admin Servlet");
-        ServletRegistration.Dynamic metricsAdminServlet =
-                servletContext.addServlet("metricsAdminServlet", new AdminServlet());
-        metricsAdminServlet.addMapping("/metrics/*");
-        dispatcherServlet.setLoadOnStartup(3);
-
         log.debug("Registering Spring Security Filter");
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
                 new DelegatingFilterProxy());
-        springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet", "metricsAdminServlet");
+
+        Environment env = rootContext.getBean(Environment.class);
+        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+            log.debug("Setting Metrics profile for the Web ApplicationContext");
+            servletContext.setInitParameter("spring.profiles.active", "metrics");
+
+            log.debug("Registering Metrics Filter");
+            FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
+                    new DefaultWebappMetricsFilter());
+            metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+
+            log.debug("Registering Metrics Admin Servlet");
+            ServletRegistration.Dynamic metricsAdminServlet =
+                    servletContext.addServlet("metricsAdminServlet", new AdminServlet());
+            metricsAdminServlet.addMapping("/metrics/*");
+            dispatcherServlet.setLoadOnStartup(3);
+
+            springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet", "metricsAdminServlet");
+        } else {
+            springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet");
+        }
 
         log.debug("Web application fully configured");
     }
