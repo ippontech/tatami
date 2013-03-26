@@ -23,7 +23,7 @@ import java.io.IOException;
         CassandraConfiguration.class,
         SearchConfiguration.class,
         MailConfiguration.class,
-        HealthCheckConfiguration.class})
+        MetricsConfiguration.class})
 @ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
 public class ApplicationConfiguration {
 

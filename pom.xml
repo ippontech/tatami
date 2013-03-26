@@ -60,6 +60,7 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
             </properties>
         </profile>
         <profile>
@@ -89,6 +90,7 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
             </properties>
             <build>
                 <plugins>
@@ -150,6 +152,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -210,6 +214,7 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
             </properties>
         </profile>
         <profile>
@@ -239,6 +244,7 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
             </properties>
             <build>
                 <testResources>
@@ -515,6 +521,11 @@
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-ehcache</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
             <version>${yammer.metrics.version}</version>
         </dependency>
         <dependency>
