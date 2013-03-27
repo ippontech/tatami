@@ -59,7 +59,7 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>true</tatami.metrics.enabled>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
