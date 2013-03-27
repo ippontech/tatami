@@ -479,7 +479,7 @@
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.13</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.9.v20130131</maven.jetty.version>
+        <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
         <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
         <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
