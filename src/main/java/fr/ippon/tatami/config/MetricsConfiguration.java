@@ -37,10 +37,9 @@ public class MetricsConfiguration {
             HealthChecks.register(new JavaMailHealthCheck(mailService));
 
             String graphiteHost = env.getProperty("tatami.metrics.graphite.host");
-            // Graphite default port is 2003
-            Integer graphitePort = env.getProperty("tatami.metrics.graphite.port", Integer.class, 2003);
             if (graphiteHost != null) {
                 log.debug("Initializing Metrics Graphite reporting");
+                Integer graphitePort = env.getProperty("tatami.metrics.graphite.port", Integer.class);
                 GraphiteReporter.enable(1,
                         TimeUnit.MINUTES,
                         graphiteHost,
