@@ -21,6 +21,7 @@ body {
 */
 
 .profile-infos {
+  font-size: 90%;
   margin-bottom: 0px
 }
 
@@ -380,10 +381,6 @@ form {
 
 .margin-bottom5 {
 	margin-bottom:5px;
-}
-
-.margin-top20 {
-	margin-top:20px;
 }
 
 .user-profile {
