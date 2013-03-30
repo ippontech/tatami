@@ -29,7 +29,7 @@
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/rest/users" method="POST" access="permitAll()"/>
-        <intercept-url pattern="/tatami/authentication" requires-channel="${tatami.connection.security}"/>
+        <!--<intercept-url pattern="/tatami/authentication" requires-channel="${tatami.connection.security}"/>-->
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')" requires-channel="${tatami.connection.security}"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
