@@ -51,7 +51,7 @@ public class HomeController {
         mv.addObject("action", action);
 
         if ("https".equals(env.getProperty("tatami.connection.security"))) {
-            if (!request.isSecure()) {
+            if (!request.getRequestURI().startsWith("https")) {
                 log.debug("Forcing https connection");
                 mv.setViewName("redirect:" +
                         "https://" +
