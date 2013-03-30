@@ -56,7 +56,6 @@ public class HomeController {
                 mv.setViewName("redirect:" +
                         "https://" +
                         request.getServerName() +
-                        "/" +
                         request.getServletContext().getContextPath() +
                         "/tatami/login");
             }
