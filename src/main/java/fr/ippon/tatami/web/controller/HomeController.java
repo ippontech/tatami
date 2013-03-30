@@ -49,17 +49,6 @@ public class HomeController {
     public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("action", action);
-
-        if ("https".equals(env.getProperty("tatami.connection.security"))) {
-            if (!request.getRequestURI().startsWith("https")) {
-                log.debug("Forcing https connection");
-                mv.setViewName("redirect:" +
-                        "https://" +
-                        request.getServerName() +
-                        request.getServletContext().getContextPath() +
-                        "/tatami/login");
-            }
-        }
         return mv;
     }
 
