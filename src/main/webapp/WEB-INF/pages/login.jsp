@@ -90,7 +90,7 @@
             <div class="row-fluid">
                 <h1><fmt:message key="tatami.authentification"/></h1>
 
-                <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm" class="well">
+                <form action="${serverRoot}/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm" class="well">
                     <fieldset class="row-fluid">
                         <div class="controle-group">
                             <label>
@@ -167,7 +167,7 @@
                 <fmt:message key="tatami.authentication.google.desc.3"/>
             </p>
 
-            <form class="well" action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
+            <form class="well" action="${serverRoot}/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
                 <fieldset class="row-fluid">
                     <div class="controle-group">
                         <input class="span12" name="openid_identifier" size="50"
