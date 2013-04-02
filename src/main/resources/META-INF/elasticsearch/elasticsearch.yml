@@ -149,16 +149,23 @@ index.number_of_replicas: 0
 #index.analysis.tokenizer.simple.max_token_length: 900
 #index.analysis.filter.french_stemmer.type: stemmer
 #index.analysis.filter.french_stemmer.name: light_french
-index.analysis.analyzer.francais.type: "custom"
-index.analysis.analyzer.francais.tokenizer: "standard"
-index.analysis.analyzer.francais.filter: ["lowercase", "stop_francais", "fr_stemmer", "asciifolding", "elision"]
-index.analysis.filter.stop_francais.type: "stop"
-index.analysis.filter.stop_francais.stopwords: ["_french_"]
-index.analysis.filter.fr_stemmer.type: "stemmer"
-index.analysis.filter.fr_stemmer.name: "french"
-index.analysis.filter.elision.type: "elision"
-index.analysis.filter.elision.articles: ["l", "m", "t", "qu", "n", "s", "j", "d"]
 
+index.analysis:
+  analyzer:
+    francais:
+      type: "custom"
+      tokenizer: "standard"
+      filter: ["lowercase", "stop_francais", "fr_stemmer", "asciifolding", "elision"]
+  filter:
+    stop_francais:
+      type: "stop"
+      stopwords: ["_french_"]
+    fr_stemmer:
+      type: "stemmer"
+      name: "french"
+    elision:
+      type: "elision"
+      articles: ["l", "m", "t", "qu", "n", "s", "j", "d"]
 
 
 #################################### Paths ####################################
@@ -226,12 +233,12 @@ path.logs: ${tatami.elasticsearch.path.log}
 
 # Set the bind address specifically (IPv4 or IPv6):
 #
-network.bind_host: 127.0.0.1
+# network.bind_host: 127.0.0.1
 
 # Set the address other nodes will use to communicate with this node. If not
 # set, it is automatically derived. It must point to an actual IP address.
 #
-network.publish_host: 127.0.0.1
+# network.publish_host: 127.0.0.1
 
 # Set both 'bind_host' and 'publish_host':
 #
