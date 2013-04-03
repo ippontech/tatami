@@ -11,7 +11,9 @@ import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -57,14 +59,21 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public boolean reset() {
-        DeleteIndexResponse delete = client().admin().
-                indices().delete(new DeleteIndexRequest(this.indexName)).actionGet();
-
-        if (!delete.acknowledged()) {
-            log.error("Search engine Index wasn't deleted !");
-            return false;
-        } else {
+        try {
+            DeleteIndexResponse delete = client().admin().indices().prepareDelete(indexName).execute().actionGet();
+            if (!delete.acknowledged()) {
+                log.error("Search engine Index wasn't deleted !");
+                return false;
+            } else {
+                return true;
+            }
+        } catch (IndexMissingException e) {
+            log.warn("Elasticsearch index " + indexName + " missing, it was not deleted");
+            // Failling to delete a missing index is supposed to be valid
             return true;
+        } catch (ElasticSearchException e) {
+            log.error("Elasticsearch index " + indexName + " was not deleted", e);
+            return false;
         }
     }
 
