@@ -9,8 +9,10 @@ public class Constants {
     }
 
     public static final String ELASTICSEARCH_ENGINE = "elasticsearch";
-
     public static final String LUCENE_ENGINE = "lucene";
+
+    public static final String REMOTE_ENGINE = "remote";
+    public static final String EMBEDDED_ENGINE = "embedded";
 
     public static final String DEFAULT_THEME = "bootstrap";
 

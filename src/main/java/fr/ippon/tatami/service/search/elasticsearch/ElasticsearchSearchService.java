@@ -44,16 +44,20 @@ public class ElasticsearchSearchService implements SearchService {
     private static final String ALL_FIELDS = "_all";
 
     @Inject
-    private Client client;
+    private ElasticsearchEngine engine;
 
     @Inject
     private String indexName;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    private Client client() {
+        return engine.client();
+    }
+
     @Override
     public boolean reset() {
-        DeleteIndexResponse delete = client.admin().
+        DeleteIndexResponse delete = client().admin().
                 indices().delete(new DeleteIndexRequest(this.indexName)).actionGet();
 
         if (!delete.acknowledged()) {
@@ -68,6 +72,9 @@ public class ElasticsearchSearchService implements SearchService {
     @Async
     public void addStatus(final Status status) {
         try {
+            if (log.isDebugEnabled())
+                log.debug("Add status " + status.toString());
+
             internalAddStatus(status);
         } catch (IOException e) {
             log.error("The status wasn't added to the index: "
@@ -133,7 +140,7 @@ public class ElasticsearchSearchService implements SearchService {
 
         SearchResponse searchResponse = null;
         try {
-            SearchRequestBuilder builder = this.client.prepareSearch(this.indexName)
+            SearchRequestBuilder builder = client().prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
                     .setFilter(domainFilter)
@@ -208,7 +215,7 @@ public class ElasticsearchSearchService implements SearchService {
 
         SearchResponse searchResponse;
         try {
-            searchResponse = this.client.prepareSearch(this.indexName)
+            searchResponse = client().prepareSearch(this.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
                     .setFilter(domainFilter)
@@ -291,7 +298,7 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         final String dataType = clazz.getSimpleName().toLowerCase();
-        client.prepareIndex(this.indexName, dataType, uid)
+        client().prepareIndex(this.indexName, dataType, uid)
                 .setSource(jsonifiedObject)
                 .execute()
                 .actionGet();
@@ -311,7 +318,7 @@ public class ElasticsearchSearchService implements SearchService {
         if (log.isDebugEnabled()) {
             log.debug("Removing a " + dataType + " item from the index : #" + uid);
         }
-        final DeleteResponse response = this.client.delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
+        final DeleteResponse response = client().delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
         return response.getId();
     }
 }

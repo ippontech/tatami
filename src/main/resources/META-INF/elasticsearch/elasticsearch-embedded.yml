@@ -36,8 +36,9 @@ cluster.name: tatamiCluster
 
 # Node names are generated dynamically on startup, so you're relieved
 # from configuring them manually. You can tie this node to a specific name:
-#
-# node.name: "Franz Kafka"
+
+node.name: "tatami-embedded-node"
+node.local: true
 
 # Every node can be configured to allow or deny being eligible as the master,
 # and to allow or deny to store the data.
@@ -196,9 +197,10 @@ index.analysis:
 #
 # path.plugins: /path/to/plugins
 
-path.data: ${tatami.elasticsearch.path.data}/data
-path.work: ${tatami.elasticsearch.path.data}/work
-path.logs: ${tatami.elasticsearch.path.log}
+path:
+  data: ${tatami.elasticsearch.path.data}/data
+  work: ${tatami.elasticsearch.path.data}/work
+  logs: ${tatami.elasticsearch.path.log}
 
 #################################### Plugin ###################################
 
@@ -242,7 +244,7 @@ path.logs: ${tatami.elasticsearch.path.log}
 
 # Set both 'bind_host' and 'publish_host':
 #
-network.host: 127.0.0.1
+#network.host: 127.0.0.1
 
 # Set a custom port for the node to node communication (9300 by default):
 #
@@ -351,13 +353,13 @@ network.host: 127.0.0.1
 #
 # 1. Disable multicast discovery (enabled by default):
 #
-discovery.zen.ping.multicast.enabled: false
+#discovery.zen.ping.multicast.enabled: false
 #
 # 2. Configure an initial list of master nodes in the cluster
 #    to perform discovery when new nodes (master or data) are started:
 #
 # discovery.zen.ping.unicast.hosts: ["host1", "host2:port", "host3[portX-portY]"]
-discovery.zen.ping.unicast.hosts: ["127.0.0.1"]
+#discovery.zen.ping.unicast.hosts: ["127.0.0.1"]
 
 # EC2 discovery allows to use AWS EC2 API in order to perform discovery.
 #
