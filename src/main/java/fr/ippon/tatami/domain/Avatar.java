@@ -4,13 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Gaby Hourlier
- * Date: 25/03/13
- * Time: 10:48
- * To change this template use File | Settings | File Templates.
- */
 public class Avatar {
 
     private String avatarId;
