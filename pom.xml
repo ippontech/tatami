@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>2.1.3</version>
+    <version>2.1.4</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -60,6 +60,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
@@ -89,6 +91,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -150,6 +154,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -210,6 +216,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
@@ -239,6 +247,8 @@
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <testResources>
@@ -469,7 +479,7 @@
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.13</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.9.v20130131</maven.jetty.version>
+        <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
         <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
         <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
@@ -515,6 +525,11 @@
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-ehcache</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
             <version>${yammer.metrics.version}</version>
         </dependency>
         <dependency>

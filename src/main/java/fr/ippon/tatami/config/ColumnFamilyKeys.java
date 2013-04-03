@@ -79,6 +79,4 @@ public class ColumnFamilyKeys {
 
     public final static String AVATAR_CF = "Avatar";
 
-    public final static String USER_AVATAR_CF = "UserAvatar";
-
 }

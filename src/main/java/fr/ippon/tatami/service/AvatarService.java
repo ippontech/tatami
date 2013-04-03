@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
-import fr.ippon.tatami.repository.UserAvatarRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.apache.commons.logging.Log;
@@ -19,14 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Gaby Hourlier
- * Date: 25/03/13
- * Time: 11:03
- * To change this template use File | Settings | File Templates.
- */
-
 @Service
 public class AvatarService {
 
@@ -34,9 +25,6 @@ public class AvatarService {
 
     @Inject
     private AvatarRepository avatarRepository;
-
-    @Inject
-    private UserAvatarRepository userAvatarRepository;
 
     @Inject
     private DomainConfigurationRepository domainConfigurationRepository;
@@ -48,15 +36,14 @@ public class AvatarService {
     private AuthenticationService authenticationService;
 
     public String createAvatar(Avatar avatar) throws IOException {
-
+       /*
+        * Delete current Avatar before upload a new one
+        */
+        User currentUser = authenticationService.getCurrentUser();
         avatar.setContent(scaleImage(avatar.getContent()));
 
         avatarRepository.createAvatar(avatar);
 
-        userAvatarRepository.addAvatarId(authenticationService.getCurrentUser().getLogin(),
-                avatar.getAvatarId());
-
-        User currentUser = authenticationService.getCurrentUser();
         userRepository.updateUser(currentUser);
 
         if (log.isDebugEnabled()) {
@@ -73,22 +60,15 @@ public class AvatarService {
         return avatarRepository.findAvatarById(avatartId);
     }
 
-    public void deleteAvatar(Avatar avatar) {
+    public void deleteAvatar(String avatarId) {
         if (log.isDebugEnabled()) {
-            log.debug("Removing avatar : " + avatar);
+            log.debug("Removing current avatar : " + avatarId);
         }
-
         User currentUser = authenticationService.getCurrentUser();
 
-        for (String avatarIdTest : userAvatarRepository.findAvatarIds(currentUser.getLogin())) {
-            if (avatarIdTest.equals(avatar.getAvatarId())) {
-                userAvatarRepository.removeAvatarId(currentUser.getLogin(), avatar.getAvatarId());
-                avatarRepository.deleteAvatar(avatar);
-                userRepository.updateUser(currentUser);
-                break;
-            }
-        }
+        avatarRepository.deleteAvatar(avatarId);
 
+        userRepository.updateUser(currentUser);
     }
     /*
     * TO DO : add param ratio to scale an image in 4/3 or 16/9

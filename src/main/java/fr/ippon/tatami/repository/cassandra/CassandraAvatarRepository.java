@@ -14,19 +14,10 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-
-/**
- * Created with IntelliJ IDEA.
- * User: hellsingblack
- * Date: 25/03/13
- * Time: 13:41
- * To change this template use File | Settings | File Templates.
- */
-
 import java.util.Date;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.AVATAR_CF;
@@ -70,13 +61,13 @@ public class CassandraAvatarRepository implements AvatarRepository {
     }
 
     @Override
-    @CacheEvict(value = "avatar-cache", key = "#avatar.avatarId")
-    public void deleteAvatar(Avatar avatar) {
+    @Cacheable(value = "avatar-cache", key = "#avatar.avatarId")
+    public void deleteAvatar(String avatarId) {
         if (log.isDebugEnabled()) {
-            log.debug("Deleting avatar : " + avatar);
+            log.debug("Deleting avatar : " + avatarId);
         }
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addDeletion(avatar.getAvatarId(), AVATAR_CF);
+        mutator.addDeletion(avatarId, AVATAR_CF);
         mutator.execute();
     }
 

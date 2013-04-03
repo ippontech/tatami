@@ -124,6 +124,7 @@ public class UserService {
         user.setLogin(currentUser.getLogin());
         user.setUsername(currentUser.getUsername());
         user.setDomain(currentUser.getDomain());
+        user.setGravatar("");
         user.setAttachmentsSize(currentUser.getAttachmentsSize());
         try {
             userRepository.updateUser(user);
@@ -203,6 +204,7 @@ public class UserService {
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
+        user.setGravatar("");
         user.setPhoneNumber("");
         user.setIsNew(true);
         user.setPreferencesMentionEmail(true);

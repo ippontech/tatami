@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Julien Dubois
@@ -45,7 +46,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(required = false) String action) {
+    public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("action", action);
         return mv;

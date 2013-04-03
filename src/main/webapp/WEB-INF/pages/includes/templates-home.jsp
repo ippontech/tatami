@@ -21,7 +21,7 @@
 
 <script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
-  <div class="well margin-top20 box-info">
+  <div class="well box-info">
     <div class="row-fluid">
       <table class="table profile-infos">
         <thead>
