@@ -36,9 +36,7 @@ public class AvatarService {
     private AuthenticationService authenticationService;
 
     public String createAvatar(Avatar avatar) throws IOException {
-       /*
-        * Delete current Avatar before upload a new one
-        */
+
         User currentUser = authenticationService.getCurrentUser();
         avatar.setContent(scaleImage(avatar.getContent()));
 
