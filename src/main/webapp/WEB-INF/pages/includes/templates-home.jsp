@@ -5,7 +5,14 @@
 <script type="text/template" id="profile-infos-template">
   <div class="span12 profile-infos avatar-float-left-container">
     <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username].filter(function(value){return value;}).join(' ') @>">
-      <img class="pull-left avatar avatar-float-left" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
+        <@ if(profile.gravatar == ""){ @>
+        <img class="pull-left avatar avatar-float-left"
+             src="/img/default_image_profile.png"/>
+        <@} else {@>
+        <img class="pull-left avatar avatar-float-left"
+             src="/tatami/avatar/<@= profile.gravatar @>/"
+             alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
+        <@ }@>
       <h4><@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @></h4>
       @<@=profile.username@>
     </a>

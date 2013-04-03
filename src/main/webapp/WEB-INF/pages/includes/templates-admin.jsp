@@ -42,20 +42,20 @@
             </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group dashed">
             <label class="control-label">
                 <fmt:message key="tatami.user.picture"/>
             </label>
 
             <div class="controls">
-                <@ if(user.gravatar) {@>
-                    <img class="nomargin avatar " src="<@= user.gravatar @>"/>
+                <@ if(user.gravatar == ""){ @>
+                    <img class="nomargin avatar" src="/img/default_image_profile.png" alt=""/>
                 <@ } else { @>
-                    <img class="nomargin avatar " src="/img/default_image_profile.png"/>
-                <@ } @>
+                    <img class="nomargin avatar" src="/tatami/avatar/<@= user.gravatar @>/" alt=""/>
+                <@ }@>
                 <div id="updateAvatar"  class="btn btn-info btn-mini">
                     <p><fmt:message key="tatami.user.picture.button" /></p>
-                    <%--<input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>--%>
+                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
             </div>
         </div>

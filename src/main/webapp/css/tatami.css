@@ -222,6 +222,11 @@ form {
     font-weight: normal;
 }
 
+.controls .avatar{
+    display: block;
+    float: left;
+}
+
 .avatar {
     width: 64px;
     height: 64px;
@@ -554,4 +559,27 @@ span.quota{
 
 .status-content * {
   max-width: 100%;
+}
+
+#updateAvatar {
+    width: 130px;
+    position: relative;
+}
+
+#updateAvatar p{
+    position: absolute;
+    top: 5px;
+    font-size: 13px;
+    margin: 0;
+    width: 130px;
+}
+
+#updateAvatar input[type=file] {
+    opacity: 0;
+    width: 130px;
+}
+
+.dashed {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 20px;
 }

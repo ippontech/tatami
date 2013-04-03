@@ -124,7 +124,6 @@ public class UserService {
         user.setLogin(currentUser.getLogin());
         user.setUsername(currentUser.getUsername());
         user.setDomain(currentUser.getDomain());
-        user.setGravatar(GravatarUtil.getHash(user.getLogin()));
         user.setAttachmentsSize(currentUser.getAttachmentsSize());
         try {
             userRepository.updateUser(user);
@@ -198,7 +197,6 @@ public class UserService {
             user.setPassword(encryptedPassword);
         }
 
-        user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
         user.setTheme(Constants.DEFAULT_THEME);

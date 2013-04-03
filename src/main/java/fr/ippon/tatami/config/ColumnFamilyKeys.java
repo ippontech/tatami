@@ -77,4 +77,8 @@ public class ColumnFamilyKeys {
 
     public final static String DOMAINLINE_CF = "Domainline";
 
+    public final static String AVATAR_CF = "Avatar";
+
+    public final static String USER_AVATAR_CF = "UserAvatar";
+
 }
