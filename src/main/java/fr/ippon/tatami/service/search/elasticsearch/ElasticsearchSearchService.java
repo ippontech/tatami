@@ -41,6 +41,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.Assert;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
@@ -68,6 +69,14 @@ public class ElasticsearchSearchService implements SearchService {
 
     private Client client() {
         return engine.client();
+    }
+
+    @PostConstruct
+    private void init() {
+        if (!client().admin().indices().prepareExists(indexName).execute().actionGet().exists()) {
+            log.info("Index " + indexName + " does not exists in Elasticsearch, creating it!");
+            createIndex();
+        }
     }
 
     @Override
