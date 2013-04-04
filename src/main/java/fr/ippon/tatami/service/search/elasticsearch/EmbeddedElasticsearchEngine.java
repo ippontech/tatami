@@ -32,7 +32,7 @@ public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
 
     @PostConstruct
     private void init() {
-        log.info("Initializing Elasticsearch embedded client...");
+        log.info("Initializing Elasticsearch embedded cluster...");
 
         node = nodeBuilder()
                 .loadConfigSettings(false)
@@ -42,7 +42,7 @@ public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
         // Looking for nodes configuration
         if (log.isDebugEnabled()) {
             final NodesInfoResponse nir =
-                    client().admin().cluster().nodesInfo(new NodesInfoRequest()).actionGet();
+                    client().admin().cluster().prepareNodesInfo().execute().actionGet();
 
             log.debug("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
                     + nir.clusterName() + "\"");
@@ -51,7 +51,7 @@ public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
 
     @PreDestroy
     private void close() {
-        log.info("Closing Elasticsearch embedded client");
+        log.info("Closing Elasticsearch embedded cluster");
         node.close();
     }
 
