@@ -1,24 +1,15 @@
 {
 	"user" : {
-		"_source" : { "enabled" : true },
 		"properties" : {
-            "username" : {
-                "type" : "string",
-                "index" : "not_analyzed"
-            },
             "domain" : {
                 "type" : "string",
                 "index" : "not_analyzed"
             },
-			"firstName" : {
-				"type" : "string",
-				"index" : "not_analyzed"
-			},
-			"lastName" : {
-				"type" : "string",
-				"index" : "not_analyzed"
-			},
-			"email" : {
+            "username" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
+			"login" : {
 				"type" : "string",
 				"index" : "not_analyzed"
 			}

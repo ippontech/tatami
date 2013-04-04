@@ -1,0 +1,36 @@
+{
+	"status" : {
+		"properties" : {
+            "domain" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "include_in_all" : false
+            },
+            "publicGroup" :{
+                "type": "boolean",
+                "include_in_all" : false
+            },
+            "groupId": {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "include_in_all" : false
+            },
+            "statusId": {
+                "type" : "string",
+                "index" : "not_indexed",
+                "include_in_all" : false
+            },
+            "username" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+            },
+			"content" : {
+				"type" : "string"
+			},
+			"statusDate" : {
+				"type" : "date",
+                "include_in_all" : false
+			}
+		}
+	}
+}
