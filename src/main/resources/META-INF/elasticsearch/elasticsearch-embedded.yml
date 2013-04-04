@@ -12,3 +12,5 @@ path:
   work: ${tatami.elasticsearch.path.data}/work
   logs: ${tatami.elasticsearch.path.log}
 
+http.enabled: ${tatami.elasticsearch.http.enabled}
+

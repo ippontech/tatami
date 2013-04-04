@@ -120,6 +120,7 @@
                 <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
