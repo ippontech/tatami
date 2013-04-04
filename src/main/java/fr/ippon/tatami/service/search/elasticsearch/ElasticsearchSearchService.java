@@ -7,16 +7,22 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.util.DomainUtil;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -37,7 +43,10 @@ import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
 public class ElasticsearchSearchService implements SearchService {
 
@@ -51,6 +60,10 @@ public class ElasticsearchSearchService implements SearchService {
     @Inject
     private String indexName;
 
+    @Inject
+    private GroupDetailsRepository groupDetailsRepository;
+
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     private Client client() {
@@ -59,71 +72,103 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public boolean reset() {
+        return deleteIndex() ? createIndex() : false;
+    }
+
+
+    /**
+     * Delete the tatami index.
+     *
+     * @return {@code true} if the index is deleted or didn't exist.
+     */
+    private boolean deleteIndex() {
         try {
-            DeleteIndexResponse delete = client().admin().indices().prepareDelete(indexName).execute().actionGet();
-            if (!delete.acknowledged()) {
+            boolean ack = client().admin().indices().prepareDelete(indexName).execute().actionGet().acknowledged();
+            if (!ack)
                 log.error("Search engine Index wasn't deleted !");
-                return false;
-            } else {
-                return true;
-            }
+            return ack;
+
         } catch (IndexMissingException e) {
             log.warn("Elasticsearch index " + indexName + " missing, it was not deleted");
-            // Failling to delete a missing index is supposed to be valid
-            return true;
+            return true; // Failling to delete a missing index is supposed to be valid
+
         } catch (ElasticSearchException e) {
             log.error("Elasticsearch index " + indexName + " was not deleted", e);
             return false;
         }
     }
 
+    /**
+     * Create the tatami index.
+     *
+     * @return {@code true} if an error occurs during the creation.
+     */
+    private boolean createIndex() {
+        try {
+            CreateIndexRequestBuilder createIndex = client().admin().indices().prepareCreate(indexName);
+            createIndex.setSettings(settingsBuilder().loadFromClasspath("META-INF/elasticsearch/index/tatami.yml"));
+
+            for (String type : Arrays.asList("user", "status", "group")) {
+                URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/tatami/" + type + ".json");
+                String mapping = IOUtils.toString(mappingUrl, Charsets.UTF_8);
+                createIndex.addMapping(type, mapping);
+            }
+
+            boolean ack = createIndex.execute().actionGet().acknowledged();
+            if (!ack)
+                log.error("Cannot create index " + indexName);
+            return ack;
+
+        } catch (ElasticSearchException e) {
+            log.error("Cannot create index " + indexName, e);
+            return false;
+
+        } catch (IOException e) {
+            log.error("Cannot create index " + indexName, e);
+            return false;
+        }
+    }
+
+    private final ElasticsearchAdapter<Status> statusAdapter = new ElasticsearchAdapter<Status>() {
+        @Override
+        public String id(Status status) {
+            return status.getStatusId();
+        }
+
+        @Override
+        public XContentBuilder toJson(Status status) throws IOException {
+            XContentBuilder source = XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("username", status.getUsername())
+                    .field("domain", status.getDomain())
+                    .field("statusDate", status.getStatusDate())
+                    .field("content", status.getContent());
+
+            if (status.getGroupId() != null) {
+                Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
+                source.field("groupId", status.getGroupId());
+                source.field("publicGroup", group.isPublicGroup());
+            }
+            return source.endObject();
+        }
+    };
+
     @Override
     @Async
-    public void addStatus(final Status status) {
-        try {
-            if (log.isDebugEnabled())
-                log.debug("Add status " + status.toString());
-
-            internalAddStatus(status);
-        } catch (IOException e) {
-            log.error("The status wasn't added to the index: "
-                    + status.getStatusId()
-                    + " ["
-                    + status.toString()
-                    + "]", e);
-        }
+    public void addStatus(Status status) {
+        index("status", status, statusAdapter);
     }
 
     @Override
     public void addStatuses(Collection<Status> statuses) {
-        try {
-            for (Status status : statuses) {
-                internalAddStatus(status);
-            }
-            log.info(statuses.size() + " statuses indexed!");
-        } catch (IOException e) {
-            log.error("Batch status insert failed ! ", e);
-        }
+        indexAll("status", statuses, statusAdapter);
     }
 
-    private void internalAddStatus(Status status) throws IOException {
-        XContentBuilder jsonifiedObject;
-
-        jsonifiedObject = XContentFactory.jsonBuilder()
-                .startObject()
-                .field("username", status.getUsername())
-                .field("domain", status.getDomain())
-                .field("statusDate", status.getStatusDate())
-                .field("content", status.getContent())
-                .endObject();
-
-        addObject(status.getClass(), status.getStatusId(), jsonifiedObject);
-    }
 
     @Override
-    public void removeStatus(final Status status) {
-        Assert.notNull(status, "status can't be null");
-        removeObject(status.getClass(), status.getStatusId());
+    public void removeStatus(Status status) {
+        Assert.notNull(status, "status cannot be null");
+        delete("status", status.getStatusId());
     }
 
     @Override
@@ -182,38 +227,41 @@ public class ElasticsearchSearchService implements SearchService {
         return items;
     }
 
+    private final ElasticsearchAdapter<User> userAdapter = new ElasticsearchAdapter<User>() {
+        @Override
+        public String id(User user) {
+            return user.getLogin();
+        }
+
+        @Override
+        public XContentBuilder toJson(User user) throws IOException {
+            return XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("domain", user.getDomain())
+                    .field("login", user.getLogin())
+                    .field("username", user.getUsername())
+                    .endObject();
+        }
+    };
+
     @Override
     @Async
     public void addUser(final User user) {
-        Assert.notNull(user, "user can't be null");
-
-        XContentBuilder jsonifiedObject;
-        try {
-            jsonifiedObject = XContentFactory.jsonBuilder()
-                    .startObject()
-                    .field("login", user.getLogin())
-                    .field("username", user.getUsername())
-                    .field("domain", user.getDomain())
-                    .field("firstName", user.getFirstName())
-                    .field("lastName", user.getLastName())
-                    .endObject();
-
-            addObject(user.getClass(), user.getLogin(), jsonifiedObject);
-        } catch (IOException e) {
-            log.error("The user wasn't added to the index: "
-                    + user.getLogin()
-                    + " ["
-                    + user.toString()
-                    + "]", e);
-        }
+        Assert.notNull(user, "user cannot be null");
+        index("user", user, userAdapter);
     }
 
     @Override
     public void addUsers(Collection<User> users) {
-        for (User user : users) {
-            addUser(user);
-        }
+        indexAll("user", users, userAdapter);
     }
+
+    @Override
+    public void removeUser(User user) {
+        Assert.notNull(user, "user cannot be null");
+        delete("user", user.getLogin());
+    }
+
 
     @SuppressWarnings("unchecked")
     @Override
@@ -267,14 +315,34 @@ public class ElasticsearchSearchService implements SearchService {
         return logins;
     }
 
+    private final ElasticsearchAdapter<Group> groupAdapter = new ElasticsearchAdapter<Group>() {
+        @Override
+        public String id(Group group) {
+            return group.getGroupId();
+        }
+
+        @Override
+        public XContentBuilder toJson(Group group) throws IOException {
+            return XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("domain", group.getDomain())
+                    .field("groupId", group.getGroupId())
+                    .field("name", group.getName())
+                    .field("description", group.getDescription())
+                    .endObject();
+        }
+    };
+
     @Override
-    public void removeUser(User user) {
-        //TODO
+    @Async
+    public void addGroup(Group group) {
+        index("group", group, groupAdapter);
     }
 
     @Override
-    public void addGroup(Group group) {
-        //TODO
+    public void removeGroup(Group group) {
+        Assert.notNull(group, "group cannot be null");
+        delete("group", group.getGroupId());
     }
 
     @Override
@@ -282,52 +350,164 @@ public class ElasticsearchSearchService implements SearchService {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public void removeGroup(Group group) {
-        //TODO
-    }
 
     /**
-     * Add an item to the index.
+     * Indexes an object to elasticsearch.
+     * This method is asynchronous.
      *
-     * @param clazz           the item class
-     * @param uid             the item identifier
-     * @param jsonifiedObject the item json representation
-     * @return the response's Id
+     * @param type    Type of object.
+     * @param object  Object to index.
+     * @param adapter Converter to JSON.
      */
-    private void addObject(@SuppressWarnings("rawtypes") final Class clazz, String uid, XContentBuilder jsonifiedObject) {
-        if (log.isDebugEnabled()) {
-            String itemAsString;
-            try {
-                itemAsString = jsonifiedObject.prettyPrint().string();
-            } catch (IOException e) {
-                itemAsString = clazz.getSimpleName() + "-" + uid;
+    private <T> void index(final String type, T object, ElasticsearchAdapter<T> adapter) {
+        Assert.notNull(type);
+        Assert.notNull(object);
+        Assert.notNull(adapter);
+
+        final String id = adapter.id(object);
+        try {
+            final XContentBuilder source = adapter.toJson(object);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Ready to index the " + type + " of id " + id + " into Elasticsearch: " + stringify(source));
             }
-            log.debug("Ready to inject this json object into Elastic Search: " + itemAsString);
+            client().prepareIndex(indexName, type, id).setSource(source).execute(new ActionListener<IndexResponse>() {
+                @Override
+                public void onResponse(IndexResponse response) {
+                    if (log.isDebugEnabled()) {
+                        log.debug(type + " of id " + id + " was " + (response.version() == 1 ? "indexed" : "updated") + " into Elasticsearch");
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    log.error("The " + type + " of id " + id + " wasn't indexed : " + stringify(source), e);
+                }
+            });
+
+        } catch (IOException e) {
+            log.error("The " + type + " of id " + id + " wasn't indexed", e);
         }
-
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        client().prepareIndex(this.indexName, dataType, uid)
-                .setSource(jsonifiedObject)
-                .execute()
-                .actionGet();
-
     }
 
     /**
-     * Delete a object from the index.
+     * Indexes an collection of objects to elasticsearch.
+     * This method is synchronous.
      *
-     * @param clazz the item class
-     * @param uid   : the item identifier
-     * @return the response's Id
+     * @param type       Type of object.
+     * @param collection Object to index.
+     * @param adapter    Converter to JSON.
      */
-    private String removeObject(@SuppressWarnings("rawtypes") final Class clazz, String uid) {
+    private <T> void indexAll(String type, Collection<T> collection, ElasticsearchAdapter<T> adapter) {
+        Assert.notNull(type);
+        Assert.notNull(collection);
+        Assert.notNull(adapter);
 
-        final String dataType = clazz.getSimpleName().toLowerCase();
-        if (log.isDebugEnabled()) {
-            log.debug("Removing a " + dataType + " item from the index : #" + uid);
+        if (collection.isEmpty())
+            return;
+
+        BulkRequestBuilder request = client().prepareBulk();
+
+        for (T object : collection) {
+            String id = adapter.id(object);
+            try {
+                XContentBuilder source = adapter.toJson(object);
+                IndexRequestBuilder indexRequest = client().prepareIndex(indexName, type, id).setSource(source);
+                request.add(indexRequest);
+
+            } catch (IOException e) {
+                log.error("The " + type + " of id " + id + " wasn't indexed", e);
+            }
         }
-        final DeleteResponse response = client().delete(new DeleteRequest(this.indexName, dataType, uid)).actionGet();
-        return response.getId();
+
+        if (log.isDebugEnabled())
+            log.debug("Ready to index " + collection.size() + " " + type + " into Elasticsearch.");
+
+
+        BulkResponse response = request.execute().actionGet();
+        if (response.hasFailures()) {
+            int errorCount = 0;
+            for (BulkItemResponse itemResponse : response) {
+                if (itemResponse.failed()) {
+                    log.error("The " + type + " of id " + itemResponse.getId() + " wasn't indexed in bulk operation: " + itemResponse.getFailureMessage());
+                    ++errorCount;
+                }
+            }
+            log.error(errorCount + " " + type + " where not indexed in bulk operation.");
+
+        } else if (log.isDebugEnabled()) {
+            log.debug(collection.size() + " " + type + " indexed into Elasticsearch in bulk operation.");
+        }
     }
+
+    /**
+     * delete a document.
+     * This method is asynchronous.
+     *
+     * @param type Type of the document.
+     * @param id   Id of the document.
+     */
+    private void delete(final String type, final String id) {
+        Assert.notNull(type);
+        Assert.notNull(id);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Ready to delete the " + type + " of id " + id + " from Elasticsearch: ");
+        }
+
+        client().prepareDelete(indexName, type, id).execute(new ActionListener<DeleteResponse>() {
+            @Override
+            public void onResponse(DeleteResponse deleteResponse) {
+                if (log.isDebugEnabled()) {
+                    if (deleteResponse.notFound())
+                        log.debug(type + " of id " + id + " was not found therefore not deleted.");
+                    else
+                        log.debug(type + " of id " + id + " was deleted from Elasticsearch.");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                log.error("The " + type + " of id " + id + " wasn't deleted from Elasticsearch.", e);
+            }
+        });
+    }
+
+    /**
+     * Stringify a document source for logging purpose.
+     *
+     * @param source Source of the document.
+     * @return A string representation of the document only valid for logging purpose.
+     */
+    private String stringify(XContentBuilder source) {
+        try {
+            return source.prettyPrint().string();
+        } catch (IOException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Used to transform an object to it's indexed representation.
+     */
+    private static interface ElasticsearchAdapter<T> {
+        /**
+         * Provides object id;
+         *
+         * @param o object.
+         * @return object id.
+         */
+        String id(T o);
+
+        /**
+         * Convert object to it's indexable JSON document representation.
+         *
+         * @param o object.
+         * @return Document
+         * @throws IOException If the creation of the JSON document failed.
+         */
+        XContentBuilder toJson(T o) throws IOException;
+    }
+
+
 }
