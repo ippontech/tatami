@@ -54,6 +54,7 @@ public class ElasticsearchSearchService implements SearchService {
     private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
 
     private static final String ALL_FIELDS = "_all";
+    public static final List<String> TYPES = Collections.unmodifiableList(Arrays.asList("user", "status", "group"));
 
     @Inject
     private ElasticsearchEngine engine;
@@ -117,7 +118,7 @@ public class ElasticsearchSearchService implements SearchService {
             CreateIndexRequestBuilder createIndex = client().admin().indices().prepareCreate(indexName);
             createIndex.setSettings(settingsBuilder().loadFromClasspath("META-INF/elasticsearch/index/tatami.yml"));
 
-            for (String type : Arrays.asList("user", "status", "group")) {
+            for (String type : TYPES) {
                 URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/tatami/" + type + ".json");
                 String mapping = IOUtils.toString(mappingUrl, Charsets.UTF_8);
                 createIndex.addMapping(type, mapping);
@@ -138,10 +139,15 @@ public class ElasticsearchSearchService implements SearchService {
         }
     }
 
-    private final ElasticsearchAdapter<Status> statusAdapter = new ElasticsearchAdapter<Status>() {
+    private final ElasticsearchMapper<Status> statusMapper = new ElasticsearchMapper<Status>() {
         @Override
         public String id(Status status) {
             return status.getStatusId();
+        }
+
+        @Override
+        public String type() {
+            return "status";
         }
 
         @Override
@@ -165,19 +171,19 @@ public class ElasticsearchSearchService implements SearchService {
     @Override
     @Async
     public void addStatus(Status status) {
-        index("status", status, statusAdapter);
+        index(status, statusMapper);
     }
 
     @Override
     public void addStatuses(Collection<Status> statuses) {
-        indexAll("status", statuses, statusAdapter);
+        indexAll(statuses, statusMapper);
     }
 
 
     @Override
     public void removeStatus(Status status) {
         Assert.notNull(status, "status cannot be null");
-        delete("status", status.getStatusId());
+        delete(status, statusMapper);
     }
 
     @Override
@@ -236,10 +242,15 @@ public class ElasticsearchSearchService implements SearchService {
         return items;
     }
 
-    private final ElasticsearchAdapter<User> userAdapter = new ElasticsearchAdapter<User>() {
+    private final ElasticsearchMapper<User> userMapper = new ElasticsearchMapper<User>() {
         @Override
         public String id(User user) {
             return user.getLogin();
+        }
+
+        @Override
+        public String type() {
+            return "user";
         }
 
         @Override
@@ -257,18 +268,17 @@ public class ElasticsearchSearchService implements SearchService {
     @Async
     public void addUser(final User user) {
         Assert.notNull(user, "user cannot be null");
-        index("user", user, userAdapter);
+        index( user, userMapper);
     }
 
     @Override
     public void addUsers(Collection<User> users) {
-        indexAll("user", users, userAdapter);
+        indexAll(users, userMapper);
     }
 
     @Override
     public void removeUser(User user) {
-        Assert.notNull(user, "user cannot be null");
-        delete("user", user.getLogin());
+        delete(user, userMapper);
     }
 
 
@@ -324,10 +334,15 @@ public class ElasticsearchSearchService implements SearchService {
         return logins;
     }
 
-    private final ElasticsearchAdapter<Group> groupAdapter = new ElasticsearchAdapter<Group>() {
+    private final ElasticsearchMapper<Group> groupMapper = new ElasticsearchMapper<Group>() {
         @Override
         public String id(Group group) {
             return group.getGroupId();
+        }
+
+        @Override
+        public String type() {
+            return "group";
         }
 
         @Override
@@ -345,13 +360,12 @@ public class ElasticsearchSearchService implements SearchService {
     @Override
     @Async
     public void addGroup(Group group) {
-        index("group", group, groupAdapter);
+        index(group, groupMapper);
     }
 
     @Override
     public void removeGroup(Group group) {
-        Assert.notNull(group, "group cannot be null");
-        delete("group", group.getGroupId());
+        delete(group, groupMapper);
     }
 
     @Override
@@ -364,18 +378,17 @@ public class ElasticsearchSearchService implements SearchService {
      * Indexes an object to elasticsearch.
      * This method is asynchronous.
      *
-     * @param type    Type of object.
      * @param object  Object to index.
-     * @param adapter Converter to JSON.
+     * @param mapper Converter to JSON.
      */
-    private <T> void index(final String type, T object, ElasticsearchAdapter<T> adapter) {
-        Assert.notNull(type);
+    private <T> void index(T object, ElasticsearchMapper<T> mapper) {
         Assert.notNull(object);
-        Assert.notNull(adapter);
+        Assert.notNull(mapper);
 
-        final String id = adapter.id(object);
+        final String type = mapper.type();
+        final String id = mapper.id(object);
         try {
-            final XContentBuilder source = adapter.toJson(object);
+            final XContentBuilder source = mapper.toJson(object);
 
             if (log.isDebugEnabled()) {
                 log.debug("Ready to index the " + type + " of id " + id + " into Elasticsearch: " + stringify(source));
@@ -403,18 +416,17 @@ public class ElasticsearchSearchService implements SearchService {
      * Indexes an collection of objects to elasticsearch.
      * This method is synchronous.
      *
-     * @param type       Type of object.
      * @param collection Object to index.
      * @param adapter    Converter to JSON.
      */
-    private <T> void indexAll(String type, Collection<T> collection, ElasticsearchAdapter<T> adapter) {
-        Assert.notNull(type);
+    private <T> void indexAll(Collection<T> collection, ElasticsearchMapper<T> adapter) {
         Assert.notNull(collection);
         Assert.notNull(adapter);
 
         if (collection.isEmpty())
             return;
 
+        String type = adapter.type();
         BulkRequestBuilder request = client().prepareBulk();
 
         for (T object : collection) {
@@ -453,12 +465,15 @@ public class ElasticsearchSearchService implements SearchService {
      * delete a document.
      * This method is asynchronous.
      *
-     * @param type Type of the document.
-     * @param id   Id of the document.
+     * @param object  Object to index.
+     * @param mapper Converter to JSON.
      */
-    private void delete(final String type, final String id) {
-        Assert.notNull(type);
-        Assert.notNull(id);
+    private <T> void delete(T object, ElasticsearchMapper<T> mapper) {
+        Assert.notNull(object);
+        Assert.notNull(mapper);
+
+        final String id = mapper.id(object);
+        final String type = mapper.type();
 
         if (log.isDebugEnabled()) {
             log.debug("Ready to delete the " + type + " of id " + id + " from Elasticsearch: ");
@@ -499,7 +514,7 @@ public class ElasticsearchSearchService implements SearchService {
     /**
      * Used to transform an object to it's indexed representation.
      */
-    private static interface ElasticsearchAdapter<T> {
+    private static interface ElasticsearchMapper<T> {
         /**
          * Provides object id;
          *
@@ -516,6 +531,13 @@ public class ElasticsearchSearchService implements SearchService {
          * @throws IOException If the creation of the JSON document failed.
          */
         XContentBuilder toJson(T o) throws IOException;
+
+        /**
+         * Provides index type of this mapping.
+         *
+         * @return The elasticsearch index type of the object.
+         */
+        String type();
     }
 
 
