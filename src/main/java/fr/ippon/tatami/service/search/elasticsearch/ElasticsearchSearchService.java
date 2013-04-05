@@ -30,6 +30,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermFilterBuilder;
@@ -38,6 +39,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.Assert;
 
@@ -48,6 +50,8 @@ import java.net.URL;
 import java.util.*;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.index.query.FilterBuilders.termFilter;
+import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
 public class ElasticsearchSearchService implements SearchService {
 
@@ -148,6 +152,11 @@ public class ElasticsearchSearchService implements SearchService {
         @Override
         public String type() {
             return "status";
+        }
+
+        @Override
+        public String prefixSearchField() {
+            return null;
         }
 
         @Override
@@ -254,6 +263,11 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         @Override
+        public String prefixSearchField() {
+            return "username";
+        }
+
+        @Override
         public XContentBuilder toJson(User user) throws IOException {
             return XContentFactory.jsonBuilder()
                     .startObject()
@@ -268,7 +282,7 @@ public class ElasticsearchSearchService implements SearchService {
     @Async
     public void addUser(final User user) {
         Assert.notNull(user, "user cannot be null");
-        index( user, userMapper);
+        index(user, userMapper);
     }
 
     @Override
@@ -282,57 +296,12 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
 
-    @SuppressWarnings("unchecked")
     @Override
+    @Cacheable("user-prefix-cache")
     public Collection<String> searchUserByPrefix(String domain, String prefix) {
-        QueryBuilder qb = QueryBuilders.prefixQuery("username", prefix);
-        String dataType = User.class.getSimpleName().toLowerCase();
-        FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
-
-        SearchResponse searchResponse;
-        try {
-            searchResponse = client().prepareSearch(this.indexName)
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(qb)
-                    .setFilter(domainFilter)
-                    .setTypes(dataType)
-                    .setFrom(0).setSize(DEFAULT_TOP_N_SEARCH_USER).setExplain(false)
-                    .addSort(SortBuilders.fieldSort("username").order(SortOrder.ASC))
-                    .execute()
-                    .actionGet();
-        } catch (IndexMissingException e) {
-            log.warn("The index was not found in the cluster.");
-            return new ArrayList<String>(0);
-        }
-
-        final SearchHits searchHits = searchResponse.getHits();
-        final Long hitsNumber = searchHits.getTotalHits();
-        if (hitsNumber == 0) {
-            return new ArrayList<String>(0);
-        }
-
-        final SearchHit[] searchHitsArray = searchHits.getHits();
-        final List<String> logins = new ArrayList<String>(hitsNumber.intValue());
-        Map<String, Object> user = null;
-        try {
-            String username = null;
-            String login = null;
-            for (int i = 0; i < searchHitsArray.length; i++) {
-                user = this.mapper.readValue(searchHitsArray[i].source(), Map.class);
-                username = (String) user.get("username");
-                login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
-                logins.add(login);
-            }
-        } catch (JsonParseException e) {
-            log.error("Json parse exception", e);
-        } catch (JsonMappingException e) {
-            log.error("Json mapping exception", e);
-        } catch (IOException e) {
-            log.error("IO exception", e);
-        }
-
-        return logins;
+        return searchByPrefix(domain, prefix, DEFAULT_TOP_N_SEARCH_USER, userMapper);
     }
+
 
     private final ElasticsearchMapper<Group> groupMapper = new ElasticsearchMapper<Group>() {
         @Override
@@ -343,6 +312,11 @@ public class ElasticsearchSearchService implements SearchService {
         @Override
         public String type() {
             return "group";
+        }
+
+        @Override
+        public String prefixSearchField() {
+            return "name-not-analyzed";
         }
 
         @Override
@@ -369,8 +343,14 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
+    @Cacheable("group-prefix-cache")
     public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Collection<String> ids = searchByPrefix(domain, prefix, size, groupMapper);
+        List<Group> groups = new ArrayList<Group>(ids.size());
+        for (String id : ids) {
+            groups.add(groupDetailsRepository.getGroupDetails(id));
+        }
+        return groups;
     }
 
 
@@ -378,7 +358,7 @@ public class ElasticsearchSearchService implements SearchService {
      * Indexes an object to elasticsearch.
      * This method is asynchronous.
      *
-     * @param object  Object to index.
+     * @param object Object to index.
      * @param mapper Converter to JSON.
      */
     private <T> void index(T object, ElasticsearchMapper<T> mapper) {
@@ -465,7 +445,7 @@ public class ElasticsearchSearchService implements SearchService {
      * delete a document.
      * This method is asynchronous.
      *
-     * @param object  Object to index.
+     * @param object Object to index.
      * @param mapper Converter to JSON.
      */
     private <T> void delete(T object, ElasticsearchMapper<T> mapper) {
@@ -497,6 +477,51 @@ public class ElasticsearchSearchService implements SearchService {
         });
     }
 
+    private Collection<String> searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
+        try {
+
+            SearchRequestBuilder searchRequest = client().prepareSearch(indexName)
+                    .setTypes(mapper.type())
+                    .setQuery(prefixQuery(mapper.prefixSearchField(), prefix))
+                    .setFilter(termFilter("domain", domain))
+                    .addFields()
+                    .setFrom(0)
+                    .setSize(size)
+                    .addSort(SortBuilders.fieldSort(mapper.prefixSearchField()).order(SortOrder.ASC));
+
+            if (log.isTraceEnabled())
+                log.trace("elasticsearch query : " + searchRequest);
+
+            SearchResponse searchResponse = searchRequest
+                    .execute()
+                    .actionGet();
+
+            SearchHits searchHits = searchResponse.hits();
+            if (searchHits.totalHits() == 0)
+                return Collections.emptyList();
+
+            SearchHit[] hits = searchHits.hits();
+            final List<String> ids = new ArrayList<String>(hits.length);
+            for (SearchHit hit : hits) {
+                ids.add(hit.getId());
+            }
+
+            if (log.isDebugEnabled())
+                log.debug("search " + mapper.type() + " by prefix(\"" + domain + "\", \"" + prefix + "\") = result : " + ids);
+
+            return ids;
+
+        } catch (IndexMissingException e) {
+            log.warn("The index " + indexName + " was not found in the Elasticsearch cluster.");
+            return Collections.emptyList();
+
+        } catch (ElasticSearchException e) {
+            log.error("Error while searching user by prefix in index " + indexName, e);
+            return Collections.emptyList();
+        }
+
+    }
+
     /**
      * Stringify a document source for logging purpose.
      *
@@ -524,6 +549,18 @@ public class ElasticsearchSearchService implements SearchService {
         String id(T o);
 
         /**
+         * Provides index type of this mapping.
+         *
+         * @return The elasticsearch index type of the object.
+         */
+        String type();
+
+        /**
+         * @return The name of the field to search by prefix.
+         */
+        String prefixSearchField();
+
+        /**
          * Convert object to it's indexable JSON document representation.
          *
          * @param o object.
@@ -531,13 +568,6 @@ public class ElasticsearchSearchService implements SearchService {
          * @throws IOException If the creation of the JSON document failed.
          */
         XContentBuilder toJson(T o) throws IOException;
-
-        /**
-         * Provides index type of this mapping.
-         *
-         * @return The elasticsearch index type of the object.
-         */
-        String type();
     }
 
 
