@@ -230,6 +230,9 @@ public class ElasticsearchSearchService implements SearchService {
                 items.put(hit.getId(), null);
             }
 
+            if (log.isDebugEnabled())
+                log.debug("search status with words (" + query + ") = " + items.keySet());
+
             return items;
 
         } catch (IndexMissingException e) {
