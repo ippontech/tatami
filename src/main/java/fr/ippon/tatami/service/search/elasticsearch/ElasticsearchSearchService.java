@@ -116,7 +116,7 @@ public class ElasticsearchSearchService implements SearchService {
     private boolean createIndex() {
         try {
             CreateIndexRequestBuilder createIndex = client().admin().indices().prepareCreate(indexName);
-            createIndex.setSettings(settingsBuilder().loadFromClasspath("META-INF/elasticsearch/index/tatami.yml"));
+            createIndex.setSettings(settingsBuilder().loadFromClasspath("META-INF/elasticsearch/index/tatami.json"));
 
             for (String type : TYPES) {
                 URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/tatami/" + type + ".json");
