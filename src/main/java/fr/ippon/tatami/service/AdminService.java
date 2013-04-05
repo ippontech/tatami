@@ -63,20 +63,30 @@ public class AdminService {
     }
 
     public Map<String, String> getEnvProperties() {
+        log.trace("AdminService.getEnvProperties() enter");
         Map<String, String> properties = new LinkedHashMap<String, String>();
-        properties.put("tatami.version", env.getProperty("tatami.version"));
-        properties.put("tatami.wro4j.enabled", env.getProperty("tatami.wro4j.enabled"));
-        properties.put("tatami.google.analytics.key", env.getProperty("tatami.google.analytics.key"));
-        properties.put("tatami.message.reloading.enabled", env.getProperty("tatami.message.reloading.enabled"));
-        properties.put("smtp.host", env.getProperty("smtp.host"));
-        properties.put("cassandra.host", env.getProperty("cassandra.host"));
-        properties.put("search.engine", env.getProperty("search.engine"));
-        properties.put("lucene.path", env.getProperty("lucene.path"));
-        properties.put("elasticsearch.indexName", env.getProperty("elasticsearch.indexName"));
-        properties.put("elasticsearch.cluster.name", env.getProperty("elasticsearch.cluster.name"));
-        properties.put("elasticsearch.cluster.nodes", env.getProperty("elasticsearch.cluster.nodes"));
-        properties.put("elasticsearch.cluster.default.communication.port", env.getProperty("elasticsearch.cluster.default.communication.port"));
+        loadProperty(properties, "tatami.version");
+        loadProperty(properties, "tatami.wro4j.enabled");
+        loadProperty(properties, "tatami.google.analytics.key");
+        loadProperty(properties, "tatami.message.reloading.enabled");
+        loadProperty(properties, "smtp.host");
+        loadProperty(properties, "cassandra.host");
+        loadProperty(properties, "search.engine");
+        loadProperty(properties, "lucene.path");
+        loadProperty(properties, "elasticsearch.indexName");
+        loadProperty(properties, "elasticsearch.cluster.name");
+        loadProperty(properties, "elasticsearch.cluster.nodes");
+        loadProperty(properties, "elasticsearch.cluster.default.communication.port");
+        log.trace("AdminService.getEnvProperties() return");
         return properties;
+    }
+
+    private void loadProperty(Map<String, String> properties, String key) {
+        try {
+            properties.put(key, env.getProperty(key));
+        }   catch (Throwable e) {
+            properties.put(key, "(Invalid value)");
+        }
     }
 
     /**
