@@ -1,7 +1,5 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
@@ -9,7 +7,6 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -25,15 +22,9 @@ import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermFilterBuilder;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -51,13 +42,14 @@ import java.util.*;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
 public class ElasticsearchSearchService implements SearchService {
 
     private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
 
-    private static final String ALL_FIELDS = "_all";
+    private static final String ALL_FIELD = "_all";
     public static final List<String> TYPES = Collections.unmodifiableList(Arrays.asList("user", "status", "group"));
 
     @Inject
@@ -211,44 +203,43 @@ public class ElasticsearchSearchService implements SearchService {
             size = SearchService.DEFAULT_PAGE_SIZE;
         }
 
-        String name = ALL_FIELDS;
-        QueryBuilder qb = QueryBuilders.matchQuery(name, query);
-        String dataType = Status.class.getSimpleName().toLowerCase();
-        FilterBuilder domainFilter = new TermFilterBuilder("domain", domain);
-
-        SearchResponse searchResponse = null;
         try {
-            SearchRequestBuilder builder = client().prepareSearch(this.indexName)
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(qb)
-                    .setFilter(domainFilter)
-                    .setTypes(dataType)
-                    .setFrom(page * size).setSize(size)
-                    .setExplain(false);
+            SearchRequestBuilder searchRequest = client().prepareSearch(this.indexName)
+                    .setTypes(statusMapper.type())
+                    .setQuery(matchQuery(ALL_FIELD, query))
+                    .setFilter(termFilter("domain", domain))
+                    .addFields()
+                    .setFrom(page * size)
+                    .setSize(size)
+                    .addSort("statusDate", SortOrder.DESC);
 
-            builder.addSort("statusDate", SortOrder.DESC);
+            if (log.isTraceEnabled())
+                log.trace("elasticsearch query : " + searchRequest);
 
-            searchResponse = builder.execute().actionGet();
+            SearchResponse searchResponse = searchRequest.execute().actionGet();
+
+            SearchHits searchHits = searchResponse.hits();
+            Long hitsNumber = searchHits.totalHits();
+            if (hitsNumber == 0) {
+                return Collections.emptyMap();
+            }
+
+            SearchHit[] hits = searchHits.hits();
+            Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(hits.length);
+            for (SearchHit hit : hits) {
+                items.put(hit.getId(), null);
+            }
+
+            return items;
+
         } catch (IndexMissingException e) {
-            log.warn("The index was not found in the cluster.");
-            return new HashMap<String, SharedStatusInfo>(0);
+            log.warn("The index " + indexName + " was not found in the Elasticsearch cluster.");
+            return Collections.emptyMap();
+
+        } catch (ElasticSearchException e) {
+            log.error("Error happened while searching status in index " + indexName);
+            return Collections.emptyMap();
         }
-
-        final SearchHits searchHits = searchResponse.getHits();
-        final Long hitsNumber = searchHits.getTotalHits();
-        if (hitsNumber == 0) {
-            return new HashMap<String, SharedStatusInfo>(0);
-        }
-
-        final SearchHit[] searchHitsArray = searchHits.getHits();
-        final Map<String, SharedStatusInfo> items =
-                new LinkedHashMap<String, SharedStatusInfo>(hitsNumber.intValue());
-
-        for (int i = 0; i < searchHitsArray.length; i++) {
-            items.put(searchHitsArray[i].getId(), null);
-        }
-
-        return items;
     }
 
     private final ElasticsearchMapper<User> userMapper = new ElasticsearchMapper<User>() {
