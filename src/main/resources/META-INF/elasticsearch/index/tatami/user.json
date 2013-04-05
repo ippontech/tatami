@@ -1,18 +1,18 @@
 {
 	"user" : {
 		"properties" : {
+            "login" : {
+                "type" : "string",
+                "analyzer" : "lowercase"
+            },
             "domain" : {
                 "type" : "string",
-                "index" : "not_analyzed"
+                "analyzer" : "lowercase"
             },
             "username" : {
                 "type" : "string",
-                "index" : "not_analyzed"
-            },
-			"login" : {
-				"type" : "string",
-				"index" : "not_analyzed"
-			}
+                "analyzer" : "lowercase"
+            }
 		}
 	}
 }
