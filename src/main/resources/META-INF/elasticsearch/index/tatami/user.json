@@ -12,6 +12,12 @@
             "username" : {
                 "type" : "string",
                 "analyzer" : "lowercase"
+            },
+            "firstName" : {
+                "type" : "string"
+            },
+            "lastName" : {
+                "type" : "string"
             }
 		}
 	}

@@ -155,8 +155,9 @@ public class ElasticsearchSearchService implements SearchService {
         public XContentBuilder toJson(Status status) throws IOException {
             XContentBuilder source = XContentFactory.jsonBuilder()
                     .startObject()
-                    .field("username", status.getUsername())
+                    .field("statusId", status.getStatusId())
                     .field("domain", status.getDomain())
+                    .field("username", status.getUsername())
                     .field("statusDate", status.getStatusDate())
                     .field("content", status.getContent());
 
@@ -265,9 +266,11 @@ public class ElasticsearchSearchService implements SearchService {
         public XContentBuilder toJson(User user) throws IOException {
             return XContentFactory.jsonBuilder()
                     .startObject()
-                    .field("domain", user.getDomain())
                     .field("login", user.getLogin())
+                    .field("domain", user.getDomain())
                     .field("username", user.getUsername())
+                    .field("firstName", user.getFirstName())
+                    .field("lastName", user.getLastName())
                     .endObject();
         }
     };
