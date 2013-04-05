@@ -33,7 +33,7 @@ public class RemoteElasticsearchEngine implements ElasticsearchEngine {
         Settings settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", env.getRequiredProperty("elasticsearch.cluster.name"))
                 .build();
-        TransportClient client = new TransportClient(settings, false);
+        client = new TransportClient(settings, false);
 
         // Looking for nodes configuration
         String nodes = env.getRequiredProperty("elasticsearch.cluster.nodes");
