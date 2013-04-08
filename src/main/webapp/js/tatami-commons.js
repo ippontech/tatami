@@ -623,7 +623,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
 app.Model.ProfileModel = Backbone.Model.extend({
   defaults: {
-    'gravatar': '',
+    'avatar': '',
     'firstName': '',
     'lastName': '',
     'statusCount': 0,
@@ -1712,7 +1712,7 @@ app.View.ListUserGroupItem = Backbone.View.extend({
 app.Model.ListUserGroupModel = Backbone.Model.extend({
     idAttribute : 'username',
     defaults : {
-        gravatar : '',
+        avatar : '',
         firstName : '',
         lastName : '',
         role : ''

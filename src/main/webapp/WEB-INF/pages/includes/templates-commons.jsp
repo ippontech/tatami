@@ -29,10 +29,10 @@
 <script type="text/template" id="timeline-item-inner">
   <tr>
     <th rowspan="6">
-        <@ if(status.gravatar ==  ""){ @>
+        <@ if(status.avatar ==  ""){ @>
         <img class="avatar" src="/img/default_image_profile.png" alt="default photo">
         <@} else {@>
-        <img class="avatar" src="/tatami/avatar/<@=status.gravatar@>/"
+        <img class="avatar" src="/tatami/avatar/<@=status.avatar@>/photo.jpg"
              alt="<@= [status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
         <@ } @>
     </th>
@@ -164,7 +164,7 @@
 <script type="text/template" id="timeline-share-item">
   <@ if (profile) { @>
     <a href="/tatami/profile/<@= profile.username @>/">
-        <img class="avatar avatar-small" src="/tatami/avatar/<@= profile.gravatar @>/"
+        <img class="avatar avatar-small" src="/tatami/avatar/<@= profile.avatar @>/photo.jpg"
              alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"></a>
   <@ } else { @>
     <a href="/tatami/profile/<@= username @>/"><@= username @></a> 
@@ -205,10 +205,10 @@
       <div class="span12">
         <a href="/tatami/profile/<@= user.username @>/"
            class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
-            <@ if(user.gravatar == ""){ @>
+            <@ if(user.avatar == ""){ @>
             <img class="avatar avatar-small" src="/img/default_image_profile.png">
             <@}else{@>
-            <img class="avatar avatar-small" src="/tatami/avatar/<@= user.gravatar @>/"
+            <img class="avatar avatar-small" src="/tatami/avatar/<@= user.avatar @>/photo.jpg"
                  alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
             <@}@>
             <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
@@ -341,7 +341,7 @@
 
 <script type="text/template" id="usergroup-item">
     <td style="text-align: left">
-        <img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar avatar-small" src="/tatami/avatar/' + <@=avatar@> + '/photo.jpg" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/">
             <@= username @>
         </a>

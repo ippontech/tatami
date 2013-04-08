@@ -27,7 +27,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetAUserByLogin() {
         User user = userService.getUserByLogin("jdubois@ippon.fr");
         assertThat(user, notNullValue());
-        assertThat(user.getGravatar(), is("gravatar"));
+        assertThat(user.getAvatar(), is("avatar"));
         assertThat(user.getFirstName(), is("Julien"));
         assertThat(user.getLastName(), is("Dubois"));
     }
@@ -94,13 +94,13 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String login = "nuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userService.createUser(user);
 
@@ -109,7 +109,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userToBeTheSame.getLogin(), is(user.getLogin()));
         assertThat(userToBeTheSame.getFirstName(), is(user.getFirstName()));
         assertThat(userToBeTheSame.getLastName(), is(user.getLastName()));
-        assertThat(userToBeTheSame.getGravatar(), is(user.getGravatar()));
+        assertThat(userToBeTheSame.getAvatar(), is(user.getAvatar()));
         assertThat(userToBeTheSame.getStatusCount(), is(0L));
         assertThat(userToBeTheSame.getFollowersCount(), is(0L));
         assertThat(userToBeTheSame.getFriendsCount(), is(0L));
