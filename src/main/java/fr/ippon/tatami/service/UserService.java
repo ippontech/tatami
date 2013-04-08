@@ -223,6 +223,20 @@ public class UserService {
         }
     }
 
+    public void createTatamibot(String domain) {
+        String login = DomainUtil.getLoginFromUsernameAndDomain(Constants.TATAMIBOT_NAME, domain);
+        User tatamiBotUser = new User();
+        tatamiBotUser.setLogin(login);
+        this.createUser(tatamiBotUser);
+        tatamiBotUser.setPreferencesMentionEmail(false);
+        tatamiBotUser.setWeeklyDigestSubscription(false);
+        tatamiBotUser.setJobTitle("I am just a robot");
+        userRepository.updateUser(tatamiBotUser);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Tatami Bot user for domain : " + domain);
+        }
+    }
+
     public void deleteUser(User user) {
         // Unfollow this user
         Collection<String> followersIds = friendshipService.getFollowerIdsForUser(user.getLogin());

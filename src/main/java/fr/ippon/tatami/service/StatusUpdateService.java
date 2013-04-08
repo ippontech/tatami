@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
@@ -99,11 +100,15 @@ public class StatusUpdateService {
     private StatusAttachmentRepository statusAttachmentRepository;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
-        createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
     }
 
     public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
-        createStatus(content, false, group, "", "", "", attachmentIds);
+        createStatus(content, false, group, "", "", "", attachmentIds, null);
+    }
+
+    public void postStatusAsUser(String content, User user) {
+        createStatus(content, false, null, "", "", "", null, user);
     }
 
     public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
@@ -152,7 +157,15 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername) {
 
-        return createStatus(content, statusPrivate, group, discussionId, replyTo, replyToUsername, new ArrayList<String>());
+        return createStatus(
+                content,
+                statusPrivate,
+                group,
+                discussionId,
+                replyTo,
+                replyToUsername,
+                new ArrayList<String>(),
+                null);
     }
 
     private Status createStatus(String content,
@@ -161,7 +174,8 @@ public class StatusUpdateService {
                                 String discussionId,
                                 String replyTo,
                                 String replyToUsername,
-                                Collection<String> attachmentIds) {
+                                Collection<String> attachmentIds,
+                                User user) {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
@@ -169,7 +183,12 @@ public class StatusUpdateService {
             startTime = Calendar.getInstance().getTimeInMillis();
             log.debug("Creating new status : " + content);
         }
-        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String currentLogin;
+        if (user == null) {
+            currentLogin = authenticationService.getCurrentUser().getLogin();
+        } else {
+            currentLogin = user.getLogin();
+        }
         String username = DomainUtil.getUsernameFromLogin(currentLogin);
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
@@ -264,6 +283,9 @@ public class StatusUpdateService {
 
     /**
      * Parses the status to find tags, and add those tags to the TagLine and the Trends.
+     *
+     * The Tatami Bot is a specific use case : as it sends a lot of statuses, it may pollute the global trends,
+     * so it is excluded from it.
      */
     private void manageStatusTags(Status status, Group group) {
         Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
@@ -275,7 +297,10 @@ public class StatusUpdateService {
                 }
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
-                trendsRepository.addTag(status.getDomain(), tag);
+                //Excludes the Tatami Bot from the global trend
+                if (status.getLogin().equals(Constants.TATAMIBOT_NAME)) {
+                    trendsRepository.addTag(status.getDomain(), tag);
+                }
                 userTrendRepository.addTag(status.getLogin(), tag);
 
                 // Add the status to all users following this tag

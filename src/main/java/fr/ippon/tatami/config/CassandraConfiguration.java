@@ -46,7 +46,7 @@ public class CassandraConfiguration {
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         cassandraHostConfigurator.setMaxActive(100);
-        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
             log.debug("Cassandra Metrics monitoring enabled");
             HOpTimer hOpTimer = new MetricsOpTimer(cassandraClusterName);
             cassandraHostConfigurator.setOpTimer(hOpTimer);
@@ -80,6 +80,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, ATTACHMENT_CF, 0);
             addColumnFamily(cluster, AVATAR_CF, 0);
             addColumnFamily(cluster, DOMAIN_CONFIGURATION_CF, 0);
+            addColumnFamily(cluster, TATAMIBOT_CONFIGURATION_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);
@@ -94,6 +95,7 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, USER_ATTACHMENT_CF, 0);
             addColumnFamilySortedbyUUID(cluster, STATUS_ATTACHMENT_CF, 0);
             addColumnFamilySortedbyUUID(cluster, DOMAINLINE_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, DOMAIN_TATAMIBOT_CF, 0);
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
@@ -143,7 +145,8 @@ public class CassandraConfiguration {
 
     @Bean
     public EntityManagerImpl entityManager(Keyspace keyspace) {
-        return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
+        String[] packagesToScan = {"fr.ippon.tatami.domain", "fr.ippon.tatami.bot.config"};
+        return new EntityManagerImpl(keyspace, packagesToScan);
     }
 
 }
