@@ -14,6 +14,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -61,7 +62,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
     }
 
     @Override
-    @Cacheable(value = "avatar-cache")
+    @CacheEvict(value = "avatar-cache")
     public void removeAvatar(String avatarId) {
         if (log.isDebugEnabled()) {
             log.debug("Avatar deleted : " + avatarId);
