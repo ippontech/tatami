@@ -23,9 +23,9 @@ import javax.inject.Inject;
  * The Tatami Robot.
  */
 @Component
-public class TatamibotTemp extends RouteBuilder {
+public class Tatamibot extends RouteBuilder {
 
-    private static final Log log = LogFactory.getLog(TatamibotTemp.class);
+    private static final Log log = LogFactory.getLog(Tatamibot.class);
 
     @Inject
     private TatamiStatusProcessor tatamiStatusProcessor;
