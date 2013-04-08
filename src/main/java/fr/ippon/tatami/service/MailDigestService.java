@@ -47,7 +47,6 @@ public class MailDigestService {
     @Inject
     private SuggestionService suggestionService;
 
-
     /**
      * Sends daily digest. Must be run every day
      */
@@ -61,7 +60,6 @@ public class MailDigestService {
         for (Domain d : domains) {
             log.info("Sending daily digest for domain " + d +
                     " and day " + day);
-
 
             int pagination = 0;
             List<String> logins;
@@ -119,7 +117,6 @@ public class MailDigestService {
             }
         }
     }
-
 
     /**
      * Fetch all necessary info for a daily digest mail
@@ -237,8 +234,6 @@ public class MailDigestService {
                 digestStatuses.addAll(allStatuses);
             }
         }
-
         return nbStatusTotal;
     }
-
 }
