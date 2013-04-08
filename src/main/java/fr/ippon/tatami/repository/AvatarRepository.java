@@ -6,7 +6,7 @@ public interface AvatarRepository {
 
     void createAvatar(Avatar avatar);
 
-    void deleteAvatar(String avatarId);
+    void removeAvatar(String avatarId);
 
     Avatar findAvatarById(String avatarId);
 

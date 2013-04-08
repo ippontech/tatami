@@ -35,17 +35,24 @@ public class AvatarService {
     @Inject
     private AuthenticationService authenticationService;
 
-    public String createAvatar(Avatar avatar) throws IOException {
+    public String createAvatar(Avatar avatar){
 
         User currentUser = authenticationService.getCurrentUser();
-        avatar.setContent(scaleImage(avatar.getContent()));
+
+        if(!currentUser.getGravatar().isEmpty()){
+            deleteAvatar(currentUser.getGravatar());
+        }
+
+        try{
+            avatar.setContent(scaleImage(avatar.getContent()));
+        }catch (IOException e){
+            log.debug("Avatar not resize : "+e.getMessage());
+        }
 
         avatarRepository.createAvatar(avatar);
 
-        userRepository.updateUser(currentUser);
-
         if (log.isDebugEnabled()) {
-            log.debug("Avatar create and resize : " + avatar);
+            log.debug("Avatar create : " + avatar);
         }
 
         return avatar.getAvatarId();
@@ -58,14 +65,10 @@ public class AvatarService {
         return avatarRepository.findAvatarById(avatartId);
     }
 
-    public void deleteAvatar(String avatarId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing current avatar : " + avatarId);
-        }
+    public void deleteAvatar(String avatarId){
+        avatarRepository.removeAvatar(avatarId);
+
         User currentUser = authenticationService.getCurrentUser();
-
-        avatarRepository.deleteAvatar(avatarId);
-
         userRepository.updateUser(currentUser);
     }
     /*

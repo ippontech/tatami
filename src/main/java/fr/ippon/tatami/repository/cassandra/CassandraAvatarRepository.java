@@ -61,10 +61,10 @@ public class CassandraAvatarRepository implements AvatarRepository {
     }
 
     @Override
-    @Cacheable(value = "avatar-cache", key = "#avatar.avatarId")
-    public void deleteAvatar(String avatarId) {
+    @Cacheable(value = "avatar-cache")
+    public void removeAvatar(String avatarId) {
         if (log.isDebugEnabled()) {
-            log.debug("Deleting avatar : " + avatarId);
+            log.debug("Avatar deleted : " + avatarId);
         }
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.addDeletion(avatarId, AVATAR_CF);
@@ -72,6 +72,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
     }
 
     @Override
+    @Cacheable("avatar-cache")
     public Avatar findAvatarById(String avatarId) {
         if (avatarId == null) {
             return null;
