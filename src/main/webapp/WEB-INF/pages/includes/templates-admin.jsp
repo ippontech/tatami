@@ -42,18 +42,21 @@
             </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group dashed">
             <label class="control-label">
                 <fmt:message key="tatami.user.picture"/>
             </label>
 
             <div class="controls">
-                <img class="nomargin avatar" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm"/>
-                <br/>
-                <fmt:message
-                        key="tatami.user.picture.legend"/><br/><a
-                    href="https://www.gravatar.com"
-                    target="_blank">https://www.gravatar.com</a>
+                <@ if(user.gravatar == ""){ @>
+                    <img class="nomargin avatar" src="/img/default_image_profile.png" alt=""/>
+                <@ } else { @>
+                    <img class="nomargin avatar" src="/tatami/avatar/<@= user.gravatar @>/" alt=""/>
+                <@ }@>
+                <div id="updateAvatar"  class="btn btn-info btn-mini">
+                    <p><fmt:message key="tatami.user.picture.button" /></p>
+                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+                </div>
             </div>
         </div>
 
@@ -280,7 +283,7 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar  avatar-small" src="<@=gravatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
@@ -569,7 +572,7 @@
 </script>
 
 <script type="text/template" id="files-item">
-    <td><@= filename @></td>
+    <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
     <td><@= (size/1000) @> kb</td>
     <td><@= prettyPrintCreationDate @> </td>
     <td>

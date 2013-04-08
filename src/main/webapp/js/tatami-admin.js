@@ -51,11 +51,25 @@ app.View.AccountProfile = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             user: this.model.toJSON(),
             login: window.login
         }));
+
+        $('#avatarFile').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result, function (index, avatar) {
+                     $('.avatar').attr('src', '/tatami/avatar/'+ avatar.attachmentId +'/');
+                });
+            },
+
+            fail: function (e, data) {
+                console.log(e);
+            }
+
+        });
+
         this.delegateEvents();
         return this.$el;
     },
@@ -286,7 +300,6 @@ app.View.TabContainer = Backbone.View.extend({
 app.View.Tab = Backbone.View.extend({
     initialize: function() {
         this.$el.addClass('table');
-
         this.template = this.options.template;
         this.collection.bind('reset', this.render, this);
         this.collection.bind('add', this.addItem, this);
