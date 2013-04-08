@@ -298,7 +298,7 @@ public class StatusUpdateService {
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 //Excludes the Tatami Bot from the global trend
-                if (status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
+                if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
                     trendsRepository.addTag(status.getDomain(), tag);
                 }
                 userTrendRepository.addTag(status.getLogin(), tag);
