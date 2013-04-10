@@ -13,8 +13,17 @@
                     "type": "custom",
                     "tokenizer": "keyword",
                     "filter": ["lowercase" ]
+                },
+                "prefixIndex" : {
+                    "type" : "custom",
+                    "tokenizer" : "standard",
+                    "filter" : [ "standard", "lowercase", "asciifolding", "elision", "edgeNGram" ]
+                },
+                "prefixSearch" : {
+                    "type" : "custom",
+                    "tokenizer" : "standard",
+                    "filter" : [ "standard", "lowercase", "asciifolding", "elision" ]
                 }
-
             },
             "filter": {
                 "stop_francais": {
@@ -28,6 +37,11 @@
                 "elision": {
                     "type": "elision",
                     "articles": ["l", "m", "t", "qu", "n", "s", "j", "d"]
+                },
+                "edgeNGram" : {
+                    "type" : "edgeNGram",
+                    "min_gram" : 1,
+                    "max_gram" : 30
                 }
             }
         }
@@ -54,6 +68,11 @@
                         "name-not-analyzed": {
                             "type": "string",
                             "analyzer": "lowercase"
+                        },
+                        "prefix" : {
+                            "type" : "string",
+                            "index_analyzer" : "prefixIndex",
+                            "search_analyzer" : "prefixSearch"
                         }
                     }
                 },

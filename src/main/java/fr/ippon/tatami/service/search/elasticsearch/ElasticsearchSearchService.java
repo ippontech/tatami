@@ -2,6 +2,7 @@ package fr.ippon.tatami.service.search.elasticsearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.Status;
@@ -141,7 +142,9 @@ public class ElasticsearchSearchService implements SearchService {
                 if (mappings != null && mappings.isObject()) {
                     for (Iterator<Map.Entry<String, JsonNode>> i = mappings.fields(); i.hasNext(); ) {
                         Map.Entry<String, JsonNode> field = i.next();
-                        createIndex.addMapping(field.getKey(), jsonMapper.writeValueAsString(field.getValue()));
+                        ObjectNode mapping = jsonMapper.createObjectNode();
+                        mapping.put(field.getKey(), field.getValue());
+                        createIndex.addMapping(field.getKey(), jsonMapper.writeValueAsString(mapping));
                     }
                 }
 
@@ -172,11 +175,6 @@ public class ElasticsearchSearchService implements SearchService {
         @Override
         public String type() {
             return "status";
-        }
-
-        @Override
-        public String prefixSearchField() {
-            return null;
         }
 
         @Override
@@ -291,11 +289,6 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         @Override
-        public String prefixSearchField() {
-            return ALL_FIELD;
-        }
-
-        @Override
         public String prefixSearchSortField() {
             return "username";
         }
@@ -347,11 +340,6 @@ public class ElasticsearchSearchService implements SearchService {
         @Override
         public String type() {
             return "group";
-        }
-
-        @Override
-        public String prefixSearchField() {
-            return "name-not-analyzed";
         }
 
         @Override
@@ -522,7 +510,7 @@ public class ElasticsearchSearchService implements SearchService {
 
             SearchRequestBuilder searchRequest = client().prepareSearch(indexName(mapper.type()))
                     .setTypes(mapper.type())
-                    .setQuery(prefixQuery(mapper.prefixSearchField(), prefix))
+                    .setQuery(matchQuery("prefix", prefix))
                     .setFilter(termFilter("domain", domain))
                     .addFields()
                     .setFrom(0)
@@ -594,11 +582,6 @@ public class ElasticsearchSearchService implements SearchService {
          * @return The elasticsearch index type of the object.
          */
         String type();
-
-        /**
-         * @return The name of the field to search by prefix.
-         */
-        String prefixSearchField();
 
         /**
          * @return The name of the field to sort by in search by prefix.
