@@ -70,8 +70,8 @@ public class SearchConfiguration {
     }
 
     @Bean
-    public String indexName() {
-        return env.getRequiredProperty("elasticsearch.indexName");
+    public String indexNamePrefix() {
+        return env.getProperty("elasticsearch.indexNamePrefix");
     }
 
     // Lucene configuration

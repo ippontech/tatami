@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service.search.elasticsearch;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
@@ -7,8 +8,7 @@ import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
@@ -38,9 +38,15 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
@@ -56,7 +62,7 @@ public class ElasticsearchSearchService implements SearchService {
     private ElasticsearchEngine engine;
 
     @Inject
-    private String indexName;
+    private String indexNamePrefix;
 
     @Inject
     private GroupDetailsRepository groupDetailsRepository;
@@ -68,11 +74,17 @@ public class ElasticsearchSearchService implements SearchService {
         return engine.client();
     }
 
+    private String indexName(String type) {
+        return StringUtils.isEmpty(indexNamePrefix) ? type : indexNamePrefix + '-' + type;
+    }
+
     @PostConstruct
     private void init() {
-        if (!client().admin().indices().prepareExists(indexName).execute().actionGet().exists()) {
-            log.info("Index " + indexName + " does not exists in Elasticsearch, creating it!");
-            createIndex();
+        for (String type : TYPES) {
+            if (!client().admin().indices().prepareExists(indexName(type)).execute().actionGet().exists()) {
+                log.info("Index " + indexName(type) + " does not exists in Elasticsearch, creating it!");
+                createIndex();
+            }
         }
     }
 
@@ -88,20 +100,23 @@ public class ElasticsearchSearchService implements SearchService {
      * @return {@code true} if the index is deleted or didn't exist.
      */
     private boolean deleteIndex() {
-        try {
-            boolean ack = client().admin().indices().prepareDelete(indexName).execute().actionGet().acknowledged();
-            if (!ack)
-                log.error("Search engine Index wasn't deleted !");
-            return ack;
+        for (String type : TYPES) {
+            try {
+                boolean ack = client().admin().indices().prepareDelete(indexName(type)).execute().actionGet().acknowledged();
+                if (!ack) {
+                    log.error("Search engine Index wasn't deleted !");
+                    return false;
+                }
+            } catch (IndexMissingException e) {
+                // Failling to delete a missing index is supposed to be valid
+                log.warn("Elasticsearch index " + indexName(type) + " missing, it was not deleted");
 
-        } catch (IndexMissingException e) {
-            log.warn("Elasticsearch index " + indexName + " missing, it was not deleted");
-            return true; // Failling to delete a missing index is supposed to be valid
-
-        } catch (ElasticSearchException e) {
-            log.error("Elasticsearch index " + indexName + " was not deleted", e);
-            return false;
+            } catch (ElasticSearchException e) {
+                log.error("Elasticsearch index " + indexName(type) + " was not deleted", e);
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -110,29 +125,42 @@ public class ElasticsearchSearchService implements SearchService {
      * @return {@code true} if an error occurs during the creation.
      */
     private boolean createIndex() {
-        try {
-            CreateIndexRequestBuilder createIndex = client().admin().indices().prepareCreate(indexName);
-            createIndex.setSettings(settingsBuilder().loadFromClasspath("META-INF/elasticsearch/index/tatami.json"));
+        for (String type : TYPES) {
+            try {
+                CreateIndexRequestBuilder createIndex = client().admin().indices().prepareCreate(indexName(type));
+                URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/" + type + ".json");
 
-            for (String type : TYPES) {
-                URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/tatami/" + type + ".json");
-                String mapping = IOUtils.toString(mappingUrl, Charsets.UTF_8);
-                createIndex.addMapping(type, mapping);
+                ObjectMapper jsonMapper = new ObjectMapper();
+                JsonNode indexConfig = jsonMapper.readTree(mappingUrl);
+                JsonNode indexSettings = indexConfig.get("settings");
+                if (indexSettings != null && indexSettings.isObject()) {
+                    createIndex.setSettings(jsonMapper.writeValueAsString(indexSettings));
+                }
+
+                JsonNode mappings = indexConfig.get("mappings");
+                if (mappings != null && mappings.isObject()) {
+                    for (Iterator<Map.Entry<String, JsonNode>> i = mappings.fields(); i.hasNext(); ) {
+                        Map.Entry<String, JsonNode> field = i.next();
+                        createIndex.addMapping(field.getKey(), jsonMapper.writeValueAsString(field.getValue()));
+                    }
+                }
+
+                boolean ack = createIndex.execute().actionGet().acknowledged();
+                if (!ack) {
+                    log.error("Cannot create index " + indexName(type));
+                    return false;
+                }
+
+            } catch (ElasticSearchException e) {
+                log.error("Cannot create index " + indexName(type), e);
+                return false;
+
+            } catch (IOException e) {
+                log.error("Cannot create index " + indexName(type), e);
+                return false;
             }
-
-            boolean ack = createIndex.execute().actionGet().acknowledged();
-            if (!ack)
-                log.error("Cannot create index " + indexName);
-            return ack;
-
-        } catch (ElasticSearchException e) {
-            log.error("Cannot create index " + indexName, e);
-            return false;
-
-        } catch (IOException e) {
-            log.error("Cannot create index " + indexName, e);
-            return false;
         }
+        return true;
     }
 
     private final ElasticsearchMapper<Status> statusMapper = new ElasticsearchMapper<Status>() {
@@ -148,6 +176,11 @@ public class ElasticsearchSearchService implements SearchService {
 
         @Override
         public String prefixSearchField() {
+            return null;
+        }
+
+        @Override
+        public String prefixSearchSortField() {
             return null;
         }
 
@@ -205,7 +238,7 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         try {
-            SearchRequestBuilder searchRequest = client().prepareSearch(this.indexName)
+            SearchRequestBuilder searchRequest = client().prepareSearch(indexName(statusMapper.type()))
                     .setTypes(statusMapper.type())
                     .setQuery(matchQuery(ALL_FIELD, query))
                     .setFilter(termFilter("domain", domain))
@@ -237,11 +270,11 @@ public class ElasticsearchSearchService implements SearchService {
             return items;
 
         } catch (IndexMissingException e) {
-            log.warn("The index " + indexName + " was not found in the Elasticsearch cluster.");
+            log.warn("The index " + indexName(statusMapper.type()) + " was not found in the Elasticsearch cluster.");
             return Collections.emptyMap();
 
         } catch (ElasticSearchException e) {
-            log.error("Error happened while searching status in index " + indexName);
+            log.error("Error happened while searching status in index " + indexName(statusMapper.type()));
             return Collections.emptyMap();
         }
     }
@@ -259,6 +292,11 @@ public class ElasticsearchSearchService implements SearchService {
 
         @Override
         public String prefixSearchField() {
+            return ALL_FIELD;
+        }
+
+        @Override
+        public String prefixSearchSortField() {
             return "username";
         }
 
@@ -317,6 +355,11 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
         @Override
+        public String prefixSearchSortField() {
+            return "name-not-analyzed";
+        }
+
+        @Override
         public XContentBuilder toJson(Group group) throws IOException {
             return XContentFactory.jsonBuilder()
                     .startObject()
@@ -370,7 +413,7 @@ public class ElasticsearchSearchService implements SearchService {
             if (log.isDebugEnabled()) {
                 log.debug("Ready to index the " + type + " of id " + id + " into Elasticsearch: " + stringify(source));
             }
-            client().prepareIndex(indexName, type, id).setSource(source).execute(new ActionListener<IndexResponse>() {
+            client().prepareIndex(indexName(type), type, id).setSource(source).execute(new ActionListener<IndexResponse>() {
                 @Override
                 public void onResponse(IndexResponse response) {
                     if (log.isDebugEnabled()) {
@@ -410,7 +453,7 @@ public class ElasticsearchSearchService implements SearchService {
             String id = adapter.id(object);
             try {
                 XContentBuilder source = adapter.toJson(object);
-                IndexRequestBuilder indexRequest = client().prepareIndex(indexName, type, id).setSource(source);
+                IndexRequestBuilder indexRequest = client().prepareIndex(indexName(type), type, id).setSource(source);
                 request.add(indexRequest);
 
             } catch (IOException e) {
@@ -456,7 +499,7 @@ public class ElasticsearchSearchService implements SearchService {
             log.debug("Ready to delete the " + type + " of id " + id + " from Elasticsearch: ");
         }
 
-        client().prepareDelete(indexName, type, id).execute(new ActionListener<DeleteResponse>() {
+        client().prepareDelete(indexName(type), type, id).execute(new ActionListener<DeleteResponse>() {
             @Override
             public void onResponse(DeleteResponse deleteResponse) {
                 if (log.isDebugEnabled()) {
@@ -477,14 +520,14 @@ public class ElasticsearchSearchService implements SearchService {
     private Collection<String> searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
         try {
 
-            SearchRequestBuilder searchRequest = client().prepareSearch(indexName)
+            SearchRequestBuilder searchRequest = client().prepareSearch(indexName(mapper.type()))
                     .setTypes(mapper.type())
                     .setQuery(prefixQuery(mapper.prefixSearchField(), prefix))
                     .setFilter(termFilter("domain", domain))
                     .addFields()
                     .setFrom(0)
                     .setSize(size)
-                    .addSort(SortBuilders.fieldSort(mapper.prefixSearchField()).order(SortOrder.ASC));
+                    .addSort(SortBuilders.fieldSort(mapper.prefixSearchSortField()).order(SortOrder.ASC));
 
             if (log.isTraceEnabled())
                 log.trace("elasticsearch query : " + searchRequest);
@@ -509,11 +552,11 @@ public class ElasticsearchSearchService implements SearchService {
             return ids;
 
         } catch (IndexMissingException e) {
-            log.warn("The index " + indexName + " was not found in the Elasticsearch cluster.");
+            log.warn("The index " + indexName(mapper.type()) + " was not found in the Elasticsearch cluster.");
             return Collections.emptyList();
 
         } catch (ElasticSearchException e) {
-            log.error("Error while searching user by prefix in index " + indexName, e);
+            log.error("Error while searching user by prefix in index " + indexName(mapper.type()), e);
             return Collections.emptyList();
         }
 
@@ -556,6 +599,11 @@ public class ElasticsearchSearchService implements SearchService {
          * @return The name of the field to search by prefix.
          */
         String prefixSearchField();
+
+        /**
+         * @return The name of the field to sort by in search by prefix.
+         */
+        String prefixSearchSortField();
 
         /**
          * Convert object to it's indexable JSON document representation.

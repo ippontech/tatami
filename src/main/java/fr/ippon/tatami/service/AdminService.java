@@ -73,7 +73,7 @@ public class AdminService {
         loadProperty(properties, "cassandra.host");
         loadProperty(properties, "search.engine");
         loadProperty(properties, "lucene.path");
-        loadProperty(properties, "elasticsearch.indexName");
+        loadProperty(properties, "elasticsearch.indexNamePrefix");
         loadProperty(properties, "elasticsearch.cluster.name");
         loadProperty(properties, "elasticsearch.cluster.nodes");
         loadProperty(properties, "elasticsearch.cluster.default.communication.port");
