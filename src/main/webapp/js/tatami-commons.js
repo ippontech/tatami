@@ -135,6 +135,11 @@ app.Model.Status = Backbone.Model.extend({
     this.bind('destroy', function() {
       app.Status.statuses.shift(self);
     });
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -196,6 +201,11 @@ app.Model.StatusDetails = Backbone.Model.extend({
     },
     initialize: function(model) {
         this.statusId = model.get('statusId');
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
@@ -231,6 +241,11 @@ app.View.SharesView = Backbone.View.extend({
 app.Model.ShareProfileModel = Backbone.Model.extend({
   url : function(){
     return '/tatami/rest/users/show?screen_name=' + this.options.username;
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -632,6 +647,11 @@ app.Model.ProfileModel = Backbone.Model.extend({
   },
   url : function(){
     return '/tatami/rest/users/show?screen_name=' + username;
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -1716,6 +1736,11 @@ app.Model.ListUserGroupModel = Backbone.Model.extend({
         firstName : '',
         lastName : '',
         role : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.avatar)? '/tatami/avatar/<@= this.avatar @>/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
