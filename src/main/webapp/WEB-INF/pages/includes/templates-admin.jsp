@@ -48,11 +48,7 @@
             </label>
 
             <div class="controls">
-                <@ if(user.avatar == ""){ @>
-                    <img class="nomargin avatar" src="/img/default_image_profile.png" alt=""/>
-                <@ } else { @>
-                    <img class="nomargin avatar" src="/tatami/avatar/<@= user.avatar @>/photo.jpg" alt=""/>
-                <@ }@>
+                <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
                 <div id="updateAvatar"  class="btn btn-info btn-mini">
                     <p><fmt:message key="tatami.user.picture.button" /></p>
                     <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>

@@ -30,6 +30,11 @@ app.Model.AccountProfile = Backbone.Model.extend({
         lastName : '',
         jobTitle : '',
         phoneNumber : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
