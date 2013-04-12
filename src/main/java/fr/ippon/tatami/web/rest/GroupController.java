@@ -283,7 +283,7 @@ public class GroupController {
         UserGroupDTO currentUserDTO = new UserGroupDTO();
         currentUserDTO.setLogin(currentUser.getLogin());
         currentUserDTO.setUsername(currentUser.getUsername());
-        currentUserDTO.setGravatar(currentUser.getGravatar());
+        currentUserDTO.setAvatar(currentUser.getAvatar());
         currentUserDTO.setFirstName(currentUser.getFirstName());
         currentUserDTO.setLastName(currentUser.getLastName());
         currentUserDTO.setIsMember(false);

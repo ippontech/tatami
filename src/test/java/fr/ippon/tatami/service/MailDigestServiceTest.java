@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Pierre Rust
  */
-
+@SuppressWarnings("unchecked")
 public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
     @Mock

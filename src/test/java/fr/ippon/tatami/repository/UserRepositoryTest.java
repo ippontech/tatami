@@ -29,14 +29,14 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "nuuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setPassword("");
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
@@ -51,13 +51,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = null;
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.createUser(user);
     }
@@ -67,13 +67,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.createUser(user);
     }
@@ -83,13 +83,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = null;
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -99,13 +99,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -115,13 +115,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "nuser_ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -132,13 +132,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String firstName = "fs";
         String lastName = null;
         String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -148,13 +148,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "nuser_ippon.fr";
         String firstName = "eee";
         String lastName = "";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -164,13 +164,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "nuser_ippon.fr";
         String firstName = "eeee";
         String lastName = "12345678901234567";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -181,13 +181,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String firstName = null;
         String lastName = "User";
         String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -198,13 +198,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String firstName = "";
         String lastName = "User";
         String email = "nuser_ippon.fr";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }
@@ -214,13 +214,13 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "nuser_ippon.fr";
         String firstName = "12345678901234567";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userRepository.updateUser(user);
     }

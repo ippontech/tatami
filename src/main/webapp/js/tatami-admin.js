@@ -30,6 +30,11 @@ app.Model.AccountProfile = Backbone.Model.extend({
         lastName : '',
         jobTitle : '',
         phoneNumber : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
@@ -51,11 +56,25 @@ app.View.AccountProfile = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             user: this.model.toJSON(),
             login: window.login
         }));
+
+        $('#avatarFile').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result, function (index, avatar) {
+                     $('.avatar').attr('src', '/tatami/avatar/'+ avatar.attachmentId +'/');
+                });
+            },
+
+            fail: function (e, data) {
+                console.log(e);
+            }
+
+        });
+
         this.delegateEvents();
         return this.$el;
     },
@@ -286,7 +305,6 @@ app.View.TabContainer = Backbone.View.extend({
 app.View.Tab = Backbone.View.extend({
     initialize: function() {
         this.$el.addClass('table');
-
         this.template = this.options.template;
         this.collection.bind('reset', this.render, this);
         this.collection.bind('add', this.addItem, this);
@@ -793,7 +811,7 @@ app.View.AddUserGroup = Backbone.View.extend({
             },
             highlighter: function (item) {
               var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              return '<img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/' + item.get('gravatar') + '?s=32&d=mm" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              return '<img class="avatar  avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>';
               }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }

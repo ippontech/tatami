@@ -36,7 +36,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 @Repository
 public class CassandraMailDigestRepository implements MailDigestRepository {
 
-
     @Inject
     private Keyspace keyspaceOperator;
 

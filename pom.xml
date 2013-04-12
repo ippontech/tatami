@@ -36,6 +36,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -59,7 +61,6 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
@@ -130,6 +131,7 @@
         <profile>
             <id>preprod</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
@@ -153,7 +155,6 @@
                 <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
@@ -193,6 +194,7 @@
         <profile>
             <id>prod</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
@@ -216,7 +218,6 @@
                 <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
@@ -255,6 +256,7 @@
         <profile>
             <id>stress-tests</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
@@ -278,7 +280,6 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
@@ -286,6 +287,7 @@
         <profile>
             <id>uitest</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -309,7 +311,6 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
@@ -534,13 +535,14 @@
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
+        <camel.version>2.10.4</camel.version>
 
         <selenium.version>2.25.0</selenium.version>
 
         <!-- Maven plugins -->
         <maven.compiler.version>3.0</maven.compiler.version>
         <maven.enforcer.version>1.2</maven.enforcer.version>
-        <maven.surefire.version>2.13</maven.surefire.version>
+        <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
         <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
@@ -667,18 +669,34 @@
             <version>2.0.4</version>
         </dependency>
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-script</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-rss</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-twitter</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-stream</artifactId>
+            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cassandra</groupId>
@@ -722,6 +740,20 @@
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>${velocity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
@@ -888,7 +920,8 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>root</finalName>
+        <!-- Tatami must be configured at the root context (/) of the application server -->
+        <finalName>ROOT</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -935,6 +968,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+                <configuration>
+                    <argLine>-XX:MaxPermSize=128m -Xmx256m</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -950,6 +986,16 @@
                             <Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
                         </manifestEntries>
                     </archive>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <includes>
+                                <include>web.xml</include>
+                            </includes>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <!-- Cassandra must be configured before jetty ... -->
@@ -971,6 +1017,10 @@
                             <name>jetty.port</name>
                             <value>${jetty.port}</value>
                         </systemProperty>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>${spring.profiles.active}</value>
+                        </systemProperty>
                     </systemProperties>
                     <webApp>
                         <contextPath>/</contextPath>
@@ -980,9 +1030,13 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
                 <configuration>
                     <path>/</path>
+                    <protocol>org.apache.coyote.http11.Http11NioProtocol</protocol>
+                    <systemProperties>
+                        <spring.profiles.active>${spring.profiles.active}</spring.profiles.active>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
