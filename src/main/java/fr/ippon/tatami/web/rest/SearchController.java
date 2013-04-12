@@ -12,6 +12,7 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,10 +86,10 @@ public class SearchController {
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Map<String, SharedStatusInfo> line;
-        if (query != null && !query.equals("")) {
+        if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
         } else {
-            line = new HashMap<String, SharedStatusInfo>();
+            line = Collections.emptyMap();
         }
         return timelineService.buildStatusList(line);
     }
