@@ -1,54 +1,154 @@
 Tatami REST API
-=========================
+=================
 
-fr.ippon.tatami.web.rest.AccountController
+Account
 ------------------
+Get account's profile
 
-* Account's profile
+```
+GET  /rest/account/profile
+```
+```json
+[ 
+  {
+    "username":"adupuis",
+    "avatar":null,
+    "firstName":"Alexandre",
+    "lastName":"DUPUIS",
+    "jobTitle":"",
+    "phoneNumber":"",
+    "attachmentsSize":0,
+    "statusCount":2,
+    "friendsCount":0,
+    "followersCount":0
+  }
+]
+```
 
-[ GET, PUT, DELETE ] /rest/account/profile
+Update account's profile
 
-* Account's preferences
+```
+PUT  /rest/account/profile
+```
 
-[ GET, POST ] /rest/account/preferences
+```
+DELETE /rest/account/profile
+```
+Get account's preferences
 
-* password is managed by LDAP
+```
+GET  /rest/account/preferences
+```
+```json
+[ 
+  {
+    "mentionEmail":true,
+    "weeklyDigest":true,
+    "dailyDigest":null,
+    "theme":"bootstrap",
+    "rssUidActive":false,
+    "rssUid":null,
+    "themesList":[
+                  "bootstrap",
+                  "cerulean",
+                  "cosmo",
+                  "journal",
+                  "readable",
+                  "simplex",
+                  "spacelab",
+                  "spruce",
+                  "superhero",
+                  "united"
+                  ]
+  }
+]
+```
 
-[ GET, POST ] /rest/account/password
+```
+POST  /rest/account/preferences
+```
 
-* All users of domain
+Password is managed by LDAP
 
-[ GET ] /rest/visit
+```
+GET  /rest/account/password
+```
+```
+POST  /rest/account/password
+```
 
+All users of domain
 
-fr.ippon.tatami.web.rest.AttachmentController
+```
+GET  /rest/visit
+```
+FileUpload
 ------------------
+Upload files
+```
+POST  /rest/fileupload
+```
+```json
+[ 
+  {
+    attachmentId: "33a61c70-a5c9-11e2-8ca3-20c9d0d4b14b"
+    delete_type: null
+    delete_url: null
+    name: "Garden.jpg"
+    size: 516424
+    thumbnail_url: null
+    url: "http://localhost:8080/tatami/file/33a61c70-a5c9-11e2-8ca3-20c9d0d4b14b/Garden.jpg"
+  }
+]
+```
+Get file by url
+```
+GET  /file/:attachmentId/*
+```
+Parameters:
 
-* Attachments list
-
-[ GET, DELETE ] /rest/attachments
-optional : {attachmentId}
-
-* Quota in % for the domain
-
-[ GET ] /rest/attachments/quota
++ `attachmentId` (required) - The ID of an attachment
 
 
-fr.ippon.tatami.web.rest.CompanyWallController
+
+
+Attachment
 ------------------
+Get Attachment by ID
 
-* Public statuses of the current company
+```
+GET  /rest/attachments/:attachmentId
+```
+Delete Attachment by ID
 
-[ GET ] /rest/company
+```
+DELETE  /rest/attachments/:attachmentId
+```
+Parameters:
 
++ `attachmentId` (required) - The ID of an attachment
 
-fr.ippon.tatami.web.rest.FavoritesController
+Quota in % for the domain
+
+```
+GET  /rest/attachments/quota
+```
+
+CompanyWall
 ------------------
+Public statuses of the current company
 
-* favorite status of the current user
+```
+GET  /rest/company
+```
 
-[ GET ] /rest/favorites
+Favorites
+------------------
+Favorite status of the current user
 
+```
+GET /rest/favorites
+```
 
 
 
