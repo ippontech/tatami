@@ -39,20 +39,21 @@ public class AvatarService {
 
         User currentUser = authenticationService.getCurrentUser();
 
-        if(!currentUser.getGravatar().isEmpty()){
-            deleteAvatar(currentUser.getGravatar());
+        if(!currentUser.getAvatar().isEmpty()){
+            deleteAvatar(currentUser.getAvatar());
         }
 
         try{
             avatar.setContent(scaleImage(avatar.getContent()));
         }catch (IOException e){
-            log.debug("Avatar not resize : "+e.getMessage());
+            log.info("Avatar could not be resized : " + e.getMessage());
+            return null;
         }
 
         avatarRepository.createAvatar(avatar);
 
         if (log.isDebugEnabled()) {
-            log.debug("Avatar create : " + avatar);
+            log.debug("Avatar created : " + avatar);
         }
 
         return avatar.getAvatarId();

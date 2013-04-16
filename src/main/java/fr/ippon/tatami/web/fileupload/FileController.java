@@ -164,11 +164,10 @@ public class FileController {
                 }
             }
         }
-
         try {
             response.flushBuffer();
-        } catch (IOException e) {
 
+        } catch (IOException e) {
             log.info("Error flushing the output stream. " + e.getMessage());
         }
 
@@ -176,9 +175,8 @@ public class FileController {
 
     @RequestMapping(value = "/rest/fileupload/avatar",
             method = RequestMethod.POST)
-    public
     @ResponseBody
-    List<UploadedFile> uploadAvatar(
+    public List<UploadedFile> uploadAvatar(
             @RequestParam("uploadFile") MultipartFile file) throws IOException{
 
         Avatar avatar = new Avatar();
@@ -203,7 +201,7 @@ public class FileController {
         uploadedFiles.add(uploadedFile);
 
         User user = authenticationService.getCurrentUser();
-        user.setGravatar(avatar.getAvatarId());
+        user.setAvatar(avatar.getAvatarId());
 
         userRepository.updateUser(user);
 

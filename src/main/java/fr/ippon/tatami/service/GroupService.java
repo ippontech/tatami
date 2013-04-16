@@ -84,7 +84,7 @@ public class GroupService {
             User user = userRepository.findUserByLogin(member.getKey());
             dto.setLogin(user.getLogin());
             dto.setUsername(user.getUsername());
-            dto.setGravatar(user.getGravatar());
+            dto.setAvatar(user.getAvatar());
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
@@ -101,7 +101,7 @@ public class GroupService {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
-                dto.setGravatar(user.getGravatar());
+                dto.setAvatar(user.getAvatar());
                 dto.setFirstName(user.getFirstName());
                 dto.setLastName(user.getLastName());
                 dto.setRole(member.getValue());

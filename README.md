@@ -20,14 +20,6 @@ Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
 Current build status is available on [BuildHive](https://buildhive.cloudbees.com/job/ippontech/job/tatami/) : [![Build Status](https://buildhive.cloudbees.com/job/ippontech/job/tatami/badge/icon)](https://buildhive.cloudbees.com/job/ippontech/job/tatami/)
 
-Tatami Bot
------------------
-
-The Tatami Bot is an optional software, which fetches data over your company's Intranet and on the Internet, and aggregates
-this data on Tatami.
-
-More information on the [Tatami Bot homepage](https://github.com/ippontech/tatami-bot).
-
 Installation for developpers
 ---------------------------------------
 

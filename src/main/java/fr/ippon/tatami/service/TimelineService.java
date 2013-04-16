@@ -211,7 +211,7 @@ public class TimelineService {
                         }
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
-                        statusDTO.setGravatar(statusUser.getGravatar());
+                        statusDTO.setAvatar(statusUser.getAvatar());
                         statusDTO.setDetailsAvailable(status.isDetailsAvailable());
                         statuses.add(statusDTO);
                     }

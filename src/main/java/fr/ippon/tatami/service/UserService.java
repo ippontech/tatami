@@ -6,7 +6,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.service.util.GravatarUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -124,7 +123,7 @@ public class UserService {
         user.setLogin(currentUser.getLogin());
         user.setUsername(currentUser.getUsername());
         user.setDomain(currentUser.getDomain());
-        user.setGravatar("");
+        user.setAvatar(currentUser.getAvatar());
         user.setAttachmentsSize(currentUser.getAttachmentsSize());
         try {
             userRepository.updateUser(user);
@@ -204,7 +203,7 @@ public class UserService {
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
-        user.setGravatar("");
+        user.setAvatar("");
         user.setPhoneNumber("");
         user.setIsNew(true);
         user.setPreferencesMentionEmail(true);
@@ -220,6 +219,20 @@ public class UserService {
 
         if (log.isDebugEnabled()) {
             log.debug("Created User : " + user.toString());
+        }
+    }
+
+    public void createTatamibot(String domain) {
+        String login = DomainUtil.getLoginFromUsernameAndDomain(Constants.TATAMIBOT_NAME, domain);
+        User tatamiBotUser = new User();
+        tatamiBotUser.setLogin(login);
+        this.createUser(tatamiBotUser);
+        tatamiBotUser.setPreferencesMentionEmail(false);
+        tatamiBotUser.setWeeklyDigestSubscription(false);
+        tatamiBotUser.setJobTitle("I am just a robot");
+        userRepository.updateUser(tatamiBotUser);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Tatami Bot user for domain : " + domain);
         }
     }
 

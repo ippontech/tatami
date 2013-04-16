@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.controller;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
@@ -79,10 +80,19 @@ public class HomeController {
             log.warn("Automatic registration should not have been called.");
             return "redirect:/tatami/login";
         }
+        if (email == null || email.equals("")) {
+            return "redirect:/tatami/login";
+        }
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("User " + email + " already exists.");
+            }
+            return "redirect:/tatami/login";
+        }
+        if (email.equals(Constants.TATAMIBOT_NAME)) {
+            if (log.isDebugEnabled()) {
+                log.debug("E-mail " + email + " can only be used by the Tatami Bot.");
             }
             return "redirect:/tatami/login";
         }

@@ -21,13 +21,13 @@
                     <div class="row-fluid">
                       <div class="span4 text-center avatar-float-left-container">
                         <a class="pull-left avatar-float-left" href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
-                            <c:if test="${empty user.gravatar}">
+                            <c:if test="${empty user.avatar}">
                                 <img class="nomargin avatar"
                                      src="/img/default_image_profile.png">
                             </c:if>
-                            <c:if test="${not empty user.gravatar}">
+                            <c:if test="${not empty user.avatar}">
                                 <img class="nomargin avatar"
-                                     src="/tatami/avatar/${user.gravatar}/"
+                                     src="/tatami/avatar/${user.avatar}/photo.jpg"
                                      alt="@${user.username} ${user.firstName} ${user.lastName}">
                             </c:if>
                         </a>

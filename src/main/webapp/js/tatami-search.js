@@ -112,7 +112,7 @@ function SearchEngine(){
             var obj = {};
             obj.label = '@'+v.username;
             obj.fullName = v.firstName+' '+ v.lastName;
-            obj.gravatar = v.gravatar;
+            obj.avatar = v.avatar;
             obj.category = "users";
             data.push(obj);
         });
