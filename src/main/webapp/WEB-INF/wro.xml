@@ -39,9 +39,7 @@
         <js>/js/vendor/modernizr.js</js>
 
         <js>/js/app/app.js</js>
-        <js>/js/app/models/statuses.js</js>
         <js>/js/app/models/users.js</js>
-
     </group>
     <group name='app'>
         <js>/js/app/**.js</js>

@@ -52,7 +52,6 @@
     <c:if test="${wro4jEnabled eq false}">
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/bootstrap.js"></script>
-        <script src="/js/vendor/d3.js"></script>
         <script src="/js/vendor/underscore.js"></script>
         <script src="/js/vendor/backbone.js"></script>
         <script src="/js/vendor/marked.js"></script>
@@ -62,6 +61,8 @@
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/models/statuses.js"></script>
+        <script src="/js/app/views/homeHeader.js"></script>
+        <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
         <script src="/tatami/static-wro4j/${version}/vendor.js"></script>
@@ -75,6 +76,8 @@
 
     <script type="text/template" id="stub">
     </script>
+
+    <jsp:include page="includes/new.jsp"/>
 </head>
 <body>
 <div class="navbar">
@@ -270,5 +273,11 @@
         </form>
     </div>
 </div>
+
+<div class="row">
+    <div id="tatamiHeader" class="col-span-12">
+    </div>
+</div>
+
 </body>
 </html>
