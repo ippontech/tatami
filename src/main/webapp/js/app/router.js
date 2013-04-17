@@ -21,7 +21,16 @@
         },
 
         homeFavorites: function(){
-            Tatami.app.header.close();
+            var tags = new Tatami.Collections.Tags();
+            window.t = tags;
+            Tatami.app.side.show(new Tatami.Views.TagTrends({
+                collection: tags
+            }));
+            tags.fetch({
+                data:{
+                    popular: true
+                }
+            });
         }
     });
 

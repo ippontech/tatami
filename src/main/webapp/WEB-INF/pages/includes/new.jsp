@@ -29,3 +29,17 @@
         </h4>
     </div>
 </script>
+<script type="text/template" id="TagTrends">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-fire"></span>
+            Tendances pour l'utilisateur
+        </h4>
+    </div>
+    <div class="items">
+    </div>
+</script>
+<script type="text/template" id="TagTrendItems">
+    <span class="glyphicon glyphicon-arrow-up"></span>
+    <a href="#">#<@= name @></a>
+</script>

@@ -1,14 +1,12 @@
 (function(Backbone, Tatami){
 
     var Tags = Backbone.Model.extend({
-
+        urlRoot: '/tatami/rest/tags',
+        idAttribute: 'name',
         defaults: {
-            tag: '',
-            type: ''
-        },
-
-        urlRoot: '/tatami/rest/tag'
-
+            followed: false,
+            trendingUp: false
+        }
     });
 
     Tatami.Models.Tags = Tags;

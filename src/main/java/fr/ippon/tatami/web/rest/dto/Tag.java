@@ -25,6 +25,16 @@ public class Tag {
         this.followed = followed;
     }
 
+    private boolean trendingUp = false;
+
+    public boolean isTrendingUp() {
+        return trendingUp;
+    }
+
+    public void setTrendingUp(boolean trendingUp) {
+        this.trendingUp = trendingUp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,6 +56,8 @@ public class Tag {
     public String toString() {
         return "Tag{" +
                 "name='" + name + '\'' +
+                ", followed='" + followed + '\'' +
+                ", trendingUp='" + trendingUp + '\'' +
                 '}';
     }
 }

@@ -61,6 +61,8 @@
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/models/statuses.js"></script>
+        <script src="/js/app/models/tags.js"></script>
+        <script src="/js/app/collections/tags.js"></script>
         <script src="/js/app/views/homeHeader.js"></script>
         <script src="/js/app/views/cardProfile.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
@@ -72,9 +74,6 @@
 
     <script type="text/javascript">
         var username = '${user.username}';
-    </script>
-
-    <script type="text/template" id="stub">
     </script>
 
     <jsp:include page="includes/new.jsp"/>

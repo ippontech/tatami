@@ -1,11 +1,13 @@
 (function(Backbone, _, Tatami){
-    var CardProfile = Backbone.Marionette.ItemView.extend({
-        template: "#CardProfile",
-        modelEvents: {
-            "change": "render",
-            "sync": "render"
-        }
+    TagTrendItems = Backbone.Marionette.ItemView.extend({
+        template: "#TagTrendItems"
     });
 
-    Tatami.Views.CardProfile = CardProfile;
+    TagTrends = Backbone.Marionette.CompositeView.extend({
+        itemView: TagTrendItems,
+        itemViewContainer: ".items",
+        template: "#TagTrends"
+    });
+
+    Tatami.Views.TagTrends = TagTrends;
 })(Backbone, _, Tatami);
