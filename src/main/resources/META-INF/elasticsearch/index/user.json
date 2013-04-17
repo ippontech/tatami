@@ -1,0 +1,110 @@
+{
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas" : 0,
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [ "lowercase", "stop_francais", "fr_stemmer", "asciifolding", "elision" ]
+                },
+                "lowercase": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [ "lowercase" ]
+                },
+                "prefixIndex" : {
+                    "type" : "custom",
+                    "tokenizer" : "standard",
+                    "filter" : [ "standard", "lowercase", "asciifolding", "elision", "edgeNGram" ]
+                },
+                "prefixSearch" : {
+                    "type" : "custom",
+                    "tokenizer" : "standard",
+                    "filter" : [ "standard", "lowercase", "asciifolding", "elision" ]
+                }
+            },
+            "filter": {
+                "stop_francais": {
+                    "type": "stop",
+                    "stopwords": [ "_french_" ]
+                },
+                "fr_stemmer": {
+                    "type": "stemmer",
+                    "name": "french"
+                },
+                "elision": {
+                    "type": "elision",
+                    "articles": [ "l", "m", "t", "qu", "n", "s", "j", "d" ]
+                },
+                "edgeNGram" : {
+                    "type" : "edgeNGram",
+                    "min_gram" : 1,
+                    "max_gram" : 30
+                }
+            }
+        }
+    },
+    "mappings": {
+        "user": {
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "analyzer": "lowercase",
+                    "include_in_all": false
+                },
+                "domain": {
+                    "type": "string",
+                    "analyzer": "lowercase",
+                    "include_in_all": false
+                },
+                "username": {
+                    "type" : "multi_field",
+                    "path" : "just_name",
+                    "fields" : {
+                        "username": {
+                            "type" : "string",
+                            "analyzer" : "lowercase"
+                        },
+                        "prefix" : {
+                            "type" : "string",
+                            "index_analyzer" : "prefixIndex",
+                            "search_analyzer" : "prefixSearch"
+                        }
+                    }
+                },
+                "firstName": {
+                    "type" : "multi_field",
+                    "path" : "just_name",
+                    "fields" : {
+                        "firstName": {
+                            "type": "string",
+                            "analyzer" : "default"
+                        },
+                        "prefix" : {
+                            "type" : "string",
+                            "index_analyzer" : "prefixIndex",
+                            "search_analyzer" : "prefixSearch"
+                        }
+                    }
+                },
+                "lastName": {
+                    "type" : "multi_field",
+                    "path" : "just_name",
+                    "fields" : {
+                        "lastName": {
+                            "type": "string",
+                            "analyzer" : "default"
+                        },
+                        "prefix" : {
+                            "type" : "string",
+                            "index_analyzer" : "prefixIndex",
+                            "search_analyzer" : "prefixSearch"
+                        }
+                    }
+                }
+            }
+         }
+    }
+}

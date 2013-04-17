@@ -46,6 +46,16 @@
         }
     });
 
+    var StatusesReply = Backbone.Model.extend({
+        idAttribute: 'statusId',
+
+        urlRoot:'/tatami/rest/statuses/discussion'
+    });
+
     Tatami.Models.Statuses = Statuses;
+    Tatami.Models.StatusesReply = StatusesReply;
+=======
+    Tatami.Models.Statuses = Statuses;
+>>>>>>> c6a5243615d767dc9db193987b801ff15b844b60
 
 })(Backbone, Tatami);

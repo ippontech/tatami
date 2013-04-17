@@ -31,7 +31,7 @@ public class MetricsConfiguration {
 
     @PostConstruct
     public void initMetrics() {
-        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
             log.debug("Initializing Metrics healthchecks");
             HealthChecks.register(new CassandraHealthCheck(keyspaceOperator));
             HealthChecks.register(new JavaMailHealthCheck(mailService));

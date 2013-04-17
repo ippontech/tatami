@@ -1,4 +1,3 @@
-
 _.templateSettings = {
     interpolate: /<\@\=(.+?)\@\>/gim,
     evaluate: /<\@(.+?)\@\>/gim
@@ -115,9 +114,6 @@ app.Collection.FollowedCollection = Backbone.Collection.extend({
 app.View.UserItemView = Backbone.View.extend({
   template: _.template($('#user-item').html()),
 
-  initialize: function() {
-    
-  },
   render: function() {
     var $el = $(this.el);
     $el.html(this.template({user:this.model.toJSON()}));

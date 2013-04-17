@@ -28,7 +28,7 @@ public class CacheConfiguration {
 
         net.sf.ehcache.CacheManager cacheManager = new net.sf.ehcache.CacheManager();
 
-        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
             log.debug("Ehcache Metrics monitoring enabled");
 
             Cache statusCache = cacheManager.getCache("status-cache");

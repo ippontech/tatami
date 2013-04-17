@@ -18,7 +18,7 @@
     </li>
 <@} else if(item.category == 'users') { @>
     <li class="item users" data-value="<@= item.label @>">
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@= item.gravatar @>?s=32&d=mm">
+        <img class="avatar  avatar-small" src="<@= item.avatar @>" alt=""/>
         <h4><a href="#"><@= item.fullName @></a></h4>
         <p><@= item.label @></p>
     </li>

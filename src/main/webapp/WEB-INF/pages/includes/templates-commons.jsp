@@ -29,7 +29,7 @@
 <script type="text/template" id="timeline-item-inner">
   <tr>
     <th rowspan="6">
-        <img class="avatar" src="https://www.gravatar.com/avatar/<@=status.gravatar@>?s=64&d=mm" alt="<@= [status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar" src="<@=status.avatar@>" alt="<@= [status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
     </th>
     <th>
       <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + status.username,status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
@@ -158,7 +158,9 @@
 
 <script type="text/template" id="timeline-share-item">
   <@ if (profile) { @>
-    <a href="/tatami/profile/<@= profile.username @>/"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"></a>
+    <a href="/tatami/profile/<@= profile.username @>/">
+        <img class="avatar avatar-small" src="<@= profile.avatar @>"
+             alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"></a>
   <@ } else { @>
     <a href="/tatami/profile/<@= username @>/"><@= username @></a> 
   <@ } @>
@@ -196,7 +198,9 @@
   <div class="alert alert-status">
     <div class="row-fluid">
       <div class="span12">
-        <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= user.username @>/"
+           class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
+            <img class="avatar avatar-small" src="<@= user.avatar @>" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
             <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
         </a>
       </div>    
@@ -327,7 +331,7 @@
 
 <script type="text/template" id="usergroup-item">
     <td style="text-align: left">
-        <img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar avatar-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/">
             <@= username @>
         </a>
