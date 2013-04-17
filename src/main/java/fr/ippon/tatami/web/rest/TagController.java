@@ -73,6 +73,30 @@ public class TagController {
         }
     }
 
+    @RequestMapping(value = "/rest/tag/{tag}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<StatusDTO> listStatusForTagRest(@RequestParam(required = false, value = "tag") String tag,
+                                                  @RequestParam(required = false) Integer count,
+                                                  @RequestParam(required = false) String since_id,
+                                                  @RequestParam(required = false) String max_id) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get statuses for tag : " + tag);
+        }
+        if (count == null) {
+            count = 20;
+        }
+        try {
+            return timelineService.getTagline(tag, count, since_id, max_id);
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(tag, 20, since_id, max_id);
+        }
+    }
+
     /**
      * POST /tagmemberships/create -> follow tag
      */
@@ -87,6 +111,17 @@ public class TagController {
         tagMembershipService.followTag(tag);
     }
 
+    @RequestMapping(value = "/rest/tag",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void followTagRest(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to follow tag : " + tag);
+        }
+        tagMembershipService.followTag(tag);
+    }
+
     /**
      * POST /tagmemberships/destroy -> unfollow tag
      */
@@ -95,6 +130,17 @@ public class TagController {
             consumes = "application/json")
     @ResponseBody
     public void unfollowTag(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unfollow tag  : " + tag);
+        }
+        tagMembershipService.unfollowTag(tag);
+    }
+
+    @RequestMapping(value = "/rest/tag",
+            method = RequestMethod.DELETE,
+            consumes = "application/json")
+    @ResponseBody
+    public void unfollowTagRest(@RequestBody Tag tag) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to unfollow tag  : " + tag);
         }
@@ -122,7 +168,7 @@ public class TagController {
     /**
      * GET  /tagmemberships/list -> get the tags followed by the current user
      */
-    @RequestMapping(value = "/rest/tagmemberships/list",
+    @RequestMapping(value = "/rest/tag",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -148,6 +194,27 @@ public class TagController {
             produces = "application/json")
     @ResponseBody
     public Collection<Tag> getPopularTags() {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        List<Trend> trends = trendService.getCurrentTrends(domain);
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Collection<Tag> tags = new ArrayList<Tag>();
+        for (Trend trend : trends) {
+            Tag tag = new Tag();
+            tag.setName(trend.getTag());
+            if (followedTags.contains(trend.getTag())) {
+                tag.setFollowed(true);
+            }
+            tags.add(tag);
+        }
+        return tags;
+    }
+
+    @RequestMapping(value = "/rest/tags/{type}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tag> getPopularTagsRest() {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         List<Trend> trends = trendService.getCurrentTrends(domain);
