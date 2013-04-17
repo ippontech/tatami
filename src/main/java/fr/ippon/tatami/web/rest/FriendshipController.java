@@ -146,7 +146,7 @@ public class FriendshipController {
     /**
      * POST /friendships -> follow user
      */
-    @RequestMapping(value = "/rest/friendships",
+    @RequestMapping(value = "/rest/friendships/email",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
