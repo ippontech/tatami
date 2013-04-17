@@ -1,0 +1,16 @@
+##################### ElasticSearch Configuration For Embedded Cluster #####################
+
+# This file contains the configuration of the embedded elasticsearch cluster,
+
+cluster.name: tatamiCluster
+node:
+  local: true
+  name: "tatami-embedded-node"
+
+path:
+  data: ${tatami.elasticsearch.path.data}/data
+  work: ${tatami.elasticsearch.path.data}/work
+  logs: ${tatami.elasticsearch.path.log}
+
+http.enabled: ${tatami.elasticsearch.http.enabled}
+

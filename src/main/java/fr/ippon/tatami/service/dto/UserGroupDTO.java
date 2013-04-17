@@ -7,7 +7,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
     private String login;
 
-    private String gravatar;
+    private String avatar;
 
     private String username;
 
@@ -27,12 +27,12 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
         this.login = login;
     }
 
-    public String getGravatar() {
-        return gravatar;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -101,7 +101,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
     public String toString() {
         return "UserGroupDTO{" +
                 "login='" + login + '\'' +
-                ", gravatar='" + gravatar + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

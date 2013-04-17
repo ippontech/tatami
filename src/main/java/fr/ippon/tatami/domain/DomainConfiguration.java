@@ -30,7 +30,7 @@ public class DomainConfiguration {
 
         public final static String PREMIUM = "1000";
 
-        public final static String IPPON = "5000";
+        public final static String IPPON = "100000";
 
     }
 

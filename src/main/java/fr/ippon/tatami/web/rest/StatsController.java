@@ -37,4 +37,14 @@ public class StatsController {
         Collection<UserStatusStat> statuses = statsService.getDayline();
         return statuses;
     }
+
+    @RequestMapping(value = "/rest/stats",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<UserStatusStat> listDayStatusStatsRest() {
+        log.debug("REST request to get the users stats.");
+        Collection<UserStatusStat> statuses = statsService.getDayline();
+        return statuses;
+    }
 }

@@ -758,7 +758,7 @@ InlineLexer.prototype.outputLink = function(cap, link) {
       + escape(link.title)
       + '"'
       : '')
-      + '>'
+      + ' target="_blank">'
       + this.output(cap[1])
       + '</a>';
   } else {

@@ -45,6 +45,10 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
             setDefaultValues(domainConfiguration);
             em.persist(domainConfiguration);
         }
+        if (domain.equals("ippon.fr")) {
+            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionLevel.IPPON);
+            domainConfiguration.setStorageSize(DomainConfiguration.StorageSizeOptions.IPPON);
+        }
         return domainConfiguration;
     }
 

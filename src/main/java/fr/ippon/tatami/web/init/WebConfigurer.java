@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.init;
 import com.yammer.metrics.reporting.AdminServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import fr.ippon.tatami.config.ApplicationConfiguration;
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.config.DispatcherServletConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -92,9 +93,8 @@ public class WebConfigurer implements ServletContextListener {
                 new DelegatingFilterProxy());
 
         Environment env = rootContext.getBean(Environment.class);
-        if ("true".equals(env.getProperty("tatami.metrics.enabled"))) {
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
             log.debug("Setting Metrics profile for the Web ApplicationContext");
-            servletContext.setInitParameter("spring.profiles.active", "metrics");
 
             log.debug("Registering Metrics Filter");
             FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
