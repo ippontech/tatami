@@ -3,7 +3,7 @@
     Models : {},
     Collections : {},
     Views : {},
-    Sync : {}
+
   };
 
   Tatami.app = new Backbone.Marionette.Application();

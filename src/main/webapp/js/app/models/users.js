@@ -33,11 +33,6 @@
     }
   });
 
-  /*
-  Users.getUser = function(username){
-    
-  };*/
-
   Tatami.Models.Users = Users;
 
 })(Backbone, _, Tatami, Modernizr, window);
