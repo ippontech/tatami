@@ -171,9 +171,8 @@ function SearchEngine(){
     };
 
     this.select = function () {
-        var input = $('#fullSearchText').val();
-
-        var val = this.$menu.find('.active').attr('data-value'),
+        var input = $('#fullSearchText').val(),
+            val = this.$menu.find('.active').attr('data-value'),
             groupId =  this.$menu.find('.active').attr('rel');
 
         if(typeof val == 'undefined'){
