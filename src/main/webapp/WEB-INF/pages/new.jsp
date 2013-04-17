@@ -62,6 +62,8 @@
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/models/statuses.js"></script>
         <script src="/js/app/views/homeHeader.js"></script>
+        <script src="/js/app/views/cardProfile.js"></script>
+        <script src="/js/app/views/tagTrends.js"></script>
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
@@ -275,6 +277,13 @@
 <div class="row">
     <div id="tatamiHeader" class="col-span-12">
     </div>
+</div>
+
+<div class="row">
+    <aside id="tatamiSide" class="col-span-3">
+    </aside>
+    <section id="tatamiBody" class="col-span-9">
+    </section>
 </div>
 
 </body>

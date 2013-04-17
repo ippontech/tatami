@@ -11,7 +11,9 @@
         // Home
 
         homeTimeline: function(){
-            Tatami.app.header.show(new Tatami.Views.HomeHeader());
+            Tatami.app.side.show(new Tatami.Views.CardProfile({
+                model: Tatami.app.user
+            }));
         },
 
         homeMentions: function(){

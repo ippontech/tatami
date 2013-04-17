@@ -1,4 +1,9 @@
-(function(window, Backbone, $){
+(function(window, Backbone, $, _){
+    _.templateSettings = {
+        interpolate: /<\@\=(.+?)\@\>/gim,
+        evaluate: /<\@(.+?)\@\>/gim
+    };
+
     var Tatami = {
         Models : {},
         Collections : {},
@@ -11,6 +16,8 @@
         Tatami.app.user = new Tatami.Models.Users({
             username: username
         });
+
+        Tatami.app.user.fetch();
     });
 
     Tatami.app.addInitializer(function(){
@@ -18,7 +25,9 @@
 
     Tatami.app.addInitializer(function(){
         Tatami.app.addRegions({
-            header: '#tatamiHeader'
+            header: '#tatamiHeader',
+            side: '#tatamiSide',
+            body: '#tatamiBody'
         });
     });
     Tatami.app.on("initialize:after", function(options){
@@ -48,4 +57,4 @@
     });
 
     window.Tatami = Tatami;
-})(window, Backbone, jQuery);
+})(window, Backbone, jQuery, _);
