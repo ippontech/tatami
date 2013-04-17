@@ -1,0 +1,158 @@
+@media screen and (max-width: 767px) {
+  .navbar .nav, .navbar .navbar-form {
+    float: none;
+  }
+
+  .nav > li > .dropdown-menu {
+    position: static;
+    float: none;
+  }
+
+  .nav li.dropdown-submenu > ul.dropdown-menu {
+    position: initial;
+    z-index: 0;
+    float: none;
+    margin: 0;
+
+  }
+}
+
+.navbar-edit {
+  line-height: 14px;
+  left: 10px;
+  right: initial;
+  padding: 4px 13px 3px;
+}
+
+.navbar-edit:hover,
+.navbar-edit:focus {
+  background-color: #ddd;
+}
+
+.title {
+  margin-left: 80px;
+}
+.title > img {
+  margin-left: -80px;
+  padding: 5px;
+  width: 70px;
+}
+
+.page-header {
+  margin-top: 0;
+}
+
+.img-rounded {
+  border-radius: 15px;
+}
+
+
+
+
+
+
+
+.navbar .btn-navbar.fix-navbar {
+  height: 14px;
+  padding-top: 6px;
+  line-height: 14px;
+  font-size: 12px;
+}
+
+.title, .tatam *, .trends *, .profile *, .preview-tatam * {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tatam {
+  padding: 0px 5px 1px 50px;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  overflow: hidden;
+}
+
+.tatam.discute {
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.tatam.favoris {
+  -webkit-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
+  -moz-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
+  box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
+
+  background-image: url(Tatami_files/favorite.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.tatam.discute.favoris {
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
+}
+
+.tatam > div..well {
+  cursor: pointer;
+}
+
+.tatam > img {
+  margin-left: -50px;
+  padding: 5px;
+  width: 50px;
+}
+.tatam > header {
+  padding-bottom: 0;
+  margin-bottom: 15px;
+}
+.tatam > footer {
+  display: none;
+}
+
+.tatam > footer > aside {
+  margin-bottom: 5px;
+}
+
+.tatam > .well {
+  margin-bottom: 5px;
+}
+
+.tatams {
+  margin-top: 15px;
+}
+
+.tatams:first-child {
+  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tatams > * {
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+}
+
+.tatams-discute > .tatam > header {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.edit-tatam-float-right {
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  padding: 2px;
+}
+
+#refresh {
+  display: none;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

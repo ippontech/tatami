@@ -102,6 +102,48 @@ public class TimelineController {
         }
     }
 
+    @RequestMapping(value = "/rest/statuses",
+            method = RequestMethod.POST)
+    @Metered
+    public void postStatusRest(@RequestBody StatusDTO status, HttpServletResponse response) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to add status : " + status.getContent());
+        }
+        String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
+        Collection<String> attachmentIds = status.getAttachmentIds();
+        if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+            if (log.isDebugEnabled()) {
+                log.debug("Private status");
+            }
+            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
+        } else {
+            User currentUser = authenticationService.getCurrentUser();
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            Group group = null;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(status.getGroupId())) {
+                    group = testGroup;
+                    break;
+                }
+            }
+            if (group == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else if (group.isArchivedGroup()) {
+                if (log.isInfoEnabled()) {
+                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
+            }
+        }
+    }
+
     /**
      * POST /statuses/discussion/:id -> reply to this Status
      */
@@ -140,6 +182,15 @@ public class TimelineController {
         timelineService.removeStatus(statusId);
     }
 
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.DELETE)
+    @ResponseBody
+    public void removeStatusRest(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to remove status : " + statusId);
+        }
+        timelineService.removeStatus(statusId);
+    }
     /**
      * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
      */
@@ -154,6 +205,16 @@ public class TimelineController {
         return timelineService.getStatus(statusId);
     }
 
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public StatusDTO getStatusRest(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status Id : " + statusId);
+        }
+        return timelineService.getStatus(statusId);
+    }
     /**
      * GET  /statuses/details/:id -> returns the details for a status, specified by the id parameter
      */
@@ -206,6 +267,24 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listStatusForUser(@PathVariable("username") String username,
+                                                   @RequestParam(required = false) Integer count,
+                                                   @RequestParam(required = false) String since_id,
+                                                   @RequestParam(required = false) String max_id) {
+
+        if (count == null || count == 0) {
+            count = 20; //Default value
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get someone's status (username=" + username + ").");
+        }
+        return timelineService.getUserline(username, count, since_id, max_id);
+    }
+
+    @RequestMapping(value = "/rest/statuses/{username}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<StatusDTO> listStatusForUserRest(@PathVariable("username") String username,
                                                    @RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String since_id,
                                                    @RequestParam(required = false) String max_id) {
