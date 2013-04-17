@@ -68,8 +68,6 @@
         <script src="/tatami/static-wro4j/${version}/vendor.js"></script>
     </c:if>
 
-
-
     <script type="text/javascript">
         var username = '${user.username}';
     </script>
