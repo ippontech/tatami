@@ -52,7 +52,7 @@ public class HomeController {
         return mv;
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    @RequestMapping(value = { "/new/**" }, method = RequestMethod.GET)
     public ModelAndView newUI(@RequestParam(required = false) String action, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("new");
         User currentUser = authenticationService.getCurrentUser();

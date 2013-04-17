@@ -218,4 +218,18 @@ public class TimelineController {
         }
         return timelineService.getUserline(username, count, since_id, max_id);
     }
+
+    /**
+     * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
+     */
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public StatusDTO getStatusREST(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status Id : " + statusId);
+        }
+        return timelineService.getStatus(statusId);
+    }
 }
