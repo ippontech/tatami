@@ -35,11 +35,11 @@
         <js>/js/vendor/backbone.js</js>
         <js>/js/vendor/backbone.marionette.js</js>
         <js>/js/vendor/marked.js</js>
-        <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
 
         <js>/js/app/app.js</js>
-        <js>/js/app/models/users.js</js>
+        <js>/js/app/router.js</js>
+        <js>/js/app/**/**.js</js>
     </group>
     <group name='app'>
         <js>/js/app/**.js</js>
