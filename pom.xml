@@ -38,6 +38,8 @@
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics -->
                 <spring.profiles.active></spring.profiles.active>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
