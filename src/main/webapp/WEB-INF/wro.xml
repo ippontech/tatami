@@ -26,9 +26,8 @@
         <js>/js/tatami-search.js</js>
     </group>
     <group name='vendor'>
-        <css>/css/reset.css</css>
-        <css>/css/bootstrap-responsive.css</css>
-        <css>/css/tatami.css</css>
+        <css>/css/vendor/css/bootstrap.css</css>
+        <css>/css/new.css</css>
 
         <js>/js/vendor/jquery.js</js>
         <js>/js/vendor/bootstrap.js</js>
@@ -38,6 +37,9 @@
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
+
+        <js>/js/app/app.js</js>
+        <js>/js/app/models/users.js</js>
     </group>
     <group name='app'>
         <js>/js/app/**.js</js>

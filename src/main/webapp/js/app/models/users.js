@@ -1,24 +1,6 @@
 (function(Backbone, _, Tatami, Modernizr, window){
 
   var Users = Backbone.Model.extend({
-    initialize: function() {
-      var self = this;
-      Tatami.app.on('localstorage:users', function(model){
-        if(self !== model && self.id === model.id) {
-          self.set(model.toJSON());
-        }
-      });
-      this.on('sync', function(model){
-        model.saveToLocal();
-      });
-      this.fetch();
-    },
-
-    sync: function(method, model, options) {
-      if((method === 'read' || method === 'update' || method === 'patch') && model.id) model.fetchFromLocal();
-      Backbone.sync(method, model, options);
-    },
-
     idAttribute: 'username',
 
     defaults: {
@@ -29,31 +11,6 @@
       attachementsSize: 0,
       friendsCount: 0,
       followersCount: 0
-    },
-
-    fetchFromLocal: function(){
-      if (Modernizr.localstorage) {
-        var resp = window.localStorage.getItem('users:' + this.id);
-        try {
-          this.set(JSON.parse(resp));
-        }
-        catch(e) {
-        }
-      }
-      return this;
-    },
-
-    saveToLocal: function(){
-      if (Modernizr.localstorage) {
-        window.localStorage.setItem('users:' + this.id, JSON.stringify(this));
-        Tatami.app.trigger('localstorage:users', this);
-      }
-      return this;
-    },
-
-    fetch: function() {
-      this.fetchFromLocal();
-      return Backbone.Model.prototype.fetch.call(this);
     },
 
     urlRoot: '/tatami/rest/users/',
