@@ -27,7 +27,7 @@
             sharedByUsername: false
         },
 
-        urlRoot: '/tatami/rest/new/statuses/',
+        urlRoot: '/tatami/rest/statuses/',
 
         toJSON: function(){
             var attr = Backbone.Model.prototype.toJSON.call(this);

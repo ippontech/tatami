@@ -1,7 +1,7 @@
 (function(Backbone, Tatami){
 
     var Tags = Backbone.Collection.extend({
-        url: '/tatami/rest/new/tags',
+        url: '/tatami/rest/tags',
         parse: function(data){
             return data.tagList;
         },

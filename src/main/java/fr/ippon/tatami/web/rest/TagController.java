@@ -165,7 +165,7 @@ public class TagController {
     }
 
 
-    @RequestMapping(value = "/rest/new/tags",
+    @RequestMapping(value = "/rest/ tags",
             method = RequestMethod.GET,
             produces = "application/json")
     public Collection<Tag> getTagsNEW(@RequestParam(required = false, value = "popular", defaultValue = "false") Boolean popular,
@@ -213,7 +213,7 @@ public class TagController {
     }
 
 
-    @RequestMapping(value = "/rest/new/tags/{tag}",
+    @RequestMapping(value = "/rest/tags/{tag}",
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody

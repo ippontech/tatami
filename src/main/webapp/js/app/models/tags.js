@@ -1,7 +1,7 @@
 (function(Backbone, Tatami){
 
     var Tags = Backbone.Model.extend({
-        urlRoot: '/tatami/rest/new/tags',
+        urlRoot: '/tatami/rest/tags',
         idAttribute: 'name',
         defaults: {
             followed: false,

@@ -220,7 +220,7 @@ public class TimelineController {
     }
 
 
-    @RequestMapping(value = "/rest/new/statuses/{statusId}",
+    @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -231,7 +231,7 @@ public class TimelineController {
         return timelineService.getStatus(statusId);
     }
 
-    @RequestMapping(value = "/rest/new/statuses/{statusId}",
+    @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
