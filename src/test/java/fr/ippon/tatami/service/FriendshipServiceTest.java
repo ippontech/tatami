@@ -129,8 +129,7 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         User authenticateUser = constructAUser(login);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
-        friendshipService.setAuthenticationService(mockAuthenticationService);
+        ReflectionTestUtils.setField(friendshipService, "authenticationService", mockAuthenticationService);
         ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
     }
-
 }
