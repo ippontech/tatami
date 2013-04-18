@@ -175,38 +175,35 @@ public class FileController {
     @ResponseBody
     public List<UploadedFile> uploadAvatar(
             @RequestParam("uploadFile") MultipartFile file) throws IOException {
-        try {
-            Avatar avatar = new Avatar();
-            avatar.setContent(file.getBytes());
-            avatar.setFilename(file.getOriginalFilename());
-            avatar.setSize(file.getSize());
-            avatar.setCreationDate(new Date());
 
-            avatarService.createAvatar(avatar);
+        Avatar avatar = new Avatar();
+        avatar.setContent(file.getBytes());
+        avatar.setFilename(file.getOriginalFilename());
+        avatar.setSize(file.getSize());
+        avatar.setCreationDate(new Date());
 
-            List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-            UploadedFile uploadedFile = new UploadedFile(
-                    avatar.getAvatarId(),
-                    file.getOriginalFilename(),
-                    Long.valueOf(file.getSize()).intValue(),
-                    tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+        avatarService.createAvatar(avatar);
 
-            if (log.isDebugEnabled()) {
-                log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
-            }
+        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        UploadedFile uploadedFile = new UploadedFile(
+                avatar.getAvatarId(),
+                file.getOriginalFilename(),
+                Long.valueOf(file.getSize()).intValue(),
+                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
-            uploadedFiles.add(uploadedFile);
-
-            User user = authenticationService.getCurrentUser();
-            user.setAvatar(avatar.getAvatarId());
-
-            userRepository.updateUser(user);
-
-            return uploadedFiles;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
+        if (log.isDebugEnabled()) {
+            log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
         }
+
+        uploadedFiles.add(uploadedFile);
+
+        User user = authenticationService.getCurrentUser();
+        user.setAvatar(avatar.getAvatarId());
+
+        userRepository.updateUser(user);
+
+        return uploadedFiles;
+
     }
 
     @RequestMapping(value = "/file/file_not_found",
