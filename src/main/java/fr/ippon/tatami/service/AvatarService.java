@@ -39,7 +39,7 @@ public class AvatarService {
 
         User currentUser = authenticationService.getCurrentUser();
 
-        if(!currentUser.getAvatar().isEmpty()){
+        if (currentUser.getAvatar() != null && !("").equals(currentUser.getAvatar())) {
             deleteAvatar(currentUser.getAvatar());
         }
 
