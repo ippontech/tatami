@@ -68,6 +68,8 @@
         <profile>
             <id>elasticsearch</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -98,6 +100,8 @@
         <profile>
             <id>elasticsearch-embedded</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -1033,6 +1037,7 @@
                 <version>2.1</version>
                 <configuration>
                     <path>/</path>
+                    <contextReloadable>true</contextReloadable>
                     <protocol>org.apache.coyote.http11.Http11NioProtocol</protocol>
                     <systemProperties>
                         <spring.profiles.active>${spring.profiles.active}</spring.profiles.active>

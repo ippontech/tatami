@@ -1,6 +1,7 @@
 package fr.ippon.tatami.config;
 
 import com.yammer.metrics.ehcache.InstrumentedEhcache;
+import me.prettyprint.hector.api.factory.HFactory;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Ehcache;
 import org.apache.commons.logging.Log;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 @Configuration
@@ -20,13 +22,20 @@ public class CacheConfiguration {
 
     private final Log log = LogFactory.getLog(CacheConfiguration.class);
 
+    private net.sf.ehcache.CacheManager cacheManager;
+
     @Inject
     private Environment env;
 
+    @PreDestroy
+    public void destroy() {
+        log.info("Closing Ehcache");
+        cacheManager.shutdown();
+    }
+
     @Bean
     public CacheManager cacheManager() {
-
-        net.sf.ehcache.CacheManager cacheManager = new net.sf.ehcache.CacheManager();
+        cacheManager = new net.sf.ehcache.CacheManager();
 
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
             log.debug("Ehcache Metrics monitoring enabled");
