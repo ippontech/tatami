@@ -35,7 +35,7 @@ public class AvatarService {
     @Inject
     private AuthenticationService authenticationService;
 
-    public String createAvatar(Avatar avatar){
+    public String createAvatar(Avatar avatar) {
 
         User currentUser = authenticationService.getCurrentUser();
 
@@ -43,9 +43,9 @@ public class AvatarService {
             deleteAvatar(currentUser.getAvatar());
         }
 
-        try{
+        try {
             avatar.setContent(scaleImage(avatar.getContent()));
-        }catch (IOException e){
+        } catch (IOException e) {
             log.info("Avatar could not be resized : " + e.getMessage());
             return null;
         }
@@ -66,16 +66,17 @@ public class AvatarService {
         return avatarRepository.findAvatarById(avatartId);
     }
 
-    public void deleteAvatar(String avatarId){
+    public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
         User currentUser = authenticationService.getCurrentUser();
         userRepository.updateUser(currentUser);
     }
+
     /*
     * TO DO : add param ratio to scale an image in 4/3 or 16/9
     */
-    public byte[] scaleImage(byte[] data) throws IOException{
+    public byte[] scaleImage(byte[] data) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         BufferedImage img = ImageIO.read(in);
@@ -84,7 +85,7 @@ public class AvatarService {
 
         Image image = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        bufferedImage.getGraphics().drawImage(image, 0, 0, new Color(0,0,0), null);
+        bufferedImage.getGraphics().drawImage(image, 0, 0, new Color(0, 0, 0), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
 

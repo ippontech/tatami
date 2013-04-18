@@ -65,12 +65,10 @@ public class FileController {
         this.tatamiUrl = env.getProperty("tatami.url");
     }
 
-    @RequestMapping(value = "/rest/fileupload",
-            method = RequestMethod.POST)
-    public
+    @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     @ResponseBody
-    List<UploadedFile> upload(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException, StorageSizeException {
+    public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
@@ -138,8 +136,8 @@ public class FileController {
     @RequestMapping(value = "/avatar/{avatarId}/*",
             method = RequestMethod.GET)
     public void getAvatar(@PathVariable("avatarId") String avatarId,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws IOException {
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws IOException {
 
         // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
@@ -170,42 +168,45 @@ public class FileController {
         } catch (IOException e) {
             log.info("Error flushing the output stream. " + e.getMessage());
         }
-
     }
 
     @RequestMapping(value = "/rest/fileupload/avatar",
             method = RequestMethod.POST)
     @ResponseBody
     public List<UploadedFile> uploadAvatar(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException{
+            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+        try {
+            Avatar avatar = new Avatar();
+            avatar.setContent(file.getBytes());
+            avatar.setFilename(file.getOriginalFilename());
+            avatar.setSize(file.getSize());
+            avatar.setCreationDate(new Date());
 
-        Avatar avatar = new Avatar();
-        avatar.setContent(file.getBytes());
-        avatar.setFilename(file.getOriginalFilename());
-        avatar.setSize(file.getSize());
-        avatar.setCreationDate(new Date());
+            avatarService.createAvatar(avatar);
 
-        avatarService.createAvatar(avatar);
+            List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+            UploadedFile uploadedFile = new UploadedFile(
+                    avatar.getAvatarId(),
+                    file.getOriginalFilename(),
+                    Long.valueOf(file.getSize()).intValue(),
+                    tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
-        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-        UploadedFile uploadedFile = new UploadedFile(
-                avatar.getAvatarId(),
-                file.getOriginalFilename(),
-                Long.valueOf(file.getSize()).intValue(),
-                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+            if (log.isDebugEnabled()) {
+                log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+            }
 
-        if (log.isDebugEnabled()) {
-            log.info("Avatar url : "+ tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+            uploadedFiles.add(uploadedFile);
+
+            User user = authenticationService.getCurrentUser();
+            user.setAvatar(avatar.getAvatarId());
+
+            userRepository.updateUser(user);
+
+            return uploadedFiles;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        uploadedFiles.add(uploadedFile);
-
-        User user = authenticationService.getCurrentUser();
-        user.setAvatar(avatar.getAvatarId());
-
-        userRepository.updateUser(user);
-
-        return uploadedFiles;
     }
 
     @RequestMapping(value = "/file/file_not_found",
