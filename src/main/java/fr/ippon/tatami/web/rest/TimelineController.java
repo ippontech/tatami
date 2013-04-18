@@ -219,10 +219,8 @@ public class TimelineController {
         return timelineService.getUserline(username, count, since_id, max_id);
     }
 
-    /**
-     * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
-     */
-    @RequestMapping(value = "/rest/statuses/{statusId}",
+
+    @RequestMapping(value = "/rest/new/statuses/{statusId}",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -231,5 +229,27 @@ public class TimelineController {
             log.debug("REST request to get status Id : " + statusId);
         }
         return timelineService.getStatus(statusId);
+    }
+
+    @RequestMapping(value = "/rest/new/statuses/{statusId}",
+            method = RequestMethod.PUT,
+            produces = "application/json")
+    @ResponseBody
+    public StatusDTO updateStatusREST(@RequestBody(required = false) StatusDTO status) {
+        StatusDTO currentStatus = timelineService.getStatus(status.getStatusId());
+        if(currentStatus.isFavorite() != status.isFavorite()){
+            if(status.isFavorite()){
+                timelineService.addFavoriteStatus(status.getStatusId());
+            }
+            else {
+                timelineService.removeFavoriteStatus(status.getStatusId());
+            }
+        }
+
+        if(status.isShared()){
+            timelineService.shareStatus(status.getStatusId());
+        }
+
+        return status;
     }
 }

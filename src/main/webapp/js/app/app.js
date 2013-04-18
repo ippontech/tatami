@@ -1,8 +1,14 @@
-(function(window, Backbone, $){
+(function(window, Backbone, $, _){
+    _.templateSettings = {
+        interpolate: /<\@\=(.+?)\@\>/gim,
+        evaluate: /<\@(.+?)\@\>/gim
+    };
+
     var Tatami = {
         Models : {},
         Collections : {},
-        Views : {}
+        Views : {},
+        Factories : {}
     };
 
     Tatami.app = new Backbone.Marionette.Application();
@@ -11,6 +17,8 @@
         Tatami.app.user = new Tatami.Models.Users({
             username: username
         });
+
+        Tatami.app.user.fetch();
     });
 
     Tatami.app.addInitializer(function(){
@@ -18,7 +26,9 @@
 
     Tatami.app.addInitializer(function(){
         Tatami.app.addRegions({
-            header: '#tatamiHeader'
+            header: '#tatamiHeader',
+            side: '#tatamiSide',
+            body: '#tatamiBody'
         });
     });
     Tatami.app.on("initialize:after", function(options){
@@ -32,8 +42,6 @@
                 $(document).delegate("a", "click", function(evt) {
                     var href = $(this).attr("href");
                     var protocol = this.protocol + "//";
-                    debugger;
-                    //if (href.slice(protocol.length) !== protocol && protocol !== 'javascript://' && href.substring(0, 1) !== '#') {
                     if (href.slice(protocol.length) !== protocol) {
                         evt.preventDefault();
                         Backbone.history.navigate(href, true);
@@ -48,4 +56,4 @@
     });
 
     window.Tatami = Tatami;
-})(window, Backbone, jQuery);
+})(window, Backbone, jQuery, _);

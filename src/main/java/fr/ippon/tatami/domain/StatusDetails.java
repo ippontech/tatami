@@ -22,7 +22,7 @@ public class StatusDetails {
     }
 
     public void setStatusId(String statusId) {
-        statusId = statusId;
+        this.statusId = statusId;
     }
 
     public Collection<StatusDTO> getDiscussionStatuses() {

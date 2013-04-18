@@ -1,11 +1,11 @@
 (function(Backbone, _, Tatami){
-    var HomeHeader = Backbone.Marionette.ItemView.extend({
-        template: '#HomeHeader',
+    var CardProfile = Backbone.Marionette.ItemView.extend({
+        template: '#CardProfile',
         modelEvents: {
             'change': 'render',
             'sync': 'render'
         }
     });
 
-    Tatami.Views.HomeHeader = HomeHeader;
+    Tatami.Views.CardProfile = CardProfile;
 })(Backbone, _, Tatami);

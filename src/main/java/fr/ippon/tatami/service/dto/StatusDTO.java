@@ -81,6 +81,8 @@ public class StatusDTO {
 
     private boolean favorite;
 
+    private boolean shared = false;
+
     private boolean detailsAvailable;
 
     /**
@@ -248,6 +250,14 @@ public class StatusDTO {
         this.favorite = favorite;
     }
 
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
     public boolean isDetailsAvailable() {
         return detailsAvailable;
     }
@@ -303,6 +313,7 @@ public class StatusDTO {
                 ", lastName='" + lastName + '\'' +
                 ", gravatar='" + gravatar + '\'' +
                 ", favorite=" + favorite +
+                ", shared=" + shared +
                 ", detailsAvailable=" + detailsAvailable +
                 ", sharedByUsername='" + sharedByUsername + '\'' +
                 '}';

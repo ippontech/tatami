@@ -22,11 +22,12 @@
             lastName: '',
             gravatar: '',
             favorite: false,
+            shared: false,
             detailsAvailable: false,
             sharedByUsername: false
         },
 
-        urlRoot: '/tatami/rest/statuses/',
+        urlRoot: '/tatami/rest/new/statuses/',
 
         toJSON: function(){
             var attr = Backbone.Model.prototype.toJSON.call(this);
