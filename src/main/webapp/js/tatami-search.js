@@ -83,8 +83,6 @@ app.View.switchSearchAgent = Backbone.View.extend({
 var agent = new app.View.switchSearchAgent();
 
 function SearchEngine(){
-
-
     this.menu = '<ul class="typeahead dropdown-menu hasCategory"></ul>';
 
     this.source = function(query,process){
@@ -173,9 +171,16 @@ function SearchEngine(){
     };
 
     this.select = function () {
+        var input = $('#fullSearchText').val();
+
         var val = this.$menu.find('.active').attr('data-value'),
             groupId =  this.$menu.find('.active').attr('rel');
-        this.$element.val(this.updater(val)).change();
+
+        if (typeof val == 'undefined') {
+            window.location = '/tatami/#/search/status/' + input
+            this.hide();
+            return false;
+        }
 
         switch(val.charAt(0)){
             case '#':
@@ -188,6 +193,7 @@ function SearchEngine(){
                window.location = '/tatami/#/groups/'+groupId;
             break;
         }
+        this.$element.val(this.updater(val)).change();
         return this.hide();
     };
 
