@@ -41,8 +41,8 @@ public class CassandraUserRepository implements UserRepository {
     @Inject
     private CounterRepository counterRepository;
 
-    private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private static Validator validator = factory.getValidator();
+    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static final Validator validator = factory.getValidator();
 
     @Override
     @CacheEvict(value = "user-cache", key = "#user.login")

@@ -8,7 +8,7 @@ import fr.ippon.tatami.service.MailService;
  */
 public class JavaMailHealthCheck extends HealthCheck {
 
-    private MailService mailService;
+    private final MailService mailService;
 
     public JavaMailHealthCheck(MailService mailService) {
         super("JavaMail");

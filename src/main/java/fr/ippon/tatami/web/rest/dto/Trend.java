@@ -32,9 +32,8 @@ public class Trend {
 
         Trend trend = (Trend) o;
 
-        if (!tag.equals(trend.tag)) return false;
+        return tag.equals(trend.tag);
 
-        return true;
     }
 
     @Override

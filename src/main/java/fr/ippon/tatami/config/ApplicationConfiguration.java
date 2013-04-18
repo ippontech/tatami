@@ -34,9 +34,9 @@ public class ApplicationConfiguration {
 
     /**
      * Initializes Tatami.
-     *
+     * <p/>
      * Spring profiles can be configured with a system property -Dspring.profiles.active=your-active-profile
-     *
+     * <p/>
      * Available profiles are :
      * - "metrics" : for enabling Yammer Metrics
      * - "tatamibot" : for enabling the Tatami bot

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * REST controller for managing users.
@@ -54,8 +53,7 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = userService.getUserByUsername(username);
-        return user;
+        return userService.getUserByUsername(username);
     }
 
     /**
@@ -108,8 +106,7 @@ public class UserController {
         if (pagination == null) {
             pagination = 0;
         }
-        List<User> users = userService.getUsersForCurrentDomain(pagination);
-        return users;
+        return userService.getUsersForCurrentDomain(pagination);
     }
 
 
@@ -130,7 +127,6 @@ public class UserController {
         user.setLogin(email);
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
-        return;
     }
 
 }

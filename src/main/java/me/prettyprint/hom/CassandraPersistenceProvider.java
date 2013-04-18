@@ -14,7 +14,7 @@ import java.util.Map;
  * but is not provided (and anyway HOM doesn't use it...).
  */
 public class CassandraPersistenceProvider implements PersistenceProvider {
-    private static Logger log = LoggerFactory.getLogger(CassandraPersistenceProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(CassandraPersistenceProvider.class);
 
     private Map<String, Object> defProperties;
 

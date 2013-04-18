@@ -2,7 +2,6 @@ package fr.ippon.tatami.web.atmosphere.users;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.util.DomainUtil;
 import org.atmosphere.config.service.MeteorService;
 import org.atmosphere.cpr.*;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
@@ -44,7 +43,6 @@ public class OnlineUsersServlet extends HttpServlet {
 
         // Log all events on the console, including WebSocket events.
         User user = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(user.getLogin());
         m.addListener(new OnlineUsersLogger(onlineUsers, user, broadcaster));
 
         res.setContentType("text/html;charset=ISO-8859-1");
@@ -61,7 +59,6 @@ public class OnlineUsersServlet extends HttpServlet {
 
     private Broadcaster lookupBroadcaster(String pathInfo) {
         String[] decodedPath = pathInfo.split("/");
-        Broadcaster b = BroadcasterFactory.getDefault().lookup(decodedPath[decodedPath.length - 1], true);
-        return b;
+        return BroadcasterFactory.getDefault().lookup(decodedPath[decodedPath.length - 1], true);
     }
 }

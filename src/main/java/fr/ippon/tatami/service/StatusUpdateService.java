@@ -214,7 +214,7 @@ public class StatusUpdateService {
         // add status to the timeline
         timelineRepository.addStatusToTimeline(currentLogin, status);
 
-        if (status.getStatusPrivate() == true) { // Private status
+        if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
             manageMentions(status, null, currentLogin, domain, new ArrayList<String>());
 
@@ -283,7 +283,7 @@ public class StatusUpdateService {
 
     /**
      * Parses the status to find tags, and add those tags to the TagLine and the Trends.
-     *
+     * <p/>
      * The Tatami Bot is a specific use case : as it sends a lot of statuses, it may pollute the global trends,
      * so it is excluded from it.
      */
@@ -364,7 +364,7 @@ public class StatusUpdateService {
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
         if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-            if (status.getStatusPrivate() == true) { // Private status
+            if (status.getStatusPrivate()) { // Private status
                 mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
             } else {
                 mailService.sendUserMentionEmail(status, mentionnedUser);

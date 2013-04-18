@@ -133,8 +133,6 @@ public class HomeController {
      * to the jsp named [subpath].jsp.
      * <p/>
      * It allows adding easily new pages with tatamiCustomization
-     *
-     * @param subPath
      */
     @RequestMapping(value = "/{subPath}", method = RequestMethod.GET)
     public String anyOtherSubPath(@PathVariable String subPath) {

@@ -9,8 +9,6 @@ import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -23,9 +21,7 @@ import java.util.List;
  */
 public abstract class AbstractCassandraFriendRepository {
 
-    private final Log log = LogFactory.getLog(AbstractCassandraFriendRepository.class);
-
-    ColumnFamilyTemplate<String, String> friendsTemplate;
+    private ColumnFamilyTemplate<String, String> friendsTemplate;
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -40,18 +36,18 @@ public abstract class AbstractCassandraFriendRepository {
         friendsTemplate.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
-    protected void addFriend(String key, String friendKey) {
+    void addFriend(String key, String friendKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, getFriendsCF(), HFactory.createColumn(friendKey,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
-    protected void removeFriend(String key, String friendKey) {
+    void removeFriend(String key, String friendKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(key, getFriendsCF(), friendKey, StringSerializer.get());
     }
 
-    protected List<String> findFriends(String key) {
+    List<String> findFriends(String key) {
         ColumnFamilyResult<String, String> result = friendsTemplate.queryColumns(key);
         List<String> friends = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {

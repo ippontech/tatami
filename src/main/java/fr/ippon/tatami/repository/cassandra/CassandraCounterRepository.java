@@ -7,8 +7,6 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
@@ -35,8 +33,6 @@ public class CassandraCounterRepository implements CounterRepository {
     private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
 
     private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
-
-    private final Log log = LogFactory.getLog(CassandraCounterRepository.class);
 
     @Inject
     private Keyspace keyspaceOperator;

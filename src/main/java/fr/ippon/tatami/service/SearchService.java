@@ -29,7 +29,6 @@ public interface SearchService {
      * Add a status to the index.
      *
      * @param status the status to add : can't be null
-     * @return the response's Id
      */
     void addStatus(Status status);
 
@@ -59,7 +58,6 @@ public interface SearchService {
      * Add a user to the index.
      *
      * @param user the user to add : can't be null
-     * @return the response's Id
      */
     void addUser(User user);
 

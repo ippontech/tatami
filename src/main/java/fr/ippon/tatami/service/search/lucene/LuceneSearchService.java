@@ -64,7 +64,7 @@ public class LuceneSearchService implements SearchService {
     @Inject
     private Analyzer analyzer;
 
-    private Map<String, Float> statusBoosts = new HashMap<String, Float>();
+    private final Map<String, Float> statusBoosts = new HashMap<String, Float>();
 
     @PostConstruct
     public void init() {
@@ -335,8 +335,8 @@ public class LuceneSearchService implements SearchService {
             }
 
             ScoreDoc[] scoreDocArray = topDocs.scoreDocs;
-            for (int i = 0; i < scoreDocArray.length; i++) {
-                int documentId = scoreDocArray[i].doc;
+            for (ScoreDoc aScoreDocArray : scoreDocArray) {
+                int documentId = aScoreDocArray.doc;
                 Document document = searcher.doc(documentId);
                 String username = document.get("username");
                 String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
@@ -414,8 +414,8 @@ public class LuceneSearchService implements SearchService {
             }
 
             ScoreDoc[] scoreDocArray = topDocs.scoreDocs;
-            for (int i = 0; i < scoreDocArray.length; i++) {
-                int documentId = scoreDocArray[i].doc;
+            for (ScoreDoc aScoreDocArray : scoreDocArray) {
+                int documentId = aScoreDocArray.doc;
                 Document document = searcher.doc(documentId);
                 String groupId = document.get("groupId");
                 Group group = groupDetailsRepository.getGroupDetails(groupId);

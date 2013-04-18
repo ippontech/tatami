@@ -128,7 +128,6 @@ public class TagController {
     @ResponseBody
     public Collection<Tag> getFollowedTags() {
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Collection<Tag> tags = new ArrayList<Tag>();
         for (String followedTag : followedTags) {

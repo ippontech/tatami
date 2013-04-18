@@ -34,7 +34,6 @@ public class StatsController {
     @ResponseBody
     public Collection<UserStatusStat> listDayStatusStats() {
         log.debug("REST request to get the users stats.");
-        Collection<UserStatusStat> statuses = statsService.getDayline();
-        return statuses;
+        return statsService.getDayline();
     }
 }

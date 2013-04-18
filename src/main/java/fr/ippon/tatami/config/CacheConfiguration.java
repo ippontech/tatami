@@ -1,7 +1,6 @@
 package fr.ippon.tatami.config;
 
 import com.yammer.metrics.ehcache.InstrumentedEhcache;
-import me.prettyprint.hector.api.factory.HFactory;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Ehcache;
 import org.apache.commons.logging.Log;

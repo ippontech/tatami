@@ -58,8 +58,8 @@ public class MailService {
     private Locale locale;
 
     // TODO: this can be used for external mail template configuration
-    private String templateRoot = "/META-INF/tatami/mails/";
-    private String templateSuffix = "Email.vm";
+    private final String templateRoot = "/META-INF/tatami/mails/";
+    private final String templateSuffix = "Email.vm";
 
     @Inject
     private VelocityEngine velocityEngine;
@@ -276,12 +276,7 @@ public class MailService {
     }
 
     /**
-     * generate and send the mail corresponding to the given template
-     *
-     * @param email
-     * @param model
-     * @param template
-     * @param locale
+     * Generate and send the mail corresponding to the given template.
      */
     private void sendTextFromTemplate(String email, Map<String, Object> model, String template, Locale locale) {
         model.put("messages", mailMessageSource);

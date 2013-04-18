@@ -205,9 +205,8 @@ public class Status {
 
         Status status = (Status) o;
 
-        if (statusId != null ? !statusId.equals(status.statusId) : status.statusId != null) return false;
+        return !(statusId != null ? !statusId.equals(status.statusId) : status.statusId != null);
 
-        return true;
     }
 
     @Override

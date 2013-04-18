@@ -72,8 +72,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public SessionLocaleResolver localeResolver() {
-        SessionLocaleResolver resolver = new SessionLocaleResolver();
-        return resolver;
+        return new SessionLocaleResolver();
     }
 
     @Bean

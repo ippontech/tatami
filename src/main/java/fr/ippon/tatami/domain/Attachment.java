@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Attachment {
 
-    private static DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
             .appendDayOfMonth(1)
             .appendLiteral(' ')
             .appendMonthOfYearShortText()
@@ -88,9 +88,8 @@ public class Attachment {
 
         Attachment that = (Attachment) o;
 
-        if (!attachmentId.equals(that.attachmentId)) return false;
+        return attachmentId.equals(that.attachmentId);
 
-        return true;
     }
 
     @Override

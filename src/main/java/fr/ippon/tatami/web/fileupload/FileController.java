@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class FileController {
 
-    private static Logger log = Logger.getLogger(FileController.class);
+    private static final Logger log = Logger.getLogger(FileController.class);
 
     private static final String HEADER_EXPIRES = "Expires";
 
@@ -36,9 +36,9 @@ public class FileController {
 
     private static final int CACHE_SECONDS = 60 * 60 * 24 * 30;
 
-    private static String HEADER_ETAG = "ETag";
+    private static final String HEADER_ETAG = "ETag";
 
-    private static String HEADER_IF_NONE_MATCH = "If-None-Match";
+    private static final String HEADER_IF_NONE_MATCH = "If-None-Match";
 
     private String tatamiUrl;
 
@@ -212,8 +212,7 @@ public class FileController {
         if (log.isDebugEnabled()) {
             log.debug("File not found !");
         }
-        ModelAndView mv = new ModelAndView("errors/file_not_found");
-        return mv;
+        return new ModelAndView("errors/file_not_found");
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class StatusResponse {
 
     private Boolean success;
-    private List<String> message;
+    private final List<String> message;
 
     public StatusResponse() {
         this.message = new ArrayList<String>();

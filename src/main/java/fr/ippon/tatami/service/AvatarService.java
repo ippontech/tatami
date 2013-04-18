@@ -66,7 +66,7 @@ public class AvatarService {
         return avatarRepository.findAvatarById(avatartId);
     }
 
-    public void deleteAvatar(String avatarId) {
+    void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
         User currentUser = authenticationService.getCurrentUser();
@@ -76,7 +76,7 @@ public class AvatarService {
     /*
     * TO DO : add param ratio to scale an image in 4/3 or 16/9
     */
-    public byte[] scaleImage(byte[] data) throws IOException {
+    byte[] scaleImage(byte[] data) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         BufferedImage img = ImageIO.read(in);
