@@ -19,7 +19,12 @@
             <div class="nomargin well row avatar-float-left-container">
                 <div class="span4 text-center">
                     <a href="/tatami/profile/${user.username}/">
-                        <img class="pull-left nomargin avatar avatar-float-left" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="">
+                        <c:if test="${empty user.avatar}">
+                            <img class="pull-left nomargin avatar avatar-float-left" src="/img/default_image_profile.png" alt="">
+                        </c:if>
+                        <c:if test="${not empty user.avatar}">
+                            <img class="pull-left nomargin avatar avatar-float-left" src="/tatami/avatar/${user.avatar}/photo.jpg" alt="">
+                        </c:if>
                         <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
                         <p>@${user.username}</p>
                     </a>

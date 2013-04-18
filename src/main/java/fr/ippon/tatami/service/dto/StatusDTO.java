@@ -77,7 +77,7 @@ public class StatusDTO {
 
     private String lastName;
 
-    private String gravatar;
+    private String avatar;
 
     private boolean favorite;
 
@@ -234,12 +234,12 @@ public class StatusDTO {
         this.lastName = lastName;
     }
 
-    public String getGravatar() {
-        return gravatar;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public boolean isFavorite() {
@@ -311,7 +311,7 @@ public class StatusDTO {
                 ", replyToUsername='" + replyToUsername + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", gravatar='" + gravatar + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", favorite=" + favorite +
                 ", shared=" + shared +
                 ", detailsAvailable=" + detailsAvailable +
