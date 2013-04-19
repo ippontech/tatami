@@ -143,8 +143,12 @@
             this.initNext();
             this.initRefresh();
 
-            this.listenTo(Tatami.app, 'refresh', this.refresh);
-            this.listenTo(Tatami.app, 'next', this.next);
+            this.listenTo(Tatami.app, 'refresh', function(){
+                self.refresh();
+            });
+            this.listenTo(Tatami.app, 'next', function(){
+                self.next();
+            });
             this.listenTo(Tatami.app, 'dislay', this.onRender);
             this.listenTo(this.collection, 'add', function(model, collection, options){
                 model.hidden = (options.at === 0);
