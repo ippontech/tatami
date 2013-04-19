@@ -89,23 +89,23 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.tatam.favoris {
+.tatam.favorite {
     -webkit-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
     -moz-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
     box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
 
-    background-image: url(Tatami_files/favorite.png);
+    background-image: url(img/favorite.png);
     background-repeat: no-repeat;
     background-position: left top;
 }
 
-.tatam.discute.favoris {
+.tatam.discute.favorite {
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
 }
 
-.tatam > div..well {
+.tatam > div.well {
     cursor: pointer;
 }
 
@@ -117,9 +117,6 @@
 .tatam > header {
     padding-bottom: 0;
     margin-bottom: 15px;
-}
-.tatam > footer {
-    display: none;
 }
 
 .tatam > footer > aside {

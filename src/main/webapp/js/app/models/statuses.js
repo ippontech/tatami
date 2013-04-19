@@ -22,7 +22,6 @@
             lastName: '',
             gravatar: '',
             favorite: false,
-            shared: false,
             detailsAvailable: false,
             sharedByUsername: false
         },

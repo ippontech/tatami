@@ -58,25 +58,27 @@
         <@= marked(content) @>
     </div>
     <footer>
-        <div class="tatams-share">
-        </div>
-        <aside class="text-right">
-            <a class="status-action-reply">
-                <span class="glyphicon glyphicon-comment"></span>
-                <fmt:message key="tatami.user.status.reply"/>
-            </a>
-            <a class="status-action-share">
-                <span class="glyphicon glyphicon-retweet"></span>
-                <fmt:message key="tatami.user.status.share"/>
-            </a>
-            <a class="status-action-favorite">
-                <span class="glyphicon glyphicon-pushpin"></span>
-                <fmt:message key="tatami.user.status.favorite"/>
-            </a>
-        </aside>
-        <div class="tatams-discute">
-        </div>
     </footer>
+</script>
+<script type="text/template" id="StatusFooters">
+    <div class="tatams-share">
+    </div>
+    <aside class="text-right">
+        <button class="btn btn-link status-action-reply">
+            <span class="glyphicon glyphicon-comment"></span>
+            <fmt:message key="tatami.user.status.reply"/>
+        </button>
+        <button class="btn btn-link status-action-share">
+            <span class="glyphicon glyphicon-retweet"></span>
+            <fmt:message key="tatami.user.status.share"/>
+        </button>
+        <button class="btn btn-link status-action-favorite">
+            <span class="glyphicon glyphicon-pushpin"></span>
+            <fmt:message key="tatami.user.status.favorite"/>
+        </button>
+    </aside>
+    <div class="tatams-discute">
+    </div>
 </script>
 <script type="text/template" id="StatusShares">
     <span class="glyphicon glyphicon-retweet"></span>

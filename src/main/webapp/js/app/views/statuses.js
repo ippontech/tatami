@@ -11,19 +11,17 @@
         className: 'tatam',
         template: '#StatusItems',
         regions: {
-            share: "footer > .tatams-share",
-            discussion: "footer > .tatams-discute"
+            footer: 'footer'
         },
         modelEvents: {
-            'change': 'render',
-            'sync': 'render slide',
+            'sync': 'slide',
             'change:statusId': 'updateDetailModel'
         },
         events: {
             'click > .well': 'showDetails',
-            'click > footer > aside > .status-action-reply': 'reply',
-            'click > footer > aside > .status-action-favorite': 'favorite',
-            'click > footer > aside > .status-action-share': 'share'
+            'click > footer > div > aside > .status-action-reply': 'replyAction',
+            'click > footer > div > aside > .status-action-share': 'shareAction',
+            'click > footer > div > aside > .status-action-favorite': 'favoriteAction'
         },
         slide: function(){
             this.$el.slideDown();
@@ -33,38 +31,87 @@
             this.$el.toggleClass('discute', this.model.get('detailsAvailable'));
         },
         showDetails: function(){
-            var $footer = this.$el.find('> footer');
-            if($footer.css('display') !== 'none') return $footer.slideToggle();
-
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-            this.share.show(Tatami.Factories.Status.statusShares(statusDetail));
-            if(this.options.discussion){
-                this.discussion.show(Tatami.Factories.Status.statusesDiscussion(statusDetail));
+
+            if(!this.footer.currentView){
+                this.footer.show(new StatusFooters({
+                    model: statusDetail,
+                    discussion: this.options.discussion
+                }));
+                statusDetail.fetch();
             }
-            statusDetail.fetch({
-                success: function(){
-                    $footer.slideToggle();
-                }
-            });
+            else this.footer.currentView.$el.slideToggle();
         },
-        reply: function(){
+        replyAction: function(){
             console.log('reply');
             return false;
         },
-        favorite: function(){
+        favoriteAction: function(){
             var self = this;
             this.model.save({
-                favorite: true
+                favorite: !this.model.get('favorite')
             }, {
+                patch: true,
                 success: function(){
                     self.onRender();
                 }
             });
             return false;
         },
-        share: function(){
-            console.log('share');
+        shareAction: function(){
+            var self = this;
+            this.model.save({
+                shared: !this.model.get('shared')
+            }, {
+                patch: true,
+                success: function(){
+                    self.refreshDetails();
+                }
+            });
             return false;
+        }
+    });
+
+    StatusFooters = Backbone.Marionette.Layout.extend({
+        initialize: function(){
+            this.$el.css('display', 'none');
+
+            var self = this;
+            this.slideDown = _.debounce(function(){
+                console.log('slide');
+                self.$el.slideDown();
+            }, jQuery.fx.speeds._default);
+        },
+        template: "#StatusFooters",
+
+        regions: {
+            share: ".tatams-share",
+            discute: ".tatams-discute"
+        },
+
+        modelEvents: {
+            'sync': 'onRender'
+        },
+
+        onRender: function(){
+            var shares = this.model.get('sharedByLogins');
+            if(shares && shares.length > 0){
+                this.share.show(new Tatami.Views.StatusShares({
+                    collection: new Backbone.Collection(shares)
+                }));
+            }
+
+            var discute = this.model.get('discussionStatuses');
+            if(this.options.discussion && discute && discute.length > 0){
+                this.discute.show(new Tatami.Views.Statuses({
+                    collection: new Tatami.Collections.Statuses(discute),
+                    itemViewOptions: {
+                        discussion: false
+                    }
+                }));
+            }
+
+            this.slideDown();
         }
     });
 
@@ -78,4 +125,5 @@
 
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItems = StatusItems;
+    Tatami.Views.StatusFooters = StatusFooters;
 })(Backbone, _, Tatami);
