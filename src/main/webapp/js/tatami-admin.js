@@ -404,7 +404,6 @@ app.View.User = Backbone.View.extend({
     },
 
     render: function(){
-
         this.$el.html(this.template(this.model.toJSON()));
         this.renderFollow();
         this.delegateEvents();
@@ -811,7 +810,7 @@ app.View.AddUserGroup = Backbone.View.extend({
             },
             highlighter: function (item) {
               var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              return '<img class="avatar  avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              return '<img class="avatar avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>';
               }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }

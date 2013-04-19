@@ -279,7 +279,13 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar  avatar-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar avatar-small"
+            <@ if (avatar == null) { @>
+                src="/img/default_image_profile.png"
+            <@ } else { @>
+                src="/tatami/avatar/' + <@= avatar @> + '/photo.jpg"
+            <@ } @>
+         alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
