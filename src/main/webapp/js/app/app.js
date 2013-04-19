@@ -22,6 +22,9 @@
     });
 
     Tatami.app.addInitializer(function(){
+        Tatami.app.listenTo(Tatami.app, 'statusPending', function(num){
+            console.log(num);
+        });
     });
 
     Tatami.app.addInitializer(function(){

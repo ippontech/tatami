@@ -24,7 +24,7 @@
 // shut down child views.
 
 Backbone.ChildViewContainer = (function(Backbone, _){
-  
+
   // Container Constructor
   // ---------------------
 
@@ -190,9 +190,9 @@ Backbone.ChildViewContainer = (function(Backbone, _){
   //
   // Mix in methods from Underscore, for iteration, and other
   // collection related features.
-  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter', 
-    'select', 'reject', 'every', 'all', 'some', 'any', 'include', 
-    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest', 
+  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter',
+    'select', 'reject', 'every', 'all', 'some', 'any', 'include',
+    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest',
     'last', 'without', 'isEmpty', 'pluck'];
 
   _.each(methods, function(method) {
@@ -218,24 +218,24 @@ Backbone.Wreqr = (function(Backbone, Marionette, _){
   // Handlers
   // --------
   // A registry of functions to call, given a name
-  
+
   Wreqr.Handlers = (function(Backbone, _){
     "use strict";
-    
+
     // Constructor
     // -----------
-  
+
     var Handlers = function(){
       this._handlers = {};
     };
-  
+
     Handlers.extend = Backbone.Model.extend;
-  
+
     // Instance Members
     // ----------------
-  
+
     _.extend(Handlers.prototype, {
-  
+
       // Add a handler for the given name, with an
       // optional context to run the handler within
       addHandler: function(name, handler, context){
@@ -243,40 +243,40 @@ Backbone.Wreqr = (function(Backbone, Marionette, _){
           callback: handler,
           context: context
         };
-  
+
         this._handlers[name] = config;
       },
-  
+
       // Get the currently registered handler for
       // the specified name. Throws an exception if
       // no handler is found.
       getHandler: function(name){
         var config = this._handlers[name];
-  
+
         if (!config){
           throw new Error("Handler not found for '" + name + "'");
         }
-  
+
         return function(){
           var args = Array.prototype.slice.apply(arguments);
           return config.callback.apply(config.context, args);
         };
       },
-  
+
       // Remove a handler for the specified name
       removeHandler: function(name){
         delete this._handlers[name];
       },
-  
+
       // Remove all handlers from this registry
       removeAllHandlers: function(){
         this._handlers = {};
       }
     });
-  
+
     return Handlers;
   })(Backbone, _);
-  
+
   // Wreqr.Commands
   // --------------
   //
@@ -284,18 +284,18 @@ Backbone.Wreqr = (function(Backbone, Marionette, _){
   // handler and execute it.
   Wreqr.Commands = (function(Wreqr){
     "use strict";
-  
+
     return Wreqr.Handlers.extend({
       execute: function(){
         var name = arguments[0];
         var args = Array.prototype.slice.call(arguments, 1);
-  
+
         this.getHandler(name).apply(this, args);
       }
     });
-  
+
   })(Wreqr);
-  
+
   // Wreqr.RequestResponse
   // ---------------------
   //
@@ -303,36 +303,36 @@ Backbone.Wreqr = (function(Backbone, Marionette, _){
   // request handler, and return a response from it
   Wreqr.RequestResponse = (function(Wreqr){
     "use strict";
-  
+
     return Wreqr.Handlers.extend({
       request: function(){
         var name = arguments[0];
         var args = Array.prototype.slice.call(arguments, 1);
-  
+
         return this.getHandler(name).apply(this, args);
       }
     });
-  
+
   })(Wreqr);
-  
+
   // Event Aggregator
   // ----------------
   // A pub-sub object that can be used to decouple various parts
   // of an application through event-driven architecture.
-  
+
   Wreqr.EventAggregator = (function(Backbone, _){
     "use strict";
     var EA = function(){};
-  
+
     // Copy the `extend` function used by Backbone's classes
     EA.extend = Backbone.Model.extend;
-  
+
     // Copy the basic Backbone.Events on to the event aggregator
     _.extend(EA.prototype, Backbone.Events);
-  
+
     return EA;
   })(Backbone, _);
-  
+
 
   return Wreqr;
 })(Backbone, Backbone.Marionette, _);
@@ -380,7 +380,7 @@ Marionette.getOption = function(target, optionName){
 // if available, otherwise shims it in place for Marionette to use.
 Marionette.createObject = (function(){
   var createObject;
-  
+
   // Define this once, and just replace the .prototype on it as needed,
   // to improve performance in older / less optimized JS engines
   function F() {}
@@ -394,7 +394,7 @@ Marionette.createObject = (function(){
 
   } else {
 
-    // An implementation of the Boodman/Crockford delegation 
+    // An implementation of the Boodman/Crockford delegation
     // w/ Cornford optimization, as suggested by @unscriptable
     // https://gist.github.com/3959151
 
@@ -409,9 +409,9 @@ Marionette.createObject = (function(){
       // create a new object that inherits from
       // the `o` parameter
       var child = new F();
-      
+
       // clean up just in case o is really large
-      F.prototype = null; 
+      F.prototype = null;
 
       // send it back
       return child;
@@ -425,7 +425,7 @@ Marionette.createObject = (function(){
 // Trigger an event and a corresponding method name. Examples:
 //
 // `this.triggerMethod("foo")` will trigger the "foo" event and
-// call the "onFoo" method. 
+// call the "onFoo" method.
 //
 // `this.triggerMethod("foo:bar") will trigger the "foo:bar" event and
 // call the "onFooBar" method.
@@ -495,8 +495,8 @@ Marionette.MonitorDOMRefresh = (function(){
 // Marionette.bindEntityEvents & unbindEntityEvents
 // ---------------------------
 //
-// These methods are used to bind/unbind a backbone "entity" (collection/model) 
-// to methods on a target object. 
+// These methods are used to bind/unbind a backbone "entity" (collection/model)
+// to methods on a target object.
 //
 // The first paremter, `target`, must have a `listenTo` method from the
 // EventBinder object.
@@ -506,7 +506,7 @@ Marionette.MonitorDOMRefresh = (function(){
 //
 // The third parameter is a hash of { "event:name": "eventHandler" }
 // configuration. Multiple handlers can be separated by a space. A
-// function can be supplied instead of a string handler name. 
+// function can be supplied instead of a string handler name.
 
 (function(Marionette){
   "use strict";
@@ -548,7 +548,7 @@ Marionette.MonitorDOMRefresh = (function(){
       target.stopListening(entity, evt, method, target);
   }
 
-  
+
   // generic looping function
   function iterateEvents(target, entity, bindings, functionCallback, stringCallback){
     if (!entity || !bindings) { return; }
@@ -561,7 +561,7 @@ Marionette.MonitorDOMRefresh = (function(){
     // iterate the bindings and bind them
     _.each(bindings, function(methods, evt){
 
-      // allow for a function as the handler, 
+      // allow for a function as the handler,
       // or a list of event names as a string
       if (_.isFunction(methods)){
         functionCallback(target, entity, evt, methods);
@@ -571,7 +571,7 @@ Marionette.MonitorDOMRefresh = (function(){
 
     });
   }
- 
+
   // Export Public API
   Marionette.bindEntityEvents = function(target, entity, bindings){
     iterateEvents(target, entity, bindings, bindToFunction, bindFromStrings);
@@ -583,7 +583,7 @@ Marionette.MonitorDOMRefresh = (function(){
 
 })(Marionette);
 
-  
+
 // Callbacks
 // ---------
 
@@ -598,7 +598,7 @@ Marionette.Callbacks = function(){
 _.extend(Marionette.Callbacks.prototype, {
 
   // Add a callback to be executed. Callbacks added here are
-  // guaranteed to execute, even if they are added after the 
+  // guaranteed to execute, even if they are added after the
   // `run` method is called.
   add: function(callback, contextOverride){
     this._callbacks.push({cb: callback, ctx: contextOverride});
@@ -609,8 +609,8 @@ _.extend(Marionette.Callbacks.prototype, {
     });
   },
 
-  // Run all registered callbacks with the context specified. 
-  // Additional callbacks can be added after this has been run 
+  // Run all registered callbacks with the context specified.
+  // Additional callbacks can be added after this has been run
   // and they will still be executed.
   run: function(options, context){
     this._deferred.resolve(context, options);
@@ -659,7 +659,7 @@ _.extend(Marionette.Controller.prototype, Backbone.Events, {
   }
 });
 
-// Region 
+// Region
 // ------
 //
 // Manage the visual regions of your composite application. See
@@ -713,19 +713,19 @@ _.extend(Marionette.Region, {
     }
 
     var selector, RegionType;
-   
+
     // get the selector for the region
-    
+
     if (regionIsString) {
       selector = regionConfig;
-    } 
+    }
 
     if (regionConfig.selector) {
       selector = regionConfig.selector;
     }
 
     // get the type for the region
-    
+
     if (regionIsType){
       RegionType = regionConfig;
     }
@@ -737,7 +737,7 @@ _.extend(Marionette.Region, {
     if (regionConfig.regionType) {
       RegionType = regionConfig.regionType;
     }
-    
+
     // build the region instance
 
     var regionManager = new RegionType({
@@ -803,8 +803,8 @@ _.extend(Marionette.Region.prototype, Backbone.Events, {
     delete this.currentView;
   },
 
-  // Attach an existing view to the region. This 
-  // will not call `render` or `onShow` for the new view, 
+  // Attach an existing view to the region. This
+  // will not call `render` or `onShow` for the new view,
   // and will not replace the current HTML for the `el`
   // of the region.
   attachView: function(view){
@@ -835,7 +835,7 @@ Marionette.TemplateCache = function(templateId){
 };
 
 // TemplateCache object-level methods. Manage the template
-// caches from these method calls instead of creating 
+// caches from these method calls instead of creating
 // your own TemplateCache instances
 _.extend(Marionette.TemplateCache, {
   templateCaches: {},
@@ -859,7 +859,7 @@ _.extend(Marionette.TemplateCache, {
   // are specified, clears all templates:
   // `clear()`
   //
-  // If arguments are specified, clears each of the 
+  // If arguments are specified, clears each of the
   // specified templates from the cache:
   // `clear("#t1", "#t2", "...")`
   clear: function(){
@@ -901,7 +901,7 @@ _.extend(Marionette.TemplateCache.prototype, {
   // Load a template from the DOM, by default. Override
   // this method to provide your own template retrieval
   // For asynchronous loading with AMD/RequireJS, consider
-  // using a template-loader plugin as described here: 
+  // using a template-loader plugin as described here:
   // https://github.com/marionettejs/backbone.marionette/wiki/Using-marionette-with-requirejs
   loadTemplate: function(templateId){
     var template = $(templateId).html();
@@ -963,7 +963,7 @@ Marionette.View = Backbone.View.extend({
   },
 
   // import the "triggerMethod" to trigger events with corresponding
-  // methods if the method exists 
+  // methods if the method exists
   triggerMethod: Marionette.triggerMethod,
 
   // Get the template for this view
@@ -1026,7 +1026,7 @@ Marionette.View = Backbone.View.extend({
     return triggerEvents;
   },
 
-  // Overriding Backbone.View's delegateEvents to handle 
+  // Overriding Backbone.View's delegateEvents to handle
   // the `triggers`, `modelEvents`, and `collectionEvents` configuration
   delegateEvents: function(events){
     this._delegateDOMEvents(events);
@@ -1320,9 +1320,9 @@ Marionette.CollectionView = Marionette.View.extend({
       itemViewOptions = itemViewOptions.call(this, item);
     }
 
-    // build the view 
+    // build the view
     var view = this.buildItemView(item, ItemView, itemViewOptions);
-    
+
     // set up the child view event forwarding
     this.addChildViewEventForwarding(view);
 
@@ -1487,7 +1487,7 @@ Marionette.CompositeView = Marionette.CollectionView.extend({
     return itemView;
   },
 
-  // Serialize the collection for the view. 
+  // Serialize the collection for the view.
   // You can override the `serializeData` method in your own view
   // definition, to provide custom serialization for your view's data.
   serializeData: function(){
@@ -1510,7 +1510,7 @@ Marionette.CompositeView = Marionette.CollectionView.extend({
     this.triggerBeforeRender();
     var html = this.renderModel();
     this.$el.html(html);
-    // the ui bindings is done here and not at the end of render since they 
+    // the ui bindings is done here and not at the end of render since they
     // will not be available until after the model is rendered, but should be
     // available before the collection is rendered.
     this.bindUIElements();
@@ -1602,7 +1602,7 @@ Marionette.CompositeView = Marionette.CollectionView.extend({
 // Used for composite view management and sub-application areas.
 Marionette.Layout = Marionette.ItemView.extend({
   regionType: Marionette.Region,
-  
+
   // Ensure the regions are avialable when the `initialize` method
   // is called.
   constructor: function () {
@@ -1624,7 +1624,7 @@ Marionette.Layout = Marionette.ItemView.extend({
       // reset the regions
       this._firstRender = false;
     } else {
-      // If this is not the first render call, then we need to 
+      // If this is not the first render call, then we need to
       // re-initializing the `el` for each region
       this.closeRegions();
       this.reInitializeRegions();
@@ -1718,7 +1718,7 @@ Marionette.Layout = Marionette.ItemView.extend({
 //
 // Configure an AppRouter with `appRoutes`.
 //
-// App routers can only take one `controller` object. 
+// App routers can only take one `controller` object.
 // It is recommended that you divide your controller
 // objects in to smaller peices of related functionality
 // and have multiple routers / controllers, instead of
@@ -1824,7 +1824,7 @@ _.extend(Marionette.Application.prototype, Backbone.Events, {
     this.triggerMethod("start", options);
   },
 
-  // Add regions to your app. 
+  // Add regions to your app.
   // Accepts a hash of named strings or Region objects
   // addRegions({something: "#someRegion"})
   // addRegions{{something: Region.extend({el: "#someRegion"}) });
@@ -2026,7 +2026,7 @@ _.extend(Marionette.Module, {
   },
 
   _addModuleDefinition: function(parentModule, module, def, args){
-    var fn; 
+    var fn;
     var startWithParent;
 
     if (_.isFunction(def)){
@@ -2038,7 +2038,7 @@ _.extend(Marionette.Module, {
       // if an object is supplied
       fn = def.define;
       startWithParent = def.startWithParent;
-      
+
     } else {
       // if nothing is supplied
       startWithParent = true;

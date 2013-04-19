@@ -11,20 +11,26 @@
         className: 'tatam',
         template: '#StatusItems',
         regions: {
-            footer: 'footer'
+            footer: {
+                selector: 'footer',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            }
         },
         modelEvents: {
-            'sync': 'slide',
-            'change:statusId': 'updateDetailModel'
+            'change:statusId': 'updateDetailModel',
+            'change:favorite': 'onRender',
+            'change:discute': 'onRender'
         },
         events: {
             'click > .well': 'showDetails',
             'click > footer > div > aside > .status-action-reply': 'replyAction',
             'click > footer > div > aside > .status-action-share': 'shareAction',
             'click > footer > div > aside > .status-action-favorite': 'favoriteAction'
-        },
-        slide: function(){
-            this.$el.slideDown();
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -40,7 +46,7 @@
                 }));
                 statusDetail.fetch();
             }
-            else this.footer.currentView.$el.slideToggle();
+            this.footer.$el.slideToggle();
         },
         replyAction: function(){
             console.log('reply');
@@ -74,6 +80,11 @@
 
     StatusFooters = Backbone.Marionette.Layout.extend({
         initialize: function(){
+            _.defaults(this.options, {
+                discute: true,
+                slide: true
+            });
+
             this.$el.css('display', 'none');
 
             var self = this;
@@ -96,14 +107,20 @@
         onRender: function(){
             var shares = this.model.get('sharedByLogins');
             if(shares && shares.length > 0){
-                this.share.show(new Tatami.Views.StatusShares({
+                if(this.share.currentView) this.share.currentView.collection.set(shares, {
+                    remove: false
+                });
+                else this.share.show(new Tatami.Views.StatusShares({
                     collection: new Backbone.Collection(shares)
                 }));
             }
 
             var discute = this.model.get('discussionStatuses');
             if(this.options.discussion && discute && discute.length > 0){
-                this.discute.show(new Tatami.Views.Statuses({
+                if(this.discute.currentView) this.discute.currentView.collection.set(discute, {
+                    remove: false
+                });
+                else this.discute.show(new Tatami.Views.Statuses({
                     collection: new Tatami.Collections.Statuses(discute),
                     itemViewOptions: {
                         discussion: false
@@ -116,10 +133,83 @@
     });
 
     Statuses = Backbone.Marionette.CollectionView.extend({
+        initialize: function(){
+            var self = this;
+
+            _.defaults(this.options, {
+                autoRefresh: true,
+                cache: 0
+            });
+            this.initNext();
+            this.initRefresh();
+
+            this.listenTo(Tatami.app, 'refresh', this.refresh);
+            this.listenTo(Tatami.app, 'next', this.next);
+            this.listenTo(Tatami.app, 'dislay', this.onRender);
+            this.listenTo(this.collection, 'add', function(model, collection, options){
+                model.hidden = (options.at === 0);
+            });
+        },
         className: 'tatams',
         itemView: StatusItems,
-        onAfterItemAdded: function(itemView){
-            itemView.slide();
+        onBeforeItemAdded: function(itemView){
+            if(!itemView.model.hidden)
+                itemView.$el.slideDown();
+        },
+        appendHtml: function(collectionView, itemView, index){
+            var element = collectionView.$el.children().get(index);
+            if(element) $(element).before(itemView.$el);
+            else collectionView.$el.append(itemView.el);
+        },
+        onRender: function(){
+            this.children.each(function(view){
+                view.model.hidden = false;
+                view.$el.slideDown();
+            });
+        },
+        initNext: function(){
+            var self = this;
+            this.next = _.once(function(cb){
+                var options = {
+                    remove:false,
+                    merge:true,
+                    success: function(){
+                        self.initNext();
+                        if (cb) cb();
+                    }
+                };
+                if(self.collection.last())
+                    options = _.extend(options, {
+                        data: {
+                            max_id: self.collection.last().id
+                        }
+                    });
+                return self.collection.fetch(options);
+            });
+        },
+        initRefresh: function(){
+            var self = this;
+            this.refresh = _.once(function(cb){
+                var options = {
+                    remove:false,
+                    merge:true,
+                    at:0,
+                    success: function(){
+                        Tatami.app.trigger('statusPending', self.collection.filter(function(model){
+                            return model.hidden;
+                        }).length);
+                        self.initRefresh();
+                        if (cb) cb();
+                    }
+                };
+                if(self.collection.first())
+                    options = _.extend(options, {
+                        data: {
+                            since_id: self.collection.first().id
+                        }
+                    });
+                return self.collection.fetch(options);
+            });
         }
     });
 

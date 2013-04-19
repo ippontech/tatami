@@ -129,17 +129,22 @@
 
 .tatams {
     margin-top: 15px;
+    margin-bottom: 15px;
 }
 
-.tatams:first-child {
+/*.tatams:first-child {
     -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-}
+}*/
 
 .tatams > * {
     margin-bottom: 20px;
     padding-bottom: 5px;
+}
+
+.tatams > *:last-child {
+    margin-bottom: 0;
 }
 
 .tatams-discute > .tatam > header {

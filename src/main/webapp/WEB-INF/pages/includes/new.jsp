@@ -92,3 +92,12 @@
     <section class='tag-trends'></section>
     <section class='groups'></section>
 </script>
+<script type="text/template" id="StatusTimelineRegion">
+    <section class='refresh-button'></section>
+    <section class='timeline'></section>
+</script>
+<script type="text/template" id="StatusUpdateButton">
+    <span class="glyphicon glyphicon-refresh"></span>
+    Message(s) en attente :
+    <span class="badge">1</span>
+</script>

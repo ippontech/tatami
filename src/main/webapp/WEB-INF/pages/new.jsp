@@ -69,6 +69,7 @@
         <script src="/js/app/views/homeHeader.js"></script>
         <script src="/js/app/views/homeSide.js"></script>
         <script src="/js/app/views/statuses.js"></script>
+        <script src="/js/app/views/statusUpdateButton.js"></script>
         <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
         <script src="/js/app/factories/home.js"></script>

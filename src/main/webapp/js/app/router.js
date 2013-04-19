@@ -21,13 +21,14 @@
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
-            var c = new Tatami.Collections.Statuses();
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesTimeline();
+            Tatami.app.body.show(region);
 
-            Tatami.app.body.show(new Tatami.Views.Statuses({
-                collection: c
-            }));
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
 
-            c.fetch();
+            timeline.collection.fetch();
         },
 
         homeMentions: function(){
