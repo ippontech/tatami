@@ -1,9 +1,9 @@
 (function(Backbone, _, Tatami){
     var CardProfile = Backbone.Marionette.ItemView.extend({
-        template: "#CardProfile",
+        template: '#CardProfile',
         modelEvents: {
-            "change": "render",
-            "sync": "render"
+            'change': 'render',
+            'sync': 'render'
         }
     });
 

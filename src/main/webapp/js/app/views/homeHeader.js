@@ -1,9 +1,9 @@
 (function(Backbone, _, Tatami){
     var HomeHeader = Backbone.Marionette.ItemView.extend({
-        template: "#HomeHeader",
+        template: '#HomeHeader',
         modelEvents: {
-            "change": "render",
-            "sync": "render"
+            'change': 'render',
+            'sync': 'render'
         }
     });
 

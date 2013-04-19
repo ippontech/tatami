@@ -61,11 +61,18 @@
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/models/statuses.js"></script>
+        <script src="/js/app/collections/statuses.js"></script>
         <script src="/js/app/models/tags.js"></script>
         <script src="/js/app/collections/tags.js"></script>
-        <script src="/js/app/views/homeHeader.js"></script>
+        <script src="/js/app/models/statusDetails.js"></script>
         <script src="/js/app/views/cardProfile.js"></script>
+        <script src="/js/app/views/homeHeader.js"></script>
+        <script src="/js/app/views/homeSide.js"></script>
+        <script src="/js/app/views/statuses.js"></script>
+        <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
+        <script src="/js/app/factories/home.js"></script>
+        <script src="/js/app/factories/status.js"></script>
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
@@ -73,7 +80,10 @@
     </c:if>
 
     <script type="text/javascript">
-        var username = '${user.username}';
+        var username = "${user.username}";
+    </script>
+
+    <script type="text/template" id="stub">
     </script>
 
     <jsp:include page="includes/new.jsp"/>

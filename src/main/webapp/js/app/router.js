@@ -5,32 +5,51 @@
             'timeline' : 'homeTimeline',
             'mentions' : 'homeMentions',
             'favorites' : 'homeFavorites',
-            '*actions' : 'homeTimeline'
+            '*actions' : 'defaults'
         },
 
         // Home
 
+        defaults: function() {
+            Backbone.history.navigate('timeline', true);
+        },
+
         homeTimeline: function(){
-            Tatami.app.side.show(new Tatami.Views.CardProfile({
-                model: Tatami.app.user
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+
+            var c = new Tatami.Collections.Statuses();
+
+            Tatami.app.body.show(new Tatami.Views.Statuses({
+                collection: c
             }));
+
+            c.fetch();
         },
 
         homeMentions: function(){
-            Tatami.app.header.close();
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+
+
+            Tatami.app.body.close();
+
         },
 
         homeFavorites: function(){
-            var tags = new Tatami.Collections.Tags();
-            window.t = tags;
-            Tatami.app.side.show(new Tatami.Views.TagTrends({
-                collection: tags
-            }));
-            tags.fetch({
-                data:{
-                    popular: true
-                }
-            });
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+
+            Tatami.app.body.close();
         }
     });
 

@@ -7,7 +7,8 @@
     var Tatami = {
         Models : {},
         Collections : {},
-        Views : {}
+        Views : {},
+        Factories : {}
     };
 
     Tatami.app = new Backbone.Marionette.Application();
@@ -41,8 +42,6 @@
                 $(document).delegate("a", "click", function(evt) {
                     var href = $(this).attr("href");
                     var protocol = this.protocol + "//";
-                    debugger;
-                    //if (href.slice(protocol.length) !== protocol && protocol !== 'javascript://' && href.substring(0, 1) !== '#') {
                     if (href.slice(protocol.length) !== protocol) {
                         evt.preventDefault();
                         Backbone.history.navigate(href, true);
