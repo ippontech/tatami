@@ -849,6 +849,24 @@
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
             "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Trends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"UserTrends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"TagCounter",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"CounterColumnType"
         }
     ]
 }
