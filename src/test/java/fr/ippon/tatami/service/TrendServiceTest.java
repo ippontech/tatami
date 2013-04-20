@@ -62,7 +62,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             }
         }
         if (!foundTrend) {
-            fail("#Trending should habe been trending");
+            fail("#Trending should have been trending");
         }
         for (int i = 0; i < 7; i++) {
             statusUpdateService.postStatus("New trending message " + i + " #NewTrend", false, new ArrayList<String>());
@@ -80,10 +80,68 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             }
         }
         if (!foundTrend) {
-            fail("#Trending should habe been trending");
+            fail("#Trending should have been trending");
         }
         if (!foundNewTrend) {
-            fail("#NewTrend should habe been trending");
+            fail("#NewTrend should have been trending");
+        }
+    }
+
+    @Test
+    public void testUserTrends() {
+        String login = "currentuser@domain.com";
+        mockAuthentication(login);
+        Collection<Trend> trends = trendService.getTrendsForUser(login);
+        for (Trend trend : trends) {
+            if (trend.getTag().equals("MyTrend")) {
+                fail("#MyTrend shoud not be trending yet");
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            statusUpdateService.postStatus("User trending message " + i + " #MyTrend", false, new ArrayList<String>());
+        }
+        trends = trendService.getTrendsForUser(login);
+        boolean foundTrend = false;
+        for (Trend trend : trends) {
+            if (trend.getTag().equals("MyTrend")) {
+                foundTrend = true;
+                assertTrue(trend.isTrendingUp());
+            }
+        }
+        if (!foundTrend) {
+            fail("#MyTrend should have been trending");
+        }
+    }
+
+    @Test
+    public void testPrivateMessagesNotInTrends() {
+        String login = "currentuser@domain.com";
+        mockAuthentication(login);
+
+        for (int i = 0; i < 5; i++) {
+            statusUpdateService.postStatus("@anotheruser private message " + i + " #NoTrend", true, new ArrayList<String>());
+        }
+
+        Collection<Trend> trends = trendService.getCurrentTrends("domain.com");
+        boolean foundTrend = false;
+        for (Trend trend : trends) {
+            if (trend.getTag().equals("NoTrend")) {
+                foundTrend = true;
+            }
+        }
+        if (foundTrend) {
+            fail("#NoTrend should not have been trending");
+        }
+
+        trendService.getTrendsForUser(login);
+        foundTrend = false;
+        for (Trend trend : trends) {
+            if (trend.getTag().equals("NoTrend")) {
+                foundTrend = true;
+            }
+        }
+        if (foundTrend) {
+            fail("#NoTrend should not have been trending");
         }
     }
 

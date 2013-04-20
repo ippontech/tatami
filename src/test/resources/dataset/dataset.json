@@ -867,6 +867,12 @@
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
             "defaultColumnValueType":"CounterColumnType"
+        },
+        {
+            "name":"Mentionline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
         }
     ]
 }
