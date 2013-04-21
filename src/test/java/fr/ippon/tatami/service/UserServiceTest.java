@@ -121,7 +121,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String login = "uuser@ippon.fr";
         String firstName = "FirstName";
         String lastName = "LastName";
-        User userToUpdate = constructAUser(login, firstName, lastName);
 
         mockAuthenticationOnUserService(login);
 
@@ -140,9 +139,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRegisterUserToDailyEmailDigest() {
         String login = "uuser@ippon.fr";
-        String firstName = "FirstName";
-        String lastName = "LastName";
-        User userToUpdate = constructAUser(login, firstName, lastName);
 
         mockAuthenticationOnUserService(login);
 
