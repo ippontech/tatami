@@ -70,7 +70,7 @@ public class UserController {
     }
 
     /**
-     * GET  /users/searchStatus -> searchStatus user by username<br>
+     * GET  /rest/users/search -> search users by prefix<br>
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
