@@ -8,6 +8,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -119,8 +122,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRegisterUserToWeeklyEmailDigest() {
         String login = "uuser@ippon.fr";
-        String firstName = "FirstName";
-        String lastName = "LastName";
 
         mockAuthenticationOnUserService(login);
 
@@ -151,6 +152,29 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         updatedUser = userService.getUserByLogin(login);
 
         assertFalse(updatedUser.getDailyDigestSubscription());
+    }
+
+    @Test
+    public void testGetUsersByLogin() {
+        String login1 = "uuser@ippon.fr";
+        String login2 = "jdubois@ippon.fr";
+
+        Collection<String> logins = new ArrayList<String>();
+        logins.add(login1);
+        logins.add(login2);
+
+        mockAuthenticationOnUserService(login2);
+
+        Collection<User> users = userService.getUsersByLogin(logins);
+
+        assertEquals(2, users.size());
+    }
+
+    @Test
+    public void testGetUsersForCurrentDomain() {
+        mockAuthenticationOnUserService("jdubois@ippon.fr");
+        Collection<User> users = userService.getUsersForCurrentDomain(0);
+        assertTrue(users.size() > 10);
     }
 
     private void mockAuthenticationOnUserService(String login) {

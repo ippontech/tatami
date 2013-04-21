@@ -4,6 +4,7 @@ import fr.ippon.tatami.repository.CounterRepository;
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
@@ -135,6 +136,11 @@ public class CassandraCounterRepository implements CounterRepository {
                         StringSerializer.get());
 
         counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
-        return counter.execute().get().getValue();
+        HCounterColumn<String> counterColumn = counter.execute().get();
+        if (counterColumn == null) {
+            return 0;
+        } else {
+            return counterColumn.getValue();
+        }
     }
 }
