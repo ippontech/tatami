@@ -925,6 +925,7 @@ app.View.FilesViewItem = Backbone.View.extend({
        this.model.destroy({
            success: function(){
               self.remove();
+               app.trigger('refreshQuota');
                app.trigger('deleteSucess');
            },
            error: function(){
