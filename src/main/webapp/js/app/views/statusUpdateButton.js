@@ -5,8 +5,8 @@
                 count: 0
             });
             this.$el.css('display', 'none');
-            this.listenTo(Tatami.app, 'statusPending', function(count){
-                this.options.count = count;
+            this.listenTo(Tatami.app, 'statusPending', function(hiddenStatuses){
+                this.options.count = hiddenStatuses.length;
                 this.render();
             });
         },

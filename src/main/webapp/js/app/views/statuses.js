@@ -140,14 +140,12 @@
                 autoRefresh: true,
                 cache: 0
             });
-            this.initNext();
-            this.initRefresh();
 
             this.listenTo(Tatami.app, 'refresh', function(){
-                self.refresh();
+                self.collection.refresh();
             });
             this.listenTo(Tatami.app, 'next', function(){
-                self.next();
+                self.collection.next();
             });
             this.listenTo(Tatami.app, 'dislay', this.onRender);
             this.listenTo(this.collection, 'add', function(model, collection, options){
@@ -169,50 +167,6 @@
             this.children.each(function(view){
                 view.model.hidden = false;
                 view.$el.slideDown();
-            });
-        },
-        initNext: function(){
-            var self = this;
-            this.next = _.once(function(cb){
-                var options = {
-                    remove:false,
-                    merge:true,
-                    success: function(){
-                        self.initNext();
-                        if (cb) cb();
-                    }
-                };
-                if(self.collection.last())
-                    options = _.extend(options, {
-                        data: {
-                            max_id: self.collection.last().id
-                        }
-                    });
-                return self.collection.fetch(options);
-            });
-        },
-        initRefresh: function(){
-            var self = this;
-            this.refresh = _.once(function(cb){
-                var options = {
-                    remove:false,
-                    merge:true,
-                    at:0,
-                    success: function(){
-                        Tatami.app.trigger('statusPending', self.collection.filter(function(model){
-                            return model.hidden;
-                        }).length);
-                        self.initRefresh();
-                        if (cb) cb();
-                    }
-                };
-                if(self.collection.first())
-                    options = _.extend(options, {
-                        data: {
-                            since_id: self.collection.first().id
-                        }
-                    });
-                return self.collection.fetch(options);
             });
         }
     });

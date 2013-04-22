@@ -67,7 +67,7 @@
         <script src="/js/app/models/statusDetails.js"></script>
         <script src="/js/app/views/cardProfile.js"></script>
         <script src="/js/app/views/homeHeader.js"></script>
-        <script src="/js/app/views/homeSide.js"></script>
+        <script src="/js/app/views/homeContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
         <script src="/js/app/views/statusShares.js"></script>

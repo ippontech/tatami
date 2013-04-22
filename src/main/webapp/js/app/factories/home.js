@@ -1,12 +1,17 @@
 (function(Backbone, Tatami){
 
-    var homeSide, tagTrends, cardProfile;
+    var homeSide, homeBody, tagTrends, cardProfile;
 
     Tatami.Factories.Home = {
         homeSide: function(){
             if(!homeSide) homeSide = new Tatami.Views.HomeSide();
 
             return homeSide;
+        },
+        homeBody: function(){
+            if(!homeBody) homeBody = new Tatami.Views.HomeBody();
+
+            return homeBody;
         },
         tagTrends: function(){
             if(tagTrends){

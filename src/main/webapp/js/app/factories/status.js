@@ -29,17 +29,23 @@
 
         statusesTimeline: function(){
             return new Tatami.Views.Statuses({
-                collection: new Tatami.Collections.Statuses(),
+                collection: new Tatami.Collections.StatusesTimeline(),
                 autoRefresh: false
             });
         },
 
-        statusesFavorite: function(){
-            statusTimeline.refresh.show(new Tatami.Views.StatusUpdateButton());
+        statusesFavorites: function(){
+            return new Tatami.Views.Statuses({
+                collection: new Tatami.Collections.StatusesFavorites(),
+                autoRefresh: false
+            });
         },
 
         statusesMentions: function(){
-            statusTimeline.refresh.show(new Tatami.Views.StatusUpdateButton());
+            return new Tatami.Views.Statuses({
+                collection: new Tatami.Collections.StatusesMentions(),
+                autoRefresh: false
+            });
         }
     };
 

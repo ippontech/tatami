@@ -92,6 +92,33 @@
     <section class='tag-trends'></section>
     <section class='groups'></section>
 </script>
+<script type="text/template" id="HomeBody">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-th-list"></span>
+            Mur
+        </h4>
+    </div>
+    <ul class="homebody-nav nav nav-tabs nav-justified">
+        <li>
+            <a href="#timeline">
+                Actualité
+            </a>
+        </li>
+        <li>
+            <a href="#mentions">
+                Mention
+            </a>
+        </li>
+        <li>
+            <a href="#favorites">
+                Favoris
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-container">
+    </section>
+</script>
 <script type="text/template" id="StatusTimelineRegion">
     <section class='refresh-button'></section>
     <section class='timeline'></section>
@@ -99,5 +126,5 @@
 <script type="text/template" id="StatusUpdateButton">
     <span class="glyphicon glyphicon-refresh"></span>
     Message(s) en attente :
-    <span class="badge">1</span>
+    <span class="badge"><@= count @></span>
 </script>

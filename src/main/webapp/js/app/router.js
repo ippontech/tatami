@@ -21,14 +21,20 @@
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
+            var homeBody = Tatami.Factories.Home.homeBody();
+
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesTimeline();
-            Tatami.app.body.show(region);
+            Tatami.app.body.show(homeBody);
+
+            homeBody.tatams.show(region);
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
+
+            homeBody.show('timeline');
         },
 
         homeMentions: function(){
@@ -38,8 +44,20 @@
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
+            var homeBody = Tatami.Factories.Home.homeBody();
 
-            Tatami.app.body.close();
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesFavorites();
+            Tatami.app.body.show(homeBody);
+
+            homeBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
+
+            homeBody.show('mentions');
 
         },
 
@@ -50,7 +68,21 @@
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
-            Tatami.app.body.close();
+            var homeBody = Tatami.Factories.Home.homeBody();
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesMentions();
+            Tatami.app.body.show(homeBody);
+
+            homeBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
+
+            homeBody.show('favorites');
+
         }
     });
 

@@ -14,5 +14,18 @@
         }
     });
 
+    HomeBody = Backbone.Marionette.Layout.extend({
+        template: "#HomeBody",
+        regions: {
+            tatams: {
+                selector: ".tatams-container"
+            }
+        },
+        show: function(tabName){
+            this.$el.find('.homebody-nav a[href="#' + tabName + '"]').tab('show');
+        }
+    });
+
     Tatami.Views.HomeSide = HomeSide;
+    Tatami.Views.HomeBody = HomeBody;
 })(Backbone, _, Tatami);

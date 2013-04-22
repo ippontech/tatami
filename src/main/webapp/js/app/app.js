@@ -22,9 +22,24 @@
     });
 
     Tatami.app.addInitializer(function(){
-        Tatami.app.listenTo(Tatami.app, 'statusPending', function(num){
-            console.log(num);
-        });
+        var autoRefresh = function(){
+            console.log('refresh');
+            Tatami.app.trigger('refresh');
+            _.delay(autoRefresh, 20000);
+        };
+        autoRefresh();
+    });
+
+    Tatami.app.addInitializer(function(){
+        var $w = $(window);
+        var $d = $(document);
+
+        var autoNext = _.debounce(function(){
+            if($w.height() + $d.scrollTop() > $d.height() - 200)
+                Tatami.app.trigger('next');
+        }, jQuery.fx.speeds._default);
+
+        $(window).scroll(autoNext);
     });
 
     Tatami.app.addInitializer(function(){

@@ -159,8 +159,7 @@
     padding: 2px;
 }
 
-#refresh {
-    display: none;
+.refresh-button {
     margin-top: 15px;
     margin-bottom: 15px;
 }
