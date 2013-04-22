@@ -560,6 +560,7 @@
 
 <script type="text/template" id="files-menu">
     <h2><fmt:message key="tatami.menu.files"/></h2>
+    <span class="file-infos"></span>
 </script>
 
 <script type="text/template" id="files-header">
@@ -589,4 +590,18 @@
         <li class="previous"><a href="#">Previous</a></li>
         <li class="next"><a href="#">Next</a></li>
     </ul>
+</script>
+
+<script type="text/template" id="delete-file-success">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.user.file.delete.success"/>
+    </div>
+</script>
+
+<script type="text/template" id="delete-file-error">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <fmt:message key="tatami.user.file.delete.error"/>
+    </div>
 </script>
