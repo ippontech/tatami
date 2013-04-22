@@ -42,6 +42,7 @@
             if(!this.footer.currentView){
                 this.footer.show(new StatusFooters({
                     model: statusDetail,
+                    username: this.model.get('username'),
                     discussion: this.options.discussion
                 }));
                 statusDetail.fetch();
@@ -102,6 +103,9 @@
 
         modelEvents: {
             'sync': 'onRender'
+        },
+        serializeData: function(){
+            return _.extend(this.model.toJSON(), this.options);
         },
 
         onRender: function(){

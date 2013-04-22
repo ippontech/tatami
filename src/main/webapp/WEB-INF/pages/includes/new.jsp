@@ -72,10 +72,12 @@
             <span class="glyphicon glyphicon-comment"></span>
             <fmt:message key="tatami.user.status.reply"/>
         </button>
+        <@ if (Tatami.app.user.get('username') !== username) { @>
         <button class="btn btn-link status-action-share">
             <span class="glyphicon glyphicon-retweet"></span>
             <fmt:message key="tatami.user.status.share"/>
         </button>
+        <@ } @>
         <button class="btn btn-link status-action-favorite">
             <span class="glyphicon glyphicon-pushpin"></span>
             <fmt:message key="tatami.user.status.favorite"/>
