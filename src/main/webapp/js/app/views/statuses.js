@@ -124,7 +124,8 @@
                     collection: new Tatami.Collections.Statuses(discute),
                     itemViewOptions: {
                         discussion: false
-                    }
+                    },
+                    autoRefresh: false
                 }));
             }
 
@@ -137,17 +138,19 @@
             var self = this;
 
             _.defaults(this.options, {
-                autoRefresh: true,
-                cache: 0
+                autoRefresh: true
             });
 
-            this.listenTo(Tatami.app, 'refresh', function(){
-                self.collection.refresh();
-            });
-            this.listenTo(Tatami.app, 'next', function(){
-                self.collection.next();
-            });
-            this.listenTo(Tatami.app, 'dislay', this.onRender);
+            if(this.options.autoRefresh){
+                this.listenTo(Tatami.app, 'refresh', function(){
+                    self.collection.refresh();
+                });
+                this.listenTo(Tatami.app, 'next', function(){
+                    self.collection.next();
+                });
+                this.listenTo(Tatami.app, 'dislay', this.onRender);
+            }
+
             this.listenTo(this.collection, 'add', function(model, collection, options){
                 model.hidden = (options.at === 0);
             });

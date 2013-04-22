@@ -57,14 +57,15 @@
     });
 
     var StatusesFavorites = Statuses.extend({
-        url: '/tatami/rest/statuses/home_timeline'
+        url: '/tatami/rest/favorites'
     });
 
     var StatusesMentions = Statuses.extend({
         model: Tatami.Models.Statuses,
-        url: '/tatami/rest/statuses/home_timeline'
+        url: '/tatami/rest/mentions'
     });
 
+    Tatami.Collections.Statuses = Statuses;
     Tatami.Collections.StatusesTimeline = StatusesTimeline;
     Tatami.Collections.StatusesFavorites = StatusesFavorites;
     Tatami.Collections.StatusesMentions = StatusesMentions;

@@ -47,7 +47,7 @@
             var homeBody = Tatami.Factories.Home.homeBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
-            var timeline = Tatami.Factories.Status.statusesFavorites();
+            var timeline = Tatami.Factories.Status.statusesMentions();
             Tatami.app.body.show(homeBody);
 
             homeBody.tatams.show(region);
@@ -71,7 +71,7 @@
             var homeBody = Tatami.Factories.Home.homeBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
-            var timeline = Tatami.Factories.Status.statusesMentions();
+            var timeline = Tatami.Factories.Status.statusesFavorites();
             Tatami.app.body.show(homeBody);
 
             homeBody.tatams.show(region);
