@@ -96,7 +96,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="#timeline">
         <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
         <fmt:message key="tatami.title"/>
     </a>
@@ -106,36 +106,40 @@
     <div class="nav-collapse navbar-responsive-collapse collapse">
         <ul class="nav">
             <li>
-                <a href="#">
-                    <span class="glyphicon glyphicon-home"></span>
-            <span class="hidden-tablet">
-              <fmt:message key="tatami.home"/>
-            </span>
+                <a href="#timeline">
+                    <span>
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="hidden-tablet">
+                            <fmt:message key="tatami.home"/>
+                        </span>
+                    </span>
                 </a>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-            <span class="hidden-tablet">
-              <fmt:message key="tatami.menu.about"/>
-            </span>
-                    <b class="caret"></b>
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span class="hidden-tablet">
+                            <fmt:message key="tatami.menu.about"/>
+                        </span>
+                        <b class="caret"></b>
+                    </span>
                 </a>
                 <ul class="dropdown-menu closed">
                     <li>
-                        <a href="#">
+                        <a>
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <fmt:message key="tatami.menu.presentation"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a>
                             <span class="glyphicon glyphicon-briefcase"></span>
                             <fmt:message key="tatami.menu.tos"/>
                         </a>
                     </li>
                     <li class="dropdown-submenu">
-                        <a href="#">
+                        <a>
                             <span class="glyphicon glyphicon-flag"></span>
                             <fmt:message key="tatami.menu.language"/>
                         </a>
@@ -154,7 +158,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a>
                             <span class="glyphicon glyphicon-info-sign"></span>
                             <fmt:message key="tatami.menu.license"/>
                         </a>
@@ -202,14 +206,14 @@
         </ul>
         <ul class="nav pull-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span>
-              <span class="glyphicon glyphicon-user"></span>
-              <span class="hidden-tablet">
-                <fmt:message key="tatami.menu.account"/>
-              </span>
-              <b class="caret"></b>
-            </span>
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                <span>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="hidden-tablet">
+                        <fmt:message key="tatami.menu.account"/>
+                    </span>
+                    <b class="caret"></b>
+                </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>

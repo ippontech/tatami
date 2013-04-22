@@ -23,7 +23,6 @@
 
     Tatami.app.addInitializer(function(){
         var autoRefresh = function(){
-            console.log('refresh');
             Tatami.app.trigger('refresh');
             _.delay(autoRefresh, 20000);
         };
@@ -49,6 +48,7 @@
             body: '#tatamiBody'
         });
     });
+
     Tatami.app.on("initialize:after", function(options){
         if (Backbone.history){
             Tatami.app.router = new Tatami.Router();
@@ -60,7 +60,7 @@
                 $(document).delegate("a", "click", function(evt) {
                     var href = $(this).attr("href");
                     var protocol = this.protocol + "//";
-                    if (href.slice(protocol.length) !== protocol) {
+                    if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol) {
                         evt.preventDefault();
                         Backbone.history.navigate(href, true);
                     }
