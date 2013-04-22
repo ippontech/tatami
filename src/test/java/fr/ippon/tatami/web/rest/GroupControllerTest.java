@@ -8,6 +8,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserGroupDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -19,8 +20,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -102,6 +102,23 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.name").value("Updated test group"));
 
+        // Test adding and removing a user
+        assertEquals(1, groupSize(groupId));
+
+        mockMvc.perform(put("/rest/groups/" + groupId + "/members/uuser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertEquals(2, groupSize(groupId));
+
+        mockMvc.perform(delete("/rest/groups/" + groupId + "/members/uuser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertEquals(1, groupSize(groupId));
+
         // Test group archive
 
         mockMvc.perform(put("/rest/groups/" + groupId)
@@ -123,5 +140,22 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
         });
 
         assertTrue(groups.iterator().next().isArchivedGroup());
+    }
+
+    private int groupSize(String groupId) throws Exception {
+        String usersAsJson = mockMvc.perform(get("/rest/groups/" + groupId + "/members/")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.[0].lastName").value("WhoHasGroup"))
+                .andExpect(jsonPath("$.[0].isMember").value(true))
+                .andReturn().getResponse().getContentAsString();
+
+        Collection<UserGroupDTO> userGroupDTOs =
+                new ObjectMapper().readValue(usersAsJson, new TypeReference<List<UserGroupDTO>>() {
+
+                });
+
+        return userGroupDTOs.size();
     }
 }

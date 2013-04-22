@@ -169,6 +169,7 @@ public class GroupService {
         }
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getLogin());
+            log.debug("user="+user);
             groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
         } else {

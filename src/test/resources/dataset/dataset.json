@@ -21,6 +21,14 @@
                         {
                             "name":"lastName",
                             "value":"Dubois"
+                        },
+                        {
+                            "name":"username",
+                            "value":"jdubois"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
@@ -38,6 +46,14 @@
                         {
                             "name":"lastName",
                             "value":"User"
+                        },
+                        {
+                            "name":"username",
+                            "value":"uuser"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
@@ -72,6 +88,14 @@
                         {
                             "name":"lastName",
                             "value":"WhoHasGroup"
+                        },
+                        {
+                            "name":"username",
+                            "value":"userWhoHasGroup"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
