@@ -42,7 +42,7 @@ public class TimelineControllerTest extends AbstractCassandraTatamiTest {
         ReflectionTestUtils.setField(timelineController, "statusUpdateService", statusUpdateService);
         ReflectionTestUtils.setField(timelineController, "groupService", groupService);
 
-        User authenticateUser = constructAUser("jdubois@ippon.fr");
+        User authenticateUser = constructAUser("timelineUser@ippon.fr");
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
         ReflectionTestUtils.setField(timelineController, "authenticationService", mockAuthenticationService);
