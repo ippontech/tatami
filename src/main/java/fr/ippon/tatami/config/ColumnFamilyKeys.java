@@ -4,83 +4,87 @@ package fr.ippon.tatami.config;
  * @author Julien Dubois
  */
 public class ColumnFamilyKeys {
+    
+    private ColumnFamilyKeys() {
+        
+    }
 
-    public final static String USER_CF = "User";
+    public static final String USER_CF = "User";
 
-    public final static String FRIENDS_CF = "Friends";
+    public static final String FRIENDS_CF = "Friends";
 
-    public final static String FOLLOWERS_CF = "Followers";
+    public static final String FOLLOWERS_CF = "Followers";
 
-    public final static String STATUS_CF = "Status";
+    public static final String STATUS_CF = "Status";
 
-    public final static String SHARES_CF = "Shares";
+    public static final String SHARES_CF = "Shares";
 
-    public final static String DISCUSSION_CF = "Discussion";
+    public static final String DISCUSSION_CF = "Discussion";
 
-    public final static String DAYLINE_CF = "Dayline";
+    public static final String DAYLINE_CF = "Dayline";
 
-    public final static String FAVLINE_CF = "Favline";
+    public static final String FAVLINE_CF = "Favline";
 
-    public final static String TAGLINE_CF = "Tagline";
+    public static final String TAGLINE_CF = "Tagline";
 
-    public final static String TIMELINE_CF = "Timeline";
+    public static final String TIMELINE_CF = "Timeline";
 
-    public final static String TIMELINE_SHARES_CF = "TimelineShares";
+    public static final String TIMELINE_SHARES_CF = "TimelineShares";
 
-    public final static String MENTIONLINE_CF = "Mentionline";
+    public static final String MENTIONLINE_CF = "Mentionline";
 
-    public final static String USERLINE_CF = "Userline";
+    public static final String USERLINE_CF = "Userline";
 
-    public final static String USERLINE_SHARES_CF = "UserlineShares";
+    public static final String USERLINE_SHARES_CF = "UserlineShares";
 
-    public final static String COUNTER_CF = "Counter";
+    public static final String COUNTER_CF = "Counter";
 
-    public final static String DOMAIN_CF = "Domain";
+    public static final String DOMAIN_CF = "Domain";
 
-    public final static String REGISTRATION_CF = "Registration";
+    public static final String REGISTRATION_CF = "Registration";
 
-    public final static String RSS_CF = "Rss";
+    public static final String RSS_CF = "Rss";
 
-    public final static String MAILDIGEST_CF = "MailDigest";
+    public static final String MAILDIGEST_CF = "MailDigest";
 
-    public final static String TRENDS_CF = "Trends";
+    public static final String TRENDS_CF = "Trends";
 
-    public final static String TAG_FOLLOWERS_CF = "TagFollowers";
+    public static final String TAG_FOLLOWERS_CF = "TagFollowers";
 
-    public final static String USER_TAGS_CF = "UserTags";
+    public static final String USER_TAGS_CF = "UserTags";
 
-    public final static String TAG_COUNTER_CF = "TagCounter";
+    public static final String TAG_COUNTER_CF = "TagCounter";
 
-    public final static String USER_TRENDS_CF = "UserTrends";
+    public static final String USER_TRENDS_CF = "UserTrends";
 
-    public final static String GROUP_CF = "Group";
+    public static final String GROUP_CF = "Group";
 
-    public final static String GROUP_DETAILS_CF = "GroupDetails";
+    public static final String GROUP_DETAILS_CF = "GroupDetails";
 
-    public final static String GROUP_MEMBERS_CF = "GroupMembers";
+    public static final String GROUP_MEMBERS_CF = "GroupMembers";
 
-    public final static String USER_GROUPS_CF = "UserGroups";
+    public static final String USER_GROUPS_CF = "UserGroups";
 
-    public final static String GROUP_COUNTER_CF = "GroupCounter";
+    public static final String GROUP_COUNTER_CF = "GroupCounter";
 
-    public final static String GROUPLINE_CF = "Groupline";
+    public static final String GROUPLINE_CF = "Groupline";
 
-    public final static String TATAMIBOT_DUPLICATE_CF = "TatamiBotDuplicate";
+    public static final String TATAMIBOT_DUPLICATE_CF = "TatamiBotDuplicate";
 
-    public final static String ATTACHMENT_CF = "Attachment";
+    public static final String ATTACHMENT_CF = "Attachment";
 
-    public final static String USER_ATTACHMENT_CF = "UserAttachments";
+    public static final String USER_ATTACHMENT_CF = "UserAttachments";
 
-    public final static String STATUS_ATTACHMENT_CF = "StatusAttachments";
+    public static final String STATUS_ATTACHMENT_CF = "StatusAttachments";
 
-    public final static String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
+    public static final String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
 
-    public final static String DOMAINLINE_CF = "Domainline";
+    public static final String DOMAINLINE_CF = "Domainline";
 
-    public final static String DOMAIN_TATAMIBOT_CF = "DomainTatamibot";
+    public static final String DOMAIN_TATAMIBOT_CF = "DomainTatamibot";
 
-    public final static String TATAMIBOT_CONFIGURATION_CF = "TatamibotConfiguration";
+    public static final String TATAMIBOT_CONFIGURATION_CF = "TatamibotConfiguration";
 
-    public final static String AVATAR_CF = "Avatar";
+    public static final String AVATAR_CF = "Avatar";
 
 }
