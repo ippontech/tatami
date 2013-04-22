@@ -17,7 +17,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
 
-
     @Inject
     public MailDigestRepository mailDigestRepository;
 
@@ -26,7 +25,6 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
     public void shouldGetAUserRepositoryInjected() {
         assertThat(mailDigestRepository, notNullValue());
     }
-
 
     @Test
     public void shouldInsertWeeklySubscription() {
@@ -41,7 +39,6 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
         assertTrue(logins.contains(login));
 
     }
-
 
     @Test
     public void shouldInsertDailySubscription() {
@@ -59,7 +56,6 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
 
     }
 
-
     @Test
     public void shouldRemoveWeeklySubscription() {
         String login = "nuuser@ippon.fr";
@@ -73,7 +69,6 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
         assertTrue(!logins.contains(login));
 
     }
-
 
     @Test
     public void shouldRemoveDailySubscription() {
@@ -89,6 +84,4 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
         assertTrue(!logins.contains(login));
 
     }
-
-
 }

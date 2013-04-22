@@ -42,6 +42,23 @@
                     ]
                 },
                 {
+                    "key":"userWhoHasGroup@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"avatar",
+                            "value":"avatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoHasGroup"
+                        }
+                    ]
+                },
+                {
                     "key":"userWhoWantToFollow@ippon.fr",
                     "columns":[
                         {
@@ -296,6 +313,10 @@
                             "value":""
                         },
                         {
+                            "name":"userWhoHasGroup@ippon.fr",
+                            "value":""
+                        },
+                        {
                             "name":"userWhoWantToFollow@ippon.fr",
                             "value":""
                         },
@@ -375,6 +396,23 @@
                         {
                             "name":"FRIENDS_COUNTER",
                             "value":"4"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoHasGroup@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
                         }
                     ]
                 },

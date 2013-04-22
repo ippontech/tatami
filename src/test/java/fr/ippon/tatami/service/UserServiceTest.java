@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
