@@ -57,6 +57,20 @@ public class FriendshipController {
         }
     }
 
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void followUserRest(@RequestBody User user, HttpServletResponse response) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to follow username : " + user.getUsername());
+        }
+        User followedUser = friendshipService.followUser(user.getUsername());
+        if (followedUser == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
     /**
      * GET /friendships -> follow user
      */
@@ -85,6 +99,17 @@ public class FriendshipController {
         friendshipService.unfollowUser(user.getUsername());
     }
 
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.DELETE,
+            consumes = "application/json")
+    @ResponseBody
+    public void unfollowUserRest(@RequestBody User user) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unfollow username  : " + user.getUsername());
+        }
+        friendshipService.unfollowUser(user.getUsername());
+    }
+
     /**
      * GET  /friends/lookup -> return extended data about the user's friends
      */
@@ -93,6 +118,15 @@ public class FriendshipController {
             produces = "application/json")
     @ResponseBody
     public Collection<User> getFriends(@RequestParam("screen_name") String username) {
+
+        return friendshipService.getFriendsForUser(username);
+    }
+
+    @RequestMapping(value = "/rest/friends/{screen_name}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<User> getFriendsRest(@RequestParam("screen_name") String username) {
 
         return friendshipService.getFriendsForUser(username);
     }
@@ -112,7 +146,7 @@ public class FriendshipController {
     /**
      * POST /friendships -> follow user
      */
-    @RequestMapping(value = "/rest/friendships",
+    @RequestMapping(value = "/rest/friendships/email",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
@@ -150,6 +184,46 @@ public class FriendshipController {
         }
     }
 
+    @RequestMapping(value = "/rest/friendships/{email}",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Metered
+    public void followUserByEmailAndUsernameRest(HttpServletResponse response,
+                                                 @RequestBody EmailAndUsername emailAndUsername,
+                                                 @RequestParam("email") Boolean email) {
+        if (StringUtils.isNotEmpty(emailAndUsername.getUsername()) && email == true) {
+            if (log.isDebugEnabled()) {
+                log.debug("REST request to follow username : " + emailAndUsername.getUsername());
+            }
+            friendshipService.followUser(emailAndUsername.getUsername());
+        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail()) && email == true) {
+            if (log.isDebugEnabled()) {
+                log.debug("REST request to follow email : " + emailAndUsername.getEmail());
+            }
+            User user = userService.getUserByLogin(emailAndUsername.getEmail());
+            if (user != null) {
+                try {
+                    friendshipService.followUser(user.getUsername());
+                } catch (Exception e) {
+
+                }
+            } else {
+                User currentUser = authenticationService.getCurrentUser();
+                if (DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
+                    mailService.sendInvitationEmail(emailAndUsername.getEmail(), currentUser);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+    }
+
     /**
      * POST /friendships/check -> check username or email
      */
@@ -158,7 +232,9 @@ public class FriendshipController {
             consumes = "application/json")
     @ResponseBody
     @Metered
-    public void checkFriend(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
+    public void checkFriend(HttpServletResponse response,
+                            @RequestBody EmailAndUsername emailAndUsername,
+                            @RequestParam("check") Boolean check) {
         User user;
         if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
             if (log.isDebugEnabled()) {
@@ -183,5 +259,35 @@ public class FriendshipController {
         return;
     }
 
+    @RequestMapping(value = "/rest/friendships/{check}",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Metered
+    public void checkFriendRest(HttpServletResponse response,
+                            @RequestBody EmailAndUsername emailAndUsername,
+                            @RequestParam("check") Boolean check) {
+        User user;
+        if (StringUtils.isNotEmpty(emailAndUsername.getUsername()) && check == true) {
+            if (log.isDebugEnabled()) {
+                log.debug("REST request to check username : " + emailAndUsername.getUsername());
+            }
+            user = userService.getUserByUsername(emailAndUsername.getUsername());
+        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail()) && check == true) {
+            if (log.isDebugEnabled()) {
+                log.debug("REST request to check email : " + emailAndUsername.getEmail());
+            }
+            user = userService.getUserByLogin(emailAndUsername.getEmail());
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
+        User currentUser = authenticationService.getCurrentUser();
+        if (user != null && !user.getDomain().equalsIgnoreCase(currentUser.getDomain())
+                || user == null && !DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return;
+    }
 }

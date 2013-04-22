@@ -131,7 +131,7 @@
         <profile>
             <id>wro4j</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <jetty.port>8080</jetty.port>
