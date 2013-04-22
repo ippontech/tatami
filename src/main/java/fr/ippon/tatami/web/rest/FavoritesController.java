@@ -55,6 +55,16 @@ public class FavoritesController {
         timelineService.addFavoriteStatus(statusId);
     }
 
+    @RequestMapping(value = "/rest/favorites/{statusId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void favoriteStatusRest(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to like status : " + statusId);
+        }
+        timelineService.addFavoriteStatus(statusId);
+    }
+
     /**
      * POST /favorites/destroy/:id -> Unfavorites the status
      */
@@ -68,4 +78,13 @@ public class FavoritesController {
         timelineService.removeFavoriteStatus(statusId);
     }
 
+    @RequestMapping(value = "/rest/favorites/{statusId}",
+            method = RequestMethod.DELETE)
+    @ResponseBody
+    public void unfavoriteStatusRest(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unlike status : " + statusId);
+        }
+        timelineService.removeFavoriteStatus(statusId);
+    }
 }

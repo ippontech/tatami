@@ -162,4 +162,66 @@ public class TagController {
         }
         return tags;
     }
+
+
+    @RequestMapping(value = "/rest/ tags",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    public Collection<Tag> getTagsNEW(@RequestParam(required = false, value = "popular", defaultValue = "false") Boolean popular,
+                                      @RequestParam(required = false, value = "search", defaultValue = "") String search) {
+        Collection<Tag> tags = new ArrayList<Tag>();
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Collection<String> tagNames;
+
+        if(popular) {
+            List<Trend> trends = trendService.getCurrentTrends(domain);
+            for (Trend trend : trends) {
+                Tag tag = new Tag();
+                tag.setName(trend.getTag());
+                tag.setTrendingUp(trend.isTrendingUp());
+                tags.add(tag);
+            }
+        }
+        else if (!search.isEmpty()) {
+            String prefix = search.toLowerCase();
+            tagNames = trendService.searchTags(domain, prefix, 5);
+            for (String tagName : tagNames) {
+                Tag tag = new Tag();
+                tag.setName(tagName);
+                tags.add(tag);
+            }
+        }
+        else {
+            tagNames = userTagRepository.findTags(currentUser.getLogin());
+            for (String tagName : tagNames) {
+                Tag tag = new Tag();
+                tag.setName(tagName);
+                tags.add(tag);
+            }
+        }
+
+        for (Tag tag : tags) {
+            if (followedTags.contains(tag.getName())) {
+                tag.setFollowed(true);
+            };
+        }
+
+        return tags;
+    }
+
+
+    @RequestMapping(value = "/rest/tags/{tag}",
+            method = RequestMethod.PUT,
+            produces = "application/json")
+    @ResponseBody
+    public Tag updateTagNEW(@RequestBody Tag tag) {
+        if(tag.isFollowed()){
+            tagMembershipService.followTag(tag);
+        } else {
+            tagMembershipService.unfollowTag(tag);
+        }
+        return tag;
+    }
 }

@@ -66,6 +66,18 @@ public class SearchController {
         return searchResults;
     }
 
+    @RequestMapping(value = "/rest/search/{q}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public SearchResults searchRest(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
+        SearchResults searchResults = new SearchResults();
+        searchResults.setTags(this.searchRecentTags(q));
+        searchResults.setUsers(this.searchUsers(q));
+        searchResults.setGroups(this.searchGroups(q));
+        return searchResults;
+    }
 
     /**
      * GET  /search/status?q=tatami -> get the status where "tatami" appears
@@ -93,6 +105,28 @@ public class SearchController {
         return timelineService.buildStatusList(line);
     }
 
+    @RequestMapping(value = "/rest/search/{status}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<StatusDTO> listStatusForUserRest(@RequestParam(value = "status", required = false, defaultValue = "") String query,
+                                                   @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                   @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to search status containing these words (" + query + ").");
+        }
+        final User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line;
+        if (StringUtils.isNotBlank(query)) {
+            line = searchService.searchStatus(domain, query, page, rpp);
+        } else {
+            line = Collections.emptyMap();
+        }
+        return timelineService.buildStatusList(line);
+    }
 
     /**
      * GET  /search/tags" -> search tags<br>
@@ -105,6 +139,27 @@ public class SearchController {
     @ResponseBody
     @Metered
     public Collection<String> searchRecentTags(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        Collection<String> tags;
+        if (query != null && !query.equals("")) {
+            if (this.log.isDebugEnabled()) {
+                this.log.debug("REST request to find tags starting with : " + prefix);
+            }
+            tags = trendService.searchTags(domain, prefix, 5);
+        } else {
+            tags = new ArrayList<String>();
+        }
+        return tags;
+    }
+
+    @RequestMapping(value = "/rest/search/{tags}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<String> searchRecentTagsRest(@RequestParam("tags") String query) {
         String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
@@ -146,6 +201,27 @@ public class SearchController {
         return groups;
     }
 
+    @RequestMapping(value = "/rest/search/{groups}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<Group> searchGroupsRest(@RequestParam("groups") String query) {
+        String prefix = query.toLowerCase();
+        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        Collection<Group> groups;
+        if (query != null && !query.equals("")) {
+            if (this.log.isDebugEnabled()) {
+                this.log.debug("REST request to find groups starting with : " + prefix);
+            }
+            groups = searchService.searchGroupByPrefix(domain, prefix, 5);
+        } else {
+            groups = new ArrayList<Group>();
+        }
+        return groups;
+    }
+
     /**
      * GET  /search/users" -> search user by username<br>
      * Should return a collection of users matching the query.<br>
@@ -161,6 +237,22 @@ public class SearchController {
     @ResponseBody
     @Metered
     public Collection<User> searchUsers(@RequestParam("q") String query) {
+        String prefix = query.toLowerCase();
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to find users starting with : " + prefix);
+        }
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        return userService.getUsersByLogin(logins);
+    }
+
+    @RequestMapping(value = "/rest/search/{users}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<User> searchUsersRest(@RequestParam("users") String query) {
         String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to find users starting with : " + prefix);
