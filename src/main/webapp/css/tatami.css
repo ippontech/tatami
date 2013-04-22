@@ -16,15 +16,12 @@ body {
   margin: 0px;
 }
 
-table {
-  display: inline-table;
-}
-
 /*
   Profile Stats table desktop
 */
 
 .profile-infos {
+  font-size: 90%;
   margin-bottom: 0px
 }
 
@@ -78,6 +75,11 @@ form {
     margin-top : 3px;
 }
 
+#updateStatusPreview p {
+    overflow-y: scroll;
+    height: 150px;
+}
+
 #contentGroup {
     display: none;
 }
@@ -112,7 +114,6 @@ form {
 }
 
 #dropzone {
-    width: 60%;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -123,13 +124,11 @@ form {
     display: none;
 }
 #dropzone.in {
-    width: 80%;
-    height: 100px;
-    line-height: 100px;
-    font-size: larger;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #0088cc;
 }
-#dropzone.hover {
-}
+
 #dropzone.fade {
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
@@ -222,6 +221,11 @@ form {
 .userStatus-info {
     color: #808080;
     font-weight: normal;
+}
+
+.controls .avatar{
+    display: block;
+    float: left;
 }
 
 .avatar {
@@ -382,10 +386,6 @@ form {
 
 .margin-bottom5 {
 	margin-bottom:5px;
-}
-
-.margin-top20 {
-	margin-top:20px;
 }
 
 .user-profile {
@@ -556,4 +556,27 @@ span.quota{
 
 .status-content * {
   max-width: 100%;
+}
+
+#updateAvatar {
+    width: 130px;
+    position: relative;
+}
+
+#updateAvatar p{
+    position: absolute;
+    top: 5px;
+    font-size: 13px;
+    margin: 0;
+    width: 130px;
+}
+
+#updateAvatar input[type=file] {
+    opacity: 0;
+    width: 130px;
+}
+
+.dashed {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 20px;
 }

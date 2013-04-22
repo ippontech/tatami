@@ -8,6 +8,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -27,7 +30,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGetAUserByLogin() {
         User user = userService.getUserByLogin("jdubois@ippon.fr");
         assertThat(user, notNullValue());
-        assertThat(user.getGravatar(), is("gravatar"));
+        assertThat(user.getAvatar(), is("avatar"));
         assertThat(user.getFirstName(), is("Julien"));
         assertThat(user.getLastName(), is("Dubois"));
     }
@@ -94,13 +97,13 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String login = "nuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
-        String gravatar = "newGravatar";
+        String avatar = "newAvatar";
 
         User user = new User();
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setGravatar(gravatar);
+        user.setAvatar(avatar);
 
         userService.createUser(user);
 
@@ -109,7 +112,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userToBeTheSame.getLogin(), is(user.getLogin()));
         assertThat(userToBeTheSame.getFirstName(), is(user.getFirstName()));
         assertThat(userToBeTheSame.getLastName(), is(user.getLastName()));
-        assertThat(userToBeTheSame.getGravatar(), is(user.getGravatar()));
+        assertThat(userToBeTheSame.getAvatar(), is(user.getAvatar()));
         assertThat(userToBeTheSame.getStatusCount(), is(0L));
         assertThat(userToBeTheSame.getFollowersCount(), is(0L));
         assertThat(userToBeTheSame.getFriendsCount(), is(0L));
@@ -119,9 +122,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRegisterUserToWeeklyEmailDigest() {
         String login = "uuser@ippon.fr";
-        String firstName = "FirstName";
-        String lastName = "LastName";
-        User userToUpdate = constructAUser(login, firstName, lastName);
 
         mockAuthenticationOnUserService(login);
 
@@ -140,9 +140,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRegisterUserToDailyEmailDigest() {
         String login = "uuser@ippon.fr";
-        String firstName = "FirstName";
-        String lastName = "LastName";
-        User userToUpdate = constructAUser(login, firstName, lastName);
 
         mockAuthenticationOnUserService(login);
 
@@ -155,6 +152,29 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         updatedUser = userService.getUserByLogin(login);
 
         assertFalse(updatedUser.getDailyDigestSubscription());
+    }
+
+    @Test
+    public void testGetUsersByLogin() {
+        String login1 = "uuser@ippon.fr";
+        String login2 = "jdubois@ippon.fr";
+
+        Collection<String> logins = new ArrayList<String>();
+        logins.add(login1);
+        logins.add(login2);
+
+        mockAuthenticationOnUserService(login2);
+
+        Collection<User> users = userService.getUsersByLogin(logins);
+
+        assertEquals(2, users.size());
+    }
+
+    @Test
+    public void testGetUsersForCurrentDomain() {
+        mockAuthenticationOnUserService("jdubois@ippon.fr");
+        Collection<User> users = userService.getUsersForCurrentDomain(0);
+        assertTrue(users.size() > 10);
     }
 
     private void mockAuthenticationOnUserService(String login) {

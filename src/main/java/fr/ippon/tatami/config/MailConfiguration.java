@@ -8,10 +8,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -24,10 +22,6 @@ import java.util.Properties;
 public class MailConfiguration {
 
     private final Log log = LogFactory.getLog(MailConfiguration.class);
-
-    @Inject
-    private Environment env;
-
 
     @Bean
     public VelocityEngine velocityEngine() throws IOException {

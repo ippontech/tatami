@@ -21,7 +21,7 @@ public class StatsService {
     @Inject
     private DaylineRepository daylineRepository;
 
-    protected static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
+    static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
     /**
      * The dayline contains a day's status.
@@ -46,7 +46,6 @@ public class StatsService {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String day = DAYLINE_KEY_FORMAT.format(date);
-        Collection<UserStatusStat> stats = daylineRepository.getDayline(domain, day);
-        return stats;
+        return daylineRepository.getDayline(domain, day);
     }
 }

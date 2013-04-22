@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.SearchService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * REST controller for managing users.
@@ -48,12 +48,12 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public User getUser(@RequestParam("screen_name") String username) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = userService.getUserByUsername(username);
-        return user;
+        return userService.getUserByUsername(username);
     }
 
     /**
@@ -63,13 +63,14 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
         return suggestionService.suggestUsers(login);
     }
 
     /**
-     * GET  /users/searchStatus -> searchStatus user by username<br>
+     * GET  /rest/users/search -> search users by prefix<br>
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
@@ -81,6 +82,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
@@ -99,12 +101,12 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
         if (pagination == null) {
             pagination = 0;
         }
-        List<User> users = userService.getUsersForCurrentDomain(pagination);
-        return users;
+        return userService.getUsersForCurrentDomain(pagination);
     }
 
 
@@ -125,8 +127,6 @@ public class UserController {
         user.setLogin(email);
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
-        return;
     }
-
 
 }

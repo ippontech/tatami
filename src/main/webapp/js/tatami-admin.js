@@ -30,6 +30,11 @@ app.Model.AccountProfile = Backbone.Model.extend({
         lastName : '',
         jobTitle : '',
         phoneNumber : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
@@ -51,11 +56,25 @@ app.View.AccountProfile = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-
         this.$el.html(this.template({
             user: this.model.toJSON(),
             login: window.login
         }));
+
+        $('#avatarFile').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result, function (index, avatar) {
+                     $('.avatar').attr('src', '/tatami/avatar/'+ avatar.attachmentId +'/');
+                });
+            },
+
+            fail: function (e, data) {
+                console.log(e);
+            }
+
+        });
+
         this.delegateEvents();
         return this.$el;
     },
@@ -286,7 +305,6 @@ app.View.TabContainer = Backbone.View.extend({
 app.View.Tab = Backbone.View.extend({
     initialize: function() {
         this.$el.addClass('table');
-
         this.template = this.options.template;
         this.collection.bind('reset', this.render, this);
         this.collection.bind('add', this.addItem, this);
@@ -386,7 +404,6 @@ app.View.User = Backbone.View.extend({
     },
 
     render: function(){
-
         this.$el.html(this.template(this.model.toJSON()));
         this.renderFollow();
         this.delegateEvents();
@@ -588,9 +605,6 @@ app.View.ActionsGroup = Backbone.View.extend({
 
     initialize : function(){
         var self = this;
-
-        //app.collections.adminGroups.bind('reset', this.render, this);
-
         this.collection = new app.Collection.ListUserGroupCollection();
         this.collection.options = {
             groupId : this.model.id
@@ -727,60 +741,6 @@ app.View.EditGroup = Backbone.View.extend({
     }
 });
 
-app.View.ListUserGroup = Backbone.View.extend({
-    tagName : 'table',
-    attributes : {
-        'class' : 'table'
-    },
-    initialize : function(){
-        this.collection.bind('reset', this.render, this);
-        this.collection.bind('add', this.addItem, this);
-
-        this.collection.fetch();
-    },
-
-    addItem : function(model){
-        var view = new app.View.ListUserGroupItem({
-            model : model
-        });
-        view.render();
-        this.$el.append(view.el);
-    },
-    render : function(){
-        var tableView = this;
-
-        this.$el.html($('#usergroup-header').html());
-        this.collection.forEach(this.addItem, this);
-
-        return this;
-    }
-});
-
-app.View.ListUserGroupItem = Backbone.View.extend({
-    tagName : 'tr',
-
-    template : _.template($('#usergroup-item').html()),
-    
-    initialize : function(){
-        this.model.bind('change', this.render, this);
-        this.model.bind('destroy', this.remove, this);
-    },
-
-    events : {
-        'click .delete' : 'removeUser'
-    },
-
-    removeUser : function(){
-        this.model.destroy();
-    },
-    
-    render : function(){
-        this.$el.html(this.template(this.model.toJSON()));
-        return this;
-    }
-    
-});
-
 app.Model.UserSearch = Backbone.Model.extend({
     toString : function(){
         return this.get('username');
@@ -850,7 +810,7 @@ app.View.AddUserGroup = Backbone.View.extend({
             },
             highlighter: function (item) {
               var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              return '<img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/' + item.get('gravatar') + '?s=32&d=mm" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              return '<img class="avatar avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>';
               }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }
@@ -886,23 +846,6 @@ app.View.AddUserGroup = Backbone.View.extend({
                 model.destroy();
             }
         });
-    }
-});
-
-app.Model.ListUserGroupModel = Backbone.Model.extend({
-    idAttribute : 'username',
-    defaults : {
-        gravatar : '',
-        firstName : '',
-        lastName : '',
-        role : ''
-    }
-});
-
-app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
-    model : app.Model.ListUserGroupModel,
-    url : function() {
-        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
     }
 });
 
@@ -964,7 +907,6 @@ app.View.FilesViewItem = Backbone.View.extend({
 
    initialize: function(){
        this.model.bind('change', this.render, this);
-       this.model.bind('destroy', this.remove, this);
    },
 
    tagName: 'tr',
@@ -979,8 +921,13 @@ app.View.FilesViewItem = Backbone.View.extend({
    },
 
    removeImage: function(){
-       this.model.destroy();
-       window.location.reload();
+       var self = this;
+       this.model.destroy({
+           success: function(){
+              self.remove();
+              app.trigger('refreshQuota');
+           }
+       });
    }
 
 });
@@ -998,6 +945,12 @@ app.View.QuotaFiles = Backbone.View.extend({
        this.model = new app.Model.QuotaModel();
        this.model.bind('change', this.render, this);
        this.model.fetch();
+
+       var self = this;
+
+       app.on('refreshQuota', function() {
+           self.model.fetch();
+       });
    },
 
    render: function(){

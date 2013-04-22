@@ -12,6 +12,7 @@
     <script src="/js/underscore.js"></script>
     <script src="/js/underscore-polyfill.js"></script>
     <script src="/js/backbone.js"></script>
+    <script src="/js/backbone.localStorage-min.js"></script>
     <script src="/js/jquery-charcount.js"></script>
     <script src="/js/jquery-timeago.js"></script>
     <script src="/js/jquery-tatami-infinitiScroll.js"></script>
@@ -26,5 +27,12 @@
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/all.js"></script>
+</c:if>
+<c:if test="${googleAnalyticsKey ne ''}">
+    <script type="text/javascript">
+        $(document).on('ajaxComplete', function (event, request, settings) {
+            _gaq.push(['_trackEvent', event.currentTarget.URL, settings.url, login, request.status]);
+        });
+    </script>
 </c:if>
 

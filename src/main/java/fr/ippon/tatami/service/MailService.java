@@ -18,6 +18,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import java.util.*;
 
 /**
@@ -48,6 +49,8 @@ public class MailService {
 
     private String smtpPassword;
 
+    private String smtpTls;
+
     private String from;
 
     private String tatamiUrl;
@@ -55,8 +58,8 @@ public class MailService {
     private Locale locale;
 
     // TODO: this can be used for external mail template configuration
-    private String templateRoot = "/META-INF/tatami/mails/";
-    private String templateSuffix = "Email.vm";
+    private final String templateRoot = "/META-INF/tatami/mails/";
+    private final String templateSuffix = "Email.vm";
 
     @Inject
     private VelocityEngine velocityEngine;
@@ -69,6 +72,7 @@ public class MailService {
         }
         this.smtpUser = env.getProperty("smtp.user");
         this.smtpPassword = env.getProperty("smtp.password");
+        this.smtpTls = env.getProperty("smtp.tls");
         this.from = env.getProperty("smtp.from");
         this.tatamiUrl = env.getProperty("tatami.url");
 
@@ -218,13 +222,23 @@ public class MailService {
         sendTextFromTemplate(user.getLogin(), model, "weeklyDigest", this.locale);
     }
 
+    public boolean connectSmtpServer() {
+        if (host != null && !host.equals("")) {
+            JavaMailSenderImpl sender = configureJavaMailSender();
+            try {
+                sender.getSession().getTransport().connect();
+                return true;
+            } catch (MessagingException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     private void sendEmail(String email, String subject, String text) {
         if (host != null && !host.equals("")) {
-            JavaMailSenderImpl sender = new JavaMailSenderImpl();
-            sender.setHost(host);
-            sender.setPort(port);
-            sender.setUsername(smtpUser);
-            sender.setPassword(smtpPassword);
+            JavaMailSenderImpl sender = configureJavaMailSender();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setFrom(from);
@@ -247,13 +261,22 @@ public class MailService {
         }
     }
 
+    private JavaMailSenderImpl configureJavaMailSender() {
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setHost(host);
+        sender.setPort(port);
+        sender.setUsername(smtpUser);
+        sender.setPassword(smtpPassword);
+        if (smtpTls != null && !smtpTls.equals("")) {
+            Properties sendProperties = new Properties();
+            sendProperties.setProperty("mail.smtp.starttls.enable", "true");
+            sender.setJavaMailProperties(sendProperties);
+        }
+        return sender;
+    }
+
     /**
-     * generate and send the mail corresponding to the given template
-     *
-     * @param email
-     * @param model
-     * @param template
-     * @param locale
+     * Generate and send the mail corresponding to the given template.
      */
     private void sendTextFromTemplate(String email, Map<String, Object> model, String template, Locale locale) {
         model.put("messages", mailMessageSource);

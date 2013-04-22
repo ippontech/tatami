@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -52,6 +53,7 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<StatusDTO> listStatusForTag(@RequestParam(required = false, value = "tag") String tag,
                                                   @RequestParam(required = false) Integer count,
                                                   @RequestParam(required = false) String since_id,
@@ -126,7 +128,6 @@ public class TagController {
     @ResponseBody
     public Collection<Tag> getFollowedTags() {
         User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Collection<Tag> tags = new ArrayList<Tag>();
         for (String followedTag : followedTags) {

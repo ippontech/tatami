@@ -9,8 +9,6 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -34,8 +32,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  */
 @Repository
 public class CassandraTrendRepository implements TrendRepository {
-
-    private final Log log = LogFactory.getLog(CassandraTrendRepository.class);
 
     private final static int COLUMN_TTL = 60 * 60 * 24 * 30; // The column is stored for 30 days.
 
@@ -77,7 +73,7 @@ public class CassandraTrendRepository implements TrendRepository {
                 .get();
 
         List<String> result = new ArrayList<String>();
-        String tag = null;
+        String tag;
         for (HColumn<UUID, String> column : query.getColumns()) {
             tag = column.getValue();
             result.add(tag);
@@ -86,19 +82,19 @@ public class CassandraTrendRepository implements TrendRepository {
     }
 
     @Cacheable(value = "domain-tags-cache", key = "#domain")
-    public Collection<String> getDomainTags(String domain, int size) {
+    public Collection<String> getDomainTags(String domain) {
         Assert.hasLength(domain);
 
         final ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(TRENDS_CF)
                 .setKey(domain)
-                .setRange(null, null, true, size)
+                .setRange(null, null, true, TRENDS_NUMBER_OF_TAGS)
                 .execute()
                 .get();
 
         final Map<String, String> result = new HashMap<String, String>();
-        String tag = null;
+        String tag;
         for (HColumn<UUID, String> column : query.getColumns()) {
             tag = column.getValue();
             result.put(tag.toLowerCase(), tag);

@@ -29,7 +29,7 @@
 <script type="text/template" id="timeline-item-inner">
   <tr>
     <th rowspan="6">
-        <img class="avatar" src="https://www.gravatar.com/avatar/<@=status.gravatar@>?s=64&d=mm" alt="<@= [status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar" src="<@=status.avatar@>" alt="<@= [status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
     </th>
     <th>
       <a href="/tatami/profile/<@= status.username @>/" class="userStatus pull-left" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + status.username,status.firstName,status.lastName].filter(function(value){return value;}).join(' ') @>">
@@ -112,18 +112,18 @@
               <fieldset>
                   <div class="control-group">
 		    <div class="tabbable">
-		      <ul id="replyEditorTab" class="nav nav-tabs" >
-			<li class="active"><a href="#replyEditPane" id="replyEditTab" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
-			<li><a href="#replyPreviewPane" id="replyPreviewTab" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
+		      <ul class="nav nav-tabs replyEditorTab" >
+			<li class="active"><a data-pane=".replyEditPane" data-toggle="tab"><fmt:message key="tatami.status.editor"/></a></li>
+			<li><a data-pane=".replyPreviewPane" data-toggle="tab"><fmt:message key="tatami.status.preview"/></a></li>
 		     </ul>
 		    <div class="tab-content fixFFmax-width">
-		      <div class="tab-pane active" id="replyEditPane">
+		      <div class="tab-pane active replyEditPane">
 	
-			<textarea id="replyEdit" class="reply span12" required="required" maxlength="750"
+			<textarea class="reply span12 replyEdit" required="required" maxlength="750"
                                 name="content">@<@= status.username @> </textarea>
 		      </div>
-		      <div class="tab-pane" id="replyPreviewPane">
-			<p id="replyPreview" class="well status-content fixFFmax-width"></p>
+		      <div class="tab-pane replyPreviewPane">
+			<p class="well status-content fixFFmax-width replyPreview"></p>
 		      </div>
 		    </div>  
                   </div>
@@ -158,7 +158,9 @@
 
 <script type="text/template" id="timeline-share-item">
   <@ if (profile) { @>
-    <a href="/tatami/profile/<@= profile.username @>/"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"></a>
+    <a href="/tatami/profile/<@= profile.username @>/">
+        <img class="avatar avatar-small" src="<@= profile.avatar @>"
+             alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"></a>
   <@ } else { @>
     <a href="/tatami/profile/<@= username @>/"><@= username @></a> 
   <@ } @>
@@ -196,7 +198,15 @@
   <div class="alert alert-status">
     <div class="row-fluid">
       <div class="span12">
-        <a href="/tatami/profile/<@= user.username @>/" class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>"><img class="avatar avatar-small" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= user.username @>/"
+           class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
+            <img class="avatar avatar-small"
+                <@ if (user.avatar == null || user.avatar == '') { @>
+                src="/img/default_image_profile.png"
+                <@ } else { @>
+                src="/tatami/avatar/<@= user.avatar @>/photo.jpg"
+                <@ } @>
+                 alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
             <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
         </a>
       </div>    
@@ -307,6 +317,48 @@
 <script type="text/template" id="welcome-friends-error">
   <div class="alert alert-error">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    Error : <@= email @>
+    <@= email @> : <@ if(status === 400) { @>
+      <fmt:message key="tatami.welcome.friends.error.400"/>
+    <@ } else if (status === 404) { @>
+      <fmt:message key="tatami.welcome.friends.error.404"/>
+    <@ } else { @>
+      <fmt:message key="tatami.welcome.friends.error.unknown"/>
+    <@ } @>
   </div>
+</script>
+
+<script type="text/template" id="usergroup-header">
+    <tr>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th><fmt:message key="tatami.group.role"/></th>
+    </tr>
+</script>
+
+<script type="text/template" id="usergroup-item">
+    <td style="text-align: left">
+        <img class="avatar avatar-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
+    </td>
+    <td>
+        <@ if(role === 'ADMIN'){ @>
+            <fmt:message key="tatami.group.role.admin"/>
+        <@ } else { @>
+            <fmt:message key="tatami.group.role.member"/>
+        <@ } @>
+    </td>
+    <@ if(admin){ @>
+        <td>
+            <@ if (window.username !== username) { @>
+                <button type="button" class="btn btn-success input-block-level delete">
+                    <fmt:message key="tatami.group.edit.member.delete"/>
+                </button>
+            <@ } @>
+        </td>
+    <@ } @>
 </script>

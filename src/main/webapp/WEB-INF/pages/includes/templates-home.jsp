@@ -5,7 +5,8 @@
 <script type="text/template" id="profile-infos-template">
   <div class="span12 profile-infos avatar-float-left-container">
     <a href="/tatami/profile/<@= profile.username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@'+profile.username].filter(function(value){return value;}).join(' ') @>">
-      <img class="pull-left avatar avatar-float-left" src="https://www.gravatar.com/avatar/<@= profile.gravatar @>?s=64&d=mm" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
+        <img class="pull-left avatar avatar-float-left"
+             src="<@= profile.avatar @>" alt="<@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @>"/>
       <h4><@= [profile.firstName,profile.lastName].filter(function(value){return value;}).join(' ') @></h4>
       @<@=profile.username@>
     </a>
@@ -14,7 +15,7 @@
 
 <script type="text/template" id="profile-stats-template">
 <div class="row-fluid hidden-phone">
-  <div class="well margin-top20 box-info">
+  <div class="well box-info">
     <div class="row-fluid">
       <table class="table profile-infos">
         <thead>
@@ -115,7 +116,7 @@
     </div>
     <div id="updateStatusPrivate" class="control-group">
       <label class="checkbox">
-          <input name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
+          <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <i class="icon-lock"></i> <fmt:message key="tatami.status.private"/>
       </label>
     </div>
     <div class="control-group" id="updateStatusBtns">
@@ -200,22 +201,24 @@
     <div class="well" style="padding: 0px;">
         <@ if (group.get('name') != undefined) { @>
         <div class="row-fluid">
+          <h2 class="text-center">
+            <@= group.get('name') @>
+          </h2>
           <table class="table profile-infos">
               <tr>
-                  <th>
-                      <fmt:message key="tatami.group.name"/>
-                  </th>
                   <th>
                       <fmt:message key="tatami.group.add.access"/>
                   </th>
                   <th>
-                      <fmt:message key="tatami.group.counter"/>
+                      <a data-toggle="modal" data-target="#group-list-member" data-background=false class="btn-link">
+                        <fmt:message key="tatami.group.counter"/>
+                      </a>
+                  </th>
+                  <th>
+                      Status
                   </th>
               </tr>
               <tr>
-                  <td>
-                      <@= group.get('name') @>
-                  </td>
                   <td>
                       <@ if (group.get('publicGroup') === true) { @>
                           <span class="label label-warning"><fmt:message
@@ -226,8 +229,25 @@
                       <@ } @>
                   </td>
                   <td>
-                      <span class="badge badge-info"><@= group.get('counter') @></span>
+                      <a data-toggle="modal" data-target="#group-list-member" data-background=false class="btn-link">
+                          <span class="badge badge-info">
+                              <@= group.get('counter') @>
+                          </span>
+                      </a>
+                      <div id="group-list-member" class="modal hide fade">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                              <h3 id="myModalLabel"><fmt:message
+                                  key="tatami.group.members.list"/></h3>
+                          </div>
+                          <div class="modal-body">
+                          </div>
+                          <div class="modal-footer">
+                              <button class="btn" data-dismiss="modal" aria-hidden="true"><fmt:message key="tatami.login.modal.timeout.close"/></button>
+                          </div>
+                      </div>
                   </td>
+                  <td class="bouton-join-group"/>
               </tr>
           </table>
         </div>
@@ -267,4 +287,14 @@
   <div class="row-fluid">
     <input class="span12" name="search" value="<@= search @>" type="text" placeholder="search">
   </div>
+</script>
+
+<script type="text/template" id="button-join-group-join">
+  <fmt:message key="tatami.group.join.group"/>
+</script>
+<script type="text/template" id="button-join-group-left">
+  <fmt:message key="tatami.group.edit.quit"/>
+</script>
+<script type="text/template" id="button-join-group-admin">
+  <fmt:message key="tatami.group.edit.link"/>
 </script>

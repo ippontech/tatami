@@ -4,11 +4,10 @@ import fr.ippon.tatami.repository.CounterRepository;
 import me.prettyprint.cassandra.model.thrift.ThriftCounterColumnQuery;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
@@ -36,8 +35,6 @@ public class CassandraCounterRepository implements CounterRepository {
 
     private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
 
-    private final Log log = LogFactory.getLog(CassandraCounterRepository.class);
-
     @Inject
     private Keyspace keyspaceOperator;
 
@@ -48,7 +45,7 @@ public class CassandraCounterRepository implements CounterRepository {
     }
 
     @Override
-    @CacheEvict(value = "user-cache", key = "#login")
+    @CacheEvict(value = {"user-cache", "suggest-users-cache"}, key = "#login")
     public void incrementFriendsCounter(String login) {
         incrementCounter(FRIENDS_COUNTER, login);
     }
@@ -139,6 +136,11 @@ public class CassandraCounterRepository implements CounterRepository {
                         StringSerializer.get());
 
         counter.setColumnFamily(COUNTER_CF).setKey(login).setName(counterName);
-        return counter.execute().get().getValue();
+        HCounterColumn<String> counterColumn = counter.execute().get();
+        if (counterColumn == null) {
+            return 0;
+        } else {
+            return counterColumn.getValue();
+        }
     }
 }

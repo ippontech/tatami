@@ -40,8 +40,8 @@ public class User {
     @JsonIgnore
     private String domain;
 
-    @Column(name = "gravatar")
-    private String gravatar;
+    @Column(name = "avatar")
+    private String avatar;
 
     @Size(min = 0, max = 50)
     @Column(name = "firstName")
@@ -128,12 +128,12 @@ public class User {
         this.domain = domain;
     }
 
-    public String getGravatar() {
-        return gravatar;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getFirstName() {
@@ -264,9 +264,8 @@ public class User {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) return false;
+        return login.equals(user.login);
 
-        return true;
     }
 
     @Override
@@ -281,7 +280,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
-                ", gravatar='" + gravatar + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +

@@ -59,6 +59,9 @@ public class TimelineService {
     private GrouplineRepository grouplineRepository;
 
     @Inject
+    private DomainlineRepository domainlineRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -145,7 +148,7 @@ public class TimelineService {
         Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
         for (String statusId : line.keySet()) {
             SharedStatusInfo sharedStatusInfo = line.get(statusId);
-            Status status = null;
+            Status status;
             if (sharedStatusInfo != null) {
                 status = statusRepository.findStatusById(sharedStatusInfo.getOriginalStatusId());
             } else {
@@ -188,7 +191,7 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
-                        if (status.getHasAttachments() != null && status.getHasAttachments() == true) {
+                        if (status.getHasAttachments() != null && status.getHasAttachments()) {
                             statusDTO.setAttachments(status.getAttachments());
                         }
                         statusDTO.setContent(status.getContent());
@@ -208,7 +211,7 @@ public class TimelineService {
                         }
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
-                        statusDTO.setGravatar(statusUser.getGravatar());
+                        statusDTO.setAvatar(statusUser.getAvatar());
                         statusDTO.setDetailsAvailable(status.isDetailsAvailable());
                         statuses.add(statusDTO);
                     }
@@ -257,10 +260,8 @@ public class TimelineService {
     }
 
     /**
-     * The groupline contains a group's statuses
+     * The groupline contains a group's statuses.
      *
-     * @param group    the group to retrieve the timeline of
-     * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
     public Collection<StatusDTO> getGroupline(String groupId, Integer count, String since_id, String max_id) {
@@ -295,6 +296,22 @@ public class TimelineService {
 
         Map<String, SharedStatusInfo> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+
+        return buildStatusList(line);
+    }
+
+    /**
+     * The domainline contains all the public statuses of the domain (status with no group, or
+     * in a public group), for the last 30 days.
+     *
+     * @param nbStatus the number of status to retrieve, starting from most recent ones
+     * @return a status list
+     */
+    public Collection<StatusDTO> getDomainline(int nbStatus, String since_id, String max_id) {
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        Map<String, SharedStatusInfo> line =
+                domainlineRepository.getDomainline(domain, nbStatus, since_id, max_id);
 
         return buildStatusList(line);
     }

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -52,6 +53,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Group getGroup(@PathVariable("groupId") String groupId) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -169,8 +171,7 @@ public class GroupController {
             }
             return new ArrayList<Group>();
         }
-        Collection<Group> groups = groupService.getGroupsForUser(user);
-        return groups;
+        return groupService.getGroupsForUser(user);
     }
 
     /**
@@ -251,7 +252,47 @@ public class GroupController {
 
 
     /**
-     * POST  /groups/{groupId}/members/ -> add a member to group
+     * GET  /groups/{groupId}/members/{userUsername} -> get a member to group status
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+
+        User currentUser = authenticationService.getCurrentUser();
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+
+        Collection<UserGroupDTO> users = null;
+
+        if (currentUser == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
+        } else if (currentGroup == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
+        } else {
+            users = groupService.getMembersForGroup(groupId);
+        }
+
+        for (UserGroupDTO user : users) {
+            if (user.getLogin().equals(currentUser.getLogin())) {
+                return user;
+            }
+        }
+
+        UserGroupDTO currentUserDTO = new UserGroupDTO();
+        currentUserDTO.setLogin(currentUser.getLogin());
+        currentUserDTO.setUsername(currentUser.getUsername());
+        currentUserDTO.setAvatar(currentUser.getAvatar());
+        currentUserDTO.setFirstName(currentUser.getFirstName());
+        currentUserDTO.setLastName(currentUser.getLastName());
+        currentUserDTO.setIsMember(false);
+
+        return currentUserDTO;
+    }
+
+
+    /**
+     * PUT  /groups/{groupId}/members/{userUsername} -> add a member to group
      */
     @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
             method = RequestMethod.PUT,

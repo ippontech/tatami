@@ -585,7 +585,7 @@ InlineLexer.prototype.output = function(src) {
       }
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -605,7 +605,7 @@ InlineLexer.prototype.output = function(src) {
       }
       out += '<a href="'
         + href
-        + '">'
+        + '" target="_blank">'
         + text
         + '</a>';
       continue;
@@ -625,9 +625,9 @@ InlineLexer.prototype.output = function(src) {
         }
       }
       if(!html)
-        out += '<a href="'
+        out += '<a target="_blank" href="'
           + href
-          + '">'
+          + '" target="_blank">'
           + text
           + '</a>';
       continue;
@@ -758,7 +758,7 @@ InlineLexer.prototype.outputLink = function(cap, link) {
       + escape(link.title)
       + '"'
       : '')
-      + '>'
+      + ' target="_blank">'
       + this.output(cap[1])
       + '</a>';
   } else {

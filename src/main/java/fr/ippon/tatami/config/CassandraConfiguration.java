@@ -1,10 +1,13 @@
 package fr.ippon.tatami.config;
 
+import me.prettyprint.cassandra.connection.HOpTimer;
+import me.prettyprint.cassandra.connection.MetricsOpTimer;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.ThriftCfDef;
 import me.prettyprint.cassandra.service.ThriftCluster;
 import me.prettyprint.cassandra.service.ThriftKsDef;
+import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
@@ -18,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
@@ -35,16 +39,31 @@ public class CassandraConfiguration {
     @Inject
     private Environment env;
 
+    private Cluster myCluster;
+
+    @PreDestroy
+    public void destroy() {
+        log.info("Closing Hector connection pool");
+        myCluster.getConnectionManager().shutdown();
+        HFactory.shutdownCluster(myCluster);
+    }
+
     @Bean
     public Keyspace keyspaceOperator() {
-
+        log.info("Configuring Cassandra keyspace");
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         cassandraHostConfigurator.setMaxActive(100);
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
+            log.debug("Cassandra Metrics monitoring enabled");
+            HOpTimer hOpTimer = new MetricsOpTimer(cassandraClusterName);
+            cassandraHostConfigurator.setOpTimer(hOpTimer);
+        }
         ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
+        this.myCluster = cluster; // Keep a pointer to the cluster, as Hector is buggy and can't find it again...
         ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
         consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
 
@@ -71,7 +90,9 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, GROUP_CF, 0);
             addColumnFamily(cluster, GROUP_DETAILS_CF, 0);
             addColumnFamily(cluster, ATTACHMENT_CF, 0);
+            addColumnFamily(cluster, AVATAR_CF, 0);
             addColumnFamily(cluster, DOMAIN_CONFIGURATION_CF, 0);
+            addColumnFamily(cluster, TATAMIBOT_CONFIGURATION_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);
@@ -85,6 +106,8 @@ public class CassandraConfiguration {
             addColumnFamilySortedbyUUID(cluster, GROUPLINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, USER_ATTACHMENT_CF, 0);
             addColumnFamilySortedbyUUID(cluster, STATUS_ATTACHMENT_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, DOMAINLINE_CF, 0);
+            addColumnFamilySortedbyUUID(cluster, DOMAIN_TATAMIBOT_CF, 0);
 
             addColumnFamilyCounter(cluster, COUNTER_CF, 0);
             addColumnFamilyCounter(cluster, TAG_COUNTER_CF, 0);
@@ -95,6 +118,12 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, TATAMIBOT_DUPLICATE_CF, 0);
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
+    }
+
+    @Bean
+    public EntityManagerImpl entityManager(Keyspace keyspace) {
+        String[] packagesToScan = {"fr.ippon.tatami.domain", "fr.ippon.tatami.bot.config"};
+        return new EntityManagerImpl(keyspace, packagesToScan);
     }
 
     private void addColumnFamily(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
@@ -131,10 +160,4 @@ public class CassandraConfiguration {
         cfd.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
         cluster.addColumnFamily(cfd);
     }
-
-    @Bean
-    public EntityManagerImpl entityManager(Keyspace keyspace) {
-        return new EntityManagerImpl(keyspace, "fr.ippon.tatami.domain");
-    }
-
 }

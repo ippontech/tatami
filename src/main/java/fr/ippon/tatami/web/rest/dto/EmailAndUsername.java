@@ -1,11 +1,7 @@
 package fr.ippon.tatami.web.rest.dto;
 
 /**
- * Created with IntelliJ IDEA.
- * User: godu
- * Date: 05/02/13
- * Time: 11:18
- * To change this template use File | Settings | File Templates.
+ * DTO containing the user name and e-mail.
  */
 public class EmailAndUsername {
     private String email;

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>2.0.1</version>
+    <version>2.2.4</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -36,6 +36,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -50,6 +52,7 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
@@ -58,11 +61,81 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+            </properties>
+        </profile>
+        <profile>
+            <id>elasticsearch</id>
+            <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+                <tatami.smtp.host></tatami.smtp.host>
+                <tatami.smtp.port></tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
+                <tatami.search.engine>elasticsearch</tatami.search.engine>
+                <tatami.elasticsearch.engine.mode>remote</tatami.elasticsearch.engine.mode>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+            </properties>
+        </profile>
+        <profile>
+            <id>elasticsearch-embedded</id>
+            <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
+                <jetty.port>8080</jetty.port>
+                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
+                <tatami.version>${project.version}</tatami.version>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
+                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+                <tatami.smtp.host></tatami.smtp.host>
+                <tatami.smtp.port></tatami.smtp.port>
+                <tatami.smtp.user></tatami.smtp.user>
+                <tatami.smtp.password></tatami.smtp.password>
+                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
+                <tatami.search.engine>elasticsearch</tatami.search.engine>
+                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.enabled>false</tatami.metrics.enabled>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>preprod</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
@@ -77,7 +150,8 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.smtp.tls></tatami.smtp.tls>                
+                <tatami.google.analytics.key>UA-38621958-2</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.connection.security>any</tatami.connection.security>
@@ -85,6 +159,8 @@
                 <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -122,6 +198,7 @@
         <profile>
             <id>prod</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
@@ -136,6 +213,7 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
@@ -144,6 +222,8 @@
                 <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -180,6 +260,7 @@
         <profile>
             <id>stress-tests</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
@@ -194,6 +275,7 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
@@ -202,11 +284,14 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>uitest</id>
             <properties>
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -221,6 +306,7 @@
                 <tatami.smtp.user></tatami.smtp.user>
                 <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
@@ -229,6 +315,8 @@
                 <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
                 <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <testResources>
@@ -426,14 +514,13 @@
         <java.version>1.6</java.version>
 
         <!-- Dependencies -->
-        <spring.version>3.2.0.RELEASE</spring.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
         <spring.security.version>3.1.3.RELEASE</spring.security.version>
-        <spring.social.version>1.0.1.RELEASE</spring.social.version>
-        <elasticsearch.version>0.19.10</elasticsearch.version>
+        <elasticsearch.version>0.20.6</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.1-2</hector.version>
+        <hector.version>1.1-3</hector.version>
         <hector.mapper.version>3.1-07</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
@@ -451,15 +538,17 @@
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
+        <yammer.metrics.version>2.2.0</yammer.metrics.version>
+        <camel.version>2.10.4</camel.version>
 
         <selenium.version>2.25.0</selenium.version>
 
         <!-- Maven plugins -->
         <maven.compiler.version>3.0</maven.compiler.version>
         <maven.enforcer.version>1.2</maven.enforcer.version>
-        <maven.surefire.version>2.13</maven.surefire.version>
+        <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.9.v20130131</maven.jetty.version>
+        <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
         <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
         <maven.wro4j.version>1.6.2</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
@@ -478,24 +567,140 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-json-org</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hppc</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-log4j</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-ehcache</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-servlet</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-web</artifactId>
+            <version>${yammer.metrics.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.2.2</version>
         </dependency>
         <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-spring</artifactId>
-            <version>1.0.1</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.javamail</groupId>
-            <artifactId>geronimo-javamail_1.4_mail</artifactId>
-            <version>1.8.2</version>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons.lang.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${javax.inject.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${persistence.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${jodatime.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-web</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-script</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-rss</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-twitter</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-stream</artifactId>
+            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cassandra</groupId>
@@ -526,36 +731,9 @@
             <version>${httpclient.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hectorclient</groupId>
-            <artifactId>hector-core</artifactId>
-            <version>${hector.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${persistence.api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hectorclient</groupId>
-            <artifactId>hector-object-mapper</artifactId>
-            <version>${hector.mapper.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.apache.geronimo.javamail</groupId>
+            <artifactId>geronimo-javamail_1.4_mail</artifactId>
+            <version>1.8.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.openjpa</groupId>
@@ -563,50 +741,9 @@
             <version>2.1.0</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>2.6.3</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-web</artifactId>
-            <version>2.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet.api.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${javax.validation.api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl.version}</version>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -623,38 +760,70 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-json-org</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-spring</artifactId>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-hppc</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-joda</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>org.hectorclient</groupId>
+            <artifactId>hector-core</artifactId>
+            <version>${hector.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${jodatime.version}</version>
+            <groupId>org.hectorclient</groupId>
+            <artifactId>hector-object-mapper</artifactId>
+            <version>${hector.mapper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>${pegdown.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -664,7 +833,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -684,12 +868,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring.security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
+            <artifactId>spring-security-crypto</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
@@ -704,35 +883,19 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-crypto</artifactId>
+            <artifactId>spring-security-taglibs</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${commons.lang.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons.io.version}</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>${rome.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.pegdown</groupId>
-            <artifactId>pegdown</artifactId>
-            <version>${pegdown.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>${velocity.version}</version>
-        </dependency>
-
 
         <!-- Test dependencies -->
         <dependency>
@@ -761,7 +924,8 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>root</finalName>
+        <!-- Tatami must be configured at the root context (/) of the application server -->
+        <finalName>ROOT</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -808,6 +972,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+                <configuration>
+                    <argLine>-XX:MaxPermSize=128m -Xmx256m</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -823,6 +990,16 @@
                             <Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
                         </manifestEntries>
                     </archive>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <includes>
+                                <include>web.xml</include>
+                            </includes>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <!-- Cassandra must be configured before jetty ... -->
@@ -844,6 +1021,10 @@
                             <name>jetty.port</name>
                             <value>${jetty.port}</value>
                         </systemProperty>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>${spring.profiles.active}</value>
+                        </systemProperty>
                     </systemProperties>
                     <webApp>
                         <contextPath>/</contextPath>
@@ -853,9 +1034,14 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
                 <configuration>
                     <path>/</path>
+                    <contextReloadable>true</contextReloadable>
+                    <protocol>org.apache.coyote.http11.Http11NioProtocol</protocol>
+                    <systemProperties>
+                        <spring.profiles.active>${spring.profiles.active}</spring.profiles.active>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>

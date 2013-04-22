@@ -10,15 +10,4 @@ public class ArchivedGroupException extends Exception {
     public ArchivedGroupException() {
     }
 
-    public ArchivedGroupException(String s) {
-        super(s);
-    }
-
-    public ArchivedGroupException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public ArchivedGroupException(Throwable throwable) {
-        super(throwable);
-    }
 }

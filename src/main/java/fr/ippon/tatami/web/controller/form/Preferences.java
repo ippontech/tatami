@@ -14,7 +14,7 @@ public class Preferences {
 
     private Boolean dailyDigest = false;
 
-    String theme = "";
+    private String theme = "";
 
     private Boolean rssUidActive = false;
 

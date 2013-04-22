@@ -39,9 +39,8 @@ public class Domain implements Serializable, Comparable<Domain> {
 
         Domain domain = (Domain) o;
 
-        if (!name.equals(domain.name)) return false;
+        return name.equals(domain.name);
 
-        return true;
     }
 
     @Override

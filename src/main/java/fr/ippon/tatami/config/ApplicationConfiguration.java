@@ -22,8 +22,9 @@ import java.io.IOException;
         CacheConfiguration.class,
         CassandraConfiguration.class,
         SearchConfiguration.class,
-        MailConfiguration.class})
-@ImportResource({"classpath:META-INF/spring/applicationContext-security.xml"})
+        MailConfiguration.class,
+        MetricsConfiguration.class})
+@ImportResource("classpath:META-INF/spring/applicationContext-*.xml")
 public class ApplicationConfiguration {
 
     private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
@@ -31,8 +32,25 @@ public class ApplicationConfiguration {
     @Inject
     private Environment env;
 
+    /**
+     * Initializes Tatami.
+     * <p/>
+     * Spring profiles can be configured with a system property -Dspring.profiles.active=your-active-profile
+     * <p/>
+     * Available profiles are :
+     * - "metrics" : for enabling Yammer Metrics
+     * - "tatamibot" : for enabling the Tatami bot
+     */
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
+        log.debug("Looking for Spring profiles... Available profiles are \"metrics\" and \"tatamibot\"");
+        if (env.getActiveProfiles().length == 0) {
+            log.debug("No Spring profile configured, running with default configuration");
+        } else {
+            for (String profile : env.getActiveProfiles()) {
+                log.debug("Detected Spring profile : " + profile);
+            }
+        }
         Constants.VERSION = env.getRequiredProperty("tatami.version");
         Constants.GOOGLE_ANALYTICS_KEY = env.getProperty("tatami.google.analytics.key");
         if ("true".equals(env.getProperty("tatami.wro4j.enabled"))) {

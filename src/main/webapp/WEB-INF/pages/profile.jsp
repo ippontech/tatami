@@ -21,7 +21,15 @@
                     <div class="row-fluid">
                       <div class="span4 text-center avatar-float-left-container">
                         <a class="pull-left avatar-float-left" href="/tatami/profile/${user.username}/" title="<fmt:message key="tatami.user.profile.show"/> @${user.username} ${user.firstName} ${user.lastName}">
-                          <img class="nomargin avatar" src="https://www.gravatar.com/avatar/${user.gravatar}?s=64&d=mm" alt="@${user.username} ${user.firstName} ${user.lastName}">
+                            <c:if test="${empty user.avatar}">
+                                <img class="nomargin avatar"
+                                     src="/img/default_image_profile.png">
+                            </c:if>
+                            <c:if test="${not empty user.avatar}">
+                                <img class="nomargin avatar"
+                                     src="/tatami/avatar/${user.avatar}/photo.jpg"
+                                     alt="@${user.username} ${user.firstName} ${user.lastName}">
+                            </c:if>
                         </a>
                         <div class="profile-title">
                           <div>
@@ -135,14 +143,15 @@
 <jsp:include page="includes/templates-profile.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
-<sec:authentication property="principal.username" var="login"/>
+<sec:authentication property="principal.username" var="currentUserLogin"/>
 <script type="text/javascript">
+    var login = "<sec:authentication property="principal.username"/>";
     var test = "${user.login}";
     var username = "${user.username}";
     var authenticatedUsername = "${authenticatedUsername}";
     var page = "profile";
     var followed = ${followed};
-    var owner = ${user.login eq login};
+    var owner = ${user.login eq currentUserLogin};
 
     var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
 </script>

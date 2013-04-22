@@ -20,14 +20,6 @@ Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
 
 Current build status is available on [BuildHive](https://buildhive.cloudbees.com/job/ippontech/job/tatami/) : [![Build Status](https://buildhive.cloudbees.com/job/ippontech/job/tatami/badge/icon)](https://buildhive.cloudbees.com/job/ippontech/job/tatami/)
 
-Tatami Bot
------------------
-
-The Tatami Bot is an optional software, which fetches data over your company's Intranet and on the Internet, and aggregates
-this data on Tatami.
-
-More information on the [Tatami Bot homepage](https://github.com/ippontech/tatami-bot).
-
 Installation for developpers
 ---------------------------------------
 
@@ -74,6 +66,8 @@ Installation for production use
 
 ### Tatami installation
 
+In order to use a stable version, use one of the [available tags](https://github.com/ippontech/tatami/tags).
+
 Tatami can be configured with the src/main/resources/META-INF/tatami/tatami.properties file. You can configure this file in 2 ways :
 
 - Edit the file in your own Tatami fork
@@ -87,6 +81,13 @@ To deploy Tatami :
 - The WAR file will be called "root.war", as Tatami should be run as the root application (on the "/" Web context)
 - Deploy the WAR file on your favorite Java EE server
 - The WAR has been tested on Jetty 8 and Tomcat 7, and should work fine on all Java EE servers
+
+Upgrading from a previous version
+---------------------------------------
+
+Upgrading is normally just a matter of using a newer version of the application.
+
+Sometimes, you will need to update the Cassandra keyspace: upgrade scripts are available in the src/main/cql/upgrade directory.
 
 Launching stress tests
 ---------------------------------------

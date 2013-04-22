@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
@@ -33,6 +34,7 @@ public class MentionsController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<StatusDTO> listMentionStatus(@RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String since_id,
                                                    @RequestParam(required = false) String max_id) {

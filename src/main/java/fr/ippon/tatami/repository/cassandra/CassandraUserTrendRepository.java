@@ -9,8 +9,6 @@ import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -31,8 +29,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  */
 @Repository
 public class CassandraUserTrendRepository implements UserTrendRepository {
-
-    private final Log log = LogFactory.getLog(CassandraUserTrendRepository.class);
 
     private final static int COLUMN_TTL = 60 * 60 * 24 * 90; // The column is stored for 90 days.
 
@@ -86,7 +82,7 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
                 .execute()
                 .get();
         Map<String, String> result = new HashMap<String, String>();
-        String tag = null;
+        String tag;
         for (HColumn<UUID, String> column : query.getColumns()) {
             tag = column.getValue();
             result.put(tag.toLowerCase(), tag);

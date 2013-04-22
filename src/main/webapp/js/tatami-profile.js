@@ -1,4 +1,3 @@
-
 _.templateSettings = {
     interpolate: /<\@\=(.+?)\@\>/gim,
     evaluate: /<\@(.+?)\@\>/gim
@@ -89,175 +88,6 @@ app.View.ProfileUpdateView = Backbone.View.extend({
     return $(this.el);
   }
 });
-/*
-  Status
-*/
-app.View.StatusNewView = Backbone.View.extend({
-  template: _.template($('#timeline-new').html()),
-  progressTemplate: _.template($('#timeline-progress').html()),
-
-  initialize: function(){
-  },
-
-  events: {
-    'click': 'newStatus'
-  },
-
-  newStatus: function(done, context){
-    this.progress();
-    var self = this;
-    if(this.model.length === 0)
-      this.model.fetch({
-        data: {
-          screen_name: self.model.options.username
-        },
-        success: function(){
-          self.render();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    else{
-      var sc = this.model.clone();
-      sc.off();
-      sc.url = this.model.url;
-
-      sc.fetch({
-        data: {
-          since_id: self.model.first().get('timelineId'),
-          screen_name: self.model.options.username
-        },
-        success: function(){
-          sc.models.reverse();
-          sc.models.forEach(function(model, key) {
-            self.model.unshift(model);
-          });
-          self.render();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    }
-  },
-
-  render: function() {
-    var $el = $(this.el);
-    $el.html(this.template());
-    this.delegateEvents();
-    return $(this.el);
-  },
-
-  progress: function() {
-    $(this.el).html(this.progressTemplate());
-    this.undelegateEvents();
-    return $(this.el);
-  }
-
-});
-
-app.View.StatusNextView = Backbone.View.extend({
-  template: _.template($('#timeline-next').html()),
-  progressTemplate: _.template($('#timeline-progress').html()),
-
-  initialize: function(){
-    $(this.el).infinitiScroll();
-  },
-
-  events: {
-    'click': 'nextStatus'
-  },
-
-  nextStatus: function(done, context){
-    this.progress();
-    var self = this;
-    if(this.model.length === 0)
-      this.model.fetch({
-        data: {
-          screen_name: self.model.options.username
-        },
-        success: function(){
-          if(self.model.length > 0)
-            self.render();
-          else
-            self.remove();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    else{
-      var sc = this.model.clone();
-      sc.off();
-      sc.url = this.model.url;
-
-      sc.fetch({
-        data: {
-          max_id: self.model.last().get('timelineId'),
-          screen_name: self.model.options.username
-        },
-        success: function(){
-          sc.models.forEach(function(model, key) {
-            self.model.push(model);
-          });
-          if(sc.length > 0)
-            self.render();
-          else
-            self.remove();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    }
-  },
-
-  render: function() {
-    var $el = $(this.el);
-    $el.html(this.template());
-    this.delegateEvents();
-    return $(this.el);
-  },
-
-  progress: function() {
-    $(this.el).html(this.progressTemplate());
-    this.undelegateEvents();
-    return $(this.el);
-  }
-
-});
-
-app.View.StatusListView = Backbone.View.extend({
-  initialize: function() {
-    this.model.options = { username : this.options.username };
-    this.views = {};
-
-    this.views.news = new app.View.StatusNewView({
-      model: this.model
-    });
-    this.views.list = new app.View.TimeLineView({
-      model: this.model
-    });
-    this.views.next = new app.View.StatusNextView({
-      model: this.model
-    });
-
-    this.views.next.nextStatus();
-
-    this.on('new', this.views.news.newStatus, this.views.news);
-    this.on('next', this.views.next.nextStatus, this.views.next);
-  },
-
-  render: function() {
-
-    $(this.el).empty();
-    $(this.el).append(this.views.news.render());
-    $(this.el).append(this.views.list.$el);
-    $(this.el).append(this.views.next.render());
-    return $(this.el);
-  }
-});
 
 /*
   Followers & Followed
@@ -284,9 +114,6 @@ app.Collection.FollowedCollection = Backbone.Collection.extend({
 app.View.UserItemView = Backbone.View.extend({
   template: _.template($('#user-item').html()),
 
-  initialize: function() {
-    
-  },
   render: function() {
     var $el = $(this.el);
     $el.html(this.template({user:this.model.toJSON()}));
@@ -350,7 +177,6 @@ app.View.StatusView = Backbone.View.extend({
         self.views.item.detailsAction();
       }
     });
-    
   },
   render: function() {
     $(this.el).html(this.views.item.render());
@@ -411,7 +237,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       followed: followed,
       owner: owner
     });
-    
+
     app.views.isfollowMe = new app.View.isFollowMe({
       authenticateUser: authenticatedUsername,
       currrentUser : username
@@ -421,7 +247,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
       el : $('.profile-infos'),
       model : new app.Model.ProfileModel()
     });
-    
+
     app.views.update = new app.View.ProfileUpdateView();
     $('#is-follow-you').html(app.views.isfollowMe.render());
     $('#follow-action').html(app.views.followButton.render());
@@ -430,7 +256,7 @@ app.Router.ProfileRouter = Backbone.Router.extend({
           $(this).css("height", "200px");
           $("#updateStatusBtn").fadeIn();
       });
-      
+
       $("#updateStatusContent").typeahead(new Suggester($("#updateStatusContent")));
 
       $("#fullSearchText").typeahead(new SearchEngine($("#fullSearchText")));
@@ -473,10 +299,9 @@ app.Router.ProfileRouter = Backbone.Router.extend({
 
     if(!app.views.status) {
       var statuscollection = new app.Collection.StatusCollection();
-      statuscollection.url = '/tatami/rest/statuses/user_timeline';
-      app.views.status = new app.View.StatusListView({
-        model: statuscollection,
-        username : username
+      statuscollection.url = '/tatami/rest/statuses/' + username + '/timeline';
+      app.views.status = new app.View.TimeLinePanelView({
+        model: statuscollection
       });
     }
     $('#tab-content').html(app.views.status.render());

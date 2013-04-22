@@ -5,10 +5,7 @@ import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.multipart.MultipartResolver;
@@ -18,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -40,6 +36,7 @@ import java.util.List;
 @EnableWebMvc
 @PropertySource({"classpath:/META-INF/tatami/tatami.properties",
         "classpath:/META-INF/tatami/customization.properties"})
+@ImportResource("classpath:META-INF/spring/applicationContext-metrics.xml")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     private final Log log = LogFactory.getLog(DispatcherServletConfig.class);
@@ -75,8 +72,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public SessionLocaleResolver localeResolver() {
-        SessionLocaleResolver resolver = new SessionLocaleResolver();
-        return resolver;
+        return new SessionLocaleResolver();
     }
 
     @Bean
@@ -108,13 +104,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
+        Object[] interceptors = {localeChangeInterceptor()};
+        requestMappingHandlerMapping.setInterceptors(interceptors);
         return requestMappingHandlerMapping;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-        super.addInterceptors(registry);
     }
 
     @Override

@@ -42,18 +42,17 @@
             </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group dashed">
             <label class="control-label">
                 <fmt:message key="tatami.user.picture"/>
             </label>
 
             <div class="controls">
-                <img class="nomargin avatar" src="https://www.gravatar.com/avatar/<@= user.gravatar @>?s=64&d=mm"/>
-                <br/>
-                <fmt:message
-                        key="tatami.user.picture.legend"/><br/><a
-                    href="https://www.gravatar.com"
-                    target="_blank">https://www.gravatar.com</a>
+                <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
+                <div id="updateAvatar"  class="btn btn-info btn-mini">
+                    <p><fmt:message key="tatami.user.picture.button" /></p>
+                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+                </div>
             </div>
         </div>
 
@@ -280,7 +279,13 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <img class="avatar avatar-small"
+            <@ if (avatar == null) { @>
+                src="/img/default_image_profile.png"
+            <@ } else { @>
+                src="/tatami/avatar/<@= avatar @>/photo.jpg"
+            <@ } @>
+         alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
@@ -539,40 +544,6 @@
     </td>
 </script>
 
-<script type="text/template" id="usergroup-header">
-    <tr>
-        <th><fmt:message key="tatami.username"/></th>
-        <th><fmt:message key="tatami.user.lastName"/></th>
-        <th><fmt:message key="tatami.group.role"/></th>
-    </tr>
-</script>
-
-<script type="text/template" id="usergroup-item">
-    <td>
-        <img class="avatar  avatar-small" src="https://www.gravatar.com/avatar/<@=gravatar@>?s=32&d=mm" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
-        <a href="/tatami/profile/<@= username @>/">
-            <@= username @>
-        </a>
-    </td>
-    <td>
-        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
-    </td>
-    <td>
-        <@ if(role === 'ADMIN'){ @>
-            <fmt:message key="tatami.group.role.admin"/>
-        <@ } else { @>
-            <fmt:message key="tatami.group.role.member"/>
-        <@ } @>
-    </td>
-    <td>
-        <@ if (window.username !== username) { @>
-            <button type="button" class="btn btn-success input-block-level delete">
-                <fmt:message key="tatami.group.edit.member.delete"/>
-            </button>
-        <@ } @>
-    </td>
-</script>
-
 <script type="text/template" id="files-quota">
 
     <div class="progress">
@@ -603,7 +574,7 @@
 </script>
 
 <script type="text/template" id="files-item">
-    <td><@= filename @></td>
+    <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
     <td><@= (size/1000) @> kb</td>
     <td><@= prettyPrintCreationDate @> </td>
     <td>

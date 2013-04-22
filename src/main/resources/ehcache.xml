@@ -50,10 +50,12 @@
            timeToLiveSeconds="1800">
     </cache>
 
+    <cache name="avatar-cache"
+           timeToIdleSeconds="1800"/>
+
     <cache name="attachment-cache"
            maxBytesLocalHeap="75%"
-           timeToIdleSeconds="600">
-    </cache>
+           timeToIdleSeconds="600"/>
 
 </ehcache>
 

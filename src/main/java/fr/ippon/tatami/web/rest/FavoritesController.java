@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
@@ -33,6 +34,7 @@ public class FavoritesController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<StatusDTO> listFavoriteStatus() {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get the favorite status of the current user.");

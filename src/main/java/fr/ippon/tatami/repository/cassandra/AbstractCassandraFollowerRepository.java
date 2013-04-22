@@ -21,7 +21,7 @@ import java.util.Collection;
  */
 public abstract class AbstractCassandraFollowerRepository {
 
-    ColumnFamilyTemplate<String, String> template;
+    private ColumnFamilyTemplate<String, String> template;
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -36,18 +36,18 @@ public abstract class AbstractCassandraFollowerRepository {
         template.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
-    protected void addFollower(String key, String followerKey) {
+    void addFollower(String key, String followerKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(key, getFollowersCF(), HFactory.createColumn(followerKey,
                 Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
     }
 
-    protected void removeFollower(String key, String followerKey) {
+    void removeFollower(String key, String followerKey) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(key, getFollowersCF(), followerKey, StringSerializer.get());
     }
 
-    protected Collection<String> findFollowers(String key) {
+    Collection<String> findFollowers(String key) {
         ColumnFamilyResult<String, String> result = template.queryColumns(key);
         Collection<String> followers = new ArrayList<String>();
         for (String columnName : result.getColumnNames()) {

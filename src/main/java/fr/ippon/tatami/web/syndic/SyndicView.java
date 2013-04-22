@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.ippon.tatami.web.syndic;
 
 import com.sun.syndication.feed.rss.Channel;
@@ -29,12 +25,8 @@ import java.util.regex.Pattern;
  */
 public class SyndicView extends AbstractRssFeedView {
 
-
     private final Log log = LogFactory.getLog(SyndicView.class);
 
-    /**
-     * @param model
-     */
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) {
         // this is mandatory: a feed with no title is invalid and is not rendered 
@@ -62,6 +54,7 @@ public class SyndicView extends AbstractRssFeedView {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
         List<Item> items = new ArrayList<Item>();
         Collection<StatusDTO> listContent = (Collection<StatusDTO>) model.get("feedContent");
@@ -103,11 +96,10 @@ public class SyndicView extends AbstractRssFeedView {
         return items;
     }
 
-
     /**
      * convert #tag and @mention to html links
      *
-     * @param htmlText
+     * @param htmlText the original text
      * @return html with converted links
      */
     private String convertLinks(String htmlText) {
@@ -130,6 +122,4 @@ public class SyndicView extends AbstractRssFeedView {
         m.appendTail(tagSb);
         return tagSb.toString();
     }
-
-
 }

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.User;
@@ -11,6 +12,7 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -55,6 +57,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public SearchResults search(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
         SearchResults searchResults = new SearchResults();
         searchResults.setTags(this.searchRecentTags(q));
@@ -71,6 +74,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<StatusDTO> listStatusForUser(@RequestParam(value = "q", required = false, defaultValue = "") String query,
                                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
@@ -81,10 +85,10 @@ public class SearchController {
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Map<String, SharedStatusInfo> line;
-        if (query != null && !query.equals("")) {
+        if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
         } else {
-            line = new HashMap<String, SharedStatusInfo>();
+            line = Collections.emptyMap();
         }
         return timelineService.buildStatusList(line);
     }
@@ -99,6 +103,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<String> searchRecentTags(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -124,6 +129,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<Group> searchGroups(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -153,6 +159,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Metered
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {

@@ -75,4 +75,12 @@ public class ColumnFamilyKeys {
 
     public final static String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
 
+    public final static String DOMAINLINE_CF = "Domainline";
+
+    public final static String DOMAIN_TATAMIBOT_CF = "DomainTatamibot";
+
+    public final static String TATAMIBOT_CONFIGURATION_CF = "TatamibotConfiguration";
+
+    public final static String AVATAR_CF = "Avatar";
+
 }

@@ -62,14 +62,29 @@ app.View.UpdateView = Backbone.View.extend({
   searchChar: '',
 
   initialize: function() {
-    $(this.el).addClass('row-fluid');
+      this.$el.addClass('row-fluid');
       this.groupsCollection = new app.Collection.GroupsCollection();
       this.groupsCollection.fetch();
       this.groupsCollection.bind("reset", this.render, this);
   },
 
   events: {
-    'submit': 'addStatus'
+    'submit': 'addStatus',
+    'change #updateStatusContent': 'storeStatus',
+    'change #updateStatusGroup': 'storeStatus',
+    'change #statusPrivate': 'storeStatus'
+  },
+
+  storeStatus: function(e){
+      var elem = e.target.id
+
+          if(elem == 'updateStatusContent'){
+              window.localStorage.setItem('status', e.target.value);
+          } else if(elem == 'updateStatusGroup'){
+              window.localStorage.setItem('statusGroup', e.target.value);
+          } else if(elem == 'statusPrivate'){
+              window.localStorage.setItem('statusPrivate', e.target.checked);
+          }
   },
 
   addStatus: function(e) {
@@ -88,6 +103,10 @@ app.View.UpdateView = Backbone.View.extend({
     });
     status.save(null,{
       success: function(model, response) {
+          window.localStorage.removeItem('status');
+          window.localStorage.removeItem('statusGroup');
+          window.localStorage.removeItem('statusPrivate');
+          $("#statusPrivate").attr('checked', false);
           e.target.reset();
           $(self.el).find('.control-group').removeClass('error');
           $('#updateStatusEditorTab a[href="#updateStatusEditPane"]').tab('show');
@@ -130,28 +149,38 @@ app.View.UpdateView = Backbone.View.extend({
     $el.html(this.template({
         groupsCollection: this.groupsCollection}));
 
-      $("#updateStatusContent").focus(function () {
-          $(this).css("height", "200px");
-          $("#updateStatusPreview").css("height", "220px");
-          $("#updateStatusEditorTab").fadeIn();
-          $("#contentGroup").fadeIn();
-          $("#contentGroup #updateStatusGroup").val(currentGroup);
-          $("#updateStatusPrivate").fadeIn();
-          $("#updateStatusBtns").fadeIn();
-          $("#dropzone").fadeIn();
+      $("#updateStatusContent").click(function () {
+          if($(this).css("height") == "30px"){
+              $(this).css("height", "150px");
+              $("#updateStatusPreview").css("height", "150px");
+              $("#updateStatusEditorTab").fadeIn();
+              $("#contentGroup").fadeIn();
+              $("#contentGroup #updateStatusGroup").val(currentGroup);
+              $("#updateStatusPrivate").fadeIn();
+              $("#updateStatusBtns").fadeIn();
+              $("#dropzone").fadeIn();
+
+              $(this).val(window.localStorage.getItem('status'));
+              if(currentGroup == "") {
+                  $("#contentGroup #updateStatusGroup").val(window.localStorage.getItem('statusGroup'));
+              }
+              if (window.localStorage.getItem('statusPrivate') == "true") {
+                  $("#statusPrivate").attr('checked', true);
+              }
+          }
+      });
+
+      $('#profileContent').mouseleave(function () {
+          if ($("#updateStatusContent").val().length === 0) {
+              window.localStorage.removeItem('status');
+              $("#updateStatusContent").css("height", "30px");
+          }
       });
 
       $('a[data-toggle="tab"]').on('show', function (e) {
           if (e.target.id === 'updateStatusPreviewTab') {
             $('#updateStatusPreview').html(
                 marked($("#updateStatusContent").val()));
-          }
-      });
-
-      $("#updateStatusContent").blur(function(){
-          if($(this).val().length === 0){
-              $(this).css("height", "20px");
-              $("#updateStatusEditorTab, #dropzone, #updateStatusBtns, #updateStatusPrivate, #contentGroup").hide();
           }
       });
 
@@ -395,236 +424,6 @@ app.View.FollowView = Backbone.View.extend({
 });
 
 /*
-  Timeline
-*/
-
-app.View.TimeLineNewView = Backbone.View.extend({
-  template: _.template($('#timeline-new').html()),
-  progressTemplate: _.template($('#timeline-progress').html()),
-
-  initialize: function(){
-    this.temp = new app.Collection.StatusCollection();
-
-    $(this.el).find("abbr.timeago").timeago();
-
-    this.endRefresh();
-  },
-
-  events: {
-    'click': 'newStatus'
-  },
-
-  startRefresh: function(){
-    if(typeof this.options.refresh === 'undefined')
-      this.refresh();
-    else
-      _.defer(this.options.refresh);
-  },
-
-  endRefresh: function(){
-    this.options.refresh = _.once(_.bind(this.refresh, this));
-    _.delay(this.options.refresh, this.options.interval); // this.options.interval
-  },
-
-  refresh: function(callback){
-    var self = this;
-
-    var sc = this.model.clone();
-    sc.off();
-    sc.url = this.model.url;
-
-    var data = {};
-    if( typeof this.temp.first() !== 'undefined')
-      data.since_id = this.temp.first().get('timelineId');
-    else if(typeof this.model.first() !== 'undefined')
-      data.since_id = this.model.first().get('timelineId');
-
-    sc.fetch({
-      data:data,
-      success:function (model, response) {
-        if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
-          // if the answer is not an array, the session must have expired
-          $(location).attr('href', '/tatami/login?timeout');
-        }
-        while (sc.length > 0) {
-          self.temp.unshift(sc.pop());
-        }
-        self.render();
-        
-        self.trigger('callbackRefresh');
-        self.endRefresh();
-      },
-      error:function () {
-        self.render();
-        self.trigger('callbackRefresh');
-        self.endRefresh();
-      },
-      statusCode: {
-        302: function() {
-          $(location).attr('href', '/tatami/login?timeout');
-        }
-      }
-    });
-  },
-
-  newStatus: function() {
-    NotificationManager.setAllowNotification();
-    this.progress();
-    var self = this;
-    if (this.model.length === 0) {
-      this.model.fetch({
-        success:function () {
-          self.render();
-        },
-        error:function () {
-          self.render();
-        }
-      });
-    } else {
-      var callback = _.once(_.bind(this.newStatusCallback, this));
-      this.on('callbackRefresh', callback);
-      this.startRefresh();
-    }
-  },
-
-  newStatusCallback: function(){
-    while (this.temp.length > 0)
-      this.model.unshift(this.temp.pop());
-    this.render();
-  },
-
-  render: function() {
-    var $el = $(this.el);
-    $el.html(this.template({status: this.temp.length}));
-    this.delegateEvents();
-
-    // filter out non-status (disconnection) and statuses from current user
-    var statuses =  _.filter(this.temp.models,
-          function(s) { return s != undefined && s.attributes.username != undefined && s.attributes.username != username});
-    if (statuses.length > 0) {
-        // Update Title
-      document.title = "Tatami (" + this.temp.length + ")";
-      var notificationText = "";
-      if (statuses.length == 1) {
-        notificationText = "1 unread status";
-      } else {
-        notificationText = (statuses.length) + " unread statuses";
-      }
-      NotificationManager.setNotification("Tatami notification", notificationText, true);
-    } else {
-        document.title = "Tatami";
-    }
-
-    return $(this.el);
-  },
-
-  progress: function() {
-    $(this.el).html(this.progressTemplate());
-    this.undelegateEvents();
-    return $(this.el);
-  }
-
-});
-
-app.View.TimeLineNextView = Backbone.View.extend({
-  template: _.template($('#timeline-next').html()),
-  progressTemplate: _.template($('#timeline-progress').html()),
-
-  initialize: function(){
-    $(this.el).infinitiScroll();
-  },
-
-  events: {
-    'click': 'nextStatus'
-  },
-
-  nextStatus: function(done, context){
-    this.progress();
-    var self = this;
-    if(this.model.length === 0)
-      this.model.fetch({
-        success: function(){
-          if(self.model.length > 0)
-            self.render();
-          else
-            self.remove();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    else{
-      var sc = this.model.clone();
-      sc.off();
-      sc.url = this.model.url;
-
-      sc.fetch({
-        data: {
-          max_id: this.model.last().get('timelineId')
-        },
-        success: function(){
-          sc.forEach(self.model.push, self.model);
-          if(sc.length > 0)
-            self.render();
-          else
-            self.remove();
-        },
-        error: function() {
-          self.render();
-        }
-      });
-    }
-  },
-
-  render: function() {
-    var $el = $(this.el);
-    $el.html(this.template());
-    this.delegateEvents();
-
-    return $(this.el);
-  },
-
-  progress: function() {
-    $(this.el).html(this.progressTemplate());
-    this.undelegateEvents(); return $(this.el); }
-
-});
-
-app.View.TimeLinePanelView = Backbone.View.extend({
-
-  initialize: function(){
-    this.views = {};
-    this.views.timeline = new app.View.TimeLineView({
-      model : this.model
-    });
-    this.views.news = new app.View.TimeLineNewView({
-      interval: 20000,
-      model : this.model
-    });
-    this.views.next = new app.View.TimeLineNextView({
-      model : this.model
-    });
-
-    this.views.next.nextStatus();
-
-    this.on('refresh', this.views.news.newStatus, this.views.news);
-    this.on('next', this.views.next.nextStatus, this.views.next);
-
-    app.on('refreshTimeline', this.views.news.newStatus, this.views.news);
-  },
-
-  render: function() {
-    $(this.el).empty();
-    $(this.el).append(this.views.news.render());
-    $(this.el).append(this.views.timeline.render());
-    $(this.el).append(this.views.next.render());
-
-    return $(this.el);
-  }
-
-});
-
-/*
   Mentions
  */
 app.View.MentionView = Backbone.View.extend({
@@ -819,14 +618,116 @@ app.View.GroupDetailsView = Backbone.View.extend({
         });
         $("#groupsList li").removeClass("active");
         $("#group-list-" + this.model.groupId).addClass("active");
+
+        this.views = {};
+
+        var collection = new app.Collection.ListUserGroupCollection();
+        collection.options = {
+            groupId : this.options.groupId
+        };
+
+        this.views.memberList = new app.View.ListUserGroup({
+            collection : collection,
+            groupId : this.options.groupId,
+            admin : false
+        });
+
+        this.views.buttonJoin = new app.View.ButtonJoinGroup({
+          groupId : this.options.groupId
+        });
     },
 
     render: function() {
         $(this.el).html(this.template({
             group: this.model}));
 
+        this.$el.find('#group-list-member .modal-body').html(this.views.memberList.el);
+
+        this.views.memberList.collection.fetch();
+
+        this.$el.find('.bouton-join-group').append(this.views.buttonJoin.el);
+
         return $(this.el);
     }
+});
+
+app.View.ButtonJoinGroup = Backbone.View.extend({
+  tagName : 'button',
+  attributes: {
+    class: 'btn'
+  },
+  template : {
+    join: _.template($('#button-join-group-join').html()),
+    left: _.template($('#button-join-group-left').html()),
+    admin: _.template($('#button-join-group-admin').html())
+  },
+  initialize: function(){
+    var self = this;
+
+    this.model = new app.Model.ListUserGroupModel();
+    this.model.options = {
+      groupId : this.options.groupId,
+      username : username
+    };
+    this.model.url = function(){
+      return "/tatami/rest/groups/" + this.options.groupId + "/members/" + this.options.username;
+    };
+
+    window.model = this.model;
+
+    this.model.fetch({
+      success: function(model){
+        self.render();
+      }
+    });
+  },
+
+  events : {
+    'click': 'onClick'
+  },
+
+  onClick: function(e){
+    var self = this;
+    if (this.model.get('role') === 'ADMIN') {
+      window.location.href = '/tatami/account/#/groups/' + this.options.groupId;
+      return;
+    }
+    if (this.model.get('isMember')){
+      this.model.destroy({
+        success: function(){
+          self.model.set('isMember', false);
+          self.render();
+        }
+      });
+    }
+    else {
+      this.model.save(null, {
+        success: function(){
+          self.model.set('isMember', true);
+          self.render();
+        }
+      });
+    }
+  },
+
+  render: function(){
+    if (this.model.get('role') === 'ADMIN') {
+      this.$el.addClass('btn-primary');
+      this.$el.text(this.template.admin());
+    }
+    else {
+      if (this.model.get('isMember')) {
+        this.$el.addClass('btn-danger');
+        this.$el.text(this.template.left());
+      }
+      else {
+        this.$el.removeClass('btn-danger');
+        this.$el.text(this.template.join());
+      }
+    }
+
+    return this;
+  }
 });
 
 app.View.GroupsView = Backbone.View.extend({
@@ -868,7 +769,7 @@ Tags
 app.View.TagsSearchView = Backbone.View.extend({
   tagfollow: _.template($('#tag-search-form-follow').html()),
   tagfollowed: _.template($('#tag-search-form-followed').html()),
-  
+
   tagName: 'form',
 
   events: {
@@ -880,7 +781,7 @@ app.View.TagsSearchView = Backbone.View.extend({
   initialize: function(){
 
     $(this.el).addClass('alert alert-status');
-    
+
     var self = this;
     this.model.url = function() {
       if(self.options.tag && self.options.tag !== '')
@@ -888,7 +789,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       else
         return '/tatami/rest/statuses/tag_timeline';
     };
-    
+
     this.set(this.options.tag);
   },
 
@@ -920,12 +821,12 @@ app.View.TagsSearchView = Backbone.View.extend({
   set: function(tag) {
 
     var _this = this;
-    
+
     if(typeof tag === 'undefined' || tag === ''){
       this.emptyRender();
-      
+
     }else {
-      
+
       return $.get('/tatami/rest/tagmemberships/lookup', {tag_name:tag}, function (data) {
         var followed = data.followed;
         if(followed) {
@@ -937,9 +838,9 @@ app.View.TagsSearchView = Backbone.View.extend({
       });
     }
   },
-  
+
   follow: function(){
-    
+
     var _this = this;
     this.undelegateEvents();
 
@@ -956,7 +857,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       }
     });
   },
-  
+
   unfollow: function(){
 
     var _this = this;
@@ -975,7 +876,7 @@ app.View.TagsSearchView = Backbone.View.extend({
       }
     });
   },
-  
+
   followedRender: function() {
     $(this.el).html(this.tagfollowed({tag: this.options.tag}));
   },
@@ -989,7 +890,7 @@ app.View.TagsSearchView = Backbone.View.extend({
 
   render: function () {
     var trends = new app.View.TrendsView();
-    
+
     if(this.model.fetch().length > 0)
     {
       $(this.el).append(trends.$el);
@@ -1004,15 +905,15 @@ app.View.TagsSearchView = Backbone.View.extend({
 app.View.TagsRefreshView = Backbone.View.extend({
   template: _.template($('#tag-refresh').html()),
   progressTemplate: _.template($('#timeline-progress').html()),
-  
+
   initialize: function(){
-    
+
   },
-  
+
   events: {
     'click': 'refreshTags'
   },
-  
+
   refreshTags: function(){
     this.progress();
     var self = this;
@@ -1025,14 +926,14 @@ app.View.TagsRefreshView = Backbone.View.extend({
       }
     });
   },
-  
+
   render: function() {
     var $el = $(this.el);
     $el.html(this.template());
     this.delegateEvents();
     return $(this.el);
   },
-  
+
   progress: function() {
     $(this.el).html(this.progressTemplate());
     this.undelegateEvents();
@@ -1043,7 +944,7 @@ app.View.TagsRefreshView = Backbone.View.extend({
 
 
 app.View.TagsView = Backbone.View.extend({
-  
+
     initialize:function () {
         this.views = {};
 
@@ -1052,7 +953,7 @@ app.View.TagsView = Backbone.View.extend({
         this.views.refresh = new app.View.TagsRefreshView({
           model:this.model
         });
-        
+
         this.views.search = new app.View.TagsSearchView({
             tag:this.options.tag,
             model:this.model

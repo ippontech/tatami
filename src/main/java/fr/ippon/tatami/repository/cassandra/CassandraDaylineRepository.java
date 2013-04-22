@@ -10,8 +10,6 @@ import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceCounterQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -34,8 +32,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createCounterSliceQuery
  */
 @Repository
 public class CassandraDaylineRepository implements DaylineRepository {
-
-    private final Log log = LogFactory.getLog(CassandraDaylineRepository.class);
 
     @Inject
     private Keyspace keyspaceOperator;
@@ -61,7 +57,7 @@ public class CassandraDaylineRepository implements DaylineRepository {
         CounterSlice<String> queryResult = query.execute().get();
 
         for (HCounterColumn<String> column : queryResult.getColumns()) {
-            UserStatusStat stat = new UserStatusStat(column.getName().toString(), column.getValue());
+            UserStatusStat stat = new UserStatusStat(column.getName(), column.getValue());
             results.add(stat);
         }
         return results;

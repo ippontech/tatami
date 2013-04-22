@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.controller;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Julien Dubois
@@ -45,7 +47,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(required = false) String action) {
+    public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("action", action);
         return mv;
@@ -78,10 +80,19 @@ public class HomeController {
             log.warn("Automatic registration should not have been called.");
             return "redirect:/tatami/login";
         }
+        if (email == null || email.equals("")) {
+            return "redirect:/tatami/login";
+        }
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("User " + email + " already exists.");
+            }
+            return "redirect:/tatami/login";
+        }
+        if (email.equals(Constants.TATAMIBOT_NAME)) {
+            if (log.isDebugEnabled()) {
+                log.debug("E-mail " + email + " can only be used by the Tatami Bot.");
             }
             return "redirect:/tatami/login";
         }
@@ -122,8 +133,6 @@ public class HomeController {
      * to the jsp named [subpath].jsp.
      * <p/>
      * It allows adding easily new pages with tatamiCustomization
-     *
-     * @param subPath
      */
     @RequestMapping(value = "/{subPath}", method = RequestMethod.GET)
     public String anyOtherSubPath(@PathVariable String subPath) {

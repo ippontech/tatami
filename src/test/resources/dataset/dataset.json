@@ -11,8 +11,8 @@
                     "key":"jdubois@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -28,8 +28,8 @@
                     "key":"uuser@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -45,8 +45,8 @@
                     "key":"userWhoWantToFollow@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -62,8 +62,8 @@
                     "key":"userWhoWillBeFollowed@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -79,8 +79,8 @@
                     "key":"userWhoFollow@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -96,8 +96,8 @@
                     "key":"userWhoIsFollowed@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -113,8 +113,8 @@
                     "key":"userWhoWantToForget@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -130,8 +130,8 @@
                     "key":"userToForget@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -155,8 +155,8 @@
                             "value":"ippon.fr"
                         },
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -180,8 +180,8 @@
                             "value":"ippon.fr"
                         },
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -197,8 +197,8 @@
                     "key":"userWhoReadStatus@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -214,8 +214,8 @@
                     "key":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
                     "columns":[
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -239,8 +239,8 @@
                             "value":"ippon.fr"
                         },
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -264,8 +264,8 @@
                             "value":"ippon.fr"
                         },
                         {
-                            "name":"gravatar",
-                            "value":"gravatar"
+                            "name":"avatar",
+                            "value":"avatar"
                         },
                         {
                             "name":"firstName",
@@ -711,6 +711,12 @@
             ]
         },
         {
+            "name":"Domainline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
             "name":"Status",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
@@ -815,21 +821,58 @@
             ]
         },
         {
+            "name":"Group",
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"GroupCounter",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"CounterColumnType"
+        },
+        {
+            "name":"GroupDetails",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
             "name":"UserGroups",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
-            "defaultColumnValueType":"UTF8Type",
-            "rows":[
-                {
-                    "key":"jdubois@ippon.fr",
-                    "columns":[
-                        {
-                            "name":"group1",
-                            "value":""
-                        }
-                    ]
-                }
-            ]
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"GroupMembers",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Trends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"UserTrends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"TagCounter",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"CounterColumnType"
+        },
+        {
+            "name":"Mentionline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
         }
     ]
 }

@@ -1,13 +1,20 @@
 package fr.ippon.tatami.web.fileupload;
 
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.Avatar;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.AttachmentService;
+import fr.ippon.tatami.service.AvatarService;
+import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 import org.apache.log4j.Logger;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -21,7 +28,7 @@ import java.util.List;
 @Controller
 public class FileController {
 
-    private static Logger log = Logger.getLogger(FileController.class);
+    private static final Logger log = Logger.getLogger(FileController.class);
 
     private static final String HEADER_EXPIRES = "Expires";
 
@@ -29,9 +36,9 @@ public class FileController {
 
     private static final int CACHE_SECONDS = 60 * 60 * 24 * 30;
 
-    private static String HEADER_ETAG = "ETag";
+    private static final String HEADER_ETAG = "ETag";
 
-    private static String HEADER_IF_NONE_MATCH = "If-None-Match";
+    private static final String HEADER_IF_NONE_MATCH = "If-None-Match";
 
     private String tatamiUrl;
 
@@ -41,16 +48,27 @@ public class FileController {
     @Inject
     private AttachmentService attachmentService;
 
+    @Inject
+    private AvatarService avatarService;
+
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private UserRepository userRepository;
+
+    @Inject
+    private AuthenticationService authenticationService;
+
     @PostConstruct
     public void init() {
         this.tatamiUrl = env.getProperty("tatami.url");
     }
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
-    public
     @ResponseBody
-    List<UploadedFile> upload(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException, StorageSizeException {
+    public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
@@ -74,10 +92,11 @@ public class FileController {
         return uploadedFiles;
     }
 
-    @RequestMapping(value = "/file/{attachmentId}/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/{attachmentId}/*",
+            method = RequestMethod.GET)
     public void download(@PathVariable("attachmentId") String attachmentId,
                          HttpServletRequest request,
-                         HttpServletResponse response) {
+                         HttpServletResponse response) throws IOException {
 
         // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
@@ -87,6 +106,7 @@ public class FileController {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         if (attachment == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.sendRedirect("/tatami/file/file_not_found");
         } else {
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
@@ -102,10 +122,98 @@ public class FileController {
                 }
             }
         }
+
         try {
             response.flushBuffer();
+        } catch (IOException e) {
+
+            log.info("Error flushing the output stream. " + e.getMessage());
+        }
+
+    }
+
+
+    @RequestMapping(value = "/avatar/{avatarId}/*",
+            method = RequestMethod.GET)
+    public void getAvatar(@PathVariable("avatarId") String avatarId,
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws IOException {
+
+        // Cache the file in the browser
+        response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
+        response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
+
+        // Put the file in the response
+        Avatar avatar = avatarService.getAvatarById(avatarId);
+        if (avatarId == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            // ETag support
+            response.setHeader(HEADER_ETAG, avatarId); // The attachmentId is unique and should not be modified
+            String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
+            if (requestETag != null && requestETag.equals(avatarId)) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            } else {
+                try {
+                    byte[] fileContent = avatar.getContent();
+                    response.getOutputStream().write(fileContent);
+                } catch (IOException e) {
+                    log.info("Error writing file to output stream. " + e.getMessage());
+                }
+            }
+        }
+        try {
+            response.flushBuffer();
+
         } catch (IOException e) {
             log.info("Error flushing the output stream. " + e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/rest/fileupload/avatar",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public List<UploadedFile> uploadAvatar(
+            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+
+        Avatar avatar = new Avatar();
+        avatar.setContent(file.getBytes());
+        avatar.setFilename(file.getOriginalFilename());
+        avatar.setSize(file.getSize());
+        avatar.setCreationDate(new Date());
+
+        avatarService.createAvatar(avatar);
+
+        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        UploadedFile uploadedFile = new UploadedFile(
+                avatar.getAvatarId(),
+                file.getOriginalFilename(),
+                Long.valueOf(file.getSize()).intValue(),
+                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+
+        if (log.isDebugEnabled()) {
+            log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+        }
+
+        uploadedFiles.add(uploadedFile);
+
+        User user = authenticationService.getCurrentUser();
+        user.setAvatar(avatar.getAvatarId());
+
+        userRepository.updateUser(user);
+
+        return uploadedFiles;
+
+    }
+
+    @RequestMapping(value = "/file/file_not_found",
+            method = RequestMethod.GET)
+    public ModelAndView FileNotFound() {
+        if (log.isDebugEnabled()) {
+            log.debug("File not found !");
+        }
+        return new ModelAndView("errors/file_not_found");
+    }
+
+
 }

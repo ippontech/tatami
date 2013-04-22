@@ -6,7 +6,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.service.util.GravatarUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -97,7 +96,7 @@ public class UserService {
      */
     public Collection<User> getUsersByLogin(Collection<String> logins) {
         final Collection<User> users = new ArrayList<User>();
-        User user = null;
+        User user;
         for (String login : logins) {
             user = userRepository.findUserByLogin(login);
             if (user != null) {
@@ -124,7 +123,7 @@ public class UserService {
         user.setLogin(currentUser.getLogin());
         user.setUsername(currentUser.getUsername());
         user.setDomain(currentUser.getDomain());
-        user.setGravatar(GravatarUtil.getHash(user.getLogin()));
+        user.setAvatar(currentUser.getAvatar());
         user.setAttachmentsSize(currentUser.getAttachmentsSize());
         try {
             userRepository.updateUser(user);
@@ -198,13 +197,13 @@ public class UserService {
             user.setPassword(encryptedPassword);
         }
 
-        user.setGravatar(GravatarUtil.getHash(login));
         user.setUsername(username);
         user.setDomain(domain);
         user.setTheme(Constants.DEFAULT_THEME);
         user.setFirstName(StringUtils.defaultString(user.getFirstName()));
         user.setLastName(StringUtils.defaultString(user.getLastName()));
         user.setJobTitle("");
+        user.setAvatar("");
         user.setPhoneNumber("");
         user.setIsNew(true);
         user.setPreferencesMentionEmail(true);
@@ -220,6 +219,20 @@ public class UserService {
 
         if (log.isDebugEnabled()) {
             log.debug("Created User : " + user.toString());
+        }
+    }
+
+    public void createTatamibot(String domain) {
+        String login = DomainUtil.getLoginFromUsernameAndDomain(Constants.TATAMIBOT_NAME, domain);
+        User tatamiBotUser = new User();
+        tatamiBotUser.setLogin(login);
+        this.createUser(tatamiBotUser);
+        tatamiBotUser.setPreferencesMentionEmail(false);
+        tatamiBotUser.setWeeklyDigestSubscription(false);
+        tatamiBotUser.setJobTitle("I am just a robot");
+        userRepository.updateUser(tatamiBotUser);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Tatami Bot user for domain : " + domain);
         }
     }
 
@@ -310,8 +323,6 @@ public class UserService {
 
     /**
      * update registration to weekly digest email.
-     *
-     * @param registration
      */
     public void updateWeeklyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
@@ -338,9 +349,7 @@ public class UserService {
     }
 
     /**
-     * update registration to daily digest email.
-     *
-     * @param registration
+     * Update registration to daily digest email.
      */
     public void updateDailyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
@@ -367,9 +376,8 @@ public class UserService {
     }
 
     /**
-     * activate of de-activate rss publication for the timeline
+     * Activate of de-activate rss publication for the timeline.
      *
-     * @param booleanPreferencesRssTimeline
      * @return the rssUid used for rss publication, empty if no publication
      */
     public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {

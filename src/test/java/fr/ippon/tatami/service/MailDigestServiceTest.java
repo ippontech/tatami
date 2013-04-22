@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Pierre Rust
  */
-
+@SuppressWarnings("unchecked")
 public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
     @Mock
@@ -283,7 +283,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         User authenticateUser = constructAUser(login);
         AuthenticationService mockAuthenticationService = mock(AuthenticationService.class);
         when(mockAuthenticationService.getCurrentUser()).thenReturn(authenticateUser);
-        friendshipService.setAuthenticationService(mockAuthenticationService);
+        ReflectionTestUtils.setField(friendshipService, "authenticationService", mockAuthenticationService);
         ReflectionTestUtils.setField(userService, "authenticationService", mockAuthenticationService);
     }
 

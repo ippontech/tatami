@@ -1,11 +1,13 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
+import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -92,18 +94,28 @@ public class StatusUpdateService {
     private UserRepository userRepository;
 
     @Inject
+    private DomainlineRepository domainlineRepository;
+
+    @Inject
     private StatusAttachmentRepository statusAttachmentRepository;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
-        createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
     }
 
     public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
-        createStatus(content, false, group, "", "", "", attachmentIds);
+        createStatus(content, false, group, "", "", "", attachmentIds, null);
     }
 
-    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException {
+    public void postStatusAsUser(String content, User user) {
+        createStatus(content, false, null, "", "", "", null, user);
+    }
+
+    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
         Status originalStatus = statusRepository.findStatusById(replyTo);
+        if (originalStatus == null) {
+            throw new ReplyStatusException();
+        }
         Group group = null;
         if (originalStatus.getGroupId() != null) {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
@@ -145,7 +157,15 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername) {
 
-        return createStatus(content, statusPrivate, group, discussionId, replyTo, replyToUsername, new ArrayList<String>());
+        return createStatus(
+                content,
+                statusPrivate,
+                group,
+                discussionId,
+                replyTo,
+                replyToUsername,
+                new ArrayList<String>(),
+                null);
     }
 
     private Status createStatus(String content,
@@ -154,7 +174,8 @@ public class StatusUpdateService {
                                 String discussionId,
                                 String replyTo,
                                 String replyToUsername,
-                                Collection<String> attachmentIds) {
+                                Collection<String> attachmentIds,
+                                User user) {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
@@ -162,7 +183,12 @@ public class StatusUpdateService {
             startTime = Calendar.getInstance().getTimeInMillis();
             log.debug("Creating new status : " + content);
         }
-        String currentLogin = authenticationService.getCurrentUser().getLogin();
+        String currentLogin;
+        if (user == null) {
+            currentLogin = authenticationService.getCurrentUser().getLogin();
+        } else {
+            currentLogin = user.getLogin();
+        }
         String username = DomainUtil.getUsernameFromLogin(currentLogin);
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
@@ -188,7 +214,7 @@ public class StatusUpdateService {
         // add status to the timeline
         timelineRepository.addStatusToTimeline(currentLogin, status);
 
-        if (status.getStatusPrivate() == true) { // Private status
+        if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
             manageMentions(status, null, currentLogin, domain, new ArrayList<String>());
 
@@ -214,6 +240,9 @@ public class StatusUpdateService {
 
             // Add to the searchStatus engine
             searchService.addStatus(status);
+
+            // add status to the company wall
+            addToCompanyWall(status, group);
         }
 
         if (log.isDebugEnabled()) {
@@ -245,8 +274,18 @@ public class StatusUpdateService {
         }
     }
 
+
+    private void addToCompanyWall(Status status, Group group) {
+        if (isPublicGroup(group)) {
+            domainlineRepository.addStatusToDomainline(status, status.getDomain());
+        }
+    }
+
     /**
      * Parses the status to find tags, and add those tags to the TagLine and the Trends.
+     * <p/>
+     * The Tatami Bot is a specific use case : as it sends a lot of statuses, it may pollute the global trends,
+     * so it is excluded from it.
      */
     private void manageStatusTags(Status status, Group group) {
         Matcher m = PATTERN_HASHTAG.matcher(status.getContent());
@@ -258,7 +297,10 @@ public class StatusUpdateService {
                 }
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
-                trendsRepository.addTag(status.getDomain(), tag);
+                //Excludes the Tatami Bot from the global trend
+                if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
+                    trendsRepository.addTag(status.getDomain(), tag);
+                }
                 userTrendRepository.addTag(status.getLogin(), tag);
 
                 // Add the status to all users following this tag
@@ -322,7 +364,7 @@ public class StatusUpdateService {
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
         if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-            if (status.getStatusPrivate() == true) { // Private status
+            if (status.getStatusPrivate()) { // Private status
                 mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
             } else {
                 mailService.sendUserMentionEmail(status, mentionnedUser);

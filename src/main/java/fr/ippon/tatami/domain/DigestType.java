@@ -8,9 +8,6 @@ public enum DigestType {
     WEEKLY_DIGEST("WEEKLY"),
     DAILY_DIGEST("DAILY");
 
-    /**
-     * @param text
-     */
     private DigestType(final String text) {
         this.text = text;
     }

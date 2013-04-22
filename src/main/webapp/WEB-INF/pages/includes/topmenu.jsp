@@ -76,6 +76,11 @@
                                         <i class="icon-signal"></i> <fmt:message
                                             key="tatami.menu.status.of.the.day"/></a>
                                 </li>
+                                <li>
+                                    <a href="/tatami/company">
+                                        <i class="icon-briefcase"></i> <fmt:message
+                                            key="tatami.menu.company.wall"/></a>
+                                </li>
                                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <li class="divider"></li>
                                     <li>
@@ -144,6 +149,11 @@
                                 <a href="/tatami/license">
                                     <i class="icon-info-sign"></i> <fmt:message
                                         key="tatami.menu.license"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/ippontech/tatami/issues" target="_blank">
+                                    <i class="icon-inbox"></i> <fmt:message key="tatami.github.issues"/>
                                 </a>
                             </li>
                             <li>

@@ -1,15 +1,20 @@
-(function( $ ){
+(function($, _){
 
-  $.fn.infinitiScroll = function( options ) {  
+  $.fn.infinitiScroll = function( options ) {
 
     return this.each(function() {
       var self = this;
-      $(window).on('scroll', function(){
-        if(self.offsetTop && self.offsetTop-$(window).height() <= $(window).scrollTop()) {
+
+      var cb = _.throttle(function(){
+        if(self.offsetTop && self.offsetTop-$(window).height() < $(window).scrollTop()) {
           self.click();
         }
-      });
+      }, 500);
+
+      $(window).on('scroll', cb);
+
+      _.delay(cb, 1000);
     });
 
   };
-})( jQuery );
+})( jQuery, _);

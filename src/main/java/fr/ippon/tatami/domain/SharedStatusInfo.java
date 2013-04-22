@@ -2,11 +2,11 @@ package fr.ippon.tatami.domain;
 
 public class SharedStatusInfo {
 
-    private String sharedStatusId;
+    private final String sharedStatusId;
 
-    private String originalStatusId;
+    private final String originalStatusId;
 
-    private String sharedByLogin;
+    private final String sharedByLogin;
 
     public SharedStatusInfo(String sharedStatusId, String originalStatusId, String sharedByLogin) {
         this.sharedStatusId = sharedStatusId;
@@ -33,9 +33,8 @@ public class SharedStatusInfo {
 
         SharedStatusInfo that = (SharedStatusInfo) o;
 
-        if (!sharedStatusId.equals(that.sharedStatusId)) return false;
+        return sharedStatusId.equals(that.sharedStatusId);
 
-        return true;
     }
 
     @Override

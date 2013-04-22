@@ -8,9 +8,13 @@ public class Constants {
     private Constants() {
     }
 
-    public static final String ELASTICSEARCH_ENGINE = "elasticsearch";
+    public static final String SPRING_PROFILE_METRICS = "metrics";
 
+    public static final String ELASTICSEARCH_ENGINE = "elasticsearch";
     public static final String LUCENE_ENGINE = "lucene";
+
+    public static final String REMOTE_ENGINE = "remote";
+    public static final String EMBEDDED_ENGINE = "embedded";
 
     public static final String DEFAULT_THEME = "bootstrap";
 
@@ -21,6 +25,8 @@ public class Constants {
     public static Boolean WRO4J_ENABLED = false;
 
     public static final int PAGINATION_SIZE = 50;
+
+    public static final String TATAMIBOT_NAME = "tatamibot";
 
     /**
      * Cassandra : number of columns to return when not doing a name-based template

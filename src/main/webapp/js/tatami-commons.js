@@ -38,6 +38,29 @@ marked.setOptions({
           cap[2] +
           '"></iframe>';
         }
+      },
+      gist : function(text, url){
+        var cap;
+        if((cap = /^.+gist.github.com\/(([A-z0-9-]+)\/)?([0-9A-z]+)/.exec(url))){
+          $.ajax({
+            url: cap[0] + '.json',
+            dataType: 'jsonp',
+            success: function(response){
+              if(response.stylesheet && $('link[href="' + response.stylesheet + '"]').length === 0){
+                var l = document.createElement("link"),
+                  head = document.getElementsByTagName("head")[0];
+
+                l.type = "text/css";
+                l.rel = "stylesheet";
+                l.href = response.stylesheet;
+                head.insertBefore(l, head.firstChild);
+              }
+              var $elements = $('.gist' + cap[3]);
+              $elements.html(response.div);
+            }
+          });
+          return '<div class="gist' + cap[3] + '"/>';
+        }
       }
     }
 });
@@ -112,6 +135,11 @@ app.Model.Status = Backbone.Model.extend({
     this.bind('destroy', function() {
       app.Status.statuses.shift(self);
     });
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -173,6 +201,11 @@ app.Model.StatusDetails = Backbone.Model.extend({
     },
     initialize: function(model) {
         this.statusId = model.get('statusId');
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
     }
 });
 
@@ -208,6 +241,11 @@ app.View.SharesView = Backbone.View.extend({
 app.Model.ShareProfileModel = Backbone.Model.extend({
   url : function(){
     return '/tatami/rest/users/show?screen_name=' + this.options.username;
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -440,7 +478,17 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
     'click .status-action-share': 'shareAction',
     'click .status-action-favorite': 'favoriteAction',
     'click .status-action-remove': 'removeAction',
+    'click .replyEditorTab a[data-toggle="tab"]': 'replyChangeTab',
     'submit .reply-form': 'sendReply'
+  },
+
+  replyChangeTab: function(e){
+    var a = e.target;
+    if(a.hasAttribute('data-pane')){
+      var target = a.getAttribute('data-pane');
+      this.$el.find('.tab-pane').removeClass('active');
+      this.$el.find(target+'.tab-pane').addClass('active');
+    }
   },
 
   detailsAction: function () {
@@ -535,6 +583,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
   },
 
   render: function() {
+      var self = this;
       var model = this.model.toJSON();
       model.markdown = marked(model.content);
 
@@ -542,12 +591,10 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
           status:model,
           discuss:(this.options.discuss)
       }));
-      
-      $('a[data-toggle="tab"]').on('show', function (e) {
-          if (e.target.id === 'replyPreviewTab') {
-            $('#replyPreview').html(
-                marked($("#replyEdit").val()));
-          }
+
+      $('a[data-toggle="tab"][data-pane=".replyPreviewPane"]').on('show', function (e) {
+            self.$el.find('.replyPreview').html(
+                marked(self.$el.find('.replyEdit').val()));
       });
 
       $(this.el).find("abbr.timeago").timeago();
@@ -591,7 +638,7 @@ app.View.TimeLineView = Backbone.View.extend({
 
 app.Model.ProfileModel = Backbone.Model.extend({
   defaults: {
-    'gravatar': '',
+    'avatar': '',
     'firstName': '',
     'lastName': '',
     'statusCount': 0,
@@ -600,6 +647,11 @@ app.Model.ProfileModel = Backbone.Model.extend({
   },
   url : function(){
     return '/tatami/rest/users/show?screen_name=' + username;
+  },
+  toJSON : function(){
+    return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+      avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+    });
   }
 });
 
@@ -711,7 +763,247 @@ render: function() {
 }
 
 });
+/*
+  Timeline
+*/
 
+app.View.TimeLineNewView = Backbone.View.extend({
+  template: _.template($('#timeline-new').html()),
+  progressTemplate: _.template($('#timeline-progress').html()),
+
+  initialize: function(){
+    this.temp = new app.Collection.StatusCollection();
+
+    $(this.el).find("abbr.timeago").timeago();
+
+    this.endRefresh();
+  },
+
+  events: {
+    'click': 'newStatus'
+  },
+
+  startRefresh: function(){
+    if(typeof this.options.refresh === 'undefined')
+      this.refresh();
+    else
+      _.defer(this.options.refresh);
+  },
+
+  endRefresh: function(){
+    this.options.refresh = _.once(_.bind(this.refresh, this));
+    _.delay(this.options.refresh, this.options.interval); // this.options.interval
+  },
+
+  refresh: function(callback){
+    var self = this;
+
+    var sc = this.model.clone();
+    sc.off();
+    sc.url = this.model.url;
+
+    var data = {};
+    if( typeof this.temp.first() !== 'undefined')
+      data.since_id = this.temp.first().get('timelineId');
+    else if(typeof this.model.first() !== 'undefined')
+      data.since_id = this.model.first().get('timelineId');
+
+    sc.fetch({
+      data:data,
+      success:function (model, response) {
+        if(Object.prototype.toString.call( response ) !== '[object Array]' ) {
+          // if the answer is not an array, the session must have expired
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+        while (sc.length > 0) {
+          self.temp.unshift(sc.pop());
+        }
+        self.render();
+
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      error:function () {
+        self.render();
+        self.trigger('callbackRefresh');
+        self.endRefresh();
+      },
+      statusCode: {
+        302: function() {
+          $(location).attr('href', '/tatami/login?timeout');
+        }
+      }
+    });
+  },
+
+  newStatus: function() {
+    NotificationManager.setAllowNotification();
+    this.progress();
+    var self = this;
+    if (this.model.length === 0) {
+      this.model.fetch({
+        success:function () {
+          self.render();
+        },
+        error:function () {
+          self.render();
+        }
+      });
+    } else {
+      var callback = _.once(_.bind(this.newStatusCallback, this));
+      this.on('callbackRefresh', callback);
+      this.startRefresh();
+    }
+  },
+
+  newStatusCallback: function(){
+    while (this.temp.length > 0)
+      this.model.unshift(this.temp.pop());
+    this.render();
+  },
+
+  render: function() {
+    var $el = $(this.el);
+    $el.html(this.template({status: this.temp.length}));
+    this.delegateEvents();
+
+    // filter out non-status (disconnection) and statuses from current user
+    var statuses =  _.filter(this.temp.models,
+          function(s) { return s != undefined && s.attributes.username != undefined && s.attributes.username != username});
+    if (statuses.length > 0) {
+        // Update Title
+      document.title = "Tatami (" + this.temp.length + ")";
+      var notificationText = "";
+      if (statuses.length == 1) {
+        notificationText = "1 unread status";
+      } else {
+        notificationText = (statuses.length) + " unread statuses";
+      }
+      NotificationManager.setNotification("Tatami notification", notificationText, true);
+    } else {
+        document.title = "Tatami";
+    }
+
+    return $(this.el);
+  },
+
+  progress: function() {
+    $(this.el).html(this.progressTemplate());
+    this.undelegateEvents();
+    return $(this.el);
+  }
+
+});
+
+app.View.TimeLineNextView = Backbone.View.extend({
+  template: _.template($('#timeline-next').html()),
+  progressTemplate: _.template($('#timeline-progress').html()),
+
+  initialize: function(){
+    $(this.el).infinitiScroll();
+  },
+
+  events: {
+    'click': 'nextStatus'
+  },
+
+  nextStatus: function(done, context){
+    this.progress();
+    var self = this;
+    if(this.model.length === 0)
+      this.model.fetch({
+        success: function(){
+          if(self.model.length > 0)
+            self.render();
+          else
+            self.remove();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+    else{
+      var sc = this.model.clone();
+      sc.off();
+      sc.url = this.model.url;
+
+      sc.fetch({
+        data: {
+          max_id: this.model.last().get('timelineId')
+        },
+        success: function(){
+          sc.forEach(self.model.push, self.model);
+          if(sc.length > 0)
+            self.render();
+          else
+            self.remove();
+        },
+        error: function() {
+          self.render();
+        }
+      });
+    }
+  },
+
+  render: function() {
+    var $el = $(this.el);
+    $el.html(this.template());
+    this.delegateEvents();
+
+    return $(this.el);
+  },
+
+  progress: function() {
+    $(this.el).html(this.progressTemplate());
+    this.undelegateEvents(); return $(this.el); }
+
+});
+
+app.View.TimeLinePanelView = Backbone.View.extend({
+
+  initialize: function(){
+    this.views = {};
+    this.views.timeline = new app.View.TimeLineView({
+      model : this.model
+    });
+    this.views.news = new app.View.TimeLineNewView({
+      interval: 20000,
+      model : this.model
+    });
+    this.views.next = new app.View.TimeLineNextView({
+      model : this.model
+    });
+
+    this.views.next.nextStatus();
+
+    this.on('refresh', this.views.news.newStatus, this.views.news);
+    this.on('next', this.views.next.nextStatus, this.views.next);
+
+    app.on('refreshTimeline', this.views.news.newStatus, this.views.news);
+
+    if(this.options.autoRefresh){
+      var self = this;
+      var f = _.bind(function(){
+        self.trigger('refresh');
+        _.delay(f, 20000);
+      });
+      f();
+    }
+  },
+
+  render: function() {
+    $(this.el).empty();
+
+    if(!this.options.autoRefresh){
+      $(this.el).append(this.views.news.render());
+    }
+    $(this.el).append(this.views.timeline.render());
+    $(this.el).append(this.views.next.render());
+
+    return $(this.el);
+  }
+
+});
 
   /*
     Search form in the top menu.
@@ -1105,6 +1397,8 @@ app.View.WelcomeFriend = Backbone.View.extend({
   initialize : function(){
     this.header = document.createElement('div');
     this.$header = $(this.header);
+    this.error = document.createElement('div');
+    this.$error = $(this.error);
     this.render();
   },
 
@@ -1151,8 +1445,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1170,8 +1465,9 @@ app.View.WelcomeFriend = Backbone.View.extend({
         email : mail
       }).save(null, {
         success : cb,
-        error : function(model){
-          self.$el.append(self.template.error(model.toJSON()));
+        error : function(model, xhr){
+          model.set('status', xhr.status);
+          self.$error.html(self.template.error(model.toJSON()));
         }
       });
     });
@@ -1213,6 +1509,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
   render: function(){
     this.$header.html(this.template.header());
     this.$el.html(this.template.body());
+    this.$el.append(this.$error);
 
     return this;
   },
@@ -1225,7 +1522,7 @@ app.View.WelcomeFriend = Backbone.View.extend({
 });
 
 app.View.Welcome = Backbone.View.extend({
-  
+
   template : _.template($('#welcome').html()),
 
   attributes : {
@@ -1269,7 +1566,7 @@ app.View.Welcome = Backbone.View.extend({
     var heightModal = windowHeight * 0.8;
     var headerHeight = this.$el.find('.modal-header').outerHeight(true);
     var footerHeight = this.$el.find('.modal-footer').outerHeight(true);
-    
+
     var height = heightModal - headerHeight - footerHeight;
 
     this.$el.find('.modal-body').css('max-height', height + 'px');
@@ -1368,4 +1665,87 @@ app.View.Welcome = Backbone.View.extend({
 
     return this;
   }
+});
+
+app.View.ListUserGroup = Backbone.View.extend({
+    tagName : 'table',
+    attributes : {
+        'class' : 'table'
+    },
+    initialize : function(){
+        this.options = _.defaults(this.options, {
+          admin : true
+        });
+
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
+
+        this.collection.fetch();
+    },
+
+    addItem : function(model){
+        var view = new app.View.ListUserGroupItem(
+          _.defaults({
+            model : model
+          }, this.options)
+        );
+        view.render();
+        this.$el.append(view.el);
+    },
+    render : function(){
+        var tableView = this;
+
+        this.$el.html($('#usergroup-header').html());
+        this.collection.forEach(this.addItem, this);
+
+        return this;
+    }
+});
+
+app.View.ListUserGroupItem = Backbone.View.extend({
+    tagName : 'tr',
+
+    template : _.template($('#usergroup-item').html()),
+
+    initialize : function(){
+        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);
+    },
+
+    events : {
+        'click .delete' : 'removeUser'
+    },
+
+    removeUser : function(){
+        this.model.destroy();
+    },
+
+    render : function(){
+        var locals = this.model.toJSON();
+        locals.admin = this.options.admin;
+        this.$el.html(this.template(locals));
+        return this;
+    }
+});
+
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        avatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
+    }
 });

@@ -36,7 +36,6 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 @Repository
 public class CassandraMailDigestRepository implements MailDigestRepository {
 
-
     @Inject
     private Keyspace keyspaceOperator;
 
@@ -52,9 +51,6 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
 
     @Override
     public void unsubscribeFromDigest(DigestType digestType, String login, String domain, String day) {
-
-        Calendar cal = Calendar.getInstance();
-
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(buildKey(digestType, domain, day), MAILDIGEST_CF, login, StringSerializer.get());
     }
@@ -87,9 +83,6 @@ public class CassandraMailDigestRepository implements MailDigestRepository {
     }
 
     /**
-     * @param digestType
-     * @param domain
-     * @param day
      * @return the row key
      */
     private String buildKey(DigestType digestType, String domain, String day) {

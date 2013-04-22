@@ -40,9 +40,8 @@ public class UserStatusStat implements Comparable<UserStatusStat> {
 
         UserStatusStat that = (UserStatusStat) o;
 
-        if (!username.equals(that.username)) return false;
+        return username.equals(that.username);
 
-        return true;
     }
 
     @Override

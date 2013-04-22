@@ -7,7 +7,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
     private String login;
 
-    private String gravatar;
+    private String avatar;
 
     private String username;
 
@@ -17,6 +17,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
     private String role;
 
+    private Boolean isMember = true;
+
     public String getLogin() {
         return login;
     }
@@ -25,12 +27,12 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
         this.login = login;
     }
 
-    public String getGravatar() {
-        return gravatar;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setGravatar(String gravatar) {
-        this.gravatar = gravatar;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -65,6 +67,14 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
         this.role = role;
     }
 
+    public Boolean getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(Boolean isMember) {
+        this.isMember = isMember;
+    }
+
     @Override
     public int compareTo(UserGroupDTO o) {
         return this.username.compareTo(o.getUsername());
@@ -77,9 +87,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
         UserGroupDTO userGroupDTO = (UserGroupDTO) o;
 
-        if (!login.equals(userGroupDTO.login)) return false;
+        return login.equals(userGroupDTO.login);
 
-        return true;
     }
 
     @Override
@@ -91,10 +100,11 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
     public String toString() {
         return "UserGroupDTO{" +
                 "login='" + login + '\'' +
-                ", gravatar='" + gravatar + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", isMember=" + isMember +
                 ", role='" + role + '\'' +
                 '}';
     }

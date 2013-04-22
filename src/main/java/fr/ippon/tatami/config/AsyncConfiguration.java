@@ -48,8 +48,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
     @DependsOn({"statusSearcherManager", "userSearcherManager"})
     public LuceneIndexReaderReloader luceneIndexReaderReloader() {
         if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine)) {
-            LuceneIndexReaderReloader reloader = new LuceneIndexReaderReloader();
-            return reloader;
+            return new LuceneIndexReaderReloader();
         } else {
             return null;
         }

@@ -29,8 +29,8 @@
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/rest/users" method="POST" access="permitAll()"/>
+        <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
-
 
         <form-login
                 login-processing-url="/tatami/authentication"
@@ -43,7 +43,8 @@
                 logout-success-url="/tatami/login"/>
 
         <openid-login authentication-failure-url="/tatami/login?action=loginFailure"
-                      user-service-ref="openIdAutoRegisteringUserDetailsService">
+                      user-service-ref="openIdAutoRegisteringUserDetailsService"
+                      authentication-success-handler-ref="tatamiAuthenticationSuccessHandler">
             <!-- Only Google Apps is supported -->
             <attribute-exchange identifier-match="https://www.google.com/.*">
                 <openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
