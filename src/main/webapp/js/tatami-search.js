@@ -171,12 +171,13 @@ function SearchEngine(){
     };
 
     this.select = function () {
-        var input = $('#fullSearchText').val(),
-            val = this.$menu.find('.active').attr('data-value'),
+        var input = $('#fullSearchText').val();
+
+        var val = this.$menu.find('.active').attr('data-value'),
             groupId =  this.$menu.find('.active').attr('rel');
 
-        if(typeof val == 'undefined'){
-            window.location = '/tatami/#/search/status/'+input
+        if (typeof val == 'undefined') {
+            window.location = '/tatami/#/search/status/' + input
             this.hide();
             return false;
         }
@@ -192,9 +193,7 @@ function SearchEngine(){
                window.location = '/tatami/#/groups/'+groupId;
             break;
         }
-
         this.$element.val(this.updater(val)).change();
-
         return this.hide();
     };
 

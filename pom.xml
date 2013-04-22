@@ -176,7 +176,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all,vendor,app</targetGroups>
+                            <targetGroups>all,vendor</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -239,7 +239,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all</targetGroups>
+                            <targetGroups>all,vendor</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -302,7 +302,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all</targetGroups>
+                            <targetGroups>all,vendor</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>

@@ -4,6 +4,9 @@
         model : Tatami.Models.StatusDetails
     }))();
 
+    var statusTimeline = new Tatami.Views.StatusTimelineRegion();
+    var updateButton = new Tatami.Views.StatusUpdateButton();
+
     Tatami.Factories.Status = {
         getStatusDetail: function(id){
             var statusDetail = statusDetails.get(id);
@@ -15,45 +18,28 @@
             }
             return statusDetail;
         },
-        statusShares: function(statusDetail){
-            var collection = new Backbone.Collection();
-            statusDetail.fetch({
-                success: function(model){
-                    collection.set(statusDetail.get('sharedByLogins'));
-                }
-            });
 
-            return new Tatami.Views.StatusShares({
-                collection: collection
-            });
+        getTimelineRegion: function(){
+            return statusTimeline;
+        },
+
+        getUpdateButton: function(){
+            return updateButton;
         },
 
         statusesTimeline: function(){
-            
+            return new Tatami.Views.Statuses({
+                collection: new Tatami.Collections.Statuses(),
+                autoRefresh: false
+            });
         },
 
         statusesFavorite: function(){
-            
+            statusTimeline.refresh.show(new Tatami.Views.StatusUpdateButton());
         },
 
         statusesMentions: function(){
-            
-        },
-
-        statusesDiscussion: function(statusDetail){
-            var collection = new Tatami.Collections.Statuses();
-            statusDetail.fetch({
-                success: function(model){
-                    collection.set(statusDetail.get('discussionStatuses'));
-                }
-            });
-
-            return new Tatami.Views.Statuses({
-                collection: collection,
-                itemViewOptions: {
-                    discussion: false
-                } 
-            });
+            statusTimeline.refresh.show(new Tatami.Views.StatusUpdateButton());
         }
     };
 

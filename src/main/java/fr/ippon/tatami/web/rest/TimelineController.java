@@ -11,6 +11,7 @@ import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
+import fr.ippon.tatami.web.rest.dto.ActionStatus;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -232,22 +233,23 @@ public class TimelineController {
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
-            method = RequestMethod.PUT,
-            produces = "application/json")
+            method = RequestMethod.PATCH)
     @ResponseBody
-    public StatusDTO updateStatusREST(@RequestBody(required = false) StatusDTO status) {
-        StatusDTO currentStatus = timelineService.getStatus(status.getStatusId());
-        if(currentStatus.isFavorite() != status.isFavorite()){
-            if(status.isFavorite()){
-                timelineService.addFavoriteStatus(status.getStatusId());
+    public StatusDTO updateStatusREST(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
+        StatusDTO status = timelineService.getStatus(statusId);
+        if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
+            if(action.isFavorite()){
+                timelineService.addFavoriteStatus(statusId);
+
             }
             else {
-                timelineService.removeFavoriteStatus(status.getStatusId());
+                timelineService.removeFavoriteStatus(statusId);
             }
+            status.setFavorite(action.isFavorite());
         }
 
-        if(status.isShared()){
-            timelineService.shareStatus(status.getStatusId());
+        if(action.isShared() != null && action.isShared()){
+            timelineService.shareStatus(statusId);
         }
 
         return status;

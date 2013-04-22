@@ -17,7 +17,6 @@
                 });
                 return tagTrends;
             }
-            
             var tags = new Tatami.Collections.Tags();
 
             tagTrends = new Tatami.Views.TagTrends({
