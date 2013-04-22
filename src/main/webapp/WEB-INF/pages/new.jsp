@@ -60,6 +60,7 @@
 
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>
+        <script src="/js/app/collections/users.js"></script>
         <script src="/js/app/models/statuses.js"></script>
         <script src="/js/app/collections/statuses.js"></script>
         <script src="/js/app/models/tags.js"></script>
@@ -69,6 +70,7 @@
         <script src="/js/app/views/homeHeader.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
+        <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
         <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
@@ -100,7 +102,7 @@
         <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
         <fmt:message key="tatami.title"/>
     </a>
-    <button type="button" class="navbar-toggle navbar-edit">
+    <button type="button" class="navbar-toggle navbar-edit" data-toggle="modal" data-target="#tatamiEdit">
         <i class="close glyphicon glyphicon-pencil"></i>
     </button>
     <div class="nav-collapse navbar-responsive-collapse collapse">
@@ -145,12 +147,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">
+                                <a href="?language=en">
                                     <fmt:message key="tatami.menu.language.en"/>
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="?language=fr">
                                     <fmt:message key="tatami.menu.language.fr"/>
                                 </a>
                             </li>
@@ -299,6 +301,9 @@
     <section id="tatamiBody" class="col-span-9">
     </section>
 </div>
+
+<form id="tatamiEdit" class="modal fade">
+</form>
 
 </body>
 </html>

@@ -104,7 +104,9 @@ public class TimelineService {
 
         // Shares management
         Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
-        details.setSharedByLogins(sharedByLogins);
+        details.setSharedByLogins(userService.getUsersByLogin(sharedByLogins));
+
+        ;
 
         // Discussion management
         Status status = statusRepository.findStatusById(statusId);

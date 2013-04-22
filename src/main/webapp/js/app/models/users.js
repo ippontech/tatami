@@ -1,38 +1,43 @@
 (function(Backbone, _, Tatami, Modernizr, window){
 
-  var Users = Backbone.Model.extend({
-    idAttribute: 'username',
+    var Users = Backbone.Model.extend({
+        idAttribute: 'username',
 
-    defaults: {
-      gravatar: '',
-      firstName: '',
-      lastName: '',
-      jobTitle: '',
-      attachementsSize: 0,
-      friendsCount: 0,
-      followersCount: 0
-    },
+        defaults: {
+            avatar: '',
+            firstName: '',
+            lastName: '',
+            jobTitle: '',
+            attachementsSize: 0,
+            friendsCount: 0,
+            followersCount: 0
+        },
 
-    urlRoot: '/tatami/rest/users/',
+        urlRoot: '/tatami/rest/users/',
 
-    toJSON: function(){
-      var attr = Backbone.Model.prototype.toJSON.call(this);
+        toJSON: function(){
+            var attr = Backbone.Model.prototype.toJSON.call(this);
 
-      attr.fullName = this.getFullName();
+            attr.fullName = this.getFullName();
+            attr.avatarURL = this.getAvatarURL();
 
-      return attr;
-    },
+            return attr;
+        },
 
-    getFullName: function(){
-      var fullName = [];
+        getFullName: function(){
+            var fullName = [];
 
-      if (this.get('firstName')) fullName.push(this.get('firstName'));
-      if (this.get('lastName')) fullName.push(this.get('lastName'));
+            if (this.get('firstName')) fullName.push(this.get('firstName'));
+            if (this.get('lastName')) fullName.push(this.get('lastName'));
 
-      return fullName.join(' ');
-    }
-  });
+            return fullName.join(' ');
+        },
 
-  Tatami.Models.Users = Users;
+        getAvatarURL: function(){
+            return (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png';
+        }
+    });
+
+    Tatami.Models.Users = Users;
 
 })(Backbone, _, Tatami, Modernizr, window);

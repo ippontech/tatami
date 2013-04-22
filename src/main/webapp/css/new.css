@@ -17,6 +17,27 @@
     }
 }
 
+.img-small {
+    width: 25px;
+    height: 25px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.img-medium {
+    width: 50px;
+    height: 50px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.img-big {
+    width: 70px;
+    height: 70px;
+    background-position: center center;
+    background-size: cover;
+}
+
 .navbar-edit {
     line-height: 14px;
     left: 10px;
@@ -70,7 +91,7 @@
 }
 
 .tatam {
-    padding: 0px 5px 1px 50px;
+    padding: 0px 5px 1px 60px;
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -109,10 +130,9 @@
     cursor: pointer;
 }
 
-.tatam > img {
-    margin-left: -50px;
+.tatam > div:first-child {
+    margin-left: -60px;
     padding: 5px;
-    width: 50px;
 }
 .tatam > header {
     padding-bottom: 0;

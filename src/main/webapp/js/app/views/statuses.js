@@ -111,7 +111,7 @@
                     remove: false
                 });
                 else this.share.show(new Tatami.Views.StatusShares({
-                    collection: new Backbone.Collection(shares)
+                    collection: new Tatami.Collections.Users(shares)
                 }));
             }
 

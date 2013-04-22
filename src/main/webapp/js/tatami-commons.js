@@ -422,7 +422,7 @@ app.View.TimeLineItemView = Backbone.View.extend({
           }
           self.views.shares.model.reset();
           _.forEach(model.get('sharedByLogins'), function(value) {
-            var username = value.split('@')[0];
+            var username = value.username;
             self.views.shares.model.add({username:username});
           });
           self.views.shares.render();
@@ -562,7 +562,7 @@ app.View.TimeLineItemInnerView = Backbone.View.extend({
     dm.save(null, {
       success: function(){
         self.replyAction();
-        
+
         app.trigger('refreshProfile');
         app.trigger('refreshTimeline');
         self.enable();

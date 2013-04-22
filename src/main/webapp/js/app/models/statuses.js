@@ -35,7 +35,7 @@
             replyToUsername: '',
             firstName: '',
             lastName: '',
-            gravatar: '',
+            avatar: '',
             favorite: false,
             detailsAvailable: false,
             sharedByUsername: false
@@ -47,6 +47,7 @@
             var attr = Backbone.Model.prototype.toJSON.call(this);
 
             attr.fullName = this.getFullName();
+            attr.avatarURL = this.getAvatarURL();
 
             return attr;
         },
@@ -58,6 +59,10 @@
             if (this.get('lastName')) fullName.push(this.get('lastName'));
 
             return fullName.join(' ');
+        },
+
+        getAvatarURL: function(){
+            return (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png';
         }
     });
 

@@ -4,10 +4,10 @@
 <script type="text/template" id="HomeHeader">
     <div class="text-center page-header">
         <h1 class="title">
-            <img class="img-rounded pull-left" src="http://www.gravatar.com/avatar/77a3ff9479d623eaff6cba1f81231939?s=70">
-          <span>
-              <@= fullName @>
-          </span>
+            <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
+            <strong>
+                <@= fullName @>
+            </strong>
             <br>
             <small>
                 @<@= username @>
@@ -18,10 +18,10 @@
 <script type="text/template" id="CardProfile">
     <div class="page-header">
         <h4 class="profile-card">
-            <img class="img-rounded pull-left" src="http://www.gravatar.com/avatar/77a3ff9479d623eaff6cba1f81231939?s=40">
-            <span>
+            <img class="img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);">
+            <strong>
                 <@= fullName @>
-            </span>
+            </strong>
             <br>
             <small>
                 @<@= username @>
@@ -44,10 +44,14 @@
     <a href="#">#<@= name @></a>
 </script>
 <script type="text/template" id="StatusItems">
-    <img class="img-rounded pull-left" src="http://www.gravatar.com/avatar/77a3ff9479d623eaff6cba1f81231939?s=50">
+    <div class='pull-left'>
+        <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+    </div>
     <header class="page-header">
         <h4>
-            <@= fullName @>
+            <strong>
+                <@= fullName @>
+            </strong>
             <small>
                 @<@= username @>
             </small>
@@ -85,7 +89,9 @@
     <fmt:message key="tatami.user.status.shared.by"/>
 </script>
 <script type="text/template" id="StatusShareItems">
-    <img class="img-rounded" src="http://www.gravatar.com/avatar/77a3ff9479d623eaff6cba1f81231939?s=25">
+    <a>
+        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    </a>
 </script>
 <script type="text/template" id="HomeSide">
     <section class='card-profile'></section>
@@ -102,17 +108,17 @@
     <ul class="homebody-nav nav nav-tabs nav-justified">
         <li>
             <a href="#timeline">
-                Actualité
+                <fmt:message key="tatami.timeline"/>
             </a>
         </li>
         <li>
             <a href="#mentions">
-                Mention
+                <fmt:message key="tatami.mentions"/>
             </a>
         </li>
         <li>
             <a href="#favorites">
-                Favoris
+                <fmt:message key="tatami.user.favoritestatus"/>
             </a>
         </li>
     </ul>
@@ -127,4 +133,62 @@
     <span class="glyphicon glyphicon-refresh"></span>
     Message(s) en attente :
     <span class="badge"><@= count @></span>
+</script>
+<script type="text/template" id="StatusEdit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><fmt:message key="tatami.status.update"/></h4>
+        </div>
+        <div class="modal-body">
+            <a class="edit-tatam-float-right">
+                <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
+            </a>
+            <fieldset class="edit-tatam row-fluid">
+                <textarea placeholder="<fmt:message key="tatami.status.update"/>" rows="5"></textarea>
+                <em>
+                    <fmt:message key="tatami.status.characters.left"/>
+                    <span class="countstatus badge"></span>
+                </em>
+            </fieldset>
+            <fieldset class="preview-tatam row-fluid hide">
+                <div class="well well-small markdown"/>
+            </fieldset>
+            <fieldset class="reply row-fluid">
+                <legend>
+                    <fmt:message key="tatami.status.reply"/>
+                </legend>
+                <div class="tatam-reply"/>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    <fmt:message key="tatami.status.options"/>
+                </legend>
+                <label class="control-label" for="groupId">Groupe</label>
+                 <div class="controls">
+                    <select name="groupId">
+                        <option value=""></option>
+                        <option value="9ee2f010-75fb-11e2-80b4-00030a37001c">
+                            Offre Formation
+                        </option>
+                    </select>
+                </div>
+                <label for="files">
+                    <fmt:message key="tatami.menu.files"/>
+                </label>
+                <div>
+                    <input name="files" type="file" class="col-span-12" multiple="multiple"/>
+                </div>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <a class="btn" data-dismiss="modal" aria-hidden="true">
+                <fmt:message key="tatami.form.cancel"/>
+            </a>
+            <a class="btn btn-primary">
+                <fmt:message key="tatami.form.save"/>
+            </a>
+        </div>
+    </div>
 </script>
