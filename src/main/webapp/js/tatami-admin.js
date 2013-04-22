@@ -925,7 +925,10 @@ app.View.FilesViewItem = Backbone.View.extend({
        this.model.destroy({
            success: function(){
               self.remove();
-              app.trigger('refreshQuota');
+               app.trigger('deleteSucess');
+           },
+           error: function(){
+               app.trigger('deleteError');
            }
        });
    }
@@ -978,6 +981,14 @@ app.View.FilesView = Backbone.View.extend({
         });
 
         this.views.quota = new app.View.QuotaFiles();
+
+        app.on('deleteSucess',function(){
+            $('.file-infos').append($('#delete-file-success').html());
+        });
+
+        app.on('deleteError',function(){
+            $('.file-infos').append($('#delete-file-error').html());
+        });
     },
 
     render: function(){
