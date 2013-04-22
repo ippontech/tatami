@@ -24,10 +24,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 
-import static fr.ippon.tatami.config.Constants.ELASTICSEARCH_ENGINE;
-import static fr.ippon.tatami.config.Constants.EMBEDDED_ENGINE;
-import static fr.ippon.tatami.config.Constants.LUCENE_ENGINE;
-import static fr.ippon.tatami.config.Constants.REMOTE_ENGINE;
+import static fr.ippon.tatami.config.Constants.*;
 
 /**
  * Search configuration : uses Elastic Search if it is configured, basic Lucene otherwise.
@@ -158,10 +155,9 @@ public class SearchConfiguration {
                     IndexWriterConfig indexWriterConfig =
                             new IndexWriterConfig(Version.LUCENE_36, analyzer);
 
-                    IndexWriter indexWriter = new IndexWriter(directory,
+                    return new IndexWriter(directory,
                             indexWriterConfig);
 
-                    return indexWriter;
                 } else {
                     return null;
                 }
@@ -199,8 +195,7 @@ public class SearchConfiguration {
         if (LUCENE_ENGINE.equalsIgnoreCase(searchEngine())) {
             try {
                 if (indexWriter != null) {
-                    SearcherManager searcherManager = new SearcherManager(indexWriter, true, null);
-                    return searcherManager;
+                    return new SearcherManager(indexWriter, true, null);
                 } else {
                     return null;
                 }

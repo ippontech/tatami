@@ -171,8 +171,7 @@ public class GroupController {
             }
             return new ArrayList<Group>();
         }
-        Collection<Group> groups = groupService.getGroupsForUser(user);
-        return groups;
+        return groupService.getGroupsForUser(user);
     }
 
     /**

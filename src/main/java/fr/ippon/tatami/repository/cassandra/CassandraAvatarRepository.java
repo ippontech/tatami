@@ -102,7 +102,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
     }
 
 
-    public Avatar findAttachmentMetadataById(String avatarId) {
+    Avatar findAttachmentMetadataById(String avatarId) {
         if (avatarId == null) {
             return null;
         }

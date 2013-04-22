@@ -18,7 +18,13 @@
     </li>
 <@} else if(item.category == 'users') { @>
     <li class="item users" data-value="<@= item.label @>">
-        <img class="avatar  avatar-small" src="<@= item.avatar @>" alt=""/>
+        <img class="avatar avatar-small"
+            <@ if (item.avatar == null || item.avatar == '') { @>
+            src="/img/default_image_profile.png"
+            <@ } else { @>
+            src="/tatami/avatar/<@= item.avatar @>/photo.jpg"
+            <@ } @>
+             alt=""/>
         <h4><a href="#"><@= item.fullName @></a></h4>
         <p><@= item.label @></p>
     </li>

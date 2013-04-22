@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>2.1.4</version>
+    <version>2.2.4</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -68,6 +68,8 @@
         <profile>
             <id>elasticsearch</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -98,6 +100,8 @@
         <profile>
             <id>elasticsearch-embedded</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics -->
+                <spring.profiles.active></spring.profiles.active>
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
@@ -727,7 +731,7 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.6.3</version>
+            <version>2.6.5</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -1099,6 +1103,7 @@
                 <version>2.1</version>
                 <configuration>
                     <path>/</path>
+                    <contextReloadable>true</contextReloadable>
                     <protocol>org.apache.coyote.http11.Http11NioProtocol</protocol>
                     <systemProperties>
                         <spring.profiles.active>${spring.profiles.active}</spring.profiles.active>

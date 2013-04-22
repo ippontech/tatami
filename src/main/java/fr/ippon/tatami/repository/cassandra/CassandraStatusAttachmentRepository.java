@@ -36,7 +36,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_ATTACHMENT_CF;
 public class CassandraStatusAttachmentRepository
         implements StatusAttachmentRepository {
 
-    ColumnFamilyTemplate<String, UUID> attachmentsTemplate;
+    private ColumnFamilyTemplate<String, UUID> attachmentsTemplate;
 
     @Inject
     private Keyspace keyspaceOperator;

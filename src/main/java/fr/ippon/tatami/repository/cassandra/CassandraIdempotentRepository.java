@@ -66,11 +66,7 @@ public class CassandraIdempotentRepository implements fr.ippon.tatami.repository
                         .execute()
                         .get();
 
-        if (column == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return column != null;
     }
 
     @Override

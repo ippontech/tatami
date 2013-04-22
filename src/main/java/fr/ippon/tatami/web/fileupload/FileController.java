@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class FileController {
 
-    private static Logger log = Logger.getLogger(FileController.class);
+    private static final Logger log = Logger.getLogger(FileController.class);
 
     private static final String HEADER_EXPIRES = "Expires";
 
@@ -36,9 +36,9 @@ public class FileController {
 
     private static final int CACHE_SECONDS = 60 * 60 * 24 * 30;
 
-    private static String HEADER_ETAG = "ETag";
+    private static final String HEADER_ETAG = "ETag";
 
-    private static String HEADER_IF_NONE_MATCH = "If-None-Match";
+    private static final String HEADER_IF_NONE_MATCH = "If-None-Match";
 
     private String tatamiUrl;
 
@@ -65,12 +65,10 @@ public class FileController {
         this.tatamiUrl = env.getProperty("tatami.url");
     }
 
-    @RequestMapping(value = "/rest/fileupload",
-            method = RequestMethod.POST)
-    public
+    @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     @ResponseBody
-    List<UploadedFile> upload(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException, StorageSizeException {
+    public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
@@ -138,8 +136,8 @@ public class FileController {
     @RequestMapping(value = "/avatar/{avatarId}/*",
             method = RequestMethod.GET)
     public void getAvatar(@PathVariable("avatarId") String avatarId,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws IOException {
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws IOException {
 
         // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
@@ -170,14 +168,13 @@ public class FileController {
         } catch (IOException e) {
             log.info("Error flushing the output stream. " + e.getMessage());
         }
-
     }
 
     @RequestMapping(value = "/rest/fileupload/avatar",
             method = RequestMethod.POST)
     @ResponseBody
     public List<UploadedFile> uploadAvatar(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException{
+            @RequestParam("uploadFile") MultipartFile file) throws IOException {
 
         Avatar avatar = new Avatar();
         avatar.setContent(file.getBytes());
@@ -195,7 +192,7 @@ public class FileController {
                 tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
         if (log.isDebugEnabled()) {
-            log.info("Avatar url : "+ tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+            log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
         }
 
         uploadedFiles.add(uploadedFile);
@@ -206,6 +203,7 @@ public class FileController {
         userRepository.updateUser(user);
 
         return uploadedFiles;
+
     }
 
     @RequestMapping(value = "/file/file_not_found",
@@ -214,8 +212,7 @@ public class FileController {
         if (log.isDebugEnabled()) {
             log.debug("File not found !");
         }
-        ModelAndView mv = new ModelAndView("errors/file_not_found");
-        return mv;
+        return new ModelAndView("errors/file_not_found");
     }
 
 

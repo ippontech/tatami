@@ -94,10 +94,9 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         TatamiUserDetails realUser = userDetailsService.getTatamiUserDetails(login,
                 authentication.getCredentials().toString());
 
-        UsernamePasswordAuthenticationToken realAuthentication =
+        return
                 new UsernamePasswordAuthenticationToken(realUser, authentication.getCredentials(),
                         realUser.getAuthorities());
 
-        return realAuthentication;
     }
 }

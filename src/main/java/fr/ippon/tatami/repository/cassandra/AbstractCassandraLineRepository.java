@@ -40,7 +40,7 @@ public abstract class AbstractCassandraLineRepository {
     @Inject
     protected Keyspace keyspaceOperator;
 
-    protected Map<String, SharedStatusInfo> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+    Map<String, SharedStatusInfo> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         List<HColumn<UUID, String>> result;
         if (max_id != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
@@ -103,11 +103,11 @@ public abstract class AbstractCassandraLineRepository {
         return line;
     }
 
-    protected void shareStatus(String login,
-                               Status status,
-                               String sharedByLogin,
-                               String columnFamily,
-                               String sharesColumnFamily) {
+    void shareStatus(String login,
+                     Status status,
+                     String sharedByLogin,
+                     String columnFamily,
+                     String sharesColumnFamily) {
 
         UUID name = UUID.fromString(status.getStatusId());
         QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
@@ -138,7 +138,7 @@ public abstract class AbstractCassandraLineRepository {
         }
     }
 
-    protected QueryResult<HColumn<UUID, String>> findByLoginAndName(String columnFamily, String login, UUID name) {
+    QueryResult<HColumn<UUID, String>> findByLoginAndName(String columnFamily, String login, UUID name) {
         ColumnQuery<String, UUID, String> columnQuery =
                 HFactory.createColumnQuery(keyspaceOperator, StringSerializer.get(),
                         UUIDSerializer.get(), StringSerializer.get());

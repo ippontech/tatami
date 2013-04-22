@@ -42,9 +42,8 @@ public class Tag {
 
         Tag tag = (Tag) o;
 
-        if (!name.equals(tag.name)) return false;
+        return name.equals(tag.name);
 
-        return true;
     }
 
     @Override

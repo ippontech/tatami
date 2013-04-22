@@ -4,8 +4,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +20,6 @@ import javax.inject.Inject;
  */
 @Controller
 public class AccountPreferencesController {
-
-    private final Log log = LogFactory.getLog(AccountPreferencesController.class);
 
     @Inject
     private UserService userService;

@@ -29,9 +29,9 @@ public class TatamiUserDetailsService implements UserDetailsService {
 
     private final Log log = LogFactory.getLog(TatamiUserDetailsService.class);
 
-    private Collection<GrantedAuthority> userGrantedAuthorities = new ArrayList<GrantedAuthority>();
+    private final Collection<GrantedAuthority> userGrantedAuthorities = new ArrayList<GrantedAuthority>();
 
-    private Collection<GrantedAuthority> adminGrantedAuthorities = new ArrayList<GrantedAuthority>();
+    private final Collection<GrantedAuthority> adminGrantedAuthorities = new ArrayList<GrantedAuthority>();
 
     private Collection<String> adminUsers = null;
 

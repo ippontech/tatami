@@ -148,7 +148,7 @@ public class TimelineService {
         Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
         for (String statusId : line.keySet()) {
             SharedStatusInfo sharedStatusInfo = line.get(statusId);
-            Status status = null;
+            Status status;
             if (sharedStatusInfo != null) {
                 status = statusRepository.findStatusById(sharedStatusInfo.getOriginalStatusId());
             } else {
@@ -191,7 +191,7 @@ public class TimelineService {
                         } else {
                             statusDTO.setTimelineId(status.getStatusId());
                         }
-                        if (status.getHasAttachments() != null && status.getHasAttachments() == true) {
+                        if (status.getHasAttachments() != null && status.getHasAttachments()) {
                             statusDTO.setAttachments(status.getAttachments());
                         }
                         statusDTO.setContent(status.getContent());
@@ -260,10 +260,8 @@ public class TimelineService {
     }
 
     /**
-     * The groupline contains a group's statuses
+     * The groupline contains a group's statuses.
      *
-     * @param group    the group to retrieve the timeline of
-     * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
     public Collection<StatusDTO> getGroupline(String groupId, Integer count, String since_id, String max_id) {

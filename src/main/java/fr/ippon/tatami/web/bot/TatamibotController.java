@@ -34,9 +34,6 @@ public class TatamibotController {
     @ResponseBody
     public Collection<TatamibotConfiguration> getConfigurations() {
         User currentUser = authenticationService.getCurrentUser();
-        Collection<TatamibotConfiguration> configurations =
-                tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain(currentUser.getDomain());
-
-        return configurations;
+        return tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain(currentUser.getDomain());
     }
 }

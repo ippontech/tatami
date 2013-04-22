@@ -821,21 +821,58 @@
             ]
         },
         {
+            "name":"Group",
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"GroupCounter",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"CounterColumnType"
+        },
+        {
+            "name":"GroupDetails",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
             "name":"UserGroups",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type",
-            "defaultColumnValueType":"UTF8Type",
-            "rows":[
-                {
-                    "key":"jdubois@ippon.fr",
-                    "columns":[
-                        {
-                            "name":"group1",
-                            "value":""
-                        }
-                    ]
-                }
-            ]
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"GroupMembers",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Trends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"UserTrends",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"TagCounter",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"CounterColumnType"
+        },
+        {
+            "name":"Mentionline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
         }
     ]
 }

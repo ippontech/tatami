@@ -96,7 +96,7 @@ public class UserService {
      */
     public Collection<User> getUsersByLogin(Collection<String> logins) {
         final Collection<User> users = new ArrayList<User>();
-        User user = null;
+        User user;
         for (String login : logins) {
             user = userRepository.findUserByLogin(login);
             if (user != null) {
@@ -323,8 +323,6 @@ public class UserService {
 
     /**
      * update registration to weekly digest email.
-     *
-     * @param registration
      */
     public void updateWeeklyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
@@ -351,9 +349,7 @@ public class UserService {
     }
 
     /**
-     * update registration to daily digest email.
-     *
-     * @param registration
+     * Update registration to daily digest email.
      */
     public void updateDailyDigestRegistration(boolean registration) {
         User currentUser = authenticationService.getCurrentUser();
@@ -380,9 +376,8 @@ public class UserService {
     }
 
     /**
-     * activate of de-activate rss publication for the timeline
+     * Activate of de-activate rss publication for the timeline.
      *
-     * @param booleanPreferencesRssTimeline
      * @return the rssUid used for rss publication, empty if no publication
      */
     public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {

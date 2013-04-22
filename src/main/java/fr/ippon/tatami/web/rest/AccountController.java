@@ -55,8 +55,7 @@ public class AccountController {
             this.log.debug("REST request to get account's profile");
         }
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
-        return user;
+        return userService.getUserByLogin(currentUser.getLogin());
     }
 
     @RequestMapping(value = "/rest/account",
@@ -190,10 +189,10 @@ public class AccountController {
             if (newPreferences.getTheme().isEmpty()) {
                 throw new Exception("Theme can't be null");
             }
-            currentUser.setTheme((String) newPreferences.getTheme());
-            currentUser.setPreferencesMentionEmail((Boolean) newPreferences.getMentionEmail());
-            currentUser.setDailyDigestSubscription((Boolean) newPreferences.getDailyDigest());
-            currentUser.setWeeklyDigestSubscription((Boolean) newPreferences.getWeeklyDigest());
+            currentUser.setTheme(newPreferences.getTheme());
+            currentUser.setPreferencesMentionEmail(newPreferences.getMentionEmail());
+            currentUser.setDailyDigestSubscription(newPreferences.getDailyDigest());
+            currentUser.setWeeklyDigestSubscription(newPreferences.getWeeklyDigest());
 
             String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
             currentUser.setRssUid(rssUid);

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * REST controller for managing users.
@@ -51,8 +50,7 @@ public class UserController {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        User user = userService.getUserByUsername(username);
-        return user;
+        return userService.getUserByUsername(username);
     }
 
     /**
@@ -69,7 +67,7 @@ public class UserController {
     }
 
     /**
-     * GET  /users/searchStatus -> searchStatus user by username<br>
+     * GET  /rest/users/search -> search users by prefix<br>
      * Should return a collection of users matching the query.<br>
      * The collection doesn't contain the current user even if he matches the query.<br>
      * If nothing matches, an empty collection (but not null) is returned.<br>
@@ -105,8 +103,7 @@ public class UserController {
         if (pagination == null) {
             pagination = 0;
         }
-        List<User> users = userService.getUsersForCurrentDomain(pagination);
-        return users;
+        return userService.getUsersForCurrentDomain(pagination);
     }
 
 
@@ -127,7 +124,6 @@ public class UserController {
         user.setLogin(email);
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
-        return;
     }
 
 }

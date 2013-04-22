@@ -84,7 +84,7 @@ public class AdminService {
     private void loadProperty(Map<String, String> properties, String key) {
         try {
             properties.put(key, env.getProperty(key));
-        }   catch (Throwable e) {
+        } catch (Throwable e) {
             properties.put(key, "(Invalid value)");
         }
     }
@@ -164,7 +164,7 @@ public class AdminService {
             for (Row<String, String, String> row : rows) {
                 Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
                 if (status != null) {  // if a status has been removed, it is returned as null
-                    if (status.getStatusPrivate() == null || status.getStatusPrivate() == false) {
+                    if (status.getStatusPrivate() == null || !status.getStatusPrivate()) {
                         statuses.add(status);
                     }
                 }

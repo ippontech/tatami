@@ -27,9 +27,6 @@ public class SyndicView extends AbstractRssFeedView {
 
     private final Log log = LogFactory.getLog(SyndicView.class);
 
-    /**
-     * @param model
-     */
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) {
         // this is mandatory: a feed with no title is invalid and is not rendered 
@@ -102,7 +99,7 @@ public class SyndicView extends AbstractRssFeedView {
     /**
      * convert #tag and @mention to html links
      *
-     * @param htmlText
+     * @param htmlText the original text
      * @return html with converted links
      */
     private String convertLinks(String htmlText) {
