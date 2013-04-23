@@ -97,6 +97,7 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testStatusUpdate() throws Exception {
         LocaleContextHolder.setLocale(Locale.US);
 
