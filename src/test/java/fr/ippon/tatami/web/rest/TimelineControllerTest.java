@@ -3,13 +3,11 @@ package fr.ippon.tatami.web.rest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
-
 import java.util.Collection;
 import java.util.List;
 

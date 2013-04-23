@@ -2,7 +2,6 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
 import org.junit.Before;
@@ -20,9 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserControllerTest extends AbstractCassandraTatamiTest {
-
-    @Inject
-    private CounterRepository counterRepository;
 
     @Inject
     private UserService userService;

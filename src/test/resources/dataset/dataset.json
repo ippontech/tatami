@@ -976,6 +976,12 @@
             "keyType":"UTF8Type",
             "comparatorType":"UUIDType",
             "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Rss",
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
         }
     ]
 }
