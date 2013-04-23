@@ -261,11 +261,11 @@
                 <fmt:message key="tatami.account.users.recommended"/>
             </a>
         </li>
-        <%--<li>
-            <a href ="#/users/all">
-                <fmt:message key="tatami.account.users.all"/>
+        <li>
+            <a href ="#/users/search">
+                <fmt:message key="tatami.search.placeholder"/>
             </a>
-        </li>--%>
+        </li>
     </ul>
 </script>
 
@@ -306,6 +306,11 @@
         <li>
             <a href ="#/groups/recommended">
                 <fmt:message key="tatami.account.groups.recommended"/>
+            </a>
+        </li>
+        <li>
+            <a href ="#/groups/search">
+                <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
     </ul>
@@ -517,6 +522,11 @@
                 <fmt:message key="tatami.account.tags.recommended"/>
             </a>
         </li>
+        <li>
+            <a href ="#/tags/search">
+                <fmt:message key="tatami.search.placeholder"/>
+            </a>
+        </li>
     </ul>
 </script>
 
@@ -604,4 +614,11 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.user.file.delete.error"/>
     </div>
+</script>
+
+<script type="text/template" id="search-filter">
+    <form>
+        <input id="block_filter" type="text" class="search-query span12" name="result_filter" autocomplete="off" placeholder="<fmt:message key="tatami.search.filter"/>">
+    </form>
+    <br />
 </script>

@@ -103,7 +103,7 @@ function SearchEngine(){
 
         items.tags.forEach(function(v){
             var obj = {};
-            obj.label = '#'+v;
+            obj.label = '#'+ v.name;
             obj.category = "tags";
             data.push(obj);
         });
