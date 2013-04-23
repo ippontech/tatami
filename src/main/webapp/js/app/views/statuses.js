@@ -1,5 +1,5 @@
 (function(Backbone, _, Tatami){
-    StatusItems = Backbone.Marionette.Layout.extend({
+    var StatusItems = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
                 discussion: true
@@ -50,7 +50,9 @@
             this.footer.$el.slideToggle();
         },
         replyAction: function(){
-            console.log('reply');
+            Tatami.app.edit.show({
+                status: this.model.id
+            });
             return false;
         },
         favoriteAction: function(){
@@ -79,7 +81,7 @@
         }
     });
 
-    StatusFooters = Backbone.Marionette.Layout.extend({
+    var StatusFooters = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
                 discute: true,
@@ -90,7 +92,6 @@
 
             var self = this;
             this.slideDown = _.debounce(function(){
-                console.log('slide');
                 self.$el.slideDown();
             }, jQuery.fx.speeds._default);
         },
@@ -137,7 +138,7 @@
         }
     });
 
-    Statuses = Backbone.Marionette.CollectionView.extend({
+    var Statuses = Backbone.Marionette.CollectionView.extend({
         initialize: function(){
             var self = this;
 
@@ -146,13 +147,22 @@
             });
 
             if(this.options.autoRefresh){
-                this.listenTo(Tatami.app, 'refresh', function(){
-                    self.collection.refresh();
+                this.listenTo(Tatami.app, 'refresh', function(options){
+                    options = options ? _.clone(options) : {};
+                    _.defaults(options || {}, {
+                        display: false
+                    });
+                    self.collection.refresh(function(){
+                        if(options.display) {
+                            Tatami.app.trigger('display');
+                            Tatami.app.trigger('statusPending');
+                        }
+                    });
                 });
                 this.listenTo(Tatami.app, 'next', function(){
                     self.collection.next();
                 });
-                this.listenTo(Tatami.app, 'dislay', this.onRender);
+                this.listenTo(Tatami.app, 'display', this.onRender);
             }
 
             this.listenTo(this.collection, 'add', function(model, collection, options){

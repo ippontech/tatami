@@ -1,5 +1,4 @@
 (function(Backbone, _, Tatami){
-
     var Router = Backbone.Marionette.AppRouter.extend({
         routes: {
             'timeline' : 'homeTimeline',
@@ -20,6 +19,7 @@
 
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            homeSide.groups.show(Tatami.Factories.Home.groups());
 
             var homeBody = Tatami.Factories.Home.homeBody();
 

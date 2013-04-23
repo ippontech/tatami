@@ -254,4 +254,56 @@ public class TimelineController {
 
         return status;
     }
+
+
+    /**
+     * POST /statuses/update -> create a new Status
+     */
+    @RequestMapping(value = "/rest/statuses/",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @Metered
+    public String postStatusREST(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to add status : " + status.getContent());
+        }
+        String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
+        Collection<String> attachmentIds = status.getAttachmentIds();
+
+        if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
+            statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
+        }
+        else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+            if (log.isDebugEnabled()) {
+                log.debug("Private status");
+            }
+            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
+        } else {
+            User currentUser = authenticationService.getCurrentUser();
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            Group group = null;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(status.getGroupId())) {
+                    group = testGroup;
+                    break;
+                }
+            }
+            if (group == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else if (group.isArchivedGroup()) {
+                if (log.isInfoEnabled()) {
+                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
+            }
+        }
+        return "{}";
+    }
 }

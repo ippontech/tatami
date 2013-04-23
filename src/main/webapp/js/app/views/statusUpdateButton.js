@@ -6,7 +6,7 @@
             });
             this.$el.css('display', 'none');
             this.listenTo(Tatami.app, 'statusPending', function(hiddenStatuses){
-                this.options.count = hiddenStatuses.length;
+                this.options.count = (hiddenStatuses)? hiddenStatuses.length: 0;
                 this.render();
             });
         },
@@ -17,11 +17,12 @@
             'click': 'onClick'
         },
         onClick: function(){
-            Tatami.app.trigger('dislay');
+            Tatami.app.trigger('display');
             this.$el.slideUp();
         },
         onRender: function(){
             if(this.options.count !== 0) this.$el.slideDown();
+            else this.$el.slideUp();
         },
         className: 'text-center',
         template: '#StatusUpdateButton'

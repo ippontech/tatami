@@ -1,10 +1,10 @@
 (function(Backbone, _, Tatami){
-    StatusShareItems = Backbone.Marionette.ItemView.extend({
+    var StatusShareItems = Backbone.Marionette.ItemView.extend({
         tagName: 'span',
         template: '#StatusShareItems'
     });
 
-    StatusShares = Backbone.Marionette.CompositeView.extend({
+    var StatusShares = Backbone.Marionette.CompositeView.extend({
         itemView: StatusShareItems,
         template: "#StatusShares"
     });

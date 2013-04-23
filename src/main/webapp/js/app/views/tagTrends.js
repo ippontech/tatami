@@ -1,9 +1,9 @@
 (function(Backbone, _, Tatami){
-    TagTrendItems = Backbone.Marionette.ItemView.extend({
+    var TagTrendItems = Backbone.Marionette.ItemView.extend({
         template: '#TagTrendItems'
     });
 
-    TagTrends = Backbone.Marionette.CompositeView.extend({
+    var TagTrends = Backbone.Marionette.CompositeView.extend({
         itemView: TagTrendItems,
         itemViewContainer: '.items',
         template: '#TagTrends'

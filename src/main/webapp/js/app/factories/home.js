@@ -1,6 +1,6 @@
 (function(Backbone, Tatami){
 
-    var homeSide, homeBody, tagTrends, cardProfile;
+    var homeSide, homeBody, tagTrends, cardProfile, groups;
 
     Tatami.Factories.Home = {
         homeSide: function(){
@@ -44,6 +44,14 @@
 
             cardProfile.model.fetch();
             return cardProfile;
+        },
+        groups: function(){
+            if(groups) return groups;
+            groups = new Tatami.Views.Groups({
+                collection: Tatami.app.groups
+            });
+
+            return groups;
         }
     };
 

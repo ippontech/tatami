@@ -1,5 +1,5 @@
 (function(Backbone, _, Tatami){
-    HomeSide = Backbone.Marionette.Layout.extend({
+    var HomeSide = Backbone.Marionette.Layout.extend({
         template: "#HomeSide",
         regions: {
             cardProfile: {
@@ -14,7 +14,7 @@
         }
     });
 
-    HomeBody = Backbone.Marionette.Layout.extend({
+    var HomeBody = Backbone.Marionette.Layout.extend({
         template: "#HomeBody",
         regions: {
             tatams: {
@@ -26,6 +26,15 @@
         }
     });
 
+    var HomeHeader = Backbone.Marionette.ItemView.extend({
+        template: '#HomeHeader',
+        modelEvents: {
+            'change': 'render',
+            'sync': 'render'
+        }
+    });
+
+    Tatami.Views.HomeHeader = HomeHeader;
     Tatami.Views.HomeSide = HomeSide;
     Tatami.Views.HomeBody = HomeBody;
 })(Backbone, _, Tatami);

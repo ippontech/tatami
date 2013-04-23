@@ -61,19 +61,23 @@
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/collections/users.js"></script>
+        <script src="/js/app/models/postStatus.js"></script>
         <script src="/js/app/models/statuses.js"></script>
         <script src="/js/app/collections/statuses.js"></script>
         <script src="/js/app/models/tags.js"></script>
         <script src="/js/app/collections/tags.js"></script>
+        <script src="/js/app/models/groups.js"></script>
+        <script src="/js/app/collections/groups.js"></script>
         <script src="/js/app/models/statusDetails.js"></script>
         <script src="/js/app/views/cardProfile.js"></script>
-        <script src="/js/app/views/homeHeader.js"></script>
+        <script src="/js/app/views/navbar.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
         <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
+        <script src="/js/app/views/groups.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/status.js"></script>
         <script src="/js/app/router.js"></script>
@@ -92,7 +96,7 @@
     <jsp:include page="includes/new.jsp"/>
 </head>
 <body>
-<div class="navbar">
+<div id="navbar" class="navbar">
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -102,7 +106,7 @@
         <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
         <fmt:message key="tatami.title"/>
     </a>
-    <button type="button" class="navbar-toggle navbar-edit" data-toggle="modal" data-target="#tatamiEdit">
+    <button type="button" class="editTatam navbar-toggle navbar-edit">
         <i class="close glyphicon glyphicon-pencil"></i>
     </button>
     <div class="nav-collapse navbar-responsive-collapse collapse">
@@ -276,11 +280,11 @@
                 </ul>
             </li>
             <li class="hidden-phone">
-                <button class="btn navbar-form">
+                <button class="editTatam btn navbar-form">
                     <i class="glyphicon glyphicon-pencil"></i>
-            <span class="visible-desktop">
-              <fmt:message key="tatami.tatam.publish"/>
-            </span>
+                    <span class="visible-desktop">
+                        <fmt:message key="tatami.tatam.publish"/>
+                    </span>
                 </button>
             </li>
         </ul>

@@ -148,7 +148,7 @@
                 <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
             </a>
             <fieldset class="edit-tatam row-fluid">
-                <textarea placeholder="<fmt:message key="tatami.status.update"/>" rows="5"></textarea>
+                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" rows="5"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
                     <span class="countstatus badge"></span>
@@ -171,16 +171,17 @@
                  <div class="controls">
                     <select name="groupId">
                         <option value=""></option>
-                        <option value="9ee2f010-75fb-11e2-80b4-00030a37001c">
-                            Offre Formation
-                        </option>
+                        <@ for (index in groups) { @>
+                            <option value="<@= groups[index].groupId @>" <@ if(groupId === groups[index].groupId ){ @>selected="selected"<@ } @>>
+                                <@= groups[index].name @>
+                            </option>
+                        <@ } @>
                     </select>
                 </div>
                 <label for="files">
                     <fmt:message key="tatami.menu.files"/>
                 </label>
-                <div>
-                    <input name="files" type="file" class="col-span-12" multiple="multiple"/>
+                <div class="status-files">
                 </div>
             </fieldset>
         </div>
@@ -188,9 +189,20 @@
             <a class="btn" data-dismiss="modal" aria-hidden="true">
                 <fmt:message key="tatami.form.cancel"/>
             </a>
-            <a class="btn btn-primary">
-                <fmt:message key="tatami.form.save"/>
-            </a>
+            <input type="submit" class="btn btn-primary" title="<fmt:message key="tatami.form.save"/>">
         </div>
     </div>
+</script>
+<script type="text/template" id="Groups">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-fire"></span>
+            <fmt:message key="tatami.trends.user.title"/>
+        </h4>
+    </div>
+    <div class="items">
+    </div>
+</script>
+<script type="text/template" id="GroupItems">
+    <a href="#"><@= name @></a>
 </script>

@@ -4,6 +4,14 @@
         evaluate: /<\@(.+?)\@\>/gim
     };
 
+    var show = Backbone.Marionette.Region.prototype.show;
+    _.extend(Backbone.Marionette.Region.prototype, {
+        show: function(view) {
+            if (this.currentView !== view)
+                show.apply(this, arguments);
+        }
+    });
+
     var Tatami = {
         Models : {},
         Collections : {},
@@ -12,14 +20,6 @@
     };
 
     Tatami.app = new Backbone.Marionette.Application();
-
-    Tatami.app.addInitializer(function(){
-        Tatami.app.user = new Tatami.Models.Users({
-            username: username
-        });
-
-        Tatami.app.user.fetch();
-    });
 
     Tatami.app.addInitializer(function(){
         var autoRefresh = function(){
@@ -52,7 +52,13 @@
     Tatami.app.addInitializer(function(){
         Tatami.app.edit = new Tatami.Views.StatusEdit({
             el: $('#tatamiEdit')
-        }).render();
+        });
+    });
+
+    Tatami.app.addInitializer(function(){
+        Tatami.app.navbar = new Tatami.Views.Navbar({
+            el: $('#navbar')
+        });
     });
 
     Tatami.app.on("initialize:after", function(options){
@@ -66,7 +72,7 @@
                 $(document).delegate("a", "click", function(evt) {
                     var href = $(this).attr("href");
                     var protocol = this.protocol + "//";
-                    if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol && /^#/.test(href)) {
+                    if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol && /^#.+$/.test(href)) {
                         evt.preventDefault();
                         Backbone.history.navigate(href, true);
                     }
@@ -76,7 +82,21 @@
     });
 
     $(function(){
-        Tatami.app.start();
+        var onStart = _.after(2, function(){
+            Tatami.app.start();
+        });
+
+        Tatami.app.user = new Tatami.Models.Users({
+            username: username
+        });
+        Tatami.app.groups = new Tatami.Collections.Groups();
+
+        Tatami.app.user.fetch({
+            success: onStart
+        });
+        Tatami.app.groups.fetch({
+            success: onStart
+        });
     });
 
     window.Tatami = Tatami;
