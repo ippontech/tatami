@@ -70,7 +70,15 @@
                         },
                         {
                             "name":"lastName",
-                            "value":"WhoHasGroup"
+                            "value":"TimelineUser"
+                        },
+                        {
+                            "name":"username",
+                            "value":"timelineUser"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
@@ -871,20 +879,9 @@
         },
         {
             "name":"Discussion",
-            "keyType":"UTF8Type",
-            "comparatorType":"UTF8Type",
-            "defaultColumnValueType":"UTF8Type",
-            "rows":[
-                {
-                    "key":"f97d6470-9847-11e1-a6ca-dummy1",
-                    "columns":[
-                        {
-                            "name":"111111111",
-                            "value":"utf8(f97d6470-9847-11e1-a6ca-dummy2)"
-                        }
-                    ]
-                }
-            ]
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
         },
         {
             "name":"Shares",
@@ -970,6 +967,12 @@
         },
         {
             "name":"Mentionline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Groupline",
             "keyType":"UTF8Type",
             "comparatorType":"UUIDType",
             "defaultColumnValueType":"UTF8Type"
