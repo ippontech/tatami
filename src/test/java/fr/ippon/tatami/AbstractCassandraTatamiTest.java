@@ -39,6 +39,8 @@ public abstract class AbstractCassandraTatamiTest {
 
     private static boolean isInitialized = false;
 
+    private static final Object lock = new Object();
+
     protected static Client client = null;
 
     @Inject
@@ -46,21 +48,23 @@ public abstract class AbstractCassandraTatamiTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        if (!isInitialized) {
-            EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-            /* create structure and load data */
-            String clusterName = "Tatami cluster";
-            String host = "localhost:9171";
-            DataLoader dataLoader = new DataLoader(clusterName, host);
-            dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
+        synchronized (lock) {
+            if (!isInitialized) {
+                EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+                // create structure and load data
+                String clusterName = "Tatami cluster";
+                String host = "localhost:9171";
+                DataLoader dataLoader = new DataLoader(clusterName, host);
+                dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
 
-            final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-            builder.put("cluster.name", clusterName);
+                final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
+                builder.put("cluster.name", clusterName);
 
-            final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
-            client = node.client();
+                final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
+                client = node.client();
 
-            isInitialized = true;
+                isInitialized = true;
+            }
         }
     }
 
