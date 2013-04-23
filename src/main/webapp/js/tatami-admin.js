@@ -274,6 +274,46 @@ app.View.Password = Backbone.View.extend({
     }
 });
 
+
+app.View.TabSearch = Backbone.View.extend({
+    templateSearch: _.template($('#search-filter').html()),
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+
+        this.views = {};
+        this.views.tab = new app.View.Tab({
+            collection : this.collection,
+            ViewModel : this.options.ViewModel,
+            template: this.options.TabHeaderTemplate
+        });
+    },
+
+    events:{
+        'keyup :input#block_filter':'search'
+    },
+
+    search: function(e){
+        var input = e.target.value;
+        if(input != '')
+            this.collection.search(input);
+    },
+
+    selectMenu: function(menu) {
+        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
+    },
+
+    render: function(){
+        this.$el.empty();
+        this.$el.append(this.options.MenuTemplate());
+        this.$el.append(this.templateSearch());
+        this.$el.append(this.views.tab.render());
+        this.delegateEvents();
+        return this.$el;
+    }
+});
+
+
 app.View.TabContainer = Backbone.View.extend({
     initialize: function(){
         this.$el.addClass('row-fluid');
@@ -284,8 +324,6 @@ app.View.TabContainer = Backbone.View.extend({
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         });
-
-
     },
 
     selectMenu: function(menu) {
@@ -333,7 +371,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.options.url = {
             owned: '/tatami/rest/friends/lookup',
             recommended: '/tatami/rest/users/suggestions',
-            all: '/tatami/rest/users/'
+            search: '/tatami/rest/search/users'
         };
     },
     recommended: function(){
@@ -361,11 +399,11 @@ app.Collection.TabUser = Backbone.Collection.extend({
         });
     },
 
-    all: function(){
-      this.url = this.options.url.all;
+    search: function(query){
+      this.url = this.options.url.search;
       this.fetch({
           data: {
-              screen_name: username
+              q: query
           }
       });
 
@@ -416,7 +454,8 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/tagmemberships/list',
-            recommended: '/tatami/rest/tags/popular'
+            recommended: '/tatami/rest/tags/popular',
+            search: '/tatami/rest/search/tags'
         };
     },
     recommended: function(){
@@ -434,6 +473,15 @@ app.Collection.TabTag = Backbone.Collection.extend({
             return tags;
         };
         this.fetch();
+    },
+
+    search: function(query){
+        this.url = this.options.url.search;
+        this.fetch({
+            data:{
+                q:query
+            }
+        })
     }
 });
 
@@ -550,7 +598,8 @@ app.Collection.TabGroup = Backbone.Collection.extend({
         this.options= {};
         this.options.url = {
             owned: '/tatami/rest/groups',
-            recommended: '/tatami/rest/groupmemberships/suggestions'
+            recommended: '/tatami/rest/groupmemberships/suggestions',
+            search: '/tatami/rest/search/groups'
         };
     },
     recommended: function(){
@@ -568,6 +617,14 @@ app.Collection.TabGroup = Backbone.Collection.extend({
             return data;
         };
         this.fetch();
+    },
+    search: function(query){
+        this.url = this.options.url.search;
+        this.fetch({
+            data:{
+                q: query
+            }
+        })
     }
 });
 
@@ -1034,12 +1091,14 @@ app.Router.AdminRouter = Backbone.Router.extend({
         'password': 'password',
         'groups': 'groups',
         'groups/recommended': 'recommendedGroups',
+        'groups/search':'searchGroup',
         'groups/:id': 'editGroup',
         'tags':'tags',
         'tags/recommended':'recommendedTags',
+        'tags/search':'searchTags',
         'users':'users',
         'users/recommended':'recommendedUsers',
-        'users/all':'allUsers',
+        'users/search':'searchUsers',
         'status_of_the_day' : 'status_of_the_day',
         'files' : 'files',
         '*action': 'profile'
@@ -1143,6 +1202,29 @@ app.Router.AdminRouter = Backbone.Router.extend({
         view.selectMenu('groups/recommended');
     },
 
+    initSearchGroups: function(){
+        if(!app.views.SearchGroups)
+            app.views.SearchGroups = new app.View.TabSearch({
+                collection: new app.Collection.TabGroup(),
+                ViewModel: app.View.Group,
+                MenuTemplate: _.template($('#groups-menu').html()),
+                TabHeaderTemplate : _.template($('#groups-header').html())
+            });
+        return app.views.SearchGroups;
+    },
+
+    searchGroup: function(){
+        var view = this.initSearchGroups();
+        this.selectMenu('groups');
+        view.selectMenu('groups/search');
+
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        view.selectMenu('groups/search');
+    },
+
     editGroup: function(id){
         this.selectMenu('');
 
@@ -1202,6 +1284,28 @@ app.Router.AdminRouter = Backbone.Router.extend({
         view.selectMenu('tags/recommended');
     },
 
+    initSearchTags: function(){
+        if(!app.views.SearchTags)
+            app.views.SearchTags = new app.View.TabSearch({
+                collection: new app.Collection.TabTag(),
+                ViewModel: app.View.Tag,
+                MenuTemplate: _.template($('#tags-menu').html()),
+                TabHeaderTemplate : _.template($('#tags-header').html())
+            });
+        return app.views.SearchTags;
+    },
+
+    searchTags: function(){
+        var view = this.initSearchTags();
+        this.selectMenu('tags');
+
+        if(this.views.indexOf(view)===-1){
+            this.resetView();
+            this.addView(view);
+        }
+        view.selectMenu('tags/search');
+    },
+
     initUsers: function(){
         if(!app.views.users)
             app.views.users = new app.View.TabContainer({
@@ -1239,17 +1343,26 @@ app.Router.AdminRouter = Backbone.Router.extend({
         view.selectMenu('users/recommended');
     },
 
-    allUsers: function(){
-        var view = this.initUsers();
-        this.selectMenu('users');
+    initSearchUser: function(){
+        if(!app.views.SearchUsers)
+            app.views.SearchUsers = new app.View.TabSearch({
+                collection: new app.Collection.TabUser(),
+                ViewModel: app.View.User,
+                MenuTemplate: _.template($('#users-menu').html()),
+                TabHeaderTemplate :_.template($('#users-header').html())
+            });
+        return app.views.SearchUsers;
+    },
 
-        view.collection.all();
+    searchUsers: function(){
+        var view = this.initSearchUser();
+        this.selectMenu('users');
 
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
         }
-        view.selectMenu('users/all');
+        view.selectMenu('users/search');
     },
 
     status_of_the_day: function(){
