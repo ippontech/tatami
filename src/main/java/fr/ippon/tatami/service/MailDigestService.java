@@ -75,7 +75,6 @@ public class MailDigestService {
         }
     }
 
-
     /**
      * Sends weekly digest.
      * <p/>
