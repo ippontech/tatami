@@ -47,8 +47,8 @@ public class CassandraStatusRepository implements StatusRepository {
     @Inject
     private AttachmentRepository attachmentRepository;
 
-    private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private static Validator validator = factory.getValidator();
+    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static final Validator validator = factory.getValidator();
 
     @Override
     public Status createStatus(String login,
@@ -106,7 +106,7 @@ public class CassandraStatusRepository implements StatusRepository {
             return null;
         }
         status.setDetailsAvailable(computeDetailsAvailable(status));
-        if (status.getHasAttachments() != null && status.getHasAttachments() == true) {
+        if (status.getHasAttachments() != null && status.getHasAttachments()) {
             Collection<String> attachmentIds = statusAttachmentRepository.findAttachmentIds(statusId);
             Collection<Attachment> attachments = new ArrayList<Attachment>();
             for (String attachmentId : attachmentIds) {

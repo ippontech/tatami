@@ -10,8 +10,6 @@ public class Constants {
 
     public static final String SPRING_PROFILE_METRICS = "metrics";
 
-    public static final String SPRING_PROFILE_TATAMIBOT = "tatamibot";
-
     public static final String ELASTICSEARCH_ENGINE = "elasticsearch";
     public static final String LUCENE_ENGINE = "lucene";
 

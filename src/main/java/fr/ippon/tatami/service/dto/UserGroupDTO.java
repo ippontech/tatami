@@ -87,9 +87,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
         UserGroupDTO userGroupDTO = (UserGroupDTO) o;
 
-        if (!login.equals(userGroupDTO.login)) return false;
+        return login.equals(userGroupDTO.login);
 
-        return true;
     }
 
     @Override

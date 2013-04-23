@@ -14,7 +14,7 @@ public class OnlineUsersLogger implements WebSocketEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(OnlineUsersLogger.class);
 
-    Map<String, User> onlineUsers;
+    private Map<String, User> onlineUsers;
 
     private User user;
 

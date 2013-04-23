@@ -121,8 +121,6 @@ public class MailDigestService {
     /**
      * Fetch all necessary info for a daily digest mail
      * and delegate the sending operation to mailService.
-     *
-     * @param login
      */
     private void handleDailyDigestPageForLogin(String login) {
         log.info("Preparing weekly digest for user " + login);
@@ -150,8 +148,6 @@ public class MailDigestService {
     /**
      * Fetch all necessary info for a weekly digest mail
      * and delegate the sending operation to mailService.
-     *
-     * @param login
      */
     private void handleWeeklyDigestPageForLogin(String login) {
         log.info("Preparing weekly digest for user " + login);
@@ -176,13 +172,13 @@ public class MailDigestService {
 
     /**
      * Build a list containing an extract of the status from an user timeline,
-     * except it's own, since a given date.
+     * except its own, since a given date.
      *
-     * @param user
+     * @param user           the user
      * @param since_date     date since
      * @param nbStatus       number of status to include in the extract
      * @param digestStatuses selected status will be added to this list (ordered by date)
-     * @return
+     * @return the number of statuses
      */
     private int getStatusesForDigest(final User user, final Date since_date,
                                      int nbStatus, List<StatusDTO> digestStatuses) {

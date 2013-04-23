@@ -43,7 +43,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(DESCRIPTION,
                 description, StringSerializer.get(), StringSerializer.get()));
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(PUBLIC_GROUP,
-                (new Boolean(publicGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
+                (Boolean.valueOf(publicGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
                 Boolean.FALSE.toString(), StringSerializer.get(), StringSerializer.get()));
     }
@@ -56,7 +56,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(DESCRIPTION,
                 description, StringSerializer.get(), StringSerializer.get()));
         mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
-                (new Boolean(archivedGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
+                (Boolean.valueOf(archivedGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
     }
 
     @Override

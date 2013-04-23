@@ -36,11 +36,7 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
         QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
                 findByLoginAndName(TIMELINE_CF, login, name);
 
-        if (isStatusAlreadyinTimeline.get() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return isStatusAlreadyinTimeline.get() != null;
     }
 
     @Override

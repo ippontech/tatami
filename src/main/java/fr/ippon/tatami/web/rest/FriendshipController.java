@@ -129,24 +129,17 @@ public class FriendshipController {
             }
             User user = userService.getUserByLogin(emailAndUsername.getEmail());
             if (user != null) {
-                try {
-                    friendshipService.followUser(user.getUsername());
-                } catch (Exception e) {
-
-                }
+                friendshipService.followUser(user.getUsername());
             } else {
                 User currentUser = authenticationService.getCurrentUser();
                 if (DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
                     mailService.sendInvitationEmail(emailAndUsername.getEmail(), currentUser);
                 } else {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    return;
                 }
-
             }
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
         }
     }
 

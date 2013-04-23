@@ -16,15 +16,15 @@ import java.util.Date;
  */
 public class StatusDTO {
 
-    private static DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
+    private static final DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
 
-    private static DateTimeFormatter basicDateFormatter = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter basicDateFormatter = new DateTimeFormatterBuilder()
             .appendDayOfMonth(1)
             .appendLiteral(' ')
             .appendMonthOfYearShortText()
             .toFormatter();
 
-    private static DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
             .appendDayOfMonth(1)
             .appendLiteral(' ')
             .appendMonthOfYearShortText()
@@ -271,9 +271,8 @@ public class StatusDTO {
 
         StatusDTO status = (StatusDTO) o;
 
-        if (statusId != null ? !statusId.equals(status.statusId) : status.statusId != null) return false;
+        return !(statusId != null ? !statusId.equals(status.statusId) : status.statusId != null);
 
-        return true;
     }
 
     @Override

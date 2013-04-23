@@ -39,25 +39,17 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
 public class ElasticsearchSearchService implements SearchService {
 
     private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
 
     private static final String ALL_FIELD = "_all";
-    public static final List<String> TYPES = Collections.unmodifiableList(Arrays.asList("user", "status", "group"));
+    private static final List<String> TYPES = Collections.unmodifiableList(Arrays.asList("user", "status", "group"));
 
     @Inject
     private ElasticsearchEngine engine;

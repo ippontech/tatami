@@ -200,7 +200,13 @@
       <div class="span12">
         <a href="/tatami/profile/<@= user.username @>/"
            class="userStatus" title="Show profile of <@= ['@'+user.username,user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
-            <img class="avatar avatar-small" src="<@= user.avatar @>" alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
+            <img class="avatar avatar-small"
+                <@ if (user.avatar == null || user.avatar == '') { @>
+                src="/img/default_image_profile.png"
+                <@ } else { @>
+                src="/tatami/avatar/<@= user.avatar @>/photo.jpg"
+                <@ } @>
+                 alt="<@= [user.firstName,user.lastName].filter(function(value){return value;}).join(' ') @>">
             <@= user.firstName @> <@= user.lastName @> <em>@<@= user.username @></em>
         </a>
       </div>    

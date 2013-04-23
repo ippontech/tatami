@@ -11,8 +11,6 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -33,8 +31,6 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
  */
 @Repository
 public class CassandraRegistrationRepository implements RegistrationRepository {
-
-    private final Log log = LogFactory.getLog(CassandraRegistrationRepository.class);
 
     private final static String ROW_KEY = "registration_key";
 
@@ -75,8 +71,6 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
      * !! For testing purpose only !!
      * This method is not efficient and is limited to 10000 registrations.
      * Other limitation : if a login is associated to multiple registrationKey
-     *
-     * @return
      */
     public Map<String, String> _getAllRegistrationKeyByLogin() {
         Map<String, String> registrationKeyByLogin = Maps.newHashMap();

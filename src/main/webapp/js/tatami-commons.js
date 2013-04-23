@@ -1726,7 +1726,6 @@ app.View.ListUserGroupItem = Backbone.View.extend({
         this.$el.html(this.template(locals));
         return this;
     }
-
 });
 
 app.Model.ListUserGroupModel = Backbone.Model.extend({
@@ -1739,7 +1738,7 @@ app.Model.ListUserGroupModel = Backbone.Model.extend({
     },
     toJSON : function(){
         return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
-            avatar : (this.avatar)? '/tatami/avatar/<@= this.avatar @>/photo.jpg': '/img/default_image_profile.png'
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
         });
     }
 });

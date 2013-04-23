@@ -7,15 +7,8 @@ package fr.ippon.tatami.service.exception;
  */
 public class StorageSizeException extends Exception {
 
-    public StorageSizeException() {
-    }
-
     public StorageSizeException(String s) {
         super(s);
-    }
-
-    public StorageSizeException(String s, Throwable throwable) {
-        super(s, throwable);
     }
 
     public StorageSizeException(Throwable throwable) {

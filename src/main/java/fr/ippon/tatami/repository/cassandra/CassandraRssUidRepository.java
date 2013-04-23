@@ -8,8 +8,6 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -26,8 +24,8 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.RSS_CF;
 @Repository
 public class CassandraRssUidRepository implements RssUidRepository {
 
-    private final Log log = LogFactory.getLog(CassandraRssUidRepository.class);
     private final static String ROW_KEY = "rss_uid";
+
     @Inject
     private Keyspace keyspaceOperator;
 

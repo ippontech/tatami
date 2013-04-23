@@ -33,7 +33,6 @@ public class AccountStatusOfTheDayController {
             method = RequestMethod.GET)
     public ModelAndView getStatusOfTheDay() {
 
-        ModelAndView mv = new ModelAndView("account_status_of_the_day");
-        return mv;
+        return new ModelAndView("account_status_of_the_day");
     }
 }

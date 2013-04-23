@@ -100,9 +100,8 @@ public class Group implements Comparable<Group> {
 
         Group group = (Group) o;
 
-        if (!groupId.equals(group.groupId)) return false;
+        return groupId.equals(group.groupId);
 
-        return true;
     }
 
     @Override
