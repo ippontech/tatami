@@ -21,6 +21,14 @@
                         {
                             "name":"lastName",
                             "value":"Dubois"
+                        },
+                        {
+                            "name":"username",
+                            "value":"jdubois"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
@@ -38,6 +46,64 @@
                         {
                             "name":"lastName",
                             "value":"User"
+                        },
+                        {
+                            "name":"username",
+                            "value":"uuser"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        }
+                    ]
+                },
+                {
+                    "key":"timelineUser@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"avatar",
+                            "value":"avatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"TimelineUser"
+                        },
+                        {
+                            "name":"username",
+                            "value":"timelineUser"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoHasGroup@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"avatar",
+                            "value":"avatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoHasGroup"
+                        },
+                        {
+                            "name":"username",
+                            "value":"userWhoHasGroup"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
                         }
                     ]
                 },
@@ -296,6 +362,14 @@
                             "value":""
                         },
                         {
+                            "name":"timelineUser@ippon.fr",
+                            "value":""
+                        },
+                        {
+                            "name":"userWhoHasGroup@ippon.fr",
+                            "value":""
+                        },
+                        {
                             "name":"userWhoWantToFollow@ippon.fr",
                             "value":""
                         },
@@ -375,6 +449,40 @@
                         {
                             "name":"FRIENDS_COUNTER",
                             "value":"4"
+                        }
+                    ]
+                },
+                {
+                    "key":"timelineUser@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
+                        }
+                    ]
+                },
+                {
+                    "key":"userWhoHasGroup@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
                         }
                     ]
                 },
@@ -771,20 +879,9 @@
         },
         {
             "name":"Discussion",
-            "keyType":"UTF8Type",
-            "comparatorType":"UTF8Type",
-            "defaultColumnValueType":"UTF8Type",
-            "rows":[
-                {
-                    "key":"f97d6470-9847-11e1-a6ca-dummy1",
-                    "columns":[
-                        {
-                            "name":"111111111",
-                            "value":"utf8(f97d6470-9847-11e1-a6ca-dummy2)"
-                        }
-                    ]
-                }
-            ]
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
         },
         {
             "name":"Shares",
@@ -873,6 +970,18 @@
             "keyType":"UTF8Type",
             "comparatorType":"UUIDType",
             "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Groupline",
+            "keyType":"UTF8Type",
+            "comparatorType":"UUIDType",
+            "defaultColumnValueType":"UTF8Type"
+        },
+        {
+            "name":"Rss",
+            "keyType":"BytesType",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
         }
     ]
 }

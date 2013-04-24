@@ -109,25 +109,6 @@ public class GroupController {
     }
 
     /**
-     * DELETE  /group/:groupId -> Remove the group with the requested id
-     */
-    @RequestMapping(value = "/rest/groups/{groupId}",
-            method = RequestMethod.DELETE,
-            produces = "application/json")
-    @ResponseBody
-    public void removeGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit, HttpServletResponse response) {
-        Group group = getGroup(groupId);
-
-        if (group != null) {
-            if (!isGroupManagedByCurrentUser(group)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    /**
      * GET  /rest/statuses/group_timeline -> get the latest status in group "ippon"
      */
     @RequestMapping(value = "/rest/statuses/group_timeline",
@@ -187,7 +168,7 @@ public class GroupController {
     }
 
     /**
-     * Get groups of the current user.
+     * Get groups where the current user is admin.
      */
     @RequestMapping(value = "/rest/admin/groups",
             method = RequestMethod.GET,
@@ -250,7 +231,6 @@ public class GroupController {
         return users;
     }
 
-
     /**
      * GET  /groups/{groupId}/members/{userUsername} -> get a member to group status
      */
@@ -290,7 +270,6 @@ public class GroupController {
         return currentUserDTO;
     }
 
-
     /**
      * PUT  /groups/{groupId}/members/{userUsername} -> add a member to group
      */
@@ -324,7 +303,6 @@ public class GroupController {
         return dto;
     }
 
-
     /**
      * DELETE  /groups/{groupId}/members/{userUsername} -> remove a member to group
      */
@@ -332,7 +310,7 @@ public class GroupController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    public UserGroupDTO removeUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public UserGroupDTO removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
@@ -357,7 +335,6 @@ public class GroupController {
         }
         return dto;
     }
-
 
     private boolean isGroupManagedByCurrentUser(Group group) {
         Collection<Group> groups = groupService.getGroupsWhereCurrentUserIsAdmin();

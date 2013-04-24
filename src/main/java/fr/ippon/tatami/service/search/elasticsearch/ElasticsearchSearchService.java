@@ -49,6 +49,7 @@ public class ElasticsearchSearchService implements SearchService {
     private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
 
     private static final String ALL_FIELD = "_all";
+
     private static final List<String> TYPES = Collections.unmodifiableList(Arrays.asList("user", "status", "group"));
 
     @Inject
@@ -59,9 +60,6 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Inject
     private GroupDetailsRepository groupDetailsRepository;
-
-
-    private final ObjectMapper mapper = new ObjectMapper();
 
     private Client client() {
         return engine.client();
@@ -75,7 +73,9 @@ public class ElasticsearchSearchService implements SearchService {
     private void init() {
         for (String type : TYPES) {
             if (!client().admin().indices().prepareExists(indexName(type)).execute().actionGet().exists()) {
-                log.info("Index " + indexName(type) + " does not exists in Elasticsearch, creating it!");
+                if (log.isInfoEnabled()) {
+                    log.info("Index " + indexName(type) + " does not exists in Elasticsearch, creating it!");
+                }
                 createIndex();
             }
         }
@@ -237,9 +237,9 @@ public class ElasticsearchSearchService implements SearchService {
                     .setSize(size)
                     .addSort("statusDate", SortOrder.DESC);
 
-            if (log.isTraceEnabled())
+            if (log.isTraceEnabled()) {
                 log.trace("elasticsearch query : " + searchRequest);
-
+            }
             SearchResponse searchResponse = searchRequest.execute().actionGet();
 
             SearchHits searchHits = searchResponse.hits();
@@ -254,9 +254,9 @@ public class ElasticsearchSearchService implements SearchService {
                 items.put(hit.getId(), null);
             }
 
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug("search status with words (" + query + ") = " + items.keySet());
-
+            }
             return items;
 
         } catch (IndexMissingException e) {
@@ -441,9 +441,9 @@ public class ElasticsearchSearchService implements SearchService {
             }
         }
 
-        if (log.isDebugEnabled())
+        if (log.isDebugEnabled()) {
             log.debug("Ready to index " + collection.size() + " " + type + " into Elasticsearch.");
-
+        }
 
         BulkResponse response = request.execute().actionGet();
         if (response.hasFailures()) {
@@ -483,10 +483,11 @@ public class ElasticsearchSearchService implements SearchService {
             @Override
             public void onResponse(DeleteResponse deleteResponse) {
                 if (log.isDebugEnabled()) {
-                    if (deleteResponse.notFound())
+                    if (deleteResponse.notFound()) {
                         log.debug(type + " of id " + id + " was not found therefore not deleted.");
-                    else
+                    } else {
                         log.debug(type + " of id " + id + " was deleted from Elasticsearch.");
+                    }
                 }
             }
 
@@ -509,9 +510,9 @@ public class ElasticsearchSearchService implements SearchService {
                     .setSize(size)
                     .addSort(SortBuilders.fieldSort(mapper.prefixSearchSortField()).order(SortOrder.ASC));
 
-            if (log.isTraceEnabled())
+            if (log.isTraceEnabled()) {
                 log.trace("elasticsearch query : " + searchRequest);
-
+            }
             SearchResponse searchResponse = searchRequest
                     .execute()
                     .actionGet();
@@ -526,9 +527,9 @@ public class ElasticsearchSearchService implements SearchService {
                 ids.add(hit.getId());
             }
 
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug("search " + mapper.type() + " by prefix(\"" + domain + "\", \"" + prefix + "\") = result : " + ids);
-
+            }
             return ids;
 
         } catch (IndexMissingException e) {
@@ -589,6 +590,4 @@ public class ElasticsearchSearchService implements SearchService {
          */
         XContentBuilder toJson(T o) throws IOException;
     }
-
-
 }

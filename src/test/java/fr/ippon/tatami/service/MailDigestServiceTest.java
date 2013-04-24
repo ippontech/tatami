@@ -50,7 +50,6 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     @Inject
     public FriendshipService friendshipService;
 
-
     static final String DAILY_DIGEST_USER = "userWhoSubscribeToDigests@ippon.fr";
     static final String WEEKLY_DIGEST_USER = "userWhoSubscribeToWeeklyDigests@ippon.fr";
 
@@ -67,7 +66,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         // Test data set has no user subscribed to daily Digest
         // no mail should be sent.
-
+        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
+        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
@@ -77,7 +77,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
-
+        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
+        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
@@ -270,7 +271,6 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
                 anyCollection(), anyCollection());
         assertThat(statuses.getValue().size() == 10, is(true));
     }
-
 
     private void mockAuthenticationOnUserService(String login) {
         User authenticateUser = constructAUser(login);

@@ -25,7 +25,7 @@
             groupName: '',
             publicGroup: false,
             attachmentIds: '',
-            attachments: '',
+            attachments: [],
             content: '',
             statusDate: 0,
             iso8601StatusDate: '',

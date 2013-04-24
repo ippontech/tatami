@@ -18,6 +18,7 @@
 }
 
 .img-small {
+    display: block;
     width: 25px;
     height: 25px;
     background-position: center center;
@@ -25,6 +26,7 @@
 }
 
 .img-medium {
+    display: block;
     width: 50px;
     height: 50px;
     background-position: center center;
@@ -32,6 +34,7 @@
 }
 
 .img-big {
+    display: block;
     width: 70px;
     height: 70px;
     background-position: center center;
@@ -182,4 +185,23 @@
 .refresh-button {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.dropzone {
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #808080;
+}
+
+.dropzone.in {
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #0088cc;
+}
+
+#tatamiBody {
+    padding-top: 15px;
 }

@@ -16,8 +16,85 @@
             this.$reply = this.$el.find('.reply');
             this.$reply.css('display', 'none');
 
+            this.initFileUpload();
+            this.initFileUploadBind();
+
+            this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0 );
+
             this.$el.modal('show');
         },
+
+        initFileUpload: function(){
+            var self = this;
+            this.$dropzone = self.$el.find('.dropzone');
+            this.$el.find('.updateStatusFileupload').fileupload({
+                dataType: 'json',
+                sequentialUploads: 'true',
+                progressall: function (e, data) {
+                    self.$el.find('.attachmentBar').show();
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    self.$el.find('.attachmentBar .bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                },
+                dropZone: this.$dropzone,
+                done: function (e, data) {
+                    self.$el.find('.attachmentBar').hide();
+                    self.$el.find('.attachmentBar .bar').css(
+                      'width','0%'
+                    );
+                    $.each(data.result, function (index, attachment) {
+                        var size = "";
+                        if (attachment.size < 1000000) {
+                            size = (attachment.size / 1000).toFixed(0) + "K";
+                        } else {
+                            size = (attachment.size / 1000000).toFixed(2) + "M";
+                        }
+                        self.model.addAttachment(attachment.attachmentId);
+                        $("<p>" + attachment.name + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                    });
+                },
+                fail: function (e, data) {
+                    self.$el.find('.attachmentBar').hide();
+                    self.$el.find('.attachmentBar .bar').css(
+                        'width','0%'
+                    );
+                    if (data.errorThrown == "Forbidden") {
+                        self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
+                    }
+                }
+            });
+        },
+
+        initFileUploadBind: _.once(function(){
+            var self = this;
+
+            $(document).bind('dragover', function (e) {
+                var dropZone = self.$dropzone,
+                timeout = window.dropZoneTimeout;
+                if (!timeout) {
+                    dropZone.addClass('in');
+                } else {
+                    clearTimeout(timeout);
+                }
+                if (e.target === dropZone[0]) {
+                    dropZone.addClass('hover');
+                } else {
+                    dropZone.removeClass('hover');
+                }
+                window.dropZoneTimeout = setTimeout(function () {
+                    window.dropZoneTimeout = null;
+                    dropZone.removeClass('in hover');
+                }, jQuery.fx.speeds._default);
+            });
+            $(document).bind('drop dragover', function (e) {
+                return false;
+            });
+            self.$el.find('.dropzone').bind('click', function(){
+                self.$el.find('.updateStatusFileupload').click();
+            });
+        }),
 
         serializeData: function(){
             return _.extend(Backbone.Marionette.Layout.prototype.serializeData.apply(this, arguments), {

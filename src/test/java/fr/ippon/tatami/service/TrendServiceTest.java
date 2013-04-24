@@ -1,10 +1,8 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.web.rest.dto.Trend;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;

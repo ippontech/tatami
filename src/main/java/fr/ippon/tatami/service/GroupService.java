@@ -67,6 +67,9 @@ public class GroupService {
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
+        if (log.isDebugEnabled()) {
+            log.debug("Editing group : " + group.getGroupId());
+        }
         groupDetailsRepository.editGroupDetails(group.getGroupId(),
                 group.getName(),
                 group.getDescription(),
@@ -132,12 +135,6 @@ public class GroupService {
         return getGroupsWhereUserIsAdmin(currentUser);
     }
 
-    public Collection<Group> getGroupsWhereCurrentUserIsAdmin(String login) {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(login);
-        return getGroupDetails(currentUser, groupIds);
-    }
-
     private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
@@ -172,6 +169,7 @@ public class GroupService {
         }
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getLogin());
+            log.debug("user="+user);
             groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
         } else {

@@ -57,6 +57,9 @@
         <script src="/js/vendor/marked.js"></script>
         <script src="/js/vendor/backbone.marionette.js"></script>
         <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/vendor/jquery.ui.widget.js"></script>
+        <script src="/js/vendor/jquery.iframe-transport.js"></script>
+        <script src="/js/vendor/jquery.fileupload.js"></script>
 
         <script src="/js/app/app.js"></script>
         <script src="/js/app/models/users.js"></script>

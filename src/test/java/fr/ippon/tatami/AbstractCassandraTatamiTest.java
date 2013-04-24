@@ -4,6 +4,9 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
+import fr.ippon.tatami.test.application.WebApplicationTestConfiguration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -14,21 +17,29 @@ import org.elasticsearch.node.NodeBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        classes = ApplicationTestConfiguration.class,
-        loader = AnnotationConfigContextLoader.class)
-@ActiveProfiles("default")
+@ContextHierarchy({
+        @ContextConfiguration(
+                name = "root",
+                classes = ApplicationTestConfiguration.class),
+        @ContextConfiguration(
+                name = "dispatcher",
+                classes = WebApplicationTestConfiguration.class
+        )
+})
 public abstract class AbstractCassandraTatamiTest {
 
+    protected final Log log = LogFactory.getLog(this.getClass().getCanonicalName());
+
     private static boolean isInitialized = false;
+
+    private static final Object lock = new Object();
 
     protected static Client client = null;
 
@@ -37,21 +48,23 @@ public abstract class AbstractCassandraTatamiTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        if (!isInitialized) {
-            EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-            /* create structure and load data */
-            String clusterName = "Tatami cluster";
-            String host = "localhost:9171";
-            DataLoader dataLoader = new DataLoader(clusterName, host);
-            dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
+        synchronized (lock) {
+            if (!isInitialized) {
+                EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+                // create structure and load data
+                String clusterName = "Tatami cluster";
+                String host = "localhost:9171";
+                DataLoader dataLoader = new DataLoader(clusterName, host);
+                dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
 
-            final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-            builder.put("cluster.name", clusterName);
+                final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
+                builder.put("cluster.name", clusterName);
 
-            final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
-            client = node.client();
+                final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
+                client = node.client();
 
-            isInitialized = true;
+                isInitialized = true;
+            }
         }
     }
 

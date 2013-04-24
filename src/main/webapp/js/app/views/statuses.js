@@ -19,7 +19,8 @@
                         this.$el.html(view.el);
                     }
                 })
-            }
+            },
+            attachments: '.attachments'
         },
         modelEvents: {
             'change:statusId': 'updateDetailModel',
@@ -35,6 +36,9 @@
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
             this.$el.toggleClass('discute', this.model.get('detailsAvailable'));
+            this.attachments.show(new Tatami.Views.StatusAttachments({
+                collection: new Backbone.Collection(this.model.get('attachments'))
+            }));
         },
         showDetails: function(){
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
@@ -188,7 +192,18 @@
         }
     });
 
+    var StatusAttachmentItems = Backbone.Marionette.ItemView.extend({
+        template: '#StatusAttachmentItems',
+        tagName: 'li'
+    });
+
+    var StatusAttachments = Backbone.Marionette.CollectionView.extend({
+        itemView: StatusAttachmentItems
+    });
+
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItems = StatusItems;
     Tatami.Views.StatusFooters = StatusFooters;
+    Tatami.Views.StatusAttachments = StatusAttachments;
+    Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
 })(Backbone, _, Tatami);

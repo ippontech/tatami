@@ -73,6 +73,34 @@ public class TagController {
         }
     }
 
+
+    /**
+     * GET  /statuses/tag_timeline -> get the latest status for a given tag
+     */
+    @RequestMapping(value = "/rest/tags/{tagName}/tag_timeline",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Metered
+    public Collection<StatusDTO> listStatusForTagREST(@RequestParam String tagName,
+                                                  @RequestParam(required = false) Integer count,
+                                                  @RequestParam(required = false) String since_id,
+                                                  @RequestParam(required = false) String max_id) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get statuses for tag : " + tagName);
+        }
+        if (count == null) {
+            count = 20;
+        }
+        try {
+            return timelineService.getTagline(tagName, count, since_id, max_id);
+        } catch (NumberFormatException e) {
+            log.warn("Page size undefined ; sizing to default", e);
+            return timelineService.getTagline(tagName, 20, since_id, max_id);
+        }
+    }
+
     /**
      * POST /tagmemberships/create -> follow tag
      */

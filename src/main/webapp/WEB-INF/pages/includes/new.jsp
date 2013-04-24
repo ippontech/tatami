@@ -21,9 +21,7 @@
             <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
                 <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
             </span>
-            <small>
-                #<@= name @>
-            </small>
+            #<@= name @>
         </h1>
     </div>
 </script>
@@ -44,7 +42,7 @@
 <script type="text/template" id="TagTrends">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-fire"></span>
+            <span class="glyphicon glyphicon-paperclip"></span>
             <fmt:message key="tatami.trends.user.title"/>
         </h4>
     </div>
@@ -76,6 +74,7 @@
     <div class="well well-small markdown pointer">
         <@= marked(content) @>
     </div>
+    <ul class="attachments"/>
     <footer>
     </footer>
 </script>
@@ -111,18 +110,12 @@
     </a>
 </script>
 <script type="text/template" id="HomeSide">
-    <section class='card-profile'></section>
-    <section class='tag-trends'></section>
-    <section class='groups'></section>
+    <section class='hidden-phone card-profile'></section>
+    <section class='hidden-phone tag-trends'></section>
+    <section class='hidden-phone groups'></section>
 </script>
 <script type="text/template" id="HomeBody">
-    <div class="page-header">
-        <h4>
-            <span class="glyphicon glyphicon-th-list"></span>
-            Mur
-        </h4>
-    </div>
-    <ul class="homebody-nav nav nav-tabs nav-justified">
+    <ul class="homebody-nav nav nav-tabs nav-tabs-inverse nav-justified">
         <li>
             <a href="#timeline">
                 <fmt:message key="tatami.timeline"/>
@@ -192,8 +185,8 @@
                 <legend>
                     <fmt:message key="tatami.status.options"/>
                 </legend>
-                <label class="control-label" for="groupId">Groupe</label>
-                 <div class="controls">
+                 <div class="controls groups">
+                    <label class="control-label" for="groupId">Groupe</label>
                     <select name="groupId">
                         <option value=""></option>
                         <@ for (index in groups) { @>
@@ -203,10 +196,18 @@
                         <@ } @>
                     </select>
                 </div>
-                <label for="files">
-                    <fmt:message key="tatami.menu.files"/>
-                </label>
-                <div class="status-files">
+                <div class="controls status-files">
+                    <label for="files">
+                        <fmt:message key="tatami.menu.files"/>
+                    </label>
+                    <div class=".attachmentBar progress progress-striped active" style="display: none;">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
+                    <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+                    <div class="fileUploadResults">
+
+                    </div>
                 </div>
             </fieldset>
         </div>
@@ -221,8 +222,8 @@
 <script type="text/template" id="Groups">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-fire"></span>
-            <fmt:message key="tatami.trends.user.title"/>
+            <span class="glyphicon glyphicon-briefcase"></span>
+            <fmt:message key="tatami.account.groups.mygroups"/>
         </h4>
     </div>
     <div class="items">
@@ -230,4 +231,10 @@
 </script>
 <script type="text/template" id="GroupItems">
     <a href="#"><@= name @></a>
+</script>
+<script type="text/template" id="StatusAttachmentItems">
+    <span class="glyphicon glyphicon-file"></span>
+    <a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank">
+        <@= filename @>
+    </a>
 </script>
