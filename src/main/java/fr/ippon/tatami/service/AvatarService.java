@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.AvatarRepository;
@@ -66,22 +67,19 @@ public class AvatarService {
         return avatarRepository.findAvatarById(avatartId);
     }
 
-    void deleteAvatar(String avatarId) {
+    public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
         User currentUser = authenticationService.getCurrentUser();
         userRepository.updateUser(currentUser);
     }
 
-    /*
-    * TO DO : add param ratio to scale an image in 4/3 or 16/9
-    */
-    byte[] scaleImage(byte[] data) throws IOException {
+    private byte[] scaleImage(byte[] data) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         BufferedImage img = ImageIO.read(in);
-        int width = 100;
-        int height = width * 3 / 4; // ratio 4/3
+        int width = Constants.AVATAR_SIZE;
+        int height = Constants.AVATAR_SIZE;
 
         Image image = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -90,7 +88,7 @@ public class AvatarService {
         ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
 
         if (log.isDebugEnabled()) {
-            log.info("New Byte size of Avatar : " + byteArrayOutputStream.size() / 1024 + " Kbits");
+            log.debug("New Byte size of Avatar : " + byteArrayOutputStream.size() / 1024 + " Kbits");
         }
 
         return byteArrayOutputStream.toByteArray();
