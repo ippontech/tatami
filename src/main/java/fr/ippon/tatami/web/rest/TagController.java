@@ -82,7 +82,7 @@ public class TagController {
             produces = "application/json")
     @ResponseBody
     @Metered
-    public Collection<StatusDTO> listStatusForTagREST(@RequestParam String tagName,
+    public Collection<StatusDTO> listStatusForTagREST(@PathVariable String tagName,
                                                   @RequestParam(required = false) Integer count,
                                                   @RequestParam(required = false) String since_id,
                                                   @RequestParam(required = false) String max_id) {

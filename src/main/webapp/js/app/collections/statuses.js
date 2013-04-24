@@ -65,9 +65,17 @@
         url: '/tatami/rest/mentions'
     });
 
+    var StatusesTags = Statuses.extend({
+        model: Tatami.Models.Statuses,
+        url: function(){
+            return '/tatami/rest/tags/' + this.tag + '/tag_timeline';
+        }
+    });
+
     Tatami.Collections.Statuses = Statuses;
     Tatami.Collections.StatusesTimeline = StatusesTimeline;
     Tatami.Collections.StatusesFavorites = StatusesFavorites;
     Tatami.Collections.StatusesMentions = StatusesMentions;
+    Tatami.Collections.StatusesTags = StatusesTags;
 
 })(Backbone, Tatami);

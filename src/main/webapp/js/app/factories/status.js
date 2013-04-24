@@ -43,6 +43,15 @@
             return new Tatami.Views.Statuses({
                 collection: new Tatami.Collections.StatusesMentions()
             });
+        },
+
+        statusesTags: function(tagName){
+            var c = new Tatami.Collections.StatusesTags();
+            c.tag = tagName;
+
+            return new Tatami.Views.Statuses({
+                collection: c
+            });
         }
     };
 

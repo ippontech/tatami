@@ -104,7 +104,7 @@
             var tagsBody = Tatami.Factories.Tags.tagsBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
-            var timeline = Tatami.Factories.Status.statusesFavorites();
+            var timeline = Tatami.Factories.Status.statusesTags(tag);
             Tatami.app.body.show(tagsBody);
 
             tagsBody.tatams.show(region);
