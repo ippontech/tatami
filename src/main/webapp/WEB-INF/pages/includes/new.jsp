@@ -17,12 +17,17 @@
 </script>
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
-        <h1 class="title">
-            <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+        <h2 class="title">
+            <span class="tagsHome pointer pull-left label label-info">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;<fmt:message key="tatami.timeline"/>
+            </span>
+            <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
                 <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
+                &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
             </span>
             #<@= name @>
-        </h1>
+        </h2>
     </div>
 </script>
 <script type="text/template" id="CardProfile">
@@ -50,7 +55,7 @@
     </div>
 </script>
 <script type="text/template" id="TagTrendItems">
-    <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+    <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
@@ -137,10 +142,6 @@
 </script>
 <script type="text/template" id="TagsBody">
     <div class="page-header">
-        <h4>
-            <span class="glyphicon glyphicon-th-list"></span>
-            Mur
-        </h4>
     </div>
     <section class="tatams-container">
     </section>

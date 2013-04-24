@@ -15,7 +15,8 @@
             'change': 'render'
         },
         events: {
-            'click .toggleTag': 'toggleTag'
+            'click .toggleTag': 'toggleTag',
+            'click .tagsHome': 'tagsHome'
         },
         toggleTag: function(){
             this.model.save({
@@ -23,6 +24,9 @@
             }, {
               success: _.bind(this.render, this)
             });
+        },
+        tagsHome: function(){
+            Tatami.app.router.navigate("timeline", { trigger: true });
         }
     });
 
