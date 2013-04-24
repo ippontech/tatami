@@ -11,6 +11,7 @@ import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
+import fr.ippon.tatami.web.rest.dto.ActionStatus;
 import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -217,5 +218,92 @@ public class TimelineController {
             log.debug("REST request to get someone's status (username=" + username + ").");
         }
         return timelineService.getUserline(username, count, since_id, max_id);
+    }
+
+
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public StatusDTO getStatusREST(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status Id : " + statusId);
+        }
+        return timelineService.getStatus(statusId);
+    }
+
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.PATCH)
+    @ResponseBody
+    public StatusDTO updateStatusREST(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
+        StatusDTO status = timelineService.getStatus(statusId);
+        if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
+            if(action.isFavorite()){
+                timelineService.addFavoriteStatus(statusId);
+
+            }
+            else {
+                timelineService.removeFavoriteStatus(statusId);
+            }
+            status.setFavorite(action.isFavorite());
+        }
+
+        if(action.isShared() != null && action.isShared()){
+            timelineService.shareStatus(statusId);
+        }
+
+        return status;
+    }
+
+
+    /**
+     * POST /statuses/update -> create a new Status
+     */
+    @RequestMapping(value = "/rest/statuses/",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @Metered
+    public String postStatusREST(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to add status : " + status.getContent());
+        }
+        String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
+        Collection<String> attachmentIds = status.getAttachmentIds();
+
+        if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
+            statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
+        }
+        else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+            if (log.isDebugEnabled()) {
+                log.debug("Private status");
+            }
+            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
+        } else {
+            User currentUser = authenticationService.getCurrentUser();
+            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            Group group = null;
+            for (Group testGroup : groups) {
+                if (testGroup.getGroupId().equals(status.getGroupId())) {
+                    group = testGroup;
+                    break;
+                }
+            }
+            if (group == null) {
+                if (log.isInfoEnabled()) {
+                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else if (group.isArchivedGroup()) {
+                if (log.isInfoEnabled()) {
+                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
+                            "group ID = " + status.getGroupId());
+                }
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
+            }
+        }
+        return "{}";
     }
 }
