@@ -53,6 +53,14 @@ public class HomeController {
         return mv;
     }
 
+    @RequestMapping(value = { "/new/**", "/new", "/new/" }, method = RequestMethod.GET)
+    public ModelAndView newUI(@RequestParam(required = false) String action, HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("new");
+        User currentUser = authenticationService.getCurrentUser();
+        mv.addObject("user", currentUser);
+        return mv;
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
         email = email.toLowerCase();

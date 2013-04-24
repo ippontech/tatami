@@ -15,7 +15,7 @@ public class StatusDetails {
 
     private Collection<StatusDTO> discussionStatuses;
 
-    private Collection<String> sharedByLogins;
+    private Collection<User> sharedByLogins;
 
     public String getStatusId() {
         return statusId;
@@ -33,11 +33,11 @@ public class StatusDetails {
         this.discussionStatuses = discussionStatuses;
     }
 
-    public Collection<String> getSharedByLogins() {
+    public Collection<User> getSharedByLogins() {
         return sharedByLogins;
     }
 
-    public void setSharedByLogins(Collection<String> sharedByLogins) {
+    public void setSharedByLogins(Collection<User> sharedByLogins) {
         this.sharedByLogins = sharedByLogins;
     }
 
