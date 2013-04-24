@@ -58,6 +58,9 @@ public class AccountController {
         return userService.getUserByLogin(currentUser.getLogin());
     }
 
+    /**
+     * PUT  /account/profile -> get account's profile
+     */
     @RequestMapping(value = "/rest/account/profile",
             method = RequestMethod.PUT)
     @ResponseBody

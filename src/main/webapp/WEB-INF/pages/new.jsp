@@ -49,6 +49,11 @@
     <link rel="apple-touch-startup-image" href="/img/startup.png">
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
+    <script type="text/javascript">
+        var username = "${user.username}";
+        var ios = ${ios};
+    </script>
+
     <c:if test="${wro4jEnabled eq false}">
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/bootstrap.js"></script>
@@ -62,6 +67,7 @@
         <script src="/js/vendor/jquery.fileupload.js"></script>
 
         <script src="/js/app/app.js"></script>
+        <script src="/js/app/plugins/tatami.search.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/collections/users.js"></script>
         <script src="/js/app/models/postStatus.js"></script>
@@ -91,16 +97,14 @@
         <script src="/tatami/static-wro4j/${version}/vendor.js"></script>
     </c:if>
 
-    <script type="text/javascript">
-        var username = "${user.username}";
-    </script>
-
     <script type="text/template" id="stub">
     </script>
 
     <jsp:include page="includes/new.jsp"/>
 </head>
 <body>
+
+<c:if test="${!ios}">
 <div id="navbar" class="navbar">
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span>
@@ -298,6 +302,7 @@
         </form>
     </div>
 </div>
+</c:if>
 
 <div class="row">
     <div id="tatamiHeader" class="col-span-12">
@@ -311,8 +316,10 @@
     </section>
 </div>
 
-<form id="tatamiEdit" class="modal fade">
-</form>
+<c:if test="${!ios}">
+    <form id="tatamiEdit" class="modal fade">
+    </form>
+</c:if>
 
 </body>
 </html>

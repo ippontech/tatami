@@ -54,10 +54,11 @@ public class HomeController {
     }
 
     @RequestMapping(value = { "/new/**", "/new", "/new/" }, method = RequestMethod.GET)
-    public ModelAndView newUI(@RequestParam(required = false) String action, HttpServletRequest request) {
+    public ModelAndView newUI(@RequestParam(required = false) String ios) {
         ModelAndView mv = new ModelAndView("new");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
+        mv.addObject("ios", (ios != null));
         return mv;
     }
 
