@@ -15,6 +15,18 @@
         </h1>
     </div>
 </script>
+<script type="text/template" id="TagsHeader">
+    <div class="text-center page-header">
+        <h1 class="title">
+            <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+                <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
+            </span>
+            <small>
+                #<@= name @>
+            </small>
+        </h1>
+    </div>
+</script>
 <script type="text/template" id="CardProfile">
     <div class="page-header">
         <h4 class="profile-card">
@@ -40,8 +52,11 @@
     </div>
 </script>
 <script type="text/template" id="TagTrendItems">
+    <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+        <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
+    </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
-    <a href="#">#<@= name @></a>
+    <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
 <script type="text/template" id="StatusItems">
     <div class='pull-left'>
@@ -58,7 +73,7 @@
             <abbr class="pull-right" title="<@= prettyPrintStatusDate @>"><@= prettyPrintStatusDate @></abbr>
         </h4>
     </header>
-    <div class="well well-small markdown">
+    <div class="well well-small markdown pointer">
         <@= marked(content) @>
     </div>
     <footer>
@@ -124,6 +139,16 @@
             </a>
         </li>
     </ul>
+    <section class="tatams-container">
+    </section>
+</script>
+<script type="text/template" id="TagsBody">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-th-list"></span>
+            Mur
+        </h4>
+    </div>
     <section class="tatams-container">
     </section>
 </script>

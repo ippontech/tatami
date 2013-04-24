@@ -4,6 +4,7 @@
             'timeline' : 'homeTimeline',
             'mentions' : 'homeMentions',
             'favorites' : 'homeFavorites',
+            'tags/:tag' : 'tags',
             '*actions' : 'defaults'
         },
 
@@ -14,6 +15,8 @@
         },
 
         homeTimeline: function(){
+            Tatami.app.header.close();
+
             var homeSide = Tatami.Factories.Home.homeSide();
             Tatami.app.side.show(homeSide);
 
@@ -38,6 +41,8 @@
         },
 
         homeMentions: function(){
+            Tatami.app.header.close();
+
             var homeSide = Tatami.Factories.Home.homeSide();
             Tatami.app.side.show(homeSide);
 
@@ -62,6 +67,8 @@
         },
 
         homeFavorites: function(){
+            Tatami.app.header.close();
+
             var homeSide = Tatami.Factories.Home.homeSide();
             Tatami.app.side.show(homeSide);
 
@@ -83,6 +90,29 @@
 
             homeBody.show('favorites');
 
+        },
+
+        tags: function(tag) {
+            Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
+
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+
+            var tagsBody = Tatami.Factories.Tags.tagsBody();
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesFavorites();
+            Tatami.app.body.show(tagsBody);
+
+            tagsBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
         }
     });
 

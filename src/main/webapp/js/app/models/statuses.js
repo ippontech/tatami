@@ -4,16 +4,15 @@
         initialize: function(){
             var self = this;
 
-            window.m = this;
-
             this.listenTo(Tatami.app, 'model:status:' + this.id, function(model){
-                Object.keys(model).forEach(function(key){
-                    var value = model[key];
-                    if (self.get(key) !== value) self.set(key, value);
-                });
+                if(self !== model)
+                    model.keys().forEach(function(key){
+                        var value = model.get(key);
+                        if (self.get(key) !== value) self.set(key, value);
+                    });
             });
             this.listenTo(this, 'change', function(){
-                Tatami.app.trigger('model:status:' + self.id, self.toJSON());
+                Tatami.app.trigger('model:status:' + self.id, self);
             });
         },
         idAttribute: 'statusId',

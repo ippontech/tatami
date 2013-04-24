@@ -72,6 +72,7 @@
         <script src="/js/app/views/cardProfile.js"></script>
         <script src="/js/app/views/navbar.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
+        <script src="/js/app/views/tagsContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
@@ -80,6 +81,7 @@
         <script src="/js/app/views/groups.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/status.js"></script>
+        <script src="/js/app/factories/tags.js"></script>
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">

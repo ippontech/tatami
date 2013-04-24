@@ -224,4 +224,20 @@ public class TagController {
         }
         return tag;
     }
+
+
+    @RequestMapping(value = "/rest/tags/{tag}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Tag getTagNEW(@PathVariable("tag") String tagName) {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Tag tag = new Tag();
+        tag.setName(tagName);
+        if (followedTags.contains(tagName)) {
+            tag.setFollowed(true);
+        }
+        return tag;
+    }
 }
