@@ -47,12 +47,13 @@
 <script type="text/template" id="TagTrends">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-paperclip"></span>
-            <fmt:message key="tatami.trends.user.title"/>
+            <span class="glyphicon glyphicon-fire"></span>
+            &nbsp;<fmt:message key="tatami.trends.title"/>
         </h4>
     </div>
     <div class="items">
     </div>
+    <br/>
 </script>
 <script type="text/template" id="TagTrendItems">
     <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
@@ -60,6 +61,18 @@
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
     <a href="#tags/<@= name @>">#<@= name @></a>
+</script>
+<script type="text/template" id="WhoToFollow">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-random"></span>
+            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
+        </h4>
+    </div>
+    <div class="items">
+        TODO
+    </div>
+    <br/>
 </script>
 <script type="text/template" id="StatusItems">
     <div class='pull-left'>
@@ -116,8 +129,9 @@
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
-    <section class='hidden-phone tag-trends'></section>
     <section class='hidden-phone groups'></section>
+    <section class='hidden-phone who-to-follow'></section>
+    <section class='hidden-phone tag-trends'></section>
 </script>
 <script type="text/template" id="HomeBody">
     <ul class="homebody-nav nav nav-tabs nav-tabs-inverse nav-justified">
@@ -228,12 +242,13 @@
 <script type="text/template" id="Groups">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-briefcase"></span>
-            <fmt:message key="tatami.account.groups.mygroups"/>
+            <span class="glyphicon glyphicon-list-alt"></span>
+            &nbsp;<fmt:message key="tatami.account.groups.mygroups"/>
         </h4>
     </div>
     <div class="items">
     </div>
+    <br/>
 </script>
 <script type="text/template" id="GroupItems">
     <a href="#"><@= name @></a>

@@ -81,6 +81,7 @@
         <script src="/js/app/views/statusUpdateButton.js"></script>
         <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
+        <script src="/js/app/views/whoToFollow.js"></script>
         <script src="/js/app/views/groups.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/status.js"></script>

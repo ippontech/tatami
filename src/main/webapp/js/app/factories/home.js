@@ -1,6 +1,6 @@
 (function(Backbone, Tatami){
 
-    var homeSide, homeBody, tagTrends, cardProfile, groups;
+    var homeSide, homeBody, tagTrends, cardProfile, groups, whoToFollow;
 
     Tatami.Factories.Home = {
         homeSide: function(){
@@ -52,6 +52,10 @@
             });
 
             return groups;
+        },
+        whoToFollow: function(){
+            if(!whoToFollow) whoToFollow = new Tatami.Views.WhoToFollow();
+            return whoToFollow;
         }
     };
 
