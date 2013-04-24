@@ -152,8 +152,13 @@
 </script>
 <script type="text/template" id="StatusUpdateButton">
     <span class="glyphicon glyphicon-refresh"></span>
-    Message(s) en attente :
-    <span class="badge"><@= count @></span>
+    <span class="badge">
+        <@ if (count == 1) { @>
+            1 <fmt:message key="tatami.timeline.message"/>
+        <@ } else { @>
+            <@= count @> <fmt:message key="tatami.timeline.messages"/>
+        <@ } @>
+    </span>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">
@@ -187,7 +192,7 @@
                     <fmt:message key="tatami.status.options"/>
                 </legend>
                  <div class="controls groups">
-                    <label class="control-label" for="groupId">Groupe</label>
+                    <label class="control-label" for="groupId"><fmt:message key="tatami.group.name"/></label>
                     <select name="groupId">
                         <option value=""></option>
                         <@ for (index in groups) { @>
