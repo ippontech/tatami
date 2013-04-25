@@ -167,10 +167,11 @@
 <script type="text/template" id="StatusUpdateButton">
     <span class="glyphicon glyphicon-refresh"></span>
     <span class="badge">
+        <@= count @>
         <@ if (count == 1) { @>
-            1 <fmt:message key="tatami.timeline.message"/>
+            <fmt:message key="tatami.timeline.message"/>
         <@ } else { @>
-            <@= count @> <fmt:message key="tatami.timeline.messages"/>
+            <fmt:message key="tatami.timeline.messages"/>
         <@ } @>
     </span>
 </script>
