@@ -161,7 +161,7 @@
     </section>
 </script>
 <script type="text/template" id="StatusTimelineRegion">
-    <section class='refresh-button'></section>
+    <section class='refresh-button pointer'></section>
     <section class='timeline'></section>
 </script>
 <script type="text/template" id="StatusUpdateButton">
