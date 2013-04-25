@@ -23,6 +23,7 @@
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             homeSide.groups.show(Tatami.Factories.Home.groups());
+            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
 
             var homeBody = Tatami.Factories.Home.homeBody();
 
@@ -47,6 +48,7 @@
             Tatami.app.side.show(homeSide);
 
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
             var homeBody = Tatami.Factories.Home.homeBody();
@@ -73,6 +75,7 @@
             Tatami.app.side.show(homeSide);
 
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
             var homeBody = Tatami.Factories.Home.homeBody();
@@ -99,6 +102,7 @@
             Tatami.app.side.show(homeSide);
 
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
             var tagsBody = Tatami.Factories.Tags.tagsBody();

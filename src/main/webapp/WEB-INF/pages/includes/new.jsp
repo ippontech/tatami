@@ -17,12 +17,17 @@
 </script>
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
-        <h1 class="title">
-            <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+        <h2 class="title">
+            <span class="tagsHome pointer pull-left label label-info">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;<fmt:message key="tatami.timeline"/>
+            </span>
+            <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
                 <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
+                &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
             </span>
             #<@= name @>
-        </h1>
+        </h2>
     </div>
 </script>
 <script type="text/template" id="CardProfile">
@@ -42,19 +47,32 @@
 <script type="text/template" id="TagTrends">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-paperclip"></span>
-            <fmt:message key="tatami.trends.user.title"/>
+            <span class="glyphicon glyphicon-fire"></span>
+            &nbsp;<fmt:message key="tatami.trends.title"/>
         </h4>
     </div>
     <div class="items">
     </div>
+    <br/>
 </script>
 <script type="text/template" id="TagTrendItems">
-    <span class="toggleTag pointer pull-right label label-<@= (followed)?'danger':'success' @>">
+    <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
     <a href="#tags/<@= name @>">#<@= name @></a>
+</script>
+<script type="text/template" id="WhoToFollow">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-random"></span>
+            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
+        </h4>
+    </div>
+    <div class="items">
+        TODO
+    </div>
+    <br/>
 </script>
 <script type="text/template" id="StatusItems">
     <div class='pull-left'>
@@ -111,8 +129,9 @@
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
-    <section class='hidden-phone tag-trends'></section>
     <section class='hidden-phone groups'></section>
+    <section class='hidden-phone who-to-follow'></section>
+    <section class='hidden-phone tag-trends'></section>
 </script>
 <script type="text/template" id="HomeBody">
     <ul class="homebody-nav nav nav-tabs nav-tabs-inverse nav-justified">
@@ -137,10 +156,6 @@
 </script>
 <script type="text/template" id="TagsBody">
     <div class="page-header">
-        <h4>
-            <span class="glyphicon glyphicon-th-list"></span>
-            Mur
-        </h4>
     </div>
     <section class="tatams-container">
     </section>
@@ -151,8 +166,13 @@
 </script>
 <script type="text/template" id="StatusUpdateButton">
     <span class="glyphicon glyphicon-refresh"></span>
-    Message(s) en attente :
-    <span class="badge"><@= count @></span>
+    <span class="badge">
+        <@ if (count == 1) { @>
+            1 <fmt:message key="tatami.timeline.message"/>
+        <@ } else { @>
+            <@= count @> <fmt:message key="tatami.timeline.messages"/>
+        <@ } @>
+    </span>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">
@@ -186,7 +206,7 @@
                     <fmt:message key="tatami.status.options"/>
                 </legend>
                  <div class="controls groups">
-                    <label class="control-label" for="groupId">Groupe</label>
+                    <label class="control-label" for="groupId"><fmt:message key="tatami.group.name"/></label>
                     <select name="groupId">
                         <option value=""></option>
                         <@ for (index in groups) { @>
@@ -222,12 +242,13 @@
 <script type="text/template" id="Groups">
     <div class="page-header">
         <h4>
-            <span class="glyphicon glyphicon-briefcase"></span>
-            <fmt:message key="tatami.account.groups.mygroups"/>
+            <span class="glyphicon glyphicon-list-alt"></span>
+            &nbsp;<fmt:message key="tatami.account.groups.mygroups"/>
         </h4>
     </div>
     <div class="items">
     </div>
+    <br/>
 </script>
 <script type="text/template" id="GroupItems">
     <a href="#"><@= name @></a>

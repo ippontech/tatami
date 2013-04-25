@@ -8,6 +8,9 @@
             tagTrends: {
                 selector: ".tag-trends"
             },
+            whoToFollow: {
+                selector: ".who-to-follow"
+            },
             groups: {
                 selector: ".groups"
             }
