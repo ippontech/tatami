@@ -17,7 +17,11 @@
             jobTitle: '',
             attachementsSize: 0,
             friendsCount: 0,
-            followersCount: 0
+            followersCount: 0,
+            statusCount: 0,
+            you: false,
+            friend: false,
+            follower: false
         },
 
         urlRoot: '/tatami/rest/users/',

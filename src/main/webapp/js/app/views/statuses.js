@@ -25,7 +25,8 @@
         modelEvents: {
             'change:statusId': 'updateDetailModel',
             'change:favorite': 'onRender',
-            'change:discute': 'onRender'
+            'change:discute': 'onRender',
+            'destroy': 'hide'
         },
         events: {
             'click > .well': 'showDetails',
@@ -85,8 +86,7 @@
             return false;
         },
         removeAction: function(){
-            var self = this;
-            // TODO delete the status
+            this.model.destroy();
             return false;
         }
     });

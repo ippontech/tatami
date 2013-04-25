@@ -1,20 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="HomeHeader">
-    <div class="text-center page-header">
-        <h1 class="title">
-            <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
-            <strong>
-                <@= fullName @>
-            </strong>
-            <br>
-            <small>
-                @<@= username @>
-            </small>
-        </h1>
-    </div>
-</script>
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
         <h2 class="title">
@@ -48,13 +34,17 @@
     <div class="page-header">
         <h4 class="profile-card">
             <img class="img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);">
-            <strong>
-                <@= fullName @>
-            </strong>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
             <br>
-            <small>
-                @<@= username @>
-            </small>
+            <a href="#users/<@= username @>">
+                <small>
+                    @<@= username @>
+                </small>
+            </a>
         </h4>
     </div>
 </script>
@@ -94,12 +84,17 @@
     </div>
     <header class="page-header">
         <h4>
-            <strong>
-                <@= fullName @>
-            </strong>
-            <small>
-                @<@= username @>
-            </small>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
+            <br>
+            <a href="#users/<@= username @>">
+                <small>
+                    @<@= username @>
+                </small>
+            </a>
             <abbr class="pull-right" title="<@= prettyPrintStatusDate @>"><@= prettyPrintStatusDate @></abbr>
         </h4>
     </header>
@@ -307,4 +302,44 @@
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
         </li>
     <@}@>
+</script>
+<script type="text/template" id="ProfileActions">
+</script>
+<script type="text/template" id="ProfileTagTrends">
+</script>
+<script type="text/template" id="ProfileStats">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-signal"></span>
+            Statistiques
+        </h4>
+    </div>
+    <div>
+        <p>
+            <strong>
+                Followers :
+            </strong>
+            <span class="badge"><@= followersCount @></span>
+        </p>
+        <p>
+            <strong>
+                Friends :
+            </strong>
+            <span class="badge"><@= friendsCount @></span>
+        </p>
+        <p>
+            <strong>
+                Tatams :
+            </strong>
+            <span class="badge"><@= statusCount @></span>
+        </p>
+    </div>
+</script>
+<script type="text/template" id="ProfileInformations">
+</script>
+<script type="text/template" id="ProfileSide">
+    <section class="actions"/>
+    <section class="stats"/>
+    <section class="informations"/>
+    <section class="tagTrends"/>
 </script>

@@ -82,6 +82,7 @@
         <script src="/js/app/views/navbar.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
         <script src="/js/app/views/tagsContainers.js"></script>
+        <script src="/js/app/views/profileContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
@@ -89,6 +90,7 @@
         <script src="/js/app/views/tagTrends.js"></script>
         <script src="/js/app/views/whoToFollow.js"></script>
         <script src="/js/app/views/groups.js"></script>
+        <script src="/js/app/views/profileSide.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/profile.js"></script>
         <script src="/js/app/factories/status.js"></script>

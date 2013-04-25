@@ -1,12 +1,12 @@
 (function(Backbone, _, Tatami){
-    /*var ProfileSide = Backbone.Marionette.Layout.extend({
+    var ProfileSide = Backbone.Marionette.Layout.extend({
         template: "#ProfileSide",
         regions: {
             actions: {
-                selector: ".actions-profile"
+                selector: ".actions"
             },
             tagTrends: {
-                selector: ".tag-trends"
+                selector: ".tagTrends"
             },
             stats: {
                 selector: ".stats"
@@ -17,7 +17,7 @@
         }
     });
 
-    var ProfileBody = Backbone.Marionette.Layout.extend({
+    /*var ProfileBody = Backbone.Marionette.Layout.extend({
         template: "#ProfileBody",
         regions: {
             tatams: {
@@ -38,6 +38,6 @@
     });
 
     Tatami.Views.ProfileHeader = ProfileHeader;
-    //Tatami.Views.ProfileSide = ProfileSide;
+    Tatami.Views.ProfileSide = ProfileSide;
     //Tatami.Views.ProfileBody = ProfileBody;
 })(Backbone, _, Tatami);

@@ -5,6 +5,7 @@
             'mentions' : 'homeMentions',
             'favorites' : 'homeFavorites',
             'tags/:tag' : 'tags',
+            'users/:username' : 'profile',
             '*actions' : 'defaults'
         },
 
@@ -115,6 +116,20 @@
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
+
+            timeline.collection.fetch();
+        },
+
+        profile: function(username) {
+            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+
+            var profileSide = Tatami.Factories.Profile.profileSide();
+            Tatami.app.side.show(profileSide);
+
+            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+
+            var timeline = Tatami.Factories.Profile.statuses(username);
+            Tatami.app.body.show(timeline);
 
             timeline.collection.fetch();
         }
