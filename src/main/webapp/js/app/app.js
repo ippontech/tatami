@@ -55,11 +55,20 @@
         });
     });
 
-    Tatami.app.addInitializer(function(){
-        Tatami.app.navbar = new Tatami.Views.Navbar({
-            el: $('#navbar')
+    if(!ios){
+        Tatami.app.addInitializer(function(){
+            Tatami.app.navbar = new Tatami.Views.Navbar({
+                el: $('#navbar')
+            });
         });
-    });
+
+        Tatami.app.addInitializer(function(){
+            Tatami.app.on('edit:show', function(){
+                Tatami.app.edit.show.apply(Tatami.app.edit, arguments);
+            });
+        });
+
+    }
 
     Tatami.app.on("initialize:after", function(options){
         if (Backbone.history){

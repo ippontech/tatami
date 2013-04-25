@@ -5,7 +5,6 @@
     }))();
 
     var statusTimeline = new Tatami.Views.StatusTimelineRegion();
-    var updateButton = new Tatami.Views.StatusUpdateButton();
 
     Tatami.Factories.Status = {
         getStatusDetail: function(id){
@@ -24,7 +23,7 @@
         },
 
         getUpdateButton: function(){
-            return updateButton;
+            return new Tatami.Views.StatusUpdateButton();
         },
 
         statusesTimeline: function(){

@@ -7,6 +7,7 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.TrendService;
+import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Tag;
@@ -45,6 +46,9 @@ public class TagController {
 
     @Inject
     private AuthenticationService authenticationService;
+
+    @Inject
+    private UserService userService;
 
     /**
      * GET  /statuses/tag_timeline -> get the latest status for a given tag
@@ -195,16 +199,28 @@ public class TagController {
     @RequestMapping(value = "/rest/ tags",
             method = RequestMethod.GET,
             produces = "application/json")
-    public Collection<Tag> getTagsNEW(@RequestParam(required = false, value = "popular", defaultValue = "false") Boolean popular,
-                                      @RequestParam(required = false, value = "search", defaultValue = "") String search) {
+    @ResponseBody
+    public Collection<Tag> getTagsNEW(@RequestParam(required = false, value = "popular") String popular,
+                                      @RequestParam(required = false, value = "user") String username,
+                                      @RequestParam(required = false, value = "search") String search) {
         Collection<Tag> tags = new ArrayList<Tag>();
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Collection<String> tagNames;
 
-        if(popular) {
-            List<Trend> trends = trendService.getCurrentTrends(domain);
+        if(popular != null) {
+            List<Trend> trends = new ArrayList<Trend>();
+            User user = null;
+            if(username != null) user = userService.getUserByUsername(username);
+            if(user != null) {
+                trendService.getTrendsForUser(user.getLogin());
+                trends = trendService.getTrendsForUser(user.getLogin());
+            }
+            else {
+                trends = trendService.getCurrentTrends(domain);
+            }
+
             for (Trend trend : trends) {
                 Tag tag = new Tag();
                 tag.setName(trend.getTag());
@@ -212,7 +228,7 @@ public class TagController {
                 tags.add(tag);
             }
         }
-        else if (!search.isEmpty()) {
+        else if (search != null && !search.isEmpty()) {
             String prefix = search.toLowerCase();
             tagNames = trendService.searchTags(domain, prefix, 5);
             for (String tagName : tagNames) {
