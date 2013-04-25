@@ -41,14 +41,20 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         userWhoWillBeFollowed.setLogin("userWhoWillBeFollowed@ippon.fr");
         userService.createUser(userWhoWillBeFollowed);
 
+        User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(0L));
+
         friendshipService.followUser("userWhoWillBeFollowed");
 
         /* verify */
-        User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
+        userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
         assertThat(userWhoFollow.getFriendsCount(), is(1L));
 
         User userWhoIsFollowed = userService.getUserByUsername("userWhoWillBeFollowed");
         assertThat(userWhoIsFollowed.getFollowersCount(), is(1L));
+
+        // Clean up
+        friendshipService.unfollowUser("userWhoWillBeFollowed");
     }
 
     @Test
@@ -60,7 +66,7 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
 
         /* verify */
         User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
-        assertThat(userWhoFollow.getFriendsCount(), is(1L));
+        assertThat(userWhoFollow.getFriendsCount(), is(0L));
     }
 
     @Test
@@ -85,11 +91,15 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
 
         mockAuthentication("userWhoWantToFollow@ippon.fr");
 
+        User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(0L));
+        assertThat(userWhoFollow.getFollowersCount(), is(0L));
+
         friendshipService.followUser("userWhoWantToFollow");
 
         /* verify */
-        User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
-        assertThat(userWhoFollow.getFriendsCount(), is(1L));
+        userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
+        assertThat(userWhoFollow.getFriendsCount(), is(0L));
         assertThat(userWhoFollow.getFollowersCount(), is(0L));
     }
 
