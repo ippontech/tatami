@@ -31,7 +31,8 @@
             'click > .well': 'showDetails',
             'click > footer > div > aside > .status-action-reply': 'replyAction',
             'click > footer > div > aside > .status-action-share': 'shareAction',
-            'click > footer > div > aside > .status-action-favorite': 'favoriteAction'
+            'click > footer > div > aside > .status-action-favorite': 'favoriteAction',
+            'click > footer > div > aside > .status-action-remove': 'removeAction'
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -81,6 +82,11 @@
                     self.refreshDetails();
                 }
             });
+            return false;
+        },
+        removeAction: function(){
+            var self = this;
+            // TODO delete the status
             return false;
         }
     });
