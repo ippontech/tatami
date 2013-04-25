@@ -30,6 +30,20 @@
         </h2>
     </div>
 </script>
+<script type="text/template" id="ProfileHeader">
+    <div class="text-center page-header">
+        <h1 class="title">
+            <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
+            <strong>
+                <@= fullName @>
+            </strong>
+            <br>
+            <small>
+                @<@= username @>
+            </small>
+        </h1>
+  </div>
+</script>
 <script type="text/template" id="CardProfile">
     <div class="page-header">
         <h4 class="profile-card">

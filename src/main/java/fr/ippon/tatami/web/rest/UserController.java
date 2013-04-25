@@ -3,9 +3,11 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Metered;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,11 +64,13 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     @Metered
-    public User getUser(@PathVariable("username") String username) {
+    public UserDTO getUser(@PathVariable("username") String username) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
         }
-        return userService.getUserByUsername(username);
+        User user = userService.getUserByUsername(username);
+
+        return userService.buildUserDTO(user);
     }
 
     /**

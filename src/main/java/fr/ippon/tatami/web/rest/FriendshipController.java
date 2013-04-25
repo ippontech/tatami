@@ -6,6 +6,7 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.EmailAndUsername;
 import org.apache.commons.lang.StringUtils;
@@ -175,6 +176,47 @@ public class FriendshipController {
         }
         return;
     }
+
+    @RequestMapping(value = "/rest/users/{username}/friends",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @Metered
+    @ResponseBody
+    public Collection<UserDTO> getFriendsV3(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+
+        Collection<User> friends = friendshipService.getFriendsForUser(username);
+
+        return userService.buildUserDTOList(friends);
+    }
+
+    @RequestMapping(value = "/rest/users/{username}/followers",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @Metered
+    @ResponseBody
+    public Collection<UserDTO> getFollowersV3(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+
+        Collection<User> friends = friendshipService.getFollowersForUser(username);
+
+        return userService.buildUserDTOList(friends);
+    }
+
+    @RequestMapping(value = "/rest/users/{username}",
+            method = RequestMethod.PATCH)
+    @Metered
+    @ResponseBody
+    public UserDTO updateFriendV3(@RequestBody UserDTO user, @PathVariable String username){
+        if (user.isFriend())
+            friendshipService.followUser(username);
+        else
+            friendshipService.unfollowUser(username);
+
+        return userService.buildUserDTO(userService.getUserByUsername(username));
+    }
+
+
 
 
 }

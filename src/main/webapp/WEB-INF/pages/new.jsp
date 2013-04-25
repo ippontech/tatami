@@ -90,6 +90,7 @@
         <script src="/js/app/views/whoToFollow.js"></script>
         <script src="/js/app/views/groups.js"></script>
         <script src="/js/app/factories/home.js"></script>
+        <script src="/js/app/factories/profile.js"></script>
         <script src="/js/app/factories/status.js"></script>
         <script src="/js/app/factories/tags.js"></script>
         <script src="/js/app/router.js"></script>
