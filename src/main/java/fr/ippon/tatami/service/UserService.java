@@ -42,6 +42,12 @@ public class UserService {
     private FriendshipService friendshipService;
 
     @Inject
+    private FriendRepository friendRepository;
+
+    @Inject
+    private FollowerRepository followerRepository;
+
+    @Inject
     private CounterRepository counterRepository;
 
     @Inject
@@ -435,15 +441,11 @@ public class UserService {
         return domain.equalsIgnoreCase(domainHandledByLdap);
     }
 
-
-
     public Collection<UserDTO> buildUserDTOList(Collection<User> users){
         Collection<UserDTO> friends = new ArrayList<UserDTO>();
-
         for (User user : users){
             friends.add(this.buildUserDTO(user));
         }
-
         return friends;
     };
 
@@ -465,11 +467,10 @@ public class UserService {
         friend.setYou(user.equals(currentUser));
 
         if(!friend.isYou()){
-            Collection<User> currentFriends = friendshipService.getFriendsForUser(currentUser.getUsername());
-            Collection<User> userFriends = friendshipService.getFriendsForUser(user.getUsername());
-
-            friend.setFriend(currentFriends.contains(user));
-            friend.setFollower(userFriends.contains(currentUser));
+            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+            Collection<String> userFriendLogins = friendRepository.findFriendsForUser(user.getLogin());
+            friend.setFriend(currentFriendLogins.contains(user.getLogin()));
+            friend.setFollower(userFriendLogins.contains(currentUser.getLogin()));
         }
 
         return friend;

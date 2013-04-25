@@ -26,6 +26,8 @@
 
     <cache name="favorites-cache"/>
 
+    <cache name="friends-cache"/>
+
     <cache name="dayline-cache"
            timeToLiveSeconds="60">
     </cache>

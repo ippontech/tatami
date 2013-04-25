@@ -182,9 +182,12 @@ public class FriendshipController {
             produces = "application/json")
     @Metered
     @ResponseBody
-    public Collection<UserDTO> getFriendsV3(@PathVariable String username) {
+    public Collection<UserDTO> getFriendsV3(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
-
+        if (user == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
         Collection<User> friends = friendshipService.getFriendsForUser(username);
 
         return userService.buildUserDTOList(friends);
@@ -195,9 +198,12 @@ public class FriendshipController {
             produces = "application/json")
     @Metered
     @ResponseBody
-    public Collection<UserDTO> getFollowersV3(@PathVariable String username) {
+    public Collection<UserDTO> getFollowersV3(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
-
+        if (user == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
         Collection<User> friends = friendshipService.getFollowersForUser(username);
 
         return userService.buildUserDTOList(friends);
@@ -208,15 +214,11 @@ public class FriendshipController {
     @Metered
     @ResponseBody
     public UserDTO updateFriendV3(@RequestBody UserDTO user, @PathVariable String username){
-        if (user.isFriend())
+        if (user.isFriend()) {
             friendshipService.followUser(username);
-        else
+        } else {
             friendshipService.unfollowUser(username);
-
+        }
         return userService.buildUserDTO(userService.getUserByUsername(username));
     }
-
-
-
-
 }
