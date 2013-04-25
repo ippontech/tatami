@@ -40,6 +40,9 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         User userWhoWillBeFollowed = new User();
         userWhoWillBeFollowed.setLogin("userWhoWillBeFollowed@ippon.fr");
         userService.createUser(userWhoWillBeFollowed);
+        userWhoWillBeFollowed.setDailyDigestSubscription(false);
+        userWhoWillBeFollowed.setWeeklyDigestSubscription(false);
+        userService.updateUser(userWhoWillBeFollowed);
 
         User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
         assertThat(userWhoFollow.getFriendsCount(), is(0L));
@@ -113,6 +116,9 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         User userToForget = new User();
         userToForget.setLogin("userToForget@ippon.fr");
         userService.createUser(userToForget);
+        userToForget.setDailyDigestSubscription(false);
+        userToForget.setWeeklyDigestSubscription(false);
+        userService.updateUser(userToForget);
 
         friendshipService.unfollowUser("userToForget");
 
