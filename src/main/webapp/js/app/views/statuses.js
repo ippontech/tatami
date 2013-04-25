@@ -55,7 +55,7 @@
             this.footer.$el.slideToggle();
         },
         replyAction: function(){
-            Tatami.app.edit.show({
+            Tatami.app.trigger('edit:show',{
                 status: this.model.id
             });
             return false;

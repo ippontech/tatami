@@ -1,27 +1,19 @@
-(function(Backbone, Tatami){
-
-    var homeSide, homeBody, tagTrends, cardProfile, groups, whoToFollow;
+(function(Backbone, _, Tatami){
 
     Tatami.Factories.Home = {
         homeSide: function(){
-            if(!homeSide) homeSide = new Tatami.Views.HomeSide();
-
-            return homeSide;
+            return new Tatami.Views.HomeSide();
         },
         homeBody: function(){
-            if(!homeBody) homeBody = new Tatami.Views.HomeBody();
-
-            return homeBody;
+            return new Tatami.Views.HomeBody();
         },
-        tagTrends: function(){
-            if(tagTrends){
-                tagTrends.collection.fetch({
-                    data:{
-                        popular: true
-                    }
-                });
-                return tagTrends;
-            }
+        tagTrends: function(username){
+            var data = _.extend({
+                popular: true
+            }, (username)?{
+                user: username
+            }: null);
+
             var tags = new Tatami.Collections.Tags();
 
             tagTrends = new Tatami.Views.TagTrends({
@@ -29,16 +21,13 @@
             });
 
             tags.fetch({
-                data:{
-                    popular: true
-                }
+                data: data
             });
 
             return tagTrends;
         },
         cardProfile: function(){
-            if(cardProfile) return cardProfile;
-            cardProfile = new Tatami.Views.CardProfile({
+            var cardProfile = new Tatami.Views.CardProfile({
                 model: Tatami.app.user
             });
 
@@ -46,17 +35,15 @@
             return cardProfile;
         },
         groups: function(){
-            if(groups) return groups;
-            groups = new Tatami.Views.Groups({
+            var groups = new Tatami.Views.Groups({
                 collection: Tatami.app.groups
             });
 
             return groups;
         },
         whoToFollow: function(){
-            if(!whoToFollow) whoToFollow = new Tatami.Views.WhoToFollow();
-            return whoToFollow;
+            return new Tatami.Views.WhoToFollow();
         }
     };
 
-})(Backbone, Tatami);
+})(Backbone, _, Tatami);

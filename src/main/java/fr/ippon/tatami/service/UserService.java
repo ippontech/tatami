@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
@@ -433,4 +434,44 @@ public class UserService {
         String domainHandledByLdap = env.getProperty("tatami.ldapauth.domain");
         return domain.equalsIgnoreCase(domainHandledByLdap);
     }
+
+
+
+    public Collection<UserDTO> buildUserDTOList(Collection<User> users){
+        Collection<UserDTO> friends = new ArrayList<UserDTO>();
+
+        for (User user : users){
+            friends.add(this.buildUserDTO(user));
+        }
+
+        return friends;
+    };
+
+    public UserDTO buildUserDTO(User user){
+        User currentUser = authenticationService.getCurrentUser();
+
+        UserDTO friend = new UserDTO();
+        friend.setUsername(user.getUsername());
+        friend.setAvatar(user.getAvatar());
+        friend.setFirstName(user.getFirstName());
+        friend.setLastName(user.getLastName());
+        friend.setJobTitle(user.getJobTitle());
+        friend.setPhoneNumber(user.getPhoneNumber());
+        friend.setAttachmentsSize(user.getAttachmentsSize());
+        friend.setStatusCount(user.getStatusCount());
+        friend.setFriendsCount(user.getFriendsCount());
+        friend.setFollowersCount(user.getFollowersCount());
+
+        friend.setYou(user.equals(currentUser));
+
+        if(!friend.isYou()){
+            Collection<User> currentFriends = friendshipService.getFriendsForUser(currentUser.getUsername());
+            Collection<User> userFriends = friendshipService.getFriendsForUser(user.getUsername());
+
+            friend.setFriend(currentFriends.contains(user));
+            friend.setFollower(userFriends.contains(currentUser));
+        }
+
+        return friend;
+    };
 }
