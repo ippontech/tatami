@@ -128,6 +128,12 @@
             <span class="glyphicon glyphicon-pushpin"></span>
             <fmt:message key="tatami.user.status.favorite"/>
         </button>
+        <@ if (Tatami.app.user.get('username') == username) { @>
+        <button class="btn btn-link status-action-remove">
+            <span class="glyphicon glyphicon-trash"></span>
+            <fmt:message key="tatami.user.status.delete"/>
+        </button>
+        <@ } @>
     </aside>
     <div class="tatams-discute">
     </div>
