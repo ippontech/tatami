@@ -11,10 +11,12 @@
         idAttribute: 'username',
 
         defaults: {
+            login: '',
             avatar: '',
             firstName: '',
             lastName: '',
             jobTitle: '',
+            phoneNumber: '',
             attachementsSize: 0,
             friendsCount: 0,
             followersCount: 0,

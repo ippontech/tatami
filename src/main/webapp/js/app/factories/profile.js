@@ -9,19 +9,6 @@
             return new Tatami.Views.ProfileSide();
 
         },
-/*
-        actions: {
-                selector: ".actions-profile"
-            },
-            tagTrends: {
-                selector: ".tag-trends"
-            },
-            stats: {
-                selector: ".stats"
-            },
-            informations: {
-                selector: ".informations"
-            }*/
 
         actions: function(username){
             var user = this.getUsers(username);
@@ -29,8 +16,7 @@
         },
 
         tagTrends: function(username){
-            var user = this.getUsers(username);
-
+            return Tatami.Factories.Home.tagTrends(username);
         },
 
         stats: function(username){
@@ -44,10 +30,15 @@
         informations: function(username){
             var user = this.getUsers(username);
 
+            return new Tatami.Views.ProfileInformations({
+                model: user
+            });
         },
 
         profileBody: function(username){
-            return new Tatami.Views.ProfileBody();
+            return new Tatami.Views.ProfileBody({
+                user: username
+            });
         },
         profileHeader: function(username){
             var user = this.getUsers(username);
@@ -75,6 +66,22 @@
             c.user = username;
 
             return new Tatami.Views.Statuses({
+                collection: c
+            });
+        },
+
+        friends: function(username){
+            var c = new Tatami.Collections.Friends();
+            c.user = username;
+            return  new Tatami.Views.UserList({
+                collection: c
+            });
+        },
+
+        followers: function(username){
+            var c = new Tatami.Collections.Followers();
+            c.user = username;
+            return  new Tatami.Views.UserList({
                 collection: c
             });
         }

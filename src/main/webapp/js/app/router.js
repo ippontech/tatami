@@ -6,6 +6,8 @@
             'favorites' : 'homeFavorites',
             'tags/:tag' : 'tags',
             'users/:username' : 'profile',
+            'users/:username/friends' : 'profileFriends',
+            'users/:username/followers' : 'profileFollowers',
             '*actions' : 'defaults'
         },
 
@@ -127,11 +129,76 @@
             Tatami.app.side.show(profileSide);
 
             profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
 
+            var profileBody = Tatami.Factories.Profile.profileBody(username);
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Profile.statuses(username);
-            Tatami.app.body.show(timeline);
+            Tatami.app.body.show(profileBody);
+
+            profileBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
 
             timeline.collection.fetch();
+
+            profileBody.show('timeline');
+        },
+
+        profileFriends: function(username) {
+            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+
+            var profileSide = Tatami.Factories.Profile.profileSide();
+            Tatami.app.side.show(profileSide);
+
+            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+
+            var profileBody = Tatami.Factories.Profile.profileBody(username);
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Profile.friends(username);
+            Tatami.app.body.show(profileBody);
+
+            profileBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            window.c = timeline.collection;
+            timeline.collection.fetch();
+
+            profileBody.show('friends');
+        },
+
+        profileFollowers: function(username) {
+            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+
+            var profileSide = Tatami.Factories.Profile.profileSide();
+            Tatami.app.side.show(profileSide);
+
+            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+
+            var profileBody = Tatami.Factories.Profile.profileBody(username);
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Profile.followers(username);
+            Tatami.app.body.show(profileBody);
+
+            profileBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
+
+            profileBody.show('followers');
         }
     });
 

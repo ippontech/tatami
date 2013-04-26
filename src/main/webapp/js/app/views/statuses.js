@@ -25,8 +25,7 @@
         modelEvents: {
             'change:statusId': 'updateDetailModel',
             'change:favorite': 'onRender',
-            'change:discute': 'onRender',
-            'destroy': 'hide'
+            'change:discute': 'onRender'
         },
         events: {
             'click > .well': 'showDetails',

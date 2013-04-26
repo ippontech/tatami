@@ -453,6 +453,7 @@ public class UserService {
         User currentUser = authenticationService.getCurrentUser();
 
         UserDTO friend = new UserDTO();
+        friend.setLogin(user.getLogin());
         friend.setUsername(user.getUsername());
         friend.setAvatar(user.getAvatar());
         friend.setFirstName(user.getFirstName());

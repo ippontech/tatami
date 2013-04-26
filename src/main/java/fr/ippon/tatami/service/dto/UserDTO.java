@@ -16,6 +16,8 @@ import java.util.Date;
  */
 public class UserDTO {
 
+    private String login;
+
     private String username;
 
     private String avatar;
@@ -167,6 +169,7 @@ public class UserDTO {
         return "UserDTO{" +
                 "username='" + username + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", login='" + login + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName=" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
@@ -179,5 +182,13 @@ public class UserDTO {
                 ", isFollower=" + isFollower +
                 ", isYou=" + isYou +
                 '}';
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

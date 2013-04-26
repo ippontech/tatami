@@ -20,6 +20,13 @@
     <div class="text-center page-header">
         <h1 class="title">
             <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
+
+            <@ if(!you) { @>
+                <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                    <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+                </span>
+            <@ } @>
+
             <strong>
                 <@= fullName @>
             </strong>
@@ -65,18 +72,6 @@
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
     <a href="#tags/<@= name @>">#<@= name @></a>
-</script>
-<script type="text/template" id="WhoToFollow">
-    <div class="page-header">
-        <h4>
-            <span class="glyphicon glyphicon-random"></span>
-            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
-        </h4>
-    </div>
-    <div class="items">
-        TODO
-    </div>
-    <br/>
 </script>
 <script type="text/template" id="StatusItems">
     <div class='pull-left'>
@@ -217,7 +212,7 @@
                 </legend>
                 <div class="tatam-reply"/>
             </fieldset>
-            <fieldset>
+            <fieldset class="row-fluid">
                 <legend>
                     <fmt:message key="tatami.status.options"/>
                 </legend>
@@ -241,7 +236,7 @@
                     </div>
                     <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
                     <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
-                    <div class="fileUploadResults">
+                    <div class="fileUploadResults wrap">
 
                     </div>
                 </div>
@@ -305,8 +300,6 @@
 </script>
 <script type="text/template" id="ProfileActions">
 </script>
-<script type="text/template" id="ProfileTagTrends">
-</script>
 <script type="text/template" id="ProfileStats">
     <div class="page-header">
         <h4>
@@ -317,29 +310,149 @@
     <div>
         <p>
             <strong>
-                Followers :
+                <fmt:message key="tatami.badge.status"/> :
             </strong>
-            <span class="badge"><@= followersCount @></span>
+            <a href="#users/<@= username @>">
+                <span class="badge"><@= statusCount @></span>
+            </a>
         </p>
         <p>
             <strong>
-                Friends :
+                <fmt:message key="tatami.badge.followed"/> :
             </strong>
-            <span class="badge"><@= friendsCount @></span>
+            <a href="#users/<@= username @>/friends">
+                <span class="badge"><@= friendsCount @></span>
+            </a>
         </p>
         <p>
             <strong>
-                Tatams :
+                <fmt:message key="tatami.badge.followers"/> :
             </strong>
-            <span class="badge"><@= statusCount @></span>
+            <a href="#users/<@= username @>/followers">
+                <span class="badge"><@= followersCount @></span>
+            </a>
         </p>
     </div>
 </script>
 <script type="text/template" id="ProfileInformations">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-user"></span>
+            Informations
+        </h4>
+    </div>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.email"/> :
+        </strong>
+        <@= login @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.jobTitle"/> :
+        </strong>
+        <@= jobTitle @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.phoneNumber"/> :
+        </strong>
+        <@= phoneNumber @>
+    </p>
 </script>
 <script type="text/template" id="ProfileSide">
     <section class="actions"/>
     <section class="stats"/>
     <section class="informations"/>
     <section class="tagTrends"/>
+</script>
+<script type="text/template" id="TagTrendsProfile">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-fire"></span>
+            &nbsp;<fmt:message key="tatami.trends.title"/>
+        </h4>
+    </div>
+    <div class="items">
+    </div>
+    <br/>
+</script>
+<script type="text/template" id="ProfileBody">
+    <ul class="profilebody-nav nav nav-tabs nav-tabs-inverse nav-justified">
+        <li class="timeline">
+            <a href="#users/<@= user @>">
+                <fmt:message key="tatami.badge.status"/>
+            </a>
+        </li>
+        <li class="friends">
+            <a href="#users/<@= user @>/friends">
+                <fmt:message key="tatami.badge.followed"/>
+            </a>
+        </li>
+        <li class="followers">
+            <a href="#users/<@= user @>/followers">
+                <fmt:message key="tatami.badge.followers"/>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-container">
+    </section>
+</script>
+<script type="text/template" id="UserItems">
+    <div class='pull-left'>
+        <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+    </div>
+    <h4>
+        <@ if(!you) { @>
+            <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+            </span>
+        <@ } @>
+        <a href="#users/<@= username @>">
+            <strong>
+                <@= fullName @>
+            </strong>
+        </a>
+        <br>
+        <a href="#users/<@= username @>">
+            <small>
+                @<@= username @>
+            </small>
+        </a>
+    </h4>
+</script>
+<script type="text/template" id="UserItemsMini">
+    <div class='pull-left'>
+        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    </div>
+    <h6>
+        <@ if(!you) { @>
+            <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+            </span>
+        <@ } @>
+        <@ if(fullName){ @>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
+            <br>
+        <@ } @>
+        <a href="#users/<@= username @>">
+            <small>
+                @<@= username @>
+            </small>
+        </a>
+    </h4>
+</script>
+<script type="text/template" id="WhoToFollow">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-random"></span>
+            <fmt:message key="tatami.follow.suggestions"/>
+        </h4>
+    </div>
+    <div class="items">
+    </div>
 </script>
