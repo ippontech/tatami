@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.FriendshipService;
@@ -47,7 +47,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     @Deprecated
     public User getUserV1(@RequestParam("screen_name") String username) {
         if (this.log.isDebugEnabled()) {
@@ -63,7 +63,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public UserDTO getUser(@PathVariable("username") String username) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to get Profile : " + username);
@@ -80,7 +80,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<User> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
         return suggestionService.suggestUsers(login);
@@ -99,7 +99,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         if (this.log.isDebugEnabled()) {
@@ -118,7 +118,7 @@ public class UserController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
         if (pagination == null) {
             pagination = 0;

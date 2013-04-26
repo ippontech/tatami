@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.User;
@@ -62,7 +62,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public SearchResults search(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
         SearchResults searchResults = new SearchResults();
         searchResults.setTags(this.searchRecentTags(q));
@@ -79,7 +79,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<StatusDTO> listStatusForUser(@RequestParam(value = "q", required = false, defaultValue = "") String query,
                                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
@@ -108,7 +108,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<Tag> searchRecentTags(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -143,7 +143,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<Group> searchGroups(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         String currentLogin = authenticationService.getCurrentUser().getLogin();
@@ -173,7 +173,7 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
 

@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.FriendshipService;
@@ -105,7 +105,7 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<User> getFollowers(@RequestParam("screen_name") String username) {
         return friendshipService.getFollowersForUser(username);
     }
@@ -117,7 +117,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public void followUserByEmailAndUsername(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
         if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
             if (log.isDebugEnabled()) {
@@ -151,7 +151,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public void checkFriend(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
         User user;
         if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
@@ -180,7 +180,7 @@ public class FriendshipController {
     @RequestMapping(value = "/rest/users/{username}/friends",
             method = RequestMethod.GET,
             produces = "application/json")
-    @Metered
+    @Timed
     @ResponseBody
     public Collection<UserDTO> getFriendsV3(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
@@ -196,7 +196,7 @@ public class FriendshipController {
     @RequestMapping(value = "/rest/users/{username}/followers",
             method = RequestMethod.GET,
             produces = "application/json")
-    @Metered
+    @Timed
     @ResponseBody
     public Collection<UserDTO> getFollowersV3(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
@@ -211,7 +211,7 @@ public class FriendshipController {
 
     @RequestMapping(value = "/rest/users/{username}",
             method = RequestMethod.PATCH)
-    @Metered
+    @Timed
     @ResponseBody
     public UserDTO updateFriendV3(@RequestBody UserDTO user, @PathVariable String username){
         if (user.isFriend()) {

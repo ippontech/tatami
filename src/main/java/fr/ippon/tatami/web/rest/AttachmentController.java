@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.service.AttachmentService;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class AttachmentController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<Attachment> getAttachments(
             @RequestParam(required = false) Integer pagination) {
 
@@ -51,7 +51,7 @@ public class AttachmentController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Attachment getAttachmentById(@PathVariable("attachmentId") String attachmentId) {
         return attachmentService.getAttachmentById(attachmentId);
     }
@@ -63,7 +63,7 @@ public class AttachmentController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public void DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         attachmentService.deleteAttachment(attachment);
