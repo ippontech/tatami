@@ -5,6 +5,7 @@
             'mentions' : 'homeMentions',
             'favorites' : 'homeFavorites',
             'tags/:tag' : 'tags',
+            'status/:id' : 'status',
             'users/:username' : 'profile',
             'users/:username/friends' : 'profileFriends',
             'users/:username/followers' : 'profileFollowers',
@@ -122,6 +123,43 @@
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
+        },
+
+        status: function(statusId) {
+            var status = new Tatami.Models.Statuses({
+                statusId: statusId
+            });
+            status.fetch({
+                error: function(){
+                    Tatami.app.router.defaults();
+                },
+                success: function(model){
+                    var username = model.get('username');
+
+                    Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+
+                    var profileSide = Tatami.Factories.Profile.profileSide();
+                    Tatami.app.side.show(profileSide);
+
+                    profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+                    profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+                    profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+
+                    var profileBody = Tatami.Factories.Profile.profileBody(username);
+
+                    Tatami.app.body.show(profileBody);
+
+                    var statusView = new Tatami.Views.StatusItems({
+                        model : model
+                    });
+
+                    profileBody.tatams.show(statusView);
+
+                    statusView.$el.slideDown();
+                    profileBody.show();
+
+                }
+            });
         },
 
         profile: function(username) {

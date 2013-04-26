@@ -125,6 +125,10 @@
     <div class="tatams-share">
     </div>
     <aside class="text-right">
+        <a href="#status/<@= statusId @>" class="btn btn-link">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            <fmt:message key="tatami.user.status.show"/>
+        </a>
         <button class="btn btn-link status-action-reply">
             <span class="glyphicon glyphicon-comment"></span>
             <fmt:message key="tatami.user.status.reply"/>
@@ -383,9 +387,9 @@
 </script>
 <script type="text/template" id="ProfileSide">
     <section class="actions"/>
-    <section class="stats"/>
-    <section class="informations"/>
-    <section class="tagTrends"/>
+    <section class="hidden-phone stats"/>
+    <section class="hidden-phone informations"/>
+    <section class="hidden-phone tagTrends"/>
 </script>
 <script type="text/template" id="TagTrendsProfile">
     <div class="page-header">

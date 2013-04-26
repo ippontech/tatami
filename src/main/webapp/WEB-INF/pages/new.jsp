@@ -88,6 +88,7 @@
 
         <script src="/js/app/app.js"></script>
         <script src="/js/app/plugins/tatami.search.js"></script>
+        <script src="/js/app/plugins/suggester.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/collections/users.js"></script>
         <script src="/js/app/models/postStatus.js"></script>
@@ -323,7 +324,7 @@
                 </button>
             </li>
         </ul>
-        <form class="navbar-form pull-right" action="">
+        <form class="navbar-form pull-right col-span-5" action="">
             <input name="search" type="text" class="col-span-12" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
         </form>
     </div>

@@ -55,7 +55,11 @@
                     username: username
                 });
                 users.add(user);
-                user.fetch();
+                user.fetch({
+                    error: function(){
+                        Tatami.app.router.defaults();
+                    }
+                });
             }
 
             return user;

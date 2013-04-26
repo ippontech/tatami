@@ -12,7 +12,11 @@
                     groupId: groupId
                 });
                 groups.add(group);
-                group.fetch();
+                group.fetch({
+                    error: function(){
+                        Tatami.app.router.defaults();
+                    }
+                });
             }
 
             return new Tatami.Views.GroupsHeader({

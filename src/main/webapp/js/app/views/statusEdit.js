@@ -21,6 +21,8 @@
 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0 );
 
+            this.$edit.typeahead(new Tatami.Suggester(this.$edit));
+
             this.$el.modal('show');
         },
 
