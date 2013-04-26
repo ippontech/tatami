@@ -8,6 +8,8 @@
             'users/:username' : 'profile',
             'users/:username/friends' : 'profileFriends',
             'users/:username/followers' : 'profileFollowers',
+            'groups/:group' : 'groups',
+            'groups/:group/members' : 'groupsMembers',
             '*actions' : 'defaults'
         },
 
@@ -199,6 +201,39 @@
             timeline.collection.fetch();
 
             profileBody.show('followers');
+        },
+
+        groups: function(group){
+            Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
+            Tatami.app.side.close();
+
+
+            var groupsBody = Tatami.Factories.Groups.groupsBody(group);
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesGroups(group);
+            Tatami.app.body.show(groupsBody);
+
+            groupsBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
+
+            groupsBody.show('timeline');
+        },
+
+        groupsMembers: function(group){
+            Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
+            Tatami.app.side.close();
+
+
+            var groupsBody = Tatami.Factories.Groups.groupsBody(group);
+
+            Tatami.app.body.show(groupsBody);
+
+            groupsBody.show('members');
         }
     });
 

@@ -79,11 +79,19 @@
         }
     });
 
+    var StatusesGroups = Statuses.extend({
+        model: Tatami.Models.Statuses,
+        url: function(){
+            return '/tatami/rest/groups/' + this.group + '/timeline';
+        }
+    });
+
     Tatami.Collections.Statuses = Statuses;
     Tatami.Collections.StatusesTimeline = StatusesTimeline;
     Tatami.Collections.StatusesFavorites = StatusesFavorites;
     Tatami.Collections.StatusesMentions = StatusesMentions;
     Tatami.Collections.StatusesTags = StatusesTags;
     Tatami.Collections.StatusesUsers = StatusesUsers;
+    Tatami.Collections.StatusesGroups = StatusesGroups;
 
 })(Backbone, Tatami);

@@ -175,6 +175,7 @@
             var self = this;
 
             this.model.set('content', this.$edit.val());
+            this.model.set('groupId', this.$el.find('[name="groupId"]').val());
 
             this.model.save(null, {
                 success: function (model, response) {

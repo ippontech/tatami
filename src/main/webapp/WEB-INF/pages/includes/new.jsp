@@ -4,15 +4,26 @@
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
         <h2 class="title">
-            <span class="tagsHome pointer pull-left label label-info">
+            <a href="#timeline" class="pull-left btn btn-info">
                 <span class="glyphicon glyphicon-th-list"></span>
                 &nbsp;<fmt:message key="tatami.timeline"/>
-            </span>
-            <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
+            </a>
+            <a class="toggleTag pull-right btn <@= (followed)?'btn-info':'' @>">
                 <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
                 &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
-            </span>
+            </a>
             #<@= name @>
+        </h2>
+    </div>
+</script>
+<script type="text/template" id="GroupsHeader">
+    <div class="text-center page-header">
+        <h2 class="title">
+            <a href="#timeline" class="pull-left btn btn-info">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;<fmt:message key="tatami.timeline"/>
+            </a>
+            <@= name @>
         </h2>
     </div>
 </script>
@@ -78,6 +89,17 @@
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <header class="page-header">
+        <div class="pull-right text-right">
+            <@ if(groupId) { @>
+                <a class="label label-info" href="#groups/<@= groupId @>">
+                    <@= groupName @>
+                </a>
+                <br/>
+            <@ } @>
+            <abbr title="<@= prettyPrintStatusDate @>">
+                <@= prettyPrintStatusDate @>
+            </abbr>
+        </div>
         <h4>
             <a href="#users/<@= username @>">
                 <strong>
@@ -90,7 +112,6 @@
                     @<@= username @>
                 </small>
             </a>
-            <abbr class="pull-right" title="<@= prettyPrintStatusDate @>"><@= prettyPrintStatusDate @></abbr>
         </h4>
     </header>
     <div class="well well-small markdown pointer">
@@ -262,7 +283,7 @@
     <br/>
 </script>
 <script type="text/template" id="GroupItems">
-    <a href="#"><@= name @></a>
+    <a href="#groups/<@= groupId @>"><@= name @></a>
 </script>
 <script type="text/template" id="StatusAttachmentItems">
     <span class="glyphicon glyphicon-file"></span>
@@ -398,6 +419,22 @@
     <section class="tatams-container">
     </section>
 </script>
+<script type="text/template" id="GroupsBody">
+    <ul class="groupsbody-nav nav nav-tabs nav-tabs-inverse nav-justified">
+        <li class="timeline">
+            <a href="#groups/<@= group @>">
+                <fmt:message key="tatami.badge.status"/>
+            </a>
+        </li>
+        <li class="members">
+            <a href="#groups/<@= group @>/members">
+                <fmt:message key="tatami.group.members.list"/>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-container">
+    </section>
+</script>
 <script type="text/template" id="UserItems">
     <div class='pull-left'>
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
@@ -450,7 +487,7 @@
     <div class="page-header">
         <h4>
             <span class="glyphicon glyphicon-random"></span>
-            <fmt:message key="tatami.follow.suggestions"/>
+            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
         </h4>
     </div>
     <div class="items">
