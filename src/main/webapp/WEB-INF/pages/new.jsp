@@ -49,6 +49,26 @@
     <link rel="apple-touch-startup-image" href="/img/startup.png">
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
+    <c:if test="${googleAnalyticsKey ne ''}">
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '${googleAnalyticsKey}']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </c:if>
+
+    <sec:authorize ifAnyGranted="ROLE_USER">
+        <c:if test="${not empty user.rssUid}">
+            <link rel="alternate" type="application/rss+xml" title="RSS"
+                  href="/tatami/syndic/${user.rssUid}" />
+        </c:if>
+    </sec:authorize>
+
     <script type="text/javascript">
         var username = "${user.username}";
         var ios = ${ios};
