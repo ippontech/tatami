@@ -146,13 +146,13 @@
                 </a>
                 <ul class="dropdown-menu closed">
                     <li>
-                        <a>
+                        <a href="/tatami/presentation">
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <fmt:message key="tatami.menu.presentation"/>
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a href="/tatami/tos">
                             <span class="glyphicon glyphicon-briefcase"></span>
                             <fmt:message key="tatami.menu.tos"/>
                         </a>
@@ -177,38 +177,38 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a>
+                        <a href="/tatami/license">
                             <span class="glyphicon glyphicon-info-sign"></span>
                             <fmt:message key="tatami.menu.license"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://github.com/ippontech/tatami/issues" target="_blank">
                             <span class="glyphicon glyphicon-inbox"></span>
                             <fmt:message key="tatami.github.issues"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://github.com/ippontech/tatami" target="_blank">
                             <span class="glyphicon glyphicon-wrench"></span>
                             <fmt:message key="tatami.github.fork"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="http://www.ippon.fr/" target="_blank">
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                             <fmt:message key="tatami.ippon.website"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="http://blog.ippon.fr/" target="_blank">
                             <span class="glyphicon glyphicon-pencil"></span>
                             <fmt:message key="tatami.ippon.blog"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://twitter.com/ippontech" target="_blank">
                             <span class="glyphicon glyphicon-bullhorn"></span>
                             <fmt:message key="tatami.ippon.twitter.follow"/>
                         </a>
@@ -236,56 +236,56 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/profile">
                             <span class="glyphicon glyphicon-user"></span>
                             <fmt:message key="tatami.menu.profile"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/preferences">
                             <span class="glyphicon glyphicon-picture"></span>
                             <fmt:message key="tatami.menu.preferences"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/password">
                             <span class="glyphicon glyphicon-lock"></span>
                             <fmt:message key="tatami.menu.password"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/files">
                             <span class="glyphicon glyphicon-file"></span>
                             <fmt:message key="tatami.menu.files"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/users">
                             <span class="glyphicon glyphicon-globe"></span>
                             <fmt:message key="tatami.menu.directory"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/groups">
                             <span class="glyphicon glyphicon-th-large"></span>
                             <fmt:message key="tatami.menu.groups"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/tags">
                             <span class="glyphicon glyphicon-tags"></span>
                             <fmt:message key="tatami.menu.tags"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/status_of_the_day">
                             <span class="glyphicon glyphicon-signal"></span>
                             <fmt:message key="tatami.menu.status.of.the.day"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/company">
                             <span class="glyphicon glyphicon-briefcase"></span>
                             <fmt:message key="tatami.menu.company.wall"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/logout">
                             <span class="glyphicon glyphicon-off"></span>
                             <fmt:message key="tatami.logout"/>
                         </a>
