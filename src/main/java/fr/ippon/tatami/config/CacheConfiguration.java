@@ -50,6 +50,22 @@ public class CacheConfiguration {
             Cache attachmentCache = cacheManager.getCache("attachment-cache");
             Ehcache decoratedAttachmentCache = InstrumentedEhcache.instrument(attachmentCache);
             cacheManager.replaceCacheWithDecoratedCache(attachmentCache, decoratedAttachmentCache);
+
+            Cache friendsCache = cacheManager.getCache("friends-cache");
+            Ehcache decoratedFriendsCache = InstrumentedEhcache.instrument(friendsCache);
+            cacheManager.replaceCacheWithDecoratedCache(friendsCache, decoratedFriendsCache);
+
+            Cache followersCache = cacheManager.getCache("followers-cache");
+            Ehcache decoratedFollowersCache = InstrumentedEhcache.instrument(followersCache);
+            cacheManager.replaceCacheWithDecoratedCache(followersCache, decoratedFollowersCache);
+
+            Cache groupCache = cacheManager.getCache("group-cache");
+            Ehcache decoratedGroupCache = InstrumentedEhcache.instrument(groupCache);
+            cacheManager.replaceCacheWithDecoratedCache(groupCache, decoratedGroupCache);
+
+            Cache groupUserCache = cacheManager.getCache("group-user-cache");
+            Ehcache decoratedGroupUserCache = InstrumentedEhcache.instrument(groupUserCache);
+            cacheManager.replaceCacheWithDecoratedCache(groupUserCache, decoratedGroupUserCache);
         }
         EhCacheCacheManager ehCacheManager = new EhCacheCacheManager();
         ehCacheManager.setCacheManager(cacheManager);
