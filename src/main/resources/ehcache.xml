@@ -28,6 +28,8 @@
 
     <cache name="friends-cache"/>
 
+    <cache name="followers-cache"/>
+
     <cache name="dayline-cache"
            timeToLiveSeconds="60">
     </cache>
