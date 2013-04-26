@@ -442,16 +442,36 @@ public class UserService {
     }
 
     public Collection<UserDTO> buildUserDTOList(Collection<User> users){
-        Collection<UserDTO> friends = new ArrayList<UserDTO>();
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
         for (User user : users){
-            friends.add(this.buildUserDTO(user));
+            UserDTO userDTO = getUserDTOFromUser(user);
+            userDTO.setYou(user.equals(currentUser));
+            if(!userDTO.isYou()){
+                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+            }
+            userDTOs.add(userDTO);
         }
-        return friends;
+        return userDTOs;
     };
 
     public UserDTO buildUserDTO(User user){
         User currentUser = authenticationService.getCurrentUser();
+        UserDTO userDTO = getUserDTOFromUser(user);
+        userDTO.setYou(user.equals(currentUser));
+        if(!userDTO.isYou()){
+            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+            Collection<String> currentFollowersLogins =  followerRepository.findFollowersForUser(currentUser.getLogin());
+            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+        }
+        return userDTO;
+    }
 
+    private UserDTO getUserDTOFromUser(User user) {
         UserDTO friend = new UserDTO();
         friend.setLogin(user.getLogin());
         friend.setUsername(user.getUsername());
@@ -464,16 +484,6 @@ public class UserService {
         friend.setStatusCount(user.getStatusCount());
         friend.setFriendsCount(user.getFriendsCount());
         friend.setFollowersCount(user.getFollowersCount());
-
-        friend.setYou(user.equals(currentUser));
-
-        if(!friend.isYou()){
-            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-            Collection<String> userFriendLogins = friendRepository.findFriendsForUser(user.getLogin());
-            friend.setFriend(currentFriendLogins.contains(user.getLogin()));
-            friend.setFollower(userFriendLogins.contains(currentUser.getLogin()));
-        }
-
         return friend;
-    };
+    }
 }

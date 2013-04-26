@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
@@ -63,7 +63,7 @@ public class TimelineController {
      */
     @RequestMapping(value = "/rest/statuses/update",
             method = RequestMethod.POST)
-    @Metered
+    @Timed
     public void postStatus(@RequestBody StatusDTO status, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
@@ -189,7 +189,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
                                             @RequestParam(required = false) String since_id,
                                             @RequestParam(required = false) String max_id) {
@@ -272,7 +272,7 @@ public class TimelineController {
     @RequestMapping(value = "/rest/statuses/",
             method = RequestMethod.POST,
             produces = "application/json")
-    @Metered
+    @Timed
     public String postStatusV3(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());

@@ -1,6 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Metered;
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
@@ -34,7 +34,7 @@ public class CompanyWallController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    @Metered
+    @Timed
     public Collection<StatusDTO> getCompanyWall(@RequestParam(required = false) Integer count,
                                                 @RequestParam(required = false) String since_id,
                                                 @RequestParam(required = false) String max_id) {
