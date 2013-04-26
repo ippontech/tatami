@@ -141,8 +141,8 @@
                     var profileSide = Tatami.Factories.Profile.profileSide();
                     Tatami.app.side.show(profileSide);
 
-                    profileSide.stats.show(Tatami.Factories.Profile.stats(username));
                     profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+                    profileSide.stats.show(Tatami.Factories.Profile.stats(username));
                     profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
 
                     var profileBody = Tatami.Factories.Profile.profileBody(username);
@@ -168,8 +168,8 @@
             var profileSide = Tatami.Factories.Profile.profileSide();
             Tatami.app.side.show(profileSide);
 
-            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
             profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
             profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
 
             var profileBody = Tatami.Factories.Profile.profileBody(username);

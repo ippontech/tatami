@@ -5,14 +5,14 @@
             actions: {
                 selector: ".actions"
             },
-            tagTrends: {
-                selector: ".tagTrends"
+            informations: {
+                selector: ".informations"
             },
             stats: {
                 selector: ".stats"
             },
-            informations: {
-                selector: ".informations"
+            tagTrends: {
+                selector: ".tagTrends"
             }
         }
     });

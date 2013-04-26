@@ -203,12 +203,12 @@
     <span class="glyphicon glyphicon-refresh"></span>
     <span class="badge">
         <@= count @>
-        <@ if (count == 1) { @>
-            <fmt:message key="tatami.timeline.message"/>
-        <@ } else { @>
-            <fmt:message key="tatami.timeline.messages"/>
-        <@ } @>
     </span>
+    <@ if (count == 1) { @>
+        <fmt:message key="tatami.timeline.message"/>
+    <@ } else { @>
+        <fmt:message key="tatami.timeline.messages"/>
+    <@ } @>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">
@@ -329,7 +329,7 @@
     <div class="page-header">
         <h4>
             <span class="glyphicon glyphicon-signal"></span>
-            Statistiques
+            <fmt:message key="tatami.statistics"/>
         </h4>
     </div>
     <div>
@@ -357,15 +357,28 @@
                 <span class="badge"><@= followersCount @></span>
             </a>
         </p>
+        <br/>
     </div>
 </script>
 <script type="text/template" id="ProfileInformations">
     <div class="page-header">
         <h4>
             <span class="glyphicon glyphicon-user"></span>
-            Informations
+            <fmt:message key="tatami.user.informations"/>
         </h4>
     </div>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.firstName"/> :
+        </strong>
+        <@= firstName @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.lastName"/> :
+        </strong>
+        <@= lastName @>
+    </p>
     <p>
         <strong>
             <fmt:message key="tatami.user.email"/> :
@@ -384,11 +397,12 @@
         </strong>
         <@= phoneNumber @>
     </p>
+    <br/>
 </script>
 <script type="text/template" id="ProfileSide">
     <section class="actions"/>
-    <section class="hidden-phone stats"/>
     <section class="hidden-phone informations"/>
+    <section class="hidden-phone stats"/>
     <section class="hidden-phone tagTrends"/>
 </script>
 <script type="text/template" id="TagTrendsProfile">
@@ -496,4 +510,5 @@
     </div>
     <div class="items">
     </div>
+    <br/>
 </script>
