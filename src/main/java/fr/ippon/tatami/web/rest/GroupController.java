@@ -87,6 +87,7 @@ public class GroupController {
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Group updateGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit, HttpServletResponse response) {
         Group group = getGroup(groupId);
 
@@ -115,6 +116,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<StatusDTO> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
                                                     @RequestParam(required = false) Integer count,
                                                     @RequestParam(required = false) String since_id,
@@ -141,6 +143,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<StatusDTO> listStatusForGroupV3(@PathVariable(value = "groupId") String groupId,
                                                     @RequestParam(required = false) Integer count,
                                                     @RequestParam(required = false) String since_id,
@@ -170,6 +173,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
@@ -188,6 +192,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Group> getGroups() {
         User currentUser = authenticationService.getCurrentUser();
         return groupService.getGroupsForUser(currentUser);
@@ -200,6 +205,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Group> getAdminGroups() {
         return groupService.getGroupsWhereCurrentUserIsAdmin();
     }
@@ -211,6 +217,7 @@ public class GroupController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Group createGroup(HttpServletResponse response, @RequestBody Group group) {
         if (group.getName() != null && !group.getName().equals("")) {
             groupService.createGroup(group.getName(), group.getDescription(), group.isPublicGroup());
@@ -227,6 +234,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Group> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
         return suggestionService.suggestGroups(login);
@@ -240,6 +248,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
         User currentUser = authenticationService.getCurrentUser();
@@ -264,6 +273,7 @@ public class GroupController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
@@ -303,6 +313,7 @@ public class GroupController {
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
@@ -336,6 +347,7 @@ public class GroupController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserGroupDTO removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();

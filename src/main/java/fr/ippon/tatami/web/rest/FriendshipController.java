@@ -46,6 +46,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
+    @Timed
     public void followUser(@RequestBody User user, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to follow username : " + user.getUsername());
@@ -63,6 +64,7 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Boolean followUser(@RequestParam("screen_name") String username) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get friendship status : " + username);
@@ -77,6 +79,7 @@ public class FriendshipController {
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
+    @Timed
     public void unfollowUser(@RequestBody User user) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to unfollow username  : " + user.getUsername());
@@ -91,6 +94,7 @@ public class FriendshipController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<User> getFriends(@RequestParam("screen_name") String username) {
 
         return friendshipService.getFriendsForUser(username);
