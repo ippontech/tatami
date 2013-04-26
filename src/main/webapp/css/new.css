@@ -18,7 +18,6 @@
 }
 
 .img-small {
-    display: block;
     width: 25px;
     height: 25px;
     background-position: center center;
@@ -26,7 +25,6 @@
 }
 
 .img-medium {
-    display: block;
     width: 50px;
     height: 50px;
     background-position: center center;
@@ -34,7 +32,6 @@
 }
 
 .img-big {
-    display: block;
     width: 70px;
     height: 70px;
     background-position: center center;
@@ -59,8 +56,6 @@
 }
 .title > img {
     margin-left: -80px;
-    padding: 5px;
-    width: 70px;
 }
 
 .page-header {
@@ -84,7 +79,7 @@
     font-size: 12px;
 }
 
-.title, .tatam *, .trends *, .profile *, .preview-tatam *, .profile-card {
+.title, .tatam *, .trends *, .profile *, .preview-tatam *, .profile-card, .wrap * {
     white-space: normal;
     word-wrap: break-word;
 }
@@ -93,7 +88,7 @@
     margin-right: 5px;
 }
 
-.tatam {
+.tatam, .useritem {
     padding: 0px 5px 1px 60px;
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -105,6 +100,23 @@
 
     overflow: hidden;
     display: none;
+}
+
+.useritemmini {
+    padding: 0px 5px 1px 35px;
+
+    overflow: hidden;
+    display: none;
+}
+
+.useritemmini h6 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    line-height: 12px
+}
+
+.useritem, .useritemmini {
+    display: block;
 }
 
 .tatam.discute {
@@ -133,10 +145,16 @@
     cursor: pointer;
 }
 
-.tatam > div:first-child {
+.tatam > div:first-child, .useritem > div:first-child {
     margin-left: -60px;
     padding: 5px;
 }
+
+.useritemmini > div:first-child {
+    margin-left: -35px;
+    padding: 5px;
+}
+
 .tatam > header {
     padding-bottom: 0;
     margin-bottom: 15px;
@@ -217,6 +235,12 @@
     padding: 0px;
 }
 
+@media screen and (max-width: 767px) {
+    .typeahead.dropdown-menu.hasCategory{
+        position: static;
+        width: 100%;
+    }
+}
 
 @media (min-width: 979px) {
   .typeahead.dropdown-menu.hasCategory{

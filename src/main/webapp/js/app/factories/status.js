@@ -51,6 +51,15 @@
             return new Tatami.Views.Statuses({
                 collection: c
             });
+        },
+
+        statusesGroups: function(groupId){
+            var c = new Tatami.Collections.StatusesGroups();
+            c.group = groupId;
+
+            return new Tatami.Views.Statuses({
+                collection: c
+            });
         }
     };
 

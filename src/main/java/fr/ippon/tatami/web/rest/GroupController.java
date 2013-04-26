@@ -137,6 +137,32 @@ public class GroupController {
         }
     }
 
+    @RequestMapping(value = "/rest/groups/{groupId}/timeline",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<StatusDTO> listStatusForGroupV3(@PathVariable(value = "groupId") String groupId,
+                                                    @RequestParam(required = false) Integer count,
+                                                    @RequestParam(required = false) String since_id,
+                                                    @RequestParam(required = false) String max_id) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get statuses for group : " + groupId);
+        }
+        if (groupId == null) {
+            return new ArrayList<StatusDTO>();
+        }
+        if (count == null) {
+            count = 20;
+        }
+        Group group = this.getGroup(groupId);
+        if (group == null) {
+            return new ArrayList<StatusDTO>();
+        } else {
+            return timelineService.getGroupline(groupId, count, since_id, max_id);
+        }
+    }
+
     /**
      * GET  /groupmemberships/lookup -> return extended data about the user's groups
      */

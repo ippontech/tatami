@@ -1,12 +1,12 @@
 (function(Backbone, _, Tatami){
-    /*var ProfileSide = Backbone.Marionette.Layout.extend({
+    var ProfileSide = Backbone.Marionette.Layout.extend({
         template: "#ProfileSide",
         regions: {
             actions: {
-                selector: ".actions-profile"
+                selector: ".actions"
             },
             tagTrends: {
-                selector: ".tag-trends"
+                selector: ".tagTrends"
             },
             stats: {
                 selector: ".stats"
@@ -24,20 +24,34 @@
                 selector: ".tatams-container"
             }
         },
+        serializeData: function(){
+            return this.options;
+        },
         show: function(tabName){
-            this.$el.find('.homebody-nav a[href="#' + tabName + '"]').tab('show');
+            this.$el.find('.profilebody-nav > li').removeClass('active');
+            this.$el.find('.profilebody-nav > li.' + tabName).addClass('active');
         }
-    });*/
+    });
 
     var ProfileHeader = Backbone.Marionette.ItemView.extend({
         template: '#ProfileHeader',
         modelEvents: {
             'change': 'render',
             'sync': 'render'
+        },
+        events: {
+            'click .toggleFriend': 'toggleFriend'
+        },
+        toggleFriend: function(){
+            this.model.save({
+                friend: !this.model.get('friend')
+            }, {
+                patch: true
+            });
         }
     });
 
     Tatami.Views.ProfileHeader = ProfileHeader;
-    //Tatami.Views.ProfileSide = ProfileSide;
-    //Tatami.Views.ProfileBody = ProfileBody;
+    Tatami.Views.ProfileSide = ProfileSide;
+    Tatami.Views.ProfileBody = ProfileBody;
 })(Backbone, _, Tatami);

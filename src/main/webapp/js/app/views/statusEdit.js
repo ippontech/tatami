@@ -21,6 +21,8 @@
 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0 );
 
+            this.$edit.typeahead(new Tatami.Suggester(this.$edit));
+
             this.$el.modal('show');
         },
 
@@ -126,8 +128,7 @@
             catch(e){
                 console.log(e);
             }
-            this.$editContent.toggleClass('hide');
-            this.$previewContent.toggleClass('hide');
+            this.$el.find('.glyphicon-eye-open, .glyphicon-edit').add(this.$editContent).add(this.$previewContent).toggleClass('hide');
         },
 
         show: function(options){
@@ -176,6 +177,7 @@
             var self = this;
 
             this.model.set('content', this.$edit.val());
+            this.model.set('groupId', this.$el.find('[name="groupId"]').val());
 
             this.model.save(null, {
                 success: function (model, response) {

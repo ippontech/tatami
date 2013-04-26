@@ -85,8 +85,7 @@
             return false;
         },
         removeAction: function(){
-            var self = this;
-            // TODO delete the status
+            this.model.destroy();
             return false;
         }
     });

@@ -225,17 +225,27 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public StatusDTO getStatusREST(@PathVariable("statusId") String statusId) {
+    public StatusDTO getStatusV3(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get status Id : " + statusId);
         }
         return timelineService.getStatus(statusId);
     }
 
+
+    @RequestMapping(value = "/rest/statuses/{statusId}",
+            method = RequestMethod.DELETE)
+    public void deleteStatusV3(@PathVariable("statusId") String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get status Id : " + statusId);
+        }
+        timelineService.removeStatus(statusId);
+    }
+
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.PATCH)
     @ResponseBody
-    public StatusDTO updateStatusREST(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
+    public StatusDTO updateStatusV3(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
         StatusDTO status = timelineService.getStatus(statusId);
         if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
             if(action.isFavorite()){
@@ -263,7 +273,7 @@ public class TimelineController {
             method = RequestMethod.POST,
             produces = "application/json")
     @Timed
-    public String postStatusREST(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
+    public String postStatusV3(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
         }
