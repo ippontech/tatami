@@ -202,8 +202,4 @@ public class FriendshipService {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
     }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 }

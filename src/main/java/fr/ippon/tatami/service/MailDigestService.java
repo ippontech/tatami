@@ -140,7 +140,6 @@ public class MailDigestService {
         // especially if the user
         // does not have anything in it's timeline and there are no suggested users for him
 
-
         mailService.sendDailyDigestEmail(user, digestStatuses, nbStatusTotal, suggestedUsers);
     }
 
