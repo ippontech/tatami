@@ -1094,7 +1094,7 @@ function Suggester(element) {
                 return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
                     var results = [];
                     for (var i = 0; i < data.length; i++) {
-                        results[i] = '#' + data[i];
+                        results[i] = '#' + data[i].name;
                     }
                     return process(results);
                 });

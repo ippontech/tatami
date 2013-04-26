@@ -49,6 +49,26 @@
     <link rel="apple-touch-startup-image" href="/img/startup.png">
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
+    <c:if test="${googleAnalyticsKey ne ''}">
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '${googleAnalyticsKey}']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </c:if>
+
+    <sec:authorize ifAnyGranted="ROLE_USER">
+        <c:if test="${not empty user.rssUid}">
+            <link rel="alternate" type="application/rss+xml" title="RSS"
+                  href="/tatami/syndic/${user.rssUid}" />
+        </c:if>
+    </sec:authorize>
+
     <script type="text/javascript">
         var username = "${user.username}";
         var ios = ${ios};
@@ -68,6 +88,7 @@
 
         <script src="/js/app/app.js"></script>
         <script src="/js/app/plugins/tatami.search.js"></script>
+        <script src="/js/app/plugins/suggester.js"></script>
         <script src="/js/app/models/users.js"></script>
         <script src="/js/app/collections/users.js"></script>
         <script src="/js/app/models/postStatus.js"></script>
@@ -82,17 +103,21 @@
         <script src="/js/app/views/navbar.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
         <script src="/js/app/views/tagsContainers.js"></script>
+        <script src="/js/app/views/profileContainers.js"></script>
+        <script src="/js/app/views/groupsContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
+        <script src="/js/app/views/userList.js"></script>
         <script src="/js/app/views/statusShares.js"></script>
         <script src="/js/app/views/tagTrends.js"></script>
-        <script src="/js/app/views/whoToFollow.js"></script>
         <script src="/js/app/views/groups.js"></script>
+        <script src="/js/app/views/profileSide.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/profile.js"></script>
         <script src="/js/app/factories/status.js"></script>
         <script src="/js/app/factories/tags.js"></script>
+        <script src="/js/app/factories/groups.js"></script>
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
@@ -144,13 +169,13 @@
                 </a>
                 <ul class="dropdown-menu closed">
                     <li>
-                        <a>
+                        <a href="/tatami/presentation">
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <fmt:message key="tatami.menu.presentation"/>
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a href="/tatami/tos">
                             <span class="glyphicon glyphicon-briefcase"></span>
                             <fmt:message key="tatami.menu.tos"/>
                         </a>
@@ -175,38 +200,38 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a>
+                        <a href="/tatami/license">
                             <span class="glyphicon glyphicon-info-sign"></span>
                             <fmt:message key="tatami.menu.license"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://github.com/ippontech/tatami/issues" target="_blank">
                             <span class="glyphicon glyphicon-inbox"></span>
                             <fmt:message key="tatami.github.issues"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://github.com/ippontech/tatami" target="_blank">
                             <span class="glyphicon glyphicon-wrench"></span>
                             <fmt:message key="tatami.github.fork"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="http://www.ippon.fr/" target="_blank">
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                             <fmt:message key="tatami.ippon.website"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="http://blog.ippon.fr/" target="_blank">
                             <span class="glyphicon glyphicon-pencil"></span>
                             <fmt:message key="tatami.ippon.blog"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://twitter.com/ippontech" target="_blank">
                             <span class="glyphicon glyphicon-bullhorn"></span>
                             <fmt:message key="tatami.ippon.twitter.follow"/>
                         </a>
@@ -234,56 +259,56 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/profile">
                             <span class="glyphicon glyphicon-user"></span>
                             <fmt:message key="tatami.menu.profile"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/preferences">
                             <span class="glyphicon glyphicon-picture"></span>
                             <fmt:message key="tatami.menu.preferences"/>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/password">
                             <span class="glyphicon glyphicon-lock"></span>
                             <fmt:message key="tatami.menu.password"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/files">
                             <span class="glyphicon glyphicon-file"></span>
                             <fmt:message key="tatami.menu.files"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/users">
                             <span class="glyphicon glyphicon-globe"></span>
                             <fmt:message key="tatami.menu.directory"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/groups">
                             <span class="glyphicon glyphicon-th-large"></span>
                             <fmt:message key="tatami.menu.groups"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/account/#/tags">
                             <span class="glyphicon glyphicon-tags"></span>
                             <fmt:message key="tatami.menu.tags"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/account/#/status_of_the_day">
                             <span class="glyphicon glyphicon-signal"></span>
                             <fmt:message key="tatami.menu.status.of.the.day"/>
                         </a>
-                        <a href="#">
+                        <a href="/tatami/company">
                             <span class="glyphicon glyphicon-briefcase"></span>
                             <fmt:message key="tatami.menu.company.wall"/>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/tatami/logout">
                             <span class="glyphicon glyphicon-off"></span>
                             <fmt:message key="tatami.logout"/>
                         </a>
@@ -299,7 +324,7 @@
                 </button>
             </li>
         </ul>
-        <form class="navbar-form pull-right" action="">
+        <form class="navbar-form pull-right col-span-5" action="">
             <input name="search" type="text" class="col-span-12" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
         </form>
     </div>

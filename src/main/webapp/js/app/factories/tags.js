@@ -19,7 +19,11 @@
                     name: tagName
                 });
                 tags.add(tag);
-                tag.fetch();
+                tag.fetch({
+                    error: function(){
+                        Tatami.app.router.defaults();
+                    }
+                });
             }
 
             return new Tatami.Views.TagsHeader({

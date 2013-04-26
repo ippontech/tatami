@@ -1,32 +1,29 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="HomeHeader">
-    <div class="text-center page-header">
-        <h1 class="title">
-            <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
-            <strong>
-                <@= fullName @>
-            </strong>
-            <br>
-            <small>
-                @<@= username @>
-            </small>
-        </h1>
-    </div>
-</script>
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
         <h2 class="title">
-            <span class="tagsHome pointer pull-left label label-info">
+            <a href="#timeline" class="pull-left btn btn-info">
                 <span class="glyphicon glyphicon-th-list"></span>
                 &nbsp;<fmt:message key="tatami.timeline"/>
-            </span>
-            <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
+            </a>
+            <a class="toggleTag pull-right btn <@= (followed)?'btn-info':'' @>">
                 <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
                 &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
-            </span>
+            </a>
             #<@= name @>
+        </h2>
+    </div>
+</script>
+<script type="text/template" id="GroupsHeader">
+    <div class="text-center page-header">
+        <h2 class="title">
+            <a href="#timeline" class="pull-left btn btn-info">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;<fmt:message key="tatami.timeline"/>
+            </a>
+            <@= name @>
         </h2>
     </div>
 </script>
@@ -34,6 +31,13 @@
     <div class="text-center page-header">
         <h1 class="title">
             <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
+
+            <@ if(!you) { @>
+                <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                    <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+                </span>
+            <@ } @>
+
             <strong>
                 <@= fullName @>
             </strong>
@@ -48,13 +52,17 @@
     <div class="page-header">
         <h4 class="profile-card">
             <img class="img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);">
-            <strong>
-                <@= fullName @>
-            </strong>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
             <br>
-            <small>
-                @<@= username @>
-            </small>
+            <a href="#users/<@= username @>">
+                <small>
+                    @<@= username @>
+                </small>
+            </a>
         </h4>
     </div>
 </script>
@@ -76,31 +84,34 @@
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
     <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
-<script type="text/template" id="WhoToFollow">
-    <div class="page-header">
-        <h4>
-            <span class="glyphicon glyphicon-random"></span>
-            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
-        </h4>
-    </div>
-    <div class="items">
-        TODO
-    </div>
-    <br/>
-</script>
 <script type="text/template" id="StatusItems">
     <div class='pull-left'>
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <header class="page-header">
+        <div class="pull-right text-right">
+            <@ if(groupId) { @>
+                <a class="label label-info" href="#groups/<@= groupId @>">
+                    <@= groupName @>
+                </a>
+                <br/>
+            <@ } @>
+            <abbr title="<@= prettyPrintStatusDate @>">
+                <@= prettyPrintStatusDate @>
+            </abbr>
+        </div>
         <h4>
-            <strong>
-                <@= fullName @>
-            </strong>
-            <small>
-                @<@= username @>
-            </small>
-            <abbr class="pull-right" title="<@= prettyPrintStatusDate @>"><@= prettyPrintStatusDate @></abbr>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
+            <br>
+            <a href="#users/<@= username @>">
+                <small>
+                    @<@= username @>
+                </small>
+            </a>
         </h4>
     </header>
     <div class="well well-small markdown pointer">
@@ -114,6 +125,10 @@
     <div class="tatams-share">
     </div>
     <aside class="text-right">
+        <a href="#status/<@= statusId @>" class="btn btn-link">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            <fmt:message key="tatami.user.status.show"/>
+        </a>
         <button class="btn btn-link status-action-reply">
             <span class="glyphicon glyphicon-comment"></span>
             <fmt:message key="tatami.user.status.reply"/>
@@ -222,7 +237,7 @@
                 </legend>
                 <div class="tatam-reply"/>
             </fieldset>
-            <fieldset>
+            <fieldset class="row-fluid">
                 <legend>
                     <fmt:message key="tatami.status.options"/>
                 </legend>
@@ -246,7 +261,7 @@
                     </div>
                     <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
                     <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
-                    <div class="fileUploadResults">
+                    <div class="fileUploadResults wrap">
 
                     </div>
                 </div>
@@ -272,7 +287,7 @@
     <br/>
 </script>
 <script type="text/template" id="GroupItems">
-    <a href="#"><@= name @></a>
+    <a href="#groups/<@= groupId @>"><@= name @></a>
 </script>
 <script type="text/template" id="StatusAttachmentItems">
     <span class="glyphicon glyphicon-file"></span>
@@ -307,4 +322,178 @@
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
         </li>
     <@}@>
+</script>
+<script type="text/template" id="ProfileActions">
+</script>
+<script type="text/template" id="ProfileStats">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-signal"></span>
+            Statistiques
+        </h4>
+    </div>
+    <div>
+        <p>
+            <strong>
+                <fmt:message key="tatami.badge.status"/> :
+            </strong>
+            <a href="#users/<@= username @>">
+                <span class="badge"><@= statusCount @></span>
+            </a>
+        </p>
+        <p>
+            <strong>
+                <fmt:message key="tatami.badge.followed"/> :
+            </strong>
+            <a href="#users/<@= username @>/friends">
+                <span class="badge"><@= friendsCount @></span>
+            </a>
+        </p>
+        <p>
+            <strong>
+                <fmt:message key="tatami.badge.followers"/> :
+            </strong>
+            <a href="#users/<@= username @>/followers">
+                <span class="badge"><@= followersCount @></span>
+            </a>
+        </p>
+    </div>
+</script>
+<script type="text/template" id="ProfileInformations">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-user"></span>
+            Informations
+        </h4>
+    </div>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.email"/> :
+        </strong>
+        <@= login @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.jobTitle"/> :
+        </strong>
+        <@= jobTitle @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.phoneNumber"/> :
+        </strong>
+        <@= phoneNumber @>
+    </p>
+</script>
+<script type="text/template" id="ProfileSide">
+    <section class="actions"/>
+    <section class="hidden-phone stats"/>
+    <section class="hidden-phone informations"/>
+    <section class="hidden-phone tagTrends"/>
+</script>
+<script type="text/template" id="TagTrendsProfile">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-fire"></span>
+            &nbsp;<fmt:message key="tatami.trends.title"/>
+        </h4>
+    </div>
+    <div class="items">
+    </div>
+    <br/>
+</script>
+<script type="text/template" id="ProfileBody">
+    <ul class="profilebody-nav nav nav-tabs nav-tabs-inverse nav-justified">
+        <li class="timeline">
+            <a href="#users/<@= user @>">
+                <fmt:message key="tatami.badge.status"/>
+            </a>
+        </li>
+        <li class="friends">
+            <a href="#users/<@= user @>/friends">
+                <fmt:message key="tatami.badge.followed"/>
+            </a>
+        </li>
+        <li class="followers">
+            <a href="#users/<@= user @>/followers">
+                <fmt:message key="tatami.badge.followers"/>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-container">
+    </section>
+</script>
+<script type="text/template" id="GroupsBody">
+    <ul class="groupsbody-nav nav nav-tabs nav-tabs-inverse nav-justified">
+        <li class="timeline">
+            <a href="#groups/<@= group @>">
+                <fmt:message key="tatami.badge.status"/>
+            </a>
+        </li>
+        <li class="members">
+            <a href="#groups/<@= group @>/members">
+                <fmt:message key="tatami.group.members.list"/>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-container">
+    </section>
+</script>
+<script type="text/template" id="UserItems">
+    <div class='pull-left'>
+        <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+    </div>
+    <h4>
+        <@ if(!you) { @>
+            <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+            </span>
+        <@ } @>
+        <a href="#users/<@= username @>">
+            <strong>
+                <@= fullName @>
+            </strong>
+        </a>
+        <br>
+        <a href="#users/<@= username @>">
+            <small>
+                @<@= username @>
+            </small>
+        </a>
+    </h4>
+</script>
+<script type="text/template" id="UserItemsMini">
+    <div class='pull-left'>
+        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    </div>
+    <h6>
+        <@ if(!you) { @>
+            <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
+                <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
+            </span>
+        <@ } @>
+        <@ if(fullName){ @>
+            <a href="#users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
+            <br>
+        <@ } @>
+        <a href="#users/<@= username @>">
+            <small>
+                @<@= username @>
+            </small>
+        </a>
+    </h4>
+</script>
+<script type="text/template" id="WhoToFollow">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-random"></span>
+            &nbsp;<fmt:message key="tatami.follow.suggestions"/>
+        </h4>
+    </div>
+    <div class="items">
+    </div>
 </script>

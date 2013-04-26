@@ -473,6 +473,7 @@ public class UserService {
 
     private UserDTO getUserDTOFromUser(User user) {
         UserDTO friend = new UserDTO();
+        friend.setLogin(user.getLogin());
         friend.setUsername(user.getUsername());
         friend.setAvatar(user.getAvatar());
         friend.setFirstName(user.getFirstName());

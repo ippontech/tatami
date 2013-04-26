@@ -22,5 +22,12 @@
         template: '#TagTrends'
     });
 
+    var TagTrendsProfile = Backbone.Marionette.CompositeView.extend({
+        itemView: TagTrendItems,
+        itemViewContainer: '.items',
+        template: '#TagTrendsProfile'
+    });
+
     Tatami.Views.TagTrends = TagTrends;
+    Tatami.Views.TagTrendsProfile = TagTrendsProfile;
 })(Backbone, _, Tatami);

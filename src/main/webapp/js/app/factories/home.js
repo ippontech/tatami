@@ -16,7 +16,8 @@
 
             var tags = new Tatami.Collections.Tags();
 
-            tagTrends = new Tatami.Views.TagTrends({
+            View = (username)?Tatami.Views.TagTrendsProfile:Tatami.Views.TagTrends;
+            tagTrends = new View({
                 collection: tags
             });
 
@@ -42,7 +43,11 @@
             return groups;
         },
         whoToFollow: function(){
-            return new Tatami.Views.WhoToFollow();
+            var c = new Tatami.Collections.WhoToFollow();
+            c.fetch();
+            return new Tatami.Views.WhoToFollow({
+                collection: c
+            });
         }
     };
 
