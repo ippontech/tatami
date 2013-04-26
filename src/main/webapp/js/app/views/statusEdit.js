@@ -126,8 +126,7 @@
             catch(e){
                 console.log(e);
             }
-            this.$editContent.toggleClass('hide');
-            this.$previewContent.toggleClass('hide');
+            this.$el.find('.glyphicon-eye-open, .glyphicon-edit').add(this.$editContent).add(this.$previewContent).toggleClass('hide');
         },
 
         show: function(options){
