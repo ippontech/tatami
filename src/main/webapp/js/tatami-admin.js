@@ -401,6 +401,12 @@ app.Collection.TabUser = Backbone.Collection.extend({
 
     search: function(query){
       this.url = this.options.url.search;
+      this.parse = function(users){
+         return users.map(function(user){
+             user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+             return user;
+         });
+      };
       this.fetch({
           data: {
               q: query
