@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -76,7 +77,14 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         // Use temporary token to use username, and not login to authenticate on ldap :
         UsernamePasswordAuthenticationToken tmpAuthentication =
                 new UsernamePasswordAuthenticationToken(username, authentication.getCredentials(), null);
-        super.authenticate(tmpAuthentication);
+        
+        try {
+            super.authenticate(tmpAuthentication);
+        } catch(InternalAuthenticationServiceException iase) {
+            // Without this : there is no log when the ldap server or the ldap configuration is broken : 
+            log.error("Internal Error while authenticating " + authentication.getName() + " with LDAP",iase);
+            throw iase;
+        }
 
         //Automatically create LDAP users in Tatami
         User user = userService.getUserByLogin(login);
