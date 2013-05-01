@@ -980,6 +980,11 @@
                 <version>${maven.surefire.version}</version>
                 <configuration>
                     <argLine>-XX:MaxPermSize=128m -Xmx256m</argLine>
+                    <!-- Force alphabetical order to have a reproducible build -->
+                    <runOrder>alphabetical</runOrder>
+                    <!-- 
+                    <runOrder>reversealphabetical</runOrder>
+                     -->
                 </configuration>
             </plugin>
             <plugin>
