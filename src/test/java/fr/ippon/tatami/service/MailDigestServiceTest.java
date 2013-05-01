@@ -193,7 +193,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     public void shouldGenerateWeeklyDigestNoMessage() {
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        userService.updateDailyDigestRegistration(true);
+        userService.updateWeeklyDigestRegistration(true);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 

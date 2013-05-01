@@ -345,7 +345,7 @@ public class UserService {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Updating weekly digest preferences : weeklyDigest=" + registration);
+            log.debug("Updating weekly digest preferences : weeklyDigest=" + registration + " for user "+currentUser.getLogin());
         }
         try {
             userRepository.updateUser(currentUser);
@@ -372,7 +372,7 @@ public class UserService {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Updating daily digest preferences : dailyDigest=" + registration);
+            log.debug("Updating daily digest preferences : dailyDigest=" + registration + " for user "+currentUser.getLogin());
         }
         try {
             userRepository.updateUser(currentUser);
