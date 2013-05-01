@@ -59,16 +59,22 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         // SpringJUnit4ClassRunner instead of MockitoJUnitRunner
         // (to get spring injection before mockito mocking with @InjectMocks)
         MockitoAnnotations.initMocks(this);
+        
+        // reset users registrations : 
+        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
+        userService.updateDailyDigestRegistration(false);
+
+        mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
+        userService.updateWeeklyDigestRegistration(false);
+
+        // README : If this tests fails again because of nuuser@ippon.fr : check order execution of MailDigestRepositoryTest.* 
     }
 
+    
     @Test
     public void shouldNotGenerateDailyDigest() {
-
-        // Test data set has no user subscribed to daily Digest
+        // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
-          // TODO : assert test data set has no such user !
-//        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-//        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
@@ -78,9 +84,6 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
-            // TODO : assert test data set has no such user !
-//        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-//        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
