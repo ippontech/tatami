@@ -1,15 +1,16 @@
 package fr.ippon.tatami.uitest
 
-import fr.ippon.tatami.test.support.LdapTestServer;
-import fr.ippon.tatami.uitest.support.TatamiBaseGebSpec;
-import geb.Page
-import geb.spock.GebSpec
-
 import pages.*
-import pages.google.*;
+import pages.google.*
+import spock.lang.Shared
+import fr.ippon.tatami.test.support.LdapTestServer
+import fr.ippon.tatami.uitest.support.TatamiBaseGebSpec
 
 class AuthenticationSpec extends TatamiBaseGebSpec {
 	
+	@Shared
+	def newUid
+
 	static LdapTestServer ldapTestServer
 	def setupSpec() {
 		// It only works if Tatami server is on the same host as the test ...
@@ -18,6 +19,12 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		// TODO : put this into maven
 		ldapTestServer = new LdapTestServer();
 		ldapTestServer.start();
+		
+		newUid = "john_doe_${new Date().time}".toString()
+		ldapTestServer.replaceAttribute("cn=john_doe,dc=ippon,dc=fr", "uid", newUid)
+		
+		println "ldap entry patched"
+		
 	}
 	
 	def cleanupSpec() {
@@ -47,16 +54,18 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		
     }
 	
-	// TODO : test new ldap user can login ... (auto-registration) 
-	
-	def "login as normal user with ldap"() {
+	// auto-registration with ldap : 
+	def "login as normal new user with ldap"() {
+				
 		given:
 		to LoginPage
 		verifyAt()
 		
 		when:
+		def username = "$newUid@ippon.fr"
 		loginForm.with {
-			j_username = "john_doe@ippon.fr"
+//			j_username = "john_doe@ippon.fr"
+			j_username = username 
 			j_password = "john"
 		}
 		 
@@ -66,8 +75,10 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		then:
 		waitFor { at HomePage }
 		
-		! adminLink.isPresent()
+        newUserWizard.isPresent()
+        // TODO : fill wizards
 		
+		! adminLink.isPresent()
 		if(realBrowser()) {
 			// doesn't work with htmlDriver (when javascript is disabled at least) :
 			assert updateStatus !=null
@@ -76,7 +87,7 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 	
 	// TODO : should we explicitly test that new openid user can login (auto-registration) ?
 	
-	def "login as normal user with google"() {
+	def "login as normal existing user with google"() {
 		given:
 		def googleEmail = System.getProperty("google.email")
 		def googlePassword = System.getProperty("google.password")
@@ -108,7 +119,7 @@ class AuthenticationSpec extends TatamiBaseGebSpec {
 		approveButton.click()
 		 
 		then:
-		waitFor { at HomePage }
+		waitFor { at HomePage } // Note : If it's a new user, the "new user wizard" will also shows up ... 
 		! adminLink.isPresent()
 	
 	}
