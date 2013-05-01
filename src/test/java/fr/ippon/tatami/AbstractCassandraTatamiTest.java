@@ -50,6 +50,10 @@ public abstract class AbstractCassandraTatamiTest {
     public static void beforeClass() throws Exception {
         synchronized (lock) {
             if (!isInitialized) {
+                
+                Log log = LogFactory.getLog(AbstractCassandraTatamiTest.class);
+                log.debug("AbstractCassandraTatamiTest : launching Cassandra");
+                
                 EmbeddedCassandraServerHelper.startEmbeddedCassandra();
                 // create structure and load data
                 String clusterName = "Tatami cluster";

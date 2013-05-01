@@ -66,8 +66,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         // Test data set has no user subscribed to daily Digest
         // no mail should be sent.
-        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        userService.updateDailyDigestRegistration(false);
+          // TODO : assert test data set has no such user !
+//        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
+//        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
@@ -77,8 +78,9 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
         // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
-        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        userService.updateDailyDigestRegistration(false);
+            // TODO : assert test data set has no such user !
+//        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
+//        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
