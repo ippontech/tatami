@@ -43,44 +43,32 @@ public class Tatamibot extends RouteBuilder {
     private UserService userService;
 
     public void configure() {
+        
+        // TODO : essayer d'inclure la nouvelle console de monitoring Camel (basé sur hawtio)
 
         log.info("Configuring the Tatami Bot");
         for (Domain domain : domainRepository.getAllDomains()) {
             if (log.isDebugEnabled()) {
                 log.debug("Configuring Bot for domain " + domain.getName());
             }
-            String tatamiBotLogin = DomainUtil.getLoginFromUsernameAndDomain(Constants.TATAMIBOT_NAME, domain.getName());
-            if (userService.getUserByLogin(tatamiBotLogin) == null) {
-                log.info("Tatami Bot user does not exist for domain " + domain.getName() + " - creating it");
-                userService.createTatamibot(domain.getName());
-                if (domain.getName().equals("ippon.fr")) {
-                    log.info("Creating a default RSS robot for ippon.fr");
-                    TatamibotConfiguration configuration = new TatamibotConfiguration();
-                    configuration.setType(TatamibotConfiguration.TatamibotType.RSS);
-                    configuration.setDomain("ippon.fr");
-                    configuration.setUrl("http://feeds.feedburner.com/LeBlogDesExpertsJ2ee?format=xml");
-                    configuration.setPollingDelay(60);
-                    DateTime lastUpdateDate = DateTime.parse("2013-01-01T00:00:00");
-                    configuration.setLastUpdateDate(lastUpdateDate.toDate());
-                    configuration.setTag("BlogIppon");
-                    tatamibotConfigurationRepository.insertTatamibotConfiguration(configuration);
-                }
-            }
+            String tatamiBotLogin = getTatamiBotLogin(domain);
+            
             for (TatamibotConfiguration configuration :
                     tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain(domain.getName())) {
 
                 if (log.isDebugEnabled()) {
                     log.debug("Configuring Bot : " + configuration);
                 }
+                
                 ProcessorDefinition pd = null;
                 if (configuration.getType().equals(TatamibotConfiguration.TatamibotType.RSS)) {
                     log.debug("Configuring RSS support");
                     pd = from("rss:" +
                             configuration.getUrl() +
-                            "&lastUpdate=" +
+                            (configuration.getUrl().contains("?")?"&":"?") + "lastUpdate=" +
                             configuration.getISOLastUpdateDate() +
                             "&consumer.delay=" +
-                            configuration.getPollingDelay() +
+                            configuration.getPollingDelay()*1000 + // !!! *1000 !
                             "&throttleEntries=false").
                             marshal().rss().
                             setBody(XPathBuilder.xpath("concat('[', /rss/channel/item/title/text(), '](', /rss/channel/item/link/text(), ')')", String.class)).
@@ -117,6 +105,31 @@ public class Tatamibot extends RouteBuilder {
                     pd.process(tatamiStatusProcessor);
 
                 }
+            }
+        }
+    }
+
+    private String getTatamiBotLogin(Domain domain) {
+        String tatamiBotLogin = DomainUtil.getLoginFromUsernameAndDomain(Constants.TATAMIBOT_NAME, domain.getName());
+        automaticBotCreation(domain, tatamiBotLogin);
+        return tatamiBotLogin;
+    }
+
+    private void automaticBotCreation(Domain domain, String tatamiBotLogin) {
+        if (userService.getUserByLogin(tatamiBotLogin) == null) {
+            log.info("Tatami Bot user does not exist for domain " + domain.getName() + " - creating it");
+            userService.createTatamibot(domain.getName());
+            if (domain.getName().equals("ippon.fr")) {
+                log.info("Creating a default RSS robot for ippon.fr");
+                TatamibotConfiguration configuration = new TatamibotConfiguration();
+                configuration.setType(TatamibotConfiguration.TatamibotType.RSS);
+                configuration.setDomain("ippon.fr");
+                configuration.setUrl("http://feeds.feedburner.com/LeBlogDesExpertsJ2ee?format=xml");
+                configuration.setPollingDelay(60);
+                DateTime lastUpdateDate = DateTime.parse("2013-01-01T00:00:00");
+                configuration.setLastUpdateDate(lastUpdateDate.toDate());
+                configuration.setTag("BlogIppon");
+                tatamibotConfigurationRepository.insertTatamibotConfiguration(configuration);
             }
         }
     }

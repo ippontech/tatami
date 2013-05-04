@@ -1,5 +1,7 @@
 package fr.ippon.tatami.bot.processor;
 
+import java.util.Date;
+
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 import fr.ippon.tatami.domain.User;
@@ -31,6 +33,23 @@ public class TatamiStatusProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
+        sendTatam(exchange);
+
+        // TODO : move to rss route ...
+        SyndFeedImpl feed = (SyndFeedImpl) exchange.getIn().getHeader("CamelRssFeed");
+        DateTime lastUpdateDateJoda = new DateTime(feed.getPublishedDate());
+        Date lastUpdateDate = lastUpdateDateJoda.toDate();
+        
+        // TODO : move to another Procesor
+        String tatamibotConfigurationId = (String) exchange.getIn().getHeader("tatamibotConfigurationId");
+        TatamibotConfiguration tatamibotConfiguration =
+                tatamibotConfigurationRepository.findTatamibotConfigurationById(tatamibotConfigurationId);
+
+        tatamibotConfiguration.setLastUpdateDate(lastUpdateDate);
+        tatamibotConfigurationRepository.updateTatamibotConfiguration(tatamibotConfiguration);
+    }
+
+    private void sendTatam(Exchange exchange) {
         String content = exchange.getIn().getBody(String.class);
         String login = exchange.getIn().getHeader("login").toString();
         User tatamiBotUser = userService.getUserByLogin(login);
@@ -38,16 +57,5 @@ public class TatamiStatusProcessor implements Processor {
             log.debug("Posting content to Tatami : " + content);
         }
         statusUpdateService.postStatusAsUser(content, tatamiBotUser);
-
-        String tatamibotConfigurationId = (String) exchange.getIn().getHeader("tatamibotConfigurationId");
-        TatamibotConfiguration tatamibotConfiguration =
-                tatamibotConfigurationRepository.findTatamibotConfigurationById(tatamibotConfigurationId);
-
-        SyndFeedImpl feed = (SyndFeedImpl) exchange.getIn().getHeader("CamelRssFeed");
-
-        DateTime lastUpdateDate = new DateTime(feed.getPublishedDate());
-
-        tatamibotConfiguration.setLastUpdateDate(lastUpdateDate.toDate());
-        tatamibotConfigurationRepository.updateTatamibotConfiguration(tatamibotConfiguration);
     }
 }
