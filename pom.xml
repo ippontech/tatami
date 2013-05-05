@@ -533,8 +533,12 @@
         <jodatime.version>2.1</jodatime.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.3</commons.io.version>
+<!-- DOESN'T WORK on some tests !
         <junit.version>4.11</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
+ -->
+        <junit.version>4.9</junit.version>
+        <hamcrest.version>1.2.1</hamcrest.version>
         <awaitility.version>1.3.5</awaitility.version>
         <cassandra.unit.version>1.1.2.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
@@ -926,6 +930,12 @@
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
             <scope>test</scope>
@@ -941,6 +951,12 @@
             <artifactId>cassandra-unit</artifactId>
             <version>${cassandra.unit.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-all</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
