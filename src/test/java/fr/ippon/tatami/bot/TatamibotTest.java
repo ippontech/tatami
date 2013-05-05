@@ -3,12 +3,11 @@ package fr.ippon.tatami.bot;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static com.jayway.awaitility.Awaitility.*;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.camel.Consumer;
 import org.apache.camel.Route;
@@ -27,6 +26,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.util.MockUtil;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
@@ -99,8 +99,8 @@ public class TatamibotTest extends CamelTestSupport {
 
         setupAndLaunchContext(configuration);
 
-        Thread.sleep(1000);
-        
+        await().until(statusUpdateServiceWasCallAtLeast3Times());
+                
         String msg1 = "[Ippevent Mobilité – Applications mobiles – ouverture des inscriptions](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/GcJYERHTfoQ/)";
         String msg2 = "[Business – Ippon Technologies acquiert Atomes et renforce son offre Cloud](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/wK-Y47WGZBQ/)";
         String msg3 = "[Les Méthodes Agiles – Définition de l’Agilité](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/hSqyt1MCOoo/)";
@@ -117,6 +117,20 @@ public class TatamibotTest extends CamelTestSupport {
         assertThat(value.getLastUpdateDate(),is(DateTime.parse("2012-12-17T17:35:51Z").toDate()));
          
         assertTrue(idempotentRepository.contains("ippon.fr-"+msg1));
+    }
+
+    private Callable<Boolean> statusUpdateServiceWasCallAtLeast3Times() {
+        return new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+//                    System.out.println("testing");
+                    // WARNING : we use internal mockito code here :
+                    int nbCalls = new MockUtil().getMockHandler(statusUpdateService).getInvocationContainer().getInvocations().size();
+//                    System.out.println("tested");
+                    return nbCalls >=3 ; 
+
+            }
+        };
+        
     }
 
     @Override
