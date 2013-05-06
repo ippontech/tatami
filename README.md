@@ -139,7 +139,7 @@ Launching UI Tests from your IDE :
 
 - Enable a groovy plugin on your IDE
 - Activate maven profile "uitest" or add src/integration/* in your classpath
-- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0`
+- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0 -Puitest`
 - Run Specs (in src\integration\java\fr\ippon\tatami\uitest) as Junit Tests from your IDE
   => you have to set adequate system properties to your running configurations (the same as those that are necessary in setting.xml for maven : see above)
 

@@ -9,7 +9,7 @@
     <context:component-scan base-package="fr.ippon.tatami.bot"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <routeBuilder ref="tatamibot"/>
+        <contextScan/>
         <threadPoolProfile id="threalPoolDefaultProfile"
                            defaultProfile="true"
                            poolSize="5" keepAliveTime="25" maxPoolSize="15" maxQueueSize="250" rejectedPolicy="Abort"/>

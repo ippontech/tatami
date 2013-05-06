@@ -105,7 +105,7 @@ public class WebConfigurer implements ServletContextListener {
             ServletRegistration.Dynamic metricsAdminServlet =
                     servletContext.addServlet("metricsAdminServlet", new AdminServlet());
             metricsAdminServlet.addMapping("/metrics/*");
-            dispatcherServlet.setLoadOnStartup(3);
+            metricsAdminServlet.setLoadOnStartup(3);
 
             springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet", "metricsAdminServlet");
         } else {

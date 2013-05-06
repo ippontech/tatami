@@ -18,6 +18,13 @@
  */
 package fr.ippon.tatami.test.support;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.server.core.DefaultDirectoryService;
 import org.apache.directory.server.core.DirectoryService;
@@ -28,18 +35,16 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Modification;
+import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.entry.Value;
+import org.apache.directory.shared.ldap.entry.client.ClientModification;
+import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
 import org.apache.directory.shared.ldap.exception.LdapNameNotFoundException;
 import org.apache.directory.shared.ldap.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.name.LdapDN;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import org.elasticsearch.common.collect.Lists;
 
 /**
  * An embedded ldap test server Based on
@@ -50,6 +55,10 @@ public class LdapTestServer {
      * The directory service
      */
     private DirectoryService service;
+
+    public DirectoryService getService() {
+        return service;
+    }
 
     /**
      * The LDAP server
@@ -116,11 +125,19 @@ public class LdapTestServer {
         server.start();
     }
 
+    public void replaceAttribute(String dn, String attName, String value) throws Exception {
+        LdapDN ldapDN = new LdapDN(dn);
+        EntryAttribute attribute = new DefaultClientAttribute(attName, value);
+        Modification m = new ClientModification(ModificationOperation.REPLACE_ATTRIBUTE, attribute);
+        List<Modification> l = Lists.newArrayList(m);
+        service.getAdminSession().modify(ldapDN, l);
+    }
+
     private static void injectEntry(LdifEntry entry, DirectoryService service) throws Exception {
         if (entry.isChangeAdd()) {
             ServerEntry serverEntry = service.newEntry(entry.getDn());
             for (EntryAttribute entryAttribute : entry.getEntry()) {
-                List<Value> allValue = new ArrayList<Value>();
+                List<Value<?>> allValue = new ArrayList<Value<?>>();
                 for (Value<?> value : entryAttribute) {
                     allValue.add(value);
                 }

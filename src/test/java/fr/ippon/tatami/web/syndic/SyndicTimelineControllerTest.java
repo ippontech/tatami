@@ -124,8 +124,8 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
         accountMockMvc.perform(post("/rest/account/preferences")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"mentionEmail\":true," +
-                        "\"weeklyDigest\":true," +
-                        "\"dailyDigest\":true," +
+                        "\"weeklyDigest\":false," +
+                        "\"dailyDigest\":false," +
                         "\"theme\":\"bootstrap\"," +
                         "\"rssUidActive\":true," +
                         "\"rssUid\":\"\"}"))

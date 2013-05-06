@@ -488,7 +488,7 @@ form {
 }
 .hasCategory li.groups p{
     margin-left: 10px;
-    margin-top: -2px;
+    margin-top: 2px;
 }
 .box-info{
     background: none;
