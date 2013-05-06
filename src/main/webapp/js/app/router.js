@@ -11,6 +11,15 @@
             'users/:username/followers' : 'profileFollowers',
             'groups/:group' : 'groups',
             'groups/:group/members' : 'groupsMembers',
+            'admin/profile':'adminProfile',
+            'admin/preference':'adminPreference',
+            'admin/password':'adminPassword',
+            'admin/files':'adminFiles',
+            'admin/users':'adminUsers',
+            'admin/groups':'adminGroups',
+            'admin/tags':'adminTags',
+            'admin/statsofday':'adminStatusOfDay',
+            'admin/*':'adminProfile',
             '*actions' : 'defaults'
         },
 
@@ -272,6 +281,82 @@
             Tatami.app.body.show(groupsBody);
 
             groupsBody.show('members');
+        },
+
+        adminProfile: function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            var adminBody = Tatami.Factories.Admin.adminBody();
+
+            Tatami.app.body.show(adminBody);
+
+            adminSide.selectMenu('profile');
+        },
+
+        adminPreference:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('preference');
+        },
+
+        adminPassword:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('password');
+        },
+
+        adminFiles:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('files');
+        },
+
+        adminUsers:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('users');
+        },
+
+        adminGroups:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('groups');
+        },
+
+        adminTags:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('tags');
+        },
+
+        adminStatusOfDay:function(){
+            Tatami.app.header.close();
+
+            var adminSide = Tatami.Factories.Admin.adminSide();
+            Tatami.app.side.show(adminSide);
+
+            adminSide.selectMenu('statsofday');
         }
     });
 
