@@ -37,8 +37,8 @@
         }
     });
 
-    var ProfileTagTrends = Backbone.Marionette.ItemView.extend({
-        template: '#ProfileTagTrends',
+    var ProfileInformations = Backbone.Marionette.ItemView.extend({
+        template: '#ProfileInformations',
         modelEvents: {
             'change': 'render',
             'sync': 'render'
@@ -53,8 +53,8 @@
         }
     });
 
-    var ProfileInformations = Backbone.Marionette.ItemView.extend({
-        template: '#ProfileInformations',
+    var ProfileTagTrends = Backbone.Marionette.ItemView.extend({
+        template: '#ProfileTagTrends',
         modelEvents: {
             'change': 'render',
             'sync': 'render'
@@ -62,7 +62,7 @@
     });
 
     Tatami.Views.ProfileActions = ProfileActions;
-    Tatami.Views.ProfileTagTrends = ProfileTagTrends;
-    Tatami.Views.ProfileStats = ProfileStats;
     Tatami.Views.ProfileInformations = ProfileInformations;
+    Tatami.Views.ProfileStats = ProfileStats;
+    Tatami.Views.ProfileTagTrends = ProfileTagTrends;
 })(Backbone, _, Tatami);

@@ -18,8 +18,7 @@
 
     var WhoToFollow = Users.extend({
         url: function(){
-          //return '/tatami/rest/users/suggestions';
-          return '/tatami/rest/users/' + username + '/friends';
+          return '/tatami/rest/users/suggestions';
         }
     });
 

@@ -3,50 +3,49 @@
 
 <script type="text/template" id="TagsHeader">
     <div class="text-center page-header">
-        <h2 class="title">
-            <a href="#timeline" class="pull-left btn btn-info">
-                <span class="glyphicon glyphicon-th-list"></span>
-                &nbsp;<fmt:message key="tatami.timeline"/>
-            </a>
-            <a class="toggleTag pull-right btn <@= (followed)?'btn-info':'' @>">
-                <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
-                &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
-            </a>
-            #<@= name @>
-        </h2>
+        <a href="#timeline" class="pull-left btn btn-info">
+            <span class="glyphicon glyphicon-th-list"></span>
+            &nbsp;<fmt:message key="tatami.timeline"/>
+        </a>
+        <a class="toggleTag pull-right btn <@= (followed)?'btn-info':'' @>">
+            <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
+            &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
+        </a>
+        <h2 class="title">#<@= name @></h2>
     </div>
 </script>
 <script type="text/template" id="GroupsHeader">
     <div class="text-center page-header">
-        <h2 class="title">
-            <a href="#timeline" class="pull-left btn btn-info">
-                <span class="glyphicon glyphicon-th-list"></span>
-                &nbsp;<fmt:message key="tatami.timeline"/>
-            </a>
-            <@= name @>
-        </h2>
+        <a href="#timeline" class="pull-left btn btn-info">
+            <span class="glyphicon glyphicon-th-list"></span>
+            &nbsp;<fmt:message key="tatami.timeline"/>
+        </a>
+
+        <a class="toggleGroup pull-right btn btn-info">
+            <span class="glyphicon glyphicon-minus"></span>
+            <!-- TODO -->
+            &nbsp;<fmt:message key="tatami.user.followed"/>
+        </a>
+
+        <h2 class="title"><@= name @></h2>
     </div>
 </script>
 <script type="text/template" id="ProfileHeader">
     <div class="text-center page-header">
-        <h1 class="title">
-            <img class="img-rounded img-big pull-left" style="background-image: url(<@= avatarURL @>);">
+         <a href="#timeline" class="pull-left btn btn-info">
+             <span class="glyphicon glyphicon-th-list"></span>
+             &nbsp;<fmt:message key="tatami.timeline"/>
+         </a>
 
-            <@ if(!you) { @>
-                <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
-                    <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
-                </span>
-            <@ } @>
+         <@ if(!you) { @>
+             <a class="toggleFriend pull-right btn <@ if(friend) { @>btn-info<@ } @>">
+             <span class="glyphicon glyphicon-<@= (friend)?'minus':'plus' @>"></span>
+             &nbsp;<@= (friend)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
+             </a>
+         <@ } @>
 
-            <strong>
-                <@= fullName @>
-            </strong>
-            <br>
-            <small>
-                @<@= username @>
-            </small>
-        </h1>
-  </div>
+        <h2 class="title">@<@= username @></h2>
+    </div>
 </script>
 <script type="text/template" id="CardProfile">
     <div class="page-header">
@@ -203,12 +202,12 @@
     <span class="glyphicon glyphicon-refresh"></span>
     <span class="badge">
         <@= count @>
-        <@ if (count == 1) { @>
-            <fmt:message key="tatami.timeline.message"/>
-        <@ } else { @>
-            <fmt:message key="tatami.timeline.messages"/>
-        <@ } @>
     </span>
+    <@ if (count == 1) { @>
+        <fmt:message key="tatami.timeline.message"/>
+    <@ } else { @>
+        <fmt:message key="tatami.timeline.messages"/>
+    <@ } @>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">
@@ -229,7 +228,7 @@
                 </em>
             </fieldset>
             <fieldset class="preview-tatam row-fluid hide">
-                <div class="well well-small markdown"/>
+                <div class="well markdown"/>
             </fieldset>
             <fieldset class="reply row-fluid">
                 <legend>
@@ -329,7 +328,7 @@
     <div class="page-header">
         <h4>
             <span class="glyphicon glyphicon-signal"></span>
-            Statistiques
+            <fmt:message key="tatami.statistics"/>
         </h4>
     </div>
     <div>
@@ -357,15 +356,34 @@
                 <span class="badge"><@= followersCount @></span>
             </a>
         </p>
+        <br/>
     </div>
 </script>
 <script type="text/template" id="ProfileInformations">
+    <h4 class="profile-card">
+        <img class="img-rounded img-big" style="background-image: url(<@= avatarURL @>);"><br/>
+        <strong><@= fullName @></strong>
+    </h4>
+    <br/>
+
     <div class="page-header">
         <h4>
             <span class="glyphicon glyphicon-user"></span>
-            Informations
+            <fmt:message key="tatami.user.informations"/>
         </h4>
     </div>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.firstName"/> :
+        </strong>
+        <@= firstName @>
+    </p>
+    <p>
+        <strong>
+            <fmt:message key="tatami.user.lastName"/> :
+        </strong>
+        <@= lastName @>
+    </p>
     <p>
         <strong>
             <fmt:message key="tatami.user.email"/> :
@@ -384,11 +402,12 @@
         </strong>
         <@= phoneNumber @>
     </p>
+    <br/>
 </script>
 <script type="text/template" id="ProfileSide">
     <section class="actions"/>
-    <section class="hidden-phone stats"/>
     <section class="hidden-phone informations"/>
+    <section class="hidden-phone stats"/>
     <section class="hidden-phone tagTrends"/>
 </script>
 <script type="text/template" id="TagTrendsProfile">
@@ -496,4 +515,38 @@
     </div>
     <div class="items">
     </div>
+    <br/>
+</script>
+
+<!-- Admin template -->
+
+<script type="text/template" id="AdminSide">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-wrench"></span>
+            Actions
+        </h4>
+    </div>
+    <ul class="adminbody-nav nav nav-pills nav-stacked">
+        <li><a href="/tatami/new/admin/profile"><fmt:message key="tatami.menu.profile"/></a></li>
+        <li><a href="/tatami/new/admin/preference"><fmt:message key="tatami.menu.preferences"/></a></li>
+        <li><a href="/tatami/new/admin/password"><fmt:message key="tatami.menu.password"/></a></li>
+        <li><a href="/tatami/new/admin/files"><fmt:message key="tatami.menu.files"/></a></li>
+        <li><a href="/tatami/new/admin/users"><fmt:message key="tatami.menu.directory"/></a></li>
+        <li><a href="/tatami/new/admin/groups"><fmt:message key="tatami.menu.groups"/></a></li>
+        <li><a href="/tatami/new/admin/tags"><fmt:message key="tatami.menu.tags"/></a></li>
+        <li><a href="/tatami/new/admin/statsofday"><fmt:message key="tatami.menu.status.of.the.day"/></a></li>
+    </ul>
+</script>
+
+<script type="text/template" id="AdminBody">
+    <div class="tab-pane" id="profile" />
+    <div class="tab-pane" id="preferences" />
+    <div class="tab-pane" id="password" />
+    <div class="tab-pane" id="files" />
+    <div class="tab-pane" id="users" />
+    <div class="tab-pane" id="groups" />
+    <div class="tab-pane" id="tags" />
+    <div class="tab-pane" id="stats" />
+    <section class="tatams-container"></section>
 </script>
