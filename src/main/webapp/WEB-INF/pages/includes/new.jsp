@@ -228,7 +228,7 @@
                 </em>
             </fieldset>
             <fieldset class="preview-tatam row-fluid hide">
-                <div class="well well-small markdown"/>
+                <div class="well markdown"/>
             </fieldset>
             <fieldset class="reply row-fluid">
                 <legend>
@@ -516,4 +516,37 @@
     <div class="items">
     </div>
     <br/>
+</script>
+
+<!-- Admin template -->
+
+<script type="text/template" id="AdminSide">
+    <div class="page-header">
+        <h4>
+            <span class="glyphicon glyphicon-wrench"></span>
+            Actions
+        </h4>
+    </div>
+    <ul class="adminbody-nav nav nav-pills nav-stacked">
+        <li><a href="/tatami/new/admin/profile"><fmt:message key="tatami.menu.profile"/></a></li>
+        <li><a href="/tatami/new/admin/preference"><fmt:message key="tatami.menu.preferences"/></a></li>
+        <li><a href="/tatami/new/admin/password"><fmt:message key="tatami.menu.password"/></a></li>
+        <li><a href="/tatami/new/admin/files"><fmt:message key="tatami.menu.files"/></a></li>
+        <li><a href="/tatami/new/admin/users"><fmt:message key="tatami.menu.directory"/></a></li>
+        <li><a href="/tatami/new/admin/groups"><fmt:message key="tatami.menu.groups"/></a></li>
+        <li><a href="/tatami/new/admin/tags"><fmt:message key="tatami.menu.tags"/></a></li>
+        <li><a href="/tatami/new/admin/statsofday"><fmt:message key="tatami.menu.status.of.the.day"/></a></li>
+    </ul>
+</script>
+
+<script type="text/template" id="AdminBody">
+    <div class="tab-pane" id="profile" />
+    <div class="tab-pane" id="preferences" />
+    <div class="tab-pane" id="password" />
+    <div class="tab-pane" id="files" />
+    <div class="tab-pane" id="users" />
+    <div class="tab-pane" id="groups" />
+    <div class="tab-pane" id="tags" />
+    <div class="tab-pane" id="stats" />
+    <section class="tatams-container"></section>
 </script>
