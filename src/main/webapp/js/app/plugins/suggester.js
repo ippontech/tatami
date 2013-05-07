@@ -39,7 +39,6 @@
                     q = query2.substring(1, query2.length);
                     return $.get('/tatami/rest/search/tags', {q:q}, function (data) {
                         var results = [];
-                        debugger;
                         for (var i = 0; i < data.length; i++) {
                             results[i] = '#' + data[i].name;
                         }
