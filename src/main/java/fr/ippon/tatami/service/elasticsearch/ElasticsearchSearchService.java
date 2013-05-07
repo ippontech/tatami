@@ -83,7 +83,13 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public boolean reset() {
-        return deleteIndex() ? createIndex() : false;
+        log.info("Reseting ElasticSearch Index");
+        if (deleteIndex()) {
+            return createIndex();
+        } else {
+            log.warn("ElasticSearch Index could not be reset!");
+            return false;
+        }
     }
 
 
@@ -97,18 +103,19 @@ public class ElasticsearchSearchService implements SearchService {
             try {
                 boolean ack = client().admin().indices().prepareDelete(indexName(type)).execute().actionGet().acknowledged();
                 if (!ack) {
-                    log.error("Search engine Index wasn't deleted !");
+                    log.error("Elasticsearch Index wasn't deleted !");
                     return false;
                 }
             } catch (IndexMissingException e) {
                 // Failling to delete a missing index is supposed to be valid
-                log.warn("Elasticsearch index " + indexName(type) + " missing, it was not deleted");
+                log.warn("Elasticsearch Index " + indexName(type) + " missing, it was not deleted");
 
             } catch (ElasticSearchException e) {
-                log.error("Elasticsearch index " + indexName(type) + " was not deleted", e);
+                log.error("Elasticsearch Index " + indexName(type) + " was not deleted", e);
                 return false;
             }
         }
+        log.debug("Elasticsearch Index deleted!");
         return true;
     }
 

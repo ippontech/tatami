@@ -126,11 +126,18 @@ public class AdminService {
                 Collection<User> users = new ArrayList<User>();
                 for (String login : logins) {
                     User user = userRepository.findUserByLogin(login);
-                    users.add(user);
-                    Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
-                    for (Group group : groups) {
-                        searchService.addGroup(group);
-                        groupCount++;
+                    if (user == null) {
+                        log.warn("User defined in domain was not found in the user respository: " + login);
+                    } else {
+                        if (log.isDebugEnabled()) {
+                            log.debug("Indexing user: " + login);
+                        }
+                        users.add(user);
+                        Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
+                        for (Group group : groups) {
+                            searchService.addGroup(group);
+                            groupCount++;
+                        }
                     }
                 }
                 searchService.addUsers(users);
