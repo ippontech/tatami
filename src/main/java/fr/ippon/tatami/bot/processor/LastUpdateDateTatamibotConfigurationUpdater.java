@@ -1,14 +1,12 @@
 package fr.ippon.tatami.bot.processor;
 
-import java.util.Date;
-
-import javax.inject.Inject;
-
+import fr.ippon.tatami.bot.config.TatamibotConfiguration;
+import fr.ippon.tatami.repository.TatamibotConfigurationRepository;
 import org.apache.camel.Header;
 import org.springframework.stereotype.Component;
 
-import fr.ippon.tatami.bot.config.TatamibotConfiguration;
-import fr.ippon.tatami.repository.TatamibotConfigurationRepository;
+import javax.inject.Inject;
+import java.util.Date;
 
 @Component
 public class LastUpdateDateTatamibotConfigurationUpdater {

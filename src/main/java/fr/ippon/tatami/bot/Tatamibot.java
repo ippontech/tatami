@@ -1,10 +1,6 @@
 package fr.ippon.tatami.bot;
 
-import java.util.Date;
-
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
-import fr.ippon.tatami.bot.processor.LastUpdateDateTatamibotConfigurationUpdater;
-import fr.ippon.tatami.bot.processor.TatamiStatusProcessor;
 import fr.ippon.tatami.bot.route.GitHubRouteBuilder;
 import fr.ippon.tatami.bot.route.RssRouteBuilder;
 import fr.ippon.tatami.bot.route.SourceRouteBuilderBase;
@@ -15,22 +11,12 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.TatamibotConfigurationRepository;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Expression;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
-import org.apache.camel.RoutesBuilder;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.builder.xml.XPathBuilder;
-import org.apache.camel.model.ProcessorDefinition;
 import org.apache.camel.spi.IdempotentRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-
-import com.sun.syndication.feed.synd.SyndFeedImpl;
 
 import javax.inject.Inject;
 

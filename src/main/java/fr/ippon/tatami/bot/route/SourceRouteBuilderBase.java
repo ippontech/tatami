@@ -1,9 +1,8 @@
 package fr.ippon.tatami.bot.route;
 
+import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spi.IdempotentRepository;
-
-import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 
 public abstract class SourceRouteBuilderBase extends RouteBuilder {
 

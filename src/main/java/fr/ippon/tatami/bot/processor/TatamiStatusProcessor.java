@@ -1,16 +1,15 @@
 package fr.ippon.tatami.bot.processor;
 
-import javax.inject.Inject;
-
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.service.StatusUpdateService;
+import fr.ippon.tatami.service.UserService;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.service.StatusUpdateService;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
 
 @Component
 public class TatamiStatusProcessor {
