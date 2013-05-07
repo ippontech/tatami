@@ -1,4 +1,4 @@
-package fr.ippon.tatami.service.search.elasticsearch;
+package fr.ippon.tatami.service.elasticsearch;
 
 import org.elasticsearch.client.Client;
 

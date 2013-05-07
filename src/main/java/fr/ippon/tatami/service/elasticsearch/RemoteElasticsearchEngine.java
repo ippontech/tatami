@@ -1,4 +1,4 @@
-package fr.ippon.tatami.service.search.elasticsearch;
+package fr.ippon.tatami.service.elasticsearch;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +23,7 @@ public class RemoteElasticsearchEngine implements ElasticsearchEngine {
 
     @Inject
     private Environment env;
+
     private TransportClient client;
 
     @PostConstruct

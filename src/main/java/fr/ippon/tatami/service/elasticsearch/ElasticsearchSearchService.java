@@ -1,4 +1,4 @@
-package fr.ippon.tatami.service.search.elasticsearch;
+package fr.ippon.tatami.service.elasticsearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
