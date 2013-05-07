@@ -1,16 +1,5 @@
 package fr.ippon.tatami.service.dto;
 
-import fr.ippon.tatami.domain.Attachment;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.format.ISODateTimeFormat;
-
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-
 /**
  * DTO to present a "complete" status to the presentation layer.
  */

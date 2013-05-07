@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 @Service
 public class StatusUpdateService {
 
-    private final Log log = LogFactory.getLog(StatusUpdateService.class);
+    private static final Log log = LogFactory.getLog(StatusUpdateService.class);
 
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
+    private static final Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
     private static final Pattern PATTERN_HASHTAG = Pattern.compile("(^|\\s)#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
@@ -98,6 +98,9 @@ public class StatusUpdateService {
 
     @Inject
     private StatusAttachmentRepository statusAttachmentRepository;
+
+    @Inject
+    private NotificationService notificationService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
@@ -212,7 +215,7 @@ public class StatusUpdateService {
         }
 
         // add status to the timeline
-        timelineRepository.addStatusToTimeline(currentLogin, status);
+        addStatusToTimelineAndNotify(currentLogin, status);
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
@@ -258,18 +261,18 @@ public class StatusUpdateService {
             Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
             for (String groupMemberLogin : groupMemberLogins) {
-                timelineRepository.addStatusToTimeline(groupMemberLogin, status);
+                addStatusToTimelineAndNotify(groupMemberLogin, status);
             }
             if (isPublicGroup(group)) { // for people not following the group but following the user
                 for (String followerLogin : followersForUser) {
                     if (!groupMemberLogins.contains(followerLogin)) {
-                        timelineRepository.addStatusToTimeline(followerLogin, status);
+                        addStatusToTimelineAndNotify(followerLogin, status);
                     }
                 }
             }
         } else { // only people following the user
             for (String followerLogin : followersForUser) {
-                timelineRepository.addStatusToTimeline(followerLogin, status);
+                addStatusToTimelineAndNotify(followerLogin, status);
             }
         }
     }
@@ -342,13 +345,13 @@ public class StatusUpdateService {
 
         if (isPublicGroup(group)) { // This is a public status
             for (String followerLogin : followersForTag) {
-                timelineRepository.addStatusToTimeline(followerLogin, status);
+                addStatusToTimelineAndNotify(followerLogin, status);
             }
-        } else {  // This is private status
+        } else {  // This is a private status
             for (String followerLogin : followersForTag) {
                 Collection<String> groupIds = userGroupRepository.findGroups(followerLogin);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                    timelineRepository.addStatusToTimeline(followerLogin, status);
+                    addStatusToTimelineAndNotify(followerLogin, status);
                 }
             }
         }
@@ -360,7 +363,7 @@ public class StatusUpdateService {
      */
     private void mentionUser(Status status, String mentionedLogin) {
         mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
-        timelineRepository.addStatusToTimeline(mentionedLogin, status);
+        addStatusToTimelineAndNotify(mentionedLogin, status);
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 
         if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
@@ -378,5 +381,13 @@ public class StatusUpdateService {
 
     private boolean isPublicGroup(Group group) {
         return group == null || group.isPublicGroup();
+    }
+
+    /**
+     * Adds the status to the timeline and notifies the user with Atmosphere.
+     */
+    private void addStatusToTimelineAndNotify(String login, Status status) {
+        timelineRepository.addStatusToTimeline(login, status);
+        notificationService.notifyUser(login, status);
     }
 }

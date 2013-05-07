@@ -773,8 +773,8 @@
         </dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-spring</artifactId>
-            <version>1.0.1</version>
+            <artifactId>atmosphere-annotations</artifactId>
+            <version>1.1.0.RC2</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>

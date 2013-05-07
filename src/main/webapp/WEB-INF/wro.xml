@@ -33,6 +33,7 @@
         <js>/js/vendor/jquery.ui.widget.js</js>
         <js>/js/vendor/jquery.iframe-transport.js</js>
         <js>/js/vendor/jquery.fileupload.js</js>
+        <js>/js/vendor/jquery.atmosphere.js</js>
         <js>/js/vendor/bootstrap.js</js>
         <js>/js/vendor/underscore.js</js>
         <js>/js/vendor/backbone.js</js>

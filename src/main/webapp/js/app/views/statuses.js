@@ -168,7 +168,7 @@
                         }
                     });
                 });
-                this.listenTo(Tatami.app, 'next', function(){
+                    this.listenTo(Tatami.app, 'next', function(){
                     self.collection.next();
                 });
                 this.listenTo(Tatami.app, 'display', this.onRender);

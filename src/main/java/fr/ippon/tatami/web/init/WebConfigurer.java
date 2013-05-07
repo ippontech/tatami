@@ -7,6 +7,8 @@ import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.config.DispatcherServletConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.atmosphere.cache.UUIDBroadcasterCache;
+import org.atmosphere.cpr.AtmosphereServlet;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -86,33 +88,56 @@ public class WebConfigurer implements ServletContextListener {
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcher", new DispatcherServlet(
                 dispatcherServletConfig));
         dispatcherServlet.addMapping("/tatami/*");
-        dispatcherServlet.setLoadOnStartup(2);
+        dispatcherServlet.setLoadOnStartup(1);
 
         log.debug("Registering Spring Security Filter");
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
                 new DelegatingFilterProxy());
 
+        springSecurityFilter.setAsyncSupported(true);
+
+        initAtmosphereServlet(servletContext);
+
         Environment env = rootContext.getBean(Environment.class);
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
-            log.debug("Setting Metrics profile for the Web ApplicationContext");
-
-            log.debug("Registering Metrics Filter");
-            FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
-                    new DefaultWebappMetricsFilter());
-            metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
-
-            log.debug("Registering Metrics Admin Servlet");
-            ServletRegistration.Dynamic metricsAdminServlet =
-                    servletContext.addServlet("metricsAdminServlet", new AdminServlet());
-            metricsAdminServlet.addMapping("/metrics/*");
-            metricsAdminServlet.setLoadOnStartup(3);
-
+            initMetricsServlet(servletContext, disps, dispatcherServlet);
             springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet", "metricsAdminServlet");
         } else {
             springSecurityFilter.addMappingForServletNames(disps, true, "dispatcher", "atmosphereServlet");
         }
 
         log.debug("Web application fully configured");
+    }
+
+    private void initMetricsServlet(ServletContext servletContext, EnumSet<DispatcherType> disps, ServletRegistration.Dynamic dispatcherServlet) {
+        log.debug("Setting Metrics profile for the Web ApplicationContext");
+
+        log.debug("Registering Metrics Filter");
+        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
+                new DefaultWebappMetricsFilter());
+        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+
+        log.debug("Registering Metrics Admin Servlet");
+        ServletRegistration.Dynamic metricsAdminServlet =
+                servletContext.addServlet("metricsAdminServlet", new AdminServlet());
+        metricsAdminServlet.addMapping("/metrics/*");
+        dispatcherServlet.setLoadOnStartup(2);
+    }
+
+    private void initAtmosphereServlet(ServletContext servletContext) {
+        log.debug("Registering Atmosphere Servlet");
+        ServletRegistration.Dynamic atmosphereServlet =
+                servletContext.addServlet("atmosphereServlet", new AtmosphereServlet());
+
+        atmosphereServlet.setAsyncSupported(true);
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.packages", "fr.ippon.tatami.web.atmosphere");
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcasterCacheClass", UUIDBroadcasterCache.class.getName());
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.shareableThreadPool", "true");
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.maxProcessingThreads", "10");
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads", "10");
+
+        atmosphereServlet.setLoadOnStartup(3);
+        atmosphereServlet.addMapping("/realtime/*");
     }
 
     @Override

@@ -45,14 +45,6 @@
     Tatami.app = new Backbone.Marionette.Application();
 
     Tatami.app.addInitializer(function(){
-        var autoRefresh = function(){
-            Tatami.app.trigger('refresh');
-            _.delay(autoRefresh, 20000);
-        };
-        autoRefresh();
-    });
-
-    Tatami.app.addInitializer(function(){
         var $w = $(window);
         var $d = $(document);
 

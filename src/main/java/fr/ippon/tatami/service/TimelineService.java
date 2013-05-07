@@ -21,9 +21,9 @@ import java.util.*;
 @Service
 public class TimelineService {
 
-    private final Log log = LogFactory.getLog(TimelineService.class);
+    private static final Log log = LogFactory.getLog(TimelineService.class);
 
-    private final static String hashtagDefault = "---";
+    private static final String hashtagDefault = "---";
 
     @Inject
     private UserService userService;
@@ -72,6 +72,9 @@ public class TimelineService {
 
     @Inject
     private SearchService searchService;
+
+    @Inject
+    private NotificationService notificationService;
 
     public StatusDTO getStatus(String statusId) {
         Map<String, SharedStatusInfo> line = new HashMap<String, SharedStatusInfo>();
@@ -363,11 +366,11 @@ public class TimelineService {
         Status status = statusRepository.findStatusById(statusId);
         // add status to the user's userline and timeline
         userlineRepository.shareStatusToUserline(currentLogin, status);
-        timelineRepository.shareStatusToTimeline(currentLogin, currentLogin, status);
+        shareStatusToTimelineAndNotify(currentLogin, currentLogin, status);
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            timelineRepository.shareStatusToTimeline(currentLogin, followerLogin, status);
+            shareStatusToTimelineAndNotify(currentLogin, followerLogin, status);
         }
         // update the status details to add this share
         sharesRepository.newShareByLogin(statusId, currentLogin);
@@ -400,5 +403,13 @@ public class TimelineService {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         Map<String, SharedStatusInfo> line = favoritelineRepository.getFavoriteline(currentLogin);
         return this.buildStatusList(line);
+    }
+
+    /**
+     * Adds the status to the timeline and notifies the user with Atmosphere.
+     */
+    private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Status status) {
+        timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, status);
+        notificationService.notifyUser(timelineLogin, status);
     }
 }

@@ -85,6 +85,8 @@
         <script src="/js/vendor/jquery.ui.widget.js"></script>
         <script src="/js/vendor/jquery.iframe-transport.js"></script>
         <script src="/js/vendor/jquery.fileupload.js"></script>
+        <script src="/js/vendor/jquery.atmosphere.js"></script>
+        <script src="/js/app/plugins/tatami.atmosphere.js"></script>
 
         <script src="/js/app/app.js"></script>
         <script src="/js/app/plugins/tatami.search.js"></script>
