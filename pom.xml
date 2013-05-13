@@ -41,6 +41,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
+                <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
@@ -74,6 +75,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
+                <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
@@ -107,6 +109,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
+                <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
@@ -170,7 +173,8 @@
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
+                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <log4j.appender>PAPERTRAIL</log4j.appender>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
@@ -234,6 +238,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
+                <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>
@@ -266,6 +271,7 @@
                 <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>DEBUG</log4j.loglevel>
+                <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://localhost:8080</tatami.url>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Encoding" value="UTF-8" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %c - %m%n" />            
+        </layout>
+    </appender>
+    <appender name="SYNC_PAPERTRAIL" class="org.apache.log4j.net.SyslogAppender">
+        <param name="Facility" value="LOCAL7" />
+        <param name="FacilityPrinting" value="false" />
+        <param name="Header" value="true" />
+        <param name="SyslogHost" value="logs.papertrailapp.com:38143" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p: %c{2} %x %m %n" />
+        </layout>
+    </appender>
+    <appender name="PAPERTRAIL" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="SYNC_PAPERTRAIL"/>
+    </appender>
+
+    <logger name="fr.ippon.tatami">
+       <level value="DEBUG"/>
+    </logger>
+
+    <logger name="com.yammer.metrics">
+        <level value="WARN"/>
+    </logger>
+    <logger name="me.prettyprint">
+        <level value="WARN"/>
+    </logger>
+    <logger name="net.sf.ehcache">
+        <level value="WARN"/>
+    </logger>
+    <logger name="netty">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.atmosphere">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.elasticsearch">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.hibernate.validator">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.openid4java">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.web">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.security">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.cache">
+        <level value="WARN"/>
+    </logger>
+
+    <root>
+        <level value="${log4j.loglevel}" />
+        <appender-ref ref="${log4j.appender}" />
+    </root>
+
+</log4j:configuration>
