@@ -398,24 +398,24 @@ public class ElasticsearchSearchService implements SearchService {
             final XContentBuilder source = mapper.toJson(object);
 
             if (log.isDebugEnabled()) {
-                log.debug("Ready to index the " + type + " of id " + id + " into Elasticsearch: " + stringify(source));
+                log.debug("Ready to index the " + type + " id " + id + " into Elasticsearch: " + stringify(source));
             }
             client().prepareIndex(indexName(type), type, id).setSource(source).execute(new ActionListener<IndexResponse>() {
                 @Override
                 public void onResponse(IndexResponse response) {
                     if (log.isDebugEnabled()) {
-                        log.debug(type + " of id " + id + " was " + (response.version() == 1 ? "indexed" : "updated") + " into Elasticsearch");
+                        log.debug(type + " id " + id + " was " + (response.version() == 1 ? "indexed" : "updated") + " into Elasticsearch");
                     }
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
-                    log.error("The " + type + " of id " + id + " wasn't indexed : " + stringify(source), e);
+                    log.error("The " + type + " id " + id + " wasn't indexed : " + stringify(source), e);
                 }
             });
 
         } catch (IOException e) {
-            log.error("The " + type + " of id " + id + " wasn't indexed", e);
+            log.error("The " + type + " id " + id + " wasn't indexed", e);
         }
     }
 
