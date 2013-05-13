@@ -113,6 +113,7 @@ public class AdminService {
         Collection<Domain> domains = domainRepository.getAllDomains();
         int groupCount = 0;
         for (Domain domain : domains) {
+            log.debug("Indexing domain: " + domain.getName());
             int paginationId = 0;
             boolean moreUsers = true;
             while (moreUsers) {

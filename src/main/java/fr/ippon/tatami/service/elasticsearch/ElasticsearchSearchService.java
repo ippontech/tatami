@@ -92,7 +92,6 @@ public class ElasticsearchSearchService implements SearchService {
         }
     }
 
-
     /**
      * Delete the tatami index.
      *
@@ -329,7 +328,6 @@ public class ElasticsearchSearchService implements SearchService {
         return searchByPrefix(domain, prefix, DEFAULT_TOP_N_SEARCH_USER, userMapper);
     }
 
-
     private final ElasticsearchMapper<Group> groupMapper = new ElasticsearchMapper<Group>() {
         @Override
         public String id(Group group) {
@@ -379,7 +377,6 @@ public class ElasticsearchSearchService implements SearchService {
         }
         return groups;
     }
-
 
     /**
      * Indexes an object to elasticsearch.
