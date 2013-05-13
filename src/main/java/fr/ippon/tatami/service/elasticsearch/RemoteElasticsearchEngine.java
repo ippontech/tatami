@@ -19,7 +19,8 @@ import javax.inject.Inject;
  * Transport client configuration.
  */
 public class RemoteElasticsearchEngine implements ElasticsearchEngine {
-    private final Log log = LogFactory.getLog(RemoteElasticsearchEngine.class);
+
+    private static final Log log = LogFactory.getLog(RemoteElasticsearchEngine.class);
 
     @Inject
     private Environment env;
@@ -70,5 +71,4 @@ public class RemoteElasticsearchEngine implements ElasticsearchEngine {
         int port = Integer.parseInt(addressItems.length > 1 ? addressItems[1] : env.getRequiredProperty("elasticsearch.cluster.default.communication.port"));
         return new InetSocketTransportAddress(addressItems[0], port);
     }
-
 }
