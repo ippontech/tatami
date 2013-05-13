@@ -1,3 +1,4 @@
+/* Disabled as the proxy does not support SSE (yet)
 $(function () {
     "use strict";
 
@@ -37,4 +38,4 @@ $(function () {
 
     var subSocket = socket.subscribe(request);
 });
-
+*/

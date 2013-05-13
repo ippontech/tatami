@@ -21,7 +21,7 @@
     </appender>
 
     <logger name="fr.ippon.tatami">
-       <level value="DEBUG"/>
+       <level value="${log4j.loglevel}"/>
     </logger>
 
     <logger name="com.yammer.metrics">
