@@ -63,6 +63,9 @@
     <logger name="org.springframework.cache">
         <level value="WARN"/>
     </logger>
+    <logger name="ro.isdc">
+        <level value="WARN"/>
+    </logger>
 
     <root>
         <level value="${log4j.loglevel}" />
