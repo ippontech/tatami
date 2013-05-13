@@ -31,11 +31,11 @@ public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
                 .node();
 
         // Looking for nodes configuration
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             final NodesInfoResponse nir =
                     client().admin().cluster().prepareNodesInfo().execute().actionGet();
 
-            log.debug("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
+            log.info("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
                     + nir.clusterName() + "\"");
         }
     }
