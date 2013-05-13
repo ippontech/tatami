@@ -552,6 +552,27 @@ InlineLexer.output = function(src, links, options) {
   return inline.output(src);
 };
 
+/*
+* Create short url
+*
+* */
+
+var shorUrl = function(){
+    var char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var str_length = 6;
+    var random = '';
+
+    for(var i=0; i<str_length; i++){
+        var rnum = Math.floor(Math.random() * char.length);
+        random += char.substring(rnum, rnum+1);
+    }
+
+    var url = 'http://tatami/'+random;
+
+    return url;
+};
+
+
 /**
  * Lexing/Compiling
  */
@@ -615,8 +636,8 @@ InlineLexer.prototype.output = function(src) {
     if (cap = this.rules.url.exec(src)) {
       var html;
       src = src.substring(cap[0].length);
-      text = escape(cap[1]);
-      href = text;
+      text = shorUrl();   //generate short url
+      href = escape(cap[1]);
       for(var key in this.options.urls){
         html = this.options.urls[key](text, href);
         if(html){
