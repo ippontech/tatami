@@ -46,11 +46,11 @@ public class RemoteElasticsearchEngine implements ElasticsearchEngine {
             client.addTransportAddress(parseAddress(nodeAddress));
         }
 
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             NodesInfoResponse nir =
                     client.admin().cluster().nodesInfo(new NodesInfoRequest()).actionGet();
 
-            log.debug("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
+            log.info("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
                     + nir.clusterName() + "\"");
         }
     }
