@@ -173,7 +173,7 @@
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
+                <log4j.loglevel>INFO</log4j.loglevel>
                 <log4j.appender>PAPERTRAIL</log4j.appender>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.version>${project.version}</tatami.version>
