@@ -88,7 +88,8 @@ public class CassandraDomainRepository implements DomainRepository {
         RangeSlicesQuery<String, String, String> query = createRangeSlicesQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
-                .setRange(null, null, false, Integer.MAX_VALUE);
+                .setRange(null, null, false, Integer.MAX_VALUE)
+                .setRowCount(Constants.CASSANDRA_MAX_ROWS);
 
         QueryResult<OrderedRows<String, String, String>> result = query.execute();
         List<Row<String, String, String>> rows = result.get().getList();

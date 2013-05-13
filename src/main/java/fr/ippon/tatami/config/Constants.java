@@ -33,4 +33,9 @@ public class Constants {
      */
     public static final int CASSANDRA_MAX_COLUMNS = 10000;
 
+    /**
+     * Cassandra : number of rows to return
+     */
+    public static final int CASSANDRA_MAX_ROWS = 10000;
+
 }
