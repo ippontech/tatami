@@ -107,6 +107,7 @@
         <script src="/js/app/views/tagsContainers.js"></script>
         <script src="/js/app/views/profileContainers.js"></script>
         <script src="/js/app/views/groupsContainers.js"></script>
+        <script src="/js/app/views/adminContainers.js"></script>
         <script src="/js/app/views/statuses.js"></script>
         <script src="/js/app/views/statusEdit.js"></script>
         <script src="/js/app/views/statusUpdateButton.js"></script>
@@ -120,6 +121,7 @@
         <script src="/js/app/factories/status.js"></script>
         <script src="/js/app/factories/tags.js"></script>
         <script src="/js/app/factories/groups.js"></script>
+        <script src="/js/app/factories/admin.js"></script>
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
