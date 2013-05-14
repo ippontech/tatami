@@ -122,6 +122,7 @@ app.View.UpdateView = Backbone.View.extend({
           $("#updateStatusContent").change();
           app.trigger('refreshProfile');
           app.trigger('refreshTimeline');
+          app.trigger('refreshGroupTimeline');
           setTimeout(function () {
               $("#statusUpdate").popover('hide');
           }, 3000);
@@ -734,6 +735,8 @@ app.View.GroupsView = Backbone.View.extend({
     initialize:function () {
         this.views = {};
 
+        self = this;
+
         this.groupId = this.options.group;
         this.model = new app.Collection.StatusCollection();
         this.model.url = '/tatami/rest/statuses/group_timeline?groupId=' + this.groupId;
@@ -751,6 +754,11 @@ app.View.GroupsView = Backbone.View.extend({
             model: this.model
         });
         this.views.next.nextStatus();
+
+        app.on('refreshGroupTimeline', function(){
+           self.model.fetch();
+        });
+
     },
 
     render:function () {
@@ -758,6 +766,8 @@ app.View.GroupsView = Backbone.View.extend({
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
         return $(this.el);
+
+        debugger;
     }
 
 });
