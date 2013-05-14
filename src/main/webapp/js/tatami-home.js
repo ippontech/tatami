@@ -766,8 +766,6 @@ app.View.GroupsView = Backbone.View.extend({
         $(this.el).append(this.views.list.render());
         $(this.el).append(this.views.next.render());
         return $(this.el);
-
-        debugger;
     }
 
 });
