@@ -7,6 +7,7 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.Preferences;
 import fr.ippon.tatami.web.controller.form.UserPassword;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.env.Environment;
@@ -68,7 +69,7 @@ public class AccountController {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setFirstName(updatedUser.getFirstName().replace("<", " "));
         currentUser.setLastName(updatedUser.getLastName().replace("<", " "));
-        currentUser.setJobTitle(updatedUser.getJobTitle().replace("<", " "));
+        currentUser.setJobTitle(StringEscapeUtils.escapeHtml(updatedUser.getJobTitle().replace("<", " ")));
         currentUser.setPhoneNumber(updatedUser.getPhoneNumber().replace("<", " "));
         try {
             userService.updateUser(currentUser);
