@@ -151,14 +151,11 @@
 
 .tatam > header {
     padding-bottom: 0;
-    margin-bottom: 15px;
-}
-
-.tatam > footer > aside {
     margin-bottom: 5px;
 }
 
 .tatam > .well {
+    padding-bottom: 0;
     margin-bottom: 5px;
 }
 

@@ -199,7 +199,7 @@
 
     var StatusAttachmentItems = Backbone.Marionette.ItemView.extend({
         template: '#StatusAttachmentItems',
-        tagName: 'li'
+        tagName: 'div'
     });
 
     var StatusAttachments = Backbone.Marionette.CollectionView.extend({
