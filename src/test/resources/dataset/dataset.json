@@ -982,6 +982,12 @@
             "keyType":"BytesType",
             "comparatorType":"BytesType",
             "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"Registration",
+            "keyType":"UTF8Type",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
         }
     ]
 }

@@ -21,10 +21,11 @@ import java.util.Properties;
 @Configuration
 public class MailConfiguration {
 
-    private final Log log = LogFactory.getLog(MailConfiguration.class);
+    private static final Log log = LogFactory.getLog(MailConfiguration.class);
 
     @Bean
     public VelocityEngine velocityEngine() throws IOException {
+        log.debug("Starting Velocity Engine");
         VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
         Properties props = new Properties();
 
@@ -45,7 +46,6 @@ public class MailConfiguration {
         factory.setVelocityProperties(props);
         return factory.createVelocityEngine();
     }
-
 
     @Bean
     public MessageSource mailMessageSource() {

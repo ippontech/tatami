@@ -46,6 +46,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public ViewResolver ContentNegotiatingViewResolver() {
+        log.debug("Configuring the ContentNegotiatingViewResolver");
         ContentNegotiatingViewResolver viewResolver = new ContentNegotiatingViewResolver();
         List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
 
@@ -77,6 +78,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
+        log.debug("Configuring localeChangeInterceptor");
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
         return localeChangeInterceptor;
@@ -84,6 +86,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MessageSource messageSource() {
+        log.debug("Loading MessageSources");
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
         messageSource.setDefaultEncoding(CharEncoding.UTF_8);
@@ -102,6 +105,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+        log.debug("Creating requestMappingHandlerMapping");
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
         Object[] interceptors = {localeChangeInterceptor()};
@@ -111,6 +115,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.debug("Adding static resource handlers");
+
         registry.addResourceHandler("/static-wro4j/" + env.getProperty("tatami.version") + "/**")
                 .addResourceLocations("/WEB-INF/generated-wro4j/")
                 .setCachePeriod(60 * 60 * 24 * 30);

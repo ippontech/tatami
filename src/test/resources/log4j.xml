@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Encoding" value="UTF-8" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %c - %m%n" />            
+        </layout>
+    </appender>
+
+    <logger name="fr.ippon.tatami">
+       <level value="DEBUG"/>
+    </logger>
+
+    <logger name="com.yammer.metrics">
+        <level value="WARN"/>
+    </logger>
+    <logger name="me.prettyprint">
+        <level value="WARN"/>
+    </logger>
+    <logger name="net.sf.ehcache">
+        <level value="WARN"/>
+    </logger>
+    <logger name="netty">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.atmosphere">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.elasticsearch">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.hibernate.validator">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.openid4java">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.web">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.security">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.springframework.cache">
+        <level value="WARN"/>
+    </logger>
+    <logger name="ro.isdc">
+        <level value="WARN"/>
+    </logger>
+
+    <root>
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</log4j:configuration>
