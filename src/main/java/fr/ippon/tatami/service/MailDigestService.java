@@ -58,9 +58,10 @@ public class MailDigestService {
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         for (Domain d : domains) {
-            log.info("Sending daily digest for domain " + d +
-                    " and day " + day);
-
+            if (log.isInfoEnabled()) {
+                log.info("Sending daily digest for domain " + d +
+                        " and day " + day);
+            }
             int pagination = 0;
             List<String> logins;
             do {
@@ -69,7 +70,14 @@ public class MailDigestService {
                 pagination = pagination + logins.size();
 
                 for (String login : logins) {
-                    handleDailyDigestPageForLogin(login);
+                    try {
+                        handleDailyDigestPageForLogin(login);
+                    } catch (Exception e) {
+                        log.warn("An error has occured when generating daily digest for user " + login + ": " + e.getMessage());
+                        if (log.isDebugEnabled()) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             } while (logins.size() > 0);
         }
@@ -96,10 +104,10 @@ public class MailDigestService {
             String day = String.valueOf(i);
 
             for (Domain d : domains) {
-
-                log.info("Sending weekly digest for domain " + d +
-                        " and day " + i);
-
+                if (log.isInfoEnabled()) {
+                    log.info("Sending weekly digest for domain " + d +
+                            " and day " + i);
+                }
                 int pagination = 0;
                 List<String> logins;
                 do {
@@ -109,9 +117,15 @@ public class MailDigestService {
                     pagination = pagination + logins.size();
 
                     for (String login : logins) {
-                        handleWeeklyDigestPageForLogin(login);
+                        try {
+                            handleWeeklyDigestPageForLogin(login);
+                        } catch (Exception e) {
+                            log.warn("An error has occured when generating weekly digest for user " + login + ": " + e.getMessage());
+                            if (log.isDebugEnabled()) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-
                 } while (logins.size() > 0);
             }
         }
@@ -184,8 +198,8 @@ public class MailDigestService {
         boolean dateReached = false;
         List<StatusDTO> allStatuses = new ArrayList<StatusDTO>(50);
 
-        // collect all statuses since 'since_date' from te timeline
-        do {
+        // collect all statuses since 'since_date' from the timeline
+        while (!dateReached) {
             Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, max_id);
             statuses.size();
             int count = 0;
@@ -209,7 +223,7 @@ public class MailDigestService {
                     max_id = status.getStatusId();
                 }
             }
-        } while (!dateReached);
+        }
 
         int nbStatusTotal = allStatuses.size();
         if (nbStatusTotal > 0) {

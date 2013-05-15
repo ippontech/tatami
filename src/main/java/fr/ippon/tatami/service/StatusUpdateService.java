@@ -182,9 +182,11 @@ public class StatusUpdateService {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             startTime = Calendar.getInstance().getTimeInMillis();
-            log.debug("Creating new status : " + content);
+            if (log.isDebugEnabled()) {
+                log.debug("Creating new status : " + content);
+            }
         }
         String currentLogin;
         if (user == null) {
@@ -248,9 +250,9 @@ public class StatusUpdateService {
             addToCompanyWall(status, group);
         }
 
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             long finishTime = Calendar.getInstance().getTimeInMillis();
-            log.debug("Status created in " + (finishTime - startTime) + "ms.");
+            log.info("Status created in " + (finishTime - startTime) + "ms.");
         }
         return status;
     }
