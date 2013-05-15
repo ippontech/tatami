@@ -988,6 +988,11 @@
             "keyType":"UTF8Type",
             "comparatorType":"BytesType",
             "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"UserTags",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type"
         }
     ]
 }
