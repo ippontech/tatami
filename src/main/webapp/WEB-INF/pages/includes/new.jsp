@@ -444,12 +444,12 @@
     <ul class="groupsbody-nav nav nav-tabs nav-tabs-inverse nav-justified">
         <li class="timeline">
             <a href="#groups/<@= group @>">
-                <fmt:message key="tatami.badge.status"/>
+                <i class="glyphicon glyphicon-th-list"></i> <fmt:message key="tatami.badge.status"/>
             </a>
         </li>
         <li class="members">
             <a href="#groups/<@= group @>/members">
-                <fmt:message key="tatami.group.members.list"/>
+                <i class="glyphicon glyphicon-user"></i> <fmt:message key="tatami.group.members.list"/>
             </a>
         </li>
     </ul>

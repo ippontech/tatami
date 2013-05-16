@@ -107,8 +107,8 @@
             var homeSide = Tatami.Factories.Home.homeSide();
             Tatami.app.side.show(homeSide);
 
+            homeSide.groups.show(Tatami.Factories.Home.groups());
             homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
             homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
             var tagsBody = Tatami.Factories.Tags.tagsBody();
@@ -243,8 +243,13 @@
 
         groups: function(group){
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
-            Tatami.app.side.close();
 
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.groups.show(Tatami.Factories.Home.groups());
+            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
 
             var groupsBody = Tatami.Factories.Groups.groupsBody(group);
 
