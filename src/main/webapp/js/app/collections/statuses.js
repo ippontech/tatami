@@ -2,10 +2,14 @@
 
     var Statuses = Backbone.Collection.extend({
         initialize: function(){
+            this.initStorage();
             this.initNext();
             this.initRefresh();
         },
-        model: Tatami.Models.Statuses,
+        model: Tatami.Models.Status,
+        initStorage: function(){
+
+        },
         initNext: function(){
             var self = this;
             this.next = _.once(function(cb){
@@ -61,26 +65,26 @@
     });
 
     var StatusesMentions = Statuses.extend({
-        model: Tatami.Models.Statuses,
+        model: Tatami.Models.Status,
         url: '/tatami/rest/mentions'
     });
 
     var StatusesTags = Statuses.extend({
-        model: Tatami.Models.Statuses,
+        model: Tatami.Models.Status,
         url: function(){
             return '/tatami/rest/tags/' + this.tag + '/tag_timeline';
         }
     });
 
     var StatusesUsers = Statuses.extend({
-        model: Tatami.Models.Statuses,
+        model: Tatami.Models.Status,
         url: function(){
             return '/tatami/rest/statuses/' + this.user + '/timeline';
         }
     });
 
     var StatusesGroups = Statuses.extend({
-        model: Tatami.Models.Statuses,
+        model: Tatami.Models.Status,
         url: function(){
             return '/tatami/rest/groups/' + this.group + '/timeline';
         }

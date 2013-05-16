@@ -135,7 +135,7 @@
             options = (options)? options: {};
             if(options.status) {
                 var self = this;
-                var status = new Tatami.Models.Statuses({
+                var status = new Tatami.Models.Status({
                     statusId: options.status
                 });
                 status.fetch({

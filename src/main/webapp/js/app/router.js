@@ -126,7 +126,7 @@
         },
 
         status: function(statusId) {
-            var status = new Tatami.Models.Statuses({
+            var status = new Tatami.Models.Status({
                 statusId: statusId
             });
             status.fetch({

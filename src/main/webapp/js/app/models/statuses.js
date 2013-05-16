@@ -1,6 +1,6 @@
 (function(Backbone, Tatami){
 
-    var Statuses = Backbone.Model.extend({
+    var Status = Backbone.Model.extend({
         initialize: function(){
             var self = this;
 
@@ -15,7 +15,7 @@
                 Tatami.app.trigger('model:status:' + self.id, self);
             });
         },
-        idAttribute: 'statusId',
+        idAttribute: 'timelineId',
 
         defaults: {
             timelineId: null,
@@ -65,6 +65,6 @@
         }
     });
 
-    Tatami.Models.Statuses = Statuses;
+    Tatami.Models.Status = Status;
 
 })(Backbone, Tatami);
