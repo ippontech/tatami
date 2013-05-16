@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
+import java.io.Serializable;
 
 /**
  * A user.
@@ -20,7 +21,7 @@ import javax.validation.groups.Default;
  */
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements Serializable {
 
     @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})

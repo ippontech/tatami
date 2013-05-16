@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * The configuration for a specific domain.
@@ -12,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "DomainConfiguration")
-public class DomainConfiguration {
+public class DomainConfiguration implements Serializable {
 
     public static class SubscriptionLevel {
 

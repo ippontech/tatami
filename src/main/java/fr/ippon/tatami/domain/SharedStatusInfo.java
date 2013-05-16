@@ -1,6 +1,8 @@
 package fr.ippon.tatami.domain;
 
-public class SharedStatusInfo {
+import java.io.Serializable;
+
+public class SharedStatusInfo implements Serializable {
 
     private final String sharedStatusId;
 

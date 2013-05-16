@@ -1,9 +1,11 @@
 package fr.ippon.tatami.service.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO to present a "complete" status to the presentation layer.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private String login;
 

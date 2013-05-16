@@ -1,9 +1,11 @@
 package fr.ippon.tatami.service.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO to manage a user in a group.
  */
-public class UserGroupDTO implements Comparable<UserGroupDTO> {
+public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     private String login;
 

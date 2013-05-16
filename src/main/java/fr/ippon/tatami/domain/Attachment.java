@@ -5,9 +5,10 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Attachment {
+public class Attachment implements Serializable {
 
     private static final DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
             .appendDayOfMonth(1)

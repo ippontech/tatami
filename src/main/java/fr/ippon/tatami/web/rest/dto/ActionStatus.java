@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * Reply to a Status.
  */
-public class ActionStatus {
+public class ActionStatus implements Serializable {
 
     private Boolean favorite = null;
 

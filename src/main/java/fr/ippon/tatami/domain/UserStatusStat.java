@@ -1,6 +1,8 @@
 package fr.ippon.tatami.domain;
 
-public class UserStatusStat implements Comparable<UserStatusStat> {
+import java.io.Serializable;
+
+public class UserStatusStat implements Comparable<UserStatusStat>, Serializable {
 
     private String username;
 

@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * A Tag.
  */
-public class Tag {
+public class Tag implements Serializable {
 
     private String name;
 

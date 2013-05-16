@@ -2,6 +2,7 @@ package fr.ippon.tatami.domain;
 
 import fr.ippon.tatami.service.dto.StatusDTO;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Collection;
  * - Lists the discussion related to this status
  * - Lists the users who shared this status
  */
-public class StatusDetails {
+public class StatusDetails implements Serializable {
 
     private String statusId;
 

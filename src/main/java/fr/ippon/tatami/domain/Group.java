@@ -3,10 +3,12 @@ package fr.ippon.tatami.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 /**
  * A group.
  */
-public class Group implements Comparable<Group> {
+public class Group implements Comparable<Group>, Serializable {
 
     private String groupId;
 

@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 /**
  * DTO to present a "complete" status to the presentation layer.
  */
-public class StatusDTO {
+public class StatusDTO  implements Serializable {
 
     private static final DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
 

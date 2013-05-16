@@ -3,10 +3,12 @@ package fr.ippon.tatami.web.controller.form;
 import fr.ippon.tatami.domain.User;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * Stores a user's preferences.
  */
-public class Preferences {
+public class Preferences implements Serializable {
 
     private Boolean mentionEmail = false;
 
