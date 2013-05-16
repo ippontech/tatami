@@ -374,11 +374,13 @@ app.Collection.TabUser = Backbone.Collection.extend({
             search: '/tatami/rest/search/users'
         };
     },
+
     recommended: function(){
         this.url = this.options.url.recommended;
         this.parse = function(users){
             return users.map(function(user){
                 user.followed = false;
+                user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
                 return user;
             });
         };
@@ -389,6 +391,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.parse = function(users){
             return users.map(function(user){
                 user.followed = true;
+                user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
                 return user;
             });
         };
