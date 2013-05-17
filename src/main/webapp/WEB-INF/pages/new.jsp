@@ -351,5 +351,12 @@
     </form>
 </c:if>
 
+<c:if test="${googleAnalyticsKey ne ''}">
+    <script type="text/javascript">
+        $(document).on('ajaxComplete', function (event, request, settings) {
+            _gaq.push(['_trackEvent', event.currentTarget.URL, settings.url, login, request.status]);
+        });
+    </script>
+</c:if>
 </body>
 </html>
