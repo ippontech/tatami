@@ -706,7 +706,7 @@ InlineLexer.prototype.output = function(src) {
     // tags
     if (cap = inline.tags.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<a href="/tatami/new/tags/' + cap[1] + '">'
+      out += '<a href="#tags/' + cap[1] + '">'
         + cap[0]
         + '</a>';
       continue;
