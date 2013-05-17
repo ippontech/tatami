@@ -23,14 +23,14 @@
         homeTimeline: function(){
             Tatami.app.header.close();
 
-            var homeSide = Tatami.Factories.Home.homeSide();
-            Tatami.app.side.show(homeSide);
-
-            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
-            homeSide.groups.show(Tatami.Factories.Home.groups());
-            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
-
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+                homeSide.groups.show(Tatami.Factories.Home.groups());
+                homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
+            }
             var homeBody = Tatami.Factories.Home.homeBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -50,12 +50,14 @@
         homeMentions: function(){
             Tatami.app.header.close();
 
-            var homeSide = Tatami.Factories.Home.homeSide();
-            Tatami.app.side.show(homeSide);
 
-            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
-            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            }
 
             var homeBody = Tatami.Factories.Home.homeBody();
 
@@ -77,13 +79,13 @@
         homeFavorites: function(){
             Tatami.app.header.close();
 
-            var homeSide = Tatami.Factories.Home.homeSide();
-            Tatami.app.side.show(homeSide);
-
-            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
-            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
-
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            }
             var homeBody = Tatami.Factories.Home.homeBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -104,13 +106,13 @@
         tags: function(tag) {
             Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
-            var homeSide = Tatami.Factories.Home.homeSide();
-            Tatami.app.side.show(homeSide);
-
-            homeSide.groups.show(Tatami.Factories.Home.groups());
-            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
-
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.groups.show(Tatami.Factories.Home.groups());
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            }
             var tagsBody = Tatami.Factories.Tags.tagsBody();
 
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -165,12 +167,13 @@
         profile: function(username) {
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            var profileSide = Tatami.Factories.Profile.profileSide();
-            Tatami.app.side.show(profileSide);
-
-            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
-            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
-            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+            if (!ios) {
+                var profileSide = Tatami.Factories.Profile.profileSide();
+                Tatami.app.side.show(profileSide);
+                profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+                profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+                profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+            }
 
             var profileBody = Tatami.Factories.Profile.profileBody(username);
 
@@ -191,13 +194,13 @@
         profileFriends: function(username) {
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            var profileSide = Tatami.Factories.Profile.profileSide();
-            Tatami.app.side.show(profileSide);
-
-            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
-            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
-            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
-
+            if (!ios) {
+                var profileSide = Tatami.Factories.Profile.profileSide();
+                Tatami.app.side.show(profileSide);
+                profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+                profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+                profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+            }
             var profileBody = Tatami.Factories.Profile.profileBody(username);
 
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -218,13 +221,13 @@
         profileFollowers: function(username) {
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            var profileSide = Tatami.Factories.Profile.profileSide();
-            Tatami.app.side.show(profileSide);
-
-            profileSide.stats.show(Tatami.Factories.Profile.stats(username));
-            profileSide.informations.show(Tatami.Factories.Profile.informations(username));
-            profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
-
+            if (!ios) {
+                var profileSide = Tatami.Factories.Profile.profileSide();
+                Tatami.app.side.show(profileSide);
+                profileSide.stats.show(Tatami.Factories.Profile.stats(username));
+                profileSide.informations.show(Tatami.Factories.Profile.informations(username));
+                profileSide.tagTrends.show(Tatami.Factories.Profile.tagTrends(username));
+            }
             var profileBody = Tatami.Factories.Profile.profileBody(username);
 
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -244,13 +247,13 @@
         groups: function(group){
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
-            var homeSide = Tatami.Factories.Home.homeSide();
-            Tatami.app.side.show(homeSide);
-
-            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
-            homeSide.groups.show(Tatami.Factories.Home.groups());
-            homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
-
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.groups.show(Tatami.Factories.Home.groups());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            }
             var groupsBody = Tatami.Factories.Groups.groupsBody(group);
 
             var region = Tatami.Factories.Status.getTimelineRegion();
