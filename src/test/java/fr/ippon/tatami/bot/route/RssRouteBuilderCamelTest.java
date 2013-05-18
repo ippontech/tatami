@@ -31,8 +31,6 @@ public class RssRouteBuilderCamelTest extends SourceRouteBuilderBaseCamelTest<Rs
         super(RssRouteBuilder.class);
     }
 
-    private static final Log log = LogFactory.getLog(RssRouteBuilderCamelTest.class);
-    
     @Test
     public void testRssRoute() throws Exception {
         launchContext();

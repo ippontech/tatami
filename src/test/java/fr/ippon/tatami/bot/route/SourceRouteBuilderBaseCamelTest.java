@@ -16,6 +16,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.idempotent.MemoryIdempotentRepository;
 import org.apache.camel.spi.IdempotentRepository;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -27,6 +29,8 @@ import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 
 public abstract class SourceRouteBuilderBaseCamelTest<T extends SourceRouteBuilderBase> extends CamelTestSupport {
 
+    protected final Log log = LogFactory.getLog(this.getClass());
+    
     protected List<String> messages = Lists.newArrayList();
     private List<Message> camelMessages = Lists.newArrayList();
 
@@ -37,6 +41,8 @@ public abstract class SourceRouteBuilderBaseCamelTest<T extends SourceRouteBuild
 
     private SourceRouteBuilderBase sut;
 
+    protected boolean disableDateHeaderTest = false;
+    
     private Class<T> builderType;
     public SourceRouteBuilderBaseCamelTest(Class<T> builderType) {
         super();
@@ -91,14 +97,16 @@ public abstract class SourceRouteBuilderBaseCamelTest<T extends SourceRouteBuild
         assertThat(firstCamelMsg.getHeader("tatamibotConfiguration",TatamibotConfiguration.class),is(botConfiguration));
         
         // Question : is it specific to rss ?
-        assertThat(firstCamelMsg.getHeader("tatamibotLastUpdateDate",Date.class),is(notNullValue()));
+        if(!disableDateHeaderTest) {
+            assertThat(firstCamelMsg.getHeader("tatamibotLastUpdateDate",Date.class),is(notNullValue()));
+        }
         
         // idempotentRepository must be called :
         String msg = getFirstMsgBody();
         Mockito.verify(idempotentRepository).add("ippon.fr-"+msg);
         
     }
-    
+
     protected abstract TatamibotConfiguration getBotConfiguration();
     
     protected abstract void launchContext() throws Exception;
