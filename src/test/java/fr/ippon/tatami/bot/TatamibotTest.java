@@ -39,6 +39,7 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.TatamibotConfigurationRepository;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.test.MockUtils;
 
 public class TatamibotTest extends CamelTestSupport {
 
@@ -120,17 +121,7 @@ public class TatamibotTest extends CamelTestSupport {
     }
 
     private Callable<Boolean> statusUpdateServiceWasCallAtLeast3Times() {
-        return new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-//                    System.out.println("testing");
-                    // WARNING : we use internal mockito code here :
-                    int nbCalls = new MockUtil().getMockHandler(statusUpdateService).getInvocationContainer().getInvocations().size();
-//                    System.out.println("tested");
-                    return nbCalls >=3 ; 
-
-            }
-        };
-        
+        return MockUtils.mockCalledCallable(statusUpdateService, 3);        
     }
 
     @Override

@@ -25,13 +25,13 @@ public class RssRouteBuilder extends SourceRouteBuilderBase {
                 to("direct:toTatami");
     }
 
-    private String getRssEndpointUri() {
+    /* pp */ String getRssEndpointUri() {
         return "rss:" +
                 configuration.getUrl() +
                 (configuration.getUrl().contains("?")?"&":"?") + "lastUpdate=" +
                 configuration.getISOLastUpdateDate() +
                 "&consumer.delay=" +
-                configuration.getPollingDelay()*1000 + // TODO : !!! *1000 was absent before : why ?
+                configuration.getPollingDelay()*1000 +
                 "&throttleEntries=false";
     }
 
