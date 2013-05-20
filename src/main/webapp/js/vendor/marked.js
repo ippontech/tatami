@@ -697,7 +697,7 @@ InlineLexer.prototype.output = function(src) {
     // mention
     if (cap = inline.mention.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<a href="/tatami/new/users/' + cap[1] + '">'
+      out += '<a href="#users/' + cap[1] + '">'
         + cap[0]
         + '</a>';
       continue;
