@@ -28,6 +28,7 @@
 
         initFileUpload: function(){
             var self = this;
+            self.model.resetAttachments();
             this.$dropzone = self.$el.find('.dropzone');
             this.$el.find('.updateStatusFileupload').fileupload({
                 dataType: 'json',

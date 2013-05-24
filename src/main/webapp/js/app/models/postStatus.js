@@ -14,6 +14,10 @@
             var attachments = this.get('attachmentIds');
             attachments.push(id);
             this.set('attachmentIds', attachments);
+        },
+
+        resetAttachments: function() {
+            this.set('attachmentIds', []);
         }
     });
 
