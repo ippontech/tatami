@@ -92,7 +92,7 @@
             <@= prettyPrintStatusDate @>
         </abbr>
     </div>
-    <h4>
+    <h5>
         <a href="#users/<@= username @>">
             <strong>
                 <@= fullName @>
@@ -103,9 +103,9 @@
                 @<@= username @>
             </small>
         </a>
-    </h4>
+    </h5>
 
-    <div class="well well-small markdown pointer">
+    <div class="markdown">
         <@= marked(content) @>
     </div>
     <div class="attachments"/>

@@ -8,7 +8,7 @@
         updateDetailModel: function(model, id){
             this.options.details.set('statusId', id);
         },
-        className: 'tatam',
+        className: 'tatam pointer',
         template: '#StatusItems',
         regions: {
             footer: {
@@ -28,7 +28,7 @@
             'change:discute': 'onRender'
         },
         events: {
-            'click > .well': 'showDetails',
+            'click ': 'showDetails',
             'click > footer > div > aside > .status-action-reply': 'replyAction',
             'click > footer > div > aside > .status-action-share': 'shareAction',
             'click > footer > div > aside > .status-action-favorite': 'favoriteAction',

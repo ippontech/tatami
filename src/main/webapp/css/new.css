@@ -78,22 +78,14 @@
 }
 
 .tatam, .useritem {
-    padding: 0px 5px 1px 60px;
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-
+    padding: 0px 0px 0px 60px;
     overflow: hidden;
     display: none;
+    border-bottom: 1px solid #ddd;
 }
 
 .useritemmini {
     padding: 0px 5px 1px 35px;
-
     overflow: hidden;
     display: none;
 }
@@ -108,26 +100,10 @@
     display: block;
 }
 
-.tatam.discute {
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
 .tatam.favorite {
-    -webkit-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
-    -moz-box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
-    box-shadow: 0 0 10px rgba(175, 120, 25, 0.5);
-
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;
     background-position: left top;
-}
-
-.tatam.discute.favorite {
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
-    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(175, 120, 25, 0.5);
 }
 
 .pointer {
@@ -146,28 +122,21 @@
 
 .tatam > header {
     padding-bottom: 0;
-    margin-bottom: 5px;
-}
-
-.tatam > .well {
-    padding-bottom: 0;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 .tatams {
-    margin-top: 15px;
+    margin-top: 5px;
     margin-bottom: 15px;
 }
 
-/*.tatams:first-child {
-    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-}*/
-
 .tatams > * {
-    margin-bottom: 20px;
-    padding-bottom: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 2px;
+}
+
+.tatams > *:hover {
+    background-color: #f5f5f5;
 }
 
 .tatams > *:last-child {
