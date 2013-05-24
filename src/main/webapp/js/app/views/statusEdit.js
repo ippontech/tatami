@@ -101,7 +101,7 @@
 
         serializeData: function(){
             return _.extend(Backbone.Marionette.Layout.prototype.serializeData.apply(this, arguments), {
-                groups: Tatami.app.groups.toJSON()
+                groups: (new Tatami.Collections.Groups(Tatami.app.groups.where({archivedGroup: false}))).toJSON()
             });
         },
 
