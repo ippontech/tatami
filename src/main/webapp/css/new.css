@@ -68,7 +68,7 @@
     font-size: 12px;
 }
 
-.title, .tatam *, .trends *, .profile *, .preview-tatam *, .profile-card, .wrap * {
+.tatam *, .trends *, .profile *, .preview-tatam *, .profile-card, .wrap * {
     white-space: normal;
     word-wrap: break-word;
 }
