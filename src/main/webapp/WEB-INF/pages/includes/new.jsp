@@ -502,7 +502,7 @@
                 @<@= username @>
             </small>
         </a>
-    </h4>
+    </h6>
 </script>
 <script type="text/template" id="WhoToFollow">
     <div class="well well-small">
