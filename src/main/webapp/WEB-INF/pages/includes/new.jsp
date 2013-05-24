@@ -88,9 +88,7 @@
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <div class="pull-right text-right">
-        <abbr title="<@= prettyPrintStatusDate @>">
-            <@= prettyPrintStatusDate @>
-        </abbr>
+        <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
     </div>
     <h5>
         <a href="#users/<@= username @>">

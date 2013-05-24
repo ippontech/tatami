@@ -34,11 +34,11 @@
         <js>/js/vendor/jquery.iframe-transport.js</js>
         <js>/js/vendor/jquery.fileupload.js</js>
         <js>/js/vendor/jquery.atmosphere.js</js>
+        <js>/js/vendor/jquery-timeago.js</js>
         <js>/js/vendor/bootstrap.js</js>
         <js>/js/vendor/underscore.js</js>
         <js>/js/vendor/backbone.js</js>
         <js>/js/vendor/backbone.marionette.js</js>
-        <js>/js/vendor/backbone_offline.js</js>
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>

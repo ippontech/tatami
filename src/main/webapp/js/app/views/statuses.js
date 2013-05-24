@@ -40,6 +40,7 @@
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))
             }));
+            $(this.el).find("abbr.timeago").timeago();
         },
         showDetails: function(){
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
