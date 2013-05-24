@@ -37,7 +37,7 @@
         },
         groups: function(){
             var groups = new Tatami.Views.Groups({
-                collection: Tatami.app.groups
+                collection: new Tatami.Collections.Groups(Tatami.app.groups.where({archivedGroup: false}))
             });
 
             return groups;

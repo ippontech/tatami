@@ -274,7 +274,6 @@
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
             Tatami.app.side.close();
 
-
             var groupsBody = Tatami.Factories.Groups.groupsBody(group);
 
             Tatami.app.body.show(groupsBody);
