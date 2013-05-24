@@ -11,7 +11,7 @@
             <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
             &nbsp;<@= (followed)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
         </a>
-        <h2 class="title">#<@= name @></h2>
+        <h3>#<@= name @></h3>
     </div>
 </script>
 <script type="text/template" id="GroupsHeader">
@@ -27,7 +27,7 @@
             &nbsp;<fmt:message key="tatami.user.followed"/>
         </a>
 
-        <h2 class="title"><@= name @></h2>
+        <h3><@= name @></h3>
     </div>
 </script>
 <script type="text/template" id="ProfileHeader">
@@ -44,7 +44,7 @@
              </a>
          <@ } @>
 
-        <h2 class="title">@<@= username @></h2>
+        <h3>@<@= username @></h3>
     </div>
 </script>
 <script type="text/template" id="CardProfile">
@@ -63,6 +63,7 @@
                 </small>
             </a>
         </h4>
+        <br/>
     </div>
 </script>
 <script type="text/template" id="TagTrends">
@@ -184,8 +185,6 @@
     </section>
 </script>
 <script type="text/template" id="TagsBody">
-    <div class="page-header">
-    </div>
     <section class="tatams-container">
     </section>
 </script>

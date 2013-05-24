@@ -51,15 +51,10 @@
     background-color: #ddd;
 }
 
-.title {
-    margin-left: 80px;
-}
-.title > img {
-    margin-left: -80px;
-}
-
 .page-header {
-    margin-top: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
 }
 
 .img-rounded {
