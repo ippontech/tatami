@@ -160,7 +160,7 @@
                     </span>
                 </a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown pointer">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                     <span>
                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -250,7 +250,7 @@
             </li>
         </ul>
         <ul class="nav pull-right">
-            <li class="dropdown">
+            <li class="dropdown pointer">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                 <span>
                     <span class="glyphicon glyphicon-user"></span>
