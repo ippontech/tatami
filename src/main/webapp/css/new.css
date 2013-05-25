@@ -143,6 +143,20 @@
     margin-bottom: 0;
 }
 
+.tatams-share {
+    border-top: 2px solid #bcbcbc;
+}
+
+.tatams-share-title {
+    border-right: 2px solid #bcbcbc;
+    padding-right: 10px;
+    margin: 10px;
+}
+
+.tatams-share-img {
+    margin-top: 10px;
+}
+
 .tatams-discute > .tatam > header {
     margin-top: 0;
     margin-bottom: 0;

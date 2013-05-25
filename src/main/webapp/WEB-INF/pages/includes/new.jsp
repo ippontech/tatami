@@ -91,18 +91,9 @@
         <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
     </div>
     <h5>
-        <a href="#users/<@= username @>">
-            <strong>
-                <@= fullName @>
-            </strong>
-        </a>
-        <a href="#users/<@= username @>">
-            <small>
-                @<@= username @>
-            </small>
-        </a>
+        <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
+        <a href="#users/<@= username @>"><small>@<@= username @></small></a>
     </h5>
-
     <div class="markdown">
         <@= marked(content) @>
     </div>
@@ -112,6 +103,20 @@
             <@= groupName @>
         </a>
     <@ } @>
+
+    <small>
+    <@ if (statusPrivate == true) { @>
+        <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>&nbsp;
+    <@ } @>
+
+    <@ if (sharedByUsername != false) { @>
+        <span class="glyphicon glyphicon-retweet"></span> <fmt:message key="tatami.user.status.shared.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a>
+    <@ } @>
+
+    <@ if (replyTo != '') { @>
+        <span class="glyphicon glyphicon-share-alt"></span> <fmt:message key="tatami.user.status.replyto"/> <a href="#status/<@= replyTo @>">@<@= replyToUsername @></a>
+    <@ } @>
+    </small>
     <footer></footer>
 </script>
 <script type="text/template" id="StatusFooters">
@@ -147,13 +152,17 @@
     </div>
 </script>
 <script type="text/template" id="StatusShares">
-    <span class="glyphicon glyphicon-retweet"></span>
-    <fmt:message key="tatami.user.status.shared.by"/>
+    <div class="tatams-share-title pull-left">
+        <fmt:message key="tatami.user.status.shared.by"/>
+        <span class="badge">
+               <@= sharesCount @>
+        </span>
+    </div>
 </script>
 <script type="text/template" id="StatusShareItems">
-    <a>
+    <div class="tatams-share-img pull-left">
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
-    </a>
+    </div>
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>

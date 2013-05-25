@@ -122,12 +122,15 @@
         onRender: function(){
             var shares = this.model.get('sharedByLogins');
             if(shares && shares.length > 0){
-                if(this.share.currentView) this.share.currentView.collection.set(shares, {
-                    remove: false
-                });
-                else this.share.show(new Tatami.Views.StatusShares({
-                    collection: new Tatami.Collections.Users(shares)
-                }));
+                if (this.share.currentView) {
+                    this.share.currentView.collection.set(shares, {
+                        remove: false
+                    });
+                } else {
+                    this.share.show(new Tatami.Views.StatusShares({
+                        collection: new Tatami.Collections.Users(shares)
+                    }));
+                }
             }
 
             var discute = this.model.get('discussionStatuses');

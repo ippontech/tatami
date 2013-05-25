@@ -8,16 +8,16 @@
             'click img': 'clickUser'
         },
         showUser: function() {
-            this.$el.popover({
+            this.$el.find("img").popover({
                 animation: true,
                 placement: 'top',
                 trigger: 'manual',
                 content: this.model.getFullName(),
             });
-            this.$el.popover('show');
+            this.$el.find("img").popover('show');
         },
         hideUser: function() {
-            this.$el.popover('hide');
+            this.$el.find("img").popover('hide');
         },
         clickUser: function() {
             Backbone.history.navigate('users/' + this.model.id, true);
@@ -26,7 +26,12 @@
 
     var StatusShares = Backbone.Marionette.CompositeView.extend({
         itemView: StatusShareItems,
-        template: "#StatusShares"
+        template: "#StatusShares",
+        serializeData: function () {
+            return {
+                sharesCount: this.collection.length
+            };
+        }
     });
 
     Tatami.Views.StatusShareItems = StatusShareItems;
