@@ -53,7 +53,7 @@
                 }));
                 statusDetail.fetch();
             }
-            this.footer.$el.slideToggle();
+            this.footer.$el.fadeToggle({duration: 200});
         },
         replyAction: function(){
             Tatami.app.trigger('edit:show',{
@@ -102,8 +102,8 @@
 
             var self = this;
             this.slideDown = _.debounce(function(){
-                self.$el.slideDown();
-            }, jQuery.fx.speeds._default);
+                self.$el.slideDown({duration: 100});
+            });
         },
         template: "#StatusFooters",
 
