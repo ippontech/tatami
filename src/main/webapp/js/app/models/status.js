@@ -15,7 +15,7 @@
                 Tatami.app.trigger('model:status:' + self.id, self);
             });
         },
-        idAttribute: 'timelineId',
+        idAttribute: 'statusId',
 
         defaults: {
             timelineId: null,

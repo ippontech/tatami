@@ -102,17 +102,23 @@ public class TimelineService {
      * - The discussion in which this status belongs to
      */
     public StatusDetails getStatusDetails(String statusId) {
+        log.debug("Looking for status details");
         StatusDetails details = new StatusDetails();
         details.setStatusId(statusId);
 
         // Shares management
         Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
         details.setSharedByLogins(userService.getUsersByLogin(sharedByLogins));
-
-        ;
+        if (log.isDebugEnabled()) {
+            log.debug("Status shared by " + sharedByLogins.size() + " users");
+        }
 
         // Discussion management
         Status status = statusRepository.findStatusById(statusId);
+        if (status == null) {
+            log.debug("Could not find status");
+            return details;
+        }
         Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
