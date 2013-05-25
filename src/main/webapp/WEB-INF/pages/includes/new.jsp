@@ -148,7 +148,7 @@
         </button>
         <@ } @>
     </aside>
-    <div class="tatams-discute">
+    <div class="tatams-discussion">
     </div>
 </script>
 <script type="text/template" id="StatusShares">

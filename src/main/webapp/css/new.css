@@ -154,10 +154,15 @@
 }
 
 .tatams-share-img {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
-.tatams-discute > .tatam > header {
+.tatams-discussion {
+    border-top: 2px solid #bcbcbc;
+    margin-top: 5px;
+}
+
+.tatams-discussion > .tatam > header {
     margin-top: 0;
     margin-bottom: 0;
 }

@@ -25,7 +25,7 @@
         modelEvents: {
             'change:statusId': 'updateDetailModel',
             'change:favorite': 'onRender',
-            'change:discute': 'onRender'
+            'change:discussion': 'onRender'
         },
         events: {
             'click ': 'showDetails',
@@ -36,7 +36,7 @@
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
-            this.$el.toggleClass('discute', this.model.get('detailsAvailable'));
+            this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))
             }));
@@ -94,7 +94,7 @@
     var StatusFooters = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
-                discute: true,
+                discussion: true,
                 slide: true
             });
 
@@ -109,7 +109,7 @@
 
         regions: {
             share: ".tatams-share",
-            discute: ".tatams-discute"
+            discussion: ".tatams-discussion"
         },
 
         modelEvents: {
@@ -133,13 +133,13 @@
                 }
             }
 
-            var discute = this.model.get('discussionStatuses');
-            if(this.options.discussion && discute && discute.length > 0){
-                if(this.discute.currentView) this.discute.currentView.collection.set(discute, {
+            var discussion = this.model.get('discussionStatuses');
+            if(this.options.discussion && discussion && discussion.length > 0){
+                if(this.discussion.currentView) this.discussion.currentView.collection.set(discussion, {
                     remove: false
                 });
-                else this.discute.show(new Tatami.Views.Statuses({
-                    collection: new Tatami.Collections.Statuses(discute),
+                else this.discussion.show(new Tatami.Views.Statuses({
+                    collection: new Tatami.Collections.Statuses(discussion),
                     itemViewOptions: {
                         discussion: false
                     },
