@@ -49,7 +49,7 @@
 </script>
 <script type="text/template" id="CardProfile">
     <div class="page-header">
-        <h4 class="profile-card">
+        <h4 class="profile-card background-image-fffix">
             <img class="img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);">
             <a href="#users/<@= username @>">
                 <strong>
@@ -84,7 +84,7 @@
     <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
 <script type="text/template" id="StatusItems">
-    <div class='pull-left'>
+    <div class='pull-left background-image-fffix'>
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <div class="pull-right text-right">
@@ -160,7 +160,7 @@
     </div>
 </script>
 <script type="text/template" id="StatusShareItems">
-    <div class="tatams-share-img pull-left">
+    <div class="tatams-share-img pull-left background-image-fffix">
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
     </div>
 </script>
@@ -309,13 +309,13 @@
             <a href="#"><@= item.label @></a>
         </li>
     <@} else if(item.category == 'users') { @>
-        <li class="item users" data-value="<@= item.label @>">
+        <li class="item users background-image-fffix" data-value="<@= item.label @>">
             <img class="img-rounded img-small" style="background-image: url(<@= item.avatarURL @>);">
             <h4><a href="#"><@= item.fullName @></a></h4>
             <p><@= item.label @></p>
         </li>
     <@} else { @>
-        <li class="item groups" data-value="<@= item.label @>" rel="<@= item.id @>">
+        <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
             <img class="img-rounded img-small" style="background-image: url(/img/default_image_profile.png);">
             <h4><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
@@ -362,7 +362,7 @@
     </div>
 </script>
 <script type="text/template" id="ProfileInformations">
-    <h4 class="profile-card">
+    <h4 class="profile-card background-image-fffix">
         <img class="img-rounded img-big" style="background-image: url(<@= avatarURL @>);"><br/>
     </h4>
     <br/>
@@ -463,7 +463,7 @@
     </section>
 </script>
 <script type="text/template" id="UserItems">
-    <div class='pull-left'>
+    <div class='pull-left background-image-fffix'>
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <h4>
@@ -486,7 +486,7 @@
     </h4>
 </script>
 <script type="text/template" id="UserItemsMini">
-    <div class='pull-left'>
+    <div class='pull-left background-image-fffix'>
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
     </div>
     <h6>
