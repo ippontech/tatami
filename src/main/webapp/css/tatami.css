@@ -73,9 +73,6 @@ form {
 
 #updateStatusPreview {
     margin-top : 3px;
-}
-
-#updateStatusPreview p {
     overflow-y: scroll;
     height: 150px;
 }
