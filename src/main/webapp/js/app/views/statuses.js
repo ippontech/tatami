@@ -29,10 +29,10 @@
         },
         events: {
             'click ': 'showDetails',
-            'click > footer > div > aside > .status-action-reply': 'replyAction',
-            'click > footer > div > aside > .status-action-share': 'shareAction',
-            'click > footer > div > aside > .status-action-favorite': 'favoriteAction',
-            'click > footer > div > aside > .status-action-remove': 'removeAction'
+            'click .status-action-reply': 'replyAction',
+            'click .status-action-share': 'shareAction',
+            'click .status-action-favorite': 'favoriteAction',
+            'click .status-action-remove': 'removeAction'
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -147,7 +147,7 @@
                 }));
             }
 
-            this.slideDown();
+            this.slideDown({duration: 100});
         }
     });
 

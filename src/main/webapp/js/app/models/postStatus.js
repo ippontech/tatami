@@ -5,7 +5,8 @@
             content: '',
             groupId: '',
             attachmentIds: [],
-            replyTo: ''
+            replyTo: '',
+            statusPrivate: false
         },
 
         urlRoot: '/tatami/rest/statuses/',

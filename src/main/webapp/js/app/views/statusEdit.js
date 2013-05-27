@@ -136,11 +136,13 @@
             options = (options)? options: {};
             if(options.status) {
                 var self = this;
-                var status = new Tatami.Models.Status({
+                var statusReply = new Tatami.Models.Status({
                     statusId: options.status
                 });
-                status.fetch({
+                statusReply.fetch({
                     success: function(model){
+                        self.$el.find('.groups').hide();
+                        self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
                         var tatam = new Tatami.Views.StatusItems({
                             model: model
@@ -179,7 +181,7 @@
 
             this.model.set('content', this.$edit.val());
             this.model.set('groupId', this.$el.find('[name="groupId"]').val());
-
+            this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
             this.model.save(null, {
                 success: function (model, response) {
                     self.hide();
@@ -194,7 +196,6 @@
         },
 
         cancel: function(){
-
             return false;
         },
 
