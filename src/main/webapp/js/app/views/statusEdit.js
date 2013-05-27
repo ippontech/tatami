@@ -119,7 +119,7 @@
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
 
-            var value = this.options.maxLenght - $textarea.val().length;
+            var value = this.options.maxLength - $textarea.val().length;
         },
 
         togglePreview: function(){
