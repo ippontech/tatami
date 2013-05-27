@@ -5,7 +5,7 @@
         },
         onRender: function(){
             _.defaults(this.options, {
-                maxLenght: 750
+                maxLength: 750
             });
 
             this.$editContent = this.$el.find('.edit-tatam');
