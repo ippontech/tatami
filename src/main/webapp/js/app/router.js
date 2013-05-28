@@ -11,6 +11,7 @@
             'users/:username/followers' : 'profileFollowers',
             'groups/:group' : 'groups',
             'groups/:group/members' : 'groupsMembers',
+            'search/:input' : 'search',
             '*actions' : 'defaults'
         },
 
@@ -125,6 +126,10 @@
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
+        },
+
+        search: function(input){
+            console.log("Recherche "+input);
         },
 
         status: function(statusId) {

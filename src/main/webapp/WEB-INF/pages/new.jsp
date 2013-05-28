@@ -327,7 +327,7 @@
                 </button>
             </li>
         </ul>
-        <form class="navbar-form pull-right col-span-5" action="">
+        <form id="searchform" class="navbar-form pull-right col-span-5" action="">
             <input name="search" type="text" class="col-span-12" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
         </form>
     </div>

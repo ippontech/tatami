@@ -98,8 +98,8 @@
                 groupId =  this.$menu.find('.active').attr('rel');
 
             if (typeof val == 'undefined') {
-                window.location = '/tatami/#/search/status/' + input;
-                    Backbone.history.navigate('search/' + input, true);
+                input = $('[name="search"]').val();
+                Backbone.history.navigate('search/' + input, true);
                 this.hide();
                 return false;
             }
