@@ -13,7 +13,8 @@
             Tatami.app.trigger('edit:show');
         }, 
 
-        search: function(){
+        search: function(event){
+            event.preventDefault();
             var input = $('[name="search"]').val();
             Backbone.history.navigate('search/' + input, true);
         }
