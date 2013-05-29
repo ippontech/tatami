@@ -22,6 +22,7 @@
         },
 
         homeTimeline: function(){
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.close();
 
             if (!ios) {
@@ -49,6 +50,7 @@
         },
 
         homeMentions: function(){
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.close();
 
 
@@ -78,6 +80,7 @@
         },
 
         homeFavorites: function(){
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.close();
 
             if (!ios) {
@@ -105,6 +108,7 @@
         },
 
         tags: function(tag) {
+            Tatami.app.navbar.displaySearch("#"+tag);
             Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
             if (!ios) {
@@ -129,10 +133,31 @@
         },
 
         search: function(input){
-            console.log("Recherche "+input);
+            Tatami.app.header.close();
+            if (!ios) {
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.groups.show(Tatami.Factories.Home.groups());
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
+            }
+
+            Tatami.app.navbar.displaySearch(input);
+            var searchModel = new Tatami.Models.Search({"input": input});
+            var searchBody = new Tatami.Views.SearchBody({model: searchModel});
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesSearch(input);
+            Tatami.app.body.show(searchBody);
+
+            searchBody.tatams.show(region);            
+            region.timeline.show(timeline);
+            timeline.collection.fetch();
+            
+     
         },
 
         status: function(statusId) {
+            Tatami.app.navbar.displaySearch();
             var status = new Tatami.Models.Status({
                 statusId: statusId
             });
@@ -170,6 +195,7 @@
         },
 
         profile: function(username) {
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
@@ -197,6 +223,7 @@
         },
 
         profileFriends: function(username) {
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
@@ -224,6 +251,7 @@
         },
 
         profileFollowers: function(username) {
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
@@ -250,6 +278,7 @@
         },
 
         groups: function(group){
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             if (!ios) {
@@ -276,6 +305,7 @@
         },
 
         groupsMembers: function(group){
+            Tatami.app.navbar.displaySearch();
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
             Tatami.app.side.close();
 
