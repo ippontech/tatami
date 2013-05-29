@@ -193,6 +193,12 @@
     <section class="tatams-container">
     </section>
 </script>
+<script type="text/template" id="SearchBody">
+    <h3><fmt:message key="tatami.search.result.title"/> : <strong><@= input @></strong></h3>
+    <hr>
+    <section class="tatams-container">
+    </section>
+</script>
 <script type="text/template" id="StatusTimelineRegion">
     <section class='refresh-button pointer'></section>
     <section class='timeline'></section>

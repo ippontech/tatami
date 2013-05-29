@@ -90,6 +90,13 @@
         }
     });
 
+    var StatusesSearch = Statuses.extend({
+        model: Tatami.Models.Status,
+        url: function(){
+            return '/tatami/rest/search/status?q='+this.input;
+        }
+    });
+
     Tatami.Collections.Statuses = Statuses;
     Tatami.Collections.StatusesTimeline = StatusesTimeline;
     Tatami.Collections.StatusesFavorites = StatusesFavorites;
@@ -97,5 +104,6 @@
     Tatami.Collections.StatusesTags = StatusesTags;
     Tatami.Collections.StatusesUsers = StatusesUsers;
     Tatami.Collections.StatusesGroups = StatusesGroups;
+    Tatami.Collections.StatusesSearch = StatusesSearch;
 
 })(Backbone, Tatami);
