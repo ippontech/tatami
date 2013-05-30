@@ -73,8 +73,17 @@
     word-wrap: break-word;
 }
 
+.status-link {
+    display: none;
+    background-color: #ee1d3b;
+}
+
+.status-actions {
+    margin-left: -60px;
+}
+
 .status-action {
-    padding: 0px;
+    padding: 10px;
     margin: 0px
 }
 

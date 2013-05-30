@@ -1,5 +1,5 @@
 (function(Backbone, _, Tatami){
-    var StatusItems = Backbone.Marionette.Layout.extend({
+    var StatusItem = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
                 discussion: true
@@ -9,8 +9,9 @@
             this.options.details.set('statusId', id);
         },
         className: 'tatam pointer',
-        template: '#StatusItems',
+        template: '#StatusItem',
         regions: {
+            statusActions: '.statusActions',
             footer: {
                 selector: 'footer',
                 regionType: Marionette.Region.extend({
@@ -28,11 +29,13 @@
             'change:discussion': 'onRender'
         },
         events: {
-            'click ': 'showDetails',
+            'click > div': 'showDetails',
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
-            'click .status-action-remove': 'removeAction'
+            'click .status-action-remove': 'removeAction',
+            'mouseover': 'showLink',
+            'mouseout': 'hideLink'
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -43,9 +46,8 @@
             $(this.el).find("abbr.timeago").timeago();
         },
         showDetails: function(){
-            var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-
-            if(!this.footer.currentView){
+             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+             if(!this.footer.currentView){
                 this.footer.show(new StatusFooters({
                     model: statusDetail,
                     username: this.model.get('username'),
@@ -53,7 +55,11 @@
                 }));
                 statusDetail.fetch();
             }
-            this.footer.$el.fadeToggle({duration: 200});
+            this.footer.$el.fadeToggle({duration: 100});
+        },
+        refreshDetails: function(){
+            var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+            statusDetail.fetch();
         },
         replyAction: function(){
             Tatami.app.trigger('edit:show',{
@@ -80,7 +86,18 @@
             }, {
                 patch: true,
                 success: function(){
-                    self.refreshDetails();
+                    var popoverNode = self.$el.find('.status-action-share');
+                    popoverNode.popover({
+                            animation: true,
+                            placement: 'top',
+                            trigger: 'manual',
+                            content: self.$el.find('.status-action-share').attr('success-text')
+                        });
+                    popoverNode.popover('show');
+                    setTimeout(function() {
+                        popoverNode.popover('hide');
+                        self.refreshDetails();
+                    }, 1000);
                 }
             });
             return false;
@@ -88,6 +105,12 @@
         removeAction: function(){
             this.model.destroy();
             return false;
+        },
+        showLink: function() {
+            this.$el.find(".status-link").show();
+        },
+        hideLink: function() {
+            this.$el.find(".status-link").hide();
         }
     });
 
@@ -127,6 +150,12 @@
                         remove: false
                     });
                 } else {
+                    var currentUsername = Tatami.app.user.get('username');
+                    for (var i = 0; i < shares.length; i++) {
+                        if (shares[i].username == currentUsername) {
+                            this.$el.find('.status-action-share').hide();
+                        }
+                    }
                     this.share.show(new Tatami.Views.StatusShares({
                         collection: new Tatami.Collections.Users(shares)
                     }));
@@ -135,18 +164,21 @@
 
             var discussion = this.model.get('discussionStatuses');
             if(this.options.discussion && discussion && discussion.length > 0){
-                if(this.discussion.currentView) this.discussion.currentView.collection.set(discussion, {
-                    remove: false
-                });
-                else this.discussion.show(new Tatami.Views.Statuses({
-                    collection: new Tatami.Collections.Statuses(discussion),
-                    itemViewOptions: {
-                        discussion: false
-                    },
-                    autoRefresh: false
-                }));
+                if(this.discussion.currentView) {
+                    this.discussion.currentView.collection.set(discussion, {
+                        remove: false
+                    });
+                } else {
+                    var replies = new Tatami.Views.Statuses({
+                        collection: new Tatami.Collections.Statuses(discussion),
+                        itemViewOptions: {
+                            discussion: false
+                        },
+                        autoRefresh: false
+                    });
+                    this.discussion.show(replies);
+                }
             }
-
             this.slideDown({duration: 100});
         }
     });
@@ -183,7 +215,7 @@
             });
         },
         className: 'tatams',
-        itemView: StatusItems,
+        itemView: StatusItem,
         onBeforeItemAdded: function(itemView){
             if(!itemView.model.hidden)
                 itemView.$el.slideDown();
@@ -210,8 +242,13 @@
         itemView: StatusAttachmentItems
     });
 
+    var StatusActions = Backbone.Marionette.ItemView.extend({
+        template: '#StatusActions',
+    });
+
     Tatami.Views.Statuses = Statuses;
-    Tatami.Views.StatusItems = StatusItems;
+    Tatami.Views.StatusItem = StatusItem;
+    Tatami.Views.StatusActions = StatusActions;
     Tatami.Views.StatusFooters = StatusFooters;
     Tatami.Views.StatusAttachments = StatusAttachments;
     Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
