@@ -79,7 +79,7 @@
         });
     });
 
-    if(!ios){
+    if(!ios) {
         Tatami.app.addInitializer(function(){
             Tatami.app.navbar = new Tatami.Views.Navbar({
                 el: $('#navbar')

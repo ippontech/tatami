@@ -33,9 +33,7 @@
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
-            'click .status-action-remove': 'removeAction',
-            'mouseover': 'showLink',
-            'mouseout': 'hideLink'
+            'click .status-action-remove': 'removeAction'
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -109,12 +107,6 @@
         removeAction: function(){
             this.model.destroy();
             return false;
-        },
-        showLink: function() {
-            this.$el.find(".status-link").show();
-        },
-        hideLink: function() {
-            this.$el.find(".status-link").hide();
         }
     });
 
@@ -222,7 +214,7 @@
         itemView: StatusItem,
         onBeforeItemAdded: function(itemView){
             if(!itemView.model.hidden)
-                itemView.$el.slideDown();
+                itemView.$el.show();
         },
         appendHtml: function(collectionView, itemView, index){
             var element = collectionView.$el.children().get(index);

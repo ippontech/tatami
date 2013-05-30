@@ -91,11 +91,6 @@
         <div class="pull-right text-right">
             <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
         </div>
-        <div class="status-link">
-            <a href="#status/<@= statusId @>" class="btn btn-link pull-right hidden-phone">
-                <span class="glyphicon glyphicon-link"></span>
-            </a>
-        </div>
         <h5>
             <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
             <a href="#users/<@= username @>"><small>@<@= username @></small></a>
@@ -130,6 +125,9 @@
 <script type="text/template" id="StatusFooters">
     <div class="text-center status-actions">
         <small>
+            <a href="#status/<@= statusId @>" class="btn btn-link status-action hidden-phone">
+                 <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+            </a>
             <button class="btn btn-link status-action status-action-reply">
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>

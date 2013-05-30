@@ -73,11 +73,6 @@
     word-wrap: break-word;
 }
 
-.status-link {
-    display: none;
-    background-color: #ee1d3b;
-}
-
 .status-actions {
     margin-left: -60px;
 }
@@ -99,7 +94,7 @@
     padding: 0px 0px 0px 60px;
     overflow: hidden;
     display: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #CCCCCC;
 }
 
 .useritemmini {
