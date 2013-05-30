@@ -128,9 +128,15 @@
             <a href="#status/<@= statusId @>" class="btn btn-link status-action hidden-phone">
                  <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
             </a>
+            <@ if (ios) { @>
+            <a href="tatami://sendResponse?replyTo=<@= statusId @>&replyToUsername=<@= username @>" class="btn btn-link status-action">
+                <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
+            </a>
+            <@ } else { @>
             <button class="btn btn-link status-action status-action-reply">
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
+            <@ } @>
             <@ if (Tatami.app.user.get('username') !== username) { @>
             <button class="btn btn-link status-action status-action-share" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
