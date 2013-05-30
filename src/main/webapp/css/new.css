@@ -69,7 +69,7 @@
 }
 
 .tatam *, .trends *, .profile *, .preview-tatam *, .profile-card, .wrap * {
-    white-space: normal;
+    /* white-space: normal; */
     word-wrap: break-word;
 }
 
