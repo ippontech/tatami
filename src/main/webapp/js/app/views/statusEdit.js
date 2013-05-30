@@ -144,7 +144,7 @@
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
-                        var tatam = new Tatami.Views.StatusItems({
+                        var tatam = new Tatami.Views.StatusItem({
                             model: model
                         });
                         self.tatamReply.show(tatam);

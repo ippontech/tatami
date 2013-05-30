@@ -22,7 +22,9 @@
         },
 
         homeTimeline: function(){
-            Tatami.app.navbar.displaySearch();
+            if (!ios) {
+                Tatami.app.navbar.displaySearch();
+            }
             Tatami.app.header.close();
 
             if (!ios) {

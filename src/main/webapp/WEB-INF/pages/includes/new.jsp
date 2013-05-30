@@ -103,7 +103,6 @@
         <div class="markdown">
             <@= marked(content) @>
         </div>
-        <div class="statusActions"/>
         <div class="attachments"/>
         <@ if (groupId) { @>
             <a class="label <@ if (publicGroup) { @>label-info<@ } else { @>label-warning<@ } @>" href="#groups/<@= groupId @>">

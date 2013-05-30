@@ -62,9 +62,13 @@
             statusDetail.fetch();
         },
         replyAction: function(){
-            Tatami.app.trigger('edit:show',{
-                status: this.model.id
-            });
+            if (ios) {
+                window.location = "tatami://sendResponse?replyTo=" + this.model.id;
+            } else {
+                Tatami.app.trigger('edit:show',{
+                    status: this.model.id
+                });
+            }
             return false;
         },
         favoriteAction: function(){
