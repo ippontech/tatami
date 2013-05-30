@@ -5,7 +5,7 @@
         },
         onRender: function(){
             _.defaults(this.options, {
-                maxLenght: 750
+                maxLength: 750
             });
 
             this.$editContent = this.$el.find('.edit-tatam');
@@ -119,7 +119,7 @@
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
 
-            var value = this.options.maxLenght - $textarea.val().length;
+            var value = this.options.maxLength - $textarea.val().length;
         },
 
         togglePreview: function(){
@@ -136,13 +136,15 @@
             options = (options)? options: {};
             if(options.status) {
                 var self = this;
-                var status = new Tatami.Models.Status({
+                var statusReply = new Tatami.Models.Status({
                     statusId: options.status
                 });
-                status.fetch({
+                statusReply.fetch({
                     success: function(model){
+                        self.$el.find('.groups').hide();
+                        self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
-                        var tatam = new Tatami.Views.StatusItems({
+                        var tatam = new Tatami.Views.StatusItem({
                             model: model
                         });
                         self.tatamReply.show(tatam);
@@ -179,7 +181,7 @@
 
             this.model.set('content', this.$edit.val());
             this.model.set('groupId', this.$el.find('[name="groupId"]').val());
-
+            this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
             this.model.save(null, {
                 success: function (model, response) {
                     self.hide();
@@ -194,7 +196,6 @@
         },
 
         cancel: function(){
-
             return false;
         },
 

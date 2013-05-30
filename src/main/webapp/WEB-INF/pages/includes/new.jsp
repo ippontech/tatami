@@ -83,86 +83,82 @@
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
     <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
-<script type="text/template" id="StatusItems">
-    <div class='pull-left background-image-fffix'>
-        <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
-    </div>
-    <div class="pull-right text-right">
-        <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
-    </div>
-    <h5>
-        <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
-        <a href="#users/<@= username @>"><small>@<@= username @></small></a>
-    </h5>
-    <div class="markdown">
-        <@= marked(content) @>
-    </div>
-    <div class="attachments"/>
-    <@ if (groupId) { @>
-        <a class="label <@ if (publicGroup) { @>label-info<@ } else { @>label-warning<@ } @>" href="#groups/<@= groupId @>">
-            <@= groupName @>
-        </a>
-    <@ } @>
+<script type="text/template" id="StatusItem">
+    <div>
+        <div class='pull-left background-image-fffix'>
+            <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+        </div>
+        <div class="pull-right text-right">
+            <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
+        </div>
+        <h5>
+            <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
+            <a href="#users/<@= username @>"><small>@<@= username @></small></a>
+        </h5>
+        <div class="markdown">
+            <@= marked(content) @>
+        </div>
+        <div class="attachments"/>
+        <@ if (groupId) { @>
+            <a class="label <@ if (publicGroup) { @>label-info<@ } else { @>label-warning<@ } @>" href="#groups/<@= groupId @>">
+                <@= groupName @>
+            </a>
+            <br/>
+        <@ } @>
 
-    <small>
-    <@ if (statusPrivate == true) { @>
-        <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>&nbsp;
-    <@ } @>
+        <small>
+        <@ if (statusPrivate == true) { @>
+            <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>&nbsp;
+        <@ } @>
 
-    <@ if (sharedByUsername != false) { @>
-        <span class="glyphicon glyphicon-retweet"></span> <fmt:message key="tatami.user.status.shared.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a>
-    <@ } @>
+        <@ if (sharedByUsername != null && sharedByUsername != false) { @>
+            <span class="glyphicon glyphicon-retweet"></span> <fmt:message key="tatami.user.status.shared.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a>
+        <@ } @>
 
-    <@ if (replyTo != '') { @>
-        <span class="glyphicon glyphicon-share-alt"></span> <fmt:message key="tatami.user.status.replyto"/> <a href="#status/<@= replyTo @>">@<@= replyToUsername @></a>
-    <@ } @>
-    </small>
+        <@ if (replyTo != '') { @>
+            <span class="glyphicon glyphicon-share-alt"></span> <fmt:message key="tatami.user.status.replyto"/> <a href="#status/<@= replyTo @>">@<@= replyToUsername @></a>
+        <@ } @>
+        </small>
+    </div>
     <footer></footer>
 </script>
 <script type="text/template" id="StatusFooters">
+    <div class="text-center status-actions">
+        <small>
+            <a href="#status/<@= statusId @>" class="btn btn-link status-action hidden-phone">
+                 <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+            </a>
+            <button class="btn btn-link status-action status-action-reply">
+                <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
+            </button>
+            <@ if (Tatami.app.user.get('username') !== username) { @>
+            <button class="btn btn-link status-action status-action-share" success-text="<fmt:message key="tatami.user.status.share.success"/>">
+                <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
+            </button>
+            <@ } @>
+            <button class="btn btn-link status-action status-action-favorite">
+                <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
+            </button>
+            <@ if (Tatami.app.user.get('username') == username) { @>
+            <button class="btn btn-link status-action status-action-remove">
+                <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
+            </button>
+            <@ } @>
+        </small>
+    </div>
     <div class="tatams-share">
     </div>
-    <aside class="text-right">
-        <a href="#status/<@= statusId @>" class="btn btn-link">
-            <span class="glyphicon glyphicon-eye-open"></span>
-            <fmt:message key="tatami.user.status.show"/>
-        </a>
-        <button class="btn btn-link status-action-reply">
-            <span class="glyphicon glyphicon-comment"></span>
-            <fmt:message key="tatami.user.status.reply"/>
-        </button>
-        <@ if (Tatami.app.user.get('username') !== username) { @>
-        <button class="btn btn-link status-action-share">
-            <span class="glyphicon glyphicon-retweet"></span>
-            <fmt:message key="tatami.user.status.share"/>
-        </button>
-        <@ } @>
-        <button class="btn btn-link status-action-favorite">
-            <span class="glyphicon glyphicon-star"></span>
-            <fmt:message key="tatami.user.status.favorite"/>
-        </button>
-        <@ if (Tatami.app.user.get('username') == username) { @>
-        <button class="btn btn-link status-action-remove">
-            <span class="glyphicon glyphicon-trash"></span>
-            <fmt:message key="tatami.user.status.delete"/>
-        </button>
-        <@ } @>
-    </aside>
     <div class="tatams-discussion">
     </div>
 </script>
 <script type="text/template" id="StatusShares">
-    <div class="tatams-share-title pull-left">
-        <fmt:message key="tatami.user.status.shared.by"/>
+        <small><fmt:message key="tatami.user.status.shared.by"/></small>
         <span class="badge">
                <@= sharesCount @>
-        </span>
-    </div>
+        </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-    <div class="tatams-share-img pull-left background-image-fffix">
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
-    </div>
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
@@ -192,6 +188,12 @@
     </section>
 </script>
 <script type="text/template" id="TagsBody">
+    <section class="tatams-container">
+    </section>
+</script>
+<script type="text/template" id="SearchBody">
+    <h3><fmt:message key="tatami.search.result.title"/> : <strong><@= input @></strong></h3>
+    <hr>
     <section class="tatams-container">
     </section>
 </script>
@@ -242,7 +244,7 @@
                     <fmt:message key="tatami.status.options"/>
                 </legend>
                  <div class="controls groups">
-                    <label class="control-label" for="groupId"><fmt:message key="tatami.group.name"/></label>
+                    <label class="control-label"><fmt:message key="tatami.group.name"/></label>
                     <select name="groupId">
                         <option value=""></option>
                         <@ for (index in groups) { @>
@@ -253,7 +255,7 @@
                     </select>
                 </div>
                 <div class="controls status-files">
-                    <label for="files">
+                    <label>
                         <fmt:message key="tatami.menu.files"/>
                     </label>
                     <div class=".attachmentBar progress progress-striped active" style="display: none;">
@@ -264,6 +266,11 @@
                     <div class="fileUploadResults wrap">
 
                     </div>
+                </div>
+                <div class="controls status-private">
+                    <label class="checkbox">
+                        <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
+                    </label>
                 </div>
             </fieldset>
         </div>

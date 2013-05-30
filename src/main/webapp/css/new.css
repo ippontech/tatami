@@ -73,6 +73,19 @@
     word-wrap: break-word;
 }
 
+.status-actions {
+    margin-left: -60px;
+}
+
+.status-action {
+    padding: 10px;
+    margin: 0px
+}
+
+.status-action:hover {
+    text-decoration: none;
+}
+
 .profile-card > img {
     margin-right: 5px;
 }
@@ -81,7 +94,7 @@
     padding: 0px 0px 0px 60px;
     overflow: hidden;
     display: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #CCCCCC;
 }
 
 .useritemmini {
@@ -144,13 +157,14 @@
 }
 
 .tatams-share {
+    padding-top: 5px;
     border-top: 2px solid #bcbcbc;
 }
 
 .tatams-share-title {
     border-right: 2px solid #bcbcbc;
-    padding-right: 10px;
-    margin: 10px;
+    padding-right: 5px;
+    margin: 5px;
 }
 
 .tatams-share-img {
@@ -158,7 +172,6 @@
 }
 
 .tatams-discussion {
-    border-top: 2px solid #bcbcbc;
     margin-top: 5px;
 }
 
@@ -195,7 +208,7 @@
 }
 
 #tatamiBody {
-    padding-top: 15px;
+    padding-top: 5px;
 }
 
 /**
@@ -322,4 +335,26 @@
 
 .background-image-fffix img {
     display: block;
+}
+
+.searchbody h3 {
+    padding: 0px;
+    margin: 0px;
+    font-weight: normal;
+    font-size: 1.4em;
+}
+
+.searchbody hr {
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 10px;
+}
+
+.deleteicon {
+    position: absolute;
+    display: block;
+    top: 9px;
+    right: 22px;
+    cursor: pointer;
 }

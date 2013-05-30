@@ -102,6 +102,7 @@
         <script src="/js/app/models/groups.js"></script>
         <script src="/js/app/collections/groups.js"></script>
         <script src="/js/app/models/statusDetails.js"></script>
+        <script src="/js/app/models/search.js"></script>
         <script src="/js/app/views/cardProfile.js"></script>
         <script src="/js/app/views/navbar.js"></script>
         <script src="/js/app/views/homeContainers.js"></script>
@@ -116,6 +117,7 @@
         <script src="/js/app/views/tagTrends.js"></script>
         <script src="/js/app/views/groups.js"></script>
         <script src="/js/app/views/profileSide.js"></script>
+        <script src="/js/app/views/search.js"></script>
         <script src="/js/app/factories/home.js"></script>
         <script src="/js/app/factories/profile.js"></script>
         <script src="/js/app/factories/status.js"></script>
@@ -327,8 +329,9 @@
                 </button>
             </li>
         </ul>
-        <form class="navbar-form pull-right col-span-5" action="">
-            <input name="search" type="text" class="col-span-12" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
+        <form id="searchform" class="navbar-form pull-right col-span-5" action="">
+            <input name="search" type="text" class="col-span-12" id="searchinput" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
+            <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
         </form>
     </div>
 </div>
@@ -351,12 +354,5 @@
     </form>
 </c:if>
 
-<c:if test="${googleAnalyticsKey ne ''}">
-    <script type="text/javascript">
-        $(document).on('ajaxComplete', function (event, request, settings) {
-            _gaq.push(['_trackEvent', event.currentTarget.URL, settings.url, ${user.login}, request.status]);
-        });
-    </script>
-</c:if>
 </body>
 </html>

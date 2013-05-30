@@ -60,6 +60,15 @@
             return new Tatami.Views.Statuses({
                 collection: c
             });
+        }, 
+
+        statusesSearch: function(input){
+            var c = new Tatami.Collections.StatusesSearch();
+            c.input = input;
+            
+            return new Tatami.Views.Statuses({
+                collection: c
+            });
         }
     };
 
