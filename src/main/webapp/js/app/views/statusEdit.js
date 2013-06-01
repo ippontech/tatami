@@ -141,6 +141,7 @@
                 });
                 statusReply.fetch({
                     success: function(model){
+                        self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
