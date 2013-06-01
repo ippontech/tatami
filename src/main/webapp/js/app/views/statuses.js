@@ -33,7 +33,9 @@
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
-            'click .status-action-remove': 'removeAction'
+            'click .status-action-delete': 'deleteAction',
+            'click .status-action-delete-confirm': 'deleteActionConfirm',
+            'click .status-action-delete-cancel': 'deleteActionCancel'
         },
         onRender: function(){
             this.$el.toggleClass('favorite', this.model.get('favorite'));
@@ -100,9 +102,26 @@
             });
             return false;
         },
-        removeAction: function(){
+        deleteAction: function(){
+            var self = this;
+            var popoverNode = self.$el.find('.status-action-delete');
+            popoverNode.popover({
+                html: true,
+                animation: true,
+                placement: 'top',
+                trigger: 'manual',
+                content: self.$el.find('.status-action-delete').attr('confirmation-text')
+            });
+            popoverNode.popover('show');
+            return false;
+        },
+        deleteActionConfirm: function(){
+            this.$el.find('.status-action-delete').popover('hide');
             this.model.destroy();
             return false;
+        },
+        deleteActionCancel: function(){
+            this.$el.find('.status-action-delete').popover('hide');
         }
     });
 
@@ -235,7 +254,7 @@
     });
 
     var StatusActions = Backbone.Marionette.ItemView.extend({
-        template: '#StatusActions',
+        template: '#StatusActions'
     });
 
     Tatami.Views.Statuses = Statuses;

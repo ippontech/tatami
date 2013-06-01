@@ -146,7 +146,11 @@
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
             <@ if (Tatami.app.user.get('username') == username) { @>
-            <button class="btn btn-link status-action status-action-remove">
+            <button class="btn btn-link status-action status-action-delete"
+                    confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                         <a class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
+                                         <a class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></a>
+                                         </p>'>
                 <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
             </button>
             <@ } @>
@@ -164,7 +168,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
