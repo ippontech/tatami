@@ -2,13 +2,14 @@
     var StatusItem = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
-                discussion: true
+                discussion: true,
+                root: true
             });
         },
         updateDetailModel: function(model, id){
             this.options.details.set('statusId', id);
         },
-        className: 'tatam pointer',
+        className: 'tatam pointer tatam-hover',
         template: '#StatusItem',
         regions: {
             statusActions: '.statusActions',
@@ -44,16 +45,32 @@
             $(this.el).find("abbr.timeago").timeago();
         },
         showDetails: function(){
-             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-             if(!this.footer.currentView){
-                this.footer.show(new StatusFooters({
-                    model: statusDetail,
-                    username: this.model.get('username'),
-                    discussion: this.options.discussion
-                }));
-                statusDetail.fetch();
-            }
-            this.footer.$el.fadeToggle({duration: 100});
+            if(this.options.root){
+                var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+                if(!this.footer.currentView){
+                    var self = this;                
+                    statusDetail.fetch({
+                        success: function(){                        
+                            if(statusDetail.get('discussionStatuses').length > 0 || statusDetail.get('sharedByLogins').length >0){
+                                self.footer.show(new StatusFooters({
+                                    model: statusDetail,
+                                    username: self.model.get('username'),
+                                    discussion: self.options.discussion
+                                }));
+                                $(self.el).addClass('tatam-expand-container');
+                                self.footer.$el.fadeToggle({duration: 100});
+                            }                        
+                        }
+                    });
+                } else {
+                    if($(this.el).attr('class').indexOf('tatam-expand-container') > 0){
+                        $(this.el).removeClass('tatam-expand-container');
+                    } else {
+                        $(this.el).addClass('tatam-expand-container');
+                    }
+                    this.footer.$el.fadeToggle({duration: 100});
+                }
+            }         
         },
         refreshDetails: function(){
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
@@ -109,16 +126,15 @@
     var StatusFooters = Backbone.Marionette.Layout.extend({
         initialize: function(){
             _.defaults(this.options, {
-                discussion: true,
-                slide: true
+                discussion: true
             });
 
-            this.$el.css('display', 'none');
+            // this.$el.css('display', 'none');
 
-            var self = this;
-            this.slideDown = _.debounce(function(){
-                self.$el.slideDown({duration: 100});
-            });
+            // var self = this;
+            // this.slideDown = _.debounce(function(){
+            //     self.$el.slideDown({duration: 100});
+            // });
         },
         template: "#StatusFooters",
 
@@ -166,12 +182,13 @@
                         itemViewOptions: {
                             discussion: false
                         },
-                        autoRefresh: false
+                        autoRefresh: false,
+                        root: false
                     });
                     this.discussion.show(replies);
                 }
             }
-            this.slideDown({duration: 100});
+            // this.slideDown({duration: 100});
         }
     });
 
@@ -180,7 +197,8 @@
             var self = this;
 
             _.defaults(this.options, {
-                autoRefresh: true
+                autoRefresh: true,
+                root: true
             });
 
             if(this.options.autoRefresh){
@@ -214,13 +232,21 @@
         },
         appendHtml: function(collectionView, itemView, index){
             var element = collectionView.$el.children().get(index);
-            if(element) $(element).before(itemView.$el);
-            else collectionView.$el.append(itemView.el);
+            var root = this.options.root;
+            itemView.options.root = root;
+            if(root){
+                itemView.$el.addClass('tatam-border-lr');                
+            }
+            if(element){
+                $(element).before(itemView.$el);
+            } else {
+                collectionView.$el.append(itemView.el);  
+            } 
         },
         onRender: function(){
             this.children.each(function(view){
                 view.model.hidden = false;
-                view.$el.slideDown();
+                // view.$el.slideDown();
             });
         }
     });

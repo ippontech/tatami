@@ -33,7 +33,7 @@
             }
             Tatami.app.header.close();
 
-            var homeBody = Tatami.Factories.Home.homeBody();
+            var homeBody = Tatami.Factories.Home.homeBody('timeline');
 
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesTimeline();
@@ -61,7 +61,7 @@
                 homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             }
 
-            var homeBody = Tatami.Factories.Home.homeBody();
+            var homeBody = Tatami.Factories.Home.homeBody('mentions');
 
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesMentions();
@@ -89,7 +89,7 @@
                 homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
                 homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             }
-            var homeBody = Tatami.Factories.Home.homeBody();
+            var homeBody = Tatami.Factories.Home.homeBody('favorites');
 
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesFavorites();

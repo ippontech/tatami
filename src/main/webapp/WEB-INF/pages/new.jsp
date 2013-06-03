@@ -96,6 +96,7 @@
         <script src="/js/app/collections/users.js"></script>
         <script src="/js/app/models/postStatus.js"></script>
         <script src="/js/app/models/status.js"></script>
+        <script src="/js/app/models/homeBody.js"></script>
         <script src="/js/app/collections/statuses.js"></script>
         <script src="/js/app/models/tags.js"></script>
         <script src="/js/app/collections/tags.js"></script>
@@ -321,7 +322,7 @@
                 </ul>
             </li>
             <li class="hidden-phone">
-                <button class="editTatam btn navbar-form">
+                <button class="editTatam btn btn-primary navbar-form">
                     <i class="glyphicon glyphicon-pencil"></i>
                     <span class="visible-desktop">
                         <fmt:message key="tatami.tatam.publish"/>

@@ -6,7 +6,7 @@
         defaults: {
             discussionStatuses: [],
             sharedByLogins: []
-        },
+        }, 
 
         urlRoot: '/tatami/rest/statuses/details/'
     });
