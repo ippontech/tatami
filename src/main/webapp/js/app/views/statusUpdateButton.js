@@ -18,11 +18,17 @@
         },
         onClick: function(){
             Tatami.app.trigger('display');
+            document.title = "Tatami";
             this.$el.slideUp();
         },
         onRender: function(){
-            if(this.options.count !== 0) this.$el.slideDown();
-            else this.$el.slideUp();
+            if(this.options.count !== 0) {
+                document.title = "Tatami (" + this.options.count + ")";
+                this.$el.slideDown();
+            } else {
+                document.title = "Tatami";
+                this.$el.slideUp();
+            }
         },
         className: 'text-center',
         template: '#StatusUpdateButton'
