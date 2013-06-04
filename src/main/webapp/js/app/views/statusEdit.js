@@ -5,7 +5,7 @@
         },
         onRender: function(){
             _.defaults(this.options, {
-                maxLength: 750
+                maxLength: 749
             });
 
             this.$editContent = this.$el.find('.edit-tatam');
@@ -110,7 +110,7 @@
         },
 
         events: {
-            'keyup .edit-tatam textarea': 'updatecount',
+            'keypress .edit-tatam > textarea': 'updatecount',
             'click .edit-tatam-float-right': 'togglePreview',
             'submit': 'submit'
         },
@@ -120,6 +120,7 @@
             var $label = this.$el.find('.countstatus');
 
             var value = this.options.maxLength - $textarea.val().length;
+            $label.text(value);
         },
 
         togglePreview: function(){
@@ -141,6 +142,7 @@
                 });
                 statusReply.fetch({
                     success: function(model){
+                        self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
                         self.$reply.slideDown();

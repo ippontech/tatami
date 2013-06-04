@@ -20,12 +20,17 @@
             <span class="glyphicon glyphicon-th-list"></span>
             &nbsp;<fmt:message key="tatami.timeline"/>
         </a>
-
-        <a class="toggleGroup pull-right btn btn-info">
-            <span class="glyphicon glyphicon-minus"></span>
-            <!-- TODO -->
-            &nbsp;<fmt:message key="tatami.user.followed"/>
-        </a>
+        <@ if(publicGroup && !administrator) { @>
+            <a class="toggleTag pull-right btn <@= (member)?'btn-info':'' @>">
+                <span class="glyphicon glyphicon-<@= (member)?'minus':'plus' @>"></span>
+                &nbsp;<@= (member)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
+            </a>
+        <@ } else if(administrator){ @>
+            <a href="/tatami/account/#/groups" class="toggleTag pull-right btn btn-info">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <fmt:message key="tatami.menu.groups"/>
+            </a>
+        <@ } @>
 
         <h3><@= name @></h3>
     </div>
@@ -172,7 +177,11 @@
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
             <@ if (Tatami.app.user.get('username') == username) { @>
-            <button class="btn btn-link status-action status-action-remove">
+            <button class="btn btn-link status-action status-action-delete"
+                    confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                         <a class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
+                                         <a class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></a>
+                                         </p>'>
                 <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
             </button>
             <@ } @>
@@ -190,7 +199,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
@@ -266,7 +275,7 @@
                 <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
             </a>
             <fieldset class="edit-tatam row-fluid">
-                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" rows="5"></textarea>
+                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
                     <span class="countstatus badge"></span>
@@ -509,6 +518,7 @@
         </li>
     </ul>
     <section class="tatams-container">
+        
     </section>
 </script>
 <script type="text/template" id="UserItems">

@@ -20,6 +20,10 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
     private String role;
 
     private Boolean isMember = true;
+    
+    private boolean friend; 
+    
+    private boolean you;
 
     public String getLogin() {
         return login;
@@ -76,8 +80,24 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
     public void setIsMember(Boolean isMember) {
         this.isMember = isMember;
     }
+    
+    public boolean isFriend() {
+		return friend;
+	}
 
-    @Override
+	public void setFriend(boolean friend) {
+		this.friend = friend;
+	}
+	
+	public boolean isYou() {
+		return you;
+	}
+
+	public void setYou(boolean you) {
+		this.you = you;
+	}
+
+	@Override
     public int compareTo(UserGroupDTO o) {
         return this.username.compareTo(o.getUsername());
     }
