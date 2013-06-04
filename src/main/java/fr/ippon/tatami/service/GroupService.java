@@ -48,6 +48,9 @@ public class GroupService {
 
     @Inject
     private SearchService searchService;
+    
+    @Inject
+    private FriendRepository friendRepository;
 
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
@@ -79,8 +82,9 @@ public class GroupService {
         searchService.addGroup(group);
     }
 
-    public Collection<UserGroupDTO> getMembersForGroup(String groupId) {
+    public Collection<UserGroupDTO> getMembersForGroup(String groupId, String login) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
+        Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
@@ -91,6 +95,12 @@ public class GroupService {
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
+            if(friendLogins.contains(user.getLogin())){
+            	dto.setFriend(true);
+            }
+            if(login.equals(user.getLogin())){
+            	dto.setYou(true);
+            }
             userGroupDTOs.add(dto);
         }
         return userGroupDTOs;
