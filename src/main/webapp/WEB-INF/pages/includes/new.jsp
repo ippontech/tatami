@@ -20,12 +20,17 @@
             <span class="glyphicon glyphicon-th-list"></span>
             &nbsp;<fmt:message key="tatami.timeline"/>
         </a>
-
-        <a class="toggleGroup pull-right btn btn-info">
-            <span class="glyphicon glyphicon-minus"></span>
-            <!-- TODO -->
-            &nbsp;<fmt:message key="tatami.user.followed"/>
-        </a>
+        <@ if(publicGroup && !administrator) { @>
+            <a class="toggleTag pull-right btn <@= (member)?'btn-info':'' @>">
+                <span class="glyphicon glyphicon-<@= (member)?'minus':'plus' @>"></span>
+                &nbsp;<@= (member)?'<fmt:message key="tatami.user.followed"/>':'<fmt:message key="tatami.user.follow"/>' @>
+            </a>
+        <@ } else if(administrator){ @>
+            <a href="/tatami/account/#/groups" class="toggleTag pull-right btn btn-info">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <fmt:message key="tatami.menu.groups"/>
+            </a>
+        <@ } @>
 
         <h3><@= name @></h3>
     </div>
@@ -477,6 +482,7 @@
         </li>
     </ul>
     <section class="tatams-container">
+        
     </section>
 </script>
 <script type="text/template" id="UserItems">

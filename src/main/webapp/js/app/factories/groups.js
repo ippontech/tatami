@@ -27,6 +27,13 @@
             return new Tatami.Views.GroupsBody({
                 group: groupId
             });
+        }, 
+        groupsUser: function(groupId){
+            var c = new Tatami.Collections.UsersInGroup();
+            c.group = groupId;
+            return new Tatami.Views.UserList({
+                collection: c
+            });         
         }
     };
 

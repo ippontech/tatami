@@ -308,14 +308,26 @@
         groupsMembers: function(group){
             if (!ios) {
                 Tatami.app.navbar.displaySearch();
+                var homeSide = Tatami.Factories.Home.homeSide();
+                Tatami.app.side.show(homeSide);
+                homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+                homeSide.groups.show(Tatami.Factories.Home.groups());
+                homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             }
             Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
-            Tatami.app.side.close();
 
             var groupsBody = Tatami.Factories.Groups.groupsBody(group);
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var usersInGroup = Tatami.Factories.Groups.groupsUser(group);
 
             Tatami.app.body.show(groupsBody);
 
+            groupsBody.tatams.show(region);
+
+            region.timeline.show(usersInGroup);
+
+            usersInGroup.collection.fetch();
+            
             groupsBody.show('members');
         }
     });

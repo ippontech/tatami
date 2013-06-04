@@ -59,24 +59,32 @@ public class GroupController {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Group publicGroup = groupService.getGroupById(domain, groupId);
         if (publicGroup != null && publicGroup.isPublicGroup()) {
-            return publicGroup;
-        } else {
-            Group result = null;
-            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-            for (Group testGroup : groups) {
-                if (testGroup.getGroupId().equals(groupId)) {
-                    result = testGroup;
-                    break;
-                }
+            Group result = getGroupFromUser(currentUser, groupId);
+            Group groupClone = (Group) publicGroup.clone();            
+            if(result != null){
+                groupClone.setMember(true);
+            } 
+            if(isGroupManagedByCurrentUser(publicGroup)){
+            	groupClone.setAdministrator(true);
             }
+            return groupClone;
+        } else {
+            Group result = getGroupFromUser(currentUser, groupId);
+            Group groupClone = null;
             if (result == null) {
                 if (log.isInfoEnabled()) {
                     log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
                             "group ID = " + groupId);
                 }
                 return null;
+            } else {
+                groupClone = (Group) result.clone();
+                groupClone.setMember(true);
+                if(isGroupManagedByCurrentUser(publicGroup)){
+                	groupClone.setAdministrator(true);
+                }
             }
-            return result;
+            return groupClone;
         }
     }
 
@@ -261,7 +269,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId);
+            users = groupService.getMembersForGroup(groupId, currentUser.getLogin());
         }
         return users;
     }
@@ -286,7 +294,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId);
+            users = groupService.getMembersForGroup(groupId,currentUser.getLogin());
         }
 
         for (UserGroupDTO user : users) {
@@ -327,10 +335,10 @@ public class GroupController {
         } else if (currentGroup == null || userToAdd == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            if (isGroupManagedByCurrentUser(currentGroup)) {
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAdd)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
                 dto = groupService.getMembersForGroup(groupId, userToAdd);
-            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd)) {
+            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
                 dto = groupService.getMembersForGroup(groupId, userToAdd);
             } else {
@@ -361,10 +369,10 @@ public class GroupController {
         } else if (currentGroup == null || userToremove == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            if (isGroupManagedByCurrentUser(currentGroup)) {
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
                 dto = groupService.getMembersForGroup(groupId, userToremove);
-            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove)) {
+            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
                 dto = groupService.getMembersForGroup(groupId, userToremove);
             } else {
@@ -384,5 +392,15 @@ public class GroupController {
             }
         }
         return isGroupManagedByCurrentUser;
+    }
+
+    private Group getGroupFromUser(User currentUser, String groupId){
+        Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+        for (Group testGroup : groups) {
+            if (testGroup.getGroupId().equals(groupId)) {
+                return testGroup;
+            }
+        }
+        return null;
     }
 }
