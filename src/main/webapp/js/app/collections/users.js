@@ -22,9 +22,16 @@
         }
     });
 
+    var UsersInGroup = Users.extend({
+        url: function(){
+            return '/tatami/rest/groups/' + this.group + '/members/';
+        }
+    });
+
     Tatami.Collections.Users = Users;
     Tatami.Collections.Friends = Friends;
     Tatami.Collections.Followers = Followers;
     Tatami.Collections.WhoToFollow = WhoToFollow;
+    Tatami.Collections.UsersInGroup = UsersInGroup;
 
 })(Backbone, Tatami);

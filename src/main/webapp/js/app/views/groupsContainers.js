@@ -38,6 +38,20 @@
         modelEvents: {
             'change': 'render',
             'sync': 'render'
+        },
+        events: {
+            'click .toggleTag': 'subscription'
+        },
+        subscription: function(event){
+            this.model.url = this.model.urlRoot+'/'+this.model.id+'/members/'+Tatami.app.user.id;
+            var model = this.model;
+            if(this.model.get('member')){                
+                this.model.destroy();
+                this.model.set('member',false);
+            } else {
+                this.model.save();                
+                this.model.set('member',true);
+            }
         }
     });
 
