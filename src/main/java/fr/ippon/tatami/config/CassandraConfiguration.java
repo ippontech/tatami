@@ -93,6 +93,7 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, AVATAR_CF, 0);
             addColumnFamily(cluster, DOMAIN_CONFIGURATION_CF, 0);
             addColumnFamily(cluster, TATAMIBOT_CONFIGURATION_CF, 0);
+            addColumnFamily(cluster, SHORT_URL_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, TIMELINE_SHARES_CF, 0);

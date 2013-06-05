@@ -5,6 +5,7 @@ import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.config.DispatcherServletConfig;
+import fr.ippon.tatami.web.urlshortener.UrlShortenerServlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.atmosphere.cache.UUIDBroadcasterCache;
@@ -89,6 +90,11 @@ public class WebConfigurer implements ServletContextListener {
                 dispatcherServletConfig));
         dispatcherServlet.addMapping("/tatami/*");
         dispatcherServlet.setLoadOnStartup(1);
+
+        log.debug("Registering Short Url Servlet");
+        ServletRegistration.Dynamic dispatcherServletShortUrl = servletContext.addServlet("urlShortener", new UrlShortenerServlet());
+        dispatcherServletShortUrl.addMapping("/s/*");
+        dispatcherServletShortUrl.setLoadOnStartup(3);
 
         log.debug("Registering Spring Security Filter");
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain",
