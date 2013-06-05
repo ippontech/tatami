@@ -183,21 +183,26 @@ public class StatusDTO  implements Serializable {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
-        DateTime dateTime = new DateTime(statusDate);
-        Period period =
-                new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis());
+        if (statusDate != null) {
+            DateTime dateTime = new DateTime(statusDate);
+            Period period =
+                    new Period(statusDate.getTime(),
+                            Calendar.getInstance().getTimeInMillis());
 
-        if (period.getMonths() < 1) { // Only format if it is more than 1 month old
-            this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            if (period.getMonths() < 1) { // Only format if it is more than 1 month old
+                this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            } else {
+                this.iso8601StatusDate = "";
+            }
+
+            if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
+                this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
+            } else {
+                this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            }
         } else {
             this.iso8601StatusDate = "";
-        }
-
-        if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
-            this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
-        } else {
-            this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            this.prettyPrintStatusDate = "";
         }
     }
 

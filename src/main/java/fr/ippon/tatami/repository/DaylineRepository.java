@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
+import fr.ippon.tatami.domain.status.Status;
 
 import java.util.Collection;
 

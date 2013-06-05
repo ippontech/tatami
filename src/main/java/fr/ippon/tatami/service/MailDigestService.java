@@ -208,7 +208,6 @@ public class MailDigestService {
             }
 
             for (StatusDTO status : statuses) {
-
                 if (status.getStatusDate().before(since_date)) {
                     dateReached = true;
                     break;

@@ -2,8 +2,8 @@ package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
@@ -47,16 +47,6 @@ public class TimelineController {
 
     @Inject
     private AuthenticationService authenticationService;
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public void handleConstraintViolationException(ConstraintViolationException cve, HttpServletResponse response) {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        if (log.isDebugEnabled()) {
-            for (ConstraintViolation cv : cve.getConstraintViolations()) {
-                log.debug("Violation : " + cv.getMessage());
-            }
-        }
-    }
 
     /**
      * POST /statuses/update -> create a new Status
@@ -196,7 +186,14 @@ public class TimelineController {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        return timelineService.getTimeline(count, since_id, max_id);
+        try {
+            return timelineService.getTimeline(count, since_id, max_id);
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     /**

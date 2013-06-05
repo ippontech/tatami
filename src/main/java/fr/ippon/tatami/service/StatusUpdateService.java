@@ -2,8 +2,10 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.domain.status.StatusType;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
@@ -115,10 +117,13 @@ public class StatusUpdateService {
     }
 
     public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
-        Status originalStatus = statusRepository.findStatusById(replyTo);
-        if (originalStatus == null) {
+        AbstractStatus abstractOriginalStatus = statusRepository.findStatusById(replyTo);
+        if (abstractOriginalStatus == null ||
+                !abstractOriginalStatus.getType().equals(StatusType.STATUS)) {
+
             throw new ReplyStatusException();
         }
+        Status originalStatus = (Status) abstractOriginalStatus;
         Group group = null;
         if (originalStatus.getGroupId() != null) {
             group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
@@ -129,7 +134,14 @@ public class StatusUpdateService {
         }
         if (!originalStatus.getReplyTo().equals("")) {
             // Original status is also a reply, replying to the real original status instead
-            Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
+            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
+            if (abstractRealOriginalStatus == null ||
+                    !abstractRealOriginalStatus.getType().equals(StatusType.STATUS)) {
+
+                throw new ReplyStatusException();
+            }
+            Status realOriginalStatus = (Status) abstractRealOriginalStatus;
+
             Status replyStatus = createStatus(
                     content,
                     realOriginalStatus.getStatusPrivate(),
@@ -194,13 +206,10 @@ public class StatusUpdateService {
         } else {
             currentLogin = user.getLogin();
         }
-        String username = DomainUtil.getUsernameFromLogin(currentLogin);
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
         Status status =
                 statusRepository.createStatus(currentLogin,
-                        username,
-                        domain,
                         statusPrivate,
                         group,
                         attachmentIds,

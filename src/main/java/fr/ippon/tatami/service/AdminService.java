@@ -3,8 +3,10 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.domain.status.StatusType;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.repository.UserRepository;
@@ -170,8 +172,11 @@ public class AdminService {
             }
             Collection<Status> statuses = new ArrayList<Status>();
             for (Row<String, String, String> row : rows) {
-                Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
-                if (status != null) {  // if a status has been removed, it is returned as null
+                AbstractStatus abstractStatus = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
+                if (abstractStatus != null && // if a status has been removed, it is returned as null
+                        abstractStatus.getType().equals(StatusType.STATUS)) { // Only index standard statuses
+
+                    Status status = (Status) abstractStatus;
                     if (status.getStatusPrivate() == null || !status.getStatusPrivate()) {
                         statuses.add(status);
                     }

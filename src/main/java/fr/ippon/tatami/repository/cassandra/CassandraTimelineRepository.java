@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -11,7 +10,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.QueryResult;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
@@ -52,7 +51,7 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getTimeline(String login, int size, String since_id, String max_id) {
+    public List<String> getTimeline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(TIMELINE_CF, login, size, since_id, max_id);
     }
 

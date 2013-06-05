@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Status;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
@@ -16,9 +15,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.inject.Inject;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -40,7 +38,7 @@ public abstract class AbstractCassandraLineRepository {
     @Inject
     protected Keyspace keyspaceOperator;
 
-    Map<String, SharedStatusInfo> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+    List<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         List<HColumn<UUID, String>> result;
         if (max_id != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
@@ -78,27 +76,11 @@ public abstract class AbstractCassandraLineRepository {
             result = query.getColumns();
         }
 
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
+        List<String> line = new ArrayList<String>();
         boolean logDebug = log.isDebugEnabled();
         for (HColumn<UUID, String> column : result) {
             String value = column.getValue();
-            if (value.equals("")) { // This is a normal status
-                line.put(column.getName().toString(), null);
-            } else { // This status was shared by another user
-                // The form is statusId:'statusId',sharedByLogin:'sharedByLogin'
-                // So we just substing() to get the original status Id and who shared it
-                String orginialStatusId = value.substring(9, 45);
-                String sharedByLogin = value.substring(60, value.length());
-                if (logDebug) {
-                    log.debug("Shared status : " + orginialStatusId + " shared by : " + sharedByLogin);
-                }
-                SharedStatusInfo sharedStatusInfo = new SharedStatusInfo(
-                        column.getName().toString(),
-                        orginialStatusId,
-                        sharedByLogin);
-
-                line.put(orginialStatusId, sharedStatusInfo);
-            }
+            line.add(column.getName().toString());
         }
         return line;
     }

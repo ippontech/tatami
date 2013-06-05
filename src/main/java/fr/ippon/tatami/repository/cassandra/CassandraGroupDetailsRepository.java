@@ -27,10 +27,10 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 @Repository
 public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
 
-    private final String NAME = "name";
-    private final String DESCRIPTION = "description";
-    private final String PUBLIC_GROUP = "publicGroup";
-    private final String ARCHIVED_GROUP = "archivedGroup";
+    private static final String NAME = "name";
+    private static final String DESCRIPTION = "description";
+    private static final String PUBLIC_GROUP = "publicGroup";
+    private static final String ARCHIVED_GROUP = "archivedGroup";
 
     @Inject
     private Keyspace keyspaceOperator;

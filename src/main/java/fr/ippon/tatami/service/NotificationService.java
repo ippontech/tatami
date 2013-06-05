@@ -1,6 +1,6 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.atmosphere.TatamiNotification;
 import org.apache.commons.logging.Log;
