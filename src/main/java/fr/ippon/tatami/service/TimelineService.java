@@ -200,6 +200,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Manage shared statuses
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
+                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
                         }
                         abstractStatus = originalStatus;
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT) ||
