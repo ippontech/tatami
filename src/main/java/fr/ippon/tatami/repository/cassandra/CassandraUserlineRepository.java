@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.UserlineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -35,8 +36,8 @@ public class CassandraUserlineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public void shareStatusToUserline(String currentLogin, Status status) {
-        shareStatus(currentLogin, status, currentLogin, USERLINE_CF, USERLINE_SHARES_CF);
+    public void shareStatusToUserline(String currentLogin, Share share) {
+        shareStatus(currentLogin, share, USERLINE_CF, USERLINE_SHARES_CF);
     }
 
     @Override

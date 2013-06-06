@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository;
 
+import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface UserlineRepository {
 
     void addStatusToUserline(Status status);
 
-    void shareStatusToUserline(String currentLogin, Status status);
+    void shareStatusToUserline(String currentLogin, Share share);
 
     void deleteUserline(String login);
 

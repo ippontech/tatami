@@ -174,6 +174,7 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     public Share createShare(String login, String originalStatusId) {
         Share share = new Share();
+        share.setLogin(login);
         share.setType(StatusType.SHARE);
         String username = DomainUtil.getUsernameFromLogin(login);
         share.setUsername(username);
@@ -182,6 +183,7 @@ public class CassandraStatusRepository implements StatusRepository {
         ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(share);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
+        share.setOriginalStatusId(originalStatusId);
 
         if (log.isDebugEnabled()) {
             log.debug("Persisting Share : " + share);
@@ -193,6 +195,7 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     public Announcement createAnnouncement(String login, String originalStatusId) {
         Announcement announcement = new Announcement();
+        announcement.setLogin(login);
         announcement.setType(StatusType.ANNOUNCEMENT);
         String username = DomainUtil.getUsernameFromLogin(login);
         announcement.setUsername(username);
@@ -201,6 +204,7 @@ public class CassandraStatusRepository implements StatusRepository {
         ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(announcement);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
+        announcement.setOriginalStatusId(originalStatusId);
 
         if (log.isDebugEnabled()) {
             log.debug("Persisting Announcement : " + announcement);
@@ -212,6 +216,7 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     public MentionFriend createMentionFriend(String login, String followerLogin) {
         MentionFriend mentionFriend = new MentionFriend();
+        mentionFriend.setLogin(login);
         mentionFriend.setType(StatusType.MENTION_FRIEND);
         String username = DomainUtil.getUsernameFromLogin(login);
         mentionFriend.setUsername(username);
@@ -231,6 +236,7 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     public MentionShare createMentionShare(String login, String originalStatusId) {
         MentionShare mentionShare = new MentionShare();
+        mentionShare.setLogin(login);
         mentionShare.setType(StatusType.MENTION_SHARE);
         String username = DomainUtil.getUsernameFromLogin(login);
         mentionShare.setUsername(username);
@@ -239,6 +245,7 @@ public class CassandraStatusRepository implements StatusRepository {
         ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(mentionShare);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
+        mentionShare.setOriginalStatusId(originalStatusId);
 
         if (log.isDebugEnabled()) {
             log.debug("Persisting MentionShare : " + mentionShare);

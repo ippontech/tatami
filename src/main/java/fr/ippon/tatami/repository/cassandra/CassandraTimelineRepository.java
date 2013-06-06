@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -31,9 +32,8 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public boolean isStatusInTimeline(String login, String statusId) {
-        UUID name = UUID.fromString(statusId);
         QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
-                findByLoginAndName(TIMELINE_CF, login, name);
+                findByLoginAndStatusId(TIMELINE_CF, login, UUID.fromString(statusId));
 
         return isStatusAlreadyinTimeline.get() != null;
     }
@@ -46,8 +46,8 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status) {
-        shareStatus(timelineLogin, status, sharedByLogin, TIMELINE_CF, TIMELINE_SHARES_CF);
+    public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Share share) {
+        shareStatus(timelineLogin, share, TIMELINE_CF, TIMELINE_SHARES_CF);
     }
 
     @Override

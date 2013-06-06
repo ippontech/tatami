@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.atmosphere.TatamiNotification;
@@ -22,11 +23,11 @@ public class NotificationService {
     /**
      * Notifies the user with Atmosphere.
      */
-    public void notifyUser(String login, Status status) {
+    public void notifyUser(String login, AbstractStatus abstractStatus) {
         if (log.isDebugEnabled()) {
             log.debug("Notifying user: " + login);
         }
-        StatusDTO statusDTO = timelineService.getStatus(status.getStatusId());
+        StatusDTO statusDTO = timelineService.getStatus(abstractStatus.getStatusId());
         TatamiNotification notification = new TatamiNotification();
         notification.setLogin(login);
         notification.setStatusDTO(statusDTO);

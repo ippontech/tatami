@@ -106,26 +106,40 @@ public class TimelineService {
     public StatusDetails getStatusDetails(String statusId) {
         log.debug("Looking for status details");
         StatusDetails details = new StatusDetails();
-        details.setStatusId(statusId);
+
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus == null) {
+            log.debug("Status could not be found");
+            return null;
+        }
+        Status status = null;
+        if (abstractStatus.getType() == null || abstractStatus.getType().equals(StatusType.STATUS)) {
+            status = (Status) abstractStatus;
+        } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+            Share share = (Share) abstractStatus;
+            AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            if (originalStatus == null) {
+                log.debug("Original Status could not be found");
+                return details;
+            } else if (originalStatus.getType() != null && !originalStatus.getType().equals(StatusType.STATUS)) {
+                log.debug("Original status does not have the correct type");
+                return details;
+            }
+            status = (Status) originalStatus;
+        } else {
+            log.debug("Status does not have the correct type");
+            return details;
+        }
+        details.setStatusId(status.getStatusId());
 
         // Shares management
-        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
+        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(status.getStatusId());
         details.setSharedByLogins(userService.getUsersByLogin(sharedByLogins));
         if (log.isDebugEnabled()) {
             log.debug("Status shared by " + sharedByLogins.size() + " users");
         }
 
         // Discussion management
-        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
-        if (abstractStatus == null) {
-            log.debug("Could not find status");
-            return details;
-        }
-        if (!abstractStatus.getType().equals(StatusType.STATUS)) {
-            log.debug("Status does not have the correct type");
-            return details;
-        }
-        Status status = (Status) abstractStatus;
         Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
@@ -134,10 +148,10 @@ public class TimelineService {
             // Add the replies
             statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getDiscussionId()));
             // Remove the current status from the list
-            statusIdsInDiscussion.remove(statusId);
+            statusIdsInDiscussion.remove(status.getStatusId());
         } else { // This is the original discussion
             // Add the replies
-            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(statusId));
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getStatusId()));
         }
 
         // Transform the Set to a Map<String, String>
@@ -182,9 +196,9 @@ public class TimelineService {
 
                     if (abstractStatus.getType().equals(StatusType.SHARE)) {
                         Share share = (Share) abstractStatus;
-                        AbstractStatus originalStatus = statusRepository.findStatusById(share.getStatusId());
+                        AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
                         if (originalStatus != null) { // Manage shared statuses
-                            statusDTO.setTimelineId(share.getOriginalStatusId());
+                            statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
                         }
                         abstractStatus = originalStatus;
@@ -382,21 +396,37 @@ public class TimelineService {
         }
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
-        if (abstractStatus.getType().equals(StatusType.STATUS)) {
-            Status status = (Status) abstractStatus;
-            // add status to the user's userline and timeline
-            userlineRepository.shareStatusToUserline(currentLogin, status);
-            shareStatusToTimelineAndNotify(currentLogin, currentLogin, status);
-            // add status to the follower's timelines
-            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
-            for (String followerLogin : followersForUser) {
-                shareStatusToTimelineAndNotify(currentLogin, followerLogin, status);
+        if (abstractStatus != null) {
+            if (abstractStatus.getType().equals(StatusType.STATUS)) {
+                internalShareStatus(currentLogin, statusId);
+            } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+                Share currentShare = (Share) abstractStatus;
+                // We share the original status
+                internalShareStatus(currentLogin, currentShare.getOriginalStatusId());
+            } else {
+                log.warn("Cannot share this type of status: " + abstractStatus);
             }
-            // update the status details to add this share
-            sharesRepository.newShareByLogin(statusId, currentLogin);
         } else {
-            log.warn("Cannot share this type of status: " + abstractStatus);
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot share this status, as it does not exist: " + abstractStatus);
+            }
         }
+    }
+
+    private void internalShareStatus(String currentLogin, String statusId) {
+        // create share
+        Share share = statusRepository.createShare(currentLogin, statusId);
+
+        // add status to the user's userline and timeline
+        userlineRepository.shareStatusToUserline(currentLogin, share);
+        shareStatusToTimelineAndNotify(currentLogin, currentLogin, share);
+        // add status to the follower's timelines
+        Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+        for (String followerLogin : followersForUser) {
+            shareStatusToTimelineAndNotify(currentLogin, followerLogin, share);
+        }
+        // update the status details to add this share
+        sharesRepository.newShareByLogin(statusId, currentLogin);
     }
 
     public void addFavoriteStatus(String statusId) {
@@ -439,8 +469,8 @@ public class TimelineService {
     /**
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
-    private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Status status) {
-        timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, status);
-        notificationService.notifyUser(timelineLogin, status);
+    private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Share share) {
+        timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, share);
+        notificationService.notifyUser(timelineLogin, share);
     }
 }

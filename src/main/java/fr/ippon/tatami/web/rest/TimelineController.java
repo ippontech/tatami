@@ -16,14 +16,11 @@ import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 /**
@@ -243,23 +240,27 @@ public class TimelineController {
             method = RequestMethod.PATCH)
     @ResponseBody
     public StatusDTO updateStatusV3(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
-        StatusDTO status = timelineService.getStatus(statusId);
-        if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
-            if(action.isFavorite()){
-                timelineService.addFavoriteStatus(statusId);
-
+        try {
+            StatusDTO status = timelineService.getStatus(statusId);
+            if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
+                if(action.isFavorite()){
+                    timelineService.addFavoriteStatus(statusId);
+                }
+                else {
+                    timelineService.removeFavoriteStatus(statusId);
+                }
+                status.setFavorite(action.isFavorite());
             }
-            else {
-                timelineService.removeFavoriteStatus(statusId);
+            if(action.isShared() != null && action.isShared()){
+                timelineService.shareStatus(statusId);
             }
-            status.setFavorite(action.isFavorite());
+            return status;
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return null;
         }
-
-        if(action.isShared() != null && action.isShared()){
-            timelineService.shareStatus(statusId);
-        }
-
-        return status;
     }
 
 

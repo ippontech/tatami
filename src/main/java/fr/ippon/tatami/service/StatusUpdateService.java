@@ -4,6 +4,7 @@ import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.domain.status.StatusType;
 import fr.ippon.tatami.repository.*;
@@ -118,11 +119,21 @@ public class StatusUpdateService {
 
     public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
         AbstractStatus abstractOriginalStatus = statusRepository.findStatusById(replyTo);
-        if (abstractOriginalStatus == null ||
-                !abstractOriginalStatus.getType().equals(StatusType.STATUS)) {
+        if (abstractOriginalStatus != null &&
+                !abstractOriginalStatus.getType().equals(StatusType.STATUS) &&
+                !abstractOriginalStatus.getType().equals(StatusType.SHARE)) {
 
+            log.debug("Can not reply to a status of this type");
             throw new ReplyStatusException();
         }
+        if (abstractOriginalStatus != null &&
+                abstractOriginalStatus.getType().equals(StatusType.SHARE)) {
+
+            Share share = (Share) abstractOriginalStatus;
+            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            abstractOriginalStatus = abstractRealOriginalStatus;
+        }
+
         Status originalStatus = (Status) abstractOriginalStatus;
         Group group = null;
         if (originalStatus.getGroupId() != null) {
