@@ -118,34 +118,36 @@ public class StatusUpdateService {
     }
 
     public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
-        AbstractStatus abstractOriginalStatus = statusRepository.findStatusById(replyTo);
-        if (abstractOriginalStatus != null &&
-                !abstractOriginalStatus.getType().equals(StatusType.STATUS) &&
-                !abstractOriginalStatus.getType().equals(StatusType.SHARE)) {
+        AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
+        if (abstractStatus != null &&
+                !abstractStatus.getType().equals(StatusType.STATUS) &&
+                !abstractStatus.getType().equals(StatusType.SHARE)) {
 
             log.debug("Can not reply to a status of this type");
             throw new ReplyStatusException();
         }
-        if (abstractOriginalStatus != null &&
-                abstractOriginalStatus.getType().equals(StatusType.SHARE)) {
+        if (abstractStatus != null &&
+                abstractStatus.getType().equals(StatusType.SHARE)) {
 
-            Share share = (Share) abstractOriginalStatus;
-            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
-            abstractOriginalStatus = abstractRealOriginalStatus;
+            log.debug("Replacing the share by the original status");
+            Share share = (Share) abstractStatus;
+            AbstractStatus abstractRealStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            abstractStatus = abstractRealStatus;
         }
 
-        Status originalStatus = (Status) abstractOriginalStatus;
+        Status status = (Status) abstractStatus;
         Group group = null;
-        if (originalStatus.getGroupId() != null) {
-            group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
+        if (status.getGroupId() != null) {
+            group = groupService.getGroupById(status.getDomain(), status.getGroupId());
 
             if (group.isArchivedGroup()) {
                 throw new ArchivedGroupException();
             }
         }
-        if (!originalStatus.getReplyTo().equals("")) {
+        if (!status.getReplyTo().equals("")) {
+            log.debug("Replacing the status by the status at the origin of the disucssion");
             // Original status is also a reply, replying to the real original status instead
-            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
+            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(status.getDiscussionId());
             if (abstractRealOriginalStatus == null ||
                     !abstractRealOriginalStatus.getType().equals(StatusType.STATUS)) {
 
@@ -158,21 +160,22 @@ public class StatusUpdateService {
                     realOriginalStatus.getStatusPrivate(),
                     group,
                     realOriginalStatus.getStatusId(),
-                    originalStatus.getStatusId(),
-                    originalStatus.getUsername());
+                    status.getStatusId(),
+                    status.getUsername());
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
+            log.debug("Replying directly to the status at the origin of the disucssion");
             // The original status of the discussion is the one we reply to
             Status replyStatus =
                     createStatus(content,
-                            originalStatus.getStatusPrivate(),
+                            status.getStatusPrivate(),
                             group,
-                            replyTo,
-                            replyTo,
-                            originalStatus.getUsername());
+                            status.getStatusId(),
+                            status.getStatusId(),
+                            status.getUsername());
 
-            discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
+            discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
         }
     }
 
