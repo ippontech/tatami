@@ -279,6 +279,9 @@ public class TimelineController {
         Collection<String> attachmentIds = status.getAttachmentIds();
 
         if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
+            if (log.isDebugEnabled()) {
+                log.debug("Creating a reply to : " + status.getReplyTo());
+            }
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
         }
         else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
