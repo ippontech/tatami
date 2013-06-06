@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service.dto;
 
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.status.StatusType;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -41,6 +42,8 @@ public class StatusDTO  implements Serializable {
      * - When this is a shared status, timelineId = the id of this share in the user's timeline
      */
     private String timelineId;
+
+    private StatusType type;
 
     private String username;
 
@@ -111,6 +114,14 @@ public class StatusDTO  implements Serializable {
 
     public void setTimelineId(String timelineId) {
         this.timelineId = timelineId;
+    }
+
+    public StatusType getType() {
+        return type;
+    }
+
+    public void setType(StatusType type) {
+        this.type = type;
     }
 
     public String getUsername() {
@@ -291,6 +302,7 @@ public class StatusDTO  implements Serializable {
         return "StatusDTO{" +
                 "statusId='" + statusId + '\'' +
                 ", timelineId='" + timelineId + '\'' +
+                ", type='" + type + '\'' +
                 ", username='" + username + '\'' +
                 ", statusPrivate=" + statusPrivate +
                 ", groupId='" + groupId + '\'' +

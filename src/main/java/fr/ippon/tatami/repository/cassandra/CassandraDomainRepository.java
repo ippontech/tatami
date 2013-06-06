@@ -83,6 +83,23 @@ public class CassandraDomainRepository implements DomainRepository {
     }
 
     @Override
+    public List<String> getLoginsInDomain(String domain) {
+        List<String> logins = new ArrayList<String>();
+        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
+                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
+                .setColumnFamily(DOMAIN_CF)
+                .setKey(domain)
+                .setRange(null, null, false, Integer.MAX_VALUE)
+                .execute()
+                .get();
+
+        for (HColumn<String, String> column : result.getColumns()) {
+            logins.add(column.getName());
+        }
+        return logins;
+    }
+
+    @Override
     public Set<Domain> getAllDomains() {
         Set<Domain> domains = new HashSet<Domain>();
         RangeSlicesQuery<String, String, String> query = createRangeSlicesQuery(keyspaceOperator,

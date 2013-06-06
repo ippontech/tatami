@@ -64,6 +64,9 @@ public class TimelineService {
     private DomainlineRepository domainlineRepository;
 
     @Inject
+    private DomainRepository domainRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -118,6 +121,17 @@ public class TimelineService {
         } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
             Share share = (Share) abstractStatus;
             AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            if (originalStatus == null) {
+                log.debug("Original Status could not be found");
+                return details;
+            } else if (originalStatus.getType() != null && !originalStatus.getType().equals(StatusType.STATUS)) {
+                log.debug("Original status does not have the correct type");
+                return details;
+            }
+            status = (Status) originalStatus;
+        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            Announcement announcement = (Announcement) abstractStatus;
+            AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
             if (originalStatus == null) {
                 log.debug("Original Status could not be found");
                 return details;
@@ -193,63 +207,62 @@ public class TimelineService {
 
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(abstractStatus.getStatusId());
+                    statusDTO.setStatusDate(abstractStatus.getStatusDate());
+                    StatusType type = abstractStatus.getType();
+                    if (type == null) {
+                        statusDTO.setType(StatusType.STATUS);
+                    } else {
+                        statusDTO.setType(abstractStatus.getType());
+                    }
 
                     if (abstractStatus.getType().equals(StatusType.SHARE)) {
                         Share share = (Share) abstractStatus;
                         AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
-                        if (originalStatus != null) { // Manage shared statuses
+                        if (originalStatus != null) { // Find the original status
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
                             statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                        }
-                        abstractStatus = originalStatus;
-                    } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT) ||
-                                abstractStatus.getType().equals(StatusType.MENTION_FRIEND) ||
-                                abstractStatus.getType().equals(StatusType.MENTION_SHARE)) {
-
-                         throw new RuntimeException("NOT IMPLEMENTED YET");
-                    } else {
-                        statusDTO.setTimelineId(abstractStatus.getStatusId());
-                    }
-
-                    Status status = (Status) abstractStatus;
-                    // Group check
-                    boolean hiddenStatus = false;
-                    if (status.getGroupId() != null) {
-                        statusDTO.setGroupId(status.getGroupId());
-                        Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
-                        // if this is a private group and the user is not part of it, he cannot see the status
-                        if (!group.isPublicGroup() && !usergroups.contains(group)) {
-                            hiddenStatus = true;
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
                         } else {
-                            statusDTO.setPublicGroup(group.isPublicGroup());
-                            statusDTO.setGroupName(group.getName());
+                            log.debug("Original status has been deleted");
                         }
-                    }
-
-                    if (!hiddenStatus) {
-                        if (status.getHasAttachments() != null && status.getHasAttachments()) {
-                            statusDTO.setAttachments(status.getAttachments());
-                        }
-                        statusDTO.setContent(status.getContent());
-                        statusDTO.setUsername(status.getUsername());
-                        if (status.getStatusPrivate() == null) {
-                            statusDTO.setStatusPrivate(false);
+                    } else if (abstractStatus.getType().equals(StatusType.MENTION_SHARE)) {
+                        MentionShare mentionShare = (MentionShare) abstractStatus;
+                        AbstractStatus originalStatus = statusRepository.findStatusById(mentionShare.getOriginalStatusId());
+                        if (originalStatus != null) { // Find the status that was shared
+                            statusDTO.setTimelineId(mentionShare.getStatusId());
+                            statusDTO.setSharedByUsername(mentionShare.getUsername());
+                            statusUser = userService.getUserByLogin(mentionShare.getLogin());
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
                         } else {
-                            statusDTO.setStatusPrivate(status.getStatusPrivate());
+                            log.debug("Mentioned status has been deleted");
                         }
-                        statusDTO.setStatusDate(status.getStatusDate());
-                        statusDTO.setReplyTo(status.getReplyTo());
-                        statusDTO.setReplyToUsername(status.getReplyToUsername());
-                        if (favoriteLine.contains(statusId)) {
-                            statusDTO.setFavorite(true);
-                        } else {
-                            statusDTO.setFavorite(false);
-                        }
+                    } else if (abstractStatus.getType().equals(StatusType.MENTION_FRIEND)) {
+                        MentionFriend mentionFriend = (MentionFriend) abstractStatus;
+                        statusDTO.setTimelineId(mentionFriend.getStatusId());
+                        statusDTO.setSharedByUsername(mentionFriend.getUsername());
+                        statusUser = userService.getUserByLogin(mentionFriend.getFollowerLogin());
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
                         statusDTO.setAvatar(statusUser.getAvatar());
-                        statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+                        statuses.add(statusDTO);
+                    } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+                        Announcement announcement = (Announcement) abstractStatus;
+                        AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
+                        if (originalStatus != null) { // Find the status that was announced
+                            statusDTO.setTimelineId(announcement.getStatusId());
+                            statusDTO.setSharedByUsername(announcement.getUsername());
+                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
+                        } else {
+                            log.debug("Announced status has been deleted");
+                        }
+                    } else { // Normal status
+                        statusDTO.setTimelineId(abstractStatus.getStatusId());
+                        buildStatus(statusDTO, abstractStatus, statusUser, usergroups, favoriteLine);
                         statuses.add(statusDTO);
                     }
                 } else {
@@ -264,6 +277,52 @@ public class TimelineService {
             }
         }
         return statuses;
+    }
+
+    private void buildStatus(StatusDTO statusDTO,
+                             AbstractStatus abstractStatus,
+                             User statusUser,
+                             Collection<Group> usergroups,
+                             List<String> favoriteLine) {
+
+        Status status = (Status) abstractStatus;
+        // Group check
+        boolean hiddenStatus = false;
+        if (status.getGroupId() != null) {
+            statusDTO.setGroupId(status.getGroupId());
+            Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
+            // if this is a private group and the user is not part of it, he cannot see the status
+            if (!group.isPublicGroup() && !usergroups.contains(group)) {
+                hiddenStatus = true;
+            } else {
+                statusDTO.setPublicGroup(group.isPublicGroup());
+                statusDTO.setGroupName(group.getName());
+            }
+        }
+
+        if (!hiddenStatus) {
+            if (status.getHasAttachments() != null && status.getHasAttachments()) {
+                statusDTO.setAttachments(status.getAttachments());
+            }
+            statusDTO.setContent(status.getContent());
+            statusDTO.setUsername(statusUser.getUsername());
+            if (status.getStatusPrivate() == null) {
+                statusDTO.setStatusPrivate(false);
+            } else {
+                statusDTO.setStatusPrivate(status.getStatusPrivate());
+            }
+            statusDTO.setReplyTo(status.getReplyTo());
+            statusDTO.setReplyToUsername(status.getReplyToUsername());
+            if (favoriteLine.contains(statusDTO.getStatusId())) {
+                statusDTO.setFavorite(true);
+            } else {
+                statusDTO.setFavorite(false);
+            }
+            statusDTO.setFirstName(statusUser.getFirstName());
+            statusDTO.setLastName(statusUser.getLastName());
+            statusDTO.setAvatar(statusUser.getAvatar());
+            statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+        }
     }
 
     /**
@@ -382,12 +441,13 @@ public class TimelineService {
         if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
             Status status = (Status) abstractStatus;
             User currentUser = authenticationService.getCurrentUser();
-            if (status.getLogin().equals(currentUser.getLogin())
-                    && Boolean.FALSE.equals(status.getRemoved())) {
+            if (status.getLogin().equals(currentUser.getLogin())) {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);
             }
+        } else {
+            log.debug("Cannot remove status of this type");
         }
     }
 
@@ -399,11 +459,13 @@ public class TimelineService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {
             if (abstractStatus.getType().equals(StatusType.STATUS)) {
-                internalShareStatus(currentLogin, statusId);
+                Status status = (Status) abstractStatus;
+                internalShareStatus(currentLogin, status);
             } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
                 Share currentShare = (Share) abstractStatus;
                 // We share the original status
-                internalShareStatus(currentLogin, currentShare.getOriginalStatusId());
+                Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
+                internalShareStatus(currentLogin, originalStatus);
             } else {
                 log.warn("Cannot share this type of status: " + abstractStatus);
             }
@@ -414,9 +476,9 @@ public class TimelineService {
         }
     }
 
-    private void internalShareStatus(String currentLogin, String statusId) {
+    private void internalShareStatus(String currentLogin, Status status) {
         // create share
-        Share share = statusRepository.createShare(currentLogin, statusId);
+        Share share = statusRepository.createShare(currentLogin, status.getStatusId());
 
         // add status to the user's userline and timeline
         userlineRepository.shareStatusToUserline(currentLogin, share);
@@ -427,7 +489,10 @@ public class TimelineService {
             shareStatusToTimelineAndNotify(currentLogin, followerLogin, share);
         }
         // update the status details to add this share
-        sharesRepository.newShareByLogin(statusId, currentLogin);
+        sharesRepository.newShareByLogin(status.getStatusId(), currentLogin);
+        // mention the status' author that the user has shared his status
+        MentionShare mentionShare = statusRepository.createMentionShare(currentLogin, status.getStatusId());
+        mentionlineRepository.addStatusToMentionline(status.getLogin(), mentionShare.getStatusId());
     }
 
     public void addFavoriteStatus(String statusId) {
@@ -453,6 +518,44 @@ public class TimelineService {
             favoritelineRepository.removeStatusFromFavoriteline(abstractStatus, currentUser.getLogin());
         } else {
             log.warn("Cannot un-favorite this type of status: " + abstractStatus);
+        }
+    }
+
+    public void announceStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Announce status : " + statusId);
+        }
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus != null) {
+            if (abstractStatus.getType().equals(StatusType.STATUS)) {
+                Status status = (Status) abstractStatus;
+                internalAnnounceStatus(currentLogin, status);
+            } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+                Share currentShare = (Share) abstractStatus;
+                // We announce the original status
+                Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
+                internalAnnounceStatus(currentLogin, originalStatus);
+            } else {
+                log.warn("Cannot announce this type of status: " + abstractStatus);
+            }
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot announce this status, as it does not exist: " + abstractStatus);
+            }
+        }
+    }
+
+    private void internalAnnounceStatus(String currentLogin, Status status) {
+        // create announcement
+        Announcement announcement = statusRepository.createAnnouncement(currentLogin, status.getStatusId());
+
+        // add status to everyone's timeline
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        List<String> logins = domainRepository.getLoginsInDomain(domain);
+        timelineRepository.announceStatusToTimeline(currentLogin, logins, announcement);
+        for (String login : logins) {
+            notificationService.notifyUser(login, announcement);
         }
     }
 

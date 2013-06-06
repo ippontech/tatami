@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -91,16 +92,28 @@
 <script type="text/template" id="StatusItem">
     <div>
         <div class='pull-left background-image-fffix'>
-            <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+            <@ if (type == 'MENTION_SHARE') { @>
+                <span class="glyphicon glyphicon-retweet"></span>
+            <@ } else if (type == 'MENTION_FRIEND') { @>
+                <span class="glyphicon glyphicon-download"></span>
+            <@ } else { @>
+                <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+            <@ } @>
         </div>
         <div class="pull-right text-right">
             <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
         </div>
         <h5>
             <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
-            <a href="#users/<@= username @>"><small>@<@= username @></small></a>
+            <@ if (type == 'MENTION_SHARE') { @>
+                <fmt:message key="tatami.user.shared.you"/>
+            <@ } else if (type == 'MENTION_FRIEND') { @>
+                <fmt:message key="tatami.user.followed.you"/>
+            <@ } else { @>
+                <a href="#users/<@= username @>"><small>@<@= username @></small></a>
+            <@ } @>
         </h5>
-        <div class="markdown">
+        <div class="markdown <@ if (type == 'MENTION_SHARE') { @>mention-share<@ } @>">
             <@= marked(content) @>
         </div>
         <div class="attachments"/>
@@ -116,8 +129,12 @@
             <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>&nbsp;
         <@ } @>
 
-        <@ if (sharedByUsername != null && sharedByUsername != false) { @>
+        <@ if ((type == 'STATUS' || type == 'SHARE') && sharedByUsername != null && sharedByUsername != false) { @>
             <span class="glyphicon glyphicon-retweet"></span> <fmt:message key="tatami.user.status.shared.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a>
+        <@ } @>
+
+        <@ if ((type == 'ANNOUNCEMENT')) { @>
+            <span class="glyphicon glyphicon-bullhorn"></span> <fmt:message key="tatami.user.status.announced.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a>
         <@ } @>
 
         <@ if (replyTo != '') { @>
@@ -142,7 +159,7 @@
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
-            <@ if (Tatami.app.user.get('username') !== username) { @>
+            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn btn-link status-action status-action-share" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
             </button>
@@ -150,6 +167,17 @@
             <button class="btn btn-link status-action status-action-favorite">
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
+            <sec:authorize ifAnyGranted="ROLE_ADMIN">
+                <@ if (statusPrivate == false && groupId == '') { @>
+                <button class="btn btn-link status-action status-action-announce"
+                        confirmation-text='<p><fmt:message key="tatami.user.status.confirm.announce"/></p><p class="text-center">
+                                             <a class="btn btn-default status-action-announce-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
+                                             <a class="btn btn-danger status-action-announce-confirm" href="#"><fmt:message key="tatami.user.status.announce"/></a>
+                                             </p>'>
+                    <i class="glyphicon glyphicon-bullhorn"></i> <fmt:message key="tatami.user.status.announce"/>
+                </button>
+                <@ } @>
+            </sec:authorize>
             <@ if (Tatami.app.user.get('username') == username) { @>
             <button class="btn btn-link status-action status-action-delete"
                     confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">

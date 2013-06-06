@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.domain.status.Announcement;
 import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
@@ -48,6 +49,17 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
     @Override
     public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Share share) {
         shareStatus(timelineLogin, share, TIMELINE_CF, TIMELINE_SHARES_CF);
+    }
+
+    @Override
+    public void announceStatusToTimeline(String announcedByLogin, List<String> logins, Announcement announcement) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+
+        for (String login : logins) {
+            mutator.addInsertion(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(announcement.getStatusId()),
+                "", UUIDSerializer.get(), StringSerializer.get()));
+        }
+        mutator.execute();
     }
 
     @Override

@@ -411,7 +411,7 @@ public class CassandraStatusRepository implements StatusRepository {
             log.debug("Removing Status : " + status);
         }
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addDeletion(status.getLogin(), STATUS_CF, status.getStatusId(), StringSerializer.get());
+        mutator.addDeletion(status.getStatusId(), STATUS_CF);
         mutator.execute();
     }
 

@@ -1,10 +1,8 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.domain.status.MentionFriend;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.logging.Log;
@@ -42,6 +40,12 @@ public class FriendshipService {
     private CounterRepository counterRepository;
 
     @Inject
+    private StatusRepository statusRepository;
+
+    @Inject
+    private MentionlineRepository mentionlineRepository;
+
+    @Inject
     private AuthenticationService authenticationService;
 
     public User followUser(String usernameToFollow) {
@@ -71,6 +75,9 @@ public class FriendshipService {
                 counterRepository.incrementFriendsCounter(currentUser.getLogin());
                 followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
                 counterRepository.incrementFollowersCounter(followedUser.getLogin());
+                // mention the friend that the user has started following him
+                MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
+                mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
                 if (log.isDebugEnabled()) {
                     log.debug("User " + currentUser.getLogin() +
                             " now follows user " + followedUser.getLogin());

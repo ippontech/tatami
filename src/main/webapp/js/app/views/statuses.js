@@ -33,6 +33,9 @@
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
+            'click .status-action-announce': 'announceAction',
+            'click .status-action-announce-confirm': 'announceActionConfirm',
+            'click .status-action-announce-cancel': 'announceActionCancel',
             'click .status-action-delete': 'deleteAction',
             'click .status-action-delete-confirm': 'deleteActionConfirm',
             'click .status-action-delete-cancel': 'deleteActionCancel'
@@ -46,14 +49,23 @@
             $(this.el).find("abbr.timeago").timeago();
         },
         showDetails: function(){
-             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-             if(!this.footer.currentView){
+            if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
+                return;
+            }
+            var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+            statusDetail.set("groupId", this.model.get("groupId"));
+            statusDetail.set("statusPrivate", this.model.get("statusPrivate"));
+            statusDetail.set("type", this.model.get("type"));
+
+            if (!this.footer.currentView) {
                 this.footer.show(new StatusFooters({
                     model: statusDetail,
                     username: this.model.get('username'),
                     discussion: this.options.discussion
                 }));
                 statusDetail.fetch();
+            } else {
+                this.footer.close();
             }
             this.footer.$el.fadeToggle({duration: 100});
         },
@@ -101,6 +113,35 @@
                 }
             });
             return false;
+        },
+        announceAction: function() {
+            var self = this;
+            var popoverNode = self.$el.find('.status-action-announce');
+            popoverNode.popover({
+                html: true,
+                animation: true,
+                placement: 'top',
+                trigger: 'manual',
+                content: self.$el.find('.status-action-announce').attr('confirmation-text')
+            });
+            popoverNode.popover('show');
+            return false;
+        },
+        announceActionConfirm: function(){
+            this.$el.find('.status-action-announce').popover('hide');
+            var self = this;
+            this.model.save({
+                announced: true
+            }, {
+                patch: true,
+                success: function(){
+                    self.onRender();
+                }
+            });
+            return false;
+        },
+        announceActionCancel: function(){
+            this.$el.find('.status-action-announce').popover('hide');
         },
         deleteAction: function(){
             var self = this;

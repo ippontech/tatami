@@ -113,6 +113,11 @@
     display: block;
 }
 
+.mention-share {
+    font-size: 80%;
+    color: #888888;
+}
+
 .tatam.favorite {
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;

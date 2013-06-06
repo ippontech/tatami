@@ -3,10 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.status.AbstractStatus;
-import fr.ippon.tatami.domain.status.Share;
-import fr.ippon.tatami.domain.status.Status;
-import fr.ippon.tatami.domain.status.StatusType;
+import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
@@ -121,9 +118,10 @@ public class StatusUpdateService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
         if (abstractStatus != null &&
                 !abstractStatus.getType().equals(StatusType.STATUS) &&
-                !abstractStatus.getType().equals(StatusType.SHARE)) {
+                !abstractStatus.getType().equals(StatusType.SHARE) &&
+                !abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
 
-            log.debug("Can not reply to a status of this type");
+            log.debug("Cannot reply to a status of this type");
             throw new ReplyStatusException();
         }
         if (abstractStatus != null &&
@@ -132,6 +130,13 @@ public class StatusUpdateService {
             log.debug("Replacing the share by the original status");
             Share share = (Share) abstractStatus;
             AbstractStatus abstractRealStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            abstractStatus = abstractRealStatus;
+        } else if (abstractStatus != null &&
+                abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+
+            log.debug("Replacing the announcement by the original status");
+            Announcement announcement = (Announcement) abstractStatus;
+            AbstractStatus abstractRealStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
             abstractStatus = abstractRealStatus;
         }
 
@@ -387,7 +392,7 @@ public class StatusUpdateService {
      * The mentioned user can also be notified by email.
      */
     private void mentionUser(Status status, String mentionedLogin) {
-        mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
+        mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId());
         addStatusToTimelineAndNotify(mentionedLogin, status);
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 

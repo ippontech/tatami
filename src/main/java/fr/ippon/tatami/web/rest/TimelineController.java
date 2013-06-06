@@ -211,7 +211,12 @@ public class TimelineController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get someone's status (username=" + username + ").");
         }
-        return timelineService.getUserline(username, count, since_id, max_id);
+        try {
+            return timelineService.getUserline(username, count, since_id, max_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -253,6 +258,9 @@ public class TimelineController {
             }
             if(action.isShared() != null && action.isShared()){
                 timelineService.shareStatus(statusId);
+            }
+            if(action.isAnnounced() != null && action.isAnnounced()){
+                timelineService.announceStatus(statusId);
             }
             return status;
         } catch (Exception e) {
