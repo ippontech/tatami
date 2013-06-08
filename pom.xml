@@ -499,8 +499,8 @@
         <slf4j.version>1.5.8</slf4j.version>
         <httpclient.core.version>4.2.2</httpclient.core.version> <!-- pour compatiblité selenium -->
         <httpclient.client.version>4.2.2</httpclient.client.version> <!-- pour compatiblité selenium -->
-        <hector.version>1.1-3</hector.version>
-        <hector.mapper.version>3.1-07</hector.mapper.version>
+        <hector.version>1.1-4</hector.version>
+        <hector.mapper.version>3.1-09</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
@@ -561,6 +561,11 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.notnoop.apns</groupId>
+            <artifactId>apns</artifactId>
+            <version>0.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.metrics</groupId>
