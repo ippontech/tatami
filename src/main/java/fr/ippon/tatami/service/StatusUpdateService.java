@@ -100,7 +100,7 @@ public class StatusUpdateService {
     private StatusAttachmentRepository statusAttachmentRepository;
 
     @Inject
-    private NotificationService notificationService;
+    private AtmosphereService atmosphereService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
@@ -418,6 +418,6 @@ public class StatusUpdateService {
      */
     private void addStatusToTimelineAndNotify(String login, Status status) {
         timelineRepository.addStatusToTimeline(login, status);
-        notificationService.notifyUser(login, status);
+        atmosphereService.notifyUser(login, status);
     }
 }

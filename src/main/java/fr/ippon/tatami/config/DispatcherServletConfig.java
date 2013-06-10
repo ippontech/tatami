@@ -140,7 +140,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
                                                  Object handler,
                                                  Exception ex) {
                 try {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    if (log.isErrorEnabled()) {
+                        log.error("An error has occured : " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     return new ModelAndView();
                 } catch (Exception handlerException) {
                     log.warn("Handling of [" + ex.getClass().getName() + "] resulted in Exception", handlerException);

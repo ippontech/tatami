@@ -1,7 +1,6 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.status.AbstractStatus;
-import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.atmosphere.TatamiNotification;
 import org.apache.commons.logging.Log;
@@ -13,9 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 
 @Service
-public class NotificationService {
+public class AtmosphereService {
 
-    private static final Log log = LogFactory.getLog(NotificationService.class);
+    private static final Log log = LogFactory.getLog(AtmosphereService.class);
 
     @Inject
     private TimelineService timelineService;

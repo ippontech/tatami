@@ -79,7 +79,7 @@ public class TimelineService {
     private SearchService searchService;
 
     @Inject
-    private NotificationService notificationService;
+    private AtmosphereService atmosphereService;
 
     public StatusDTO getStatus(String statusId) {
         List<String> line = new ArrayList<String>();
@@ -555,7 +555,7 @@ public class TimelineService {
         List<String> logins = domainRepository.getLoginsInDomain(domain);
         timelineRepository.announceStatusToTimeline(currentLogin, logins, announcement);
         for (String login : logins) {
-            notificationService.notifyUser(login, announcement);
+            atmosphereService.notifyUser(login, announcement);
         }
     }
 
@@ -575,6 +575,6 @@ public class TimelineService {
      */
     private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Share share) {
         timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, share);
-        notificationService.notifyUser(timelineLogin, share);
+        atmosphereService.notifyUser(timelineLogin, share);
     }
 }

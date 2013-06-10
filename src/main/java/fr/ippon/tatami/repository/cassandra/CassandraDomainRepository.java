@@ -59,19 +59,20 @@ public class CassandraDomainRepository implements DomainRepository {
 
     @Override
     public List<String> getLoginsInDomain(String domain, int pagination) {
+        int maxColumns = pagination + Constants.PAGINATION_SIZE;
         List<String> logins = new ArrayList<String>();
         ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(DOMAIN_CF)
                 .setKey(domain)
-                .setRange(null, null, false, Integer.MAX_VALUE)
+                .setRange(null, null, false, maxColumns)
                 .execute()
                 .get();
 
         int index = 0;
         for (HColumn<String, String> column : result.getColumns()) {
             // We take one more item, to display (or not) the "next" button if there is an item after the displayed list.
-            if (index > pagination + Constants.PAGINATION_SIZE) {
+            if (index > maxColumns) {
                 break;
             }
             if (index >= pagination) {
