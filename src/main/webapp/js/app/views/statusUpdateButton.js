@@ -17,15 +17,18 @@
             'click': 'onClick'
         },
         onClick: function(){
+            $(this.el).removeClass('refresh-button-style');
             Tatami.app.trigger('display');
             document.title = "Tatami";
             this.$el.slideUp();
         },
         onRender: function(){
             if(this.options.count !== 0) {
+                $(this.el).addClass('refresh-button-style');
                 document.title = "Tatami (" + this.options.count + ")";
                 this.$el.slideDown();
             } else {
+                $(this.el).removeClass('refresh-button-style');
                 document.title = "Tatami";
                 this.$el.slideUp();
             }

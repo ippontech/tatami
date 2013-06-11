@@ -107,7 +107,7 @@
         },
 
         tags: function(tag) {
-            Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
+            // Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
             if (!ios) {
                 Tatami.app.navbar.displaySearch("#"+tag);
@@ -117,13 +117,15 @@
                 homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
                 homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             }
-            var tagsBody = Tatami.Factories.Tags.tagsBody();
+            var tagsBody = Tatami.Factories.Tags.tagsBody("#"+tag);
 
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesTags(tag);
             Tatami.app.body.show(tagsBody);
 
             tagsBody.tatams.show(region);
+
+            tagsBody.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
@@ -142,11 +144,12 @@
                 Tatami.app.navbar.displaySearch(input);
             }
 
-            var searchModel = new Tatami.Models.Search({"input": input});
-            var searchBody = new Tatami.Views.SearchBody({model: searchModel});
+            var searchBody = Tatami.Factories.Search.searchBody(input);
+
             var region = Tatami.Factories.Status.getTimelineRegion();
             var timeline = Tatami.Factories.Status.statusesSearch(input);
             Tatami.app.body.show(searchBody);
+            searchBody.header.show(Tatami.Factories.Search.searchHeader(input));
 
             searchBody.tatams.show(region);            
             region.timeline.show(timeline);
@@ -169,8 +172,8 @@
                     var username = model.get('username');
 
                     if (!ios) {
-                        Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
-
+                        // Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+                        Tatami.app.navbar.displaySearch("@"+username);
                         var profileSide = Tatami.Factories.Profile.profileSide();
                         Tatami.app.side.show(profileSide);
 
@@ -187,19 +190,20 @@
                     });
 
                     profileBody.tatams.show(statusView);
+                    profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
                     statusView.$el.slideDown();
-                    profileBody.show();
+                    profileBody.show('timeline');
 
                 }
             });
         },
 
         profile: function(username) {
-            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+            // Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
-                Tatami.app.navbar.displaySearch();
+                Tatami.app.navbar.displaySearch("@"+username);
                 var profileSide = Tatami.Factories.Profile.profileSide();
                 Tatami.app.side.show(profileSide);
                 profileSide.informations.show(Tatami.Factories.Profile.informations(username));
@@ -214,6 +218,7 @@
             Tatami.app.body.show(profileBody);
 
             profileBody.tatams.show(region);
+            profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
@@ -224,10 +229,10 @@
         },
 
         profileFriends: function(username) {
-            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+            // Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
-                Tatami.app.navbar.displaySearch();
+                Tatami.app.navbar.displaySearch("@"+username);
                 var profileSide = Tatami.Factories.Profile.profileSide();
                 Tatami.app.side.show(profileSide);
                 profileSide.stats.show(Tatami.Factories.Profile.stats(username));
@@ -241,6 +246,7 @@
             Tatami.app.body.show(profileBody);
 
             profileBody.tatams.show(region);
+            profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
@@ -252,10 +258,10 @@
         },
 
         profileFollowers: function(username) {
-            Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
+            // Tatami.app.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             if (!ios) {
-                Tatami.app.navbar.displaySearch();
+                Tatami.app.navbar.displaySearch("@"+username);
                 var profileSide = Tatami.Factories.Profile.profileSide();
                 Tatami.app.side.show(profileSide);
                 profileSide.stats.show(Tatami.Factories.Profile.stats(username));
@@ -269,6 +275,7 @@
             Tatami.app.body.show(profileBody);
 
             profileBody.tatams.show(region);
+            profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
@@ -279,7 +286,7 @@
         },
 
         groups: function(group){
-            Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
+            // Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             if (!ios) {
                 Tatami.app.navbar.displaySearch();
@@ -296,6 +303,7 @@
             Tatami.app.body.show(groupsBody);
 
             groupsBody.tatams.show(region);
+            groupsBody.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
@@ -314,7 +322,7 @@
                 homeSide.groups.show(Tatami.Factories.Home.groups());
                 homeSide.cardProfile.show(Tatami.Factories.Home.cardProfile());
             }
-            Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
+            // Tatami.app.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             var groupsBody = Tatami.Factories.Groups.groupsBody(group);
             var region = Tatami.Factories.Status.getTimelineRegion();
@@ -323,6 +331,7 @@
             Tatami.app.body.show(groupsBody);
 
             groupsBody.tatams.show(region);
+            groupsBody.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             region.timeline.show(usersInGroup);
 

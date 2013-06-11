@@ -1,20 +1,20 @@
 (function(Backbone, _, Tatami){
     var StatusItem = Backbone.Marionette.Layout.extend({
+
         initialize: function(){
             _.defaults(this.options, {
-                discussion: true,
-                root: true
+                discussion: true
             });
         },
         updateDetailModel: function(model, id){
             this.options.details.set('statusId', id);
         },
-        className: 'tatam pointer tatam-hover',
+        className: 'tatam pointer',
         template: '#StatusItem',
         regions: {
             statusActions: '.statusActions',
-            footer: {
-                selector: 'footer',
+            before: {
+                selector: '#before',
                 regionType: Marionette.Region.extend({
                     open: function(view){
                         this.$el.css('display', 'none');
@@ -22,6 +22,36 @@
                     }
                 })
             },
+            after: {
+                selector: '#after',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            },
+
+            share: {
+                selector: '#share',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            },
+
+            buttons: {
+                selector: '#buttons',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            },
+
             attachments: '.attachments'
         },
         modelEvents: {
@@ -31,48 +61,107 @@
         },
         events: {
             'click > div': 'showDetails',
+            'click .status-action-show' : 'showDetails',
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
             'click .status-action-delete': 'deleteAction',
             'click .status-action-delete-confirm': 'deleteActionConfirm',
-            'click .status-action-delete-cancel': 'deleteActionCancel'
+            'click .status-action-delete-cancel': 'deleteActionCancel',
+            'click .status-action-attach': 'showAttach'
         },
         onRender: function(){
+            console.log("rendrer");
             this.$el.toggleClass('favorite', this.model.get('favorite'));
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))
             }));
             $(this.el).find("abbr.timeago").timeago();
+            if(this.model.get('root')){
+                this.$el.addClass('tatam-border-lr tatam-hover');    
+            } else {
+                this.$el.addClass('tatam-background');
+            }
         },
         showDetails: function(){
-            if(this.options.root){
+            currentModel = this.model;
+            if(this.model.get('root')){
                 var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-                if(!this.footer.currentView){
-                    var self = this;                
+                if(!this.before.currentView){
+                    var self = this;
+                    statusDetail.set('refDate', this.model.get('statusDate'));
                     statusDetail.fetch({
-                        success: function(){                        
-                            if(statusDetail.get('discussionStatuses').length > 0 || statusDetail.get('sharedByLogins').length >0){
-                                self.footer.show(new StatusFooters({
-                                    model: statusDetail,
-                                    username: self.model.get('username'),
-                                    discussion: self.options.discussion
-                                }));
-                                $(self.el).addClass('tatam-expand-container');
-                                self.footer.$el.fadeToggle({duration: 100});
-                            }                        
+                        success: function(){                
+                            $(self.el).animate({marginTop: '+=10', marginBottom: '+=10'}, 200);
+
+                            var shares = statusDetail.get('sharedByLogins');
+                            self.share.show(new Tatami.Views.StatusShares({
+                                collection: new Tatami.Collections.Users(shares)
+                            }));
+                            if(shares.length){
+                                self.share.$el.slideToggle({duration: 200});
+                            }
+
+                            self.buttons.show(new StatusFooters({model: currentModel}));
+                            self.buttons.$el.slideToggle({duration: 200});
+
+                            var before = new Tatami.Views.Statuses({
+                                collection: new Tatami.Collections.Statuses(statusDetail.getStatusBefore()),
+                                itemViewOptions: {
+                                    discussion: false
+                                },
+                                autoRefresh: false                        
+                            });
+
+                            self.before.show(before);   
+                            if(statusDetail.getStatusBefore().length > 0){
+                                setTimeout(function() {
+                                    self.before.$el.slideToggle({duration: 100});
+                                }, 500);
+                            }
+                            
+
+
+                            var after = new Tatami.Views.Statuses({
+                                collection: new Tatami.Collections.Statuses(statusDetail.getStatusAfter()),
+                                itemViewOptions: {
+                                    discussion: false
+                                },
+                                autoRefresh: false                        
+                            });
+
+                            self.after.show(after);
+                            setTimeout(function() {
+                                if(statusDetail.getStatusAfter().length > 0){
+                                    self.after.$el.slideToggle({duration: 100});
+                                }
+                            }, 500);                            
+
+                            $(self.el).toggleClass('tatam-hover');
+                            $(self.el).toggleClass('tatam-expand-container').animate(200);
                         }
+
                     });
                 } else {
-                    if($(this.el).attr('class').indexOf('tatam-expand-container') > 0){
-                        $(this.el).removeClass('tatam-expand-container');
-                    } else {
-                        $(this.el).addClass('tatam-expand-container');
+                    this.before.$el.slideToggle({duration: 200});
+                    this.after.$el.slideToggle({duration: 200});
+                    this.buttons.$el.slideToggle({duration: 200});
+                    var shares = statusDetail.get('sharedByLogins');
+                    if(shares.length){
+                        this.share.$el.slideToggle({duration: 200});
                     }
-                    this.footer.$el.fadeToggle({duration: 100});
+                    if($(this.el).attr('class').indexOf('tatam-expand-container') == -1){
+                        $(this.el).animate({marginTop: '+=10', marginBottom: '+=10'}, 200);
+                    } else {
+                        $(this.el).animate({marginTop: '-=10', marginBottom: '-=10'}, 200);
+                    }
+                    $(this.el).toggleClass('tatam-hover');
+                    $(this.el).toggleClass('tatam-expand-container');
+                    this.before.currentView = null;
                 }
-            }         
+                // return false;
+            }            
         },
         refreshDetails: function(){
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
@@ -86,14 +175,10 @@
         },
         favoriteAction: function(){
             var self = this;
-            this.model.save({
-                favorite: !this.model.get('favorite')
-            }, {
-                patch: true,
-                success: function(){
-                    self.onRender();
-                }
-            });
+            this.model.save(
+                {favorite: !self.model.get('favorite')}, 
+                {patch: true}
+            );
             return false;
         },
         shareAction: function(){
@@ -139,76 +224,22 @@
         },
         deleteActionCancel: function(){
             this.$el.find('.status-action-delete').popover('hide');
+            return false;
+        },
+        remove: function(){
+            this.$el.hide(function(){
+                $(this).remove();
+            }).slideDown(); 
+        }, 
+        showAttach: function(e){
+            window.open(e.target.attr("href"),'_blank');
+            return false;
         }
     });
 
     var StatusFooters = Backbone.Marionette.Layout.extend({
-        initialize: function(){
-            _.defaults(this.options, {
-                discussion: true
-            });
+        template: "#StatusFooters"
 
-            // this.$el.css('display', 'none');
-
-            // var self = this;
-            // this.slideDown = _.debounce(function(){
-            //     self.$el.slideDown({duration: 100});
-            // });
-        },
-        template: "#StatusFooters",
-
-        regions: {
-            share: ".tatams-share",
-            discussion: ".tatams-discussion"
-        },
-
-        modelEvents: {
-            'sync': 'onRender'
-        },
-        serializeData: function(){
-            return _.extend(this.model.toJSON(), this.options);
-        },
-
-        onRender: function(){
-            var shares = this.model.get('sharedByLogins');
-            if(shares && shares.length > 0){
-                if (this.share.currentView) {
-                    this.share.currentView.collection.set(shares, {
-                        remove: false
-                    });
-                } else {
-                    var currentUsername = Tatami.app.user.get('username');
-                    for (var i = 0; i < shares.length; i++) {
-                        if (shares[i].username == currentUsername) {
-                            this.$el.find('.status-action-share').hide();
-                        }
-                    }
-                    this.share.show(new Tatami.Views.StatusShares({
-                        collection: new Tatami.Collections.Users(shares)
-                    }));
-                }
-            }
-
-            var discussion = this.model.get('discussionStatuses');
-            if(this.options.discussion && discussion && discussion.length > 0){
-                if(this.discussion.currentView) {
-                    this.discussion.currentView.collection.set(discussion, {
-                        remove: false
-                    });
-                } else {
-                    var replies = new Tatami.Views.Statuses({
-                        collection: new Tatami.Collections.Statuses(discussion),
-                        itemViewOptions: {
-                            discussion: false
-                        },
-                        autoRefresh: false,
-                        root: false
-                    });
-                    this.discussion.show(replies);
-                }
-            }
-            // this.slideDown({duration: 100});
-        }
     });
 
     var Statuses = Backbone.Marionette.CollectionView.extend({
@@ -216,8 +247,7 @@
             var self = this;
 
             _.defaults(this.options, {
-                autoRefresh: true,
-                root: true
+                autoRefresh: true
             });
 
             if(this.options.autoRefresh){
@@ -251,11 +281,14 @@
         },
         appendHtml: function(collectionView, itemView, index){
             var element = collectionView.$el.children().get(index);
-            var root = this.options.root;
-            itemView.options.root = root;
-            if(root){
-                itemView.$el.addClass('tatam-border-lr');                
+
+            if(itemView.model.get('first')){
+                itemView.$el.addClass('tatam-first');
             }
+            if(itemView.model.get('last')){
+                itemView.$el.addClass('tatam-last');
+            }
+
             if(element){
                 $(element).before(itemView.$el);
             } else {
@@ -265,7 +298,7 @@
         onRender: function(){
             this.children.each(function(view){
                 view.model.hidden = false;
-                // view.$el.slideDown();
+                view.$el.slideDown();
             });
         }
     });
@@ -286,7 +319,7 @@
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItem = StatusItem;
     Tatami.Views.StatusActions = StatusActions;
-    Tatami.Views.StatusFooters = StatusFooters;
+    // Tatami.Views.StatusFooters = StatusFooters;
     Tatami.Views.StatusAttachments = StatusAttachments;
     Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
 })(Backbone, _, Tatami);

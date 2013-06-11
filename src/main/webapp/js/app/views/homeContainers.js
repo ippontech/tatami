@@ -25,7 +25,6 @@
             }
         },
         show: function(tabName){
-            console.log(tabName);
             this.$el.find('.homebody-nav a[href="#' + tabName + '"]').tab('show');
         }
     });

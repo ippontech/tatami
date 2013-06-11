@@ -37,7 +37,10 @@
             avatar: '',
             favorite: false,
             detailsAvailable: false,
-            sharedByUsername: false
+            sharedByUsername: false, 
+            root: true,
+            first: false,
+            last: false
         },
 
         urlRoot: '/tatami/rest/statuses/',
