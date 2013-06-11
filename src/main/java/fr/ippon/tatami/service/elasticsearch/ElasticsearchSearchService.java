@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
 import org.apache.commons.lang.StringUtils;
@@ -218,7 +217,7 @@ public class ElasticsearchSearchService implements SearchService {
     }
 
     @Override
-    public Map<String, SharedStatusInfo> searchStatus(final String domain,
+    public List<String> searchStatus(final String domain,
                                                       final String query,
                                                       int page,
                                                       int size) {
@@ -251,27 +250,27 @@ public class ElasticsearchSearchService implements SearchService {
             SearchHits searchHits = searchResponse.hits();
             Long hitsNumber = searchHits.totalHits();
             if (hitsNumber == 0) {
-                return Collections.emptyMap();
+                return Collections.emptyList();
             }
 
             SearchHit[] hits = searchHits.hits();
-            Map<String, SharedStatusInfo> items = new LinkedHashMap<String, SharedStatusInfo>(hits.length);
+            List<String> items = new ArrayList<String>(hits.length);
             for (SearchHit hit : hits) {
-                items.put(hit.getId(), null);
+                items.add(hit.getId());
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("search status with words (" + query + ") = " + items.keySet());
+                log.debug("search status with words (" + query + ") = " + items);
             }
             return items;
 
         } catch (IndexMissingException e) {
             log.warn("The index " + indexName(statusMapper.type()) + " was not found in the Elasticsearch cluster.");
-            return Collections.emptyMap();
+            return Collections.emptyList();
 
         } catch (ElasticSearchException e) {
             log.error("Error happened while searching status in index " + indexName(statusMapper.type()));
-            return Collections.emptyMap();
+            return Collections.emptyList();
         }
     }
 

@@ -2,8 +2,8 @@ package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.StatusDetails;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
@@ -16,14 +16,11 @@ import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 /**
@@ -47,16 +44,6 @@ public class TimelineController {
 
     @Inject
     private AuthenticationService authenticationService;
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public void handleConstraintViolationException(ConstraintViolationException cve, HttpServletResponse response) {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        if (log.isDebugEnabled()) {
-            for (ConstraintViolation cv : cve.getConstraintViolations()) {
-                log.debug("Violation : " + cv.getMessage());
-            }
-        }
-    }
 
     /**
      * POST /statuses/update -> create a new Status
@@ -196,7 +183,14 @@ public class TimelineController {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        return timelineService.getTimeline(count, since_id, max_id);
+        try {
+            return timelineService.getTimeline(count, since_id, max_id);
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     /**
@@ -217,7 +211,12 @@ public class TimelineController {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get someone's status (username=" + username + ").");
         }
-        return timelineService.getUserline(username, count, since_id, max_id);
+        try {
+            return timelineService.getUserline(username, count, since_id, max_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -246,23 +245,30 @@ public class TimelineController {
             method = RequestMethod.PATCH)
     @ResponseBody
     public StatusDTO updateStatusV3(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
-        StatusDTO status = timelineService.getStatus(statusId);
-        if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
-            if(action.isFavorite()){
-                timelineService.addFavoriteStatus(statusId);
-
+        try {
+            StatusDTO status = timelineService.getStatus(statusId);
+            if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
+                if(action.isFavorite()){
+                    timelineService.addFavoriteStatus(statusId);
+                }
+                else {
+                    timelineService.removeFavoriteStatus(statusId);
+                }
+                status.setFavorite(action.isFavorite());
             }
-            else {
-                timelineService.removeFavoriteStatus(statusId);
+            if(action.isShared() != null && action.isShared()){
+                timelineService.shareStatus(statusId);
             }
-            status.setFavorite(action.isFavorite());
+            if(action.isAnnounced() != null && action.isAnnounced()){
+                timelineService.announceStatus(statusId);
+            }
+            return status;
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return null;
         }
-
-        if(action.isShared() != null && action.isShared()){
-            timelineService.shareStatus(statusId);
-        }
-
-        return status;
     }
 
 
@@ -281,6 +287,9 @@ public class TimelineController {
         Collection<String> attachmentIds = status.getAttachmentIds();
 
         if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
+            if (log.isDebugEnabled()) {
+                log.debug("Creating a reply to : " + status.getReplyTo());
+            }
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
         }
         else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {

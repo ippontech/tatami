@@ -866,6 +866,10 @@
                             "value":"utf8(userWithStatus)"
                         },
                         {
+                            "name":"domain",
+                            "value":"utf8(ippon.fr)"
+                        },
+                        {
                             "name":"content",
                             "value":"utf8(Tatami is fully Open Source)"
                         },

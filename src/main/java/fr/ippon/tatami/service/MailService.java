@@ -1,8 +1,8 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

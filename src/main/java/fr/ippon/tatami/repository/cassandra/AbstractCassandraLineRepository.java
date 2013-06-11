@@ -1,10 +1,8 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Share;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -16,9 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.inject.Inject;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
@@ -40,7 +37,7 @@ public abstract class AbstractCassandraLineRepository {
     @Inject
     protected Keyspace keyspaceOperator;
 
-    Map<String, SharedStatusInfo> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+    List<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         List<HColumn<UUID, String>> result;
         if (max_id != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
@@ -78,72 +75,51 @@ public abstract class AbstractCassandraLineRepository {
             result = query.getColumns();
         }
 
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
-        boolean logDebug = log.isDebugEnabled();
+        List<String> line = new ArrayList<String>();
         for (HColumn<UUID, String> column : result) {
-            String value = column.getValue();
-            if (value.equals("")) { // This is a normal status
-                line.put(column.getName().toString(), null);
-            } else { // This status was shared by another user
-                // The form is statusId:'statusId',sharedByLogin:'sharedByLogin'
-                // So we just substing() to get the original status Id and who shared it
-                String orginialStatusId = value.substring(9, 45);
-                String sharedByLogin = value.substring(60, value.length());
-                if (logDebug) {
-                    log.debug("Shared status : " + orginialStatusId + " shared by : " + sharedByLogin);
-                }
-                SharedStatusInfo sharedStatusInfo = new SharedStatusInfo(
-                        column.getName().toString(),
-                        orginialStatusId,
-                        sharedByLogin);
-
-                line.put(orginialStatusId, sharedStatusInfo);
-            }
+            line.add(column.getName().toString());
         }
         return line;
     }
 
     void shareStatus(String login,
-                     Status status,
-                     String sharedByLogin,
+                     Share share,
                      String columnFamily,
                      String sharesColumnFamily) {
 
-        UUID name = UUID.fromString(status.getStatusId());
         QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
-                findByLoginAndName(columnFamily, login, name);
+                findByLoginAndStatusId(columnFamily, login, UUID.fromString(share.getOriginalStatusId()));
 
         if (isStatusAlreadyinTimeline.get() == null) {
             QueryResult<HColumn<UUID, String>> isStatusAlreadyShared =
-                    findByLoginAndName(sharesColumnFamily, login, name);
+                    findByLoginAndStatusId(sharesColumnFamily, login, UUID.fromString(share.getOriginalStatusId()));
 
             if (isStatusAlreadyShared.get() == null) {
-                UUID shareId = TimeUUIDUtils.getUniqueTimeUUIDinMillis();
                 Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 
-                mutator.insert(login, columnFamily, HFactory.createColumn(shareId,
-                        "statusId:" + status.getStatusId() + ",sharedByLogin:" + sharedByLogin, UUIDSerializer.get(), StringSerializer.get()));
+                mutator.insert(login, columnFamily, HFactory.createColumn(UUID.fromString(share.getStatusId()),
+                        "", UUIDSerializer.get(), StringSerializer.get()));
 
-                mutator.insert(login, sharesColumnFamily, HFactory.createColumn(UUID.fromString(status.getStatusId()),
+                mutator.insert(login, sharesColumnFamily, HFactory.createColumn(UUID.fromString(share.getOriginalStatusId()),
                         "", UUIDSerializer.get(), StringSerializer.get()));
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("Shared status " + status.getStatusId() + " is already shared in " + columnFamily);
+                    log.debug("Shared status " + share.getOriginalStatusId() + " is already shared in " + columnFamily);
                 }
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("Shared status " + status.getStatusId() + " is already present in " + columnFamily);
+                log.debug("Shared status " + share.getOriginalStatusId() + " is already present in " + columnFamily);
             }
         }
     }
 
-    QueryResult<HColumn<UUID, String>> findByLoginAndName(String columnFamily, String login, UUID name) {
+    QueryResult<HColumn<UUID, String>> findByLoginAndStatusId(String columnFamily, String login, UUID statusId) {
         ColumnQuery<String, UUID, String> columnQuery =
                 HFactory.createColumnQuery(keyspaceOperator, StringSerializer.get(),
                         UUIDSerializer.get(), StringSerializer.get());
 
-        columnQuery.setColumnFamily(columnFamily).setKey(login).setName(name);
+        columnQuery.setColumnFamily(columnFamily).setKey(login).setName(statusId);
         return columnQuery.execute();
     }
 }

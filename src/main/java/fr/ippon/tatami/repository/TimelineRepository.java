@@ -1,9 +1,10 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Announcement;
+import fr.ippon.tatami.domain.status.Share;
+import fr.ippon.tatami.domain.status.Status;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * The Timeline Repository.
@@ -21,14 +22,16 @@ public interface TimelineRepository {
 
     void addStatusToTimeline(String login, Status status);
 
-    void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Status status);
+    void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Share share);
+
+    void announceStatusToTimeline(String announcedByLogin, List<String> logins, Announcement announcement);
 
     void deleteTimeline(String login);
 
     /**
      * The user timeline : the user's statuses, and statuses from users he follows.
      * - The key is the statusId of the statuses
-     * - The value is who shared the statuses (or null if it wasn't shared)
+     * - The value is always null
      */
-    Map<String, SharedStatusInfo> getTimeline(String login, int size, String since_id, String max_id);
+    List<String> getTimeline(String login, int size, String since_id, String max_id);
 }

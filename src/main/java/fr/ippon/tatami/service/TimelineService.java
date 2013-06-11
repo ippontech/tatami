@@ -1,6 +1,8 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.domain.*;
+import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
@@ -62,6 +64,9 @@ public class TimelineService {
     private DomainlineRepository domainlineRepository;
 
     @Inject
+    private DomainRepository domainRepository;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -74,11 +79,11 @@ public class TimelineService {
     private SearchService searchService;
 
     @Inject
-    private NotificationService notificationService;
+    private AtmosphereService atmosphereService;
 
     public StatusDTO getStatus(String statusId) {
-        Map<String, SharedStatusInfo> line = new HashMap<String, SharedStatusInfo>();
-        line.put(statusId, null);
+        List<String> line = new ArrayList<String>();
+        line.add(statusId);
         Collection<StatusDTO> statusCollection = buildStatusList(line);
         if (statusCollection.isEmpty()) {
             return null;
@@ -104,21 +109,51 @@ public class TimelineService {
     public StatusDetails getStatusDetails(String statusId) {
         log.debug("Looking for status details");
         StatusDetails details = new StatusDetails();
-        details.setStatusId(statusId);
+
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus == null) {
+            log.debug("Status could not be found");
+            return null;
+        }
+        Status status = null;
+        if (abstractStatus.getType() == null || abstractStatus.getType().equals(StatusType.STATUS)) {
+            status = (Status) abstractStatus;
+        } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+            Share share = (Share) abstractStatus;
+            AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            if (originalStatus == null) {
+                log.debug("Original Status could not be found");
+                return details;
+            } else if (originalStatus.getType() != null && !originalStatus.getType().equals(StatusType.STATUS)) {
+                log.debug("Original status does not have the correct type");
+                return details;
+            }
+            status = (Status) originalStatus;
+        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            Announcement announcement = (Announcement) abstractStatus;
+            AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
+            if (originalStatus == null) {
+                log.debug("Original Status could not be found");
+                return details;
+            } else if (originalStatus.getType() != null && !originalStatus.getType().equals(StatusType.STATUS)) {
+                log.debug("Original status does not have the correct type");
+                return details;
+            }
+            status = (Status) originalStatus;
+        } else {
+            log.debug("Status does not have the correct type");
+            return details;
+        }
+        details.setStatusId(status.getStatusId());
 
         // Shares management
-        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(statusId);
+        Collection<String> sharedByLogins = sharesRepository.findLoginsWhoSharedAStatus(status.getStatusId());
         details.setSharedByLogins(userService.getUsersByLogin(sharedByLogins));
         if (log.isDebugEnabled()) {
             log.debug("Status shared by " + sharedByLogins.size() + " users");
         }
 
         // Discussion management
-        Status status = statusRepository.findStatusById(statusId);
-        if (status == null) {
-            log.debug("Could not find status");
-            return details;
-        }
         Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
@@ -127,16 +162,16 @@ public class TimelineService {
             // Add the replies
             statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getDiscussionId()));
             // Remove the current status from the list
-            statusIdsInDiscussion.remove(statusId);
+            statusIdsInDiscussion.remove(status.getStatusId());
         } else { // This is the original discussion
             // Add the replies
-            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(statusId));
+            statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getStatusId()));
         }
 
         // Transform the Set to a Map<String, String>
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
+        List<String> line = new ArrayList<String>();
         for (String statusIdInDiscussion : statusIdsInDiscussion) {
-            line.put(statusIdInDiscussion, null);
+            line.add(statusIdInDiscussion);
         }
         // Enrich the details object with the complete statuses in the discussion
         Collection<StatusDTO> statusesInDiscussion = buildStatusList(line);
@@ -144,91 +179,95 @@ public class TimelineService {
         return details;
     }
 
-    public Collection<StatusDTO> buildStatusList(Map<String, SharedStatusInfo> line) {
+    public Collection<StatusDTO> buildStatusList(List<String> line) {
         User currentUser = null;
         Collection<Group> usergroups;
-        Map<String, SharedStatusInfo> favoriteLine;
+        List<String> favoriteLine;
         if (authenticationService.hasAuthenticatedUser()) {
             currentUser = authenticationService.getCurrentUser();
             usergroups = groupService.getGroupsForUser(currentUser);
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
         } else {
             usergroups = Collections.emptyList();
-            favoriteLine = Collections.emptyMap();
+            favoriteLine = Collections.emptyList();
         }
         Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
-        for (String statusId : line.keySet()) {
-            SharedStatusInfo sharedStatusInfo = line.get(statusId);
-            Status status;
-            if (sharedStatusInfo != null) {
-                status = statusRepository.findStatusById(sharedStatusInfo.getOriginalStatusId());
-            } else {
-                status = statusRepository.findStatusById(statusId);
-            }
-            if (status != null) {
-                User statusUser = userService.getUserByLogin(status.getLogin());
+        for (String statusId : line) {
+            AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+            if (abstractStatus != null) {
+                User statusUser = userService.getUserByLogin(abstractStatus.getLogin());
                 if (statusUser != null) {
                     // Security check
                     // bypass the security check when no user is logged in 
                     // => for non-authenticated rss access 
                     if ((currentUser != null) && !statusUser.getDomain().equals(currentUser.getDomain())) {
                         throw new DomainViolationException("User " + currentUser + " tried to access " +
-                                " status : " + status);
+                                " status : " + abstractStatus);
                     }
 
                     StatusDTO statusDTO = new StatusDTO();
-                    statusDTO.setStatusId(status.getStatusId());
-
-                    // Group check
-                    boolean hiddenStatus = false;
-                    if (status.getGroupId() != null) {
-                        statusDTO.setGroupId(status.getGroupId());
-                        Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
-                        // if this is a private group and the user is not part of it, he cannot see the status
-                        if (!group.isPublicGroup() && !usergroups.contains(group)) {
-                            hiddenStatus = true;
-                        } else {
-                            statusDTO.setPublicGroup(group.isPublicGroup());
-                            statusDTO.setGroupName(group.getName());
-                        }
+                    statusDTO.setStatusId(abstractStatus.getStatusId());
+                    statusDTO.setStatusDate(abstractStatus.getStatusDate());
+                    StatusType type = abstractStatus.getType();
+                    if (type == null) {
+                        statusDTO.setType(StatusType.STATUS);
+                    } else {
+                        statusDTO.setType(abstractStatus.getType());
                     }
 
-                    if (!hiddenStatus) {
-                        if (sharedStatusInfo != null) { // Manage shared statuses
-                            statusDTO.setTimelineId(sharedStatusInfo.getSharedStatusId());
-                            String sharedByLogin = sharedStatusInfo.getSharedByLogin();
-                            String sharedByUsername = DomainUtil.getUsernameFromLogin(sharedByLogin);
-                            statusDTO.setSharedByUsername(sharedByUsername);
+                    if (abstractStatus.getType().equals(StatusType.SHARE)) {
+                        Share share = (Share) abstractStatus;
+                        AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+                        if (originalStatus != null) { // Find the original status
+                            statusDTO.setTimelineId(share.getStatusId());
+                            statusDTO.setSharedByUsername(share.getUsername());
+                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
                         } else {
-                            statusDTO.setTimelineId(status.getStatusId());
+                            log.debug("Original status has been deleted");
                         }
-                        if (status.getHasAttachments() != null && status.getHasAttachments()) {
-                            statusDTO.setAttachments(status.getAttachments());
-                        }
-                        statusDTO.setContent(status.getContent());
-                        statusDTO.setUsername(status.getUsername());
-                        if (status.getStatusPrivate() == null) {
-                            statusDTO.setStatusPrivate(false);
+                    } else if (abstractStatus.getType().equals(StatusType.MENTION_SHARE)) {
+                        MentionShare mentionShare = (MentionShare) abstractStatus;
+                        AbstractStatus originalStatus = statusRepository.findStatusById(mentionShare.getOriginalStatusId());
+                        if (originalStatus != null) { // Find the status that was shared
+                            statusDTO.setTimelineId(mentionShare.getStatusId());
+                            statusDTO.setSharedByUsername(mentionShare.getUsername());
+                            statusUser = userService.getUserByLogin(mentionShare.getLogin());
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
                         } else {
-                            statusDTO.setStatusPrivate(status.getStatusPrivate());
+                            log.debug("Mentioned status has been deleted");
                         }
-                        statusDTO.setStatusDate(status.getStatusDate());
-                        statusDTO.setReplyTo(status.getReplyTo());
-                        statusDTO.setReplyToUsername(status.getReplyToUsername());
-                        if (favoriteLine.containsKey(statusId)) {
-                            statusDTO.setFavorite(true);
-                        } else {
-                            statusDTO.setFavorite(false);
-                        }
+                    } else if (abstractStatus.getType().equals(StatusType.MENTION_FRIEND)) {
+                        MentionFriend mentionFriend = (MentionFriend) abstractStatus;
+                        statusDTO.setTimelineId(mentionFriend.getStatusId());
+                        statusDTO.setSharedByUsername(mentionFriend.getUsername());
+                        statusUser = userService.getUserByLogin(mentionFriend.getFollowerLogin());
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
                         statusDTO.setAvatar(statusUser.getAvatar());
-                        statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+                        statuses.add(statusDTO);
+                    } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+                        Announcement announcement = (Announcement) abstractStatus;
+                        AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
+                        if (originalStatus != null) { // Find the status that was announced
+                            statusDTO.setTimelineId(announcement.getStatusId());
+                            statusDTO.setSharedByUsername(announcement.getUsername());
+                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
+                            buildStatus(statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            statuses.add(statusDTO);
+                        } else {
+                            log.debug("Announced status has been deleted");
+                        }
+                    } else { // Normal status
+                        statusDTO.setTimelineId(abstractStatus.getStatusId());
+                        buildStatus(statusDTO, abstractStatus, statusUser, usergroups, favoriteLine);
                         statuses.add(statusDTO);
                     }
                 } else {
                     if (log.isDebugEnabled()) {
-                        log.debug("Deleted user : " + status.getLogin());
+                        log.debug("Deleted user : " + abstractStatus.getLogin());
                     }
                 }
             } else {
@@ -240,6 +279,52 @@ public class TimelineService {
         return statuses;
     }
 
+    private void buildStatus(StatusDTO statusDTO,
+                             AbstractStatus abstractStatus,
+                             User statusUser,
+                             Collection<Group> usergroups,
+                             List<String> favoriteLine) {
+
+        Status status = (Status) abstractStatus;
+        // Group check
+        boolean hiddenStatus = false;
+        if (status.getGroupId() != null) {
+            statusDTO.setGroupId(status.getGroupId());
+            Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
+            // if this is a private group and the user is not part of it, he cannot see the status
+            if (!group.isPublicGroup() && !usergroups.contains(group)) {
+                hiddenStatus = true;
+            } else {
+                statusDTO.setPublicGroup(group.isPublicGroup());
+                statusDTO.setGroupName(group.getName());
+            }
+        }
+
+        if (!hiddenStatus) {
+            if (status.getHasAttachments() != null && status.getHasAttachments()) {
+                statusDTO.setAttachments(status.getAttachments());
+            }
+            statusDTO.setContent(status.getContent());
+            statusDTO.setUsername(statusUser.getUsername());
+            if (status.getStatusPrivate() == null) {
+                statusDTO.setStatusPrivate(false);
+            } else {
+                statusDTO.setStatusPrivate(status.getStatusPrivate());
+            }
+            statusDTO.setReplyTo(status.getReplyTo());
+            statusDTO.setReplyToUsername(status.getReplyToUsername());
+            if (favoriteLine.contains(statusDTO.getStatusId())) {
+                statusDTO.setFavorite(true);
+            } else {
+                statusDTO.setFavorite(false);
+            }
+            statusDTO.setFirstName(statusUser.getFirstName());
+            statusDTO.setLastName(statusUser.getLastName());
+            statusDTO.setAvatar(statusUser.getAvatar());
+            statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+        }
+    }
+
     /**
      * The mentionline contains a statuses where the current user is mentioned.
      *
@@ -247,7 +332,7 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getMentionline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
-        Map<String, SharedStatusInfo> line =
+        List<String> line =
                 mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, since_id, max_id);
 
         return buildStatusList(line);
@@ -266,7 +351,7 @@ public class TimelineService {
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
+        List<String> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
         return buildStatusList(line);
     }
 
@@ -276,7 +361,7 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getGroupline(String groupId, Integer count, String since_id, String max_id) {
-        Map<String, SharedStatusInfo> line = grouplineRepository.getGroupline(groupId, count, since_id, max_id);
+        List<String> line = grouplineRepository.getGroupline(groupId, count, since_id, max_id);
         return buildStatusList(line);
     }
 
@@ -288,7 +373,7 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        Map<String, SharedStatusInfo> line =
+        List<String> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
 
         return buildStatusList(line);
@@ -305,7 +390,7 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String since_id, String max_id) {
 
-        Map<String, SharedStatusInfo> line =
+        List<String> line =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
 
         return buildStatusList(line);
@@ -321,7 +406,7 @@ public class TimelineService {
     public Collection<StatusDTO> getDomainline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line =
+        List<String> line =
                 domainlineRepository.getDomainline(domain, nbStatus, since_id, max_id);
 
         return buildStatusList(line);
@@ -344,7 +429,7 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        Map<String, SharedStatusInfo> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
+        List<String> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
         return this.buildStatusList(line);
     }
 
@@ -352,15 +437,17 @@ public class TimelineService {
         if (log.isDebugEnabled()) {
             log.debug("Removing status : " + statusId);
         }
-        Status status = statusRepository.findStatusById(statusId);
-        if (status != null) {
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
+            Status status = (Status) abstractStatus;
             User currentUser = authenticationService.getCurrentUser();
-            if (status.getLogin().equals(currentUser.getLogin())
-                    && Boolean.FALSE.equals(status.getRemoved())) {
+            if (status.getLogin().equals(currentUser.getLogin())) {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);
             }
+        } else {
+            log.debug("Cannot remove status of this type");
         }
     }
 
@@ -369,35 +456,107 @@ public class TimelineService {
             log.debug("Share status : " + statusId);
         }
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
-        Status status = statusRepository.findStatusById(statusId);
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus != null) {
+            if (abstractStatus.getType().equals(StatusType.STATUS)) {
+                Status status = (Status) abstractStatus;
+                internalShareStatus(currentLogin, status);
+            } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+                Share currentShare = (Share) abstractStatus;
+                // We share the original status
+                Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
+                internalShareStatus(currentLogin, originalStatus);
+            } else {
+                log.warn("Cannot share this type of status: " + abstractStatus);
+            }
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot share this status, as it does not exist: " + abstractStatus);
+            }
+        }
+    }
+
+    private void internalShareStatus(String currentLogin, Status status) {
+        // create share
+        Share share = statusRepository.createShare(currentLogin, status.getStatusId());
+
         // add status to the user's userline and timeline
-        userlineRepository.shareStatusToUserline(currentLogin, status);
-        shareStatusToTimelineAndNotify(currentLogin, currentLogin, status);
+        userlineRepository.shareStatusToUserline(currentLogin, share);
+        shareStatusToTimelineAndNotify(currentLogin, currentLogin, share);
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
         for (String followerLogin : followersForUser) {
-            shareStatusToTimelineAndNotify(currentLogin, followerLogin, status);
+            shareStatusToTimelineAndNotify(currentLogin, followerLogin, share);
         }
         // update the status details to add this share
-        sharesRepository.newShareByLogin(statusId, currentLogin);
+        sharesRepository.newShareByLogin(status.getStatusId(), currentLogin);
+        // mention the status' author that the user has shared his status
+        MentionShare mentionShare = statusRepository.createMentionShare(currentLogin, status.getStatusId());
+        mentionlineRepository.addStatusToMentionline(status.getLogin(), mentionShare.getStatusId());
     }
 
     public void addFavoriteStatus(String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("Favorite status : " + statusId);
         }
-        Status status = statusRepository.findStatusById(statusId);
-        String login = authenticationService.getCurrentUser().getLogin();
-        favoritelineRepository.addStatusToFavoriteline(status, login);
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus.getType().equals(StatusType.STATUS)) {
+            String login = authenticationService.getCurrentUser().getLogin();
+            favoritelineRepository.addStatusToFavoriteline(abstractStatus, login);
+        } else {
+            log.warn("Cannot favorite this type of status: " + abstractStatus);
+        }
     }
 
     public void removeFavoriteStatus(String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("Un-favorite status : " + statusId);
         }
-        Status status = statusRepository.findStatusById(statusId);
-        User currentUser = authenticationService.getCurrentUser();
-        favoritelineRepository.removeStatusFromFavoriteline(status, currentUser.getLogin());
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus.getType().equals(StatusType.STATUS)) {
+            User currentUser = authenticationService.getCurrentUser();
+            favoritelineRepository.removeStatusFromFavoriteline(abstractStatus, currentUser.getLogin());
+        } else {
+            log.warn("Cannot un-favorite this type of status: " + abstractStatus);
+        }
+    }
+
+    public void announceStatus(String statusId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Announce status : " + statusId);
+        }
+        String currentLogin = this.authenticationService.getCurrentUser().getLogin();
+        AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
+        if (abstractStatus != null) {
+            if (abstractStatus.getType().equals(StatusType.STATUS)) {
+                Status status = (Status) abstractStatus;
+                internalAnnounceStatus(currentLogin, status);
+            } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+                Share currentShare = (Share) abstractStatus;
+                // We announce the original status
+                Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
+                internalAnnounceStatus(currentLogin, originalStatus);
+            } else {
+                log.warn("Cannot announce this type of status: " + abstractStatus);
+            }
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot announce this status, as it does not exist: " + abstractStatus);
+            }
+        }
+    }
+
+    private void internalAnnounceStatus(String currentLogin, Status status) {
+        // create announcement
+        Announcement announcement = statusRepository.createAnnouncement(currentLogin, status.getStatusId());
+
+        // add status to everyone's timeline
+        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        List<String> logins = domainRepository.getLoginsInDomain(domain);
+        timelineRepository.announceStatusToTimeline(currentLogin, logins, announcement);
+        for (String login : logins) {
+            atmosphereService.notifyUser(login, announcement);
+        }
     }
 
     /**
@@ -407,15 +566,15 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getFavoritesline() {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        Map<String, SharedStatusInfo> line = favoritelineRepository.getFavoriteline(currentLogin);
+        List<String> line = favoritelineRepository.getFavoriteline(currentLogin);
         return this.buildStatusList(line);
     }
 
     /**
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
-    private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Status status) {
-        timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, status);
-        notificationService.notifyUser(timelineLogin, status);
+    private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Share share) {
+        timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, share);
+        atmosphereService.notifyUser(timelineLogin, share);
     }
 }

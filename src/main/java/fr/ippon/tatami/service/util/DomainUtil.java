@@ -16,6 +16,9 @@ public class DomainUtil {
     }
 
     public static String getDomainFromLogin(String login) {
+        if (login == null) {
+            return null;
+        }
         return login.substring(login.indexOf("@") + 1, login.length());
     }
 

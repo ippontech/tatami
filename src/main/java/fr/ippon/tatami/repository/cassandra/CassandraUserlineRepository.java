@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Share;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.UserlineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -9,7 +9,7 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
@@ -36,12 +36,12 @@ public class CassandraUserlineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public void shareStatusToUserline(String currentLogin, Status status) {
-        shareStatus(currentLogin, status, currentLogin, USERLINE_CF, USERLINE_SHARES_CF);
+    public void shareStatusToUserline(String currentLogin, Share share) {
+        shareStatus(currentLogin, share, USERLINE_CF, USERLINE_SHARES_CF);
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getUserline(String login, int size, String since_id, String max_id) {
+    public List<String> getUserline(String login, int size, String since_id, String max_id) {
         return getLineFromCF(USERLINE_CF, login, size, since_id, max_id);
     }
 

@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service.dto;
 
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.status.StatusType;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -41,6 +42,8 @@ public class StatusDTO  implements Serializable {
      * - When this is a shared status, timelineId = the id of this share in the user's timeline
      */
     private String timelineId;
+
+    private StatusType type;
 
     private String username;
 
@@ -113,6 +116,14 @@ public class StatusDTO  implements Serializable {
         this.timelineId = timelineId;
     }
 
+    public StatusType getType() {
+        return type;
+    }
+
+    public void setType(StatusType type) {
+        this.type = type;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -183,21 +194,26 @@ public class StatusDTO  implements Serializable {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
-        DateTime dateTime = new DateTime(statusDate);
-        Period period =
-                new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis());
+        if (statusDate != null) {
+            DateTime dateTime = new DateTime(statusDate);
+            Period period =
+                    new Period(statusDate.getTime(),
+                            Calendar.getInstance().getTimeInMillis());
 
-        if (period.getMonths() < 1) { // Only format if it is more than 1 month old
-            this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            if (period.getMonths() < 1) { // Only format if it is more than 1 month old
+                this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            } else {
+                this.iso8601StatusDate = "";
+            }
+
+            if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
+                this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
+            } else {
+                this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            }
         } else {
             this.iso8601StatusDate = "";
-        }
-
-        if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
-            this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
-        } else {
-            this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            this.prettyPrintStatusDate = "";
         }
     }
 
@@ -286,6 +302,7 @@ public class StatusDTO  implements Serializable {
         return "StatusDTO{" +
                 "statusId='" + statusId + '\'' +
                 ", timelineId='" + timelineId + '\'' +
+                ", type='" + type + '\'' +
                 ", username='" + username + '\'' +
                 ", statusPrivate=" + statusPrivate +
                 ", groupId='" + groupId + '\'' +

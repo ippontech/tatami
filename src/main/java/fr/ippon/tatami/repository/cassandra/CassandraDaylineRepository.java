@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.UserStatusStat;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.DaylineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;

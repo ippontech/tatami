@@ -60,11 +60,14 @@
             'change:discussion': 'onRender'
         },
         events: {
-            'click > div': 'showDetails',
+            'click': 'showDetails',
             'click .status-action-show' : 'showDetails',
             'click .status-action-reply': 'replyAction',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
+            'click .status-action-announce': 'announceAction',
+            'click .status-action-announce-confirm': 'announceActionConfirm',
+            'click .status-action-announce-cancel': 'announceActionCancel',
             'click .status-action-delete': 'deleteAction',
             'click .status-action-delete-confirm': 'deleteActionConfirm',
             'click .status-action-delete-cancel': 'deleteActionCancel',
@@ -86,8 +89,14 @@
         },
         showDetails: function(){
             currentModel = this.model;
+            if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
+                return;
+            }
             if(this.model.get('root')){
                 var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+                statusDetail.set("groupId", this.model.get("groupId"));
+                statusDetail.set("statusPrivate", this.model.get("statusPrivate"));
+                statusDetail.set("type", this.model.get("type"));
                 if(!this.before.currentView){
                     var self = this;
                     statusDetail.set('refDate', this.model.get('statusDate'));
@@ -203,6 +212,35 @@
                 }
             });
             return false;
+        },
+        announceAction: function() {
+            var self = this;
+            var popoverNode = self.$el.find('.status-action-announce');
+            popoverNode.popover({
+                html: true,
+                animation: true,
+                placement: 'top',
+                trigger: 'manual',
+                content: self.$el.find('.status-action-announce').attr('confirmation-text')
+            });
+            popoverNode.popover('show');
+            return false;
+        },
+        announceActionConfirm: function(){
+            this.$el.find('.status-action-announce').popover('hide');
+            var self = this;
+            this.model.save({
+                announced: true
+            }, {
+                patch: true,
+                success: function(){
+                    self.onRender();
+                }
+            });
+            return false;
+        },
+        announceActionCancel: function(){
+            this.$el.find('.status-action-announce').popover('hide');
         },
         deleteAction: function(){
             var self = this;

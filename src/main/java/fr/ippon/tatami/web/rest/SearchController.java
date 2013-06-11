@@ -2,7 +2,6 @@ package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -27,7 +26,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Search engine controller.
@@ -89,11 +88,11 @@ public class SearchController {
         }
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line;
+        List<String> line;
         if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
         } else {
-            line = Collections.emptyMap();
+            line = Collections.emptyList();
         }
         return timelineService.buildStatusList(line);
     }

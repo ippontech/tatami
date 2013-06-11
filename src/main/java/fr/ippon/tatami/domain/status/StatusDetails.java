@@ -1,5 +1,6 @@
-package fr.ippon.tatami.domain;
+package fr.ippon.tatami.domain.status;
 
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.dto.StatusDTO;
 
 import java.io.Serializable;

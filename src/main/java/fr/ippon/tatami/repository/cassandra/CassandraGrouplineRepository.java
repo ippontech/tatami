@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.GrouplineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -11,7 +10,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE_CF;
@@ -47,7 +46,7 @@ public class CassandraGrouplineRepository extends AbstractCassandraLineRepositor
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getGroupline(String groupId, int size, String since_id, String max_id) {
+    public List<String> getGroupline(String groupId, int size, String since_id, String max_id) {
         return getLineFromCF(GROUPLINE_CF, groupId, size, since_id, max_id);
     }
 }
