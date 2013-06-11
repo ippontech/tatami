@@ -35,7 +35,7 @@ public class ApplePushService {
     /**
      * Notifies the user with APNS.
      */
-    public void notifyUser(String login, AbstractStatus abstractStatusn) {
+    public void notifyUser(String login, AbstractStatus abstractStatus) {
         if (log.isDebugEnabled()) {
             log.debug("Notifying user with Apple Push: " + login);
         }
