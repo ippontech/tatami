@@ -28,7 +28,7 @@
         <link href="/css/new.css" rel="stylesheet">
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
-        <link href="/tatami/static-wro4j/${version}/vendor.css" rel="stylesheet">
+        <link href="/tatami/static-wro4j/${version}/tatami.css" rel="stylesheet">
     </c:if>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -126,7 +126,7 @@
         <script src="/js/app/router.js"></script>
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
-        <script src="/tatami/static-wro4j/${version}/vendor.js"></script>
+        <script src="/tatami/static-wro4j/${version}/tatami.js"></script>
     </c:if>
 
     <script type="text/template" id="stub">

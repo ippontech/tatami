@@ -25,7 +25,7 @@
         <js>/js/tatami-commons.js</js>
         <js>/js/tatami-search.js</js>
     </group>
-    <group name='vendor'>
+    <group name='tatami'>
         <css>/css/vendor/css/bootstrap.css</css>
         <css>/css/new.css</css>
 
