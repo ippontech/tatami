@@ -138,14 +138,14 @@ public class HomeController {
     }
 
     /**
-     * This maps any GET request to /tatami/[subpath]
-     * to the jsp named [subpath].jsp.
+     * This maps any GET request to /tatami/customization/[subpath]
+     * to the jsp named /customization/[subpath].jsp.
      * <p/>
      * It allows adding easily new pages with tatamiCustomization
      */
-    @RequestMapping(value = "/{subPath}", method = RequestMethod.GET)
+    @RequestMapping(value = "/customization/{subPath}", method = RequestMethod.GET)
     public String anyOtherSubPath(@PathVariable String subPath) {
-        return subPath;
+        return "/customization/" + subPath;
     }
 
 }
