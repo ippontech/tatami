@@ -43,7 +43,7 @@ public class ApplicationConfiguration {
      */
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
-        log.debug("Looking for Spring profiles... Available profiles are \"metrics\" and \"tatamibot\"");
+        log.debug("Looking for Spring profiles... Available profiles are \"metrics\", \"tatamibot\" and \"apple-push\"");
         if (env.getActiveProfiles().length == 0) {
             log.debug("No Spring profile configured, running with default configuration");
         } else {

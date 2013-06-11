@@ -30,6 +30,10 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                         Authentication authentication) throws ServletException, IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
+        if (request.getParameter("device_token") != null) {
+            log.info("Device token: " + request.getParameter("device_token"));
+        }
+
         if (savedRequest == null) {
             super.onAuthenticationSuccess(request, response, authentication);
             return;

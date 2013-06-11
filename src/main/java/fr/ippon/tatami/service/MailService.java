@@ -154,7 +154,7 @@ public class MailService {
     }
 
     @Async
-    public void sendUserPrivateMessageEmail(Status status, User mentionnedUser) {
+    public void sendUserPrivateMessageEmail(User mentionnedUser, Status status) {
         if (log.isDebugEnabled()) {
             log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() +
                     "' with locale : '" + locale + "'");
@@ -170,7 +170,7 @@ public class MailService {
     }
 
     @Async
-    public void sendUserMentionEmail(Status status, User mentionnedUser) {
+    public void sendUserMentionEmail(User mentionnedUser, Status status) {
         if (log.isDebugEnabled()) {
             log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() +
                     "' with locale : '" + locale + "'");

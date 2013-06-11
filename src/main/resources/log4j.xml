@@ -27,6 +27,9 @@
     <logger name="com.yammer.metrics">
         <level value="WARN"/>
     </logger>
+    <logger name="com.notnoop">
+        <level value="WARN"/>
+    </logger>
     <logger name="me.prettyprint">
         <level value="WARN"/>
     </logger>

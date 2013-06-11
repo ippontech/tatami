@@ -49,7 +49,7 @@ public class StatusUpdateService {
     private TimelineRepository timelineRepository;
 
     @Inject
-    private MentionlineRepository mentionlineRepository;
+    private MentionService mentionService;
 
     @Inject
     private UserlineRepository userlineRepository;
@@ -86,12 +86,6 @@ public class StatusUpdateService {
 
     @Inject
     private SearchService searchService;
-
-    @Inject
-    private MailService mailService;
-
-    @Inject
-    private UserRepository userRepository;
 
     @Inject
     private DomainlineRepository domainlineRepository;
@@ -360,10 +354,10 @@ public class StatusUpdateService {
                 if (!isPublicGroup(group)) {
                     Collection<String> groupIds = userGroupRepository.findGroups(mentionedLogin);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                        mentionUser(status, mentionedLogin);
+                        mentionUser(mentionedLogin, status);
                     }
                 } else { // This is a public status
-                    mentionUser(status, mentionedLogin);
+                    mentionUser(mentionedLogin, status);
                 }
             }
         }
@@ -389,20 +383,11 @@ public class StatusUpdateService {
 
     /**
      * A status that mentions a user is put in the user's mentionline and in his timeline.
-     * The mentioned user can also be notified by email.
+     * The mentioned user can also be notified by email or iOS push.
      */
-    private void mentionUser(Status status, String mentionedLogin) {
-        mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId());
+    private void mentionUser(String mentionedLogin, Status status) {
         addStatusToTimelineAndNotify(mentionedLogin, status);
-        User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
-
-        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-            if (status.getStatusPrivate()) { // Private status
-                mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
-            } else {
-                mailService.sendUserMentionEmail(status, mentionnedUser);
-            }
-        }
+        mentionService.mentionUser(mentionedLogin, status);
     }
 
     private String extractUsernameWithoutAt(String dest) {
