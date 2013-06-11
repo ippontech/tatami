@@ -36,103 +36,36 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- Spring profiles available : tatamibot, metrics -->
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <log4j.appender>CONSOLE</log4j.appender>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>elasticsearch-remote</id>
             <properties>
-                <!-- Spring profiles available : tatamibot, metrics -->
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <log4j.appender>CONSOLE</log4j.appender>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
                 <tatami.elasticsearch.engine.mode>remote</tatami.elasticsearch.engine.mode>
                 <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
                 <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
                 <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>preprod</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
                 <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>                
-                <tatami.google.analytics.key></tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
@@ -170,23 +103,17 @@
         <profile>
             <id>prod</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
                 <log4j.appender>PAPERTRAIL</log4j.appender>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
@@ -234,67 +161,20 @@
         <profile>
             <id>stress-tests</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>WARN</log4j.loglevel>
                 <log4j.appender>CONSOLE</log4j.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>uitest</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <log4j.appender>CONSOLE</log4j.appender>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://localhost:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <testResources>
@@ -487,6 +367,35 @@
     </profiles>
 
     <properties>
+        <!-- Default project properties -->
+        <jetty.port>8080</jetty.port>
+        <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+        <log4j.loglevel>DEBUG</log4j.loglevel>
+        <log4j.appender>CONSOLE</log4j.appender>
+        <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
+        <tatami.version>${project.version}</tatami.version>
+        <tatami.url>http://localhost:8080</tatami.url>
+        <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
+        <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+        <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+        <tatami.smtp.host></tatami.smtp.host>
+        <tatami.smtp.port></tatami.smtp.port>
+        <tatami.smtp.user></tatami.smtp.user>
+        <tatami.smtp.password></tatami.smtp.password>
+        <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+        <tatami.smtp.tls></tatami.smtp.tls>
+        <tatami.google.analytics.key></tatami.google.analytics.key>
+        <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+        <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+        <tatami.connection.security>any</tatami.connection.security>
+        <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+        <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+        <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
+        <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
+        <tatami.automatic.registration>false</tatami.automatic.registration>
+        <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+        <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.6</java.version>
@@ -531,7 +440,7 @@
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
         <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
-        <maven.wro4j.version>1.6.2</maven.wro4j.version>
+        <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>

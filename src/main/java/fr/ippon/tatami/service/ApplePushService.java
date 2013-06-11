@@ -16,7 +16,7 @@ import java.util.Map;
  * Notifies users with iOS push notifications.
  */
 @Service
-@Profile("ApplePush")
+@Profile("apple-push")
 public class ApplePushService {
 
     private static final Log log = LogFactory.getLog(ApplePushService.class);
