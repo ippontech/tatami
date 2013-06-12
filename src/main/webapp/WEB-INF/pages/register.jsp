@@ -13,7 +13,7 @@
 
 <div id="mainPanel" class="container">
     <div class="row">
-        <div class="offset2 span8">
+        <div class="col-offset-2 col-span-8">
             <h1><fmt:message key="tatami.register.validation.title"/></h1>
 
             <c:if test="${login eq null}">
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="offset4 span2">
+        <div class="col-offset-4 col-span-2">
             <br>
             <br>
             <a href="/tatami/"><fmt:message key="tatami.register.home"/></a>

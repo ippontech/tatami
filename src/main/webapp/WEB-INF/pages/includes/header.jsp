@@ -1,7 +1,7 @@
-<%@ page import="fr.ippon.tatami.config.Constants" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="fr.ippon.tatami.config.Constants" %>
 <%
     String version = Constants.VERSION;
     request.setAttribute("version", version);
@@ -14,24 +14,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title><fmt:message key="tatami.title"/></title>
-    <meta name="viewport" content="initial-scale = 1,user-scalable=no,maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale = 1,user-scalable=no,maximum-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 
-    <sec:authorize ifNotGranted="ROLE_USER">
-        <link href="/css/themes/bootstrap.css" rel="stylesheet">
-    </sec:authorize>
-    <sec:authorize ifAnyGranted="ROLE_USER">
-        <link href="/css/themes/<sec:authentication property='principal.theme'/>.css" rel="stylesheet">
-    </sec:authorize>
+
     <c:if test="${wro4jEnabled eq false}">
-        <link href="/css/reset.css" rel="stylesheet">
-        <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/css/vendor/css/bootstrap.css" rel="stylesheet">
         <link href="/css/tatami.css" rel="stylesheet">
     </c:if>
     <c:if test="${wro4jEnabled eq true}">
-        <link href="/tatami/static-wro4j/${version}/all.css" rel="stylesheet">
+        <link href="/tatami/static-wro4j/${version}/tatami.css" rel="stylesheet">
     </c:if>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 7]>
+    <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css">
+    <![endif]-->
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -55,12 +57,20 @@
             })();
         </script>
     </c:if>
-        
+
     <sec:authorize ifAnyGranted="ROLE_USER">
         <c:if test="${not empty user.rssUid}">
             <link rel="alternate" type="application/rss+xml" title="RSS"
                   href="/tatami/syndic/${user.rssUid}" />
         </c:if>
     </sec:authorize>
-                                      
+
+    <script type="text/javascript">
+        var username = "${user.username}";
+        var ios = false;
+        <c:if test="ios != null">
+            var ios = ${ios};
+        </c:if>
+    </script>
+
 </head>

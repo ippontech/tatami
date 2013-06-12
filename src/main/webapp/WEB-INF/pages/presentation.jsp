@@ -21,8 +21,8 @@
     </div>
     <div class="row">
 
-        <div class="span4"><img src="/img/presentation_tatami.jpg" height="267" width="400" alt="Tatami"></div>
-        <div class="span8">
+        <div class="col-span-4"><img src="/img/presentation_tatami.jpg" height="267" width="400" alt="Tatami"></div>
+        <div class="col-span-8">
             <br>
             <p><h2><fmt:message key="tatami.presentation.row1.title"/></h2></p>
             <ul>
@@ -41,7 +41,7 @@
     </div>
     <div class="row">
 
-        <div class="span8">
+        <div class="col-span-8">
             <br>
             <br>
             <br>
@@ -52,15 +52,15 @@
                 <li><fmt:message key="tatami.presentation.row2.3"/></li>
             </ul>
         </div>
-        <div class="span4"><img src="/img/presentation_devices.jpg" height="267" width="200" alt="Devices"></div>
+        <div class="col-span-4"><img src="/img/presentation_devices.jpg" height="267" width="200" alt="Devices"></div>
 
     </div>
     <div class="row">
         <br>
         <br>
         <br>
-        <div class="span4"><img src="/img/presentation_opensource.jpg" height="216" width="250Logo-ippon-MarquePage.png" alt="Open Source"></div>
-        <div class="span8">
+        <div class="col-span-8"><img src="/img/presentation_opensource.jpg" height="216" width="250Logo-ippon-MarquePage.png" alt="Open Source"></div>
+        <div class="col-span-4">
             <p><h2><fmt:message key="tatami.presentation.row3.title"/></h2></p>
             <ul>
                 <li><fmt:message key="tatami.presentation.row3.1"/></li>
@@ -79,7 +79,7 @@
     <br>
     <div class="row">
 
-        <div class="span8">
+        <div class="col-span-8">
             <p><h2><fmt:message key="tatami.presentation.row4.title"/></h2></p>
             <ul>
                 <li><fmt:message key="tatami.presentation.row4.1"/> <a href="https://tatami.ippon.fr">https://tatami.ippon.fr</a></li>
@@ -87,11 +87,11 @@
                 <li><fmt:message key="tatami.presentation.row4.3"/></li>
             </ul>
         </div>
-        <div class="span4"><img src="/img/company-logo-bookmark.png" height="148" width="150" alt="<fmt:message key="tatami.logo"/>"></div>
+        <div class="col-span-4"><img src="/img/company-logo-bookmark.png" height="148" width="150" alt="<fmt:message key="tatami.logo"/>"></div>
 
     </div>
     <div class="row">
-        <div class="span12">
+        <div class="col-span-12">
             <p><h2><fmt:message key="tatami.presentation.row5.title"/></h2></p>
             <ul>
                 <li><fmt:message key="tatami.presentation.row5.1"/> <a href="mailto:commercial@ippon.fr">commercial@ippon.fr</a></li>

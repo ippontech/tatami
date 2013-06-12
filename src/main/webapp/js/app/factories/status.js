@@ -44,6 +44,12 @@
             });
         },
 
+        statusesCompany: function(){
+            return new Tatami.Views.Statuses({
+                collection: new Tatami.Collections.StatusesCompany()
+            });
+        },
+
         statusesTags: function(tagName){
             var c = new Tatami.Collections.StatusesTags();
             c.tag = tagName;

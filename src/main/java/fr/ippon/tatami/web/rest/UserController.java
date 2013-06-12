@@ -40,22 +40,6 @@ public class UserController {
     private SuggestionService suggestionService;
 
     /**
-     * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
-     */
-    @RequestMapping(value = "/rest/users/show",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    @Deprecated
-    public User getUserV1(@RequestParam("screen_name") String username) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get Profile : " + username);
-        }
-        return userService.getUserByUsername(username);
-    }
-
-    /**
      * GET  /rest/users/:username -> get the "jdubois" user
      */
     @RequestMapping(value = "/rest/users/{username}",

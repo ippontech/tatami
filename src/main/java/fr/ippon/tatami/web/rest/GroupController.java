@@ -117,42 +117,12 @@ public class GroupController {
         }
     }
 
-    /**
-     * GET  /rest/statuses/group_timeline -> get the latest status in group "ippon"
-     */
-    @RequestMapping(value = "/rest/statuses/group_timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<StatusDTO> listStatusForGroup(@RequestParam(required = false, value = "groupId") String groupId,
-                                                    @RequestParam(required = false) Integer count,
-                                                    @RequestParam(required = false) String since_id,
-                                                    @RequestParam(required = false) String max_id) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for group : " + groupId);
-        }
-        if (groupId == null) {
-            return new ArrayList<StatusDTO>();
-        }
-        if (count == null) {
-            count = 20;
-        }
-        Group group = this.getGroup(groupId);
-        if (group == null) {
-            return new ArrayList<StatusDTO>();
-        } else {
-            return timelineService.getGroupline(groupId, count, since_id, max_id);
-        }
-    }
-
     @RequestMapping(value = "/rest/groups/{groupId}/timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<StatusDTO> listStatusForGroupV3(@PathVariable(value = "groupId") String groupId,
+    public Collection<StatusDTO> listStatusForGroup(@PathVariable(value = "groupId") String groupId,
                                                     @RequestParam(required = false) Integer count,
                                                     @RequestParam(required = false) String since_id,
                                                     @RequestParam(required = false) String max_id) {

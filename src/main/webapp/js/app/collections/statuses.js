@@ -69,6 +69,11 @@
         url: '/tatami/rest/mentions'
     });
 
+    var StatusesCompany = Statuses.extend({
+        model: Tatami.Models.Status,
+        url: '/tatami/rest/company'
+    });
+
     var StatusesTags = Statuses.extend({
         model: Tatami.Models.Status,
         url: function(){
@@ -101,6 +106,7 @@
     Tatami.Collections.StatusesTimeline = StatusesTimeline;
     Tatami.Collections.StatusesFavorites = StatusesFavorites;
     Tatami.Collections.StatusesMentions = StatusesMentions;
+    Tatami.Collections.StatusesCompany = StatusesCompany;
     Tatami.Collections.StatusesTags = StatusesTags;
     Tatami.Collections.StatusesUsers = StatusesUsers;
     Tatami.Collections.StatusesGroups = StatusesGroups;

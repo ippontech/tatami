@@ -1,396 +1,408 @@
-.homeMenu{margin-left:0;margin-bottom:0.3em;list-style:none;}
+@media screen and (max-width: 767px) {
+    .navbar .nav, .navbar .navbar-form {
+        float: none;
+    }
+
+    .nav > li > .dropdown-menu {
+        position: static;
+        float: none;
+    }
+
+    .nav li.dropdown-submenu > ul.dropdown-menu {
+        position: initial;
+        z-index: 0;
+        float: none;
+        margin: 0;
+
+    }
+
+    #tatamiBody {
+        padding: 0px;
+    }
+}
+
+@media screen and (min-width: 767px) {
+    #tatamiBody {
+        padding: 10px 15px 10px 0px;
+    }
+}
 
 body {
-    background-image:url(/img/wallpaper.jpg);
+    background-image: url(/img/wallpaper.jpg);
 }
 
-/*
-  Profile Stats table
-*/
-
-.nopadding {
-  padding: 0px;
+h4 {
+    font-size: inherit;
 }
 
-.nomargin {
-  margin: 0px;
+.well {
+    background-color: white;
+    box-shadow: none;
+    border-radius: 5px;
 }
 
-/*
-  Profile Stats table desktop
-*/
-
-.profile-infos {
-  font-size: 90%;
-  margin-bottom: 0px
+.well h4 {
+    margin: 0px;
 }
 
-.profile-infos td, .profile-infos th {
-  text-align: center;
-  padding: 0px;
+.navbar {
+    background-color: black;
 }
 
-.table.profile-infos td{
-    border-top: none;
+.navbar .nav > li > a {
+    color: #CCCCCC;
 }
 
-/*
-  Profile Stats table tablet
-*/
-
-#profileContent .well, #profileOnlineUsers .well, #profileFollow .well, #profileTrends .well, #userTrends .well {
-  padding: 0px;
+.navbar .nav > li > a:hover {
+    color: white;
 }
 
-#profileContent table, #profileOnlineUsers .table, #profileFollow table, #profileTrends table, #userTrends table {
-  margin: 0px;
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-top-color: #CCCCCC; 
+    border-bottom-color: #CCCCCC; 
 }
 
-form {
-  margin-bottom: 0px;
+.navbar .nav li.dropdown > .dropdown-toggle .caret:hover {
+    border-top-color: white; 
+    border-bottom-color: white;
 }
 
-.table-right th {
-  text-align: left;
-  width: 100px;
-}
-.table-right td {
-  text-align: right;
+.navbar .nav li.dropdown.open > .dropdown-toggle {
+    color: white;
+    background-color: inherit;
 }
 
-.alert {
-  padding-right: 14px;
+.img-small {
+    width: 25px;
+    height: 25px;
+    background-position: center center;
+    background-size: cover;
 }
 
-#updateStatusContent {
-    height: 20px;
+.img-reply {
+    width: 35px;
+    height: 35px;
+    margin-left: 10px;
+    background-position: center center;
+    background-size: cover;
 }
 
-#updateStatusEditorTab {
-    display: none;
-    margin-bottom: 5px;
-}
-
-#updateStatusPreview {
-    margin-top : 3px;
-    overflow-y: scroll;
-    height: 150px;
-}
-
-#contentGroup {
-    display: none;
-}
-
-.attachmentBar {
-    height: 18px;
-    background: green;
-}
-
-#updateStatusPrivate {
-    display: none;
-}
-
-#updateStatusBtns {
-    display:none;
-}
-
-.counter{
-    font-size:80%;
-    font-style: italic;
-}
-.counter_warning{color: #ff7f00;}
-.counter_exceeded{color: #ee0014;}
-
-#contentHelp {
-    font-size:80%;
-    font-style: italic;
-}
-
-#updateStatusFileupload {
-    display: none;
-}
-
-#dropzone {
+.img-medium {
+    width: 50px;
     height: 50px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.img-big {
+    width: 70px;
+    height: 70px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.navbar-edit {
+    line-height: 14px;
+    left: 10px;
+    right: initial;
+    width: 48px;
+    padding: 4px 13px 3px;
+}
+
+.navbar-edit:hover,
+.navbar-edit:focus {
+    background-color: #ddd;
+}
+
+.page-header {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.img-rounded {
+    /*border-radius: 15px;*/
+}
+
+.navbar .btn-navbar.fix-navbar {
+    height: 14px;
+    padding-top: 6px;
+    line-height: 14px;
+    font-size: 12px;
+}
+
+.tatam *, .trends *, .profile *, .preview-tatam *, .profile-card, .wrap * {
+    /* white-space: normal; */
+    word-wrap: break-word;
+}
+
+.status-actions {
+    margin-left: -60px;
+}
+
+.status-action {
+    padding: 0;
+    margin: 0;
+}
+
+.status-action:hover {
+    text-decoration: none;
+}
+
+.profile-card > img {
+    margin-right: 5px;
+}
+
+/*.tatam, .useritem {*/
+.useritem {
+    padding: 0px 5px 0px 0px;
+    overflow: hidden;
+    display: none;
+    border: 1px solid #CCCCCC;
+    background-color: white;
+    margin-bottom: -1px;
+}
+
+.useritemmini {
+    padding: 0px 5px 1px 35px;
+    overflow: hidden;
+    display: none;
+}
+
+.useritemmini h6 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    line-height: 12px
+}
+
+.useritem, .useritemmini {
+    display: block;
+}
+
+.mention-share {
+    font-size: 80%;
+    color: #888888;
+}
+
+.tatam.favorite {
+    background-image: url(img/favorite.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.tatam > div:first-child, .useritem > div:first-child {
+    /*margin-left: -60px;*/
+    padding: 5px;
+}
+
+.useritemmini > div:first-child {
+    margin-left: -35px;
+    padding: 5px;
+}
+
+.tatam > header {
+    padding-bottom: 0;
+    margin-bottom: 0px;
+}
+
+.tatams {
+    /*margin-bottom: 15px;*/
+}
+
+.tatam > div:first-child, .useritem > div:first-child {
+    padding: 5px 10px 0px 10px;
+}
+
+.tatams > * {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+@media screen and (min-width: 767px) {
+    .tatam-hover:hover{
+        background-color: #ECF1F7;
+    }
+}
+
+.tatams > *:last-child {
+    margin-bottom: 0;
+}
+
+.tatams-share {
+    padding-top: 5px;
+    /*border-top: 2px solid #bcbcbc;*/
+}
+
+.tatams-share-title {
+    border-right: 2px solid #bcbcbc;
+    padding-right: 5px;
+    margin: 5px;
+}
+
+.tatams-share-img {
+    margin-top: 5px;
+}
+
+/*.tatams-discussion {
+    margin-top: 0px;
+    margin-left: -60px;
+}*/
+
+.tatams-discussion > .tatam > header {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.edit-tatam-float-right {
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    padding: 2px;
+}
+
+.refresh-button {
+
+}
+
+.refresh-button-style {
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: -1px;
+    padding: 10px;    
+    box-shadow: inset 0 3px 8px rgba(0,0,0,.05);
+}
+
+.dropzone {
     line-height: 50px;
     text-align: center;
     font-weight: bold;
     border-style: dashed;
     border-width: 2px;
     border-color: #808080;
-    display: none;
 }
-#dropzone.in {
+
+.dropzone.in {
     border-style: dashed;
     border-width: 2px;
     border-color: #0088cc;
 }
 
-#dropzone.fade {
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
-    opacity: 1;
+.tatam {
+    background-color: white;
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    padding: 0px;
+    margin-bottom: -1px;
+    overflow: hidden;
+    display: none;
 }
 
-.trends {
-    color: #0088CC;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 110%;
+.tatam-border-lr {
+    border-right: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+}
+
+.tatam-first {
+    border-top: 0px;
+}
+
+.tatam-last {
+    border-bottom: 0px;
+}
+
+@media screen and (min-width: 767px) {
+    .tatams-margin {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .tatams-margin {
+        margin-top: -1px;
+    }
+}
+
+.tatams-content-title {
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background-color: white;
+    margin-bottom: 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.tatams-content h3 {
+    padding: 5px 10px 5px 10px;
+    margin: 0px;
+    font-weight: normal;
+    font-size: 1.4em;
+}
+
+.btn-title {
+    margin-top: 2px;
     margin-left: 5px;
 }
 
-#trends ul li {
-	list-style-type:none;
+.tatams-content hr {
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #CCCCCC;
+    margin-bottom: -2px;
+    margin-top: 0px;
 }
 
-#trends ul {
-	margin:10px 0 10px 0px;
+.tatams-container {
+    min-height: 75px;
+    background-image: url(/img/wallpaper.jpg);
 }
 
-.alert-status {
-    color: #000000;
-    background-color: #fcfcfc;
-    border-color: #E6E6E6;
-}
-.alert-status h4 {
-    color: #252525;
+.tatam-expand-container {
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-radius: 5px;
 }
 
-.alert-discuss {
-  color: #000000;
-  background-color: #E6E6E6;
-  border-color: #E6E6E6;
+.tatam-background {
+    background-color: #ECF1F7;
 }
 
-.alert-shares {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  color: #000000;
-  border-color: #E6E6E6;
+.homebody-nav {
+    background-color: white;
 }
 
-.share-title {
-  text-align: center;
+.nav-justified {
+    border-collapse: collapse;
 }
 
-.share-number {
-  text-align: center;
-  font-weight: bold;
+.nav-justified > li {
+    border: 1px solid #CCCCCC;
+    padding: 0px;
 }
 
-.shares-list div {
-  float:left;
+.nav-tabs > li > a {
+    border-radius: 0px;
 }
 
-.details-available {
-    box-shadow: 2px 2px 2px #888;
+.homebody-nav {
+    background-color: white;
 }
 
-.statuses-details {
-    padding-left: 50px;
+.homebody-nav .active a {
+    color: #333333;
 }
 
-.statuses table, .shares table {
-    width: 100%;
+.nav-tabs.nav-justified > .active > a {
+    border-bottom-color: #CCCCCC;
 }
 
-.userStatus {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 110%;
-    margin-left: 5px
-}
-.userStatus:hover {
-    text-decoration: none;
-    color: #08C;
-}
-
-.userStatus em {
-    font-size: 90%;
-    color: #808080;
-    font-weight: normal;
-}
-.userStatus-info {
-    color: #808080;
-    font-weight: normal;
-}
-
-.controls .avatar{
-    display: block;
-    float: left;
-}
-
-.avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 5px 5px 5px 5px;
-    margin-right: 5px;
-    margin-bottom: 0px;
-}
-
-.avatar-small {
-    width: 32px;
-    height: 32px;
-    margin-right: 2px;
-    margin-bottom: 2px;
-}
-
-.status-actions {
-  font-size: 90%;
-  font-weight: normal;
-  padding-right: 10px;
-}
-
-.status-actions a:hover {
-  cursor: pointer;
-}
-
-.status-content p {
-  word-break: break-word;
-  word-wrap: break-word;
-}
-
-.status-content a {
-  font-weight: bold;
-}
-/** replay to status */
-
-#replyEditorTab {
-  margin-bottom : 5px;
-}
-#replyEdit {
-  height : 120px;
-}
-
-#replyPreview {
-  margin-bottom : 10px;
-  height : 110px;
-}
-
-.status .well {
-  padding: 5px;
-  margin-bottom: 0px;
-}
-
-.timeago {
-  color: #808080;
-  font-size: 90%;
-}
-
-.favorite {
-  background-image: url(/img/favorite.png);
-  background-repeat: no-repeat;
-  background-position: right top;
-}
-
-.status {
-  margin-bottom: 5px;
-}
-
-.status th:first-child {
-  vertical-align: top;
-  width: 64px;
-}
-
-.status table {
-  margin-bottom: 0px;
-}
-
-.status td {
-  padding-bottom: 0px;
-  padding-right: 0px;
-}
-
-.profilMenu {
-  margin-bottom: 0px;
-}
-
-/*
-  Responsive design
-*/
-
-/*
-  Fix input width on phone
-*/
-
-/* Landscape phones and down */
-@media (max-width: 480px) {
-  .hero-unit {
-    padding: 10px;
-  }
-
-  .hero-unit h1 {
-    font-size: 42px;
-  }
-}
- 
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) { 
-  [class*="span"], .row-fluid [class*="span"] {
-    width: 100%;
-  }
-
-  .navbar-fixed-top, .navbar-fixed-bottom {
-    margin-right: -5px;
-    margin-left: -5px;
-    margin-bottom: 5px;
-  }
-
-  body {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-
-
-  .alert {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-
-  .status th {
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-  .alert {
-    margin-bottom: 5px;
-  }
-
-}
- 
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-}
- 
-/* Large desktop */
-@media (min-width: 1200px) {
-}
-
-.tags-followed {
-	margin:0px 10px 10px 0px;
-	padding:5px;
-	text-shadow:none;
-}
-
-.tags-followed a {
-	color:#ffffff;
-}
-
-.margin-bottom5 {
-	margin-bottom:5px;
-}
-
-.user-profile {
-	margin:0px;
-    color:#252525;
-}
 /**
-** Search Engine
+* Search Engine
 **/
 
 .typeahead.dropdown-menu.hasCategory{
@@ -399,8 +411,14 @@ form {
     padding: 0px;
 }
 
+@media screen and (max-width: 767px) {
+    .typeahead.dropdown-menu.hasCategory{
+        position: static;
+        width: 100%;
+    }
+}
 
-@media (min-width: 979px) { 
+@media (min-width: 979px) {
   .typeahead.dropdown-menu.hasCategory{
     margin-left: -53px;
   }
@@ -409,7 +427,6 @@ form {
     width: 320px;
   }
 }
-
 
 .hasCategory .item{
     height: 33px;
@@ -499,81 +516,104 @@ form {
   border-bottom: 1px solid #CCCCCC;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1); 
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.alert .close {
-  right: -6px;
+.background-image-fffix {
+    overflow: auto;
 }
 
-.typeahead-item{
-    width: 200px;
+.background-image-fffix img {
+    display: block;
 }
 
-.avatar-float-left {
-  margin-left: -73px;
+.searchbody h3 {
+    padding: 0px;
+    margin: 0px;
+    font-weight: normal;
+    font-size: 1.4em;
 }
 
-.avatar-float-left-container {
-  padding-left: 73px;
+.searchbody hr {
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 10px;
 }
 
-.blur {
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
-}
-
-span.quota{
-  position: absolute;
-  width: 100%;
-  left: 0;
-  text-align: center;
-}
-
-#accountContent .progress {
-    position:relative;
-}
-
-#presentationHelp, #updateStatusContentHelp, #timelineHelp, #groupsHelp, #follow-suggestHelp, #profileTrendsHelp{
-	width : 400px;
-}
-
-#timelineHelp {
-    padding-top: 46px;
-}
-
-.fixFFmax-width{
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-}
-
-.status-content * {
-  max-width: 100%;
-}
-
-#updateAvatar {
-    width: 130px;
-    position: relative;
-}
-
-#updateAvatar p{
+.deleteicon {
     position: absolute;
-    top: 5px;
-    font-size: 13px;
+    display: block;
+    top: 9px;
+    right: 22px;
+    cursor: pointer;
+}
+
+.statusitem-name {
+    padding: 0;
     margin: 0;
-    width: 130px;
+    margin-top: -4px;
 }
 
-#updateAvatar input[type=file] {
-    opacity: 0;
-    width: 130px;
+.statusitem-content {
+    margin-bottom: 5px;
+    
 }
 
-.dashed {
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 20px;
+.statusitem-footer {
+    padding: 0px;   
+}
+
+.markdown p {
+    margin: 0px 0px 0px 0px;
+}
+
+#current {
+    padding: 5px;
+}
+
+#before{
+    padding: 0px;
+    margin: 0px;
+}
+
+#after {
+
+}
+
+#status-content-container {
+    margin-left: 60px;
+}
+
+.statusitem-img {
+    margin-bottom: 5px;
+}
+
+@media screen and (min-width: 767px) {
+    #buttons {
+        clear: both;
+        margin-left: 60px;
+    }
+}
+@media screen and (max-width: 767px) {
+    #buttons {
+        clear: both;
+    }
+
+    .statusitem-footer {
+        background-color: #ECF1F7;
+        border-top: 1px solid #CCCCCC;
+        padding-left: 8px;
+    }
+
+    .button-ios {
+        margin-left: -2px;
+        margin-right: -2px;
+        margin: 2px 4px 2px 0px; 
+    }
+
+    .button-ios-right {
+        border-right: 1px solid #CCCCCC;
+    }
+
 }

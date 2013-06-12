@@ -1,6 +1,6 @@
 (function(Backbone, _, Tatami, Modernizr, window){
 
-    var Users = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
         initialize: function(){
           this.listenTo(this, 'sync', function(model){
             if(Tatami.app.user.id === model.id)
@@ -57,6 +57,6 @@
         }
     });
 
-    Tatami.Models.Users = Users;
+    Tatami.Models.User = User;
 
 })(Backbone, _, Tatami, Modernizr, window);

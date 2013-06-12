@@ -12,6 +12,7 @@
             'groups/:group' : 'groups',
             'groups/:group/members' : 'groupsMembers',
             'search/:input' : 'search',
+            'company' : 'company',
             '*actions' : 'defaults'
         },
 
@@ -338,6 +339,30 @@
             usersInGroup.collection.fetch();
             
             groupsBody.show('members');
+        },
+
+        company: function(){
+
+            Tatami.app.navbar.displaySearch();
+            var homeSide = Tatami.Factories.Home.homeSide();
+            Tatami.app.side.show(homeSide);
+            homeSide.tagTrends.show(Tatami.Factories.Home.tagTrends());
+            homeSide.whoToFollow.show(Tatami.Factories.Home.whoToFollow());
+
+            Tatami.app.header.close();
+
+            var homeBody = Tatami.Factories.Home.homeBody('company');
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Status.statusesCompany();
+            Tatami.app.body.show(homeBody);
+
+            homeBody.tatams.show(region);
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch();
         }
     });
 

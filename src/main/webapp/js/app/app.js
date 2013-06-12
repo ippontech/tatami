@@ -155,7 +155,7 @@
             Tatami.app.router = new Tatami.Router();
             Backbone.history.start({
                 pushState: true,
-                root: "/tatami/new/"
+                root: "/tatami/home/"
             });
             if (Backbone.history._hasPushState) {
                 $(document).delegate("a", "click", function(evt) {
@@ -175,7 +175,7 @@
             Tatami.app.start();
         });
 
-        Tatami.app.user = new Tatami.Models.Users({
+        Tatami.app.user = new Tatami.Models.User({
             username: username
         });
         Tatami.app.groups = new Tatami.Collections.Groups();

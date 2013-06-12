@@ -1,4 +1,3 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -11,7 +10,7 @@
 <jsp:include page="includes/topmenu.jsp"/>
 
 <div id="mainPanel" class="container">
-    <div class="offset2 span8 ">
+    <div class="col-offset-2 col-span-8">
 
         <h1><fmt:message key="tatami.license"/></h1>
 
@@ -27,7 +26,6 @@
     </div>
 </div>
 
-<jsp:include page="includes/footer.jsp"/>
-
 </body>
+<jsp:include page="includes/footer.jsp"/>
 </html>

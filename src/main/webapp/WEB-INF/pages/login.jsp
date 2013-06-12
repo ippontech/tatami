@@ -14,7 +14,7 @@
 <div id="mainPanel" class="container">
 
     <div class="row">
-        <div class="hero-unit">
+        <div class="jumbotron">
             <h1><fmt:message key="tatami.presentation"/></h1>
             <p>
                 [<a href="/tatami/presentation"><fmt:message key="tatami.presentation.moreinfo"/></a>]
@@ -54,101 +54,100 @@
     </c:if>
 
     <div class="row">
-        <div class="span4">
-            <div class="row-fluid">
-                <h1><fmt:message key="tatami.register.title"/></h1>
+        <div class="col-span-4">
+            <h1><fmt:message key="tatami.register.title"/></h1>
 
-                <p>
-                    <fmt:message key="tatami.register.text.1"/>
-                <ul>
-                    <li><fmt:message key="tatami.register.text.2"/></li>
-                    <li><fmt:message key="tatami.register.text.3"/></li>
-                    <li><fmt:message key="tatami.register.text.4"/></li>
-                </ul>
-                </p>
-                <form action="/tatami/register" method="post" class="well" accept-charset="utf-8" id="registrationForm">
-                    <fieldset class="row-fluid">
-                        <div class="controle-group">
-                            <label>
-                                <fmt:message key="tatami.login"/> :
-                            </label>
-                            <input name="email" type="email" required="required" class="span12"
-                                   placeholder="Your e-mail..."/>
+            <p>
+                <fmt:message key="tatami.register.text.1"/>
+            <ul>
+                <li><fmt:message key="tatami.register.text.2"/></li>
+                <li><fmt:message key="tatami.register.text.3"/></li>
+                <li><fmt:message key="tatami.register.text.4"/></li>
+            </ul>
+            </p>
+            <form action="/tatami/register" method="post" class="well" accept-charset="utf-8" id="registrationForm">
+                <fieldset class="row-fluid">
+                    <div class="controle-group">
+                        <label>
+                            <fmt:message key="tatami.login"/> :
+                        </label>
+                        <input name="email" type="email" required="required" class="span12"
+                               placeholder="Your e-mail..."/>
+                    </div>
+                    <div class="controle-group">
+                        <button type="submit" class="span12 btn btn-success" id="registrationButton">
+                            <fmt:message key="tatami.register"/>
+                        </button>
+                        <div class="text-center">(<a href="/tatami/tos"><fmt:message
+                                key="tatami.authentication.cgv"/></a>)
                         </div>
-                        <div class="controle-group">
-                            <button type="submit" class="span12 btn btn-success" id="registrationButton">
-                                <fmt:message key="tatami.register"/>
-                            </button>
-                            <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)</div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
 
-        <div class="span4">
-            <div class="row-fluid">
-                <h1><fmt:message key="tatami.authentification"/></h1>
+        <div class="col-span-4">
+            <h1><fmt:message key="tatami.authentification"/></h1>
 
-                <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm" class="well">
-                    <fieldset class="row-fluid">
-                        <div class="controle-group">
-                            <label>
-                                <fmt:message key="tatami.login"/> :
-                            </label>
-                            <input id="j_username" name="j_username" type="email" required="required" autofocus
-                                   class="span12" placeholder="Your e-mail..."/>
-                        </div>
-                        <div class="controle-group">
-                            <label>
-                                <fmt:message key="tatami.password"/> :
-                            </label>
-                            <input id="j_password" name="j_password" type="password" required="required"
-                                   class="span12" placeholder="Your password..."/>
-                        </div>
-                        <div class="controle-group">
-                            <fmt:message key="tatami.remember.password.time"/> :
-                            <input id="_spring_security_remember_me" name="_spring_security_remember_me"
-                                   type="checkbox"/>
-                        </div>
-                        <div class="controle-group">
-                            <button type="submit" class="span12 btn btn-success" id="loginButton">
-                                <fmt:message key="tatami.authentificate"/>
-                            </button>
-                        </div>
-                    </fieldset>
-                </form>
-
-                <div class="well">
-                    <div class="row-fluid" data-toggle="collapse" data-target="#lostPasswordDiv">
-                        <button class="span12 btn btn-info">
-                            <fmt:message key="tatami.lost.password.title"/>
+            <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm" class="well">
+                <fieldset class="row-fluid">
+                    <div class="controle-group">
+                        <label>
+                            <fmt:message key="tatami.login"/> :
+                        </label>
+                        <input id="j_username" name="j_username" type="email" required="required" autofocus
+                               class="span12" placeholder="Your e-mail..."/>
+                    </div>
+                    <div class="controle-group">
+                        <label>
+                            <fmt:message key="tatami.password"/> :
+                        </label>
+                        <input id="j_password" name="j_password" type="password" required="required"
+                               class="span12" placeholder="Your password..."/>
+                    </div>
+                    <div class="controle-group">
+                        <fmt:message key="tatami.remember.password.time"/> :
+                        <input id="_spring_security_remember_me" name="_spring_security_remember_me"
+                               type="checkbox"/>
+                    </div>
+                    <div class="controle-group">
+                        <button type="submit" class="span12 btn btn-success" id="loginButton">
+                            <fmt:message key="tatami.authentificate"/>
                         </button>
                     </div>
-                    <br/>
+                </fieldset>
+            </form>
 
-                    <div id="lostPasswordDiv" class="collapse">
-                        <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
-                            <fieldset>
-                                <div class="controle-group">
-                                    <label>
-                                        <fmt:message key="tatami.login"/> :
-                                    </label>
-                                    <input name="email" type="email" required="required" class="span12"
-                                           placeholder="Your e-mail..."/>
-                                </div>
-                                <div class="controle-group">
-                                    <button type="submit" class="span12 btn btn-success">
-                                        <fmt:message key="tatami.lost.password.button"/>
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
+            <div class="well">
+                <div class="row-fluid" data-toggle="collapse" data-target="#lostPasswordDiv">
+                    <button class="span12 btn btn-info">
+                        <fmt:message key="tatami.lost.password.title"/>
+                    </button>
+                </div>
+                <br/>
+
+                <div id="lostPasswordDiv" class="collapse">
+                    <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
+                        <fieldset>
+                            <div class="controle-group">
+                                <label>
+                                    <fmt:message key="tatami.login"/> :
+                                </label>
+                                <input name="email" type="email" required="required" class="span12"
+                                       placeholder="Your e-mail..."/>
+                            </div>
+                            <div class="controle-group">
+                                <button type="submit" class="span12 btn btn-success">
+                                    <fmt:message key="tatami.lost.password.button"/>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="span4">
+
+        <div class="col-span-4">
             <h1><fmt:message key="tatami.authentication.google.title"/></h1>
 
             <p>

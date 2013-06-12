@@ -1,6 +1,6 @@
 (function(Backbone, Tatami){
 
-    var Tags = Backbone.Model.extend({
+    var Tag = Backbone.Model.extend({
         initialize: function(){
             var self = this;
 
@@ -22,6 +22,6 @@
         }
     });
 
-    Tatami.Models.Tags = Tags;
+    Tatami.Models.Tag = Tag;
 
 })(Backbone, Tatami);

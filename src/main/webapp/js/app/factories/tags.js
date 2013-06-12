@@ -1,7 +1,7 @@
 (function(Backbone, Tatami){
 
     var tags = new (Backbone.Collection.extend({
-        model : Tatami.Models.Tags
+        model : Tatami.Models.Tag
     }))();
 
     var tagsBody, tagsHeader;
@@ -15,7 +15,7 @@
         tagsHeader: function(tagName){
             var tag = tags.get(tagName);
             if(!tag){
-                tag = new Tatami.Models.Tags({
+                tag = new Tatami.Models.Tag({
                     name: tagName
                 });
                 tags.add(tag);

@@ -134,14 +134,12 @@
         },
 
         show: function(options){
-            console.log("show");
             options = (options)? options: {};
             if(options.status) {
                 var self = this;
                 var statusReply = new Tatami.Models.Status({
                     statusId: options.status
                 });
-                console.log("show avant "+statusReply.get('root'));
                 statusReply.fetch({
                     success: function(model){
                         self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");

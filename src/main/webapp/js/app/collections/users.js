@@ -1,7 +1,7 @@
 (function(Backbone, Tatami){
 
     var Users = Backbone.Collection.extend({
-        model: Tatami.Models.Users
+        model: Tatami.Models.User
     });
 
     var Friends = Users.extend({

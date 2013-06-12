@@ -247,6 +247,7 @@ public class TimelineService {
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
                         statusDTO.setAvatar(statusUser.getAvatar());
+                        statusDTO.setUsername(statusUser.getUsername());
                         statuses.add(statusDTO);
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;

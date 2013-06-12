@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <groups xmlns="http://www.isdc.ro/wro">
-    <group name='all'>
-        <css>/css/reset.css</css>
-        <css>/css/bootstrap-responsive.css</css>
-        <css>/css/tatami.css</css>
-
-        <js>/js/jquery.js</js>
-        <js>/js/jquery-ui.min.js</js>
-        <js>/js/bootstrap.js</js>
-        <js>/js/bootstrap-tour.js</js>
-        <js>/js/underscore.js</js>
-        <js>/js/underscore-polyfill.js</js>
-        <js>/js/backbone.js</js>
-        <js>/js/jquery-charcount.js</js>
-        <js>/js/jquery-timeago.js</js>
-        <js>/js/jquery-tatami-infinitiScroll.js</js>
-        <js>/js/marked.js</js>
-        <js>/js/jquery.ui.widget.js</js>
-        <js>/js/jquery.iframe-transport.js</js>
-        <js>/js/jquery.fileupload.js</js>
-        <js>/js/d3.js</js>
-        <js>/js/d3.layout.cloud.js</js>
-        <js>/js/tatami-commons.js</js>
-        <js>/js/tatami-search.js</js>
-    </group>
-    <group name='tatami'>
+    <group name='tatami-vendor'>
         <css>/css/vendor/css/bootstrap.css</css>
-        <css>/css/new.css</css>
+        <css>/css/tatami.css</css>
 
         <js>/js/vendor/jquery.js</js>
         <js>/js/vendor/jquery.ui.widget.js</js>
@@ -36,13 +12,15 @@
         <js>/js/vendor/jquery.atmosphere.js</js>
         <js>/js/vendor/jquery-timeago.js</js>
         <js>/js/vendor/bootstrap.js</js>
+        <js>/js/vendor/bootstrap-tour.js</js>
         <js>/js/vendor/underscore.js</js>
         <js>/js/vendor/backbone.js</js>
         <js>/js/vendor/backbone.marionette.js</js>
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
-
+    </group>
+    <group name='tatami-app'>
         <js>/js/app/app.js</js>
         <js>/js/app/router.js</js>
         <js>/js/app/models/**.js</js>

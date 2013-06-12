@@ -35,17 +35,6 @@ public class HomeController {
     @Inject
     private Environment env;
 
-    @RequestMapping(value = "/")
-    public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
-        ModelAndView mv = new ModelAndView("home");
-        User currentUser = authenticationService.getCurrentUser();
-        mv.addObject("user", currentUser);
-        mv.addObject("authenticatedUsername", currentUser.getUsername());
-        mv.addObject("tag", tag);
-        mv.addObject("search", search);
-        return mv;
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("login");
@@ -53,9 +42,9 @@ public class HomeController {
         return mv;
     }
 
-    @RequestMapping(value = { "/new/**", "/new", "/new/" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/", "/home/**", "/home", "/home/" }, method = RequestMethod.GET)
     public ModelAndView newUI(@RequestParam(required = false) String ios) {
-        ModelAndView mv = new ModelAndView("new");
+        ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
         mv.addObject("ios", (ios != null));
@@ -135,6 +124,11 @@ public class HomeController {
     @RequestMapping(value = "/tos", method = RequestMethod.GET)
     public String termsOfService() {
         return "terms_of_service";
+    }
+
+    @RequestMapping(value = "/presentation", method = RequestMethod.GET)
+    public String presentation() {
+        return "presentation";
     }
 
     /**

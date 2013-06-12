@@ -234,7 +234,7 @@ public class AccountController {
             method = RequestMethod.DELETE,
             produces = "application/json")
     @ResponseBody
-    public void finish() {
+    public void finishVisit() {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setIsNew(false);
         userService.updateUser(currentUser);

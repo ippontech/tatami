@@ -71,7 +71,7 @@
 
                 switch(currentCategory){
                     case 'users':
-                        item.avatarURL = (new Tatami.Models.Users({
+                        item.avatarURL = (new Tatami.Models.User({
                             avatar: item.avatar
                         })).getAvatarURL();
                         i = templateItems({item: item});

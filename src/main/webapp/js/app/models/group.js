@@ -1,6 +1,6 @@
 (function(Backbone, Tatami){
 
-    var Groups = Backbone.Model.extend({
+    var Group = Backbone.Model.extend({
         urlRoot: '/tatami/rest/groups',
         idAttribute: 'groupId',
         defaults: {
@@ -22,6 +22,6 @@
         }
     });
 
-    Tatami.Models.Groups = Groups;
+    Tatami.Models.Group = Group;
 
 })(Backbone, Tatami);

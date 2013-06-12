@@ -12,7 +12,6 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.web.rest.dto.ActionStatus;
-import fr.ippon.tatami.web.rest.dto.Reply;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,103 +45,6 @@ public class TimelineController {
     private AuthenticationService authenticationService;
 
     /**
-     * POST /statuses/update -> create a new Status
-     */
-    @RequestMapping(value = "/rest/statuses/update",
-            method = RequestMethod.POST)
-    @Timed
-    public void postStatus(@RequestBody StatusDTO status, HttpServletResponse response) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to add status : " + status.getContent());
-        }
-        String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
-        Collection<String> attachmentIds = status.getAttachmentIds();
-        if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
-            if (log.isDebugEnabled()) {
-                log.debug("Private status");
-            }
-            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
-        } else {
-            User currentUser = authenticationService.getCurrentUser();
-            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-            Group group = null;
-            for (Group testGroup : groups) {
-                if (testGroup.getGroupId().equals(status.getGroupId())) {
-                    group = testGroup;
-                    break;
-                }
-            }
-            if (group == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + status.getGroupId());
-                }
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            } else if (group.isArchivedGroup()) {
-                if (log.isInfoEnabled()) {
-                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
-                            "group ID = " + status.getGroupId());
-                }
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            } else {
-                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
-            }
-        }
-    }
-
-    /**
-     * POST /statuses/discussion/:id -> reply to this Status
-     */
-    @RequestMapping(value = "/rest/statuses/discussion",
-            method = RequestMethod.POST)
-    public void replyToStatus(@RequestBody Reply reply, HttpServletResponse response) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to reply to status : " + reply);
-        }
-        String escapedContent = StringEscapeUtils.escapeHtml(reply.getContent());
-        try {
-            statusUpdateService.replyToStatus(escapedContent, reply.getStatusId());
-        } catch (ArchivedGroupException age) {
-            if (log.isInfoEnabled()) {
-                log.info("The user tried to reply to a message in an archived group");
-            }
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } catch (ReplyStatusException rse) {
-            if (log.isInfoEnabled()) {
-                log.info("Original status ID " + reply.getStatusId() + " does not exist.");
-            }
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
-    }
-
-    /**
-     * POST /statuses/destroy/:id -> delete Status
-     */
-    @RequestMapping(value = "/rest/statuses/destroy/{statusId}",
-            method = RequestMethod.POST)
-    @ResponseBody
-    public void removeStatus(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to remove status : " + statusId);
-        }
-        timelineService.removeStatus(statusId);
-    }
-
-    /**
-     * GET  /statuses/show/:id -> returns a single status, specified by the id parameter
-     */
-    @RequestMapping(value = "/rest/statuses/show/{statusId}",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public StatusDTO getStatus(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get status Id : " + statusId);
-        }
-        return timelineService.getStatus(statusId);
-    }
-
-    /**
      * GET  /statuses/details/:id -> returns the details for a status, specified by the id parameter
      */
     @RequestMapping(value = "/rest/statuses/details/{statusId}",
@@ -154,19 +56,6 @@ public class TimelineController {
             log.debug("REST request to get status details Id : " + statusId);
         }
         return timelineService.getStatusDetails(statusId);
-    }
-
-    /**
-     * POST /statuses/share/:id -> Shares the status
-     */
-    @RequestMapping(value = "/rest/statuses/share/{statusId}",
-            method = RequestMethod.POST)
-    @ResponseBody
-    public void shareStatus(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to share status : " + statusId);
-        }
-        timelineService.shareStatus(statusId);
     }
 
     /**
@@ -224,7 +113,7 @@ public class TimelineController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public StatusDTO getStatusV3(@PathVariable("statusId") String statusId) {
+    public StatusDTO getStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get status Id : " + statusId);
         }
@@ -234,7 +123,7 @@ public class TimelineController {
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.DELETE)
-    public void deleteStatusV3(@PathVariable("statusId") String statusId) {
+    public void deleteStatus(@PathVariable("statusId") String statusId) {
         if (log.isDebugEnabled()) {
             log.debug("REST request to get status Id : " + statusId);
         }
@@ -244,7 +133,7 @@ public class TimelineController {
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.PATCH)
     @ResponseBody
-    public StatusDTO updateStatusV3(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
+    public StatusDTO updateStatus(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
         try {
             StatusDTO status = timelineService.getStatus(statusId);
             if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
@@ -279,7 +168,7 @@ public class TimelineController {
             method = RequestMethod.POST,
             produces = "application/json")
     @Timed
-    public String postStatusV3(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
+    public String postStatus(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
         if (log.isDebugEnabled()) {
             log.debug("REST request to add status : " + status.getContent());
         }

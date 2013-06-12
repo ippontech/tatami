@@ -1,14 +1,14 @@
 (function(Backbone, Tatami){
 
     var groups = new (Backbone.Collection.extend({
-        model : Tatami.Models.Groups
+        model : Tatami.Models.Group
     }))();
 
     Tatami.Factories.Groups = {
         groupsHeader: function(groupId){
             var group = groups.get(groupId);
             if(!group){
-                group = new Tatami.Models.Groups({
+                group = new Tatami.Models.Group({
                     groupId: groupId
                 });
                 groups.add(group);

@@ -51,42 +51,14 @@ public class TagController {
     private UserService userService;
 
     /**
-     * GET  /statuses/tag_timeline -> get the latest status for a given tag
-     */
-    @RequestMapping(value = "/rest/statuses/tag_timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<StatusDTO> listStatusForTag(@RequestParam(required = false, value = "tag") String tag,
-                                                  @RequestParam(required = false) Integer count,
-                                                  @RequestParam(required = false) String since_id,
-                                                  @RequestParam(required = false) String max_id) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for tag : " + tag);
-        }
-        if (count == null) {
-            count = 20;
-        }
-        try {
-            return timelineService.getTagline(tag, count, since_id, max_id);
-        } catch (NumberFormatException e) {
-            log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(tag, 20, since_id, max_id);
-        }
-    }
-
-
-    /**
-     * GET  /statuses/tag_timeline -> get the latest status for a given tag
+     * GET  /rest/tags/{tagName}/tag_timeline -> get the latest status for a given tag
      */
     @RequestMapping(value = "/rest/tags/{tagName}/tag_timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<StatusDTO> listStatusForTagREST(@PathVariable String tagName,
+    public Collection<StatusDTO> listStatusForTag(@PathVariable String tagName,
                                                   @RequestParam(required = false) Integer count,
                                                   @RequestParam(required = false) String since_id,
                                                   @RequestParam(required = false) String max_id) {
@@ -103,72 +75,6 @@ public class TagController {
             log.warn("Page size undefined ; sizing to default", e);
             return timelineService.getTagline(tagName, 20, since_id, max_id);
         }
-    }
-
-    /**
-     * POST /tagmemberships/create -> follow tag
-     */
-    @RequestMapping(value = "/rest/tagmemberships/create",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void followTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow tag : " + tag);
-        }
-        tagMembershipService.followTag(tag);
-    }
-
-    /**
-     * POST /tagmemberships/destroy -> unfollow tag
-     */
-    @RequestMapping(value = "/rest/tagmemberships/destroy",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void unfollowTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow tag  : " + tag);
-        }
-        tagMembershipService.unfollowTag(tag);
-    }
-
-    /**
-     * POST /tagmemberships/lookup -> looks up the tag for the user
-     */
-    @RequestMapping(value = "/rest/tagmemberships/lookup",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Tag lookupTag(@RequestParam("tag_name") String tagname) {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
-        Tag tag = new Tag();
-        tag.setName(tagname);
-        if (followedTags.contains(tagname)) {
-            tag.setFollowed(true);
-        }
-        return tag;
-    }
-
-    /**
-     * GET  /tagmemberships/list -> get the tags followed by the current user
-     */
-    @RequestMapping(value = "/rest/tagmemberships/list",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<Tag> getFollowedTags() {
-        User currentUser = authenticationService.getCurrentUser();
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
-        Collection<Tag> tags = new ArrayList<Tag>();
-        for (String followedTag : followedTags) {
-            Tag tag = new Tag();
-            tag.setName(followedTag);
-            tag.setFollowed(true);
-            tags.add(tag);
-        }
-        return tags;
     }
 
     /**
@@ -196,11 +102,11 @@ public class TagController {
     }
 
 
-    @RequestMapping(value = "/rest/ tags",
+    @RequestMapping(value = "/rest/tags",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<Tag> getTagsNEW(@RequestParam(required = false, value = "popular") String popular,
+    public Collection<Tag> getTags(@RequestParam(required = false, value = "popular") String popular,
                                       @RequestParam(required = false, value = "user") String username,
                                       @RequestParam(required = false, value = "search") String search) {
         Collection<Tag> tags = new ArrayList<Tag>();
@@ -210,7 +116,7 @@ public class TagController {
         Collection<String> tagNames;
 
         if(popular != null) {
-            List<Trend> trends = new ArrayList<Trend>();
+            List<Trend> trends;
             User user = null;
             if(username != null) user = userService.getUserByUsername(username);
             if(user != null) {

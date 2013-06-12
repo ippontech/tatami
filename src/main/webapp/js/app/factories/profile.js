@@ -1,7 +1,7 @@
 (function(Backbone, _, Tatami){
 
     var users = new (Backbone.Collection.extend({
-        model : Tatami.Models.Users
+        model : Tatami.Models.User
     }))();
 
     Tatami.Factories.Profile = {
@@ -51,7 +51,7 @@
         getUsers: function(username){
             var user = users.get(username);
             if(!user){
-                user = new Tatami.Models.Users({
+                user = new Tatami.Models.User({
                     username: username
                 });
                 users.add(user);

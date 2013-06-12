@@ -65,7 +65,7 @@
     </div>
 </script>
 <script type="text/template" id="TagTrends">
-    <div class="well well-small">
+    <div id="profileTrends" class="well well-small">
         <h4>
             <span class="glyphicon glyphicon-fire"></span>
             &nbsp;<fmt:message key="tatami.trends.title"/>
@@ -103,12 +103,11 @@
             </div>
             <h5 class="statusitem-name">
                 <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
+                <a href="#users/<@= username @>"><small>@<@= username @></small></a>
                 <@ if (type == 'MENTION_SHARE') { @>
                     <fmt:message key="tatami.user.shared.you"/>
                 <@ } else if (type == 'MENTION_FRIEND') { @>
                     <fmt:message key="tatami.user.followed.you"/>
-                <@ } else { @>
-                    <a href="#users/<@= username @>"><small>@<@= username @></small></a>
                 <@ } @>
             </h5>
             <div class="markdown <@ if (type == 'MENTION_SHARE') { @>mention-share<@ } @>">
@@ -355,7 +354,7 @@
     </div>
 </script>
 <script type="text/template" id="Groups">
-    <div class=" well well-small">
+    <div id="groupsList" class=" well well-small">
         <h4>
             <span class="glyphicon glyphicon-list-alt"></span>
             &nbsp;<fmt:message key="tatami.account.groups.mygroups"/>
@@ -600,7 +599,7 @@
     </h6>
 </script>
 <script type="text/template" id="WhoToFollow">
-    <div class="well well-small">
+    <div id="follow-suggest" class="well well-small">
         <h4>
             <span class="glyphicon glyphicon-random"></span>
             &nbsp;<fmt:message key="tatami.follow.suggestions"/>

@@ -74,7 +74,6 @@
             'click .status-action-attach': 'showAttach'
         },
         onRender: function(){
-            console.log("rendrer");
             this.$el.toggleClass('favorite', this.model.get('favorite'));
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
@@ -129,8 +128,6 @@
                                     self.before.$el.slideToggle({duration: 100});
                                 }, 500);
                             }
-                            
-
 
                             var after = new Tatami.Views.Statuses({
                                 collection: new Tatami.Collections.Statuses(statusDetail.getStatusAfter()),

@@ -1,4 +1,3 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -9,102 +8,74 @@
 
 <body>
 
-    <jsp:include page="includes/topmenu.jsp"/>
+<jsp:include page="includes/topmenu.jsp"/>
 
-    <div id="mainPanel" class="container">
-        <div class="row">
-
-            <div class="span4">
-
-                <!-- Infos -->
-                <div id="profileContent" class="alert alert-status">
-                </div>
-
-                <!-- Groups -->
-                <div id="groupsList" class="alert alert-status">
-                    <div>
-                        <i class="icon-th"></i> <strong><fmt:message key="tatami.menu.groups"/></strong>
-                        <div class="row-fluid" id="userGroups">
-
-                        </div>
-                    </div>
-                </div>
-
-                <div id="profileFollow" class="alert alert-status hidden-phone">
-                </div>
-
-                <div id="profileTrends" class="alert alert-status hidden-phone">
-                    <div>
-                        <i class="icon-fire"></i> <strong><fmt:message key="tatami.trends.title"/></strong>
-                    </div>
-                    <div class="row-fluid">
-                        <div id="trends">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="span8">
-                <div class="tabbable">
-                    <ul class="nav nav-pills homeMenu">
-                        <li class="active">
-                            <a href="#/timeline">
-                                <i class="icon-th-list"></i> <span class="hidden-phone"><fmt:message key="tatami.timeline"/></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/mention">
-                                <i class="icon-user"></i> <span class="hidden-phone"><fmt:message key="tatami.mentions"/></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/tags">
-                                <i class="icon-tags"></i> <span class="hidden-phone"><fmt:message key="tatami.tags"/></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/favorite">
-                                <i class="icon-star"></i> <span class="hidden-phone"><fmt:message key="tatami.user.favoritestatus"/></span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div id="tab-content">
-                    </div>  
-                </div>
-            </div>
-        </div>
+<div class="row">
+    <div id="tatamiHeader" class="col-span-12">
     </div>
+</div>
 
-    <jsp:include page="includes/templates-home.jsp"/>
-    <jsp:include page="includes/footer.jsp"/>
-<!-- Help tour -->
-    <jsp:include page="includes/help-home.jsp"/>
+<div class="row">
+    <aside id="tatamiSide" class="col-span-3">
+    </aside>
+    <section id="tatamiBody" class="col-span-9">
+    </section>
+</div>
 
-    <script type="text/javascript">
-        var isNew = ${user.isNew};
-        var login = "<sec:authentication property="principal.username"/>";
-        var username = "${user.username}";
-        var authenticatedUsername = "${authenticatedUsername}";
-        var tag = "${tag}";
-        var searchQuery = "${search}";
-        var page = "home";
-
-        var text_characters_left="<fmt:message key="tatami.status.characters.left"/>";
-
-        if(tag !== '')
-            $('a[href="#tags"]').tab('show');
-        else if(searchQuery !== '')
-            $('a[href="#search"]').tab('show');
-
-    </script>
-
-    <c:if test="${wro4jEnabled eq false}">
-        <script src="/js/tatami-home.js"></script>
-    </c:if>
-    <c:if test="${wro4jEnabled eq true}">
-        <script src="/tatami/static/${version}/tatami-home.js"></script>
-    </c:if>
+<c:if test="${!ios}">
+    <form id="tatamiEdit" class="modal fade">
+    </form>
+</c:if>
 
 </body>
+
+<jsp:include page="includes/footer.jsp"/>
+
+<c:if test="${wro4jEnabled eq false}">
+    <script src="/js/app/app.js"></script>
+    <script src="/js/app/plugins/tatami.search.js"></script>
+    <script src="/js/app/plugins/suggester.js"></script>
+    <script src="/js/app/models/user.js"></script>
+    <script src="/js/app/collections/users.js"></script>
+    <script src="/js/app/models/postStatus.js"></script>
+    <script src="/js/app/models/status.js"></script>
+    <script src="/js/app/models/homeBody.js"></script>
+    <script src="/js/app/collections/statuses.js"></script>
+    <script src="/js/app/models/tag.js"></script>
+    <script src="/js/app/collections/tags.js"></script>
+    <script src="/js/app/models/group.js"></script>
+    <script src="/js/app/collections/groups.js"></script>
+    <script src="/js/app/models/statusDetails.js"></script>
+    <script src="/js/app/models/search.js"></script>
+    <script src="/js/app/views/cardProfile.js"></script>
+    <script src="/js/app/views/navbar.js"></script>
+    <script src="/js/app/views/homeContainers.js"></script>
+    <script src="/js/app/views/tagsContainers.js"></script>
+    <script src="/js/app/views/profileContainers.js"></script>
+    <script src="/js/app/views/groupsContainers.js"></script>
+    <script src="/js/app/views/statuses.js"></script>
+    <script src="/js/app/views/statusEdit.js"></script>
+    <script src="/js/app/views/statusUpdateButton.js"></script>
+    <script src="/js/app/views/userList.js"></script>
+    <script src="/js/app/views/statusShares.js"></script>
+    <script src="/js/app/views/tagTrends.js"></script>
+    <script src="/js/app/views/groups.js"></script>
+    <script src="/js/app/views/profileSide.js"></script>
+    <script src="/js/app/views/search.js"></script>
+    <script src="/js/app/factories/home.js"></script>
+    <script src="/js/app/factories/profile.js"></script>
+    <script src="/js/app/factories/status.js"></script>
+    <script src="/js/app/factories/tags.js"></script>
+    <script src="/js/app/factories/search.js"></script>
+    <script src="/js/app/factories/groups.js"></script>
+    <script src="/js/app/router.js"></script>
+</c:if>
+<c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
+</c:if>
+
+<jsp:include page="includes/templates.jsp"/>
+
+<jsp:include page="includes/help-home.jsp"/>
+
 </html>

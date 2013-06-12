@@ -2,7 +2,7 @@
 
     var Tags = Backbone.Collection.extend({
         url: '/tatami/rest/tags',
-        model: Tatami.Models.Tags
+        model: Tatami.Models.Tag
     });
 
     Tatami.Collections.Tags = Tags;
