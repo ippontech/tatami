@@ -7,8 +7,8 @@
     var tagsBody, tagsHeader;
 
     Tatami.Factories.Tags = {
-        tagsBody: function(){
-            if(!tagsBody) tagsBody = new Tatami.Views.TagsBody();
+        tagsBody: function(tagName){          
+            tagsBody = new Tatami.Views.TagsBody();
 
             return tagsBody;
         },

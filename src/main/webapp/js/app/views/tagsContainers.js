@@ -3,10 +3,24 @@
     var TagsBody = Backbone.Marionette.Layout.extend({
         template: '#TagsBody',
         regions: {
+            header: {
+                selector: ".tatams-content-title"
+            },
             tatams: {
                 selector: ".tatams-container"
             }
         }
+        // events: {
+        //     'click .toggleTag': 'toggleTag'
+        // },
+        // modelEvents: {
+        //     'change': 'render'
+        // },
+        // toggleTag: function(){
+        //     this.model.save({
+        //       followed: !this.model.get('followed')
+        //     });
+        // }
     });
 
     var TagsHeader = Backbone.Marionette.ItemView.extend({
@@ -17,12 +31,11 @@
         events: {
             'click .toggleTag': 'toggleTag'
         },
+        modelEvents: {
+            'change': 'render'
+        },
         toggleTag: function(){
-            this.model.save({
-              followed: !this.model.get('followed')
-            }, {
-              success: _.bind(this.render, this)
-            });
+            this.model.save({followed: !this.model.get('followed')});
         }
     });
 

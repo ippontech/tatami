@@ -36,10 +36,12 @@
         search: function(event){
             event.preventDefault();
             var input = $('[name="search"]').val();
-            if(input.indexOf("#") != 0){
-                Backbone.history.navigate('search/' + input, true);
-            } else {
+            if(input.indexOf("#") == 0){
                 Backbone.history.navigate('tags/' + input.substring(1, input.length), true);
+            } else if(input.indexOf("@") == 0){
+                Backbone.history.navigate('users/' + input.substring(1, input.length), true);
+            } else {
+                Backbone.history.navigate('search/' + input, true);
             }
         },
 
