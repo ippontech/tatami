@@ -20,6 +20,9 @@
     var GroupsBody = Backbone.Marionette.Layout.extend({
         template: "#GroupsBody",
         regions: {
+            header: {
+                selector: ".tatams-content-title"
+            }, 
             tatams: {
                 selector: ".tatams-container"
             }
@@ -28,8 +31,8 @@
             return this.options;
         },
         show: function(tabName){
-            this.$el.find('.groupsbody-nav > li').removeClass('active');
-            this.$el.find('.groupsbody-nav > li.' + tabName).addClass('active');
+            this.$el.find('.homebody-nav > li').removeClass('active');
+            this.$el.find('.homebody-nav > li.' + tabName).addClass('active');
         }
     });
 

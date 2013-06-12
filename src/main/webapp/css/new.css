@@ -15,11 +15,74 @@
         margin: 0;
 
     }
+
+    #tatamiBody {
+        padding: 0px;
+    }
+}
+
+@media screen and (min-width: 767px) {
+    #tatamiBody {
+        padding: 10px 15px 10px 0px;
+    }
+}
+
+body {
+    background-image: url(/img/wallpaper.jpg);
+}
+
+h4 {
+    font-size: inherit;
+}
+
+.well {
+    background-color: white;
+    box-shadow: none;
+    border-radius: 5px;
+}
+
+.well h4 {
+    margin: 0px;
+}
+
+.navbar {
+    background-color: black;
+}
+
+.navbar .nav > li > a {
+    color: #CCCCCC;
+}
+
+.navbar .nav > li > a:hover {
+    color: white;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-top-color: #CCCCCC; 
+    border-bottom-color: #CCCCCC; 
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret:hover {
+    border-top-color: white; 
+    border-bottom-color: white;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle {
+    color: white;
+    background-color: inherit;
 }
 
 .img-small {
     width: 25px;
     height: 25px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.img-reply {
+    width: 35px;
+    height: 35px;
+    margin-left: 10px;
     background-position: center center;
     background-size: cover;
 }
@@ -58,7 +121,7 @@
 }
 
 .img-rounded {
-    border-radius: 15px;
+    /*border-radius: 15px;*/
 }
 
 .navbar .btn-navbar.fix-navbar {
@@ -78,8 +141,8 @@
 }
 
 .status-action {
-    padding: 10px;
-    margin: 0px
+    padding: 0;
+    margin: 0;
 }
 
 .status-action:hover {
@@ -90,11 +153,14 @@
     margin-right: 5px;
 }
 
-.tatam, .useritem {
-    padding: 0px 0px 0px 60px;
+/*.tatam, .useritem {*/
+.useritem {
+    padding: 0px 5px 0px 0px;
     overflow: hidden;
     display: none;
-    border-bottom: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
+    background-color: white;
+    margin-bottom: -1px;
 }
 
 .useritemmini {
@@ -129,7 +195,7 @@
 }
 
 .tatam > div:first-child, .useritem > div:first-child {
-    margin-left: -60px;
+    /*margin-left: -60px;*/
     padding: 5px;
 }
 
@@ -144,17 +210,22 @@
 }
 
 .tatams {
-    margin-top: 5px;
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
+}
+
+.tatam > div:first-child, .useritem > div:first-child {
+    padding: 5px 10px 0px 10px;
 }
 
 .tatams > * {
     margin-bottom: 0px;
-    padding-bottom: 2px;
+    padding-bottom: 0px;
 }
 
-.tatams > *:hover {
-    background-color: #f5f5f5;
+@media screen and (min-width: 767px) {
+    .tatam-hover:hover{
+        background-color: #ECF1F7;
+    }
 }
 
 .tatams > *:last-child {
@@ -163,7 +234,7 @@
 
 .tatams-share {
     padding-top: 5px;
-    border-top: 2px solid #bcbcbc;
+    /*border-top: 2px solid #bcbcbc;*/
 }
 
 .tatams-share-title {
@@ -176,9 +247,10 @@
     margin-top: 5px;
 }
 
-.tatams-discussion {
-    margin-top: 5px;
-}
+/*.tatams-discussion {
+    margin-top: 0px;
+    margin-left: -60px;
+}*/
 
 .tatams-discussion > .tatam > header {
     margin-top: 0;
@@ -193,8 +265,17 @@
 }
 
 .refresh-button {
-    margin-top: 15px;
-    margin-bottom: 15px;
+
+}
+
+.refresh-button-style {
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: -1px;
+    padding: 10px;    
+    box-shadow: inset 0 3px 8px rgba(0,0,0,.05);
 }
 
 .dropzone {
@@ -212,8 +293,112 @@
     border-color: #0088cc;
 }
 
-#tatamiBody {
-    padding-top: 5px;
+.tatam {
+    background-color: white;
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    padding: 0px;
+    margin-bottom: -1px;
+    overflow: hidden;
+    display: none;
+}
+
+.tatam-border-lr {
+    border-right: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+}
+
+.tatam-first {
+    border-top: 0px;
+}
+
+.tatam-last {
+    border-bottom: 0px;
+}
+
+@media screen and (min-width: 767px) {
+    .tatams-margin {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .tatams-margin {
+        margin-top: -1px;
+    }
+}
+
+.tatams-content-title {
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background-color: white;
+    margin-bottom: 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.tatams-content h3 {
+    padding: 5px 10px 5px 10px;
+    margin: 0px;
+    font-weight: normal;
+    font-size: 1.4em;
+}
+
+.btn-title {
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.tatams-content hr {
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #CCCCCC;
+    margin-bottom: -2px;
+    margin-top: 0px;
+}
+
+.tatams-container {
+    min-height: 75px;
+    background-image: url(/img/wallpaper.jpg);
+}
+
+.tatam-expand-container {
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
+.tatam-background {
+    background-color: #ECF1F7;
+}
+
+.homebody-nav {
+    background-color: white;
+}
+
+.nav-justified {
+    border-collapse: collapse;
+}
+
+.nav-justified > li {
+    border: 1px solid #CCCCCC;
+    padding: 0px;
+}
+
+.nav-tabs > li > a {
+    border-radius: 0px;
+}
+
+.homebody-nav {
+    background-color: white;
+}
+
+.homebody-nav .active a {
+    color: #333333;
+}
+
+.nav-tabs.nav-justified > .active > a {
+    border-bottom-color: #CCCCCC;
 }
 
 /**
@@ -362,4 +547,73 @@
     top: 9px;
     right: 22px;
     cursor: pointer;
+}
+
+.statusitem-name {
+    padding: 0;
+    margin: 0;
+    margin-top: -4px;
+}
+
+.statusitem-content {
+    margin-bottom: 5px;
+    
+}
+
+.statusitem-footer {
+    padding: 0px;   
+}
+
+.markdown p {
+    margin: 0px 0px 0px 0px;
+}
+
+#current {
+    padding: 5px;
+}
+
+#before{
+    padding: 0px;
+    margin: 0px;
+}
+
+#after {
+
+}
+
+#status-content-container {
+    margin-left: 60px;
+}
+
+.statusitem-img {
+    margin-bottom: 5px;
+}
+
+@media screen and (min-width: 767px) {
+    #buttons {
+        clear: both;
+        margin-left: 60px;
+    }
+}
+@media screen and (max-width: 767px) {
+    #buttons {
+        clear: both;
+    }
+
+    .statusitem-footer {
+        background-color: #ECF1F7;
+        border-top: 1px solid #CCCCCC;
+        padding-left: 8px;
+    }
+
+    .button-ios {
+        margin-left: -2px;
+        margin-right: -2px;
+        margin: 2px 4px 2px 0px; 
+    }
+
+    .button-ios-right {
+        border-right: 1px solid #CCCCCC;
+    }
+
 }

@@ -6,11 +6,50 @@
         defaults: {
             discussionStatuses: [],
             sharedByLogins: []
+        }, 
+
+        urlRoot: '/tatami/rest/statuses/details/',
+
+        getStatusBefore: function(){
+            var refDate = this.get('refDate');
+            var statusBefore = this.get('discussionStatuses').filter(function(element){      
+                element.root = false;
+                return (element.statusDate < refDate);
+            });
+            if(statusBefore.length > 0){
+                statusBefore[0].first = true;
+            }
+            return statusBefore;
         },
 
-        urlRoot: '/tatami/rest/statuses/details/'
+        getStatusAfter: function(){
+            var refDate = this.get('refDate');
+            var statusAfter = this.get('discussionStatuses').filter(function(element){
+                element.root = false;
+                return (element.statusDate > refDate);
+            });
+            var length = statusAfter.length;
+            if(length > 0){
+                length--;
+                statusAfter[length].last = true;
+            }
+
+            return statusAfter;
+        } 
+    });
+
+    var StatusDiscussion = Backbone.Model.extend({
+
+        idAttribute: 'statusId',
+
+        defaults: {
+            statusId: '',
+            discussions: []
+        }
+
     });
 
     Tatami.Models.StatusDetails = StatusDetails;
+    Tatami.Models.StatusDiscussion = StatusDiscussion;
 
 })(Backbone, Tatami);

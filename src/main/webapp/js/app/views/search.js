@@ -2,14 +2,21 @@
 
     var SearchBody = Backbone.Marionette.Layout.extend({
         template: '#SearchBody',
-        className: 'searchbody',
         regions: {
+            header: {
+                selector: ".tatams-content-title"
+            },
             tatams: {
                 selector: ".tatams-container"
             }
         }
     });
 
+    var SearchHeader = Backbone.Marionette.ItemView.extend({
+        template: '#SearchHeader'
+    });
+
+    Tatami.Views.SearchHeader = SearchHeader;
     Tatami.Views.SearchBody = SearchBody;
 
 })(Backbone, _, Tatami);

@@ -4,8 +4,9 @@
         homeSide: function(){
             return new Tatami.Views.HomeSide();
         },
-        homeBody: function(){
-            return new Tatami.Views.HomeBody();
+        homeBody: function(tabName){
+            var model = new Tatami.Models.HomeBody({'tabName':tabName});
+            return new Tatami.Views.HomeBody({'model': model});
         },
         tagTrends: function(username){
             var data = _.extend({
