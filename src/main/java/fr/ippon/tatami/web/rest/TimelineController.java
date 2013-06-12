@@ -108,7 +108,6 @@ public class TimelineController {
         }
     }
 
-
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.GET,
             produces = "application/json")
@@ -119,7 +118,6 @@ public class TimelineController {
         }
         return timelineService.getStatus(statusId);
     }
-
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.DELETE)
@@ -160,9 +158,8 @@ public class TimelineController {
         }
     }
 
-
     /**
-     * POST /statuses/update -> create a new Status
+     * POST /statuses/ -> create a new Status
      */
     @RequestMapping(value = "/rest/statuses/",
             method = RequestMethod.POST,

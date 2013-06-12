@@ -102,7 +102,7 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
         LocaleContextHolder.setLocale(Locale.US);
 
         // Post content
-        timelineMockMvc.perform(post("/rest/statuses/update")
+        timelineMockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"content\":\"Test status for RSS syndication\"}"))
                 .andExpect(status().isOk());

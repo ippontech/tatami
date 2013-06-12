@@ -80,7 +80,7 @@ public class TagControllerTest extends AbstractCassandraTatamiTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.[0]").doesNotExist());
 
-        timelineMockMvc.perform(post("/rest/statuses/update")
+        timelineMockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"content\":\"Test status with a tag #testTag\"}"))
                 .andExpect(status().isOk());

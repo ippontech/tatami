@@ -78,6 +78,72 @@ public class TagController {
     }
 
     /**
+     * POST /tagmemberships/create -> follow tag
+     */
+    @RequestMapping(value = "/rest/tagmemberships/create",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void followTag(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to follow tag : " + tag);
+        }
+        tagMembershipService.followTag(tag);
+    }
+
+    /**
+     * POST /tagmemberships/destroy -> unfollow tag
+     */
+    @RequestMapping(value = "/rest/tagmemberships/destroy",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    public void unfollowTag(@RequestBody Tag tag) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to unfollow tag  : " + tag);
+        }
+        tagMembershipService.unfollowTag(tag);
+    }
+
+    /**
+     * POST /tagmemberships/lookup -> looks up the tag for the user
+     */
+    @RequestMapping(value = "/rest/tagmemberships/lookup",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Tag lookupTag(@RequestParam("tag_name") String tagname) {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Tag tag = new Tag();
+        tag.setName(tagname);
+        if (followedTags.contains(tagname)) {
+            tag.setFollowed(true);
+        }
+        return tag;
+    }
+
+    /**
+     * GET  /tagmemberships/list -> get the tags followed by the current user
+     */
+    @RequestMapping(value = "/rest/tagmemberships/list",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<Tag> getFollowedTags() {
+        User currentUser = authenticationService.getCurrentUser();
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        Collection<Tag> tags = new ArrayList<Tag>();
+        for (String followedTag : followedTags) {
+            Tag tag = new Tag();
+            tag.setName(followedTag);
+            tag.setFollowed(true);
+            tags.add(tag);
+        }
+        return tags;
+    }
+
+    /**
      * GET  /tags/popular -> get the list of popular tags
      */
     @RequestMapping(value = "/rest/tags/popular",
