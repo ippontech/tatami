@@ -9,17 +9,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#timeline">
+        <a class="navbar-brand" href="/tatami/home">
             <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
             <fmt:message key="tatami.title"/>
         </a>
-        <button type="button" class="editTatam navbar-toggle navbar-edit">
+
+        <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
             <i class="close glyphicon glyphicon-pencil"></i>
         </button>
         <div class="nav-collapse navbar-responsive-collapse collapse">
             <ul class="nav">
                 <li>
-                    <a href="/tatami/">
+                    <a href="/tatami/home">
                     <span>
                         <span class="glyphicon glyphicon-home"></span>
                         <span class="hidden-tablet">
@@ -111,6 +112,7 @@
                 </li>
             </ul>
 
+            <sec:authorize ifAnyGranted="ROLE_USER">
             <ul class="nav pull-right">
                 <li class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown">
@@ -206,6 +208,7 @@
                 <input name="search" type="text" class="col-span-12" id="searchinput" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
                 <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
             </form>
+            </sec:authorize>
         </div>
     </div>
 </c:if>

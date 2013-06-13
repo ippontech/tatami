@@ -107,11 +107,13 @@ h4 {
     right: initial;
     width: 48px;
     padding: 4px 13px 3px;
+    color: #ffffff;
+    background-color: #0088cc;
 }
 
 .navbar-edit:hover,
 .navbar-edit:focus {
-    background-color: #ddd;
+    background-color: #0088cc;
 }
 
 .page-header {
