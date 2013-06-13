@@ -71,7 +71,7 @@ public class SyndicTimelineController {
 
         mav.addObject("feedTitle", feedTitle);
         mav.addObject("feedDescription", feedDesc);
-        mav.addObject("statusBaseLink", "/tatami/profile/");
+        mav.addObject("statusBaseLink", "/tatami/home/");
 
         // the link must point the actual content and not to the rss channel
         mav.addObject("feedLink", "/tatami/");

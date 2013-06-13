@@ -159,7 +159,7 @@ public class MailService {
             log.debug("Sending Private Message e-mail to User '" + mentionnedUser.getLogin() +
                     "' with locale : '" + locale + "'");
         }
-        String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
+        String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);
@@ -175,7 +175,7 @@ public class MailService {
             log.debug("Sending Mention e-mail to User '" + mentionnedUser.getLogin() +
                     "' with locale : '" + locale + "'");
         }
-        String url = tatamiUrl + "/tatami/profile/" + status.getUsername() + "/#/status/" + status.getStatusId();
+        String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);

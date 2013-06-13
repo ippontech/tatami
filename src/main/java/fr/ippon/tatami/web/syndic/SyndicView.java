@@ -83,8 +83,8 @@ public class SyndicView extends AbstractRssFeedView {
 
             // build link for the status
             StringBuilder linkBuilder = new StringBuilder(statusBaseLink);
-            linkBuilder.append(tempContent.getUsername())
-                    .append("/#/status/")
+            linkBuilder
+                    .append("status/")
                     .append(tempContent.getStatusId());
 
             item.setTitle(statusText.substring(0, Math.min(30, statusText.length())));
@@ -109,7 +109,7 @@ public class SyndicView extends AbstractRssFeedView {
         Matcher m = p.matcher(htmlText);
         StringBuffer mentionSb = new StringBuffer();
         while (m.find()) {
-            m.appendReplacement(mentionSb, "<a href='/tatami/profile/$1/' >$0</a>");
+            m.appendReplacement(mentionSb, "<a href='/tatami/home/users/$1' >$0</a>");
         }
         m.appendTail(mentionSb);
 
@@ -117,7 +117,7 @@ public class SyndicView extends AbstractRssFeedView {
         m = p.matcher(mentionSb.toString());
         StringBuffer tagSb = new StringBuffer();
         while (m.find()) {
-            m.appendReplacement(tagSb, "<a href='/tatami/#/tags/$1' >$0</a>");
+            m.appendReplacement(tagSb, "<a href='/tatami/home/tags/$1' >$0</a>");
         }
         m.appendTail(tagSb);
         return tagSb.toString();
