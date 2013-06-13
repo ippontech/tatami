@@ -102,7 +102,7 @@ public class TimelineControllerTest extends AbstractCassandraTatamiTest {
 
         mockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"statusId\":\"" + statusId + "\", \"content\":\"Reply discussion\"}"))
+                .content("{\"replyTo\":\"" + statusId + "\", \"content\":\"Reply discussion\"}"))
                 .andExpect(status().isOk());
 
         String replyAsJson = mockMvc.perform(get("/rest/statuses/home_timeline")

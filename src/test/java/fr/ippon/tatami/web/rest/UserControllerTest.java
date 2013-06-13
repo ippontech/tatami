@@ -45,15 +45,6 @@ public class UserControllerTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void testUsersShowV1() throws Exception {
-        restUserMockMvc.perform(get("/rest/users/show").param("screen_name", "jdubois")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.firstName").value("Julien"));
-    }
-
-    @Test
     public void testUsersShow() throws Exception {
         restUserMockMvc.perform(get("/rest/users/jdubois")
                 .accept(MediaType.APPLICATION_JSON))
