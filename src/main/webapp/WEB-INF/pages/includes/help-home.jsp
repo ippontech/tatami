@@ -10,7 +10,7 @@
                 next: '<fmt:message key="tatami.help.next"/>',
                 prev: '<fmt:message key="tatami.help.previous"/>'
             },
-            allowState: false,
+            backdrop: true,
             useLocalStorage: true
         });
 
@@ -39,27 +39,30 @@
         });
 
         tour.addStep({
-            element: "#groupsList",
+            element: "#groups-list-title",
             placement: "right",
             stepId: "groupsHelp",
             title: "<fmt:message key="tatami.help.home.groups.title"/>",
-            content: "<fmt:message key="tatami.help.home.groups.content"/>"
+            content: "<fmt:message key="tatami.help.home.groups.content"/>",
+            container: "#tatamiBody"
         });
 
         tour.addStep({
-            element: "#follow-suggest",
+            element: "#follow-suggest-title",
             placement: "right",
             stepId: "follow-suggestHelp",
             title: "<fmt:message key="tatami.help.home.follow-suggest.title"/>",
-            content: "<fmt:message key="tatami.help.home.follow-suggest.content"/>"
+            content: "<fmt:message key="tatami.help.home.follow-suggest.content"/>",
+            container: "#tatamiBody"
         });
 
         tour.addStep({
-            element: "#profileTrends",
+            element: "#profile-trends-title",
             placement: "right",
             stepId: "profileTrendsHelp",
             title: "<fmt:message key="tatami.help.home.profileTrends.title"/>",
-            content: "<fmt:message key="tatami.help.home.profileTrends.content"/>"
+            content: "<fmt:message key="tatami.help.home.profileTrends.content"/>",
+            container: "#tatamiBody"
         });
 
 

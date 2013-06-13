@@ -65,8 +65,8 @@
     </div>
 </script>
 <script type="text/template" id="TagTrends">
-    <div id="profileTrends" class="well well-small">
-        <h4>
+    <div class="well well-small">
+        <h4 id="profile-trends-title">
             <span class="glyphicon glyphicon-fire"></span>
             &nbsp;<fmt:message key="tatami.trends.title"/>
         </h4>
@@ -354,8 +354,8 @@
     </div>
 </script>
 <script type="text/template" id="Groups">
-    <div id="groupsList" class=" well well-small">
-        <h4>
+    <div class="well well-small">
+        <h4 id="groups-list-title">
             <span class="glyphicon glyphicon-list-alt"></span>
             &nbsp;<fmt:message key="tatami.account.groups.mygroups"/>
         </h4>
@@ -599,8 +599,8 @@
     </h6>
 </script>
 <script type="text/template" id="WhoToFollow">
-    <div id="follow-suggest" class="well well-small">
-        <h4>
+    <div class="well well-small">
+        <h4 id="follow-suggest-title">
             <span class="glyphicon glyphicon-random"></span>
             &nbsp;<fmt:message key="tatami.follow.suggestions"/>
         </h4>
