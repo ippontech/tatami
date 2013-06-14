@@ -16,6 +16,7 @@
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
+        <js>/js/vendor/raphael-min.js</js>
     </group>
     <group name='tatami-app'>
         <js>/js/app/app.js</js>

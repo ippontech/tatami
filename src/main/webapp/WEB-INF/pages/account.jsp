@@ -107,12 +107,10 @@
 
 <c:if test="${wro4jEnabled eq false}">
   <script src="/js/vendor/raphael-min.js"></script>
-  <script src="/js/vendor/jquery-raphael-tatami-pie.js"></script>
+  <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
   <script src="/js/tatami-admin.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
-    <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>
-    <script src="/tatami/static/${version}/vendor/jquery-raphael-tatami-pie.js"></script>
     <script src="/tatami/static/${version}/tatami-admin.js"></script>
 </c:if>
 
