@@ -290,7 +290,7 @@ html {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 20px;
+  /*line-height: 20px;   */
   color: #333333;
   background-color: #ffffff;
 }
@@ -423,7 +423,7 @@ h6,
 .h5,
 .h6 {
   font-family: inherit;
-  font-weight: 500;
+ /* font-weight: 500;*/
   line-height: 20px;
 }
 
@@ -1025,6 +1025,8 @@ th {
 .table {
   width: 100%;
   margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 5px;
 }
 
 .table thead > tr > th,
@@ -1160,6 +1162,7 @@ table td[class*="col-span-"],
 table th[class*="col-span-"] {
   display: table-cell;
   float: none;
+  border-top: 1px solid #dddddd;
 }
 
 .table > tbody > tr > td.success,
@@ -1229,7 +1232,7 @@ legend {
 label {
   display: inline-block;
   margin-bottom: 5px;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 select,
@@ -1873,9 +1876,11 @@ fieldset[disabled] .btn {
 }
 
 .btn-mini {
-  padding: 0 6px;
-  font-size: 10.5px;
-  border-radius: 3px;
+    padding: 5px 5px 0px;
+    font-size: 13px;
+    border-radius: 3px;
+    width: 130px;
+    height: 40px;
 }
 
 .btn-block {
@@ -2143,6 +2148,7 @@ fieldset[disabled] .btn-link:focus {
 
 .collapse.in {
   height: auto;
+  /*overflow: visible;*/
 }
 
 @font-face {
@@ -2150,7 +2156,7 @@ fieldset[disabled] .btn-link:focus {
   font-style: normal;
   font-weight: normal;
   src: url('/css/vendor/fonts/glyphiconshalflings-regular.eot');
-  src: url('/css/vendor/fonts/glyphiconshalflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphiconshalflings-regular.woff') format('woff'), url('../fonts/glyphiconshalflings-regular.ttf') format('truetype'), url('../fonts/glyphiconshalflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('/css/vendor/fonts/glyphiconshalflings-regular.eot?#iefix') format('embedded-opentype'), url('/css/vendor/fonts/glyphiconshalflings-regular.woff') format('woff'), url('/css/vendor/fonts/glyphiconshalflings-regular.ttf') format('truetype'), url('/css/vendor/fonts/glyphiconshalflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
 .glyphicon:before {
@@ -3346,6 +3352,8 @@ button.close {
 
 .nav-pills > li > a {
   border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .nav-pills > li + li > a {
@@ -4618,11 +4626,11 @@ button.close {
 }
 
 .alert {
-  padding: 8px 35px 8px 14px;
+  padding: 8px 15px 8px 14px;
   margin-bottom: 20px;
-  color: #c09853;
-  background-color: #fcf8e3;
-  border: 1px solid #fbeed5;
+  /*color: #c09853;*/
+  background-color: #fcfcfc;
+  border: 1px solid #e6e6e6;
   border-radius: 4px;
 }
 
@@ -4644,7 +4652,7 @@ button.close {
 .alert .close {
   position: relative;
   top: -2px;
-  right: -21px;
+  /*right: -21px;*/ /*Décalage lors de l'ouverture d'un tatam*/
   color: inherit;
 }
 
@@ -5386,7 +5394,4 @@ a.list-group-item.active > .badge,
   .visible-print {
     display: inherit !important;
   }
-  .hidden-print {
-    display: none !important;
-  }
-}
+  
