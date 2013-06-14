@@ -36,7 +36,6 @@ h4 {
 }
 
 .well {
-    background-color: white;
     box-shadow: none;
     border-radius: 5px;
 }
@@ -47,6 +46,42 @@ h4 {
 
 .navbar {
     background-color: black;
+}
+.controle-group
+{
+  padding: 0px 0px 5px;
+
+    }
+.quota {
+
+  margin-left: 45%;
+}
+.nomargin {
+      margin: 0px;
+}
+
+#updateAvatar{
+       position: relative;
+
+}
+
+
+
+#updateAvatar input[type=file] {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 130px;
+}
+
+
+.avatar-float-left-container  {
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    margin-right: 15px;
 }
 
 .navbar .nav > li > a {
@@ -107,13 +142,11 @@ h4 {
     right: initial;
     width: 48px;
     padding: 4px 13px 3px;
-    color: #ffffff;
-    background-color: #0088cc;
 }
 
 .navbar-edit:hover,
 .navbar-edit:focus {
-    background-color: #0088cc;
+    background-color: #ddd;
 }
 
 .page-header {
@@ -169,6 +202,11 @@ h4 {
     padding: 0px 5px 1px 35px;
     overflow: hidden;
     display: none;
+}
+
+.user-profile {
+    margin:0px;
+    color:#252525;
 }
 
 .useritemmini h6 {
