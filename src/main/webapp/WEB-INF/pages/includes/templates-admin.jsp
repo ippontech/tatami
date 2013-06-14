@@ -9,14 +9,14 @@
 </script>
 
 <script type="text/template" id="form-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.form.error"/>
     </div>
 </script>
 
 <script type="text/template" id="form-ldap">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.user.password.ldap"/>
     </div>
 </script>
@@ -51,7 +51,7 @@
                 <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
                 <div id="updateAvatar"  class="btn btn-info btn-mini">
                     <p><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+                    <input id="avatarFile" type="file" name="uploadFile"  data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
             </div>
         </div>
@@ -453,7 +453,7 @@
 </script>
 
 <script type="text/template" id="groups-form-adduser-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.group.edit.member.add.error"/>
     </div>
@@ -553,11 +553,11 @@
 
     <div class="progress">
         <@ if(quota < 50){@>
-        <div class="bar bar-success" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;"></div>
         <@ }else if(quota > 50 && quota < 80) {@>
-        <div class="bar bar-warning" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;"></div>
         <@ }else{@>
-        <div class="bar bar-danger" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;"></div>
         <@ } @>
         <span class="quota"><@= quota @>%</span>
     </div>
@@ -605,7 +605,7 @@
 </script>
 
 <script type="text/template" id="delete-file-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.user.file.delete.error"/>
     </div>
