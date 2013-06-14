@@ -862,7 +862,7 @@
     </dependencies>
     <build>
         <!-- Tatami must be configured at the root context (/) of the application server -->
-        <finalName>ROOT</finalName>
+        <finalName>root</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
