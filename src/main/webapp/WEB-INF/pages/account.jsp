@@ -18,7 +18,7 @@
 
             <div class="nomargin well row avatar-float-left-container">
                 <div class="col-span-5 text-center">
-                    <a href="/tatami/profile/${user.username}/">
+                    <a href="/tatami/home/users/${user.username}/">
                         <c:if test="${empty user.avatar}">
                             <img class="pull-left nomargin avatar avatar-float-left" src="/img/default_image_profile.png" alt="">
                         </c:if>

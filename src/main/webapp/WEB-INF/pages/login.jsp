@@ -127,11 +127,11 @@
                 </div>
                 <br/>
 
-                <div id="lostPasswordDiv" class="collapse">
+                <div id="lostPasswordDiv" class="collapse little-height" >
                     <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
                         <fieldset>
                             <div class="controle-group">
-                                <label>
+                                <label class="little-marge-top">
                                     <fmt:message key="tatami.login"/> :
                                 </label>
                                 <input name="email" type="email" required="required" class="col-span-12"
