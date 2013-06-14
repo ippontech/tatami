@@ -2148,7 +2148,7 @@ fieldset[disabled] .btn-link:focus {
 
 .collapse.in {
   height: auto;
-  /*overflow: visible;*/
+  overflow: visible;
 }
 
 @font-face {
