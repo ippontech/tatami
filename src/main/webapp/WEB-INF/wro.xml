@@ -18,9 +18,6 @@
         <js>/js/vendor/modernizr.js</js>
     </group>
     <group name='tatami-app'>
-        <css>/css/vendor/css/bootstrap.css</css>
-        <css>/css/tatami.css</css>
-
         <js>/js/app/app.js</js>
         <js>/js/app/router.js</js>
         <js>/js/app/models/**.js</js>
