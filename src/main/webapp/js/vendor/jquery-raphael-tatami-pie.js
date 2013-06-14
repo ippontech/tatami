@@ -38,7 +38,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
                 p.stop().animate({transform: ""}, ms, "elastic");
                 txt.stop().animate({opacity: 0.3, "font-size": 13}, ms);
             }).click(function(){
-                window.location = '/tatami/profile/' + labels[j] + '/';
+                window.location = '/tatami/home/users/' + labels[j] + '/';
             });
             angle += angleplus;
             chart.push(p);
