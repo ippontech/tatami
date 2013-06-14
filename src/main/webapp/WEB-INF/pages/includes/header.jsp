@@ -62,10 +62,7 @@
 
     <script type="text/javascript">
         var username = "${user.username}";
-        var ios = false;
-        <c:if test="ios != null">
-            var ios = ${ios};
-        </c:if>
+        var ios = ${ios};
     </script>
 
 </head>

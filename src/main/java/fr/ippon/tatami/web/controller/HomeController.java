@@ -46,7 +46,11 @@ public class HomeController {
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
-        mv.addObject("ios", (ios != null));
+        if (ios == null) {
+            mv.addObject("ios", false);
+        } else {
+            mv.addObject("ios", true);
+        }
         return mv;
     }
 
