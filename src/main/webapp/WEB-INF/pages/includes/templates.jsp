@@ -172,7 +172,8 @@
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
-            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
+            <!-- //TODO CodingParty : Afficher l'annulation du partage -->
+            <@ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn-link status-action status-action-share button-ios" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
             </button>

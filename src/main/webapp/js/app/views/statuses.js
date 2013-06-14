@@ -110,7 +110,8 @@
                             if(shares.length){
                                 self.share.$el.slideToggle({duration: 200});
                             }
-
+                            //TODO CodingParty : Afficher l'annulation du partage
+                            currentModel.set('sharedByMe', statusDetail.isSharedBy(Tatami.app.user.get('username')));
                             self.buttons.show(new StatusFooters({model: currentModel}));
                             self.buttons.$el.slideToggle({duration: 200});
 
@@ -166,12 +167,23 @@
                     $(this.el).toggleClass('tatam-expand-container');
                     this.before.currentView = null;
                 }
-                // return false;
             }            
         },
         refreshDetails: function(){
             var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
-            statusDetail.fetch();
+            var self = this;
+            statusDetail.fetch({
+                success: function(){
+                    var shares = statusDetail.get('sharedByLogins');
+                    self.share.show(new Tatami.Views.StatusShares({
+                        collection: new Tatami.Collections.Users(shares)
+                    }));
+                    if(shares.length){
+                        self.share.$el.slideToggle({duration: 200});
+                        self.$el.find('.status-action-share').hide();
+                    }
+                }
+            });
         },
         replyAction: function(){
             Tatami.app.trigger('edit:show',{
