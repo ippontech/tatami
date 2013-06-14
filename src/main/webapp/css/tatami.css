@@ -21,6 +21,14 @@
     }
 }
 
+.alertColor{
+    padding: 8px 15px 8px 14px;
+    margin-bottom: 20px;
+    color: #c09853;
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    border-radius: 4px;
+}
 @media screen and (min-width: 767px) {
     #tatamiBody {
         padding: 10px 15px 10px 0px;
@@ -59,7 +67,22 @@ h4 {
 .nomargin {
       margin: 0px;
 }
+.little-marge-right{
+    margin-right: 20px
+}
 
+.little-height{
+    height: 10px;
+}
+
+.little-marge-top{
+    margin-top: 5px;
+}
+
+.little-padding
+{
+    padding: 0.10em 0.6em;
+}
 #updateAvatar{
        position: relative;
 

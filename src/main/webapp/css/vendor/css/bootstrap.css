@@ -5282,7 +5282,7 @@ a.list-group-item.active > .badge,
 }
 
 .hide {
-  display: none !important;
+  display: none ;
 }
 
 .show {
