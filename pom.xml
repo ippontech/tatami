@@ -66,6 +66,10 @@
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
             </properties>
             <build>
                 <plugins>
