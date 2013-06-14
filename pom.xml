@@ -86,7 +86,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all,tatami</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -145,7 +145,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all,tatami</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
