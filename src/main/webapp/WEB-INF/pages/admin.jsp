@@ -16,7 +16,7 @@
 
     <c:if test="${message == 'reindex'}">
     <div class="row">
-        <div class="span12">
+        <div class="col-span-12">
             <div class="alert alert-success">
                 Search engine re-indexation has succeeded.
             </div>
@@ -25,15 +25,15 @@
     </c:if>
 
     <div class="row">
-        <div class="span12">
+        <div class="col-span-12">
             <h1>Administration dashboard</h1>
         </div>
     </div>
 
     <div class="row">
-        <div class="span12">
+        <div class="col-span-12">
             <div class="row-fluid">
-                <div class="tab-content span12">
+                <div class="tab-content col-span-12">
                     <h2>
                         Registered enterprises
                     </h2>
@@ -63,57 +63,57 @@
         </div>
     </div>
 
-        <div class="row">
-            <div class="span12">
-                <div class="row-fluid">
-                    <div class="tab-content span12">
-                        <h2>
-                            Environnement variables (from tatami.properties)
-                        </h2>
-                        <table class="table table-striped">
-                            <thead>
+    <div class="row">
+        <div class="col-span-12">
+            <div class="row-fluid">
+                <div class="tab-content col-span-12">
+                    <h2>
+                        Environnement variables (from tatami.properties)
+                    </h2>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${properties}" var="property">
                             <tr>
-                                <th>Property</th>
-                                <th>Value</th>
+                                <td>
+                                        ${property.key}
+                                </td>
+                                <td>
+                                        ${property.value}
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${properties}" var="property">
-                                <tr>
-                                    <td>
-                                            ${property.key}
-                                    </td>
-                                    <td>
-                                            ${property.value}
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                        </c:forEach>
+                        </tbody>
+                    </table>
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="span12">
-                <h2>
-                    Re-index Search Engine
-                </h2>
+    <div class="row">
+        <div class="col-span-12">
+            <h2>
+                Re-index Search Engine
+            </h2>
 
-                <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
-                    <fieldset>
-                        <div class="form-actions">
-                            <button type="submit" class="input-xlarge btn btn-danger"
-                                    onclick="return(confirm('Are you sure you want to re-index Search Engine?'));">
-                                Re-index Search Engine
-                            </button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+            <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
+                <fieldset>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-danger"
+                                onclick="return(confirm('Are you sure you want to re-index Search Engine?'));">
+                            Re-index Search Engine
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
         </div>
+    </div>
 
     <jsp:include page="includes/footer.jsp"/>
 
