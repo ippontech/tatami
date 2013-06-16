@@ -11,9 +11,9 @@
                         if (self.get(key) !== value) self.set(key, value);
                     });
             });
-            this.listenTo(this, 'change', function(){
-                Tatami.app.trigger('model:status:' + self.id, self);
-            });
+            // this.listenTo(this, 'change', function(){
+            //     Tatami.app.trigger('model:status:' + self.id, self);
+            // });
         },
         idAttribute: 'statusId',
 
