@@ -4,13 +4,14 @@
         model : Tatami.Models.StatusDetails
     }))();
 
-    var statusTimeline = new Tatami.Views.StatusTimelineRegion();
+    // var statusTimeline = new Tatami.Views.StatusTimelineRegion();
 
     Tatami.Factories.Status = {
+
         getStatusDetail: function(id){
             var statusDetail = statusDetails.get(id);
             if(!statusDetail){
-                statusDetail = new Tatami.Models.StatusDetails({
+                var statusDetail = new Tatami.Models.StatusDetails({
                     statusId: id
                 });
                 statusDetails.add(statusDetail);
@@ -19,7 +20,7 @@
         },
 
         getTimelineRegion: function(){
-            return statusTimeline;
+            return new Tatami.Views.StatusTimelineRegion();
         },
 
         getUpdateButton: function(){
@@ -28,7 +29,7 @@
 
         statusesTimeline: function(){
             return new Tatami.Views.Statuses({
-                collection: new Tatami.Collections.StatusesTimeline()
+                collection: new Tatami.Collections.StatusesTimeline()                
             });
         },
 
