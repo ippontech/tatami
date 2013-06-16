@@ -18,14 +18,9 @@
     <meta name="description" content="">
     <meta name="author" content="Ippon Technologies">
 
+    <link href="/css/vendor/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/tatami.css" rel="stylesheet">
 
-    <c:if test="${wro4jEnabled eq false}">
-        <link href="/css/vendor/css/bootstrap.css" rel="stylesheet">
-        <link href="/css/tatami.css" rel="stylesheet">
-    </c:if>
-    <c:if test="${wro4jEnabled eq true}">
-        <link href="/tatami/static-wro4j/${version}/tatami.css" rel="stylesheet">
-    </c:if>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,8 +62,10 @@
 
     <script type="text/javascript">
         var username = "${user.username}";
-        var ios = false;
-        <c:if test="ios != null">
+        <c:if test="${ios == null}">
+            var ios = false;
+        </c:if>
+        <c:if test="${ios != null}">
             var ios = ${ios};
         </c:if>
     </script>

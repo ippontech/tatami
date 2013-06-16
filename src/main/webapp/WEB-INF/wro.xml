@@ -2,9 +2,6 @@
 
 <groups xmlns="http://www.isdc.ro/wro">
     <group name='tatami-vendor'>
-        <css>/css/vendor/css/bootstrap.css</css>
-        <css>/css/tatami.css</css>
-
         <js>/js/vendor/jquery.js</js>
         <js>/js/vendor/jquery.ui.widget.js</js>
         <js>/js/vendor/jquery.iframe-transport.js</js>
@@ -19,6 +16,7 @@
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
+        <js>/js/vendor/raphael-min.js</js>
     </group>
     <group name='tatami-app'>
         <js>/js/app/app.js</js>

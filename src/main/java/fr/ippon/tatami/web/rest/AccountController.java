@@ -5,8 +5,8 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.controller.form.Preferences;
-import fr.ippon.tatami.web.controller.form.UserPassword;
+import fr.ippon.tatami.web.rest.dto.Preferences;
+import fr.ippon.tatami.web.rest.dto.UserPassword;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -179,11 +179,14 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public void isPasswordManagedByLDAP(HttpServletResponse response) {
+    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         if (userService.isDomainHandledByLDAP(domain)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        } else {
+            return new UserPassword();
         }
     }
 
@@ -194,7 +197,7 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
-    public String setPreferences(@RequestBody UserPassword userPassword, HttpServletResponse response) {
+    public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
         if (this.log.isDebugEnabled()) {
             this.log.debug("REST request to set account's password");
         }
@@ -220,15 +223,15 @@ public class AccountController {
             if (log.isDebugEnabled()) {
                 log.debug("User password updated : " + currentUser);
             }
-            return null;
+            return new UserPassword();
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return e.getMessage();
+            return null;
         }
     }
 
     /**
-     * GET  /visit -> Get all users of domain
+     * GET  /visit -> Finish the user 1st visit
      */
     @RequestMapping(value = "/rest/visit",
             method = RequestMethod.DELETE,

@@ -928,20 +928,16 @@ app.View.DailyStatsView = Backbone.View.extend({
         this.model = new app.Collection.DailyStatCollection();
         this.model.bind('reset', this.render, this);
         this.model.fetch();
-
-
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
     render:function () {
-
         var values = [];
         var labels = [];
         this.model.each(function (model) {
             values.push(model.get('statusCount'));
             labels.push(model.get('username'));
         });
-
         this.$el.pie(values, labels);
 
         return this.$el;

@@ -10,7 +10,7 @@ import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import fr.ippon.tatami.web.controller.form.Preferences;
+import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.AccountController;
 import fr.ippon.tatami.web.rest.TimelineController;
 import org.apache.commons.lang.CharEncoding;

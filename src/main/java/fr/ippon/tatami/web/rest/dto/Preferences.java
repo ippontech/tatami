@@ -1,4 +1,4 @@
-package fr.ippon.tatami.web.controller.form;
+package fr.ippon.tatami.web.rest.dto;
 
 import fr.ippon.tatami.domain.User;
 import org.apache.commons.lang.StringUtils;

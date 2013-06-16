@@ -9,14 +9,14 @@
 </script>
 
 <script type="text/template" id="form-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.form.error"/>
     </div>
 </script>
 
 <script type="text/template" id="form-ldap">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.user.password.ldap"/>
     </div>
 </script>
@@ -38,7 +38,7 @@
             </label>
 
             <div class="controls">
-                <input name="login" type="text" disabled="true" class="span12" value="<@= login @>"/>
+                <input name="login" type="text" disabled="true" class="col-span-12" value="<@= login @>"/>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                 <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
                 <div id="updateAvatar"  class="btn btn-info btn-mini">
                     <p><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+                    <input id="avatarFile" type="file" name="uploadFile"  data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
             </label>
 
             <div class="controls">
-                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge span12" value="<@= user.firstName @>"/>
+                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.firstName @>"/>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             </label>
 
             <div class="controls">
-                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge span12" value="<@= user.lastName @>"/>
+                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.lastName @>"/>
             </div>
         </div>
 
@@ -82,7 +82,7 @@
             </label>
 
             <div class="controls">
-                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge span12" value="<@= user.jobTitle @>"/>
+                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="<@= user.jobTitle @>"/>
             </div>
         </div>
 
@@ -92,7 +92,7 @@
             </label>
 
             <div class="controls">
-                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge span12" value="<@= user.phoneNumber @>"/>
+                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= user.phoneNumber @>"/>
             </div>
         </div>
 
@@ -142,7 +142,7 @@
                         key="tatami.preferences.theme.current"/>
             </label>
             <div class="controls">
-                <select class="input-xlarge span12" name="theme">
+                <select class="input-xlarge col-span-12" name="theme">
                     <@  preferences.themesList.forEach(function(theme){ @>
                         <option value="<@= theme @>" <@ if(preferences.theme === theme) { @>selected="true" <@ } @>>
                             <@= function(string){ return string.charAt(0).toUpperCase() + string.slice(1) }(theme) @>
@@ -216,7 +216,7 @@
             </label>
 
             <div class="controls">
-                <input name="oldPassword" type="password" required="required" size="15" maxlength="40" class="input-xlarge span12" />
+                <input name="oldPassword" type="password" required="required" size="15" maxlength="40" class="input-xlarge col-span-12" />
             </div>
         </div>
 
@@ -226,7 +226,7 @@
             </label>
 
             <div class="controls">
-                <input name="newPassword" type="password" required="required" ize="15" maxlength="40" class="input-xlarge span12"/>
+                <input name="newPassword" type="password" required="required" ize="15" maxlength="40" class="input-xlarge col-span-12"/>
             </div>
         </div>
 
@@ -236,7 +236,7 @@
             </label>
 
             <div class="controls">
-                <input name="newPasswordConfirmation" type="password" required="required" size="15" maxlength="40" class="input-xlarge span12"/>
+                <input name="newPasswordConfirmation" type="password" required="required" size="15" maxlength="40" class="input-xlarge col-span-12"/>
             </div>
         </div>
         <div class="form-actions">
@@ -320,7 +320,7 @@
             <fmt:message key="tatami.group.add"/>
         </button>
     <@ } @>
-    <fieldset <@ if (typeof groupId === 'undefined') { @>class="hide"<@ } @>>
+    <fieldset <@ if (typeof groupId === 'undefined') { @>class="hide" <@ } @>>
         <legend>
             <@ if (typeof groupId === 'undefined') { @>
                 <fmt:message key="tatami.group.add"/>
@@ -334,7 +334,7 @@
             </label>
 
             <div class="controls">
-                <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge span12" value="<@= name @>" />
+                <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-span-12" value="<@= name @>" />
             </div>
         </div>
 
@@ -344,7 +344,7 @@
             </label>
 
             <div class="controls">
-                <textarea name="description" class="input-xlarge span12"><@= description @></textarea>
+                <textarea name="description" class="input-xlarge col-span-12"><@= description @></textarea>
             </div>
         </div>
 
@@ -366,8 +366,8 @@
                 </div>
             </div>
 
-            <div class="alert">
-                <i class="icon-warning-sign"></i>
+            <div class="alertColor">
+                <i class="glyphicon glyphicon-warning-sign"></i>
                 <fmt:message key="tatami.group.add.public.alert"/>
             </div>
         <@ } else { @>
@@ -396,14 +396,14 @@
 
         <div class="form-actions">
             <@ if (typeof groupId === 'undefined') { @>
-                <button type="submit" class="btn btn-success span8">
+                <button type="submit" class="btn btn-success col-span-7 little-marge-right">
                     <fmt:message key="tatami.form.save"/>
                 </button>
-                <button type="reset" class="btn btn-danger span4">
+                <button type="reset" class="btn btn-danger col-span-4">
                     <fmt:message key="tatami.form.cancel"/>
                 </button>
             <@ } else { @>
-                <button type="submit" class="btn btn-success span12">
+                <button type="submit" class="btn btn-success col-span-12">
                     <fmt:message key="tatami.form.save"/>
                 </button>
             <@ } @>
@@ -428,12 +428,12 @@
             </label>
 
             <div class="controls">
-                <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge span12"/>
+                <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12"/>
             </div>
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-success span12">
+            <button type="submit" class="btn btn-success col-span-12">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
@@ -453,7 +453,7 @@
 </script>
 
 <script type="text/template" id="groups-form-adduser-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.group.edit.member.add.error"/>
     </div>
@@ -553,11 +553,11 @@
 
     <div class="progress">
         <@ if(quota < 50){@>
-        <div class="bar bar-success" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;"></div>
         <@ }else if(quota > 50 && quota < 80) {@>
-        <div class="bar bar-warning" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;"></div>
         <@ }else{@>
-        <div class="bar bar-danger" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;"></div>
         <@ } @>
         <span class="quota"><@= quota @>%</span>
     </div>
@@ -605,7 +605,7 @@
 </script>
 
 <script type="text/template" id="delete-file-error">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <fmt:message key="tatami.user.file.delete.error"/>
     </div>
@@ -613,7 +613,7 @@
 
 <script type="text/template" id="search-filter">
     <form>
-        <input id="block_filter" type="text" class="search-query span12" name="result_filter" autocomplete="off" placeholder="<fmt:message key="tatami.search.filter"/>">
+        <input id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="<fmt:message key="tatami.search.filter"/>">
     </form>
     <br />
 </script>

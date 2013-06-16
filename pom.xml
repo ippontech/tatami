@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.14</version>
+    <version>3.0.16</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -58,7 +58,7 @@
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <log4j.loglevel>INFO</log4j.loglevel>
-                <log4j.appender>CONSOLE</log4j.appender>
+                <log4j.appender>PAPERTRAIL</log4j.appender>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -66,6 +66,10 @@
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
             </properties>
             <build>
                 <plugins>
@@ -82,7 +86,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all,tatami</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -141,7 +145,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>all,tatami</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -858,7 +862,7 @@
     </dependencies>
     <build>
         <!-- Tatami must be configured at the root context (/) of the application server -->
-        <finalName>ROOT</finalName>
+        <finalName>root</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

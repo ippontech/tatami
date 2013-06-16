@@ -8,7 +8,7 @@
     <a href="#timeline" class="btn-title toggleTag pull-right label label-info">
         <span class="glyphicon glyphicon-th-list"></span>
     </a>
-    <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @>">
+    <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </a>
     </h3>
@@ -75,7 +75,7 @@
     </div>
 </script>
 <script type="text/template" id="TagTrendItems">
-    <span class="toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
+    <span class="little-padding toggleTag pointer pull-right label <@= (followed)?'label-info':'' @>">
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
