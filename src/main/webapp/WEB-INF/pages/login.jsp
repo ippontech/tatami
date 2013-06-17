@@ -28,12 +28,12 @@
     </div>
     </c:if>
     <c:if test="${action eq 'registerFailure'}">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.register.msg.error"/>
     </div>
     </c:if>
     <c:if test="${action eq 'loginFailure'}">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.authentification.error"/>
     </div>
     </c:if>
@@ -43,12 +43,12 @@
     </div>
     </c:if>
     <c:if test="${action eq 'lostPasswordFailure'}">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.lost.password.msg.error"/>
     </div>
     </c:if>
     <c:if test="${action eq 'ldapPasswordFailure'}">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <fmt:message key="tatami.ldap.password.msg.error"/>
     </div>
     </c:if>
