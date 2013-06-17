@@ -22,6 +22,9 @@
         regions: {
             tatams: {
                 selector: ".tatams-container"
+            },
+            welcome: {
+                selector: ".welcome"
             }
         },
         show: function(tabName){

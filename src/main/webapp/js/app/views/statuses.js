@@ -402,7 +402,6 @@
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItem = StatusItem;
     Tatami.Views.StatusActions = StatusActions;
-    // Tatami.Views.StatusFooters = StatusFooters;
     Tatami.Views.StatusAttachments = StatusAttachments;
     Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
 })(Backbone, _, Tatami);

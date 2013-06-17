@@ -56,6 +56,7 @@
     <script src="/js/app/views/statuses.js"></script>
     <script src="/js/app/views/statusEdit.js"></script>
     <script src="/js/app/views/statusUpdateButton.js"></script>
+    <script src="/js/app/views/welcome.js"></script>
     <script src="/js/app/views/userList.js"></script>
     <script src="/js/app/views/statusShares.js"></script>
     <script src="/js/app/views/tagTrends.js"></script>

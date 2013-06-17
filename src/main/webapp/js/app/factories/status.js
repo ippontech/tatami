@@ -4,8 +4,6 @@
         model : Tatami.Models.StatusDetails
     }))();
 
-    // var statusTimeline = new Tatami.Views.StatusTimelineRegion();
-
     Tatami.Factories.Status = {
 
         getStatusDetail: function(id){
@@ -21,6 +19,10 @@
 
         getTimelineRegion: function(){
             return new Tatami.Views.StatusTimelineRegion();
+        },
+
+        getWelcomeRegion: function(){
+            return new Tatami.Views.WelcomeRegion();
         },
 
         getUpdateButton: function(){
