@@ -212,7 +212,6 @@ public class UserService {
         user.setJobTitle("");
         user.setAvatar("");
         user.setPhoneNumber("");
-        user.setIsNew(true);
         user.setPreferencesMentionEmail(true);
         user.setWeeklyDigestSubscription(true);
 

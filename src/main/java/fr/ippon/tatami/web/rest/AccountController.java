@@ -229,17 +229,4 @@ public class AccountController {
             return null;
         }
     }
-
-    /**
-     * GET  /visit -> Finish the user 1st visit
-     */
-    @RequestMapping(value = "/rest/visit",
-            method = RequestMethod.DELETE,
-            produces = "application/json")
-    @ResponseBody
-    public void finishVisit() {
-        User currentUser = authenticationService.getCurrentUser();
-        currentUser.setIsNew(false);
-        userService.updateUser(currentUser);
-    }
 }
