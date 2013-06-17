@@ -87,4 +87,6 @@ public class ColumnFamilyKeys {
 
     public static final String AVATAR_CF = "Avatar";
 
+    public static final String SHORT_URL_CF = "ShortUrl";
+
 }
