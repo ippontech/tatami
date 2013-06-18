@@ -250,6 +250,8 @@
     <@ } @>
         <section class="tatams-container">
         </section>
+        <section class="welcome">
+        </section>
     </section>
 </script>
 <script type="text/template" id="TagsBody">
@@ -281,6 +283,31 @@
     <@ } else { @>
         <fmt:message key="tatami.timeline.messages"/>
     <@ } @>
+</script>
+<script type="text/template" id="Welcome">
+    <div id="WelcomeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><fmt:message key="tatami.welcome.title"/></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col col-span6">
+                            <img src="/img/welcome.jpg" class="pull-left">
+                        </div>
+                        <div class="col col-span6">
+                            <br/><br/><h2><fmt:message key="tatami.welcome.title"/></h2><p><fmt:message key="tatami.welcome.description"/></p>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default hide-welcome" data-dismiss="modal"><fmt:message key="tatami.form.cancel"/></button>
+                    <button type="button" class="btn btn-primary launch-help"><fmt:message key="tatami.welcome.launch"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">
