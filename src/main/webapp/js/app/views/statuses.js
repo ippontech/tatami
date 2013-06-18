@@ -61,7 +61,7 @@
             'change:favorite': 'onRender',
             'change:discussion': 'onRender'
         },
-        events: {
+        events: {            
             'click': 'showDetails',
             'click a' : 'showLink',
             'click .status-action-show' : 'showDetails',
@@ -73,8 +73,7 @@
             'click .status-action-announce-cancel': 'announceActionCancel',
             'click .status-action-delete': 'deleteAction',
             'click .status-action-delete-confirm': 'deleteActionConfirm',
-            'click .status-action-delete-cancel': 'deleteActionCancel',
-            'click .status-action-attach': 'showAttach'
+            'click .status-action-delete-cancel': 'deleteActionCancel'
         },
         onRender: function(){
             this.$el.find('> #current').toggleClass('favorite', this.model.get('favorite'));
@@ -300,6 +299,13 @@
                 self.model.destroy();
             });
 
+            var statusToDelete = $(".tatam-id-"+this.model.id);
+            statusToDelete.each(function(status){
+                statusToDelete.hide(function(){
+                    this.remove();
+                }).slideDown();
+            }); 
+
             return false;
         },
         deleteActionCancel: function(){
@@ -388,7 +394,7 @@
 
     var StatusAttachmentItems = Backbone.Marionette.ItemView.extend({
         template: '#StatusAttachmentItems',
-        tagName: 'div'
+        tagName: 'span'
     });
 
     var StatusAttachments = Backbone.Marionette.CollectionView.extend({

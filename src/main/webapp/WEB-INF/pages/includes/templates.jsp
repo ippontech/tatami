@@ -156,11 +156,9 @@
 <@ } else { @>
     <small class="statusitem-footer"> 
 <@ } @>  
-        <button class="btn-link status-action button-ios">
-            <a href="#status/<@= statusId @>" >
-                 <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
-            </a>
-        </button>
+        <a href="#status/<@= statusId @>" class="btn-link status-action button-ios" >
+            <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+        </a>
         <@ if (ios) { @>
             <button class="btn-link status-action button-ios">
                 <a href="tatami://sendResponse?replyTo=<@= statusId @>&replyToUsername=<@= username @>">
@@ -368,12 +366,9 @@
     <a href="#groups/<@= groupId @>"><@= name @></a>
 </script>
 <script type="text/template" id="StatusAttachmentItems">
-    <button class="btn-link status-action status-action-attach">
-        <span class="glyphicon glyphicon-file"></span>
-        <a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank">
-            <@= filename @>
+        <a href="/tatami/file/<@= attachmentId @>/<@= filename @>" class="btn-link status-action" target="_blank">
+            <i class="glyphicon glyphicon-file"></i> <@= filename @>
         </a>
-    </button>
 </script>
 <script type="text/template" id="search-category">
     <@ if(cat.category == 'tags') {@>
