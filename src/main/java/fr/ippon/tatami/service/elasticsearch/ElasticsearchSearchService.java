@@ -72,9 +72,7 @@ public class ElasticsearchSearchService implements SearchService {
     private void init() {
         for (String type : TYPES) {
             if (!client().admin().indices().prepareExists(indexName(type)).execute().actionGet().exists()) {
-                if (log.isInfoEnabled()) {
-                    log.info("Index " + indexName(type) + " does not exists in Elasticsearch, creating it!");
-                }
+                log.info("Index {} does not exists in Elasticsearch, creating it!",indexName(type));
                 createIndex();
             }
         }

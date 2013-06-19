@@ -68,9 +68,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
             domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(login), login);
 
         } catch (UsernameNotFoundException e) {
-            if (log.isInfoEnabled()) {
-                log.info("User with login : \"" + login + "\" doesn't exist yet in Tatami database - creating it...");
-            }
+            log.info("User with login : \"{}\" doesn't exist yet in Tatami database - creating it...",login);
             userDetails = getNewlyCreatedUserDetails(token);
         }
         return userDetails;

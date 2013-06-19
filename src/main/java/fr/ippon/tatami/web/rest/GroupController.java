@@ -72,10 +72,7 @@ public class GroupController {
             Group result = getGroupFromUser(currentUser, groupId);
             Group groupClone = null;
             if (result == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + groupId);
-                }
+                log.info("Permission denied! User {} tried to access group ID = {} ", currentUser.getLogin(), groupId);
                 return null;
             } else {
                 groupClone = (Group) result.clone();

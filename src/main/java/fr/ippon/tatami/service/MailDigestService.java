@@ -60,10 +60,7 @@ public class MailDigestService {
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         for (Domain d : domains) {
-            if (log.isInfoEnabled()) {
-                log.info("Sending daily digest for domain " + d +
-                        " and day " + day);
-            }
+            log.info("Sending daily digest for domain {} and day {}",d ,day);
             int pagination = 0;
             List<String> logins;
             do {
@@ -107,10 +104,7 @@ public class MailDigestService {
             String day = String.valueOf(i);
 
             for (Domain d : domains) {
-                if (log.isInfoEnabled()) {
-                    log.info("Sending weekly digest for domain " + d +
-                            " and day " + i);
-                }
+                log.info("Sending weekly digest for domain {} and day {}",d,i);
                 int pagination = 0;
                 List<String> logins;
                 do {

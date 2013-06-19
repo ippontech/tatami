@@ -184,16 +184,12 @@ public class TimelineController {
                 }
             }
             if (group == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + status.getGroupId());
-                }
+                log.info("Permission denied! User {} tried to access " +
+                            "group ID = {}",currentUser.getLogin(),status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else if (group.isArchivedGroup()) {
-                if (log.isInfoEnabled()) {
-                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
-                            "group ID = " + status.getGroupId());
-                }
+                    log.info("Archived group! User {} tried to post a message to archived " +
+                            "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
                 statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
