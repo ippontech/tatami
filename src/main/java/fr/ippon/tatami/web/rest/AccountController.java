@@ -10,6 +10,8 @@ import fr.ippon.tatami.web.rest.dto.UserPassword;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,7 +35,7 @@ import javax.validation.ConstraintViolationException;
 @Controller
 public class AccountController {
 
-    private final Log log = LogFactory.getLog(AccountController.class);
+    private final Logger log = LoggerFactory.getLogger(AccountController.class);
 
     @Inject
     private UserService userService;
@@ -52,9 +54,7 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public User getProfile() {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's profile");
-        }
+        this.log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
         return userService.getUserByLogin(currentUser.getLogin());
     }
@@ -77,9 +77,7 @@ public class AccountController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("User updated : " + currentUser);
-        }
+        log.debug("User updated : {}", currentUser);
         return currentUser;
     }
 
@@ -87,9 +85,7 @@ public class AccountController {
             method = RequestMethod.DELETE)
     public void suppressUserProfile() {
         User currentUser = authenticationService.getCurrentUser();
-        if (log.isDebugEnabled()) {
-            log.debug("Suppression du compte utilisateur : " + currentUser);
-        }
+        log.debug("Suppression du compte utilisateur : {}", currentUser);
         userService.deleteUser(currentUser);
     }
 
@@ -102,9 +98,7 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public Preferences getPreferences() {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's preferences");
-        }
+        this.log.debug("REST request to get account's preferences");
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
 
@@ -123,9 +117,7 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to set account's preferences");
-        }
+        this.log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
@@ -158,9 +150,7 @@ public class AccountController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            if (log.isDebugEnabled()) {
-                log.debug("User updated : " + currentUser);
-            }
+            log.debug("User updated : {}", currentUser);
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -198,17 +188,13 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to set account's password");
-        }
+        this.log.debug("REST request to set account's password");
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!encoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
-                if (log.isDebugEnabled()) {
-                    log.debug("The old password is incorrect : " + userPassword.getOldPassword());
-                }
+                log.debug("The old password is incorrect : {}", userPassword.getOldPassword());
                 throw new Exception("oldPassword");
             }
 
@@ -220,9 +206,7 @@ public class AccountController {
 
             userService.updatePassword(currentUser);
 
-            if (log.isDebugEnabled()) {
-                log.debug("User password updated : " + currentUser);
-            }
+            log.debug("User password updated : {}", currentUser);
             return new UserPassword();
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
