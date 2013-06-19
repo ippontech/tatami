@@ -9,8 +9,8 @@ import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final Log log = LogFactory.getLog(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Inject
     private UserRepository userRepository;
@@ -148,9 +148,7 @@ public class UserService {
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
         String encryptedPassword = encoder.encode(password);
         currentUser.setPassword(encryptedPassword);
-        if (log.isDebugEnabled()) {
-            log.debug("Password encrypted to : " + encryptedPassword);
-        }
+        log.debug("Password encrypted to : {}", encryptedPassword);
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -162,9 +160,7 @@ public class UserService {
     public void updateThemePreferences(String theme) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setTheme(theme);
-        if (log.isDebugEnabled()) {
-            log.debug("Updating theme :" + theme);
-        }
+        log.debug("Updating theme :{}", theme);
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -176,9 +172,7 @@ public class UserService {
     public void updateEmailPreferences(boolean preferencesMentionEmail) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setPreferencesMentionEmail(preferencesMentionEmail);
-        if (log.isDebugEnabled()) {
-            log.debug("Updating e-mail preferences : preferencesMentionEmail=" + preferencesMentionEmail);
-        }
+            log.debug("Updating e-mail preferences : preferencesMentionEmail={}", preferencesMentionEmail);
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -224,9 +218,7 @@ public class UserService {
         // Add to the searchStatus engine
         searchService.addUser(user);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Created User : " + user.toString());
-        }
+        log.debug("Created User : {}", user.toString());
     }
 
     public void createTatamibot(String domain) {
@@ -238,9 +230,7 @@ public class UserService {
         tatamiBotUser.setWeeklyDigestSubscription(false);
         tatamiBotUser.setJobTitle("I am just a robot");
         userRepository.updateUser(tatamiBotUser);
-        if (log.isDebugEnabled()) {
-            log.debug("Created Tatami Bot user for domain : " + domain);
-        }
+        log.debug("Created Tatami Bot user for domain : {}", domain);
     }
 
     public void deleteUser(User user) {
@@ -298,9 +288,7 @@ public class UserService {
     }
 
     public String validateRegistration(String key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Validating registration for key " + key);
-        }
+            log.debug("Validating registration for key {}", key);
         String login = registrationRepository.getLoginByRegistrationKey(key);
         String password = RandomUtil.generatePassword();
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -308,16 +296,12 @@ public class UserService {
         if (login != null) {
             User existingUser = getUserByLogin(login);
             if (existingUser != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Reinitializing password for user " + login);
-                }
+                log.debug("Reinitializing password for user {}", login);
                 existingUser.setPassword(encryptedPassword);
                 userRepository.updateUser(existingUser);
                 mailService.sendPasswordReinitializedEmail(existingUser, password);
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Validating user " + login);
-                }
+                    log.debug("Validating user {}", login);
                 User user = new User();
                 user.setLogin(login);
                 user.setPassword(encryptedPassword);
@@ -344,9 +328,8 @@ public class UserService {
                     currentUser.getDomain(), day);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Updating weekly digest preferences : weeklyDigest=" + registration + " for user "+currentUser.getLogin());
-        }
+            log.debug("Updating weekly digest preferences : " +
+                    "weeklyDigest={} for user {}",registration, currentUser.getLogin());
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -371,9 +354,7 @@ public class UserService {
                     currentUser.getDomain(), day);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Updating daily digest preferences : dailyDigest=" + registration + " for user "+currentUser.getLogin());
-        }
+        log.debug("Updating daily digest preferences : dailyDigest={} for user {}", registration, currentUser.getLogin());
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -399,9 +380,7 @@ public class UserService {
                 // Activate rss feed publication.
                 rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
                 currentUser.setRssUid(rssUid);
-                if (log.isDebugEnabled()) {
-                    log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
-                }
+                log.debug("Updating rss timeline preferences : rssUid={}", rssUid);
 
                 try {
                     userRepository.updateUser(currentUser);
@@ -418,9 +397,7 @@ public class UserService {
                 rssUidRepository.removeRssUid(rssUid);
                 rssUid = "";
                 currentUser.setRssUid(rssUid);
-                if (log.isDebugEnabled()) {
-                    log.debug("Updating rss timeline preferences : rssUid=" + rssUid);
-                }
+                log.debug("Updating rss timeline preferences : rssUid={}", rssUid);
 
                 try {
                     userRepository.updateUser(currentUser);

@@ -9,8 +9,6 @@ import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import fr.ippon.tatami.service.SearchService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -30,6 +28,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.Assert;
@@ -45,7 +45,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 public class ElasticsearchSearchService implements SearchService {
 
-    private static final Log log = LogFactory.getLog(ElasticsearchSearchService.class);
+    private static final Logger log = LoggerFactory.getLogger(ElasticsearchSearchService.class);
 
     private static final String ALL_FIELD = "_all";
 
@@ -259,9 +259,7 @@ public class ElasticsearchSearchService implements SearchService {
                 items.add(hit.getId());
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("search status with words (" + query + ") = " + items);
-            }
+            log.debug("search status with words ({}) = {}", query, items);
             return items;
 
         } catch (IndexMissingException e) {
@@ -393,15 +391,11 @@ public class ElasticsearchSearchService implements SearchService {
         try {
             final XContentBuilder source = mapper.toJson(object);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Ready to index the " + type + " id " + id + " into Elasticsearch: " + stringify(source));
-            }
+            log.debug("Ready to index the {} id {} into Elasticsearch: {}", type, id, stringify(source));
             client().prepareIndex(indexName(type), type, id).setSource(source).execute(new ActionListener<IndexResponse>() {
                 @Override
                 public void onResponse(IndexResponse response) {
-                    if (log.isDebugEnabled()) {
-                        log.debug(type + " id " + id + " was " + (response.version() == 1 ? "indexed" : "updated") + " into Elasticsearch");
-                    }
+                    log.debug(type + " id " + id + " was " + (response.version() == 1 ? "indexed" : "updated") + " into Elasticsearch");
                 }
 
                 @Override
@@ -444,9 +438,7 @@ public class ElasticsearchSearchService implements SearchService {
             }
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Ready to index " + collection.size() + " " + type + " into Elasticsearch.");
-        }
+        log.debug("Ready to index {} {} into Elasticsearch.",collection.size(),  type);
 
         BulkResponse response = request.execute().actionGet();
         if (response.hasFailures()) {
@@ -459,8 +451,8 @@ public class ElasticsearchSearchService implements SearchService {
             }
             log.error(errorCount + " " + type + " where not indexed in bulk operation.");
 
-        } else if (log.isDebugEnabled()) {
-            log.debug(collection.size() + " " + type + " indexed into Elasticsearch in bulk operation.");
+        } else  {
+            log.debug("{} {} indexed into Elasticsearch in bulk operation.",collection.size(), type);
         }
     }
 
@@ -478,9 +470,7 @@ public class ElasticsearchSearchService implements SearchService {
         final String id = mapper.id(object);
         final String type = mapper.type();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Ready to delete the " + type + " of id " + id + " from Elasticsearch: ");
-        }
+        log.debug("Ready to delete the {} of id {} from Elasticsearch: ", type, id);
 
         client().prepareDelete(indexName(type), type, id).execute(new ActionListener<DeleteResponse>() {
             @Override
@@ -530,9 +520,7 @@ public class ElasticsearchSearchService implements SearchService {
                 ids.add(hit.getId());
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("search " + mapper.type() + " by prefix(\"" + domain + "\", \"" + prefix + "\") = result : " + ids);
-            }
+            log.debug("search " + mapper.type() + " by prefix(\"" + domain + "\", \"" + prefix + "\") = result : " + ids);
             return ids;
 
         } catch (IndexMissingException e) {

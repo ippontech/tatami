@@ -50,7 +50,7 @@
             <div class="controls">
                 <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
                 <div id="updateAvatar"  class="btn btn-info btn-mini">
-                    <p><fmt:message key="tatami.user.picture.button" /></p>
+                    <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
                     <input id="avatarFile" type="file" name="uploadFile"  data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
             </div>

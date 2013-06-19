@@ -1,14 +1,14 @@
 package fr.ippon.tatami.web.atmosphere;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.atmosphere.config.service.ManagedService;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResponse;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.handler.OnMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
         path = "/realtime/statuses/home_timeline")
 public class RealtimeService extends OnMessage<TatamiNotification> {
 
-    private static final Log log = LogFactory.getLog(RealtimeService.class);
+    private static final Logger log = LoggerFactory.getLogger(RealtimeService.class);
 
     private static final ObjectMapper jsonObjectMapper = new ObjectMapper();
 
@@ -27,9 +27,7 @@ public class RealtimeService extends OnMessage<TatamiNotification> {
         String broadcasterName = "/realtime/statuses/home_timeline/" +
                 resource.getRequest().getRemoteUser();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Subscribing this resource to broadcaster: " + broadcasterName);
-        }
+        log.debug("Subscribing this resource to broadcaster: {}", broadcasterName);
         Broadcaster b =
                 BroadcasterFactory.getDefault().lookup(broadcasterName, true);
 
@@ -53,9 +51,7 @@ public class RealtimeService extends OnMessage<TatamiNotification> {
 
     @Override
     public void onMessage(AtmosphereResponse response, TatamiNotification notification) throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("Received Atmosphere message: " + notification);
-        }
+        log.debug("Received Atmosphere message: {}", notification);
         String json = jsonObjectMapper.writeValueAsString(notification);
         response.getWriter().write(json);
     }

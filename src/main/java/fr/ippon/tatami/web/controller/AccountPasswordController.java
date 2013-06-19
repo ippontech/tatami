@@ -5,8 +5,8 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.controller.form.UserPassword;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,7 +26,7 @@ import javax.validation.ConstraintViolationException;
 @Controller
 public class AccountPasswordController {
 
-    private final Log log = LogFactory.getLog(AccountPasswordController.class);
+    private final Logger log = LoggerFactory.getLogger(AccountPasswordController.class);
 
     @Inject
     private UserService userService;
@@ -69,9 +69,7 @@ public class AccountPasswordController {
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
         if (!encoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
-            if (log.isDebugEnabled()) {
-                log.debug("The old password is incorrect : " + userPassword.getOldPassword());
-            }
+            log.debug("The old password is incorrect : {}", userPassword.getOldPassword());
             result.rejectValue("oldPassword",
                     "tatami.user.old.password.error",
                     "The old password is incorrect");
@@ -98,9 +96,7 @@ public class AccountPasswordController {
             result.reject(cve.getMessage(), "The new password is not valid : " + cve.getMessage());
             return getUpdatePassword(false);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("User password updated : " + currentUser);
-        }
+        log.debug("User password updated : {}", currentUser);
         return new ModelAndView("redirect:/tatami/account/password?success=true");
     }
 }

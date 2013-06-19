@@ -26,10 +26,12 @@ import org.mockito.Spy;
 import com.google.common.collect.Lists;
 
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class SourceRouteBuilderBaseCamelTest<T extends SourceRouteBuilderBase> extends CamelTestSupport {
 
-    protected final Log log = LogFactory.getLog(this.getClass());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     protected List<String> messages = Lists.newArrayList();
     private List<Message> camelMessages = Lists.newArrayList();

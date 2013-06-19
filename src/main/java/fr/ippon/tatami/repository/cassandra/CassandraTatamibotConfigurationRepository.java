@@ -11,8 +11,8 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hom.EntityManagerImpl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -45,7 +45,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 @Repository
 public class CassandraTatamibotConfigurationRepository implements TatamibotConfigurationRepository {
 
-    private final Log log = LogFactory.getLog(CassandraTatamibotConfigurationRepository.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraTatamibotConfigurationRepository.class);
 
     @Inject
     private Keyspace keyspaceOperator;

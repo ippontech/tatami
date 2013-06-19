@@ -2,8 +2,8 @@ package fr.ippon.tatami.config;
 
 import fr.ippon.tatami.web.syndic.SyndicView;
 import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -39,7 +39,7 @@ import java.util.List;
 @ImportResource("classpath:META-INF/spring/applicationContext-metrics.xml")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
-    private final Log log = LogFactory.getLog(DispatcherServletConfig.class);
+    private final Logger log = LoggerFactory.getLogger(DispatcherServletConfig.class);
 
     @Inject
     private Environment env;

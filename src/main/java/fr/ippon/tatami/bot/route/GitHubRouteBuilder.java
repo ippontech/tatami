@@ -1,12 +1,12 @@
 package fr.ippon.tatami.bot.route;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //@Component ==> disabling component scanning as we create instances of this builder programmatically
 public class GitHubRouteBuilder extends SourceRouteBuilderBase {
 
-    private static final Log log = LogFactory.getLog(GitHubRouteBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(GitHubRouteBuilder.class);
 
     @Override
     public void configure() {

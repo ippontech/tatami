@@ -8,12 +8,14 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.MailDigestRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -24,7 +26,7 @@ import java.util.*;
 @Service
 public class MailDigestService {
 
-    private static final Log log = LogFactory.getLog(MailDigestService.class);
+    private static final Logger log = LoggerFactory.getLogger(MailDigestService.class);
 
     private final static int MAX_STATUS_DAILY_DIGEST = 10;
     private final static int MAX_STATUS_WEEKLY_DIGEST = 10;
@@ -74,9 +76,10 @@ public class MailDigestService {
                         handleDailyDigestPageForLogin(login);
                     } catch (Exception e) {
                         log.warn("An error has occured when generating daily digest for user " + login + ": " + e.getMessage());
-                        if (log.isDebugEnabled()) {
-                            e.printStackTrace();
-                        }
+                        StringWriter stack = new StringWriter();
+                        PrintWriter pw = new PrintWriter(stack);
+                        e.printStackTrace(pw);
+                        log.debug("{}", stack.toString());
                     }
                 }
             } while (logins.size() > 0);
@@ -121,9 +124,10 @@ public class MailDigestService {
                             handleWeeklyDigestPageForLogin(login);
                         } catch (Exception e) {
                             log.warn("An error has occured when generating weekly digest for user " + login + ": " + e.getMessage());
-                            if (log.isDebugEnabled()) {
-                                e.printStackTrace();
-                            }
+                            StringWriter stack = new StringWriter();
+                            PrintWriter pw = new PrintWriter(stack);
+                            e.printStackTrace(pw);
+                            log.debug("{}", stack.toString());
                         }
                     }
                 } while (logins.size() > 0);

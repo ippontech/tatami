@@ -2,8 +2,8 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.service.StatsService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +20,7 @@ import java.util.Collection;
 @Controller
 public class StatsController {
 
-    private final Log log = LogFactory.getLog(StatsController.class);
+    private final Logger log = LoggerFactory.getLogger(StatsController.class);
 
     @Inject
     private StatsService statsService;

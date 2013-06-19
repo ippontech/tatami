@@ -1,18 +1,18 @@
 package fr.ippon.tatami.bot.route;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //@Component // ==> disabling component scanning as we create instances of this builder programmatically
 //@Scope("prototype") // <<<===  TODO : configure it with Spring !! using prototype scope : WARN testability ! 
 public class RssRouteBuilder extends SourceRouteBuilderBase {
 
-    private static final Log log = LogFactory.getLog(RssRouteBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(RssRouteBuilder.class);
 
     @Override
     public void configure() {
 
-        log.debug("Configuring a RSS support for domain "+configuration.getDomain());
+        log.debug("Configuring a RSS support for domain {}",configuration.getDomain());
 
         from(getRssEndpointUri()). // return a single SyndFeed each time (with a single SyndEntry)
                 id("rss-"+configuration.getDomain()).

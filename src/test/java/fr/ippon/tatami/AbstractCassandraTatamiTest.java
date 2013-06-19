@@ -17,6 +17,8 @@ import org.elasticsearch.node.NodeBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,7 +39,7 @@ import javax.inject.Inject;
 })
 public abstract class AbstractCassandraTatamiTest {
 
-    protected final Log log = LogFactory.getLog(this.getClass().getCanonicalName());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
 
     private static boolean isInitialized = false;
 
