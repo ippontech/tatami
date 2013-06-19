@@ -5,11 +5,11 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.controller.form.Preferences;
-import fr.ippon.tatami.web.controller.form.UserPassword;
+import fr.ippon.tatami.web.rest.dto.Preferences;
+import fr.ippon.tatami.web.rest.dto.UserPassword;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,7 +33,7 @@ import javax.validation.ConstraintViolationException;
 @Controller
 public class AccountController {
 
-    private final Logger log = LoggerFactory.getLogger(AccountController.class);
+    private final Log log = LogFactory.getLog(AccountController.class);
 
     @Inject
     private UserService userService;
@@ -52,7 +52,9 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public User getProfile() {
-        this.log.debug("REST request to get account's profile");
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to get account's profile");
+        }
         User currentUser = authenticationService.getCurrentUser();
         return userService.getUserByLogin(currentUser.getLogin());
     }
@@ -75,7 +77,9 @@ public class AccountController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
-            log.debug("User updated : {}", currentUser);
+        if (log.isDebugEnabled()) {
+            log.debug("User updated : " + currentUser);
+        }
         return currentUser;
     }
 
@@ -83,7 +87,9 @@ public class AccountController {
             method = RequestMethod.DELETE)
     public void suppressUserProfile() {
         User currentUser = authenticationService.getCurrentUser();
-        log.debug("Suppression du compte utilisateur : {}", currentUser);
+        if (log.isDebugEnabled()) {
+            log.debug("Suppression du compte utilisateur : " + currentUser);
+        }
         userService.deleteUser(currentUser);
     }
 
@@ -96,7 +102,9 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public Preferences getPreferences() {
-        this.log.debug("REST request to get account's preferences");
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to get account's preferences");
+        }
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
 
@@ -115,7 +123,9 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
-        this.log.debug("REST request to set account's preferences");
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to set account's preferences");
+        }
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
@@ -148,7 +158,9 @@ public class AccountController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.debug("User updated : {}", currentUser);
+            if (log.isDebugEnabled()) {
+                log.debug("User updated : " + currentUser);
+            }
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -167,11 +179,14 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public void isPasswordManagedByLDAP(HttpServletResponse response) {
+    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         if (userService.isDomainHandledByLDAP(domain)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        } else {
+            return new UserPassword();
         }
     }
 
@@ -182,14 +197,18 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
-    public String setPreferences(@RequestBody UserPassword userPassword, HttpServletResponse response) {
-        this.log.debug("REST request to set account's password");
+    public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("REST request to set account's password");
+        }
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!encoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
-                log.debug("The old password is incorrect : {}", userPassword.getOldPassword());
+                if (log.isDebugEnabled()) {
+                    log.debug("The old password is incorrect : " + userPassword.getOldPassword());
+                }
                 throw new Exception("oldPassword");
             }
 
@@ -201,24 +220,13 @@ public class AccountController {
 
             userService.updatePassword(currentUser);
 
-            log.debug("User password updated : {}", currentUser);
-            return null;
+            if (log.isDebugEnabled()) {
+                log.debug("User password updated : " + currentUser);
+            }
+            return new UserPassword();
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return e.getMessage();
+            return null;
         }
-    }
-
-    /**
-     * GET  /visit -> Get all users of domain
-     */
-    @RequestMapping(value = "/rest/visit",
-            method = RequestMethod.DELETE,
-            produces = "application/json")
-    @ResponseBody
-    public void finishVisit() {
-        User currentUser = authenticationService.getCurrentUser();
-        currentUser.setIsNew(false);
-        userService.updateUser(currentUser);
     }
 }

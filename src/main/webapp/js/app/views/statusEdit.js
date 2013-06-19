@@ -179,9 +179,8 @@
         submit: function(e){
             e.preventDefault();
             e.stopPropagation();
-
             var self = this;
-
+            var replyTo = self.model.get('replyTo');
             this.model.set('content', this.$edit.val());
             this.model.set('groupId', this.$el.find('[name="groupId"]').val());
             this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
@@ -189,7 +188,8 @@
                 success: function (model, response) {
                     self.hide();
                     Tatami.app.trigger('refresh', {
-                        display: true
+                        display: true,
+                        replyTo: replyTo
                     });
                     Tatami.app.user.set('statusCount', Tatami.app.user.get('statusCount') + 1);
                 },

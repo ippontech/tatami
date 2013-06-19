@@ -256,6 +256,12 @@ h4 {
     background-position: left top;
 }
 
+.favorite {
+    background-image: url(img/favorite.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+
 .pointer {
     cursor: pointer;
 }

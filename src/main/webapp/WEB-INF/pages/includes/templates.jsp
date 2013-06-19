@@ -102,8 +102,8 @@
                 <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
             </div>
             <h5 class="statusitem-name">
-                <a href="#users/<@= username @>"><strong><@= fullName @></strong></a>
-                <a href="#users/<@= username @>"><small>@<@= username @></small></a>
+                <strong><a href="#users/<@= username @>"><@= fullName @></a></strong>
+                <small><a href="#users/<@= username @>">@<@= username @></a></small>
                 <@ if (type == 'MENTION_SHARE') { @>
                     <fmt:message key="tatami.user.shared.you"/>
                 <@ } else if (type == 'MENTION_FRIEND') { @>
@@ -172,7 +172,8 @@
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
-            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
+            <!-- //TODO CodingParty : Afficher l'annulation du partage -->
+            <@ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn-link status-action status-action-share button-ios" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
             </button>
@@ -194,8 +195,8 @@
             <@ if (Tatami.app.user.get('username') == username) { @>
             <button class="btn-link status-action status-action-delete button-ios"
                     confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
-                                         <a class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
-                                         <a class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></a>
+                                         <button class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                         <button class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></button>
                                          </p>'>
                 <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
             </button>
@@ -251,6 +252,8 @@
     <@ } @>
         <section class="tatams-container">
         </section>
+        <section class="welcome">
+        </section>
     </section>
 </script>
 <script type="text/template" id="TagsBody">
@@ -282,6 +285,31 @@
     <@ } else { @>
         <fmt:message key="tatami.timeline.messages"/>
     <@ } @>
+</script>
+<script type="text/template" id="Welcome">
+    <div id="WelcomeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><fmt:message key="tatami.welcome.title"/></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col col-span6">
+                            <img src="/img/welcome.jpg" class="pull-left">
+                        </div>
+                        <div class="col col-span6">
+                            <br/><br/><h2><fmt:message key="tatami.welcome.title"/></h2><p><fmt:message key="tatami.welcome.description"/></p>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default hide-welcome" data-dismiss="modal"><fmt:message key="tatami.form.cancel"/></button>
+                    <button type="button" class="btn btn-primary launch-help"><fmt:message key="tatami.welcome.launch"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 <script type="text/template" id="StatusEdit">
     <div class="modal-dialog">

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Julien Dubois
@@ -36,18 +35,22 @@ public class HomeController {
     private Environment env;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
+    public ModelAndView login(@RequestParam(required = false) String action) {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("action", action);
         return mv;
     }
 
     @RequestMapping(value = { "/", "/home/**", "/home", "/home/" }, method = RequestMethod.GET)
-    public ModelAndView newUI(@RequestParam(required = false) String ios) {
+    public ModelAndView home(@RequestParam(required = false) String ios) {
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
-        mv.addObject("ios", (ios != null));
+        if (ios == null) {
+            mv.addObject("ios", false);
+        } else {
+            mv.addObject("ios", true);
+        }
         return mv;
     }
 
@@ -101,7 +104,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
-    public String lostpassword(@RequestParam String email) {
+    public String lostPassword(@RequestParam String email) {
         email = email.toLowerCase();
         User user = userService.getUserByLogin(email);
         if (user == null) {

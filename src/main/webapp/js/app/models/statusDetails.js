@@ -35,7 +35,15 @@
             }
 
             return statusAfter;
-        } 
+        },
+
+        isSharedBy: function(username){
+            var shares = this.get('sharedByLogins');
+            var isOk = shares.some(function(element){
+                return (element.username == username);
+            });
+            return isOk;
+        }
     });
 
     var StatusDiscussion = Backbone.Model.extend({

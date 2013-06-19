@@ -16,11 +16,9 @@
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/d3.js</js>
         <js>/js/vendor/modernizr.js</js>
+        <js>/js/vendor/raphael-min.js</js>
     </group>
     <group name='tatami-app'>
-        <css>/css/vendor/css/bootstrap.css</css>
-        <css>/css/tatami.css</css>
-
         <js>/js/app/app.js</js>
         <js>/js/app/router.js</js>
         <js>/js/app/models/**.js</js>

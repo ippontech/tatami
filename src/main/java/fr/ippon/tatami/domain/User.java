@@ -87,10 +87,6 @@ public class User implements Serializable {
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
-    @Column(name = "isNew")
-    @JsonIgnore
-    private Boolean isNew;
-
     private long statusCount;
 
     private long friendsCount;
@@ -193,14 +189,6 @@ public class User implements Serializable {
         this.preferencesMentionEmail = preferencesMentionEmail;
     }
 
-    public Boolean getIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(Boolean isNew) {
-        this.isNew = isNew;
-    }
-
     public long getAttachmentsSize() {
         return attachmentsSize;
     }
@@ -296,7 +284,6 @@ public class User implements Serializable {
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
-                ", isNew=" + isNew +
                 '}';
     }
 }

@@ -45,7 +45,14 @@
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
             region.timeline.show(timeline);
 
-            timeline.collection.fetch();
+            timeline.collection.fetch({
+                success: function () {
+                    if (timeline.collection.length == 0 && showWelcome == true) {
+                        homeBody.welcome.show(Tatami.Factories.Status.getWelcomeRegion());
+                        $('#WelcomeModal').modal('show');
+                    }
+                }
+            });
 
             homeBody.show('timeline');
         },
