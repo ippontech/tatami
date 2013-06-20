@@ -9,7 +9,8 @@ import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ import java.util.List;
 @Controller
 public class FileController {
 
-    private static final Logger log = Logger.getLogger(FileController.class);
+    private static final Logger log = LoggerFactory.getLogger(FileController.class);
+
 
     private static final String HEADER_EXPIRES = "Expires";
 
@@ -191,9 +193,7 @@ public class FileController {
                 Long.valueOf(file.getSize()).intValue(),
                 tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
-        if (log.isDebugEnabled()) {
-            log.info("Avatar url : " + tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
-        }
+        log.info("Avatar url : {}/tatami/avatar/{}/{}",tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
         uploadedFiles.add(uploadedFile);
 
@@ -209,9 +209,7 @@ public class FileController {
     @RequestMapping(value = "/file/file_not_found",
             method = RequestMethod.GET)
     public ModelAndView FileNotFound() {
-        if (log.isDebugEnabled()) {
-            log.debug("File not found !");
-        }
+        log.debug("File not found !");
         return new ModelAndView("errors/file_not_found");
     }
 

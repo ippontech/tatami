@@ -3,10 +3,10 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.web.atmosphere.TatamiNotification;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import javax.inject.Inject;
 @Service
 public class AtmosphereService {
 
-    private static final Log log = LogFactory.getLog(AtmosphereService.class);
+    private static final Logger log = LoggerFactory.getLogger(AtmosphereService.class);
 
     @Inject
     private TimelineService timelineService;
@@ -23,9 +23,7 @@ public class AtmosphereService {
      * Notifies the user with Atmosphere.
      */
     public void notifyUser(String login, AbstractStatus abstractStatus) {
-        if (log.isDebugEnabled()) {
-            log.debug("Notifying user: " + login);
-        }
+        log.debug("Notifying user: {}", login);
         StatusDTO statusDTO = timelineService.getStatus(abstractStatus.getStatusId());
         TatamiNotification notification = new TatamiNotification();
         notification.setLogin(login);

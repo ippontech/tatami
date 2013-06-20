@@ -3,8 +3,8 @@ package fr.ippon.tatami.config;
 import com.yammer.metrics.ehcache.InstrumentedEhcache;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Ehcache;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 @EnableCaching
 public class CacheConfiguration {
 
-    private final Log log = LogFactory.getLog(CacheConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
 
     private net.sf.ehcache.CacheManager cacheManager;
 

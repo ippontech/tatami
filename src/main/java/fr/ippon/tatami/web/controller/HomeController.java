@@ -4,8 +4,8 @@ import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
 @Controller
 public class HomeController {
 
-    private final Log log = LogFactory.getLog(HomeController.class);
+    private final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     @Inject
     private UserService userService;
@@ -86,20 +86,14 @@ public class HomeController {
         }
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("User " + email + " already exists.");
-            }
+            log.debug("User {} already exists.",email);
             return "redirect:/tatami/login";
         }
         if (email.equals(Constants.TATAMIBOT_NAME)) {
-            if (log.isDebugEnabled()) {
-                log.debug("E-mail " + email + " can only be used by the Tatami Bot.");
-            }
+            log.debug("E-mail {} can only be used by the Tatami Bot.", email);
             return "redirect:/tatami/login";
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Creating user " + email);
-        }
+        log.debug("Creating user {}", email);
         User user = new User();
         user.setLogin(email);
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();

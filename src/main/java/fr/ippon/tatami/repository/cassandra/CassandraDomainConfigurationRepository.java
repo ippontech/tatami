@@ -3,8 +3,8 @@ package fr.ippon.tatami.repository.cassandra;
 import fr.ippon.tatami.domain.DomainConfiguration;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import me.prettyprint.hom.EntityManagerImpl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @Repository
 public class CassandraDomainConfigurationRepository implements DomainConfigurationRepository {
 
-    private final Log log = LogFactory.getLog(CassandraDomainConfigurationRepository.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraDomainConfigurationRepository.class);
 
     @Inject
     private EntityManagerImpl em;
@@ -34,9 +34,9 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
         try {
             domainConfiguration = em.find(DomainConfiguration.class, domain);
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for domain " + domain + " : " + e.toString());
-            }
+
+            log.debug("Exception while looking for domain {} : {}", domain , e.toString());
+
             return null;
         }
         if (domainConfiguration == null) {

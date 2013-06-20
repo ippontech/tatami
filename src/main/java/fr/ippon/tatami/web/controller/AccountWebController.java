@@ -3,8 +3,8 @@ package fr.ippon.tatami.web.controller;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Controller
 public class AccountWebController {
 
-    private final Log log = LogFactory.getLog(AccountWebController.class);
+    private final Logger log = LoggerFactory.getLogger(AccountWebController.class);
 
     @Inject
     private UserService userService;
@@ -29,9 +29,7 @@ public class AccountWebController {
     @RequestMapping(value = "/account",
             method = RequestMethod.GET)
     public ModelAndView getUserProfile() {
-        if (log.isDebugEnabled()) {
-            log.debug("Request to get account");
-        }
+        log.debug("Request to get account");
         ModelAndView mv = basicModelAndView();
         mv.setViewName("account");
         return mv;

@@ -11,8 +11,8 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ import java.util.Collection;
 @Controller
 public class GroupController {
 
-    private final Log log = LogFactory.getLog(GroupController.class);
+    private final Logger log = LoggerFactory.getLogger(GroupController.class);
 
     @Inject
     private TimelineService timelineService;
@@ -72,10 +72,7 @@ public class GroupController {
             Group result = getGroupFromUser(currentUser, groupId);
             Group groupClone = null;
             if (result == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + groupId);
-                }
+                log.info("Permission denied! User {} tried to access group ID = {} ", currentUser.getLogin(), groupId);
                 return null;
             } else {
                 groupClone = (Group) result.clone();
@@ -127,9 +124,7 @@ public class GroupController {
                                                     @RequestParam(required = false) String since_id,
                                                     @RequestParam(required = false) String max_id) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for group : " + groupId);
-        }
+        log.debug("REST request to get statuses for group : {}", groupId);
         if (groupId == null) {
             return new ArrayList<StatusDTO>();
         }
@@ -155,9 +150,7 @@ public class GroupController {
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Trying to find group for non-existing username = " + username);
-            }
+            log.debug("Trying to find group for non-existing username = {}", username);
             return new ArrayList<Group>();
         }
         return groupService.getGroupsForUser(user);

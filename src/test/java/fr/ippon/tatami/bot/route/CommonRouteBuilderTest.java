@@ -21,10 +21,12 @@ import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 import fr.ippon.tatami.bot.processor.LastUpdateDateTatamibotConfigurationUpdater;
 import fr.ippon.tatami.bot.processor.TatamiStatusProcessor;
 import fr.ippon.tatami.test.MockUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommonRouteBuilderTest extends CamelTestSupport {
 
-    private static final Log log = LogFactory.getLog(CommonRouteBuilderTest.class);
+    private static final Logger log = LoggerFactory.getLogger(CommonRouteBuilderTest.class);
     
     private static Date value = new Date();
     

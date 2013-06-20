@@ -6,8 +6,8 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
  */
 public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider {
 
-    private final Log log = LogFactory.getLog(TatamiLdapAuthenticationProvider.class);
+    private final Logger log = LoggerFactory.getLogger(TatamiLdapAuthenticationProvider.class);
 
     @Inject
     private UserService userService;
@@ -52,9 +52,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
     private boolean canHandleAuthentication(Authentication authentication) {
         String login = authentication.getName();
         if (!login.contains("@")) {
-            if (log.isDebugEnabled()) {
-                log.debug("User login " + login + " is incorrect.");
-            }
+            log.debug("User login {} is incorrect.", login);
 
             throw new BadCredentialsException(messages.getMessage(
                     "LdapAuthenticationProvider.badCredentials", "Bad credentials"));
@@ -68,9 +66,8 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         if (!canHandleAuthentication(authentication)) {
             return null; // this provider is not suitable for this domain
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Authenticating " + authentication.getName() + " with LDAP");
-        }
+
+        log.debug("Authenticating {} with LDAP", authentication.getName());
         String login = authentication.getName().toLowerCase();
         String username = DomainUtil.getUsernameFromLogin(login);
 

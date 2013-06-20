@@ -9,10 +9,12 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RssRouteBuilderUnitTest {
 
-    private static final Log log = LogFactory.getLog(RssRouteBuilderUnitTest.class);
+    private static final Logger log = LoggerFactory.getLogger(RssRouteBuilderUnitTest.class);
 
     RssRouteBuilder sut = new RssRouteBuilder();
     

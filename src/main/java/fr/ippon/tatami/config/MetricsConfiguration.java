@@ -6,8 +6,8 @@ import fr.ippon.tatami.config.metrics.CassandraHealthCheck;
 import fr.ippon.tatami.config.metrics.JavaMailHealthCheck;
 import fr.ippon.tatami.service.MailService;
 import me.prettyprint.hector.api.Keyspace;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class MetricsConfiguration {
 
-    private final Log log = LogFactory.getLog(MetricsConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(MetricsConfiguration.class);
 
     @Inject
     private Environment env;

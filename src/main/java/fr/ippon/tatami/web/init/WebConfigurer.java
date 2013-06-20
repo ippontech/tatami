@@ -5,10 +5,10 @@ import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import fr.ippon.tatami.config.ApplicationConfiguration;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.config.DispatcherServletConfig;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.atmosphere.cache.UUIDBroadcasterCache;
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -63,7 +63,7 @@ import java.util.EnumSet;
  */
 public class WebConfigurer implements ServletContextListener {
 
-    private final Log log = LogFactory.getLog(WebConfigurer.class);
+    private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

@@ -13,9 +13,9 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spi.IdempotentRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -26,7 +26,8 @@ import javax.inject.Inject;
 @Component
 public class Tatamibot extends RouteBuilder {
 
-    private static final Log log = LogFactory.getLog(Tatamibot.class);
+    private static final Logger log = LoggerFactory.getLogger(Tatamibot.class);
+
 
 
     @Inject
@@ -46,17 +47,14 @@ public class Tatamibot extends RouteBuilder {
         
         log.info("Configuring the Tatami Bot");
         for (Domain domain : domainRepository.getAllDomains()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Configuring Bot for domain " + domain.getName());
-            }
+            log.debug("Configuring Bot for domain {}", domain.getName());
             String tatamiBotLogin = getTatamiBotLogin(domain);
             
             for (TatamibotConfiguration configuration :
                     tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain(domain.getName())) {
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Configuring Bot : " + configuration);
-                }
+                    log.debug("Configuring Bot : {}", configuration);
+
                 
                 SourceRouteBuilderBase subBuilder = null;
                 if (configuration.getType().equals(TatamibotConfiguration.TatamibotType.RSS)) {

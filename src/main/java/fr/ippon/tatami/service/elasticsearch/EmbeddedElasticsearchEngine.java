@@ -1,10 +1,10 @@
 package fr.ippon.tatami.service.elasticsearch;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -17,7 +17,7 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
  */
 public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
 
-    private final Log log = LogFactory.getLog(EmbeddedElasticsearchEngine.class);
+    private final Logger log = LoggerFactory.getLogger(EmbeddedElasticsearchEngine.class);
 
     private Node node;
 

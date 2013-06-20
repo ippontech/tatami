@@ -4,8 +4,8 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,7 +32,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
     private static final String LASTNAME_ATTRIBUTE = "lastname";
     private static final String FULLNAME_ATTRIBUTE = "fullname";
 
-    private final Log log = LogFactory.getLog(OpenIdAutoRegisteringUserDetailsService.class);
+    private final Logger log = LoggerFactory.getLogger(OpenIdAutoRegisteringUserDetailsService.class);
 
     @Inject
     private UserService userService;
@@ -56,9 +56,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
             throw new UsernameNotFoundException(msg);
         }
         if (!login.contains("@")) {
-            if (log.isDebugEnabled()) {
-                log.debug("User login " + login + " from OpenId response is incorrect.");
-            }
+            log.debug("User login {} from OpenId response is incorrect.", login);
             throw new UsernameNotFoundException("OpendId response did not contains a valid user email");
         }
 
@@ -70,9 +68,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
             domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(login), login);
 
         } catch (UsernameNotFoundException e) {
-            if (log.isInfoEnabled()) {
-                log.info("User with login : \"" + login + "\" doesn't exist yet in Tatami database - creating it...");
-            }
+            log.info("User with login : \"{}\" doesn't exist yet in Tatami database - creating it...",login);
             userDetails = getNewlyCreatedUserDetails(token);
         }
         return userDetails;

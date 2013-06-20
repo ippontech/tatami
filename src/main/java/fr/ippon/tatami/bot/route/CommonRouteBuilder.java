@@ -7,8 +7,8 @@ import fr.ippon.tatami.bot.processor.TatamiStatusProcessor;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 @Component // This one IS a component as it is a singleton 
 public class CommonRouteBuilder extends RouteBuilder {
 
-    private static final Log log = LogFactory.getLog(CommonRouteBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(CommonRouteBuilder.class);
     
     @Inject
     private TatamiStatusProcessor tatamiStatusProcessor;
