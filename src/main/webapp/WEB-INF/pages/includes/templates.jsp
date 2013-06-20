@@ -164,8 +164,14 @@
 <script type="text/template" id="ImagePreview"> 
     <div class="image-preview-container"> 
     <@ for(index in attachmentsImage){ @>
-    <@   if(index < 4){ @>            
-            <div class="<@= attachmentsImage.length<2?'image-preview-element-1':'image-preview-element' @>"><img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="slide-img-<@= index @>"></div>
+    <@   if(index < 4){ @>                    
+            <div class="<@= attachmentsImage.length<2?'image-preview-element-1':'image-preview-element' @>">
+        <@ if(!ios){ @>
+            <img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="slide-img slide-img-n<@= index @>">
+        <@ } else { @>
+            <a href="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="btn-link status-action" target="_blank"><img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>"></a>
+        <@ } @>            
+            </div>
     <@  } } @>
     </div>
 </div>     

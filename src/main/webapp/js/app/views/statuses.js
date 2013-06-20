@@ -474,11 +474,13 @@
             });
         },
         events: {            
-            'click img': 'showImage'
+            'click .slide-img': 'showImage',
+            'click a': 'showLink'
         }, 
         showImage: function(event){
             var className = event.target.className;
-            var current = className.replace(/slide-img-(.*)/, '$1');
+            var current = className.replace(/.*slide-img-n(.*)/, '$1');
+            console.log(className+ " "+ current);
             var self = this;
             self.model.set('current', current);
             var slider = new StatusImageSlider({
@@ -487,6 +489,11 @@
             });
             Tatami.app.slider.show(slider);
             Tatami.app.slider.$el.modal('show');
+            return false;
+        },
+        showLink: function(event){
+            var href = event.target.src;
+            window.open(href,'_blank');
             return false;
         }
 
