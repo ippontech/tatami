@@ -50,6 +50,7 @@
 
             attr.fullName = this.getFullName();
             attr.avatarURL = this.getAvatarURL();
+            attr.attachmentsImage = this.getImages();
 
             return attr;
         },
@@ -65,6 +66,13 @@
 
         getAvatarURL: function(){
             return (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png';
+        }, 
+
+        getImages: function(){
+            var images = this.get('attachments').filter(function(element){                      
+                return element.filename.match(/jpg$|jpeg$|gif$|png$/i);
+            });
+            return images;
         }
     });
 

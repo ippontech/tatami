@@ -134,21 +134,47 @@
                 <@ if ((type == 'ANNOUNCEMENT')) { @>
                     <span class="glyphicon glyphicon-bullhorn"></span> <fmt:message key="tatami.user.status.announced.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a></br>
                 <@ } @>
-                <div class="attachments"/>
+                <div class="attachments"/>   
                 <div id="share">
 
                 </div>
             </small>
         </div>        
     </div>
+    <div id="preview">
+
+    </div>    
     <div id="buttons">
 
-    </div>
+    </div> 
     <@if(root){ @>      
         <div id="after">
 
         </div>
     <@ } @>
+</script>
+<script type="text/template" id="ImageSlider">
+    <div class="slider-container">
+        <div class="slider-container-header"><button type="button" class="slider-button slider-button-close" data-dismiss="modal" aria-hidden="true">&times;</button></div>                
+        <div class="slider-container-img"><img src="/tatami/file/<@= attachmentsImage[current].attachmentId @>/<@= attachmentsImage[current].filename @>"></div>
+        <a class="slider-button slider-button-left">&lt;</a>
+        <a class="slider-button slider-button-right">&gt;</a>
+    </div>
+</script>
+<script type="text/template" id="ImagePreview"> 
+    <div class="image-preview-container"> 
+    <@ for(index in attachmentsImage){ @>
+    <@   if(index < 4){ @>                    
+            <div class="<@= attachmentsImage.length<2?'image-preview-element-1':'image-preview-element' @>">
+        <@ if(!ios){ @>
+            <img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="slide-img slide-img-n<@= index @>">
+        <@ } else { @>
+            <a href="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="btn-link status-action" target="_blank"><img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>"></a>
+        <@ } @>            
+            </div>
+    <@  } } @>
+    </div>
+</div>     
 </script>
 <script type="text/template" id="StatusFooters">
 <@ if (ios) { @>
@@ -156,11 +182,9 @@
 <@ } else { @>
     <small class="statusitem-footer"> 
 <@ } @>  
-        <button class="btn-link status-action button-ios">
-            <a href="#status/<@= statusId @>" >
-                 <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
-            </a>
-        </button>
+        <a href="#status/<@= statusId @>" class="btn-link status-action button-ios" >
+            <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+        </a>
         <@ if (ios) { @>
             <button class="btn-link status-action button-ios">
                 <a href="tatami://sendResponse?replyTo=<@= statusId @>&replyToUsername=<@= username @>">
@@ -200,7 +224,7 @@
                                          </p>'>
                 <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
             </button>
-        <@ } @>
+        <@ } @>        
 <@ if (ios) { @>
     </div> 
 <@ } else { @>
@@ -395,12 +419,9 @@
     <a href="#groups/<@= groupId @>"><@= name @></a>
 </script>
 <script type="text/template" id="StatusAttachmentItems">
-    <button class="btn-link status-action status-action-attach">
-        <span class="glyphicon glyphicon-file"></span>
-        <a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank">
-            <@= filename @>
+        <a href="/tatami/file/<@= attachmentId @>/<@= filename @>" class="btn-link status-action" target="_blank">
+            <i class="glyphicon glyphicon-file"></i> <@= filename @>
         </a>
-    </button>
 </script>
 <script type="text/template" id="search-category">
     <@ if(cat.category == 'tags') {@>

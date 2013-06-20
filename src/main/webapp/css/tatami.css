@@ -661,6 +661,10 @@ h4 {
     margin-bottom: 5px;
 }
 
+.attachments {
+    margin-top: 5px;
+}
+
 @media screen and (min-width: 767px) {
     #buttons {
         clear: both;
@@ -689,3 +693,138 @@ h4 {
     }
 
 }
+
+.image-preview-template {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.image-preview-container {
+    display: table;
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+.image-preview-element {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.image-preview-element img {
+    max-width: 245px;
+    max-height: 195px;
+}
+
+.image-preview-element-1 {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.image-preview-element-1 img {
+    max-width: 500px;
+    max-height: 400px;
+}
+
+@media screen and (min-width: 767px) {
+
+    .slider-container {
+        display: table;
+        margin: 0 auto;
+        margin-top: 20px;
+        background-color: black;
+        position: relative;
+        width: 900px;
+        height: 550px;
+    }
+
+    .slider-container .slider-container-img {
+        background-color: black;
+        text-align: center;   
+        width: 900px;
+        line-height: 550px;
+        height: 550px;
+    }
+
+    .slider-container .slider-container-img img {
+        vertical-align: middle;
+        max-width: 900px;
+        max-height: 550px;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+
+    .slider-container {
+        display: table;
+        margin: 0 auto;
+        margin-top: 20px;
+        background-color: black;
+        position: relative;
+        width: 500px;
+        height: 550px;
+    }
+
+    .slider-container .slider-container-img {
+        background-color: black;
+        text-align: center;   
+        width: 500px;
+        line-height: 550px;
+        height: 550px;
+    }
+
+    .slider-container .slider-container-img img {
+        vertical-align: middle;
+        max-width: 500px;
+        max-height: 550px;
+    }
+
+}
+
+
+
+
+.slider-container .slider-container-header {
+    height: 0px;
+    text-align: right;
+    margin-right: 5px;
+}
+
+.slider-container .slider-container-left {
+
+}
+
+
+.slider-container .slider-container-right {
+
+}
+
+.slider-container .slider-button {
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    opacity: 0.6;
+    border: 0;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.slider-container .slider-button-close {
+
+}
+
+.slider-container .slider-button-left {
+    position: absolute;
+    left: 10px;
+    bottom: 50%;
+}
+
+.slider-container .slider-button-right {
+    position: absolute;
+    right: 10px;
+    bottom: 50%;
+}
+
