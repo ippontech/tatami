@@ -125,7 +125,8 @@
         Tatami.app.addRegions({
             header: '#tatamiHeader',
             side: '#tatamiSide',
-            body: '#tatamiBody'
+            body: '#tatamiBody',
+            slider: '#slider'
         });
     });
 

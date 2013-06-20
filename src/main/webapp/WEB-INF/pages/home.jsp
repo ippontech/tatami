@@ -26,6 +26,7 @@
     <form id="tatamiEdit" class="modal fade">
     </form>
 </c:if>
+<div id="slider" class="modal fade"></div>
 
 </body>
 
