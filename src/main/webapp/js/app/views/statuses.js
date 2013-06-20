@@ -54,7 +54,18 @@
                 })
             },
 
+            preview: {
+                selector: '#preview',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            },            
+
             attachments: '.attachments'
+
         },
         modelEvents: {
             'change:statusId': 'updateDetailModel',
@@ -133,6 +144,19 @@
                             self.buttons.show(new StatusFooters({model: currentModel}));
                             self.buttons.$el.slideToggle({duration: 200});
 
+
+                            if(self.model.getImages().length > 0){
+
+                                self.preview.show(new Tatami.Views.StatusImagePreview({
+                                    model: self.model
+                                }));
+
+                                setTimeout(function() {
+                                    self.preview.$el.slideToggle({duration: 100});
+                                }, 500);  
+
+                            }
+
                             if(isRoot){
                                 $(self.el).animate({marginTop: '+=10', marginBottom: '+=10'}, 200);
                                 $(self.el).toggleClass('tatam-hover');
@@ -163,8 +187,6 @@
                                     autoRefresh: false                        
                                 });
 
-                                after.collection.add();
-
                                 self.after.show(after);
                                 setTimeout(function() {
                                     if(afters.length > 0){
@@ -180,6 +202,9 @@
                     var shares = statusDetail.get('sharedByLogins');
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 200});
+                    }
+                    if(this.model.getImages().length > 0){
+                        this.preview.$el.slideToggle({duration: 200});
                     }
                     if(isRoot){
                         if($(this.el).attr('class').indexOf('tatam-expand-container') != -1){
@@ -405,9 +430,73 @@
         template: '#StatusActions'
     });
 
+    var StatusImageSlider = Backbone.Marionette.Layout.extend({
+        template: '#ImageSlider',
+        initialize: function(){
+            _.defaults(this.options, {                
+                currentIndex: 0
+            });
+        },
+        events: {
+            'click .slider-button-left': 'left',
+            'click .slider-button-right': 'right'
+        },
+        left: function(event){
+            console.log(this.options.currentIndex);
+            var index = this.options.currentIndex;
+            var images = this.model.getImages();
+            index--;
+            if(index < 0){
+                index = images.length-1;
+            }
+            this.$el.find('img').attr('src', '/tatami/file/'+images[index].attachmentId+'/'+images[index].filename);
+            this.options.currentIndex = index;
+        },
+        right: function(event){
+            var index = this.options.currentIndex;
+            var images = this.model.getImages();
+            index++;
+            if(index >= images.length){
+                index = 0;
+            }
+            this.$el.find('img').attr('src', '/tatami/file/'+images[index].attachmentId+'/'+images[index].filename);
+            this.options.currentIndex = index;
+        }
+
+    });
+
+    var StatusImagePreview = Backbone.Marionette.Layout.extend({
+        template: '#ImagePreview',
+        className: 'image-preview-template', 
+        initialize: function(){
+            _.defaults(this.options, {                
+                currentIndex: 0
+            });
+        },
+        events: {            
+            'click img': 'showImage'
+        }, 
+        showImage: function(event){
+            var className = event.target.className;
+            var current = className.replace(/slide-img-(.*)/, '$1');
+            var self = this;
+            self.model.set('current', current);
+            var slider = new StatusImageSlider({
+                model: self.model,
+                currentIndex: current
+            });
+            Tatami.app.slider.show(slider);
+            Tatami.app.slider.$el.modal('show');
+            return false;
+        }
+
+    });
+
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItem = StatusItem;
     Tatami.Views.StatusActions = StatusActions;
     Tatami.Views.StatusAttachments = StatusAttachments;
     Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
+    Tatami.Views.StatusImagePreview = StatusImagePreview;
+    Tatami.Views.StatusImageSlider = StatusImageSlider;
 })(Backbone, _, Tatami);

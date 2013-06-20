@@ -134,21 +134,41 @@
                 <@ if ((type == 'ANNOUNCEMENT')) { @>
                     <span class="glyphicon glyphicon-bullhorn"></span> <fmt:message key="tatami.user.status.announced.by"/> <a href="#users/<@= sharedByUsername @>">@<@= sharedByUsername @></a></br>
                 <@ } @>
-                <div class="attachments"/>
+                <div class="attachments"/>   
                 <div id="share">
 
                 </div>
             </small>
         </div>        
     </div>
+    <div id="preview">
+
+    </div>    
     <div id="buttons">
 
-    </div>
+    </div> 
     <@if(root){ @>      
         <div id="after">
 
         </div>
     <@ } @>
+</script>
+<script type="text/template" id="ImageSlider">
+    <div class="slider-container">
+        <div class="slider-container-header"><button type="button" class="slider-button slider-button-close" data-dismiss="modal" aria-hidden="true">&times;</button></div>                
+        <div class="slider-container-img"><img src="/tatami/file/<@= attachmentsImage[current].attachmentId @>/<@= attachmentsImage[current].filename @>"></div>
+        <a class="slider-button slider-button-left">&lt;</a>
+        <a class="slider-button slider-button-right">&gt;</a>
+    </div>
+</script>
+<script type="text/template" id="ImagePreview"> 
+    <div class="image-preview-container"> 
+    <@ for(index in attachmentsImage){ @>
+    <@   if(index < 4){ @>            
+            <div class="<@= attachmentsImage.length<2?'image-preview-element-1':'image-preview-element' @>"><img src="/tatami/file/<@= attachmentsImage[index].attachmentId @>/<@= attachmentsImage[index].filename @>" class="slide-img-<@= index @>"></div>
+    <@  } } @>
+    </div>
+</div>     
 </script>
 <script type="text/template" id="StatusFooters">
 <@ if (ios) { @>
@@ -198,7 +218,7 @@
                                          </p>'>
                 <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
             </button>
-        <@ } @>
+        <@ } @>        
 <@ if (ios) { @>
     </div> 
 <@ } else { @>
