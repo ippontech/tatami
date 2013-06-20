@@ -27,6 +27,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.MockUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
@@ -43,7 +45,7 @@ import fr.ippon.tatami.test.MockUtils;
 
 public class TatamibotTest extends CamelTestSupport {
 
-    private static final Log log = LogFactory.getLog(TatamibotTest.class);
+    private static final Logger log = LoggerFactory.getLogger(TatamibotTest.class);
        
     @Mock
     private DomainRepository domainRepository;

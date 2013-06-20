@@ -12,8 +12,8 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Tag;
 import fr.ippon.tatami.web.rest.dto.Trend;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ import java.util.List;
 @Controller
 public class TagController {
 
-    private final Log log = LogFactory.getLog(TagController.class);
+    private final Logger log = LoggerFactory.getLogger(TagController.class);
 
     @Inject
     private TimelineService timelineService;
@@ -63,9 +63,7 @@ public class TagController {
                                                   @RequestParam(required = false) String since_id,
                                                   @RequestParam(required = false) String max_id) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for tag : " + tagName);
-        }
+        log.debug("REST request to get statuses for tag : {}", tagName);
         if (count == null) {
             count = 20;
         }
@@ -85,9 +83,7 @@ public class TagController {
             consumes = "application/json")
     @ResponseBody
     public void followTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow tag : " + tag);
-        }
+        log.debug("REST request to follow tag : {}", tag);
         tagMembershipService.followTag(tag);
     }
 
@@ -99,9 +95,7 @@ public class TagController {
             consumes = "application/json")
     @ResponseBody
     public void unfollowTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow tag  : " + tag);
-        }
+        log.debug("REST request to unfollow tag  : {}", tag);
         tagMembershipService.unfollowTag(tag);
     }
 

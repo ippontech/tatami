@@ -5,8 +5,8 @@ import fr.ippon.tatami.domain.status.MentionFriend;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 public class FriendshipService {
 
-    private final Log log = LogFactory.getLog(FriendshipService.class);
+    private final Logger log = LoggerFactory.getLogger(FriendshipService.class);
 
     @Inject
     private UserRepository userRepository;
@@ -49,9 +49,7 @@ public class FriendshipService {
     private AuthenticationService authenticationService;
 
     public User followUser(String usernameToFollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("Following user : " + usernameToFollow);
-        }
+        log.debug("Following user : {}", usernameToFollow);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
@@ -62,10 +60,7 @@ public class FriendshipService {
                 for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(loginToFollow)) {
                         userAlreadyFollowed = true;
-                        if (log.isDebugEnabled()) {
-                            log.debug("User " + currentUser.getLogin() +
-                                    " already follows user " + followedUser.getLogin());
-                        }
+                        log.debug("User {} already follows user {}", currentUser.getLogin(), followedUser.getLogin());
                         break;
                     }
                 }
@@ -78,10 +73,7 @@ public class FriendshipService {
                 // mention the friend that the user has started following him
                 MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
                 mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
-                if (log.isDebugEnabled()) {
-                    log.debug("User " + currentUser.getLogin() +
-                            " now follows user " + followedUser.getLogin());
-                }
+                log.debug("User {} now follows user {} ",currentUser.getLogin(), followedUser.getLogin());
             }
             return followedUser;
         } else {
@@ -91,9 +83,7 @@ public class FriendshipService {
     }
 
     public void unfollowUser(String usernameToUnfollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing followed user : " + usernameToUnfollow);
-        }
+        log.debug("Removing followed user : {}", usernameToUnfollow);
         User currentUser = authenticationService.getCurrentUser();
         String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = userRepository.findUserByLogin(loginToUnfollow);
@@ -123,16 +113,12 @@ public class FriendshipService {
     }
 
     public List<String> getFriendIdsForUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving friends for user : " + login);
-        }
+            log.debug("Retrieving friends for user : {}", login);
         return friendRepository.findFriendsForUser(login);
     }
 
     public Collection<String> getFollowerIdsForUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving followed users : " + login);
-        }
+        log.debug("Retrieving followed users : {}", login);
         return followerRepository.findFollowersForUser(login);
     }
 
@@ -162,9 +148,7 @@ public class FriendshipService {
      * Finds if the "userLogin" user is followed by the current user.
      */
     public boolean isFollowed(String userLogin) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving if you follow this user : " + userLogin);
-        }
+        log.debug("Retrieving if you follow this user : {}", userLogin);
         boolean isFollowed = false;
         User user = authenticationService.getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {
@@ -185,9 +169,7 @@ public class FriendshipService {
      * Finds if  the current user user follow the "userLogin".
      */
     public boolean isFollowing(String userLogin) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving if you follow this user : " + userLogin);
-        }
+        log.debug("Retrieving if you follow this user : {}", userLogin);
         boolean isFollowing = false;
         User user = authenticationService.getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {

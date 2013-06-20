@@ -1,17 +1,17 @@
 package fr.ippon.tatami.bot.route;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //@Component ==> disabling component scanning as we create instances of this builder programmatically
 public class TwitterRouteBuilder extends SourceRouteBuilderBase {
 
-    private static final Log log = LogFactory.getLog(TwitterRouteBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(TwitterRouteBuilder.class);
 
     @Override
     public void configure() {
 
-        log.debug("Configuring a Twitter support for domain "+configuration.getDomain());
+        log.debug("Configuring a Twitter support for domain {}",configuration.getDomain());
         
         from(getTwitterEndpointUri()).
             id("twitter-"+configuration.getDomain()).

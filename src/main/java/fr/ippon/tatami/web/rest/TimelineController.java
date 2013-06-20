@@ -13,13 +13,15 @@ import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.web.rest.dto.ActionStatus;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 
 /**
@@ -30,7 +32,7 @@ import java.util.Collection;
 @Controller
 public class TimelineController {
 
-    private final Log log = LogFactory.getLog(TimelineController.class);
+    private final Logger log = LoggerFactory.getLogger(TimelineController.class);
 
     @Inject
     private TimelineService timelineService;
@@ -52,9 +54,7 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public StatusDetails getStatusDetails(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get status details Id : " + statusId);
-        }
+        log.debug("REST request to get status details Id : {}", statusId);
         return timelineService.getStatusDetails(statusId);
     }
 
@@ -75,9 +75,10 @@ public class TimelineController {
         try {
             return timelineService.getTimeline(count, since_id, max_id);
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            StringWriter stack = new StringWriter();
+            PrintWriter pw = new PrintWriter(stack);
+            e.printStackTrace(pw);
+            log.debug("{}", stack.toString());
             return null;
         }
     }
@@ -97,9 +98,7 @@ public class TimelineController {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get someone's status (username=" + username + ").");
-        }
+        log.debug("REST request to get someone's status (username={}).",username);
         try {
             return timelineService.getUserline(username, count, since_id, max_id);
         } catch (Exception e) {
@@ -113,18 +112,14 @@ public class TimelineController {
             produces = "application/json")
     @ResponseBody
     public StatusDTO getStatus(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get status Id : " + statusId);
-        }
+        log.debug("REST request to get status Id : {}", statusId);
         return timelineService.getStatus(statusId);
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
             method = RequestMethod.DELETE)
     public void deleteStatus(@PathVariable("statusId") String statusId) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get status Id : " + statusId);
-        }
+        log.debug("REST request to get status Id : {}", statusId);
         timelineService.removeStatus(statusId);
     }
 
@@ -151,9 +146,10 @@ public class TimelineController {
             }
             return status;
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            StringWriter stack = new StringWriter();
+            PrintWriter pw = new PrintWriter(stack);
+            e.printStackTrace(pw);
+            log.debug("{}", stack.toString());
             return null;
         }
     }
@@ -166,22 +162,16 @@ public class TimelineController {
             produces = "application/json")
     @Timed
     public String postStatus(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to add status : " + status.getContent());
-        }
+        log.debug("REST request to add status : {}", status.getContent());
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
         Collection<String> attachmentIds = status.getAttachmentIds();
 
         if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Creating a reply to : " + status.getReplyTo());
-            }
+            log.debug("Creating a reply to : {}", status.getReplyTo());
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
         }
         else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
-            if (log.isDebugEnabled()) {
-                log.debug("Private status");
-            }
+            log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
         } else {
             User currentUser = authenticationService.getCurrentUser();
@@ -194,16 +184,12 @@ public class TimelineController {
                 }
             }
             if (group == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + status.getGroupId());
-                }
+                log.info("Permission denied! User {} tried to access " +
+                            "group ID = {}",currentUser.getLogin(),status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else if (group.isArchivedGroup()) {
-                if (log.isInfoEnabled()) {
-                    log.info("Archived group! User " + currentUser.getLogin() + " tried to post a message to archived " +
-                            "group ID = " + status.getGroupId());
-                }
+                    log.info("Archived group! User {} tried to post a message to archived " +
+                            "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
                 statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);

@@ -4,9 +4,9 @@ import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Content;
 import com.sun.syndication.feed.rss.Item;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.pegdown.PegDownProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  */
 public class SyndicView extends AbstractRssFeedView {
 
-    private final Log log = LogFactory.getLog(SyndicView.class);
+    private final Logger log = LoggerFactory.getLogger(SyndicView.class);
 
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) {
@@ -70,9 +70,7 @@ public class SyndicView extends AbstractRssFeedView {
 
             PegDownProcessor processor = new PegDownProcessor();
             String htmlText = processor.markdownToHtml(statusText);
-            if (log.isDebugEnabled()) {
-                log.debug("feed html content " + htmlText);
-            }
+            log.debug("feed html content {}", htmlText);
             // url handling  for mention & tags
             htmlText = convertLinks(htmlText);
 

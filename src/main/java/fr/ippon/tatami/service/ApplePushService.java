@@ -4,8 +4,8 @@ import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.exceptions.NetworkIOException;
 import fr.ippon.tatami.domain.status.AbstractStatus;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Profile("apple-push")
 public class ApplePushService {
 
-    private static final Log log = LogFactory.getLog(ApplePushService.class);
+    private static final Logger log = LoggerFactory.getLogger(ApplePushService.class);
 
     private ApnsService apnsService;
 
@@ -53,9 +53,7 @@ public class ApplePushService {
      * Notifies the user with APNS.
      */
     public void notifyUser(String login, AbstractStatus abstractStatus) {
-        if (log.isDebugEnabled()) {
-            log.debug("Notifying user with Apple Push: " + login);
-        }
+        log.debug("Notifying user with Apple Push: {}", login);
         try {
             String payload =
                     APNS.newPayload()

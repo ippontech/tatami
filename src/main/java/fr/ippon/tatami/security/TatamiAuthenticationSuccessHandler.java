@@ -1,7 +1,7 @@
 package fr.ippon.tatami.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -21,7 +21,7 @@ import java.io.IOException;
 @Component
 public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final Log log = LogFactory.getLog(TatamiAuthenticationSuccessHandler.class);
+    private final Logger log = LoggerFactory.getLogger(TatamiAuthenticationSuccessHandler.class);
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 

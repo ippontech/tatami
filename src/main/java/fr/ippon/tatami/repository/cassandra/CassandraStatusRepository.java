@@ -15,8 +15,8 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -41,7 +41,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
 @Repository
 public class CassandraStatusRepository implements StatusRepository {
 
-    private final Log log = LogFactory.getLog(CassandraStatusRepository.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraStatusRepository.class);
 
     private static final String LOGIN = "login";
     private static final String TYPE = "type";
@@ -163,9 +163,8 @@ public class CassandraStatusRepository implements StatusRepository {
             updater.setString(REPLY_TO_USERNAME, replyToUsername);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting Status : " + status);
-        }
+        log.debug("Persisting Status : {}", status);
+
 
         template.update(updater);
         return status;
@@ -185,9 +184,8 @@ public class CassandraStatusRepository implements StatusRepository {
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         share.setOriginalStatusId(originalStatusId);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting Share : " + share);
-        }
+        log.debug("Persisting Share : {}", share);
+
         template.update(updater);
         return share;
     }
@@ -206,9 +204,8 @@ public class CassandraStatusRepository implements StatusRepository {
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         announcement.setOriginalStatusId(originalStatusId);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting Announcement : " + announcement);
-        }
+        log.debug("Persisting Announcement : {}", announcement);
+
         template.update(updater);
         return announcement;
     }
@@ -226,9 +223,9 @@ public class CassandraStatusRepository implements StatusRepository {
 
         updater.setString(FOLLOWER_LOGIN, followerLogin);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting MentionFriend : " + mentionFriend);
-        }
+
+        log.debug("Persisting MentionFriend : {}", mentionFriend);
+
         template.update(updater);
         return mentionFriend;
     }
@@ -247,9 +244,9 @@ public class CassandraStatusRepository implements StatusRepository {
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         mentionShare.setOriginalStatusId(originalStatusId);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Persisting MentionShare : " + mentionShare);
-        }
+
+        log.debug("Persisting MentionShare : {}", mentionShare);
+
         template.update(updater);
         return mentionShare;
     }
@@ -407,9 +404,8 @@ public class CassandraStatusRepository implements StatusRepository {
     @Override
     @CacheEvict(value = "status-cache", key = "#status.statusId")
     public void removeStatus(AbstractStatus status) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing Status : " + status);
-        }
+        log.debug("Removing Status : {}", status);
+
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.addDeletion(status.getStatusId(), STATUS_CF);
         mutator.execute();

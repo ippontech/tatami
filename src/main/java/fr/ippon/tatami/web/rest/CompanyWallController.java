@@ -3,8 +3,8 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +22,7 @@ import java.util.Collection;
 @Controller
 public class CompanyWallController {
 
-    private final Log log = LogFactory.getLog(CompanyWallController.class);
+    private final Logger log = LoggerFactory.getLogger(CompanyWallController.class);
 
     @Inject
     private TimelineService timelineService;

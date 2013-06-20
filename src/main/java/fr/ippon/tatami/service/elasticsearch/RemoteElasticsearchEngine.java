@@ -1,7 +1,5 @@
 package fr.ippon.tatami.service.elasticsearch;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.client.Client;
@@ -9,6 +7,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +20,7 @@ import javax.inject.Inject;
  */
 public class RemoteElasticsearchEngine implements ElasticsearchEngine {
 
-    private static final Log log = LogFactory.getLog(RemoteElasticsearchEngine.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteElasticsearchEngine.class);
 
     @Inject
     private Environment env;

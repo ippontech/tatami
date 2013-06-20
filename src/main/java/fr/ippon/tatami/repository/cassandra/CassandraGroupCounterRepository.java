@@ -7,8 +7,8 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.CounterQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
         return counter.execute().get().getValue();
     }
 
-    protected final Log log = LogFactory.getLog(this.getClass().getCanonicalName());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
     @Override
     public void incrementGroupCounter(String domain, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
