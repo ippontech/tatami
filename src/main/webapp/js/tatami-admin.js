@@ -22,7 +22,7 @@ else {
 /* Account profile */
 
 app.Model.AccountProfile = Backbone.Model.extend({
-    url: '/tatami/rest/users',
+    url: '/tatami/rest/account/profile',
     idAttribute: 'username',
     defaults : {
         username : window.username,
