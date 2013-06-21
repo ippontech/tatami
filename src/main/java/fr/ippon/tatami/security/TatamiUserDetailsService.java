@@ -58,7 +58,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
             adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
             if (log.isDebugEnabled()) {
                 for (String admin : adminUsers) {
-                    log.debug("Initialization : user \"{}\" is an administrator",admin);
+                    log.debug("Initialization : user \"{}\" is an administrator", admin);
                 }
             }
         }

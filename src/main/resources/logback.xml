@@ -9,7 +9,7 @@
     </appender>
 
     <appender name="SYNC_PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
-        <syslogHost>logs.papertrailapp.com:38143</syslogHost>
+        <syslogHost>${logback.syslogHost}</syslogHost>
         <facility>LOCAL7</facility>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%p: %c{2} %ex %m %n</pattern>
