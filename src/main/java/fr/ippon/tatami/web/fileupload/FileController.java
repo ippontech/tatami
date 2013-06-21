@@ -68,34 +68,6 @@ public class FileController {
         this.tatamiUrl = env.getProperty("tatami.url");
     }
 
-    @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
-    @ResponseBody
-    @Timed
-    public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
-            throws IOException, StorageSizeException {
-
-        Attachment attachment = new Attachment();
-        attachment.setContent(file.getBytes());
-        attachment.setFilename(file.getName());
-        attachment.setSize(file.getSize());
-        attachment.setFilename(file.getOriginalFilename());
-        attachment.setCreationDate(new Date());
-
-        attachmentService.createAttachment(attachment);
-
-        log.debug("Created attachment : " + attachment.getAttachmentId());
-
-        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-        UploadedFile uploadedFile = new UploadedFile(
-                attachment.getAttachmentId(),
-                file.getOriginalFilename(),
-                Long.valueOf(file.getSize()).intValue(),
-                tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
-
-        uploadedFiles.add(uploadedFile);
-        return uploadedFiles;
-    }
-
     @RequestMapping(value = "/file/{attachmentId}/*",
             method = RequestMethod.GET)
     @Timed
@@ -123,7 +95,7 @@ public class FileController {
                     byte[] fileContent = attachment.getContent();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream. " + e.getMessage());
+                    log.info("Error writing file to output stream. {}", e.getMessage());
                 }
             }
         }
@@ -131,8 +103,7 @@ public class FileController {
         try {
             response.flushBuffer();
         } catch (IOException e) {
-
-            log.info("Error flushing the output stream. " + e.getMessage());
+            log.info("Error flushing the output stream. {}", e.getMessage());
         }
 
     }
@@ -164,7 +135,7 @@ public class FileController {
                     byte[] fileContent = avatar.getContent();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream. " + e.getMessage());
+                    log.info("Error writing file to output stream. {}", e.getMessage());
                 }
             }
         }
@@ -172,7 +143,7 @@ public class FileController {
             response.flushBuffer();
 
         } catch (IOException e) {
-            log.info("Error flushing the output stream. " + e.getMessage());
+            log.info("Error flushing the output stream. {}", e.getMessage());
         }
     }
 
@@ -209,6 +180,35 @@ public class FileController {
 
         return uploadedFiles;
 
+    }
+
+
+    @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
+    @ResponseBody
+    @Timed
+    public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
+
+        Attachment attachment = new Attachment();
+        attachment.setContent(file.getBytes());
+        attachment.setFilename(file.getName());
+        attachment.setSize(file.getSize());
+        attachment.setFilename(file.getOriginalFilename());
+        attachment.setCreationDate(new Date());
+
+        attachmentService.createAttachment(attachment);
+
+        log.debug("Created attachment : {}", attachment.getAttachmentId());
+
+        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        UploadedFile uploadedFile = new UploadedFile(
+                attachment.getAttachmentId(),
+                file.getOriginalFilename(),
+                Long.valueOf(file.getSize()).intValue(),
+                tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
+
+        uploadedFiles.add(uploadedFile);
+        return uploadedFiles;
     }
 
     @RequestMapping(value = "/file/file_not_found",
