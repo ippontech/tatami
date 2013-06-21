@@ -112,6 +112,7 @@
                 </li>
             </ul>
 
+            <c:if test="${currentPage != null && currentPage == 'home'}">
             <sec:authorize ifAnyGranted="ROLE_USER">
             <ul class="nav pull-right">
                 <li class="dropdown pointer">
@@ -209,6 +210,7 @@
                 <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
             </form>
             </sec:authorize>
+            </c:if>
         </div>
     </div>
 </c:if>
