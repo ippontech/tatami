@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
@@ -113,7 +112,8 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
                 .andExpect(status().isNotFound());
 
         // Enable RSS for this user
-        TatamiUserDetails userDetails = new TatamiUserDetails(username, "", new ArrayList<GrantedAuthority>());
+        org.springframework.security.core.userdetails.User userDetails =
+                new org.springframework.security.core.userdetails.User(username, "", new ArrayList<GrantedAuthority>());
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails,
@@ -139,7 +139,7 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
                 .andExpect(jsonPath("$.rssUidActive").value(true))
                 .andReturn().getResponse().getContentAsString();
 
-        Preferences preferences = new ObjectMapper().readValue(preferencesAsJson, TestPreferences.class);
+        Preferences preferences = new ObjectMapper().readValue(preferencesAsJson, Preferences.class);
 
         String rssId = preferences.getRssUid();
 
@@ -150,14 +150,5 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
         Collection<StatusDTO> statuses = (Collection<StatusDTO>) result.getModel().get("feedContent");
         assertEquals("Test status for RSS syndication", statuses.iterator().next().getContent());
 
-    }
-}
-
-class TestPreferences extends Preferences {
-
-    @JsonIgnore
-    @Override
-    public String[] getThemesList() {
-        return super.getThemesList();
     }
 }

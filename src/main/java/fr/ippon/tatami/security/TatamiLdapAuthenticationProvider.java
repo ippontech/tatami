@@ -88,7 +88,6 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         if (user == null) {
             user = new User();
             user.setLogin(login);
-            user.setTheme(Constants.DEFAULT_THEME);
             userService.createUser(user);
         } else {
             // ensure that this user has access to its domain if it has been created before
@@ -96,7 +95,7 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         }
 
         // The real authentication object uses the login, and not the username
-        TatamiUserDetails realUser = userDetailsService.getTatamiUserDetails(login,
+        org.springframework.security.core.userdetails.User realUser = userDetailsService.getTatamiUserDetails(login,
                 authentication.getCredentials().toString());
 
         return

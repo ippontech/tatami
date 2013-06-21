@@ -72,16 +72,10 @@ public class TatamiUserDetailsService implements UserDetailsService {
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
         }
-        TatamiUserDetails userDetails = getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
-        String theme = userFromCassandra.getTheme();
-        if (theme == null) {
-            theme = Constants.DEFAULT_THEME;
-        }
-        userDetails.setTheme(theme);
-        return userDetails;
+        return getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
     }
 
-    protected TatamiUserDetails getTatamiUserDetails(String login, String password) {
+    protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
         Collection<GrantedAuthority> grantedAuthorities;
         if (adminUsers.contains(login)) {
             log.debug("User \"{}\" is an administrator",login);
@@ -91,7 +85,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
             grantedAuthorities = userGrantedAuthorities;
         }
 
-        return new TatamiUserDetails(login, password,
+        return new org.springframework.security.core.userdetails.User(login, password,
                 grantedAuthorities);
     }
 }

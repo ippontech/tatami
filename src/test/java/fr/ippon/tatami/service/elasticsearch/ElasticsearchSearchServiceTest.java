@@ -1,7 +1,6 @@
 package fr.ippon.tatami.service.elasticsearch;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
-import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.AdminService;
 import fr.ippon.tatami.service.SearchService;
 import org.junit.Test;
@@ -32,7 +31,8 @@ public class ElasticsearchSearchServiceTest extends AbstractCassandraTatamiTest 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
         grantedAuthorities.add(adminAuthority);
 
-        TatamiUserDetails userDetails = new TatamiUserDetails("tatami@ippon.fr", "", grantedAuthorities);
+        org.springframework.security.core.userdetails.User userDetails =
+                new org.springframework.security.core.userdetails.User("tatami@ippon.fr", "", grantedAuthorities);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails,

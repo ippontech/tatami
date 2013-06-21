@@ -142,31 +142,6 @@
         <fmt:message key="tatami.menu.preferences"/>
     </h2>
 
-    <fieldset>
-
-        <legend>
-            <fmt:message key="tatami.preferences.theme"/>
-        </legend>
-
-        <div class="control-group">
-            <label class="control-label" for="theme">
-                <fmt:message
-                        key="tatami.preferences.theme.current"/>
-            </label>
-            <div class="controls">
-                <select class="input-xlarge col-span-12" name="theme">
-                    <@  preferences.themesList.forEach(function(theme){ @>
-                        <option value="<@= theme @>" <@ if(preferences.theme === theme) { @>selected="true" <@ } @>>
-                            <@= function(string){ return string.charAt(0).toUpperCase() + string.slice(1) }(theme) @>
-                            </option>
-                    <@ }); @>
-                </select>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset>
-
         <legend>
             <fmt:message key="tatami.preferences.notifications"/>
         </legend>

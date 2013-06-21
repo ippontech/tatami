@@ -157,18 +157,11 @@ app.View.Preferences = Backbone.View.extend({
     },
 
     events: {
-        'submit': 'submit',
-        'change [name="theme"]' : function(e){this.switchTheme($(e.target).val());}
-    },
-
-    switchTheme: function(theme){
-        var css = $('[href^="/css/themes/"]');
-        css.attr('href', '/css/themes/' + theme + '.css');
+        'submit': 'submit'
     },
 
     render: function(){
         this.$el.empty();
-        this.model.attributes.themesList = (this.model.attributes.themesList== undefined) ? [] : this.model.attributes.themesList;
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
@@ -181,8 +174,6 @@ app.View.Preferences = Backbone.View.extend({
 
         var form = $(e.target);
 
-        this.model.set('theme', form.find('[name="theme"]').val());
-        this.model.set('themesList', '');
         this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
         this.model.set('dailyDigest', form.find('[name="dailyDigest"]')[0].checked);
         this.model.set('weeklyDigest', form.find('[name="weeklyDigest"]')[0].checked);

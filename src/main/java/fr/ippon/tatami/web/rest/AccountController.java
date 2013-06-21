@@ -2,7 +2,6 @@ package fr.ippon.tatami.web.rest;
 
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Preferences;
@@ -103,9 +102,6 @@ public class AccountController {
         User user = userService.getUserByLogin(currentUser.getLogin());
 
         Preferences preferences = new Preferences(user);
-        String themes = env.getProperty("tatami.authorized.theme");
-        preferences.setThemesList(themes);
-
         return preferences;
     }
 
@@ -121,10 +117,6 @@ public class AccountController {
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
-            if (newPreferences.getTheme().isEmpty()) {
-                throw new Exception("Theme can't be null");
-            }
-            currentUser.setTheme(newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail(newPreferences.getMentionEmail());
             currentUser.setDailyDigestSubscription(newPreferences.getDailyDigest());
             currentUser.setWeeklyDigestSubscription(newPreferences.getWeeklyDigest());
@@ -138,15 +130,14 @@ public class AccountController {
             userService.updateDailyDigestRegistration(newPreferences.getDailyDigest());
             userService.updateWeeklyDigestRegistration(newPreferences.getWeeklyDigest());
 
-            userService.updateThemePreferences(newPreferences.getTheme());
-            TatamiUserDetails userDetails =
-                    (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            org.springframework.security.core.userdetails.User securityUser =
+                    (org.springframework.security.core.userdetails.User)
+                            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            userDetails.setTheme(newPreferences.getTheme());
             Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails,
-                            userDetails.getPassword(),
-                            userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(securityUser,
+                            securityUser.getPassword(),
+                            securityUser.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -155,8 +146,6 @@ public class AccountController {
             log.debug("Error during setting preferences", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
-            String themes = env.getProperty("tatami.authorized.theme");
-            preferences.setThemesList(themes);
             return preferences;
         }
     }
