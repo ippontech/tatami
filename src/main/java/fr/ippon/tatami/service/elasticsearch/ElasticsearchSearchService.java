@@ -475,9 +475,9 @@ public class ElasticsearchSearchService implements SearchService {
             public void onResponse(DeleteResponse deleteResponse) {
                 if (log.isDebugEnabled()) {
                     if (deleteResponse.notFound()) {
-                        log.debug(type + " of id " + id + " was not found therefore not deleted.");
+                        log.debug("{} of id {} was not found therefore not deleted.", type, id);
                     } else {
-                        log.debug(type + " of id " + id + " was deleted from Elasticsearch.");
+                        log.debug("{} of id {} was deleted from Elasticsearch.",type, id);
                     }
                 }
             }
