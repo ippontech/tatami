@@ -369,7 +369,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
         this.options.url = {
-            owned: '/tatami/rest/friends/lookup',
+            owned: '/tatami/rest/users',
             recommended: '/tatami/rest/users/suggestions',
             search: '/tatami/rest/search/users'
         };
@@ -387,7 +387,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.fetch();
     },
     owned: function(){
-        this.url = this.options.url.owned;
+        this.url = this.options.url.owned + "/" + username + "/friends";
         this.parse = function(users){
             return users.map(function(user){
                 user.followed = true;
@@ -395,11 +395,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
                 return user;
             });
         };
-        this.fetch({
-            data: {
-                screen_name : username
-            }
-        });
+        this.fetch();
     },
 
     search: function(query){
