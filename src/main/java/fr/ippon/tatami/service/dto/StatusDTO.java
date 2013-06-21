@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * DTO to present a "complete" status to the presentation layer.
  */
-public class StatusDTO  implements Serializable {
+public class StatusDTO implements Serializable {
 
     private static final DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
 

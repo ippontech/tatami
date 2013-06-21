@@ -84,8 +84,8 @@ public class MailService {
     public void sendRegistrationEmail(String registrationKey, User user) {
 
         String registrationUrl = tatamiUrl + "/tatami/register?key=" + registrationKey;
-            log.debug("Sending registration e-mail to User '{}', Url='{}' " +
-                    "with locale : '{}'",user.getLogin(), registrationUrl, locale);
+        log.debug("Sending registration e-mail to User '{}', Url='{}' " +
+                "with locale : '{}'", user.getLogin(), registrationUrl, locale);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
@@ -96,7 +96,7 @@ public class MailService {
 
     @Async
     public void sendInvitationEmail(String email, User user) {
-        log.debug("Sending invitation e-mail to email '{}'",email);
+        log.debug("Sending invitation e-mail to email '{}'", email);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user.getLogin());
@@ -109,7 +109,7 @@ public class MailService {
     public void sendLostPasswordEmail(String registrationKey, User user) {
 
         String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
-        log.debug("Sending lost password e-mail to User '{}', Url='{}' with locale : '{}'",user.getLogin(), url, locale);
+        log.debug("Sending lost password e-mail to User '{}', Url='{}' with locale : '{}'", user.getLogin(), url, locale);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
@@ -120,8 +120,8 @@ public class MailService {
 
     @Async
     public void sendValidationEmail(User user, String password) {
-            log.debug("Sending validation e-mail to User '{}', non-encrypted Password='{}' " +
-                    "with locale : '{}'",user.getLogin(), password, locale );
+        log.debug("Sending validation e-mail to User '{}', non-encrypted Password='{}' " +
+                "with locale : '{}'", user.getLogin(), password, locale);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
@@ -132,8 +132,8 @@ public class MailService {
 
     @Async
     public void sendPasswordReinitializedEmail(User user, String password) {
-            log.debug("Sending password re-initialization e-mail to User '{}', non-encrypted Password='{}' " +
-                    "with locale : '{}'", user.getLogin(), password, locale );
+        log.debug("Sending password re-initialization e-mail to User '{}', non-encrypted Password='{}' " +
+                "with locale : '{}'", user.getLogin(), password, locale);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
@@ -144,8 +144,8 @@ public class MailService {
 
     @Async
     public void sendUserPrivateMessageEmail(User mentionnedUser, Status status) {
-            log.debug("Sending Private Message e-mail to User '{}' " +
-                    "with locale : '{}'",mentionnedUser.getLogin(), locale);
+        log.debug("Sending Private Message e-mail to User '{}' " +
+                "with locale : '{}'", mentionnedUser.getLogin(), locale);
         String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -158,7 +158,7 @@ public class MailService {
 
     @Async
     public void sendUserMentionEmail(User mentionnedUser, Status status) {
-        log.debug("Sending Mention e-mail to User '{}' with locale : '{}'",mentionnedUser.getLogin(), locale);
+        log.debug("Sending Mention e-mail to User '{}' with locale : '{}'", mentionnedUser.getLogin(), locale);
         String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -189,7 +189,7 @@ public class MailService {
     public void sendWeeklyDigestEmail(User user, List<StatusDTO> statuses, int nbStatus,
                                       Collection<User> suggestedUsers,
                                       Collection<Group> suggestedGroup) {
-        log.debug("Sending weekly digest e-mail to User '{}'",user.getLogin());
+        log.debug("Sending weekly digest e-mail to User '{}'", user.getLogin());
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
@@ -226,7 +226,7 @@ public class MailService {
             message.setText(text);
             try {
                 sender.send(message);
-                log.debug("Sent e-mail to User '{}'!",email);
+                log.debug("Sent e-mail to User '{}'!", email);
             } catch (MailException e) {
                 log.warn("Warning! SMTP server error, could not send e-mail.");
                 log.debug("SMTP Error : {}", e.getMessage());

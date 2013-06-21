@@ -77,7 +77,7 @@ public class FriendshipController {
 
     /**
      * WARNING! This is the old API, only used by the admin console
-     *
+     * <p/>
      * POST /friendships/create -> follow user
      */
     @RequestMapping(value = "/rest/friendships/create",
@@ -97,7 +97,7 @@ public class FriendshipController {
 
     /**
      * WARNING! This is the old API, only used by the admin console
-     *
+     * <p/>
      * POST /friendships/destroy -> unfollow user
      */
     @RequestMapping(value = "/rest/friendships/destroy",

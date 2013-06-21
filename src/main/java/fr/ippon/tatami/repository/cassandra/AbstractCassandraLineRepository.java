@@ -109,7 +109,7 @@ public abstract class AbstractCassandraLineRepository {
             }
         } else {
 
-            log.debug("Shared status {} is already present in {}",share.getOriginalStatusId(), columnFamily);
+            log.debug("Shared status {} is already present in {}", share.getOriginalStatusId(), columnFamily);
 
         }
     }

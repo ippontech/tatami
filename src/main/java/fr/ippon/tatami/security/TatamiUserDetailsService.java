@@ -1,6 +1,5 @@
 package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
 import org.slf4j.Logger;
@@ -78,7 +77,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
     protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
         Collection<GrantedAuthority> grantedAuthorities;
         if (adminUsers.contains(login)) {
-            log.debug("User \"{}\" is an administrator",login);
+            log.debug("User \"{}\" is an administrator", login);
 
             grantedAuthorities = adminGrantedAuthorities;
         } else {

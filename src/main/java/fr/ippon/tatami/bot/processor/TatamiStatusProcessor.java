@@ -23,15 +23,15 @@ public class TatamiStatusProcessor {
     private UserService userService;
 
     public void sendStatus(@Body String content, @Header("login") String login) throws Exception {
-        
+
         User tatamiBotUser = userService.getUserByLogin(login);
 
-            log.debug("Posting content to Tatami : {}", content);
+        log.debug("Posting content to Tatami : {}", content);
 
-        
+
         // TODO : handle posting in group ...
 
         statusUpdateService.postStatusAsUser(content, tatamiBotUser);
-        
-     }
+
+    }
 }

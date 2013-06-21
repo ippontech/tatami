@@ -98,7 +98,7 @@ public class TimelineController {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        log.debug("REST request to get someone's status (username={}).",username);
+        log.debug("REST request to get someone's status (username={}).", username);
         try {
             return timelineService.getUserline(username, count, since_id, max_id);
         } catch (Exception e) {
@@ -129,19 +129,18 @@ public class TimelineController {
     public StatusDTO updateStatus(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
         try {
             StatusDTO status = timelineService.getStatus(statusId);
-            if(action.isFavorite() != null && status.isFavorite() != action.isFavorite()){
-                if(action.isFavorite()){
+            if (action.isFavorite() != null && status.isFavorite() != action.isFavorite()) {
+                if (action.isFavorite()) {
                     timelineService.addFavoriteStatus(statusId);
-                }
-                else {
+                } else {
                     timelineService.removeFavoriteStatus(statusId);
                 }
                 status.setFavorite(action.isFavorite());
             }
-            if(action.isShared() != null && action.isShared()){
+            if (action.isShared() != null && action.isShared()) {
                 timelineService.shareStatus(statusId);
             }
-            if(action.isAnnounced() != null && action.isAnnounced()){
+            if (action.isAnnounced() != null && action.isAnnounced()) {
                 timelineService.announceStatus(statusId);
             }
             return status;
@@ -169,8 +168,7 @@ public class TimelineController {
         if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
             log.debug("Creating a reply to : {}", status.getReplyTo());
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
-        }
-        else if(status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+        } else if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
         } else {
@@ -185,11 +183,11 @@ public class TimelineController {
             }
             if (group == null) {
                 log.info("Permission denied! User {} tried to access " +
-                            "group ID = {}",currentUser.getLogin(),status.getGroupId());
+                        "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else if (group.isArchivedGroup()) {
-                    log.info("Archived group! User {} tried to post a message to archived " +
-                            "group ID = {}", currentUser.getLogin(), status.getGroupId());
+                log.info("Archived group! User {} tried to post a message to archived " +
+                        "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
                 statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);

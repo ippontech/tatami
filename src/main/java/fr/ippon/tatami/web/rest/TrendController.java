@@ -55,7 +55,7 @@ public class TrendController {
             produces = "application/json")
     @ResponseBody
     @Timed
-     public List<Trend> getUserTrends(@RequestParam("screen_name") String username) {
+    public List<Trend> getUserTrends(@RequestParam("screen_name") String username) {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         return trendService.getTrendsForUser(DomainUtil.getLoginFromUsernameAndDomain(username, domain));

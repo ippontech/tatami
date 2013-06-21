@@ -262,7 +262,7 @@ public class UserService {
     }
 
     public String validateRegistration(String key) {
-            log.debug("Validating registration for key {}", key);
+        log.debug("Validating registration for key {}", key);
         String login = registrationRepository.getLoginByRegistrationKey(key);
         String password = RandomUtil.generatePassword();
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -275,7 +275,7 @@ public class UserService {
                 userRepository.updateUser(existingUser);
                 mailService.sendPasswordReinitializedEmail(existingUser, password);
             } else {
-                    log.debug("Validating user {}", login);
+                log.debug("Validating user {}", login);
                 User user = new User();
                 user.setLogin(login);
                 user.setPassword(encryptedPassword);
@@ -302,8 +302,8 @@ public class UserService {
                     currentUser.getDomain(), day);
         }
 
-            log.debug("Updating weekly digest preferences : " +
-                    "weeklyDigest={} for user {}",registration, currentUser.getLogin());
+        log.debug("Updating weekly digest preferences : " +
+                "weeklyDigest={} for user {}", registration, currentUser.getLogin());
         try {
             userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -392,30 +392,32 @@ public class UserService {
         return domain.equalsIgnoreCase(domainHandledByLdap);
     }
 
-    public Collection<UserDTO> buildUserDTOList(Collection<User> users){
+    public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
         Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
-        for (User user : users){
+        for (User user : users) {
             UserDTO userDTO = getUserDTOFromUser(user);
             userDTO.setYou(user.equals(currentUser));
-            if(!userDTO.isYou()){
+            if (!userDTO.isYou()) {
                 userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
                 userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
             }
             userDTOs.add(userDTO);
         }
         return userDTOs;
-    };
+    }
 
-    public UserDTO buildUserDTO(User user){
+    ;
+
+    public UserDTO buildUserDTO(User user) {
         User currentUser = authenticationService.getCurrentUser();
         UserDTO userDTO = getUserDTOFromUser(user);
         userDTO.setYou(user.equals(currentUser));
-        if(!userDTO.isYou()){
+        if (!userDTO.isYou()) {
             Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-            Collection<String> currentFollowersLogins =  followerRepository.findFollowersForUser(currentUser.getLogin());
+            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
             userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
             userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
         }

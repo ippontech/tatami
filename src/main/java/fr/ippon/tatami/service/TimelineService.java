@@ -268,7 +268,7 @@ public class TimelineService {
                     log.debug("Deleted user : {}", abstractStatus.getLogin());
                 }
             } else {
-                    log.debug("Invisible status : {}", statusId);
+                log.debug("Invisible status : {}", statusId);
             }
         }
         return statuses;
@@ -507,7 +507,7 @@ public class TimelineService {
     }
 
     public void announceStatus(String statusId) {
-        log.debug("Announce status : {}",statusId);
+        log.debug("Announce status : {}", statusId);
         String currentLogin = this.authenticationService.getCurrentUser().getLogin();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {

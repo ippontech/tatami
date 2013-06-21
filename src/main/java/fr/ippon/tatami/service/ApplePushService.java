@@ -57,8 +57,8 @@ public class ApplePushService {
         try {
             String payload =
                     APNS.newPayload()
-                        .badge(3)
-                        .alertBody("Hello from Tatami!").build();
+                            .badge(3)
+                            .alertBody("Hello from Tatami!").build();
 
             String token = "test token";
             apnsService.push(token, payload);

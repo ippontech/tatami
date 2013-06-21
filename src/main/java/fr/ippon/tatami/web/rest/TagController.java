@@ -167,23 +167,22 @@ public class TagController {
             produces = "application/json")
     @ResponseBody
     public Collection<Tag> getTags(@RequestParam(required = false, value = "popular") String popular,
-                                      @RequestParam(required = false, value = "user") String username,
-                                      @RequestParam(required = false, value = "search") String search) {
+                                   @RequestParam(required = false, value = "user") String username,
+                                   @RequestParam(required = false, value = "search") String search) {
         Collection<Tag> tags = new ArrayList<Tag>();
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Collection<String> tagNames;
 
-        if(popular != null) {
+        if (popular != null) {
             List<Trend> trends;
             User user = null;
-            if(username != null) user = userService.getUserByUsername(username);
-            if(user != null) {
+            if (username != null) user = userService.getUserByUsername(username);
+            if (user != null) {
                 trendService.getTrendsForUser(user.getLogin());
                 trends = trendService.getTrendsForUser(user.getLogin());
-            }
-            else {
+            } else {
                 trends = trendService.getCurrentTrends(domain);
             }
 
@@ -193,8 +192,7 @@ public class TagController {
                 tag.setTrendingUp(trend.isTrendingUp());
                 tags.add(tag);
             }
-        }
-        else if (search != null && !search.isEmpty()) {
+        } else if (search != null && !search.isEmpty()) {
             String prefix = search.toLowerCase();
             tagNames = trendService.searchTags(domain, prefix, 5);
             for (String tagName : tagNames) {
@@ -202,8 +200,7 @@ public class TagController {
                 tag.setName(tagName);
                 tags.add(tag);
             }
-        }
-        else {
+        } else {
             tagNames = userTagRepository.findTags(currentUser.getLogin());
             for (String tagName : tagNames) {
                 Tag tag = new Tag();
@@ -215,7 +212,8 @@ public class TagController {
         for (Tag tag : tags) {
             if (followedTags.contains(tag.getName())) {
                 tag.setFollowed(true);
-            };
+            }
+            ;
         }
 
         return tags;
@@ -227,7 +225,7 @@ public class TagController {
             produces = "application/json")
     @ResponseBody
     public Tag updateTagNEW(@RequestBody Tag tag) {
-        if(tag.isFollowed()){
+        if (tag.isFollowed()) {
             tagMembershipService.followTag(tag);
         } else {
             tagMembershipService.unfollowTag(tag);

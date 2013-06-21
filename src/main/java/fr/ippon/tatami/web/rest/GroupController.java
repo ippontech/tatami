@@ -60,12 +60,12 @@ public class GroupController {
         Group publicGroup = groupService.getGroupById(domain, groupId);
         if (publicGroup != null && publicGroup.isPublicGroup()) {
             Group result = getGroupFromUser(currentUser, groupId);
-            Group groupClone = (Group) publicGroup.clone();            
-            if(result != null){
+            Group groupClone = (Group) publicGroup.clone();
+            if (result != null) {
                 groupClone.setMember(true);
-            } 
-            if(isGroupManagedByCurrentUser(publicGroup)){
-            	groupClone.setAdministrator(true);
+            }
+            if (isGroupManagedByCurrentUser(publicGroup)) {
+                groupClone.setAdministrator(true);
             }
             return groupClone;
         } else {
@@ -77,8 +77,8 @@ public class GroupController {
             } else {
                 groupClone = (Group) result.clone();
                 groupClone.setMember(true);
-                if(isGroupManagedByCurrentUser(publicGroup)){
-                	groupClone.setAdministrator(true);
+                if (isGroupManagedByCurrentUser(publicGroup)) {
+                    groupClone.setAdministrator(true);
                 }
             }
             return groupClone;
@@ -147,7 +147,7 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     @Timed
-     public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
+    public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             log.debug("Trying to find group for non-existing username = {}", username);
@@ -257,7 +257,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId,currentUser.getLogin());
+            users = groupService.getMembersForGroup(groupId, currentUser.getLogin());
         }
 
         for (UserGroupDTO user : users) {
@@ -357,7 +357,7 @@ public class GroupController {
         return isGroupManagedByCurrentUser;
     }
 
-    private Group getGroupFromUser(User currentUser, String groupId){
+    private Group getGroupFromUser(User currentUser, String groupId) {
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(groupId)) {

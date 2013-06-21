@@ -193,7 +193,7 @@ public class FileController {
                 Long.valueOf(file.getSize()).intValue(),
                 tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
-        log.info("Avatar url : {}/tatami/avatar/{}/{}",tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
+        log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
         uploadedFiles.add(uploadedFile);
 

@@ -4,9 +4,9 @@ package fr.ippon.tatami.config;
  * @author Julien Dubois
  */
 public class ColumnFamilyKeys {
-    
+
     private ColumnFamilyKeys() {
-        
+
     }
 
     public static final String USER_CF = "User";

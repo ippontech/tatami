@@ -48,7 +48,7 @@ public class GroupService {
 
     @Inject
     private SearchService searchService;
-    
+
     @Inject
     private FriendRepository friendRepository;
 
@@ -91,11 +91,11 @@ public class GroupService {
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
-            if(friendLogins.contains(user.getLogin())){
-            	dto.setFriend(true);
+            if (friendLogins.contains(user.getLogin())) {
+                dto.setFriend(true);
             }
-            if(login.equals(user.getLogin())){
-            	dto.setYou(true);
+            if (login.equals(user.getLogin())) {
+                dto.setYou(true);
             }
             userGroupDTOs.add(dto);
         }
@@ -175,11 +175,11 @@ public class GroupService {
         }
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getLogin());
-            log.debug("user="+user);
+            log.debug("user=" + user);
             groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
         } else {
-            log.debug("User {} is already a member of group {}",user.getLogin(), group.getName());
+            log.debug("User {} is already a member of group {}", user.getLogin(), group.getName());
         }
     }
 
@@ -198,7 +198,7 @@ public class GroupService {
             groupCounterRepository.decrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.removeGroup(user.getLogin(), groupId);
         } else {
-            log.debug("User {} is not a member of group {}",user.getLogin(), group.getName());
+            log.debug("User {} is not a member of group {}", user.getLogin(), group.getName());
         }
     }
 }

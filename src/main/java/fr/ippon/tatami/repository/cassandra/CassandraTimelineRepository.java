@@ -57,7 +57,7 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
         for (String login : logins) {
             mutator.addInsertion(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(announcement.getStatusId()),
-                "", UUIDSerializer.get(), StringSerializer.get()));
+                    "", UUIDSerializer.get(), StringSerializer.get()));
         }
         mutator.execute();
     }

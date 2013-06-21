@@ -73,7 +73,7 @@ public class FriendshipService {
                 // mention the friend that the user has started following him
                 MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
                 mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
-                log.debug("User {} now follows user {} ",currentUser.getLogin(), followedUser.getLogin());
+                log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
             }
             return followedUser;
         } else {
@@ -113,7 +113,7 @@ public class FriendshipService {
     }
 
     public List<String> getFriendIdsForUser(String login) {
-            log.debug("Retrieving friends for user : {}", login);
+        log.debug("Retrieving friends for user : {}", login);
         return friendRepository.findFriendsForUser(login);
     }
 

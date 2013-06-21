@@ -83,7 +83,7 @@ public class SearchController {
                                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
-        log.debug("REST request to search status containing these words ({}).",query);
+        log.debug("REST request to search status containing these words ({}).", query);
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         List<String> line;
@@ -116,11 +116,11 @@ public class SearchController {
 
         if (query != null && !query.equals("")) {
             this.log.debug("REST request to find tags starting with : {}", prefix);
-            for(String trend : trends){
+            for (String trend : trends) {
                 Tag tag = new Tag();
                 tag.setName(trend);
-                if(followedTags.contains(trend)){
-                   tag.setFollowed(true);
+                if (followedTags.contains(trend)) {
+                    tag.setFollowed(true);
                 }
                 tags.add(tag);
             }

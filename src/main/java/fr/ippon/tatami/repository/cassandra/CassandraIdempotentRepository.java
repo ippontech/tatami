@@ -55,7 +55,7 @@ public class CassandraIdempotentRepository implements fr.ippon.tatami.repository
     @Override
     public boolean contains(String key) {
 
-        log.debug("Test message duplication with key : {}" , key);
+        log.debug("Test message duplication with key : {}", key);
         ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
 
         HColumn<String, String> column =

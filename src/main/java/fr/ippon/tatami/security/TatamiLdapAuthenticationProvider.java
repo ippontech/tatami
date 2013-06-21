@@ -1,6 +1,5 @@
 package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.service.UserService;
@@ -74,12 +73,12 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         // Use temporary token to use username, and not login to authenticate on ldap :
         UsernamePasswordAuthenticationToken tmpAuthentication =
                 new UsernamePasswordAuthenticationToken(username, authentication.getCredentials(), null);
-        
+
         try {
             super.authenticate(tmpAuthentication);
-        } catch(InternalAuthenticationServiceException iase) {
+        } catch (InternalAuthenticationServiceException iase) {
             // Without this : there is no log when the ldap server or the ldap configuration is broken : 
-            log.error("Internal Error while authenticating " + authentication.getName() + " with LDAP",iase);
+            log.error("Internal Error while authenticating " + authentication.getName() + " with LDAP", iase);
             throw iase;
         }
 

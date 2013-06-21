@@ -17,10 +17,10 @@ import javax.inject.Inject;
 public class CommonRouteBuilder extends RouteBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(CommonRouteBuilder.class);
-    
+
     @Inject
     private TatamiStatusProcessor tatamiStatusProcessor;
-    
+
     @Inject
     private LastUpdateDateTatamibotConfigurationUpdater lastUpdateDateTatamibotConfigurationUpdater;
 
@@ -30,16 +30,16 @@ public class CommonRouteBuilder extends RouteBuilder {
         // Final endpoint used to send status to Tatami : 
 
         from("direct:toTatami"). // TODO : switch from direct: endpoint to an asynchronous one : seda: or jms: (for throttling in particular)
-        bean(new TagAppender()).
-        bean(tatamiStatusProcessor).
-        bean(lastUpdateDateTatamibotConfigurationUpdater);
-        
+                bean(new TagAppender()).
+                bean(tatamiStatusProcessor).
+                bean(lastUpdateDateTatamibotConfigurationUpdater);
+
     }
-    
+
     public static class TagAppender {
         public String process(@Body String body, @Header("tatamibotConfiguration") TatamibotConfiguration configuration) throws Exception {
-            if (! Strings.isNullOrEmpty(configuration.getTag())) {
-                body = body+ " #" + configuration.getTag();
+            if (!Strings.isNullOrEmpty(configuration.getTag())) {
+                body = body + " #" + configuration.getTag();
             }
             return body;
         }

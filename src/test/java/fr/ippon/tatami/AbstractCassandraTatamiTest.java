@@ -5,8 +5,6 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.test.application.WebApplicationTestConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;

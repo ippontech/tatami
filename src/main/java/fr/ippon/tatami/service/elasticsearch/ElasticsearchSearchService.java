@@ -72,7 +72,7 @@ public class ElasticsearchSearchService implements SearchService {
     private void init() {
         for (String type : TYPES) {
             if (!client().admin().indices().prepareExists(indexName(type)).execute().actionGet().exists()) {
-                log.info("Index {} does not exists in Elasticsearch, creating it!",indexName(type));
+                log.info("Index {} does not exists in Elasticsearch, creating it!", indexName(type));
                 createIndex();
             }
         }
@@ -216,9 +216,9 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Override
     public List<String> searchStatus(final String domain,
-                                                      final String query,
-                                                      int page,
-                                                      int size) {
+                                     final String query,
+                                     int page,
+                                     int size) {
 
         Assert.notNull(query);
         Assert.notNull(domain);
@@ -436,7 +436,7 @@ public class ElasticsearchSearchService implements SearchService {
             }
         }
 
-        log.debug("Ready to index {} {} into Elasticsearch.",collection.size(),  type);
+        log.debug("Ready to index {} {} into Elasticsearch.", collection.size(), type);
 
         BulkResponse response = request.execute().actionGet();
         if (response.hasFailures()) {
@@ -449,8 +449,8 @@ public class ElasticsearchSearchService implements SearchService {
             }
             log.error(errorCount + " " + type + " where not indexed in bulk operation.");
 
-        } else  {
-            log.debug("{} {} indexed into Elasticsearch in bulk operation.",collection.size(), type);
+        } else {
+            log.debug("{} {} indexed into Elasticsearch in bulk operation.", collection.size(), type);
         }
     }
 
@@ -477,7 +477,7 @@ public class ElasticsearchSearchService implements SearchService {
                     if (deleteResponse.notFound()) {
                         log.debug("{} of id {} was not found therefore not deleted.", type, id);
                     } else {
-                        log.debug("{} of id {} was deleted from Elasticsearch.",type, id);
+                        log.debug("{} of id {} was deleted from Elasticsearch.", type, id);
                     }
                 }
             }

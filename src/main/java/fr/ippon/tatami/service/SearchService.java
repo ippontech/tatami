@@ -48,9 +48,9 @@ public interface SearchService {
      * @param size  the size of a page
      */
     List<String> searchStatus(String domain,
-                                               String query,
-                                               int page,
-                                               int size);
+                              String query,
+                              int page,
+                              int size);
 
 
     /**

@@ -35,7 +35,7 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
             domainConfiguration = em.find(DomainConfiguration.class, domain);
         } catch (Exception e) {
 
-            log.debug("Exception while looking for domain {} : {}", domain , e.toString());
+            log.debug("Exception while looking for domain {} : {}", domain, e.toString());
 
             return null;
         }

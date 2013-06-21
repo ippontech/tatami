@@ -4,8 +4,6 @@ import fr.ippon.tatami.config.AsyncConfiguration;
 import fr.ippon.tatami.config.CassandraConfiguration;
 import fr.ippon.tatami.config.MailConfiguration;
 import fr.ippon.tatami.config.SearchConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

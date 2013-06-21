@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Pierre Rust
  */
 public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
-    
+
     @Inject
     public MailDigestRepository mailDigestRepository;
 
@@ -28,9 +28,9 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldInsertWeeklySubscription() {
-        
+
         log.debug("In shouldInsertWeeklySubscription");
-        
+
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
@@ -63,7 +63,7 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRemoveWeeklySubscription() {
         log.debug("In shouldRemoveWeeklySubscription");
-        
+
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
@@ -79,7 +79,7 @@ public class MailDigestRepositoryTest extends AbstractCassandraTatamiTest {
     @Test
     public void shouldRemoveDailySubscription() {
         log.debug("In shouldRemoveDailySubscription");
-        
+
         String login = "nuuser@ippon.fr";
         String domain = "ippon.fr";
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));

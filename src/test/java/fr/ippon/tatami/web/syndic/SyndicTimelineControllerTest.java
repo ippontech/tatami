@@ -1,6 +1,5 @@
 package fr.ippon.tatami.web.syndic;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
@@ -9,9 +8,9 @@ import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.AccountController;
 import fr.ippon.tatami.web.rest.TimelineController;
+import fr.ippon.tatami.web.rest.dto.Preferences;
 import org.apache.commons.lang.CharEncoding;
 import org.junit.Before;
 import org.junit.Test;

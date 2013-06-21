@@ -1,13 +1,12 @@
 package fr.ippon.tatami.test;
 
-import java.util.concurrent.Callable;
-
 import org.mockito.internal.util.MockUtil;
+
+import java.util.concurrent.Callable;
 
 public class MockUtils {
 
     /**
-     * 
      * @param mock a Mockito mock
      * @return
      */
@@ -18,7 +17,7 @@ public class MockUtils {
 
     /**
      * To be used with Awaitility.await().until(xxx)
-     * 
+     *
      * @param mock
      * @param minInvocationCount
      * @return
@@ -27,7 +26,7 @@ public class MockUtils {
         return new Callable<Boolean>() {
             public Boolean call() throws Exception {
                 int nbCalls = getNumberOfInvocation(mock);
-                return nbCalls >= minInvocationCount ; 
+                return nbCalls >= minInvocationCount;
             }
         };
     }

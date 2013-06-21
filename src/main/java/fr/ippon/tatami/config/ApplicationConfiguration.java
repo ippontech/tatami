@@ -56,7 +56,7 @@ public class ApplicationConfiguration {
         if ("true".equals(env.getProperty("tatami.wro4j.enabled"))) {
             Constants.WRO4J_ENABLED = true;
         }
-        log.info("Tatami v. {} started!", Constants.VERSION );
+        log.info("Tatami v. {} started!", Constants.VERSION);
         log.debug("Google Analytics key : {}", Constants.GOOGLE_ANALYTICS_KEY);
         log.debug("WRO4J enabled : {}", Constants.WRO4J_ENABLED);
 

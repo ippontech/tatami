@@ -88,15 +88,15 @@ public class CassandraStatusRepository implements StatusRepository {
     private AttachmentRepository attachmentRepository;
 
 
-   @PostConstruct
-   public void init() {
-       template =
-               new ThriftColumnFamilyTemplate<String, String>(
-                       keyspaceOperator,
-                       STATUS_CF,
-                       StringSerializer.get(),
-                       StringSerializer.get());
-   }
+    @PostConstruct
+    public void init() {
+        template =
+                new ThriftColumnFamilyTemplate<String, String>(
+                        keyspaceOperator,
+                        STATUS_CF,
+                        StringSerializer.get(),
+                        StringSerializer.get());
+    }
 
 
     @Override
@@ -124,13 +124,13 @@ public class CassandraStatusRepository implements StatusRepository {
         if (!constraintViolations.isEmpty()) {
             if (log.isDebugEnabled()) {
                 for (ConstraintViolation cv : constraintViolations) {
-                    log.debug("Constraint violation: {}",  cv.getMessage());
+                    log.debug("Constraint violation: {}", cv.getMessage());
                 }
             }
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
         }
 
-        ColumnFamilyUpdater<String,String> updater = this.createBaseStatus(status);
+        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(status);
 
         updater.setString(CONTENT, content);
 
@@ -179,7 +179,7 @@ public class CassandraStatusRepository implements StatusRepository {
         share.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         share.setDomain(domain);
-        ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(share);
+        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(share);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         share.setOriginalStatusId(originalStatusId);
@@ -199,7 +199,7 @@ public class CassandraStatusRepository implements StatusRepository {
         announcement.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         announcement.setDomain(domain);
-        ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(announcement);
+        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(announcement);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         announcement.setOriginalStatusId(originalStatusId);
@@ -219,7 +219,7 @@ public class CassandraStatusRepository implements StatusRepository {
         mentionFriend.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         mentionFriend.setDomain(domain);
-        ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(mentionFriend);
+        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(mentionFriend);
 
         updater.setString(FOLLOWER_LOGIN, followerLogin);
 
@@ -239,7 +239,7 @@ public class CassandraStatusRepository implements StatusRepository {
         mentionShare.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         mentionShare.setDomain(domain);
-        ColumnFamilyUpdater<String,String> updater =  this.createBaseStatus(mentionShare);
+        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(mentionShare);
 
         updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
         mentionShare.setOriginalStatusId(originalStatusId);
@@ -251,11 +251,11 @@ public class CassandraStatusRepository implements StatusRepository {
         return mentionShare;
     }
 
-    private ColumnFamilyUpdater<String,String> createBaseStatus(AbstractStatus abstractStatus) {
+    private ColumnFamilyUpdater<String, String> createBaseStatus(AbstractStatus abstractStatus) {
         // Generate statusId and statusDate for all statuses
         String statusId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
         abstractStatus.setStatusId(statusId);
-        ColumnFamilyUpdater<String,String> updater = template.createUpdater(statusId);
+        ColumnFamilyUpdater<String, String> updater = template.createUpdater(statusId);
 
         Date statusDate = Calendar.getInstance().getTime();
         updater.setDate(STATUS_DATE, statusDate);
@@ -296,7 +296,7 @@ public class CassandraStatusRepository implements StatusRepository {
             log.trace("Finding status : " + statusId);
         }
 
-        ColumnFamilyResult<String,String> result = template.queryColumns(statusId);
+        ColumnFamilyResult<String, String> result = template.queryColumns(statusId);
 
         if (result.hasResults() == false) {
             return null; // No status was found
@@ -338,7 +338,7 @@ public class CassandraStatusRepository implements StatusRepository {
         return status;
     }
 
-    private Status findStatus(ColumnFamilyResult<String,String> result, String statusId) {
+    private Status findStatus(ColumnFamilyResult<String, String> result, String statusId) {
         Status status = new Status();
         status.setStatusId(statusId);
         status.setType(StatusType.STATUS);
@@ -373,28 +373,28 @@ public class CassandraStatusRepository implements StatusRepository {
         return status;
     }
 
-    private Share findShare(ColumnFamilyResult<String,String> result) {
+    private Share findShare(ColumnFamilyResult<String, String> result) {
         Share share = new Share();
         share.setType(StatusType.SHARE);
         share.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
         return share;
     }
 
-    private Announcement findAnnouncement(ColumnFamilyResult<String,String> result) {
+    private Announcement findAnnouncement(ColumnFamilyResult<String, String> result) {
         Announcement announcement = new Announcement();
         announcement.setType(StatusType.ANNOUNCEMENT);
         announcement.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
         return announcement;
     }
 
-    private MentionFriend findMentionFriend(ColumnFamilyResult<String,String> result) {
+    private MentionFriend findMentionFriend(ColumnFamilyResult<String, String> result) {
         MentionFriend mentionFriend = new MentionFriend();
         mentionFriend.setType(StatusType.MENTION_FRIEND);
         mentionFriend.setFollowerLogin(result.getString(FOLLOWER_LOGIN));
         return mentionFriend;
     }
 
-    private MentionShare findMentionShare(ColumnFamilyResult<String,String> result) {
+    private MentionShare findMentionShare(ColumnFamilyResult<String, String> result) {
         MentionShare mentionShare = new MentionShare();
         mentionShare.setType(StatusType.MENTION_SHARE);
         mentionShare.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));

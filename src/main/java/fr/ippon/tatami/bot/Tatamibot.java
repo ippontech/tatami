@@ -29,7 +29,6 @@ public class Tatamibot extends RouteBuilder {
     private static final Logger log = LoggerFactory.getLogger(Tatamibot.class);
 
 
-
     @Inject
     private IdempotentRepository<String> idempotentRepository;
 
@@ -44,30 +43,30 @@ public class Tatamibot extends RouteBuilder {
 
     @Override
     public void configure() {
-        
+
         log.info("Configuring the Tatami Bot");
         for (Domain domain : domainRepository.getAllDomains()) {
             log.debug("Configuring Bot for domain {}", domain.getName());
             String tatamiBotLogin = getTatamiBotLogin(domain);
-            
+
             for (TatamibotConfiguration configuration :
                     tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain(domain.getName())) {
 
-                    log.debug("Configuring Bot : {}", configuration);
+                log.debug("Configuring Bot : {}", configuration);
 
-                
+
                 SourceRouteBuilderBase subBuilder = null;
                 if (configuration.getType().equals(TatamibotConfiguration.TatamibotType.RSS)) {
                     subBuilder = new RssRouteBuilder();
-                  
+
                 } else if (configuration.getType().equals(TatamibotConfiguration.TatamibotType.TWITTER)) {
                     subBuilder = new TwitterRouteBuilder();
-                
+
                 } else if (configuration.getType().equals(TatamibotConfiguration.TatamibotType.GIT)) {
                     subBuilder = new GitHubRouteBuilder();
                 }
 
-                if(subBuilder != null) {
+                if (subBuilder != null) {
                     subBuilder.setConfiguration(configuration);
                     subBuilder.setTatamiBotLogin(tatamiBotLogin);
                     subBuilder.setIdempotentRepository(idempotentRepository);
@@ -81,7 +80,7 @@ public class Tatamibot extends RouteBuilder {
         try {
             getContext().addRoutes(builder);
         } catch (Exception e) {
-            throw new RuntimeException("Unexpected error when configuring a route",e);
+            throw new RuntimeException("Unexpected error when configuring a route", e);
         }
     }
 

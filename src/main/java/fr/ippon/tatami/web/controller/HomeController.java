@@ -41,7 +41,7 @@ public class HomeController {
         return mv;
     }
 
-    @RequestMapping(value = { "/", "/home/**", "/home", "/home/" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/home/**", "/home", "/home/"}, method = RequestMethod.GET)
     public ModelAndView home(@RequestParam(required = false) String ios) {
         ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
@@ -86,7 +86,7 @@ public class HomeController {
         }
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
-            log.debug("User {} already exists.",email);
+            log.debug("User {} already exists.", email);
             return "redirect:/tatami/login";
         }
         if (email.equals(Constants.TATAMIBOT_NAME)) {

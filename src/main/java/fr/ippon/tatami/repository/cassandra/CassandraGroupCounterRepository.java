@@ -43,6 +43,7 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
     }
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
+
     @Override
     public void incrementGroupCounter(String domain, String groupId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());

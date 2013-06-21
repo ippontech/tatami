@@ -74,7 +74,7 @@ public class AttachmentService {
                 userAttachmentRepository.
                         findAttachmentIds(authenticationService.getCurrentUser().getLogin());
 
-            log.debug("Collection of attachments : {}", attachmentIds.size());
+        log.debug("Collection of attachments : {}", attachmentIds.size());
 
         return attachmentIds;
     }
@@ -108,7 +108,7 @@ public class AttachmentService {
         Collection<Long> taux = new ArrayList<Long>();
         taux.add(quota);
 
-            log.debug("Domain quota attachments : {}", quota);
+        log.debug("Domain quota attachments : {}", quota);
 
         return taux;
     }

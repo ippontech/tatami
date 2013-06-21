@@ -26,8 +26,8 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
     private long counter;
 
     private boolean member;
-    
-    private boolean administrator; 
+
+    private boolean administrator;
 
     public String getGroupId() {
         return groupId;
@@ -89,19 +89,19 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
         return member;
     }
 
-    public void setMember(boolean member){
+    public void setMember(boolean member) {
         this.member = member;
     }
-    
+
     public boolean isAdministrator() {
-		return administrator;
-	}
+        return administrator;
+    }
 
-	public void setAdministrator(boolean administrator) {
-		this.administrator = administrator;
-	}
+    public void setAdministrator(boolean administrator) {
+        this.administrator = administrator;
+    }
 
-	@Override
+    @Override
     public int compareTo(Group o) {
         if (this.getName() == null) {
             return -1;
@@ -141,20 +141,20 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
                 ", domain='" + domain + '\'' +
                 ", counter=" + counter +
                 ", member=" + member +
-                ", administrator="+ administrator +
+                ", administrator=" + administrator +
                 '}';
     }
 
-	@Override
-	public Object clone() {
-	    Group clone = null;
-	    try {
-	    	clone = (Group) super.clone();
-	    } catch(CloneNotSupportedException cnse) {
-	      	cnse.printStackTrace(System.err);
-	    }
-		return clone;
-	}
-    
-    
+    @Override
+    public Object clone() {
+        Group clone = null;
+        try {
+            clone = (Group) super.clone();
+        } catch (CloneNotSupportedException cnse) {
+            cnse.printStackTrace(System.err);
+        }
+        return clone;
+    }
+
+
 }

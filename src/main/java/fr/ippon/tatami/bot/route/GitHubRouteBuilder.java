@@ -12,6 +12,6 @@ public class GitHubRouteBuilder extends SourceRouteBuilderBase {
     public void configure() {
 
 //      log.info("Configuring Github support");
-      //https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
+        //https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
     }
 }

@@ -60,7 +60,7 @@ public class CassandraUserRepository implements UserRepository {
     @Override
     @CacheEvict(value = "user-cache", key = "#user.login", beforeInvocation = true)
     public void updateUser(User user) throws ConstraintViolationException, IllegalArgumentException {
-        log.debug("Updating user : {}",  user);
+        log.debug("Updating user : {}", user);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
@@ -84,7 +84,7 @@ public class CassandraUserRepository implements UserRepository {
         try {
             user = em.find(User.class, login);
         } catch (Exception e) {
-                log.debug("Exception while looking for user {} : {}", login, e.toString());
+            log.debug("Exception while looking for user {} : {}", login, e.toString());
             return null;
         }
         if (user != null) {
