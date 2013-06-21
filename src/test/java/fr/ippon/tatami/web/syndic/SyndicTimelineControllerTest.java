@@ -126,7 +126,6 @@ public class SyndicTimelineControllerTest extends AbstractCassandraTatamiTest {
                 .content("{\"mentionEmail\":true," +
                         "\"weeklyDigest\":false," +
                         "\"dailyDigest\":false," +
-                        "\"theme\":\"bootstrap\"," +
                         "\"rssUidActive\":true," +
                         "\"rssUid\":\"\"}"))
                 .andExpect(status().isOk());
