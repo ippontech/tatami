@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
@@ -50,6 +51,7 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public User getProfile() {
         this.log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
@@ -62,6 +64,7 @@ public class AccountController {
     @RequestMapping(value = "/rest/account/profile",
             method = RequestMethod.PUT)
     @ResponseBody
+    @Timed
     public User updateUserProfile(@RequestBody User updatedUser, HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setFirstName(updatedUser.getFirstName().replace("<", " "));
@@ -80,6 +83,7 @@ public class AccountController {
 
     @RequestMapping(value = "/rest/account/profile",
             method = RequestMethod.DELETE)
+    @Timed
     public void suppressUserProfile() {
         User currentUser = authenticationService.getCurrentUser();
         log.debug("Suppression du compte utilisateur : {}", currentUser);
@@ -94,6 +98,7 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Preferences getPreferences() {
         this.log.debug("REST request to get account's preferences");
         User currentUser = authenticationService.getCurrentUser();
@@ -110,6 +115,7 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
         this.log.debug("REST request to set account's preferences");
         Preferences preferences = null;
@@ -156,6 +162,7 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -174,6 +181,7 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
         this.log.debug("REST request to set account's password");
         try {

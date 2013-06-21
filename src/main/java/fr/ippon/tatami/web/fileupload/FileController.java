@@ -1,5 +1,6 @@
 package fr.ippon.tatami.web.fileupload;
 
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
@@ -69,6 +70,7 @@ public class FileController {
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     @ResponseBody
+    @Timed
     public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
             throws IOException, StorageSizeException {
 
@@ -96,6 +98,7 @@ public class FileController {
 
     @RequestMapping(value = "/file/{attachmentId}/*",
             method = RequestMethod.GET)
+    @Timed
     public void download(@PathVariable("attachmentId") String attachmentId,
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
@@ -137,6 +140,7 @@ public class FileController {
 
     @RequestMapping(value = "/avatar/{avatarId}/*",
             method = RequestMethod.GET)
+    @Timed
     public void getAvatar(@PathVariable("avatarId") String avatarId,
                           HttpServletRequest request,
                           HttpServletResponse response) throws IOException {
@@ -175,6 +179,7 @@ public class FileController {
     @RequestMapping(value = "/rest/fileupload/avatar",
             method = RequestMethod.POST)
     @ResponseBody
+    @Timed
     public List<UploadedFile> uploadAvatar(
             @RequestParam("uploadFile") MultipartFile file) throws IOException {
 
@@ -208,6 +213,7 @@ public class FileController {
 
     @RequestMapping(value = "/file/file_not_found",
             method = RequestMethod.GET)
+    @Timed
     public ModelAndView FileNotFound() {
         log.debug("File not found !");
         return new ModelAndView("errors/file_not_found");
