@@ -11,9 +11,7 @@
     <appender name="SYNC_PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
         <syslogHost>${logback.syslogHost}</syslogHost>
         <facility>LOCAL7</facility>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%p: %c{2} %ex %m %n</pattern>
-        </layout>
+        <suffixPattern>[%thread] %logger %msg</suffixPattern>
     </appender>
 
     <appender name="PAPERTRAIL" class="ch.qos.logback.classic.AsyncAppender">
