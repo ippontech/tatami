@@ -124,7 +124,7 @@ public class CassandraStatusRepository implements StatusRepository {
         if (!constraintViolations.isEmpty()) {
             if (log.isDebugEnabled()) {
                 for (ConstraintViolation cv : constraintViolations) {
-                    log.debug("ConstraintViolation: " + cv.getMessage());
+                    log.debug("Constraint violation: {}",  cv.getMessage());
                 }
             }
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(constraintViolations));
