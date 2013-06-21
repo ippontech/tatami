@@ -375,7 +375,6 @@ app.Collection.TabUser = Backbone.Collection.extend({
         };
     },
 
-
     recommended: function(){
         this.url = this.options.url.recommended;
         this.parse = function(users){
