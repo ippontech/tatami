@@ -147,7 +147,7 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
+     public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             log.debug("Trying to find group for non-existing username = {}", username);
