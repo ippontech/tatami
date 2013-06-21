@@ -21,6 +21,18 @@
     </div>
 </script>
 
+<script type="text/template" id="follow-button">
+    <span class="btn btn-block input-block-level"><fmt:message key="tatami.user.follow"/></span>
+</script>
+
+<script type="text/template" id="followed-button">
+    <span class="btn btn-primary btn-block input-block-level"><fmt:message key="tatami.user.followed"/></span>
+</script>
+
+<script type="text/template" id="edit-profile">
+    <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
+</script>
+
 <script type="text/template" id="account-profile">
     <h2>
         <fmt:message key="tatami.account.update.title"/>
@@ -281,7 +293,7 @@
     <td>
         <img class="avatar avatar-small" src="<@= avatar @>"
          alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
-        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/home/users/<@= username @>" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
     </td>
@@ -471,7 +483,7 @@
 
 <script type="text/template" id="groups-item">
     <td>
-        <a href="/tatami/#/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
+        <a href="/tatami/home/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
     </td>
     <td>
         <@ if(publicGroup && !archivedGroup) { @>

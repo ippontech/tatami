@@ -22,7 +22,7 @@ else {
 /* Account profile */
 
 app.Model.AccountProfile = Backbone.Model.extend({
-    url: '/tatami/rest/account/profile',
+    url: '/tatami/rest/users',
     idAttribute: 'username',
     defaults : {
         username : window.username,
@@ -430,7 +430,6 @@ app.View.User = Backbone.View.extend({
         var user = this.model.get('username');
         var self = this;
 
-
         function onFinish(follow) {
             app.views.followButton = new app.View.FollowButtonView({
                 username: user,
@@ -442,7 +441,7 @@ app.View.User = Backbone.View.extend({
 
         var followed = this.model.get('followed');
         if(typeof followed === 'undefined')
-            $.get('/tatami/rest/friendships', {screen_name:user}, onFinish, 'json');
+            $.get('/tatami/rest/users/' + user + "/friends", onFinish, 'json');
         else onFinish(followed);
     },
 
@@ -452,6 +451,112 @@ app.View.User = Backbone.View.extend({
         this.delegateEvents();
         return this.$el;
     }
+});
+
+app.Model.FollowUserModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/friendships/create';
+    }
+});
+
+app.Model.UnFollowUserModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/friendships/destroy';
+    }
+});
+
+app.View.FollowButtonView = Backbone.View.extend({
+    templateFollow: _.template($('#follow-button').html()),
+    templateFollowed: _.template($('#followed-button').html()),
+    templateUserEdit:_.template($('#edit-profile').html()),
+
+    initialize: function() {
+        this.set(this.options.owner, this.options.followed);
+    },
+
+    set: function(owner, followed) {
+        if(owner){
+            this.events = {
+                "click .btn": "editMyProfile"
+            };
+            this.editMyProfileRender();
+        }
+        else if(!owner && followed) {
+            this.events = {
+                "click .btn": "unfollow"
+            };
+            this.followedRender();
+        }
+        else if(!owner && !followed) {
+            this.events = {
+                "click .btn": "follow"
+            };
+            this.followRender();
+        }
+    },
+
+    editMyProfile: function() {
+        window.location = '/tatami/account/#/profile';
+    },
+
+    follow: function() {
+        var self = this;
+        this.undelegateEvents();
+        $(this.el).empty();
+
+        var m = new app.Model.FollowUserModel();
+        m.set('username', this.options.username);
+
+        m.save(null, {
+            success: function(){
+                self.set(self.options.owner, true);
+                self.delegateEvents();
+                app.trigger('refreshProfile');
+            },
+            error: function(){
+                self.set(self.options.owner, false);
+                self.delegateEvents();
+            }
+        });
+    },
+
+    unfollow: function() {
+        var self = this;
+        this.undelegateEvents();
+        $(this.el).empty();
+
+        var m = new app.Model.UnFollowUserModel();
+        m.set('username', this.options.username);
+
+        m.save(null, {
+            success: function(){
+                self.set(self.options.owner, false);
+                self.delegateEvents();
+                app.trigger('refreshProfile');
+            },
+            error: function(){
+                self.set(self.options.owner, true);
+                self.delegateEvents();
+            }
+        });
+    },
+
+    followRender: function() {
+        $(this.el).html(this.templateFollow());
+    },
+
+    followedRender: function() {
+        $(this.el).html(this.templateFollowed());
+    },
+
+    editMyProfileRender: function() {
+        $(this.el).html(this.templateUserEdit());
+    },
+
+    render: function() {
+        return $(this.el);
+    }
+
 });
 
 app.Collection.TabTag = Backbone.Collection.extend({
@@ -528,6 +633,22 @@ app.View.Tag = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.delegateEvents();
         return this.$el;
+    }
+});
+
+
+/*
+ Tags
+ */
+app.Model.FollowTagModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/tagmemberships/create';
+    }
+});
+
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/tagmemberships/destroy';
     }
 });
 

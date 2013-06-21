@@ -105,7 +105,6 @@ public class UserController {
         return userService.getUsersForCurrentDomain(pagination);
     }
 
-
     /**
      * POST  /users -> Register new user
      */
@@ -124,5 +123,4 @@ public class UserController {
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
-
 }
