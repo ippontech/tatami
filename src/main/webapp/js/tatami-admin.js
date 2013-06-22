@@ -432,7 +432,7 @@ app.View.User = Backbone.View.extend({
 
         var followed = this.model.get('followed');
         if(typeof followed === 'undefined')
-            $.get('/tatami/rest/users/' + user + "/friends", onFinish, 'json');
+            $.get('/tatami/rest/friendships', {screen_name:user}, onFinish, 'json');
         else onFinish(followed);
     },
 

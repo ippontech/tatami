@@ -110,4 +110,22 @@ public class FriendshipController {
         log.debug("REST request to unfollow username  : {}", user.getUsername());
         friendshipService.unfollowUser(user.getUsername());
     }
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     *
+     * GET /friendships -> is the user a friend ?
+     */
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public Boolean followUser(@RequestParam("screen_name") String username) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get friendship status : " + username);
+        }
+        return friendshipService.isFollowing(username);
+    }
 }
