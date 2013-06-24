@@ -86,12 +86,13 @@ public class FriendshipController {
     @ResponseBody
     @Timed
     @Deprecated
-    public void followUser(@RequestBody User user, HttpServletResponse response) {
+    public boolean followUser(@RequestBody User user, HttpServletResponse response) {
         log.debug("REST request to follow username : {}", user.getUsername());
-        User followedUser = friendshipService.followUser(user.getUsername());
-        if (followedUser == null) {
+        boolean success = friendshipService.followUser(user.getUsername());
+        if (!success) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+        return success;
     }
 
 
@@ -106,14 +107,18 @@ public class FriendshipController {
     @ResponseBody
     @Timed
     @Deprecated
-    public void unfollowUser(@RequestBody User user) {
+    public boolean unfollowUser(@RequestBody User user, HttpServletResponse response) {
         log.debug("REST request to unfollow username  : {}", user.getUsername());
-        friendshipService.unfollowUser(user.getUsername());
+        boolean success = friendshipService.unfollowUser(user.getUsername());
+        if (!success) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return success;
     }
 
     /**
      * WARNING! This is the old API, only used by the admin console
-     *
+     * <p/>
      * GET /friendships -> is the user a friend ?
      */
     @RequestMapping(value = "/rest/friendships",

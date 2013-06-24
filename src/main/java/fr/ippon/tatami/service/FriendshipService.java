@@ -48,49 +48,60 @@ public class FriendshipService {
     @Inject
     private AuthenticationService authenticationService;
 
-    public User followUser(String usernameToFollow) {
+    /**
+     * Follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean followUser(String usernameToFollow) {
         log.debug("Following user : {}", usernameToFollow);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
         User followedUser = userRepository.findUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
-            boolean userAlreadyFollowed = false;
             if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
                 for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(loginToFollow)) {
-                        userAlreadyFollowed = true;
                         log.debug("User {} already follows user {}", currentUser.getLogin(), followedUser.getLogin());
-                        break;
+                        return false;
                     }
                 }
             }
-            if (!userAlreadyFollowed) {
-                friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
-                counterRepository.incrementFriendsCounter(currentUser.getLogin());
-                followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
-                counterRepository.incrementFollowersCounter(followedUser.getLogin());
-                // mention the friend that the user has started following him
-                MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
-                mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
-                log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
-            }
-            return followedUser;
+            friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
+            counterRepository.incrementFriendsCounter(currentUser.getLogin());
+            followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
+            counterRepository.incrementFollowersCounter(followedUser.getLogin());
+            // mention the friend that the user has started following him
+            MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
+            mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
+            log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
+            return true;
         } else {
             log.debug("Followed user does not exist : " + loginToFollow);
-            return null;
+            return false;
         }
     }
 
-    public void unfollowUser(String usernameToUnfollow) {
+    /**
+     * Un-follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean unfollowUser(String usernameToUnfollow) {
         log.debug("Removing followed user : {}", usernameToUnfollow);
         User currentUser = authenticationService.getCurrentUser();
         String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = userRepository.findUserByLogin(loginToUnfollow);
-        unfollowUser(currentUser, userToUnfollow);
+        return unfollowUser(currentUser, userToUnfollow);
     }
 
-    public void unfollowUser(User currentUser, User userToUnfollow) {
+    /**
+     * Un-follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean unfollowUser(User currentUser, User userToUnfollow) {
         if (userToUnfollow != null) {
             String loginToUnfollow = userToUnfollow.getLogin();
             boolean userAlreadyFollowed = false;
@@ -104,11 +115,14 @@ public class FriendshipService {
                 counterRepository.decrementFriendsCounter(currentUser.getLogin());
                 followerRepository.removeFollower(loginToUnfollow, currentUser.getLogin());
                 counterRepository.decrementFollowersCounter(loginToUnfollow);
-                log.debug("User " + currentUser.getLogin() +
-                        " has stopped following user " + loginToUnfollow);
+                log.debug("User {} has stopped following user {}", currentUser.getLogin(), loginToUnfollow);
+                return true;
+            } else {
+                return false;
             }
         } else {
             log.debug("Followed user does not exist.");
+            return false;
         }
     }
 

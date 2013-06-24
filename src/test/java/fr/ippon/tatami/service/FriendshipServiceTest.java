@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +47,7 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
         assertThat(userWhoFollow.getFriendsCount(), is(0L));
 
-        friendshipService.followUser("userWhoWillBeFollowed");
+        assertTrue(friendshipService.followUser("userWhoWillBeFollowed"));
 
         /* verify */
         userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
@@ -61,11 +61,11 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldNotFollowUserBecauseUserNotExist() {
+    public void shouldNotFollowUserBecauseUserDoesNotExist() {
 
         mockAuthentication("userWhoWantToFollow@ippon.fr");
 
-        friendshipService.followUser("unknownUser");
+        assertFalse(friendshipService.followUser("unknownUser"));
 
         /* verify */
         User userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
@@ -73,11 +73,11 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldNotFollowUserBecauseUserAlreadyFollowed() throws Exception {
+    public void shouldNotFollowUserBecauseUserIsAlreadyFollowed() throws Exception {
 
         mockAuthentication("userWhoFollow@ippon.fr");
 
-        friendshipService.followUser("userWhoIsFollowed");
+        assertFalse(friendshipService.followUser("userWhoIsFollowed"));
 
         /* verify */
         User userWhoFollow = userService.getUserByUsername("userWhoFollow");
@@ -98,7 +98,7 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userWhoFollow.getFriendsCount(), is(0L));
         assertThat(userWhoFollow.getFollowersCount(), is(0L));
 
-        friendshipService.followUser("userWhoWantToFollow");
+        assertFalse(friendshipService.followUser("userWhoWantToFollow"));
 
         /* verify */
         userWhoFollow = userService.getUserByUsername("userWhoWantToFollow");
@@ -120,21 +120,18 @@ public class FriendshipServiceTest extends AbstractCassandraTatamiTest {
         userToForget.setWeeklyDigestSubscription(false);
         userService.updateUser(userToForget);
 
-        friendshipService.unfollowUser("userToForget");
-
-        /* verify */
+        assertTrue(friendshipService.unfollowUser("userToForget"));
         userWhoWantToForget = userService.getUserByUsername("userWhoWantToForget");
         assertThat(userWhoWantToForget.getFriendsCount(), is(0L));
-
         User userWhoIsForgotten = userService.getUserByUsername("userToForget");
         assertThat(userWhoIsForgotten.getFollowersCount(), is(0L));
     }
 
     @Test
-    public void shouldNotForgetUserBecauseUserNotExist() {
+    public void shouldNotForgetUserBecauseUserDoesNotExist() {
         mockAuthentication("userWhoWantToForget@ippon.fr");
 
-        friendshipService.unfollowUser("unknownUser");
+        assertFalse(friendshipService.unfollowUser("unknownUser"));
 
         /* verify */
         User userWhoWantToForget = userService.getUserByUsername("userWhoWantToForget");

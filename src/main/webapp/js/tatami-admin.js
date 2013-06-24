@@ -502,7 +502,6 @@ app.View.FollowButtonView = Backbone.View.extend({
             success: function(){
                 self.set(self.options.owner, true);
                 self.delegateEvents();
-                app.trigger('refreshProfile');
             },
             error: function(){
                 self.set(self.options.owner, false);
@@ -523,7 +522,6 @@ app.View.FollowButtonView = Backbone.View.extend({
             success: function(){
                 self.set(self.options.owner, false);
                 self.delegateEvents();
-                app.trigger('refreshProfile');
             },
             error: function(){
                 self.set(self.options.owner, true);
