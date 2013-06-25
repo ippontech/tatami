@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -102,8 +103,10 @@ public class TimelineController {
         try {
             return timelineService.getUserline(username, count, since_id, max_id);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            if (log.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+            return new ArrayList<StatusDTO>();
         }
     }
 

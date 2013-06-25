@@ -69,10 +69,12 @@
         }, 
 
         getImages: function(){
-            var images = this.get('attachments').filter(function(element){                      
-                return element.filename.match(/jpg$|jpeg$|gif$|png$/i);
-            });
-            return images;
+            if (this.get('attachments') != null) {
+                var images = this.get('attachments').filter(function(element){
+                    return element.filename.match(/jpg$|jpeg$|gif$|png$/i);
+                });
+                return images;
+            }
         }
     });
 

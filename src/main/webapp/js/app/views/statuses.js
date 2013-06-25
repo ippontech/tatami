@@ -442,7 +442,6 @@
             'click .slider-button-right': 'right'
         },
         left: function(event){
-            console.log(this.options.currentIndex);
             var index = this.options.currentIndex;
             var images = this.model.getImages();
             index--;
