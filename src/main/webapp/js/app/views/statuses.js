@@ -145,7 +145,7 @@
                             self.buttons.$el.slideToggle({duration: 200});
 
 
-                            if(self.model.getImages().length > 0){
+                            if (self.model.getImages() != null && self.model.getImages().length > 0) {
 
                                 self.preview.show(new Tatami.Views.StatusImagePreview({
                                     model: self.model
