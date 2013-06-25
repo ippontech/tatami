@@ -20,11 +20,16 @@
         <div class="nav-collapse navbar-responsive-collapse collapse">
             <ul class="nav">
                 <li>
-                    <a href="/tatami/home">
+                    <c:if test="${currentPage != null && currentPage == 'home'}">
+                      <a href="#/home/timeline">
+                    </c:if>
+                    <c:if test="${currentPage == null || currentPage != 'home'}">
+                      <a href="/tatami/home">
+                    </c:if>
                     <span>
-                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="glyphicon glyphicon-th-list"></span>
                         <span class="hidden-tablet">
-                            <fmt:message key="tatami.home"/>
+                            <fmt:message key="tatami.timeline"/>
                         </span>
                     </span>
                     </a>

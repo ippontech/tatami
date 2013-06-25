@@ -4,44 +4,46 @@
 
 <script type="text/template" id="TagsHeader">
     <h3>
-    <@ if (!ios) { @><fmt:message key="tatami.search.result.title"/> : <@ } @><strong>#<@= name @></strong>                    
-    <a href="#timeline" class="btn-title toggleTag pull-right label label-info">
-        <span class="glyphicon glyphicon-th-list"></span>
-    </a>
-    <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
-        <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
-    </a>
+      <span class="text-center"><strong>#<@= name @></strong></span>
+      <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
+      <@ if(followed) { @>
+        <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+      <@ } else { @>
+        <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+      <@ } @>
+      </a>
     </h3>
 </script>
 <script type="text/template" id="GroupsHeader">
     <h3>
-        <@ if (!ios) { @><fmt:message key="tatami.search.result.title"/> : <@ } @><strong><@= name @><strong>
-        <a href="#timeline" class="btn-title toggleTag pull-right label label-info">
-            <span class="glyphicon glyphicon-th-list"></span>
-        </a>
-
+        <strong><@= name @><strong>
         <@ if(publicGroup && !administrator) { @>
             <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
-                <span class="glyphicon glyphicon-<@= (member)?'minus':'plus' @>"></span>
+                <@ if(member) { @>
+                  <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+                <@ } else { @>
+                  <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+                <@ } @>
             </a>
-        <@ } else if(administrator){ @>
-            <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info">
-                <span class="glyphicon glyphicon-th-large"></span>
+        <@ } else if(administrator) { @>
+            <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info hidden-phone">
+                <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
             </a>
         <@ } @>
     </h3>
 </script>
 <script type="text/template" id="SearchHeader">
-    <h3><@ if (!ios) { @><fmt:message key="tatami.search.result.title"/> : <@ } @><strong><@= input @></strong></h3>
+    <h3><strong><@= input @></strong></h3>
 </script>
 <script type="text/template" id="ProfileHeader">
-    <h3><fmt:message key="tatami.search.result.title"/> : <strong>@<@= username @><strong>
-        <a href="#timeline" class="btn-title toggleTag pull-right label label-info">
-            <span class="glyphicon glyphicon-th-list"></span>
-        </a>
+    <h3><strong>@<@= username @></strong>
         <@ if(!you) { @>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
-                <span class="glyphicon glyphicon-<@= (friend)?'minus':'plus' @>"></span>
+                <@ if(friend) { @>
+                  <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+                <@ } else { @>
+                <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+                <@ } @>
             </a>
         <@ } @>
     </h3>
@@ -282,6 +284,15 @@
 </script>
 <script type="text/template" id="TagsBody">
     <section class="tatams-content">
+        <@ if(ios) { @>
+        <ul class="homebody-nav nav nav-justified">
+            <li>
+                <a href="#timeline">
+                    <i class="glyphicon glyphicon-th-list"></i> <fmt:message key="tatami.timeline"/>
+                </a>
+            </li>
+        </ul>
+        <@ } @>
         <div class="tatams-content-title">
 
         </div>
@@ -290,6 +301,15 @@
     </section>
 </script>
 <script type="text/template" id="SearchBody">
+    <@ if(ios) { @>
+    <ul class="homebody-nav nav nav-justified">
+        <li>
+            <a href="#timeline">
+                <i class="glyphicon glyphicon-th-list"></i> <fmt:message key="tatami.timeline"/>
+            </a>
+        </li>
+    </ul>
+    <@ } @>
     <section class="tatams-content">
         <div class="tatams-content-title">
 
@@ -553,6 +573,15 @@
     </div>
 </script>
 <script type="text/template" id="ProfileBody">
+    <@ if(ios) { @>
+    <ul class="homebody-nav nav nav-justified">
+        <li>
+            <a href="#timeline">
+                <i class="glyphicon glyphicon-th-list"></i> <fmt:message key="tatami.timeline"/>
+            </a>
+        </li>
+    </ul>
+    <@ } @>
     <ul class="homebody-nav nav nav-tabs-inverse nav-justified">
         <li class="timeline">
             <a href="#users/<@= user @>">
@@ -579,6 +608,15 @@
     </section> 
 </script>
 <script type="text/template" id="GroupsBody">
+    <@ if(ios) { @>
+    <ul class="homebody-nav nav nav-justified">
+        <li>
+            <a href="#timeline">
+                <i class="glyphicon glyphicon-th-list"></i> <fmt:message key="tatami.timeline"/>
+            </a>
+        </li>
+    </ul>
+    <@ } @>
     <ul class="homebody-nav nav nav-tabs-inverse nav-justified">
         <li class="timeline">
             <a href="#groups/<@= group @>">
