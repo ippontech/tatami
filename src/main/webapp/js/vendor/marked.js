@@ -580,8 +580,8 @@ InlineLexer.prototype.output = function(src) {
           : this.mangle(cap[1]);
         href = this.mangle('mailto:') + text;
       } else {
-        text = escape(cap[1]);
-        href = text;
+        href = escape(cap[1]);
+        text = shortenUrl(href);
       }
       out += '<a href="'
         + href
@@ -600,8 +600,8 @@ InlineLexer.prototype.output = function(src) {
           : this.mangle(cap[1]);
         href = this.mangle('mailto:') + text;
       } else {
-        text = escape(cap[1]);
-        href = text;
+        href = escape(cap[1]);
+        text = shortenUrl(href);
       }
       out += '<a href="'
         + href
@@ -615,8 +615,8 @@ InlineLexer.prototype.output = function(src) {
     if (cap = this.rules.url.exec(src)) {
       var html;
       src = src.substring(cap[0].length);
-      text = escape(cap[1]);
-      href = text;
+      href = escape(cap[1]);
+      text = shortenUrl(href);
       for(var key in this.options.urls){
         html = this.options.urls[key](text, href);
         if(html){
@@ -1024,6 +1024,14 @@ function escape(html, encode) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function shortenUrl(url) {
+    if (url.length < 67) {
+        return url;
+    } else {
+        return url.substring(0, 64) + "...";
+    }
 }
 
 function replace(regex, opt) {
