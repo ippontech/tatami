@@ -1005,7 +1005,8 @@ app.View.AddUserGroup = Backbone.View.extend({
             },
             highlighter: function (item) {
               var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              return '<img class="avatar avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              var avatar =  (item.get('avatar'))? '/tatami/avatar/' + item.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+              return '<img class="avatar img-rounded img-small" src="' + avatar + '" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>';
               }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }
