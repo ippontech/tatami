@@ -170,7 +170,7 @@ public class TimelineController {
 
         if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
             log.debug("Creating a reply to : {}", status.getReplyTo());
-            statusUpdateService.replyToStatus(escapedContent, status.getReplyTo());
+            statusUpdateService.replyToStatus(escapedContent, status.getReplyTo(), attachmentIds);
         } else if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);

@@ -108,7 +108,7 @@ public class StatusUpdateService {
         createStatus(content, false, null, "", "", "", null, user);
     }
 
-    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
+    public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
         AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
         if (abstractStatus != null &&
                 !abstractStatus.getType().equals(StatusType.STATUS) &&
@@ -160,7 +160,8 @@ public class StatusUpdateService {
                     group,
                     realOriginalStatus.getStatusId(),
                     status.getStatusId(),
-                    status.getUsername());
+                    status.getUsername(),
+                    attachmentIds);
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
@@ -172,7 +173,8 @@ public class StatusUpdateService {
                             group,
                             status.getStatusId(),
                             status.getStatusId(),
-                            status.getUsername());
+                            status.getUsername(),
+                            attachmentIds);
 
             discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
         }
@@ -183,7 +185,8 @@ public class StatusUpdateService {
                                 Group group,
                                 String discussionId,
                                 String replyTo,
-                                String replyToUsername) {
+                                String replyToUsername,
+                                Collection<String> attachmentIds) {
 
         return createStatus(
                 content,
@@ -192,7 +195,7 @@ public class StatusUpdateService {
                 discussionId,
                 replyTo,
                 replyToUsername,
-                new ArrayList<String>(),
+                attachmentIds,
                 null);
     }
 
