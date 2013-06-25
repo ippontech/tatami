@@ -1142,9 +1142,14 @@ app.Collection.DailyStatCollection = Backbone.Collection.extend({
 
 app.View.DailyStatsView = Backbone.View.extend({
     initialize:function () {
+        var self = this;
         this.model = new app.Collection.DailyStatCollection();
         this.model.bind('reset', this.render, this);
-        this.model.fetch();
+        this.model.fetch({
+            success: function() {
+                self.render();
+            }
+        });
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
