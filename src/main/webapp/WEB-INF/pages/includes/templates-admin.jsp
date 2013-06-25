@@ -267,7 +267,7 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar avatar-small" src="<@= avatar @>"
+        <img class="avatar img-small" src="<@= avatar @>"
          alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
         <a href="/tatami/home/users/<@= username @>" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
@@ -491,6 +491,42 @@
     <button type="button" class="btn btn-danger btn-block">
         <fmt:message key="tatami.group.edit.quit"/>
     </button>
+</script>
+
+<script type="text/template" id="usergroup-header">
+    <tr>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th><fmt:message key="tatami.group.role"/></th>
+    </tr>
+</script>
+
+<script type="text/template" id="usergroup-item">
+    <td style="text-align: left">
+        <img class="avatar img-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
+    </td>
+    <td>
+        <@ if(role === 'ADMIN'){ @>
+        <fmt:message key="tatami.group.role.admin"/>
+        <@ } else { @>
+        <fmt:message key="tatami.group.role.member"/>
+        <@ } @>
+    </td>
+    <@ if(admin){ @>
+    <td>
+        <@ if (window.username !== username) { @>
+        <button type="button" class="btn btn-success input-block-level delete">
+            <fmt:message key="tatami.group.edit.member.delete"/>
+        </button>
+        <@ } @>
+    </td>
+    <@ } @>
 </script>
 
 <script type="text/template" id="tags-menu">

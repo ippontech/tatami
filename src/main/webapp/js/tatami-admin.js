@@ -936,6 +936,89 @@ app.View.EditGroup = Backbone.View.extend({
     }
 });
 
+app.View.ListUserGroup = Backbone.View.extend({
+    tagName : 'table',
+    attributes : {
+        'class' : 'table'
+    },
+    initialize : function(){
+        this.options = _.defaults(this.options, {
+            admin : true
+        });
+
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
+
+        this.collection.fetch();
+    },
+
+    addItem : function(model){
+        var view = new app.View.ListUserGroupItem(
+            _.defaults({
+                model : model
+            }, this.options)
+        );
+        view.render();
+        this.$el.append(view.el);
+    },
+    render : function(){
+        var tableView = this;
+
+        this.$el.html($('#usergroup-header').html());
+        this.collection.forEach(this.addItem, this);
+
+        return this;
+    }
+});
+
+app.View.ListUserGroupItem = Backbone.View.extend({
+    tagName : 'tr',
+
+    template : _.template($('#usergroup-item').html()),
+
+    initialize : function(){
+        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);
+    },
+
+    events : {
+        'click .delete' : 'removeUser'
+    },
+
+    removeUser : function(){
+        this.model.destroy();
+    },
+
+    render : function(){
+        var locals = this.model.toJSON();
+        locals.admin = this.options.admin;
+        this.$el.html(this.template(locals));
+        return this;
+    }
+});
+
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        avatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
+    }
+});
+
 app.Model.UserSearch = Backbone.Model.extend({
     toString : function(){
         return this.get('username');
