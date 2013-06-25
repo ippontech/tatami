@@ -34,26 +34,25 @@ public class TagMembershipService {
     @Inject
     private AuthenticationService authenticationService;
 
-    public void followTag(Tag tag) {
+    public boolean followTag(Tag tag) {
         log.debug("Following tag : {}", tag);
         User currentUser = authenticationService.getCurrentUser();
-        boolean tagAlreadyFollowed = false;
         for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
-            if (alreadyFollowingTest.equals(tag)) {
-                tagAlreadyFollowed = true;
+            if (alreadyFollowingTest.equals(tag.getName())) {
                 log.debug("User {} already follows tag {}", currentUser.getLogin(), tag);
+                return false;
             }
         }
-        if (!tagAlreadyFollowed) {
-            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            userTagRepository.addTag(currentUser.getLogin(), tag.getName());
-            tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
-            log.debug("User " + currentUser.getLogin() +
-                    " now follows tag " + tag);
-        }
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        userTagRepository.addTag(currentUser.getLogin(), tag.getName());
+        tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
+        log.debug("User " + currentUser.getLogin() +
+                " now follows tag " + tag);
+
+        return true;
     }
 
-    public void unfollowTag(Tag tag) {
+    public boolean unfollowTag(Tag tag) {
         log.debug("Removing followed tag : {}", tag);
         User currentUser = authenticationService.getCurrentUser();
         boolean tagAlreadyFollowed = false;
@@ -68,6 +67,10 @@ public class TagMembershipService {
             tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getLogin());
             log.debug("User " + currentUser.getLogin() +
                     " has stopped following tag " + tag);
+
+            return true;
+        } else {
+            return false;
         }
     }
 }

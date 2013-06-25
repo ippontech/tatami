@@ -564,6 +564,7 @@ app.Collection.TabTag = Backbone.Collection.extend({
                 return !(tag.followed);
             });
         };
+        this.reset();
         this.fetch();
     },
     owned: function(){
@@ -571,11 +572,13 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.parse = function(tags){
             return tags;
         };
+        this.reset();
         this.fetch();
     },
 
     search: function(query){
         this.url = this.options.url.search;
+        this.reset();
         this.fetch({
             data:{
                 q:query
@@ -610,12 +613,13 @@ app.View.Tag = Backbone.View.extend({
         m.save(null, {
             success : function(){
                 self.model.set('followed', !self.model.get('followed'));
+                self.render();
             }
         });
     },
 
     show: function(){
-        console.log(this.model.toJSON());
+
     },
 
     render: function(){
@@ -1485,7 +1489,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.selectMenu('tags');
 
         view.collection.owned();
-
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);
