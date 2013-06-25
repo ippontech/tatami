@@ -285,8 +285,10 @@ app.View.TabSearch = Backbone.View.extend({
 
     search: function(e){
         var input = e.target.value;
-        if(input != '')
+        if(input != '') {
+            this.collection.reset();
             this.collection.search(input);
+        }
     },
 
     selectMenu: function(menu) {
