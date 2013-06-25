@@ -319,7 +319,7 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
@@ -329,20 +329,23 @@ public class GroupController {
 
         if (currentUser == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
+            return false;
         } else if (currentGroup == null || userToremove == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
+            return false;
         } else {
             if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(groupId, userToremove);
             } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(groupId, userToremove);
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return false;
             }
         }
-        return dto;
+        return true;
     }
 
     private boolean isGroupManagedByCurrentUser(Group group) {

@@ -809,7 +809,11 @@ app.View.ActionsGroup = Backbone.View.extend({
             groupId : this.model.id
         };
         this.collection.on('reset', this.render, this);
-        this.collection.fetch();
+        this.collection.fetch({
+            success: function() {
+                self.render();
+            }
+        });
 
         this.actionModel = new app.Model.ListUserGroupModel({
             username : username
@@ -873,8 +877,9 @@ app.View.ActionsGroup = Backbone.View.extend({
         var isAdmin = app.collections.adminGroups.some(function(group){
             return (group.id === self.model.id);
         });
-        if (isAdmin) this.renderAdmin();
-        else {
+        if (isAdmin) {
+            this.renderAdmin();
+        } else {
             var isMember = this.collection.some(function(member){
                 return (member.id === username);
             });
