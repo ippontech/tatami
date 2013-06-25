@@ -748,6 +748,7 @@ app.View.Group = Backbone.View.extend({
         this.actionsView = new app.View.ActionsGroup({
             model : this.model
         });
+        this.actionsView.render();
     },
 
     template:_.template($('#groups-item').html()),
@@ -1286,7 +1287,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
                 TabHeaderTemplate : _.template($('#groups-header').html())
             });
         if(!app.collections.adminGroups) app.collections.adminGroups = new app.Collection.AdminGroup();
-        app.collections.adminGroups.fetch();
+        app.collections.adminGroups.fetch({
+            success: function() {
+                app.views.groups.render();
+            }
+        });
         return app.views.groups;
     },
 
