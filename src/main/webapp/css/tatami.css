@@ -102,7 +102,6 @@ h4 {
 
 }
 
-
 .avatar-float-left-container  {
     margin-left: 15px;
     margin-top: 15px;
@@ -165,9 +164,9 @@ h4 {
 .navbar-edit {
     line-height: 14px;
     left: 10px;
-    right: initial;
     width: 48px;
     padding: 4px 13px 3px;
+    background-color: #428bca;
 }
 
 .navbar-edit:hover,
