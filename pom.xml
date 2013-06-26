@@ -416,6 +416,7 @@
         <logback.version>1.0.13</logback.version>
         <httpclient.core.version>4.2.2</httpclient.core.version> <!-- pour compatiblité selenium -->
         <httpclient.client.version>4.2.2</httpclient.client.version> <!-- pour compatiblité selenium -->
+        <cassandra.version>1.2.6</cassandra.version>
         <hector.version>1.1-4</hector.version>
         <hector.mapper.version>3.1-09</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
@@ -447,7 +448,7 @@
         <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
-        <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
+        <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
         <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
@@ -795,7 +796,7 @@
         <dependency>
             <groupId>org.apache.cassandra</groupId>
             <artifactId>cassandra-all</artifactId>
-            <version>1.2.5</version>
+            <version>${cassandra.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -966,6 +967,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cassandra-maven-plugin</artifactId>
                 <version>${maven.cassandra.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cassandra</groupId>
+                        <artifactId>cassandra-all</artifactId>
+                        <version>${cassandra.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
