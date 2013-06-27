@@ -1,275 +1,32 @@
+/**
+ * Created with IntelliJ IDEA.
+ * User: Gregoire
+ * Date: 26/06/13
+ * Time: 14:37
+ * To change this template use File | Settings | File Templates.
+ */
+(function(window, Backbone, $, _){
 _.templateSettings = {
     interpolate: /<\@\=(.+?)\@\>/gim,
     evaluate: /<\@(.+?)\@\>/gim
 };
 
+
 var app;
 
 if(!window.app){
-  app = window.app = _.extend({
-    views: {},
-    collections: {},
-    View: {},
-    Collection: {},
-    Model: {},
-    Router: {}
-  }, Backbone.Events);
+    app = window.app = _.extend({
+        views: {},
+        collections: {},
+        View: {},
+        Collection: {},
+        Model: {},
+        Router: {}
+    }, Backbone.Events);
 }
 else {
-  app = window.app;
+    app = window.app;
 }
-
-/* Account profile */
-
-app.Model.AccountProfile = new MAccountProfile();
-
-/*app.Model.AccountProfile = Backbone.Model.extend({
-    url: '/tatami/rest/account/profile',
-    idAttribute: 'username',
-    defaults : {
-        username : window.username,
-        firstName : '',
-        lastName : '',
-        jobTitle : '',
-        phoneNumber : ''
-    },
-    toJSON : function(){
-        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
-            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
-        });
-    }
-});    */
-app.View.AccountProfile = new VAccountProfile();
-/*app.View.AccountProfile = Backbone.View.extend({
-    tagName: 'form',
-    template: _.template($('#account-profile').html()),
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-
-        this.model.fetch({
-            success:_.bind(this.render, this)
-        });
-    },
-
-    events: {
-        'submit': 'saveForm'
-    },
-
-    render: function(){
-        this.$el.empty();
-        this.$el.html(this.template({
-            user: this.model.toJSON(),
-            login: window.login
-        }));
-
-        $('#avatarFile').fileupload({
-            dataType: 'json',
-            done: function (e, data) {
-                $.each(data.result, function (index, avatar) {
-                     $('.avatar').attr('src', '/tatami/avatar/'+ avatar.attachmentId +'/');
-                });
-            },
-
-            fail: function (e, data) {
-                console.log(e);
-            }
-
-        });
-
-        this.delegateEvents();
-        return this.$el;
-    },
-
-    saveForm: function(e){
-        e.preventDefault();
-        var self = this;
-
-        _.each($(e.target).serializeArray(), function(value){
-            self.model.set(value.name, value.value);
-        });
-
-        self.model.save(null, {
-            success: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-success').html());
-            },
-            error: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-error').html());
-            }
-        });
-    }
-});       */
-
-//app.View.AccountProfileDestroy = new VAccountProfileDestroy();
-app.View.AccountProfileDestroy = Backbone.View.extend({
-    tagName: 'form',
-    template: _.template($('#account-destroy').html()),
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-    },
-
-    events: {
-        'submit': 'destroy'
-    },
-
-    render: function(){
-        this.$el.empty();
-
-        this.$el.html(this.template({
-            user: this.model.toJSON(),
-            login: window.login
-        }));
-        this.delegateEvents();
-        return this.$el;
-    },
-
-    destroy: function(e){
-        e.preventDefault();
-        var self = this;
-
-        self.model.destroy({
-            success: function(){
-                //self.$el.find('.return').append($('#form-success').html());
-                self.$(".return").html(new VFormSuccess().render().$el);
-                _.delay(_.bind(window.location.reload, window), 5000);
-            },
-            error: function(){
-                //self.$el.find('.return').append($('#form-error').html());
-                self.$(".return").html(new VFormSuccess().render().$el);
-            }
-        });
-    }
-});
-
-app.Model.Preferences = Backbone.Model.extend({
-    url: '/tatami/rest/account/preferences'
-});
-
-app.View.Preferences = Backbone.View.extend({
-    tagName: 'form',
-    template: _.template($('#account-preferences').html()),
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-
-        this.model = new app.Model.Preferences();
-        this.model.fetch({
-            success:_.bind(this.render, this)
-        });
-    },
-
-    events: {
-        'submit': 'submit'
-    },
-
-    render: function(){
-        this.$el.empty();
-        this.$el.html(this.template({
-            preferences: this.model.toJSON()
-        }));
-        this.delegateEvents();
-        return this.$el;
-    },
-
-    submit: function(e){
-        e.preventDefault();
-
-        var form = $(e.target);
-
-        this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
-        this.model.set('dailyDigest', form.find('[name="dailyDigest"]')[0].checked);
-        this.model.set('weeklyDigest', form.find('[name="weeklyDigest"]')[0].checked);
-        this.model.set('rssUidActive', form.find('[name="rssUidActive"]')[0].checked);
-
-        var self = this;
-        self.model.save(null, {
-            success: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-success').html());
-            },
-            error: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-error').html());
-            }
-        });
-    }
-});
-
-app.Model.Password = Backbone.Model.extend({
-    url: '/tatami/rest/account/password'
-});
-
-app.View.Password = Backbone.View.extend({
-    tagName: 'form',
-    template: _.template($('#account-password').html()),
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-
-        this.model = new app.Model.Password();
-        this.model.fetch({
-            error:_.bind(this.disable, this)
-        });
-
-        this.$el.empty();
-
-        this.$el.html(this.template());
-    },
-
-    events: {
-        'submit': 'submit',
-        'change [name="newPassword"]' : 'validation',
-        'change [name="newPasswordConfirmation"]' : 'validation'
-    },
-
-    disable: function(){
-        this.$el.find('[name]').attr('disabled', 'disabled');
-        this.$el.find('button[type="submit"]').attr('disabled', 'disabled');
-        this.$el.find('.return').append($('#form-ldap').html());
-    },
-
-    validation: function(){
-        var newPassword = this.$el.find('[name="newPassword"]');
-        var newPasswordConfirmation = this.$el.find('[name="newPasswordConfirmation"]');
-        if(newPassword.val() !== newPasswordConfirmation.val()){
-            newPasswordConfirmation[0].setCustomValidity($('#account-password-newPasswordConfirmation').text());
-            return;
-        }
-        newPasswordConfirmation[0].setCustomValidity('');
-        return;
-    },
-
-    render: function(){
-
-        this.delegateEvents();
-        return this.$el;
-    },
-
-    submit: function(e){
-        e.preventDefault();
-
-        var form = $(e.target);
-
-        this.model.set('oldPassword', form.find('[name="oldPassword"]').val());
-        this.model.set('newPassword', form.find('[name="newPassword"]').val());
-        this.model.set('newPasswordConfirmation', form.find('[name="newPasswordConfirmation"]').val());
-
-        var self = this;
-        self.model.save(null, {
-            success: function(){
-                $(e.target)[0].reset();
-                self.$el.find('.return').append($('#form-success').html());
-            },
-            error: function(){
-                self.$el.find('.return').append($('#form-error').html());
-            }
-        });
-    }
-});
-
 
 app.View.TabSearch = Backbone.View.extend({
     templateSearch: _.template($('#search-filter').html()),
@@ -310,7 +67,6 @@ app.View.TabSearch = Backbone.View.extend({
         return this.$el;
     }
 });
-
 
 app.View.TabContainer = Backbone.View.extend({
     initialize: function(){
@@ -363,57 +119,9 @@ app.View.Tab = Backbone.View.extend({
     }
 });
 
-app.Collection.TabUser = Backbone.Collection.extend({
-    initialize: function(){
-        this.options= {};
-        this.options.url = {
-            owned: '/tatami/rest/users',
-            recommended: '/tatami/rest/users/suggestions',
-            search: '/tatami/rest/search/users'
-        };
-    },
+app.Collection.TabUser = new CTabUser();
 
-    recommended: function(){
-        this.url = this.options.url.recommended;
-        this.parse = function(users){
-            return users.map(function(user){
-                user.followed = false;
-                user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
-                return user;
-            });
-        };
-        this.fetch();
-    },
-    owned: function(){
-        this.url = this.options.url.owned + "/" + username + "/friends";
-        this.parse = function(users){
-            return users.map(function(user){
-                user.followed = true;
-                user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
-                return user;
-            });
-        };
-        this.fetch();
-    },
-
-    search: function(query){
-      this.url = this.options.url.search;
-      this.parse = function(users){
-         return users.map(function(user){
-             user.avatar = (_.isEmpty(user.avatar))? '/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
-             return user;
-         });
-      };
-      this.fetch({
-          data: {
-              q: query
-          }
-      });
-
-    }
-});
-
-app.View.User = Backbone.View.extend({
+    app.View.User = Backbone.View.extend({
     initialize: function(){
         app.views = {};
     },
@@ -451,17 +159,9 @@ app.View.User = Backbone.View.extend({
     }
 });
 
-app.Model.FollowUserModel = Backbone.Model.extend({
-    url : function(){
-        return '/tatami/rest/friendships/create';
-    }
-});
+app.Model.FollowUserModel = new MFollowUser();
 
-app.Model.UnFollowUserModel = Backbone.Model.extend({
-    url : function(){
-        return '/tatami/rest/friendships/destroy';
-    }
-});
+app.Model.UnFollowUserModel = new MUnFollowUser();
 
 app.View.FollowButtonView = Backbone.View.extend({
     templateFollow: _.template($('#follow-button').html()),
@@ -502,7 +202,7 @@ app.View.FollowButtonView = Backbone.View.extend({
         this.undelegateEvents();
         $(this.el).empty();
 
-        var m = new app.Model.FollowUserModel();
+        var m = new MFollowUser();
         m.set('username', this.options.username);
 
         m.save(null, {
@@ -522,7 +222,7 @@ app.View.FollowButtonView = Backbone.View.extend({
         this.undelegateEvents();
         $(this.el).empty();
 
-        var m = new app.Model.UnFollowUserModel();
+        var m = new MUnFollowUser();
         m.set('username', this.options.username);
 
         m.save(null, {
@@ -554,6 +254,10 @@ app.View.FollowButtonView = Backbone.View.extend({
     }
 
 });
+
+    /*
+     Tags
+     */
 
 app.Collection.TabTag = Backbone.Collection.extend({
     initialize: function(){
@@ -637,9 +341,7 @@ app.View.Tag = Backbone.View.extend({
 });
 
 
-/*
- Tags
- */
+
 app.Model.FollowTagModel = Backbone.Model.extend({
     url : function(){
         return '/tatami/rest/tagmemberships/create';
@@ -842,8 +544,8 @@ app.View.ActionsGroup = Backbone.View.extend({
 
     onClickAdmin : function() {
         /*app.router.navigate('/groups/' + this.model.id, {
-            trigger:true
-        });*/
+         trigger:true
+         });*/
     },
 
     renderMember : function() {
@@ -1103,11 +805,11 @@ app.View.AddUserGroup = Backbone.View.extend({
                 });
             },
             highlighter: function (item) {
-              var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              var avatar =  (item.get('avatar'))? '/tatami/avatar/' + item.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
-              return '<img class="avatar img-rounded img-small" src="' + avatar + '" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-                return '<strong>' + match + '</strong>';
-              }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
+                var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+                var avatar =  (item.get('avatar'))? '/tatami/avatar/' + item.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+                return '<img class="avatar img-rounded img-small" src="' + avatar + '" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                    return '<strong>' + match + '</strong>';
+                }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }
         });
     },
@@ -1182,86 +884,64 @@ app.View.DailyStatsView = Backbone.View.extend({
  * Files
  */
 
-app.Model.FileModel = Backbone.Model.extend({
-    idAttribute: 'attachmentId',
-    initialize: function(){
-
-    }
-});
-
-app.Collection.FilesCollection = Backbone.Collection.extend({
-    model: app.Model.FileModel,
-    url: '/tatami/rest/attachments',
-
-    initialize: function(){
-
-    }
-});
 
 app.View.FilesViewItem = Backbone.View.extend({
-   template: _.template($('#files-item').html()),
+    template: _.template($('#files-item').html()),
 
-   initialize: function(){
-       this.model.bind('change', this.render, this);
-   },
+    initialize: function(){
+        this.model.bind('change', this.render, this);
+    },
 
-   tagName: 'tr',
+    tagName: 'tr',
 
-   events:{
-      'click .btn':'removeImage'
-   },
+    events:{
+        'click .btn':'removeImage'
+    },
 
-   render: function(){
-      this.$el.html(this.template(this.model.toJSON()));
-      return this.$el;
-   },
+    render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this.$el;
+    },
 
-   removeImage: function(){
-       var self = this;
-       this.model.destroy({
-           success: function(){
-              self.remove();
-               app.trigger('refreshQuota');
-               app.trigger('deleteSucess');
-           },
-           error: function(){
-               app.trigger('deleteError');
-           }
-       });
-   }
+    removeImage: function(){
+        var self = this;
+        this.model.destroy({
+            success: function(){
+                self.remove();
+                app.trigger('refreshQuota');
+                app.trigger('deleteSucess');
+            },
+            error: function(){
+                app.trigger('deleteError');
+            }
+        });
+    }
 
 });
-
-
-app.Model.QuotaModel = Backbone.Model.extend({
-   url : '/tatami/rest/attachments/quota'
-});
-
 
 app.View.QuotaFiles = Backbone.View.extend({
-   template: _.template($('#files-quota').html()),
+    template: _.template($('#files-quota').html()),
 
-   initialize: function(){
-       this.model = new app.Model.QuotaModel();
-       this.model.bind('change', this.render, this);
-       this.model.fetch();
+    initialize: function(){
+        this.model = new MQuota();
+        this.model.bind('change', this.render, this);
+        this.model.fetch();
 
-       var self = this;
+        var self = this;
 
-       app.on('refreshQuota', function() {
-           self.model.fetch();
-       });
-   },
+        app.on('refreshQuota', function() {
+            self.model.fetch();
+        });
+    },
 
-   render: function(){
-      var quota = this.model.get(0);
-      quota = Math.round(quota);
-      this.$el.html(this.template({quota: quota}));
-      return this.$el;
-   }
+    render: function(){
+        var quota = this.model.get(0);
+        quota = Math.round(quota);
+        this.$el.html(this.template({quota: quota}));
+        return this.$el;
+    }
 
 });
-
 
 app.View.FilesView = Backbone.View.extend({
     MenuTemplate: _.template($('#files-menu').html()),
@@ -1302,354 +982,11 @@ app.View.FilesView = Backbone.View.extend({
  Router
  */
 
-app.Router.AdminRouter = Backbone.Router.extend({
-
-    initialize: function(){
-        this.views = [];
-    },
-
-    selectMenu: function(menu) {
-        $('.adminMenu a').parent().removeClass('active');
-        $('.adminMenu a[href="/tatami/account/#/' + menu + '"]').parent().addClass('active');
-    },
-
-    resetView : function(){
-        this.views = [];
-        $('#accountContent').empty();
-    },
-
-    addView : function(view){
-        this.views.push(view);
-        $('#accountContent').append(view.$el);
-        view.render();
-    },
-
-    routes: {
-        'profile': 'profile',
-        'preferences': 'preferences',
-        'password': 'password',
-        'groups': 'groups',
-        'groups/recommended': 'recommendedGroups',
-        'groups/search':'searchGroup',
-        'groups/:id': 'editGroup',
-        'tags':'tags',
-        'tags/recommended':'recommendedTags',
-        'tags/search':'searchTags',
-        'users':'users',
-        'users/recommended':'recommendedUsers',
-        'users/search':'searchUsers',
-        'status_of_the_day' : 'status_of_the_day',
-        'files' : 'files',
-        '*action': 'profile'
-    },
-
-    profile: function() {
-        this.selectMenu('profile');
-
-        app.addRegions({
-            mainRegion: "#main-content"
-        })    ;
-        if(!app.views.profile){
-            //var model = new app.Model.AccountProfile();
-            var model = new MAccountProfile();
-
-            app.views.profile = {};
-            app.views.profile.edit = new VAccountProfile({
-                model: model
-            });
-            app.views.profile.destroy = new app.View.AccountProfileDestroy({
-                model: model
-            });
-        }
-        this.resetView();
-        this.addView(app.views.profile.edit);
-        this.addView(app.views.profile.destroy);
-    },
-
-    preferences: function(){
-        this.selectMenu('preferences');
-
-        if(!app.views.preferences){
-            app.views.preferences = new app.View.Preferences();
-        }
-
-        this.resetView();
-        this.addView(app.views.preferences);
-    },
-
-    password: function(){
-        this.selectMenu('password');
-
-        if(!app.views.password){
-            app.views.password = new app.View.Password();
-        }
-
-        this.resetView();
-        this.addView(app.views.password);
-    },
-
-    initGroups: function(){
-        if(!app.views.groups)
-            app.views.groups = new app.View.TabContainer({
-                collection: new app.Collection.TabGroup(),
-                ViewModel: app.View.Group,
-                MenuTemplate: _.template($('#groups-menu').html()),
-                TabHeaderTemplate : _.template($('#groups-header').html())
-            });
-        if(!app.collections.adminGroups) app.collections.adminGroups = new app.Collection.AdminGroup();
-        app.collections.adminGroups.fetch({
-            success: function() {
-                app.views.groups.render();
-            }
-        });
-        return app.views.groups;
-    },
-
-    initAddGroup: function(listView){
-        if(!app.views.addgroup){
-            app.views.addgroup = new app.View.AddGroup();
-            app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
-            app.views.addgroup.bind('success', app.collections.adminGroups.fetch, app.collections.adminGroups);
-        }
-        return app.views.addgroup;
-    },
-
-    groups: function(){
-        var view = this.initGroups();
-        this.selectMenu('groups');
-
-        view.collection.owned();
-
-        var addview = this.initAddGroup(view);
-
-        addview.collection = view.collection;
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(addview);
-            this.addView(view);
-        }
-        view.selectMenu('groups');
-    },
-
-    recommendedGroups: function(){
-        var view = this.initGroups();
-        this.selectMenu('groups');
-
-        view.collection.recommended();
-
-        var addview = this.initAddGroup(view);
-
-        addview.collection = view.collection;
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(addview);
-            this.addView(view);
-        }
-        view.selectMenu('groups/recommended');
-    },
-
-    initSearchGroups: function(){
-        if(!app.views.SearchGroups)
-            app.views.SearchGroups = new app.View.TabSearch({
-                collection: new app.Collection.TabGroup(),
-                ViewModel: app.View.Group,
-                MenuTemplate: _.template($('#groups-menu').html()),
-                TabHeaderTemplate : _.template($('#groups-header').html())
-            });
-        return app.views.SearchGroups;
-    },
-
-    searchGroup: function(){
-        var view = this.initSearchGroups();
-        this.selectMenu('groups');
-        view.selectMenu('groups/search');
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('groups/search');
-    },
-
-    editGroup: function(id){
-        this.selectMenu('');
-
-        this.resetView();
-        this.addView(new app.View.EditGroup({
-            groupId : id
-        }));
-        var collection = new app.Collection.ListUserGroupCollection();
-        collection.options = {
-            groupId : id
-        };
-
-        this.addView(new app.View.AddUserGroup({
-            collection : collection
-        }));
-
-        this.addView(new app.View.ListUserGroup({
-            collection : collection,
-            groupId : id
-        }));
-    },
-
-    initTags: function(){
-        if(!app.views.tags)
-            app.views.tags = new app.View.TabContainer({
-                collection: new app.Collection.TabTag(),
-                ViewModel: app.View.Tag,
-                MenuTemplate: _.template($('#tags-menu').html()),
-                TabHeaderTemplate : _.template($('#tags-header').html())
-            });
-        return app.views.tags;
-    },
-
-    tags: function(){
-        var view = this.initTags();
-        this.selectMenu('tags');
-
-        view.collection.owned();
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('tags');
-    },
-
-    recommendedTags: function(){
-        var view = this.initTags();
-        this.selectMenu('tags');
-
-        view.collection.recommended();
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('tags/recommended');
-    },
-
-    initSearchTags: function(){
-        if(!app.views.SearchTags)
-            app.views.SearchTags = new app.View.TabSearch({
-                collection: new app.Collection.TabTag(),
-                ViewModel: app.View.Tag,
-                MenuTemplate: _.template($('#tags-menu').html()),
-                TabHeaderTemplate : _.template($('#tags-header').html())
-            });
-        return app.views.SearchTags;
-    },
-
-    searchTags: function(){
-        var view = this.initSearchTags();
-        this.selectMenu('tags');
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('tags/search');
-    },
-
-    initUsers: function(){
-        if(!app.views.users)
-            app.views.users = new app.View.TabContainer({
-                collection: new app.Collection.TabUser(),
-                ViewModel: app.View.User,
-                MenuTemplate: _.template($('#users-menu').html()),
-                TabHeaderTemplate :_.template($('#users-header').html())
-            });
-        return app.views.users;
-    },
-
-    users: function(){
-        var view = this.initUsers();
-        this.selectMenu('users');
-
-        view.collection.owned();
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('users');
-    },
-
-    recommendedUsers: function(){
-        var view = this.initUsers();
-        this.selectMenu('users');
-
-        view.collection.recommended();
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('users/recommended');
-    },
-
-    initSearchUser: function(){
-        if(!app.views.SearchUsers)
-            app.views.SearchUsers = new app.View.TabSearch({
-                collection: new app.Collection.TabUser(),
-                ViewModel: app.View.User,
-                MenuTemplate: _.template($('#users-menu').html()),
-                TabHeaderTemplate :_.template($('#users-header').html())
-            });
-        return app.views.SearchUsers;
-    },
-
-    searchUsers: function(){
-        var view = this.initSearchUser();
-        this.selectMenu('users');
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        view.selectMenu('users/search');
-    },
-
-    status_of_the_day: function(){
-        this.selectMenu('status_of_the_day');
-        if(!app.views.daily)
-            app.views.daily = new app.View.DailyStatsView();
-        var view = app.views.daily;
-
-        this.resetView();
-        this.addView(view);
-    },
-
-    initFiles: function(){
-        if(!app.views.files)
-            app.views.files = new app.View.FilesView({
-                collection: new app.Collection.FilesCollection()
-            });
-
-        return app.views.files;
-    },
-
-    files: function(){
-        this.selectMenu('files');
-        var view = this.initFiles();
-
-        view.collection.fetch();
-
-        if(this.views.indexOf(view)===-1){
-            this.resetView();
-            this.addView(view);
-        }
-        this.selectMenu('files');
-
-    }
-
-});
-
 $(function() {
 
-    app.router = new app.Router.AdminRouter();
-    Backbone.history.start();
+ app.router = new AdminRouter();
+ if( ! Backbone.History.started) Backbone.history.start();
 
 });
+
+})(window, Backbone, jQuery, _);

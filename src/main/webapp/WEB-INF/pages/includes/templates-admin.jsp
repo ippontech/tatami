@@ -62,7 +62,7 @@
             <div class="controls">
 
                 <div id="updateAvatar" class="dropzone well">
-                    <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
+                    <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
                     <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
                     <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
@@ -75,7 +75,7 @@
             </label>
 
             <div class="controls">
-                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.firstName @>"/>
+                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="${user.firstName}"/>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
             </label>
 
             <div class="controls">
-                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.lastName @>"/>
+                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="${user.lastName}"/>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
             </label>
 
             <div class="controls">
-                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="<@= user.jobTitle @>"/>
+                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="${user.jobTitle}"/>
             </div>
         </div>
 
@@ -105,7 +105,7 @@
             </label>
 
             <div class="controls">
-                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= user.phoneNumber @>"/>
+                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="${user.phoneNumber}"/>
             </div>
         </div>
 
@@ -150,24 +150,54 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
+                    <c:if test="${preferences.mentionEmail}" >
+                        <input name="mentionEmail" type="checkbox"  checked="true" />
+                    </c:if>
+                    <c:if test="${!preferences.mentionEmail}" >
+                        <input name="mentionEmail" type="checkbox"  />
+                    </c:if>
+                    <!--input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @> /-->
+                    <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
+                    <c:if test="${preferences.dailyDigest}" >
+                        <input name="dailyDigest" type="checkbox"  checked="true" />
+                    </c:if>
+                    <c:if test="${!preferences.dailyDigest}" >
+                        <input name="dailyDigest" type="checkbox"  />
+                    </c:if>
+                    <!--input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @> /-->
+                    <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="weeklyDigest" type="checkbox" <@ if(preferences.weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
+                    <c:if test="${preferences.weeklyDigest}" >
+                        <input name="weeklyDigest" type="checkbox"  checked="true" />
+                    </c:if>
+                    <c:if test="${!preferences.weeklyDigest}" >
+                        <input name="weeklyDigest" type="checkbox"  />
+                    </c:if>
+                    <!--input name="weeklyDigest" type="checkbox" if(preferences.weeklyDigest){ @> checked="true" <@ } @>/-->
+                    <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                <c:if test="${preferences.rssUidActive}" >
+                    <input name="rssUidActive" type="checkbox"  checked="true" />
+                </c:if>
+                <c:if test="${!preferences.rssUidActive}" >
+                    <input name="rssUidActive" type="checkbox"  />
+                </c:if>
+                    <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
                 </label>
-                <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
+                <c:if test="${preferences.rssUidActive}" >
+                    <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a>
+                </c:if>
+
             </div>
         </div>
     </fieldset>

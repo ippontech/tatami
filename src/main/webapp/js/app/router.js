@@ -1,5 +1,7 @@
 (function(Backbone, _, Tatami){
     var Router = Backbone.Marionette.AppRouter.extend({
+
+
         routes: {
             'timeline' : 'homeTimeline',
             'mentions' : 'homeMentions',
