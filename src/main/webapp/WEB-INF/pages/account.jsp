@@ -40,7 +40,18 @@
     <script src="/js/account/models/mPassword.js"></script>
     <!--script src="/js/account/views/vFile.js"></script-->
     <script src="/js/account/models/mFile.js"></script>
+    <script src="/js/account/collections/cTabTag.js"></script>
+    <script src="/js/account/models/mFollowTag.js"></script>
+    <script src="/js/account/collections/cDailyStat.js"></script>
+    <script src="/js/account/views/vTag.js"></script>
     <script src="/js/account/collections/cFiles.js"></script>
+    <script src="/js/account/models/mGroup.js"></script>
+    <script src="/js/account/models/mUserSearch.js"></script>
+    <script src="/js/account/collections/cUserSearch.js"></script>
+
+    <script src="/js/account/models/mUserGroup.js"></script>
+    <script src="/js/account/collections/cAdminGroup.js"></script>
+
     <script src="/js/account/models/mFollowUser.js"></script>
     <script src="/js/account/collections/cTabUser.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>

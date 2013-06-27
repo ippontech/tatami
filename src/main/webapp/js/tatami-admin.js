@@ -23,7 +23,7 @@ else {
 
 app.Model.AccountProfile = new MAccountProfile();
 
-/*app.Model.AccountProfile = Backbone.Model.extend({
+app.Model.AccountProfile = Backbone.Model.extend({
     url: '/tatami/rest/account/profile',
     idAttribute: 'username',
     defaults : {
@@ -38,9 +38,9 @@ app.Model.AccountProfile = new MAccountProfile();
             avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
         });
     }
-});    */
+});
 app.View.AccountProfile = new VAccountProfile();
-/*app.View.AccountProfile = Backbone.View.extend({
+app.View.AccountProfile = Backbone.View.extend({
     tagName: 'form',
     template: _.template($('#account-profile').html()),
 
@@ -100,7 +100,7 @@ app.View.AccountProfile = new VAccountProfile();
             }
         });
     }
-});       */
+});
 
 //app.View.AccountProfileDestroy = new VAccountProfileDestroy();
 app.View.AccountProfileDestroy = Backbone.View.extend({

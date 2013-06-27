@@ -94,12 +94,12 @@
         initGroups: function(){
             if(!app.views.groups)
                 app.views.groups = new app.View.TabContainer({
-                    collection: new app.Collection.TabGroup(),
+                    collection: new CTabGroup(),
                     ViewModel: app.View.Group,
                     MenuTemplate: _.template($('#groups-menu').html()),
                     TabHeaderTemplate : _.template($('#groups-header').html())
                 });
-            if(!app.collections.adminGroups) app.collections.adminGroups = new app.Collection.AdminGroup();
+            if(!app.collections.adminGroups) app.collections.adminGroups = new CAdminGroup();
             app.collections.adminGroups.fetch({
                 success: function() {
                     app.views.groups.render();
@@ -156,7 +156,7 @@
         initSearchGroups: function(){
             if(!app.views.SearchGroups)
                 app.views.SearchGroups = new app.View.TabSearch({
-                    collection: new app.Collection.TabGroup(),
+                    collection: new CTabGroup(),
                     ViewModel: app.View.Group,
                     MenuTemplate: _.template($('#groups-menu').html()),
                     TabHeaderTemplate : _.template($('#groups-header').html())
@@ -183,7 +183,7 @@
             this.addView(new app.View.EditGroup({
                 groupId : id
             }));
-            var collection = new app.Collection.ListUserGroupCollection();
+            var collection = new CListUserGroup();
             collection.options = {
                 groupId : id
             };
@@ -201,7 +201,7 @@
         initTags: function(){
             if(!app.views.tags)
                 app.views.tags = new app.View.TabContainer({
-                    collection: new app.Collection.TabTag(),
+                    collection: new CTabTag(),
                     ViewModel: app.View.Tag,
                     MenuTemplate: _.template($('#tags-menu').html()),
                     TabHeaderTemplate : _.template($('#tags-header').html())
@@ -237,7 +237,7 @@
         initSearchTags: function(){
             if(!app.views.SearchTags)
                 app.views.SearchTags = new app.View.TabSearch({
-                    collection: new app.Collection.TabTag(),
+                    collection: new CTabTag(),
                     ViewModel: app.View.Tag,
                     MenuTemplate: _.template($('#tags-menu').html()),
                     TabHeaderTemplate : _.template($('#tags-header').html())

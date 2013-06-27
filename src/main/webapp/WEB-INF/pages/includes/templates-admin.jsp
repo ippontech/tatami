@@ -150,13 +150,13 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <c:if test="${preferences.mentionEmail}" >
+                    <!--c:if test="\${preferences.mentionEmail}" >
                         <input name="mentionEmail" type="checkbox"  checked="true" />
-                    </c:if>
-                    <c:if test="${!preferences.mentionEmail}" >
+                    <!--/c:if>
+                    <!--c:if test="\${!preferences.mentionEmail}" >
                         <input name="mentionEmail" type="checkbox"  />
-                    </c:if>
-                    <!--input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @> /-->
+                    <!--/c:if-->
+                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @> />
                     <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
             </div>

@@ -5,7 +5,6 @@
  * Time: 14:37
  * To change this template use File | Settings | File Templates.
  */
-(function(window, Backbone, $, _){
 _.templateSettings = {
     interpolate: /<\@\=(.+?)\@\>/gim,
     evaluate: /<\@(.+?)\@\>/gim
@@ -119,9 +118,7 @@ app.View.Tab = Backbone.View.extend({
     }
 });
 
-app.Collection.TabUser = new CTabUser();
-
-    app.View.User = Backbone.View.extend({
+app.View.User = Backbone.View.extend({
     initialize: function(){
         app.views = {};
     },
@@ -158,10 +155,6 @@ app.Collection.TabUser = new CTabUser();
         return this.$el;
     }
 });
-
-app.Model.FollowUserModel = new MFollowUser();
-
-app.Model.UnFollowUserModel = new MUnFollowUser();
 
 app.View.FollowButtonView = Backbone.View.extend({
     templateFollow: _.template($('#follow-button').html()),
@@ -259,45 +252,6 @@ app.View.FollowButtonView = Backbone.View.extend({
      Tags
      */
 
-app.Collection.TabTag = Backbone.Collection.extend({
-    initialize: function(){
-        this.options= {};
-        this.options.url = {
-            owned: '/tatami/rest/tagmemberships/list',
-            recommended: '/tatami/rest/tags/popular',
-            search: '/tatami/rest/search/tags'
-        };
-    },
-    recommended: function(){
-        this.url = this.options.url.recommended;
-        this.parse = function(tags){
-            return tags.filter(function(tag){
-                return !(tag.followed);
-            });
-        };
-        this.reset();
-        this.fetch();
-    },
-    owned: function(){
-        this.url = this.options.url.owned;
-        this.parse = function(tags){
-            return tags;
-        };
-        this.reset();
-        this.fetch();
-    },
-
-    search: function(query){
-        this.url = this.options.url.search;
-        this.reset();
-        this.fetch({
-            data:{
-                q:query
-            }
-        })
-    }
-});
-
 app.View.Tag = Backbone.View.extend({
     initialize: function(){
         this.model.bind('change', this.render, this);
@@ -316,10 +270,10 @@ app.View.Tag = Backbone.View.extend({
         var self = this;
         var m;
         if(this.model.get('followed')){
-            m = new app.Model.UnFollowTagModel(this.model.toJSON());
+            m = new MUnFollowTag(this.model.toJSON());
         }
         else {
-            m = new app.Model.FollowTagModel(this.model.toJSON());
+            m = new MFollowTag(this.model.toJSON());
         }
         m.save(null, {
             success : function(){
@@ -340,35 +294,7 @@ app.View.Tag = Backbone.View.extend({
     }
 });
 
-
-
-app.Model.FollowTagModel = Backbone.Model.extend({
-    url : function(){
-        return '/tatami/rest/tagmemberships/create';
-    }
-});
-
-app.Model.UnFollowTagModel = Backbone.Model.extend({
-    url : function(){
-        return '/tatami/rest/tagmemberships/destroy';
-    }
-});
-
-app.Model.Group = Backbone.Model.extend({
-    urlRoot: '/tatami/rest/groups',
-    idAttribute: 'groupId',
-    defaults: {
-        name: '',
-        description: '',
-        publicGroup: true,
-        archivedGroup: false
-    }
-});
-
-app.Collection.AdminGroup = Backbone.Collection.extend({
-    model : app.Model.Group,
-    url: '/tatami/rest/admin/groups'
-});
+    //GROUPE
 
 app.View.AddGroup = Backbone.View.extend({
     tagName: 'form',
@@ -376,7 +302,7 @@ app.View.AddGroup = Backbone.View.extend({
     initialize: function(){
         this.$el.addClass('form-horizontal row-fluid');
 
-        this.model = new app.Model.Group();
+        this.model = new MGroup();
         this.$el.html(this.template(this.model.toJSON()));
     },
 
@@ -420,42 +346,6 @@ app.View.AddGroup = Backbone.View.extend({
     }
 });
 
-app.Collection.TabGroup = Backbone.Collection.extend({
-    model : app.Model.Group,
-    initialize: function(){
-        this.options= {};
-        this.options.url = {
-            owned: '/tatami/rest/groups',
-            recommended: '/tatami/rest/groupmemberships/suggestions',
-            search: '/tatami/rest/search/groups'
-        };
-    },
-    recommended: function(){
-        this.url = this.options.url.recommended;
-        this.parse = function(data, options){
-            return data.filter(function(model){
-                return model.publicGroup;
-            });
-        };
-        this.fetch();
-    },
-    owned: function(){
-        this.url = this.options.url.owned;
-        this.parse = function(data, options){
-            return data;
-        };
-        this.fetch();
-    },
-    search: function(query){
-        this.url = this.options.url.search;
-        this.fetch({
-            data:{
-                q: query
-            }
-        })
-    }
-});
-
 app.View.Group = Backbone.View.extend({
     initialize: function(){
         this.actionsView = new app.View.ActionsGroup({
@@ -481,28 +371,6 @@ app.View.Group = Backbone.View.extend({
     }
 });
 
-app.Model.ListUserGroupModel = Backbone.Model.extend({
-    idAttribute : 'username',
-    defaults : {
-        avatar : '',
-        firstName : '',
-        lastName : '',
-        role : ''
-    },
-    toJSON : function(){
-        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
-            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
-        });
-    }
-});
-
-app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
-    model : app.Model.ListUserGroupModel,
-    url : function() {
-        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
-    }
-});
-
 app.View.ActionsGroup = Backbone.View.extend({
     tagName : 'td',
     template : {
@@ -513,7 +381,7 @@ app.View.ActionsGroup = Backbone.View.extend({
 
     initialize : function(){
         var self = this;
-        this.collection = new app.Collection.ListUserGroupCollection();
+        this.collection = new CListUserGroup();
         this.collection.options = {
             groupId : this.model.id
         };
@@ -524,7 +392,7 @@ app.View.ActionsGroup = Backbone.View.extend({
             }
         });
 
-        this.actionModel = new app.Model.ListUserGroupModel({
+        this.actionModel = new MUserGroup({
             username : username
         });
         this.actionModel.urlRoot = function() {
@@ -615,7 +483,7 @@ app.View.EditGroup = Backbone.View.extend({
     },
 
     initialize: function(){
-        this.model = new app.Model.Group({
+        this.model = new MGroup({
             groupId: this.options.groupId
         });
         this.model.bind('change', this.render, this);
@@ -715,74 +583,6 @@ app.View.ListUserGroupItem = Backbone.View.extend({
     }
 });
 
-app.Model.ListUserGroupModel = Backbone.Model.extend({
-    idAttribute : 'username',
-    defaults : {
-        avatar : '',
-        firstName : '',
-        lastName : '',
-        role : ''
-    },
-    toJSON : function(){
-        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
-            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
-        });
-    }
-});
-
-app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
-    model : app.Model.ListUserGroupModel,
-    url : function() {
-        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
-    }
-});
-
-app.Model.UserSearch = Backbone.Model.extend({
-    toString : function(){
-        return this.get('username');
-    },
-    toLowerCase : function(){
-        return this.toString().toLowerCase();
-    },
-    replace : function(a, b, c){
-        return this.toString().replace(a, b, c);
-    }
-});
-
-app.Collection.UserSearch = Backbone.Collection.extend({
-    url : '/tatami/rest/users/search',
-
-    model : app.Model.UserSearch,
-
-    search : function(q, callback) {
-        var self = this;
-        this.fetch({
-            data : {
-                q : q
-            },
-            success : function(collection){
-                var result = self.removeAlreadyMember();
-                callback(result);
-            }
-        });
-    },
-
-    removeAlreadyMember : function(){
-        var collectionFilter = this.options.filter;
-        if(typeof collectionFilter != 'undefined'){
-            return this.filter(function(result){
-                var isAlreadyMember = collectionFilter.find(function(user){
-                    var isEqual = user.get('username') === result.get('username');
-                    return isEqual;
-                });
-                return !isAlreadyMember;
-            });
-        } else {
-            return this.toArray();
-        }
-    }
-});
-
 app.View.AddUserGroup = Backbone.View.extend({
     tagName : 'form',
     attributes : {
@@ -794,7 +594,7 @@ app.View.AddUserGroup = Backbone.View.extend({
 
         window.collection = this.collection;
 
-        var search = new app.Collection.UserSearch();
+        var search = new CUserSearch();
         search.options = {
             filter : this.collection
         };
@@ -850,14 +650,10 @@ app.View.AddUserGroup = Backbone.View.extend({
  Statistics
  */
 
-app.Collection.DailyStatCollection = Backbone.Collection.extend({
-    url:'/tatami/rest/stats/day'
-});
-
 app.View.DailyStatsView = Backbone.View.extend({
     initialize:function () {
         var self = this;
-        this.model = new app.Collection.DailyStatCollection();
+        this.model = new CDailyStat();
         this.model.bind('reset', this.render, this);
         this.model.fetch({
             success: function() {
@@ -989,4 +785,3 @@ $(function() {
 
 });
 
-})(window, Backbone, jQuery, _);
