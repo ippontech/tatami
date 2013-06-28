@@ -12,12 +12,6 @@
 
 <jsp:include page="includes/topmenu.jsp"/>
 
-<!--script id="layout-template" type="text/template">
-    <section>
-        <div id="navigation-region"><!!jsp:include page="includes/navigation-admin.jsp"/></div>
-        <div id="main-region"><!jsp:include page="includes/templates-admin.jsp"/></div>
-    </section>
-</script-->
 <jsp:include page="includes/navigation-admin.jsp"/>
 <jsp:include page="includes/templates-admin.jsp"/>
 
@@ -38,12 +32,16 @@
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
     <script src="/js/account/models/mPassword.js"></script>
-    <!--script src="/js/account/views/vFile.js"></script-->
+    <script src="/js/account/views/vFile.js"></script>
+    <script src="/js/account/views/vGroup.js"></script>
     <script src="/js/account/models/mFile.js"></script>
     <script src="/js/account/collections/cTabTag.js"></script>
     <script src="/js/account/models/mFollowTag.js"></script>
     <script src="/js/account/collections/cDailyStat.js"></script>
+    <script src="/js/account/views/vUser.js"></script>
     <script src="/js/account/views/vTag.js"></script>
+    <script src="/js/account/views/vDailyStat.js"></script>
+    <script src="/js/account/views/vTab.js"></script>
     <script src="/js/account/collections/cFiles.js"></script>
     <script src="/js/account/models/mGroup.js"></script>
     <script src="/js/account/models/mUserSearch.js"></script>

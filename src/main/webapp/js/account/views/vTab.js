@@ -1,0 +1,98 @@
+/**
+ * Created with IntelliJ IDEA.
+ * User: Gregoire
+ * Date: 28/06/13
+ * Time: 14:15
+ * To change this template use File | Settings | File Templates.
+ */
+
+var VTabSearch = Backbone.View.extend({
+    templateSearch: _.template($('#search-filter').html()),
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+
+        this.views = {};
+        this.views.tab = new VTab({
+            collection : this.collection,
+            ViewModel : this.options.ViewModel,
+            template: this.options.TabHeaderTemplate
+        });
+    },
+
+    events:{
+        'keyup :input#block_filter':'search'
+    },
+
+    search: function(e){
+        var input = e.target.value;
+        if(input != '') {
+            this.collection.reset();
+            this.collection.search(input);
+        }
+    },
+
+    selectMenu: function(menu) {
+        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
+    },
+
+    render: function(){
+        this.$el.empty();
+        this.$el.append(this.options.MenuTemplate());
+        this.$el.append(this.templateSearch());
+        this.$el.append(this.views.tab.render());
+        this.delegateEvents();
+        return this.$el;
+    }
+});
+
+var VTabContainer = Backbone.View.extend({
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+
+        this.views = {};
+        this.views.tab = new VTab({
+            collection : this.collection,
+            ViewModel : this.options.ViewModel,
+            template: this.options.TabHeaderTemplate
+        });
+    },
+
+    selectMenu: function(menu) {
+        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
+    },
+
+    render: function(){
+        this.$el.empty();
+        this.$el.append(this.options.MenuTemplate());
+        this.$el.append(this.views.tab.render());
+        this.delegateEvents();
+        return this.$el;
+    }
+});
+
+var VTab = Backbone.View.extend({
+    initialize: function() {
+        this.$el.addClass('table');
+        this.template = this.options.template;
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
+    },
+
+    tagName: 'table',
+
+    addItem: function(item) {
+        this.$el.append(new this.options.ViewModel({
+            model: item
+        }).render());
+    },
+
+    render: function() {
+        this.$el.empty();
+        this.$el.append(this.template());
+        this.collection.forEach(this.addItem, this);
+        this.delegateEvents();
+        return this.$el;
+    }
+});

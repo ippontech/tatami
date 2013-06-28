@@ -93,9 +93,9 @@
 
         initGroups: function(){
             if(!app.views.groups)
-                app.views.groups = new app.View.TabContainer({
+                app.views.groups = new VTabContainer({
                     collection: new CTabGroup(),
-                    ViewModel: app.View.Group,
+                    ViewModel: VGroup,
                     MenuTemplate: _.template($('#groups-menu').html()),
                     TabHeaderTemplate : _.template($('#groups-header').html())
                 });
@@ -110,7 +110,7 @@
 
         initAddGroup: function(listView){
             if(!app.views.addgroup){
-                app.views.addgroup = new app.View.AddGroup();
+                app.views.addgroup = new VAddGroup();
                 app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
                 app.views.addgroup.bind('success', app.collections.adminGroups.fetch, app.collections.adminGroups);
             }
@@ -155,9 +155,9 @@
 
         initSearchGroups: function(){
             if(!app.views.SearchGroups)
-                app.views.SearchGroups = new app.View.TabSearch({
+                app.views.SearchGroups = new VTabSearch({
                     collection: new CTabGroup(),
-                    ViewModel: app.View.Group,
+                    ViewModel: VGroup,
                     MenuTemplate: _.template($('#groups-menu').html()),
                     TabHeaderTemplate : _.template($('#groups-header').html())
                 });
@@ -180,7 +180,7 @@
             this.selectMenu('');
 
             this.resetView();
-            this.addView(new app.View.EditGroup({
+            this.addView(new VEditGroup({
                 groupId : id
             }));
             var collection = new CListUserGroup();
@@ -188,11 +188,11 @@
                 groupId : id
             };
 
-            this.addView(new app.View.AddUserGroup({
+            this.addView(new VAddUserGroup({
                 collection : collection
             }));
 
-            this.addView(new app.View.ListUserGroup({
+            this.addView(new VListUserGroup({
                 collection : collection,
                 groupId : id
             }));
@@ -200,9 +200,9 @@
 
         initTags: function(){
             if(!app.views.tags)
-                app.views.tags = new app.View.TabContainer({
+                app.views.tags = new VTabContainer({
                     collection: new CTabTag(),
-                    ViewModel: app.View.Tag,
+                    ViewModel: VTag,
                     MenuTemplate: _.template($('#tags-menu').html()),
                     TabHeaderTemplate : _.template($('#tags-header').html())
                 });
@@ -236,9 +236,9 @@
 
         initSearchTags: function(){
             if(!app.views.SearchTags)
-                app.views.SearchTags = new app.View.TabSearch({
+                app.views.SearchTags = new VTabSearch({
                     collection: new CTabTag(),
-                    ViewModel: app.View.Tag,
+                    ViewModel: VTag,
                     MenuTemplate: _.template($('#tags-menu').html()),
                     TabHeaderTemplate : _.template($('#tags-header').html())
                 });
@@ -258,9 +258,9 @@
 
         initUsers: function(){
             if(!app.views.users)
-                app.views.users = new app.View.TabContainer({
+                app.views.users = new VTabContainer({
                     collection: new CTabUser(),
-                    ViewModel: app.View.User,
+                    ViewModel: VUser,
                     MenuTemplate: _.template($('#users-menu').html()),
                     TabHeaderTemplate :_.template($('#users-header').html())
                 });
@@ -295,9 +295,9 @@
 
         initSearchUser: function(){
             if(!app.views.SearchUsers)
-                app.views.SearchUsers = new app.View.TabSearch({
+                app.views.SearchUsers = new VTabSearch({
                     collection: new CTabUser(),
-                    ViewModel: app.View.User,
+                    ViewModel: VUser,
                     MenuTemplate: _.template($('#users-menu').html()),
                     TabHeaderTemplate :_.template($('#users-header').html())
                 });
@@ -318,7 +318,7 @@
         status_of_the_day: function(){
             this.selectMenu('status_of_the_day');
             if(!app.views.daily)
-                app.views.daily = new app.View.DailyStatsView();
+                app.views.daily = new VDailyStats();
             var view = app.views.daily;
 
             this.resetView();
@@ -327,7 +327,7 @@
 
         initFiles: function(){
             if(!app.views.files)
-                app.views.files = new app.View.FilesView({
+                app.views.files = new VFilesView({
                     collection: new CFiles()
                 });
 

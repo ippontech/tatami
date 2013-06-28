@@ -756,7 +756,7 @@ app.Collection.TabGroup = Backbone.Collection.extend({
 
 app.View.Group = Backbone.View.extend({
     initialize: function(){
-        this.actionsView = new app.View.ActionsGroup({
+        this.actionsView = new VActionsGroup({
             model : this.model
         });
         this.actionsView.render();
@@ -1273,7 +1273,7 @@ app.View.FilesView = Backbone.View.extend({
         this.views = {};
         this.views.files = new app.View.Tab({
             collection : this.collection,
-            ViewModel : app.View.FilesViewItem,
+            ViewModel : app.View.FilesItem,
             template: this.HeaderTemplate
         });
 
