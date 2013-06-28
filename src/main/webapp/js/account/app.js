@@ -10,7 +10,6 @@ _.templateSettings = {
     evaluate: /<\@(.+?)\@\>/gim
 };
 
-
 var app;
 
 if(!window.app){
