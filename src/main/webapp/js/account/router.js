@@ -7,6 +7,13 @@
  */
 
 //(function(Backbone, _, Tatami){
+
+_.templateSettings = {
+    interpolate: /\<\@\=(.+?)\@\>/gim,
+    evaluate: /\<\@(.+?)\@\>/gim,
+    escape: /\<\@\-(.+?)\@\>/gim
+};
+
     var AdminRouter = Backbone.Marionette.AppRouter.extend({
     initialize: function(){
         this.views = [];

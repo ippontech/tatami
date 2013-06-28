@@ -1,6 +1,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
+
 <script type="text/template" id="form-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -150,54 +152,24 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <!--c:if test="\${preferences.mentionEmail}" >
-                        <input name="mentionEmail" type="checkbox"  checked="true" />
-                    <!--/c:if>
-                    <!--c:if test="\${!preferences.mentionEmail}" >
-                        <input name="mentionEmail" type="checkbox"  />
-                    <!--/c:if-->
-                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @> />
-                    <fmt:message key="tatami.preferences.notifications.email.mention"/>
+                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <c:if test="${preferences.dailyDigest}" >
-                        <input name="dailyDigest" type="checkbox"  checked="true" />
-                    </c:if>
-                    <c:if test="${!preferences.dailyDigest}" >
-                        <input name="dailyDigest" type="checkbox"  />
-                    </c:if>
-                    <!--input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @> /-->
-                    <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
+                    <input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <c:if test="${preferences.weeklyDigest}" >
-                        <input name="weeklyDigest" type="checkbox"  checked="true" />
-                    </c:if>
-                    <c:if test="${!preferences.weeklyDigest}" >
-                        <input name="weeklyDigest" type="checkbox"  />
-                    </c:if>
-                    <!--input name="weeklyDigest" type="checkbox" if(preferences.weeklyDigest){ @> checked="true" <@ } @>/-->
-                    <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
+                    <input name="weeklyDigest" type="checkbox" <@ if(preferences.weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                <c:if test="${preferences.rssUidActive}" >
-                    <input name="rssUidActive" type="checkbox"  checked="true" />
-                </c:if>
-                <c:if test="${!preferences.rssUidActive}" >
-                    <input name="rssUidActive" type="checkbox"  />
-                </c:if>
-                    <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                    <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
                 </label>
-                <c:if test="${preferences.rssUidActive}" >
-                    <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a>
-                </c:if>
-
+                <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
             </div>
         </div>
     </fieldset>

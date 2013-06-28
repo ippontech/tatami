@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +29,7 @@
 <c:if test="${wro4jEnabled eq false}">
   <script src="/js/vendor/raphael-min.js"></script>
   <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+    <script src="/js/account/app.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
@@ -57,7 +59,7 @@
 
     <script src="/js/account/router.js"></script>
 
-  <script src="/js/account/app.js"></script>
+
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>

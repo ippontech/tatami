@@ -6,8 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 _.templateSettings = {
-    interpolate: /<\@\=(.+?)\@\>/gim,
-    evaluate: /<\@(.+?)\@\>/gim
+    interpolate: /\<\@\=(.+?)\@\>/gim,
+    evaluate: /\<\@(.+?)\@\>/gim,
+    escape: /\<\@\-(.+?)\@\>/gim
 };
 
 var app;
@@ -25,8 +26,6 @@ if(!window.app){
 else {
     app = window.app;
 }
-
-
 
 $(function() {
 
