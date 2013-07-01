@@ -111,13 +111,13 @@
             </div>
         </div>
 
+        <div class="return"/>
+
         <div class="form-actions">
             <button type="submit" class="input-xlarge btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-
-        <div class="return"/>
     </fieldset>
 </script>
 
@@ -175,13 +175,12 @@
     </fieldset>
 
     <fieldset>
+        <div class="return"/>
         <div class="form-actions">
             <button type="submit" class="input-xlarge btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-
-        <div class="return"/>
     </fieldset>
 
 </script>
@@ -229,12 +228,12 @@
                 <input name="newPasswordConfirmation" type="password" required="required" size="15" maxlength="40" class="input-xlarge col-span-12"/>
             </div>
         </div>
+        <div class="return"/>
         <div class="form-actions">
             <button type="submit" class="btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-        <div class="return"/>
     </fieldset>
 
 </script>
@@ -384,6 +383,9 @@
             </div>
         <@ } @>
 
+        <br/>
+        <div class="return"/>
+        <br/>
         <div class="form-actions">
             <@ if (typeof groupId === 'undefined') { @>
                 <button type="submit" class="btn btn-success col-span-7 little-marge-right">
@@ -401,9 +403,7 @@
 
     </fieldset>
 
-    <br/>
-    <div class="return"/>
-    <br/>
+
 
 </script>
 
@@ -421,7 +421,9 @@
                 <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12"/>
             </div>
         </div>
-
+        <br/>
+        <div class="return"/>
+        <br/>
         <div class="form-actions">
             <button type="submit" class="btn btn-success col-span-12">
                 <fmt:message key="tatami.form.save"/>
@@ -430,9 +432,7 @@
 
     </fieldset>
 
-    <br/>
-    <div class="return"/>
-    <br/>
+
 </script>
 
 <script type="text/template" id="groups-form-adduser-success">
