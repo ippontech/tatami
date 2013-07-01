@@ -46,7 +46,7 @@ var VTabSearch = Backbone.View.extend({
     }
 });
 
-var VTabContainer = Backbone.View.extend({
+var VTabContainer = Marionette.ItemView.extend({
     initialize: function(){
         this.$el.addClass('row-fluid');
 
@@ -72,7 +72,7 @@ var VTabContainer = Backbone.View.extend({
     }
 });
 
-var VTab = Backbone.View.extend({
+var VTab = Marionette.ItemView.extend({
     initialize: function() {
         this.$el.addClass('table');
         this.template = this.options.template;

@@ -7,7 +7,7 @@
  */
 
 
-var VTag = Backbone.View.extend({
+var VTag = Marionette.ItemView.extend({
     initialize: function(){
         this.model.bind('change', this.render, this);
 

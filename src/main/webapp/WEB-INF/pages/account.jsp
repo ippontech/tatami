@@ -48,15 +48,12 @@
     <script src="/js/account/models/mGroup.js"></script>
     <script src="/js/account/models/mUserSearch.js"></script>
     <script src="/js/account/collections/cUserSearch.js"></script>
-
     <script src="/js/account/models/mUserGroup.js"></script>
     <script src="/js/account/collections/cAdminGroup.js"></script>
-
     <script src="/js/account/models/mFollowUser.js"></script>
     <script src="/js/account/collections/cTabUser.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
     <script src="/js/account/models/mAccountProfile.js"></script>
-
     <script src="/js/account/router.js"></script>
 
 

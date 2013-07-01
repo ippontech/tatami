@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var VAddGroup = Backbone.View.extend({
+var VAddGroup = Marionette.ItemView.extend({
     tagName: 'form',
 
     initialize: function(){
@@ -56,7 +56,7 @@ var VAddGroup = Backbone.View.extend({
     }
 });
 
-var VGroup = Backbone.View.extend({
+var VGroup = Marionette.ItemView.extend({
     initialize: function(){
         this.actionsView = new VActionsGroup({
             model : this.model
@@ -81,7 +81,7 @@ var VGroup = Backbone.View.extend({
     }
 });
 
-var VActionsGroup = Backbone.View.extend({
+var VActionsGroup = Marionette.ItemView.extend({
     tagName : 'td',
     template : {
         join : _.template($('#groups-join').html()),
@@ -186,7 +186,7 @@ var VActionsGroup = Backbone.View.extend({
     }
 });
 
-var VEditGroup = Backbone.View.extend({
+var VEditGroup = Marionette.ItemView.extend({
     tagName: 'form',
     attributes : {
         'class' : 'form-horizontal row-fluid'
@@ -232,7 +232,7 @@ var VEditGroup = Backbone.View.extend({
     }
 });
 
-var VListUserGroup = Backbone.View.extend({
+var VListUserGroup = Marionette.ItemView.extend({
     tagName : 'table',
     attributes : {
         'class' : 'table'
@@ -267,7 +267,7 @@ var VListUserGroup = Backbone.View.extend({
     }
 });
 
-var VListUserGroupItem = Backbone.View.extend({
+var VListUserGroupItem = Marionette.ItemView.extend({
     tagName : 'tr',
 
     template : _.template($('#usergroup-item').html()),
@@ -293,7 +293,7 @@ var VListUserGroupItem = Backbone.View.extend({
     }
 });
 
-var VAddUserGroup = Backbone.View.extend({
+var VAddUserGroup = Marionette.ItemView.extend({
     tagName : 'form',
     attributes : {
         'class' : 'form-horizontal row-fluid'

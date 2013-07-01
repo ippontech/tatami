@@ -1,7 +1,5 @@
 
-
-
-var VFilesItem = Backbone.View.extend({
+var VFilesItem = Marionette.ItemView.extend({
     template: _.template($('#files-item').html()),
 
     initialize: function(){
@@ -35,7 +33,7 @@ var VFilesItem = Backbone.View.extend({
 
 });
 
-var VQuotaFiles = Backbone.View.extend({
+var VQuotaFiles = Marionette.ItemView.extend({
     template: _.template($('#files-quota').html()),
 
     initialize: function(){
@@ -59,7 +57,7 @@ var VQuotaFiles = Backbone.View.extend({
 
 });
 
-var VFilesView = Backbone.View.extend({
+var VFilesView = Marionette.ItemView.extend({
     MenuTemplate: _.template($('#files-menu').html()),
     HeaderTemplate: _.template($('#files-header').html()),
 

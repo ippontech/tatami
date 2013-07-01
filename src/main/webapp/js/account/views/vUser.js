@@ -7,7 +7,7 @@
  */
 
 
-var VUser = Backbone.View.extend({
+var VUser = Marionette.ItemView.extend({
     initialize: function(){
         app.views = {};
     },
@@ -45,7 +45,7 @@ var VUser = Backbone.View.extend({
     }
 });
 
-var VFollowButton = Backbone.View.extend({
+var VFollowButton = Marionette.ItemView.extend({
     templateFollow: _.template($('#follow-button').html()),
     templateFollowed: _.template($('#followed-button').html()),
     templateUserEdit:_.template($('#edit-profile').html()),

@@ -8,7 +8,7 @@
 
 
 
-var VDailyStats = Backbone.View.extend({
+var VDailyStats = Marionette.ItemView.extend({
     initialize:function () {
         var self = this;
         this.model = new CDailyStat();
