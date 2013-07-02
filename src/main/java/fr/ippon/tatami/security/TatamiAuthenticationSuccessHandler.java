@@ -1,6 +1,7 @@
 package fr.ippon.tatami.security;
 
 import fr.ippon.tatami.repository.AppleDeviceRepository;
+import fr.ippon.tatami.repository.AppleDeviceUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,9 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Inject
     private AppleDeviceRepository appleDeviceRepository;
 
+    @Inject
+    private AppleDeviceUserRepository appleDeviceUserRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
@@ -40,6 +44,7 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             log.debug("Device token: {}", deviceToken);
             String deviceId = deviceToken.substring(1, deviceToken.length() - 1);
             log.debug("Device Id: {}", deviceId);
+            appleDeviceUserRepository.createAppleDeviceForUser(deviceId, authentication.getName());
             appleDeviceRepository.createAppleDevice(authentication.getName(), deviceId);
         }
 

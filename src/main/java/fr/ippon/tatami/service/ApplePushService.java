@@ -5,6 +5,7 @@ import com.notnoop.apns.ApnsService;
 import com.notnoop.exceptions.NetworkIOException;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.AppleDeviceRepository;
+import fr.ippon.tatami.repository.AppleDeviceUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -34,6 +35,9 @@ public class ApplePushService {
 
     @Inject
     private AppleDeviceRepository appleDeviceRepository;
+
+    @Inject
+    private AppleDeviceUserRepository appleDeviceUserRepository;
 
     @PostConstruct
     public void init() {
@@ -80,8 +84,6 @@ public class ApplePushService {
                 apnsService.push(deviceId, payload);
             }
 
-            feedbackService();
-
         } catch (Exception e) {
             log.warn("Apple Push error: " + e.getMessage());
         }
@@ -92,11 +94,18 @@ public class ApplePushService {
      */
     @Scheduled(cron = "0 0 23 * * ?")
     public void feedbackService() {
-        log.info("Checking the Apple feedback service for inactive devices");
-        Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
-        for (String deviceToken : inactiveDevices.keySet()) {
-            Date inactiveAsOf = inactiveDevices.get(deviceToken);
-            log.debug("Device '" + deviceToken + "' is inactive");
+        log.info("Checking the Apple Feedback Service for inactive devices");
+        try {
+            Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
+            for (String deviceId : inactiveDevices.keySet()) {
+                log.debug("Device {} is inactive", deviceId);
+                String login = appleDeviceUserRepository.findLoginForDeviceId(deviceId);
+                log.debug("Removing device for user {}" + login);
+                appleDeviceRepository.removeAppleDevice(login, deviceId);
+                appleDeviceUserRepository.removeAppleDeviceForUser(deviceId);
+            }
+        } catch (Exception e) {
+            log.warn("Apple Feedback Service error: " + e.getMessage());
         }
     }
 }

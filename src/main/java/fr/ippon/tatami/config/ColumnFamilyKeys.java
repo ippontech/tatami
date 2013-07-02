@@ -89,4 +89,6 @@ public class ColumnFamilyKeys {
 
     public static final String APPLE_DEVICE_CF = "AppleDevice";
 
+    public static final String APPLE_DEVICE_USER_CF = "AppleDeviceUser";
+
 }

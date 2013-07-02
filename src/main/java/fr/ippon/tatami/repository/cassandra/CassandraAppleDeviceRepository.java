@@ -21,6 +21,8 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 /**
  * Cassandra implementation of the AppleDevice repository.
  * <p/>
+ * Maps users to Apple device ids.
+ * <p/>
  * Structure :
  * - Key = login
  * - Name = apple device id
@@ -47,7 +49,6 @@ public class CassandraAppleDeviceRepository implements AppleDeviceRepository {
     @Override
     public void removeAppleDevice(String login, String deviceId) {
         log.debug("Deleting Apple Device for user {} : {}", login, deviceId);
-
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.delete(login, APPLE_DEVICE_CF, deviceId, StringSerializer.get());
     }
