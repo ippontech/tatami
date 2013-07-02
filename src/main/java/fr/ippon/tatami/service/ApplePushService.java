@@ -80,6 +80,8 @@ public class ApplePushService {
                 apnsService.push(deviceId, payload);
             }
 
+            feedbackService();
+
         } catch (Exception e) {
             log.warn("Apple Push error: " + e.getMessage());
         }
