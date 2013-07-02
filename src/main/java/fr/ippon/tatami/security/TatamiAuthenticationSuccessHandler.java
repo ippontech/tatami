@@ -38,7 +38,7 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (request.getParameter("device_token") != null) {
             String deviceToken = request.getParameter("device_token");
             log.debug("Device token: {}", deviceToken);
-            String deviceId = deviceToken.substring(1, 33);
+            String deviceId = deviceToken.substring(1, deviceToken.length() - 1);
             log.debug("Device Id: {}", deviceId);
             appleDeviceRepository.createAppleDevice(authentication.getName(), deviceId);
         }
