@@ -77,7 +77,7 @@ public class TagController {
 
     /**
      * WARNING! This is the old API, only used by the admin console
-     *
+     * <p/>
      * POST /tagmemberships/create -> follow tag
      */
     @RequestMapping(value = "/rest/tagmemberships/create",
@@ -93,7 +93,7 @@ public class TagController {
 
     /**
      * WARNING! This is the old API, only used by the admin console
-     *
+     * <p/>
      * POST /tagmemberships/destroy -> unfollow tag
      */
     @RequestMapping(value = "/rest/tagmemberships/destroy",

@@ -271,11 +271,11 @@ public class TimelineService {
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,
-                             StatusDTO statusDTO,
-                             AbstractStatus abstractStatus,
-                             User statusUser,
-                             Collection<Group> usergroups,
-                             List<String> favoriteLine) {
+                                 StatusDTO statusDTO,
+                                 AbstractStatus abstractStatus,
+                                 User statusUser,
+                                 Collection<Group> usergroups,
+                                 List<String> favoriteLine) {
 
         Status status = (Status) abstractStatus;
         // Group check

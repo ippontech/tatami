@@ -55,9 +55,9 @@
             <id>preprod</id>
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
-                <spring.profiles.active></spring.profiles.active>
+                <spring.profiles.active>apple-push</spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
                 <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>

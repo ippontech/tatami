@@ -3,7 +3,8 @@ package fr.ippon.tatami.service;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.exceptions.NetworkIOException;
-import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.repository.AppleDeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -29,6 +31,9 @@ public class ApplePushService {
 
     @Inject
     private Environment env;
+
+    @Inject
+    private AppleDeviceRepository appleDeviceRepository;
 
     @PostConstruct
     public void init() {
@@ -52,16 +57,29 @@ public class ApplePushService {
     /**
      * Notifies the user with APNS.
      */
-    public void notifyUser(String login, AbstractStatus abstractStatus) {
+    public void notifyUser(String login, Status status) {
         log.debug("Notifying user with Apple Push: {}", login);
         try {
+            String message =
+                    "@" +
+                            status.getUsername() +
+                            "\n" +
+                            status.getContent();
+
+            if (message.length() > 256) {
+                message = message.substring(0, 252) + "...";
+            }
+
             String payload =
                     APNS.newPayload()
-                            .badge(3)
-                            .alertBody("Hello from Tatami!").build();
+                            .alertBody(message).build();
 
-            String token = "test token";
-            apnsService.push(token, payload);
+            Collection<String> deviceIds = appleDeviceRepository.findAppleDevices(login);
+            for (String deviceId : deviceIds) {
+                log.debug("Notifying user : {} - device : {}", login, deviceId);
+                apnsService.push(deviceId, payload);
+            }
+
         } catch (Exception e) {
             log.warn("Apple Push error: " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.security;
 
+import fr.ippon.tatami.repository.AppleDeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +27,20 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 
+    @Inject
+    private AppleDeviceRepository appleDeviceRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (request.getParameter("device_token") != null) {
-            log.info("Device token: " + request.getParameter("device_token"));
+            String deviceToken = request.getParameter("device_token");
+            log.debug("Device token: {}", deviceToken);
+            String deviceId = deviceToken.substring(1, 33);
+            log.debug("Device Id: {}", deviceId);
+            appleDeviceRepository.createAppleDevice(authentication.getName(), deviceId);
         }
 
         if (savedRequest == null) {
