@@ -72,11 +72,12 @@
             'change:favorite': 'onRender',
             'change:discussion': 'onRender'
         },
-        events: {            
-            'click': 'showDetails',
-            'click a' : 'showLink',
+        events: {
+            'click #current': 'showDetails',
+            'click #current a' : 'showLink',
             'click .status-action-show' : 'showDetails',
             'click .status-action-reply': 'replyAction',
+            'click .status-action-reply a': '',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
             'click .status-action-announce': 'announceAction',
