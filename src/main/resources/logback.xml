@@ -10,7 +10,7 @@
 
     <appender name="SYNC_PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
         <syslogHost>${logback.syslogHost}</syslogHost>
-        <port>>${logback.syslogHost.port}</port>
+        <port>${logback.syslogHost.port}</port>
         <facility>LOCAL7</facility>
         <suffixPattern>[%thread] %logger %msg</suffixPattern>
     </appender>
