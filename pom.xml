@@ -59,7 +59,8 @@
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -114,7 +115,8 @@
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <logback.loglevel>INFO</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.url>https://tatami.ippon.fr</tatami.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
