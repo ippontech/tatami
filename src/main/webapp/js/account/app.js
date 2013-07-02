@@ -27,10 +27,22 @@ else {
     app = window.app;
 }
 
+
+// Show the "layout" in the "container" region
+accountLayout = new AccountLayout();
+AccountContainer.show(accountLayout);
+
+
+accountLayout.avatar.show(new VAvatar());
+accountLayout.navigation.show(new VNavigation());
+accountLayout.content.show(new VContent());
+
+
 $(function() {
 
  app.router = new AdminRouter();
  if( ! Backbone.History.started) Backbone.history.start();
 
 });
+
 

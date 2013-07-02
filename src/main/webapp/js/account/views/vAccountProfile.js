@@ -10,10 +10,6 @@ var VAccountProfile = Marionette.ItemView.extend({
     tagName: 'form',
     template: '#account-profile',
 
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-    },
-
     events: {
         'submit': 'saveForm'
     },
@@ -29,18 +25,18 @@ var VAccountProfile = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 self.$(".return").html(new VFormSuccess().render().$el);
-                //self.render();  //Only with region
+                //self.render();  //Only with region ?
             },
             error: function(){
                 self.$(".return").html(new VFormError().render().$el);
-                //self.render();   // Only with region
+                //self.render();   // Only with region?
             }
         });
     }
 });
 
 var VFormSuccess = Marionette.ItemView.extend({
-    tag: '.return',
+   // tag: '.return', ok with region ?
     template: "#form-success"
 } );
 
@@ -52,10 +48,6 @@ var VFormError = Marionette.ItemView.extend({
 var VAccountProfileDestroy = Marionette.ItemView.extend({
     tagName: 'form',
     template: '#account-destroy',
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-    },
 
     events: {
         'submit': 'destroy'
@@ -78,3 +70,15 @@ var VAccountProfileDestroy = Marionette.ItemView.extend({
         });
     }
 });
+
+var VAvatar = Marionette.ItemView.extend({
+    template: "#template-avatar"
+} );
+
+var VNavigation = Marionette.ItemView.extend({
+    template: "#template-navigation"
+} );
+
+var VContent = Marionette.ItemView.extend({
+    template: "#template-content"
+} );

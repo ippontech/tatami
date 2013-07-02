@@ -54,10 +54,9 @@ var VQuotaFiles = Marionette.ItemView.extend({
         this.$el.html(this.template({quota: quota}));
         return this.$el;
     }
-
 });
 
-var VFilesView = Marionette.ItemView.extend({
+var VFiles = Marionette.ItemView.extend({
     MenuTemplate: _.template($('#files-menu').html()),
     HeaderTemplate: _.template($('#files-header').html()),
 

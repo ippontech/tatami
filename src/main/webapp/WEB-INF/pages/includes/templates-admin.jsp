@@ -35,13 +35,18 @@
     <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
 </script>
 
-<script type="text/template" id="account-profile">
+
+
+
+
+<script type="text/template" id="account-profile" >
+
     <h2>
         <fmt:message key="tatami.account.update.title"/>
     </h2>
 
 
-    <fieldset>
+    <fieldset class="form-horizontal row-fluid">
         <legend>
             <fmt:message key="tatami.account.update.legend"/>
         </legend>
@@ -122,7 +127,7 @@
 </script>
 
 <script type="text/template" id="account-destroy">
-    <fieldset>
+    <fieldset class="form-horizontal row-fluid">
         <legend><fmt:message key="tatami.user.suppress"/></legend>
         <div class="return"/>
         <div class="form-actions">

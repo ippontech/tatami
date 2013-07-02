@@ -68,10 +68,20 @@ _.templateSettings = {
                 app.views.profile.destroy = new VAccountProfileDestroy({
                     model: model
                 });
+
+               /* var layout = new MyLayout();
+                layout.form.show(new VForm());
+                layout.formInfo.show(new VFormInfo());
+                layout.formButton.show(new VFormButton());
+                container.show(layout);*/
             }
+
+
+
             this.resetView();
             this.addView(app.views.profile.edit);
             this.addView(app.views.profile.destroy);
+
         },
 
         preferences: function(){
@@ -334,7 +344,7 @@ _.templateSettings = {
 
         initFiles: function(){
             if(!app.views.files)
-                app.views.files = new VFilesView({
+                app.views.files = new VFiles({
                     collection: new CFiles()
                 });
 
