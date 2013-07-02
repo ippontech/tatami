@@ -437,6 +437,11 @@ public class TimelineService {
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);
             }
+        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            User currentUser = authenticationService.getCurrentUser();
+            if (abstractStatus.getLogin().equals(currentUser.getLogin())) {
+                statusRepository.removeStatus(abstractStatus);
+            }
         } else {
             log.debug("Cannot remove status of this type");
         }
