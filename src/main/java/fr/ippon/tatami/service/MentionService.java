@@ -21,7 +21,7 @@ public class MentionService {
     @Inject
     private MailService mailService;
 
-    @Inject
+    @Autowired(required = false)
     private ApplePushService applePushService;
 
     @Inject

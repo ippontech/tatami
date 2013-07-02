@@ -7,6 +7,7 @@ import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.AppleDeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Notifies users with iOS push notifications.
  */
 @Service
+@Profile("apple-push")
 public class ApplePushService {
 
     private static final Logger log = LoggerFactory.getLogger(ApplePushService.class);
@@ -35,24 +37,20 @@ public class ApplePushService {
 
     @PostConstruct
     public void init() {
-        if (env.acceptsProfiles("apple-push")) {
-            log.info("Creating Apple Push Service");
-            String certificate = env.getRequiredProperty("apple.push.certificate");
-            String password = env.getRequiredProperty("apple.push.password");
-            apnsService =
-                    APNS.newService()
-                            .withCert(certificate, password)
-                            .withSandboxDestination()
-                            .build();
+        log.info("Creating Apple Push Service");
+        String certificate = env.getRequiredProperty("apple.push.certificate");
+        String password = env.getRequiredProperty("apple.push.password");
+        apnsService =
+                APNS.newService()
+                        .withCert(certificate, password)
+                        .withSandboxDestination()
+                        .build();
 
-            try {
-                apnsService.testConnection();
-                log.info("Apple Push Service is OK");
-            } catch (NetworkIOException nioe) {
-                log.warn("Apple Push Service is NOT OK");
-            }
-        } else {
-            log.info("Apple Push Service is NOT active");
+        try {
+            apnsService.testConnection();
+            log.info("Apple Push Service is OK");
+        } catch (NetworkIOException nioe) {
+            log.warn("Apple Push Service is NOT OK");
         }
     }
 
@@ -60,10 +58,6 @@ public class ApplePushService {
      * Notifies the user with APNS.
      */
     public void notifyUser(String login, Status status) {
-        if (apnsService == null) {
-            log.debug("Apple Push Service is NOT active");
-            return;
-        }
         log.debug("Notifying user with Apple Push: {}", login);
         try {
             String message =
@@ -98,10 +92,6 @@ public class ApplePushService {
      */
     @Scheduled(cron = "0 0 23 * * ?")
     public void feedbackService() {
-        if (apnsService == null) {
-            log.debug("Apple Push Service is NOT active");
-            return;
-        }
         log.info("Checking the Apple feedback service for inactive devices");
         Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
         for (String deviceToken : inactiveDevices.keySet()) {
