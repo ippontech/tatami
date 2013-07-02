@@ -438,7 +438,7 @@
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
-        <camel.version>2.10.4</camel.version>
+        <camel.version>2.11.0</camel.version>
 
         <selenium.version>2.31.0</selenium.version>
 
