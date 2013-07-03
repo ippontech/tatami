@@ -5,7 +5,7 @@
  * Time: 09:46
  * To change this template use File | Settings | File Templates.
  */
-
+//(function(Backbone, Tatami){
 var MFile = Backbone.Model.extend({
     idAttribute: 'attachmentId',
     initialize: function(){
@@ -16,3 +16,4 @@ var MFile = Backbone.Model.extend({
 var MQuota = Backbone.Model.extend({
     url : '/tatami/rest/attachments/quota'
 });
+//})(Backbone, Tatami);

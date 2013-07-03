@@ -6,6 +6,11 @@ var VFilesItem = Marionette.ItemView.extend({
         this.model.bind('change', this.render, this);
     },
 
+
+    /*modelEvents: {   //A la place de bind
+      'change': 'render'
+    },           */
+
     tagName: 'tr',
 
     events:{

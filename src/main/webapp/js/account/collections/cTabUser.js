@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
 var CTabUser = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
@@ -55,3 +56,4 @@ var CTabUser = Backbone.Collection.extend({
 
     }
 });
+//})(Backbone, Tatami);

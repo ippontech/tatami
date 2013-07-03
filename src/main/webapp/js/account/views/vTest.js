@@ -7,31 +7,23 @@
  */
 
 
-
-/*
-var VForm = Marionette.ItemView.extend({
-    template: "#temp-from"
+_.templateSettings = {
+    interpolate: /\<\@\=(.+?)\@\>/gim,
+    evaluate: /\<\@(.+?)\@\>/gim,
+    escape: /\<\@\-(.+?)\@\>/gim
+};
+var VAvatar = Marionette.ItemView.extend({
+    template: "#template-avatar"
 } );
 
-var VFormInfo = Marionette.ItemView.extend({
-    template: "#temp-form-info"
+var VNavigation = Marionette.ItemView.extend({
+    template: "#template-navigation"
 } );
 
-var VFormButton = Marionette.ItemView.extend({
-    template: "#temp-form-button"
+var VContent = Marionette.ItemView.extend({
+    template: "#template-content"
 } );
 
-var container = new Backbone.Marionette.Region({
-    el: "#theform"
-});
 
-var MyLayout = Backbone.Marionette.Layout.extend({
-    template: "#my-account",
 
-    regions: {
-        form: "#form",
-        formInfo: "#form-info",
-        formButton: "#form-button"
-    }
-});        */
 

@@ -57,7 +57,6 @@ _.templateSettings = {
         profile: function() {
             this.selectMenu('profile');
 
-
             if(!app.views.profile){
                 var model = new MAccountProfile();
 
@@ -68,19 +67,26 @@ _.templateSettings = {
                 app.views.profile.destroy = new VAccountProfileDestroy({
                     model: model
                 });
-
-               /* var layout = new MyLayout();
-                layout.form.show(new VForm());
-                layout.formInfo.show(new VFormInfo());
-                layout.formButton.show(new VFormButton());
-                container.show(layout);*/
             }
 
-
-
             this.resetView();
+
+             /*var profileLayout = new ProfileLayout();
+            ProfileContainer.show(profileLayout);
+
+             profileLayout.profileChange.show(new VAvatar());
+             profileLayout.profileDestroy.show(new VNavigation());    */
+
+
+            /*this.addView(app.views.profile.edit);
+            this.addView(app.views.profile.destroy); */
+            //accountLayout.content.show(app.views.profile.edit);
+            //accountLayout.content.show(app.views.profile.destroy);
             this.addView(app.views.profile.edit);
             this.addView(app.views.profile.destroy);
+
+            //accountLayout.content.close();  //Comme on add des views ca ne marche pas.
+            //alert('t');
 
         },
 

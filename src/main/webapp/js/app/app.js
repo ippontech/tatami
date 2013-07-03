@@ -152,7 +152,8 @@
     }
 
     Tatami.app.on("initialize:after", function(options){
-        if (Backbone.history){
+        //if (Backbone.History.started){
+            if (Backbone.history){
             Tatami.app.router = new Tatami.Router();
             Backbone.history.start({
                 pushState: true,

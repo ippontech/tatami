@@ -5,7 +5,9 @@
  * Time: 17:05
  * To change this template use File | Settings | File Templates.
  */
+//(function(Backbone, Tatami){
 
 var MPreferences = Backbone.Model.extend({
     url: '/tatami/rest/account/preferences'
 });
+//})(Backbone, Tatami);

@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
 var CFiles = Backbone.Collection.extend({
     model: MFile,
     url: '/tatami/rest/attachments',
@@ -14,3 +15,4 @@ var CFiles = Backbone.Collection.extend({
 
     }
 });
+//})(Backbone, Tatami);

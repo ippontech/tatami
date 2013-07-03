@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
-
 var VDailyStats = Marionette.ItemView.extend({
     initialize:function () {
         var self = this;

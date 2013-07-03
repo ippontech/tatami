@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+
 var VAccountProfile = Marionette.ItemView.extend({
     tagName: 'form',
     template: '#account-profile',
@@ -25,6 +26,12 @@ var VAccountProfile = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 self.$(".return").html(new VFormSuccess().render().$el);
+
+                //Tatami.app.trigger('success', 'Profil sauvegardé');
+
+                /*this.listenTo(Tatami.app, 'success', function(msg){
+
+                });*/
                 //self.render();  //Only with region ?
             },
             error: function(){
@@ -71,14 +78,4 @@ var VAccountProfileDestroy = Marionette.ItemView.extend({
     }
 });
 
-var VAvatar = Marionette.ItemView.extend({
-    template: "#template-avatar"
-} );
 
-var VNavigation = Marionette.ItemView.extend({
-    template: "#template-navigation"
-} );
-
-var VContent = Marionette.ItemView.extend({
-    template: "#template-content"
-} );

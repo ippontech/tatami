@@ -8,7 +8,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div class="row">
+
     <div class="col-span-4">
         <div class="tabbable alert alert-status">
             <ul class="adminMenu nav nav-pills nav-stacked nomargin">
@@ -55,10 +55,4 @@
             </ul>
         </div>
     </div>
-    <div class="col-span-8">
-        <div id="accountContent" class="alert alert-status">
 
-
-        </div>
-    </div>
-</div>

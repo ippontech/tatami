@@ -6,7 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
+
 
 var CDailyStat = Backbone.Collection.extend({
     url:'/tatami/rest/stats/day'
 });
+//})(Backbone, Tatami);

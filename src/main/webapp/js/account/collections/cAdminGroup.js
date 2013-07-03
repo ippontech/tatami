@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
 
 var CAdminGroup = Backbone.Collection.extend({
     model : MGroup,
@@ -54,3 +55,4 @@ var CListUserGroup = Backbone.Collection.extend({
         return '/tatami/rest/groups/' + this.options.groupId + '/members/';
     }
 });
+//})(Backbone, Tatami);

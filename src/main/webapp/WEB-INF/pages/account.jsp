@@ -16,7 +16,14 @@
             <c:when test="${not empty user}">
                 <div id="avatar"></div>
                 <br/>
+                <div class="row">
                 <div id="navigation"></div>
+                    <div class="col-span-8">
+                        <div id="accountContent" class="alert alert-status">
+                            <div id="content"></div>
+                        </div>
+                    </div>
+                </div>
             </c:when>
             <c:otherwise>
                 <div class="row-fluid">
@@ -25,7 +32,7 @@
             </c:otherwise>
         </c:choose>
     </div>
-    <div id="content"></div>
+
 </script>
 
 <script id="template-avatar" type="text/html">
@@ -36,10 +43,26 @@
     <jsp:include page="includes/navigation-admin.jsp"/>
 </script>
 
-<script id="template-content" type="text/html">
-    <jsp:include page="includes/templates-admin.jsp"/>
+<script id="template-content" type="text/template">
+                vcvx    fdfs
 </script>
+
+<script id="template-account-profile" type="text/template">
+    <div id="profile-change"></div>
+    <div id="profile-destroy"></div>
+</script>
+
+<script id="template-avatar" type="text/html">
+    <jsp:include page="includes/topavatar.jsp"/>
+</script>
+
+<script id="template-navigation" type="text/html">
+    <jsp:include page="includes/navigation-admin.jsp"/>
+</script>
+
 <body>
+
+<jsp:include page="includes/templates-admin.jsp"/>
 
 <jsp:include page="includes/topmenu.jsp"/>
 
@@ -56,10 +79,11 @@
 <c:if test="${wro4jEnabled eq false}">
   <script src="/js/vendor/raphael-min.js"></script>
   <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+
     <script src="/js/account/views/vTest.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
+    <script src="/js/account/layout/lAccount.js"></script>
     <script src="/js/account/layout/lAccountProfile.js"></script>
-    <script src="/js/account/app.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
@@ -85,8 +109,8 @@
     <script src="/js/account/collections/cTabUser.js"></script>
 
     <script src="/js/account/models/mAccountProfile.js"></script>
-
     <script src="/js/account/router.js"></script>
+    <script src="/js/account/app.js"></script>
 
 
 

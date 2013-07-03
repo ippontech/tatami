@@ -11,7 +11,31 @@ _.templateSettings = {
     escape: /\<\@\-(.+?)\@\>/gim
 };
 
-var app;
+
+
+/*var Account = {
+    views: {},
+    collections: {},
+    View: {},
+    Collection: {},
+    Model: {},
+    Router: {}
+};
+
+Account.app = new Backbone.Marionette.Application();
+
+if(!window.app){
+       window.app = Account.app;
+}       */
+
+var Tatami = {
+    views: {},
+    collections: {},
+    View: {},
+    Collection: {},
+    Model: {},
+    Router: {}
+};
 
 if(!window.app){
     app = window.app = _.extend({
@@ -27,8 +51,6 @@ else {
     app = window.app;
 }
 
-
-// Show the "layout" in the "container" region
 accountLayout = new AccountLayout();
 AccountContainer.show(accountLayout);
 
@@ -39,8 +61,30 @@ accountLayout.content.show(new VContent());
 
 
 $(function() {
+        //if (Backbone.History.started){
+       /*if (Backbone.history){
+            app.router = new AdminRouter();
+            Backbone.history.start({
+                pushState: true,
+                root: "/tatami/account/"
+            });
 
- app.router = new AdminRouter();
+            if (Backbone.history._hasPushState) {
+                $(document).delegate("a", "click", function(evt) {
+                    var href = $(this).attr("href");
+                    var protocol = this.protocol + "//";
+                    if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol && /^#.+$/.test(href)) {
+                        evt.preventDefault();
+                        Backbone.history.navigate(href, true);
+                    }
+                });
+            }
+        }    */
+
+  //  });
+
+    app.router = new AdminRouter();
+
  if( ! Backbone.History.started) Backbone.history.start();
 
 });

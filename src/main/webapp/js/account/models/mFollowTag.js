@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
 var MFollowTag = Backbone.Model.extend({
     url : function(){
         return '/tatami/rest/tagmemberships/create';
@@ -17,3 +18,4 @@ var MUnFollowTag = Backbone.Model.extend({
         return '/tatami/rest/tagmemberships/destroy';
     }
 });
+//})(Backbone, Tatami);

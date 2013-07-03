@@ -6,6 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
+//(function(Backbone, Tatami){
+
+
 var MAccountProfile = Backbone.Model.extend({
     url: '/tatami/rest/account/profile',
     idAttribute: 'username',
@@ -22,3 +25,4 @@ var MAccountProfile = Backbone.Model.extend({
         });
     }
 });
+//})(Backbone, Tatami);

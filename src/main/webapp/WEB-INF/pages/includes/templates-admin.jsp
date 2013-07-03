@@ -35,10 +35,6 @@
     <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
 </script>
 
-
-
-
-
 <script type="text/template" id="account-profile" >
 
     <h2>
