@@ -39,14 +39,7 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                         Authentication authentication) throws ServletException, IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-        if (request.getParameter("device_token") != null) {
-            String deviceToken = request.getParameter("device_token");
-            log.debug("Device token: {}", deviceToken);
-            String deviceId = deviceToken.substring(1, deviceToken.length() - 1);
-            log.debug("Device Id: {}", deviceId);
-            appleDeviceUserRepository.createAppleDeviceForUser(deviceId, authentication.getName());
-            appleDeviceRepository.createAppleDevice(authentication.getName(), deviceId);
-        }
+        manageAppleDevice(authentication.getName(), request.getParameter("device_token"));
 
         if (savedRequest == null) {
             super.onAuthenticationSuccess(request, response, authentication);
@@ -78,5 +71,21 @@ public class TatamiAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     public void setRequestCache(RequestCache requestCache) {
         this.requestCache = requestCache;
+    }
+
+    private void manageAppleDevice(String login, String deviceToken) {
+        if (deviceToken == null) {
+            return;
+        }
+        log.debug("Device token: {}", deviceToken);
+        String deviceId = deviceToken.substring(1, deviceToken.length() - 1);
+        log.debug("Device Id: {}", deviceId);
+        String existingDeviceLogin = appleDeviceUserRepository.findLoginForDeviceId(deviceId);
+        if (existingDeviceLogin != null) {
+            appleDeviceRepository.removeAppleDevice(existingDeviceLogin, deviceId);
+            appleDeviceUserRepository.removeAppleDeviceForUser(deviceId);
+        }
+        appleDeviceUserRepository.createAppleDeviceForUser(deviceId, login);
+        appleDeviceRepository.createAppleDevice(login, deviceId);
     }
 }
