@@ -1,25 +1,12 @@
 
-var VFilesItem = Marionette.ItemView.extend({
-    template: _.template($('#files-item').html()),
-
-    initialize: function(){
-        this.model.bind('change', this.render, this);
-    },
-
-
-    /*modelEvents: {   //A la place de bind
-      'change': 'render'
-    },           */
-
+var VFile = Marionette.ItemView.extend({
+    template: '#files-item',
     tagName: 'tr',
+    initialize: function(){
+    },
 
     events:{
         'click .btn':'removeImage'
-    },
-
-    render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
-        return this.$el;
     },
 
     removeImage: function(){
@@ -35,7 +22,6 @@ var VFilesItem = Marionette.ItemView.extend({
             }
         });
     }
-
 });
 
 var VQuotaFiles = Marionette.ItemView.extend({
@@ -43,7 +29,7 @@ var VQuotaFiles = Marionette.ItemView.extend({
 
     initialize: function(){
         this.model = new MQuota();
-        this.model.bind('change', this.render, this);
+        //this.model.bind('change', this.render, this);
         this.model.fetch();
 
         var self = this;
@@ -53,6 +39,10 @@ var VQuotaFiles = Marionette.ItemView.extend({
         });
     },
 
+    modelEvents: {
+        "change" : "render"
+    } ,
+
     render: function(){
         var quota = this.model.get(0);
         quota = Math.round(quota);
@@ -61,37 +51,38 @@ var VQuotaFiles = Marionette.ItemView.extend({
     }
 });
 
-var VFiles = Marionette.ItemView.extend({
-    MenuTemplate: _.template($('#files-menu').html()),
-    HeaderTemplate: _.template($('#files-header').html()),
+var VFiles =  Marionette.CollectionView.extend({
 
-    initialize: function(){
-        this.$el.addClass('row-fluid');
+       itemView : VFile,
 
-        this.views = {};
-        this.views.files = new VTab({
-            collection : this.collection,
-            ViewModel : VFilesItem,
-            template: this.HeaderTemplate
-        });
+        initialize: function() {
+            _.bindAll(this);
 
-        this.views.quota = new VQuotaFiles();
+            this.$el.addClass('row-fluid');
 
-        app.on('deleteSucess',function(){
-            $('.file-infos').append($('#delete-file-success').html());
-        });
+            app.on('deleteSucess',function(){
+                $('.file-infos').append($('#delete-file-success').html());
+            });
 
-        app.on('deleteError',function(){
-            $('.file-infos').append($('#delete-file-error').html());
-        });
-    },
+            app.on('deleteError',function(){
+                $('.file-infos').append($('#delete-file-error').html());
+            }) ;
+        },
 
-    render: function(){
-        this.$el.empty();
-        this.$el.append(this.MenuTemplate());
-        this.$el.append(this.views.quota.render());
-        this.$el.append(this.views.files.render());
-        this.delegateEvents();
-        return this.$el;
-    }
+        onAfterItemAdded: function(itemView){
+            console.log("item was added");
+        },
+        onRender: function(){
+            console.log("render");
+        }
+})  ;
+
+var VFilesMenu = Marionette.ItemView.extend({
+    template: '#files-menu'
+
+});
+
+var VFilesHeader = Marionette.ItemView.extend({
+    template: '#files-header'
+
 });

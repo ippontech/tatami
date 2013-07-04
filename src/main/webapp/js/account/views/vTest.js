@@ -20,9 +20,7 @@ var VNavigation = Marionette.ItemView.extend({
     template: "#template-navigation"
 } );
 
-var VContent = Marionette.ItemView.extend({
-    template: "#template-content"
-} );
+
 
 
 

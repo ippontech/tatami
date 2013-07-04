@@ -16,7 +16,7 @@ _.templateSettings = {
 
     var AdminRouter = Backbone.Marionette.AppRouter.extend({
     initialize: function(){
-        this.views = [];
+
     },
 
     selectMenu: function(menu) {
@@ -25,16 +25,16 @@ _.templateSettings = {
     },
 
     resetView : function(){
-        this.views = [];
-        $('#accountContent').empty();
+        //Harsh way but the regionx.close() was buggy
+        /*contentLayout.close();
+        contentLayout = new ContentLayout();
+        ContentContainer.show(contentLayout);*/
+        contentLayout.region1.close();
+        contentLayout.region2.close();
+        contentLayout.region3.close();
+        contentLayout.region4.close();
+        contentLayout.region5.close();
     },
-
-    addView : function(view){
-        this.views.push(view);
-        $('#accountContent').append(view.$el);
-        view.render();
-    },
-
 
     routes: {
             'profile': 'profile',
@@ -55,66 +55,37 @@ _.templateSettings = {
             '*action': 'profile'
         },
         profile: function() {
+
             this.selectMenu('profile');
 
-            if(!app.views.profile){
-                var model = new MAccountProfile();
-
-                app.views.profile = {};
-                app.views.profile.edit = new VAccountProfile({
-                    model: model
-                });
-                app.views.profile.destroy = new VAccountProfileDestroy({
-                    model: model
-                });
-            }
-
+            var mAccountProfile = new MAccountProfile();
+            var vAccountProfile = new VAccountProfile({model: mAccountProfile});
+            var vAccountProfileDestroy = new VAccountProfileDestroy({model: mAccountProfile});
             this.resetView();
-
-             /*var profileLayout = new ProfileLayout();
-            ProfileContainer.show(profileLayout);
-
-             profileLayout.profileChange.show(new VAvatar());
-             profileLayout.profileDestroy.show(new VNavigation());    */
-
-
-            /*this.addView(app.views.profile.edit);
-            this.addView(app.views.profile.destroy); */
-            //accountLayout.content.show(app.views.profile.edit);
-            //accountLayout.content.show(app.views.profile.destroy);
-            this.addView(app.views.profile.edit);
-            this.addView(app.views.profile.destroy);
-
-            //accountLayout.content.close();  //Comme on add des views ca ne marche pas.
-            //alert('t');
-
+            contentLayout.region1.show(vAccountProfile);
+            contentLayout.region2.show(vAccountProfileDestroy) ;
         },
 
         preferences: function(){
             this.selectMenu('preferences');
 
-           // var model = new MPreferences();
-            //app.views.preferences = {};
-            if(!app.views.preferences){
-                app.views.preferences = new VPreferences(/*{model: model}*/);
-            }
-
+            var mPreferences = new MPreferences();
+            var vPreferences = new VPreferences({model : mPreferences});
             this.resetView();
-            this.addView(app.views.preferences);
+            contentLayout.region1.show(vPreferences);
         },
 
         password: function(){
             this.selectMenu('password');
 
-            if(!app.views.password){
-                app.views.password = new VPassword();
-            }
-
+            var mPassword = new MPassword();
+            var vPassword = new VPassword({model : mPassword});
             this.resetView();
-            this.addView(app.views.password);
+            contentLayout.region1.show(vPassword);
         },
 
         initGroups: function(){
+
             if(!app.views.groups)
                 app.views.groups = new VTabContainer({
                     collection: new CTabGroup(),
@@ -132,6 +103,7 @@ _.templateSettings = {
         },
 
         initAddGroup: function(listView){
+
             if(!app.views.addgroup){
                 app.views.addgroup = new VAddGroup();
                 app.views.addgroup.bind('success', listView.collection.fetch, listView.collection);
@@ -149,12 +121,10 @@ _.templateSettings = {
             var addview = this.initAddGroup(view);
 
             addview.collection = view.collection;
+            this.resetView();
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(addview);
-                this.addView(view);
-            }
+            contentLayout.region1.show(addview);
+            contentLayout.region2.show(view);
             view.selectMenu('groups');
         },
 
@@ -168,15 +138,15 @@ _.templateSettings = {
 
             addview.collection = view.collection;
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(addview);
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(addview);
+            contentLayout.region2.show(view);
+
             view.selectMenu('groups/recommended');
         },
 
         initSearchGroups: function(){
+
             if(!app.views.SearchGroups)
                 app.views.SearchGroups = new VTabSearch({
                     collection: new CTabGroup(),
@@ -192,33 +162,34 @@ _.templateSettings = {
             this.selectMenu('groups');
             view.selectMenu('groups/search');
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
-            view.selectMenu('groups/search');
+            //this.resetView();
+            contentLayout.region1.show(view);
         },
 
         editGroup: function(id){
             this.selectMenu('');
-
             this.resetView();
-            this.addView(new VEditGroup({
+
+            var vEditGroup = new VEditGroup({
                 groupId : id
-            }));
+            });
+
             var collection = new CListUserGroup();
             collection.options = {
                 groupId : id
             };
-
-            this.addView(new VAddUserGroup({
+            var vAddUserGroup = new VAddUserGroup({
                 collection : collection
-            }));
+            });
 
-            this.addView(new VListUserGroup({
+            var vListUserGroup = new VListUserGroup({
                 collection : collection,
                 groupId : id
-            }));
+            });
+
+            contentLayout.region1.show(vEditGroup);
+            contentLayout.region2.show(vAddUserGroup);
+            contentLayout.region3.show(vListUserGroup);
         },
 
         initTags: function(){
@@ -237,10 +208,9 @@ _.templateSettings = {
             this.selectMenu('tags');
 
             view.collection.owned();
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(view);
+
             view.selectMenu('tags');
         },
 
@@ -250,10 +220,9 @@ _.templateSettings = {
 
             view.collection.recommended();
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(view);
+
             view.selectMenu('tags/recommended');
         },
 
@@ -272,10 +241,9 @@ _.templateSettings = {
             var view = this.initSearchTags();
             this.selectMenu('tags');
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(view);
+
             view.selectMenu('tags/search');
         },
 
@@ -296,10 +264,9 @@ _.templateSettings = {
 
             view.collection.owned();
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(view);
+
             view.selectMenu('users');
         },
 
@@ -309,10 +276,9 @@ _.templateSettings = {
 
             view.collection.recommended();
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(view);
+
             view.selectMenu('users/recommended');
         },
 
@@ -330,11 +296,9 @@ _.templateSettings = {
         searchUsers: function(){
             var view = this.initSearchUser();
             this.selectMenu('users');
+            this.resetView();
+            contentLayout.region1.show(view);
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
             view.selectMenu('users/search');
         },
 
@@ -345,7 +309,7 @@ _.templateSettings = {
             var view = app.views.daily;
 
             this.resetView();
-            this.addView(view);
+            contentLayout.region1.show(view);
         },
 
         initFiles: function(){
@@ -363,14 +327,13 @@ _.templateSettings = {
 
             view.collection.fetch();
 
-            if(this.views.indexOf(view)===-1){
-                this.resetView();
-                this.addView(view);
-            }
+            this.resetView();
+            contentLayout.region1.show(new VFilesMenu());
+            contentLayout.region2.show(new VQuotaFiles());
+            contentLayout.region3.show(new VFilesHeader);
+            contentLayout.region4.show(view);
             this.selectMenu('files');
-
         }
-
     });
 
 

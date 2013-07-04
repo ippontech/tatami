@@ -67,6 +67,12 @@ h4 {
 .nomargin {
       margin: 0px;
 }
+
+.file-table
+{
+display: block;
+}
+
 .little-marge-right{
     margin-right: 20px
 }
@@ -101,6 +107,7 @@ h4 {
     width: 550px;
 
 }
+
 
 .avatar-float-left-container  {
     margin-left: 15px;

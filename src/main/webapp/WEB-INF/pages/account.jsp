@@ -20,7 +20,7 @@
                 <div id="navigation"></div>
                     <div class="col-span-8">
                         <div id="accountContent" class="alert alert-status">
-                            <div id="content"></div>
+                            <div id="content-container"></div>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,11 @@
 </script>
 
 <script id="template-content" type="text/template">
-                vcvx    fdfs
+    <div id="region1"></div>
+    <div id="region2"></div>
+    <div id="region3"></div>
+    <div id="region4"></div>
+    <div id="region5"></div>
 </script>
 
 <script id="template-account-profile" type="text/template">
@@ -83,7 +87,7 @@
     <script src="/js/account/views/vTest.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
     <script src="/js/account/layout/lAccount.js"></script>
-    <script src="/js/account/layout/lAccountProfile.js"></script>
+    <script src="/js/account/layout/lContent.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
@@ -110,6 +114,7 @@
 
     <script src="/js/account/models/mAccountProfile.js"></script>
     <script src="/js/account/router.js"></script>
+    <!--script src="/js/app/router.js"></script-->
     <script src="/js/account/app.js"></script>
 
 

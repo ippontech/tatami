@@ -15,6 +15,8 @@
             'groups/:group/members' : 'groupsMembers',
             'search/:input' : 'search',
             'company' : 'company',
+            'account' : 'profileAccount',
+            'account/profile' : 'profileAccount',
             '*actions' : 'defaults'
         },
 
@@ -371,7 +373,13 @@
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
-        }
+        }//,
+
+        /*profileAccount: function(){
+            Tatami.app.body.close();
+            Tatami.app.side.close();
+            Tatami.app.header.close();
+        } */
     });
 
     Tatami.Router = Router;

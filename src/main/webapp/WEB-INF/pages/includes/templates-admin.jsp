@@ -596,33 +596,29 @@
 </script>
 
 <script type="text/template" id="files-header">
-<thead>
-    <tr>
-     <th><fmt:message key="tatami.user.file.name"/></th>
-     <th><fmt:message key="tatami.user.file.size"/></th>
-     <th><fmt:message key="tatami.user.file.creation.date"/></th>
-     <th></th>
-    </tr>
-</thead>
+<div>
+     <span class="col-span-5"><b><fmt:message key="tatami.user.file.name"/></b></span>
+     <span class="col-span-3"><b><fmt:message key="tatami.user.file.size"/></b></span>
+     <span class="col-span-2"><b><fmt:message key="tatami.user.file.creation.date"/></b></span>
+     <span class="col-span-2">  </span>
+</div>
+    </br>
 </script>
 
 <script type="text/template" id="files-item">
-    <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
-    <td><@= (size/1000) @> kb</td>
-    <td><@= prettyPrintCreationDate @> </td>
-    <td>
+
+
+    <span class="col-span-5 file-table"><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></span>
+    <span class="col-span-3"><@= (size/1000) @> kb</span>   </tr>
+    <span class="col-span-2"><@= prettyPrintCreationDate @> </span>
+    <span class="col-span-2">
         <span class="btn btn-primary btn-block">
-                <fmt:message key="tatami.user.status.delete"/>
+            <fmt:message key="tatami.user.status.delete"/>
         </span>
-    </td>
+    </span>
+
 </script>
 
-<script type="text/template" id="files-pagination">
-    <ul class="pager">
-        <li class="previous"><a href="#">Previous</a></li>
-        <li class="next"><a href="#">Next</a></li>
-    </ul>
-</script>
 
 <script type="text/template" id="delete-file-success">
     <div class="alert alert-success">

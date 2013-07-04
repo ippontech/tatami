@@ -13,6 +13,8 @@ var VUser = Marionette.ItemView.extend({
     },
 
     template:_.template($('#users-item').html()),
+//    template:_.template($('#users-item').html()),
+
     tagName: 'tr',
 
     events:{
