@@ -46,11 +46,13 @@ var VAddGroup = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 $(e.target)[0].reset();
-                self.$el.find('.return').append($('#form-success').html());
+                //self.$el.find('.return').append($('#form-success').html());
+                app.trigger('even-alert-success', app.formSuccess);
                 self.trigger('success');
             },
             error: function(){
-                self.$el.find('.return').append($('#form-error').html());
+                //self.$el.find('.return').append($('#form-error').html());
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }
@@ -223,10 +225,12 @@ var VEditGroup = Marionette.ItemView.extend({
         var self = this;
         self.model.save(null, {
             success: function(){
-                self.$el.find('.return').append($('#form-success').html());
+                //self.$el.find('.return').append($('#form-success').html());
+                app.trigger('even-alert-success', app.formSuccess);
             },
             error: function(){
-                self.$el.find('.return').append($('#form-error').html());
+                //self.$el.find('.return').append($('#form-error').html());
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }
@@ -346,10 +350,12 @@ var VAddUserGroup = Marionette.ItemView.extend({
         var self = this;
         self.collection.create(data, {
             success: function(model){
-                self.$el.find('.return').append($('#groups-form-adduser-success').html());
+                //self.$el.find('.return').append($('#groups-form-adduser-success').html());
+                app.trigger('even-alert-success', app.memberAddSuccess);
             },
             error: function(model){
-                self.$el.find('.return').append($('#groups-form-adduser-error').html());
+                //self.$el.find('.return').append($('#groups-form-adduser-error').html());
+                app.trigger('even-alert-error', app.memberAddError);
                 model.destroy();
             }
         });

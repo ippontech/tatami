@@ -45,12 +45,14 @@ var VPreferences = Marionette.ItemView.extend({
         var self = this;
         self.model.save(null, {
             success: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-success').html());
+                //self.render();
+                //self.$el.find('.return').append($('#form-success').html());
+                app.trigger('even-alert-success',app.formSuccess);
             },
             error: function(){
-                self.render();
-                self.$el.find('.return').append($('#form-error').html());
+                //self.render();
+                //self.$el.find('.return').append($('#form-error').html());
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }

@@ -51,6 +51,69 @@ else {
     app = window.app;
 }
 
+//app.formSuccess = "Form Save";
+app.formSuccess = $('#form-success-label').text().trim();
+app.formError =   $('#form-error-label').text().trim();
+app.deleteFileSuccess = $('#delete-file-success-label').text().trim();
+app.deleteFileError = $('#delete-file-error-label').text().trim();
+app.memberAddSuccess = $('#groups-form-adduser-success-label').text().trim();
+app.memberAddError = $('#groups-form-adduser-error-label').text().trim();
+
+
+app.on('even-alert-success', function(msg){
+
+    $.jGrowl(msg, {
+        theme: 'alert-success',
+        //speed: 'slow',
+        life: 2500 ,
+         animateOpen: {
+         height: "show"
+         }//,
+         /*animateClose: {
+         height: "hide"
+         }  */
+    });
+});
+
+app.on('even-alert-error', function(msg){
+
+    $.jGrowl(msg, {
+        theme: 'alert-danger',
+        //speed: 'slow',
+        life: 4000
+        /* animateOpen: {
+         height: "show"
+         },
+         animateClose: {
+         height: "hide"
+         } */
+    });
+});
+
+app.on('even-alert-warning', function(msg){
+
+    $.jGrowl(msg, {
+        theme: 'alertColor',
+        //speed: 'slow',
+        life: 3000,
+         animateOpen: {
+         height: "show"
+         },
+         animateClose: {
+         height: "hide"
+         }
+    });
+});
+
+
+
+/*app.trigger('even-alert-success', 'Form Save');
+app.trigger('even-alert-error', 'Form Save');
+app.trigger('even-alert-warning', 'Form Save');     */
+
+
+
+
 accountLayout = new AccountLayout();
 AccountContainer.show(accountLayout);
 

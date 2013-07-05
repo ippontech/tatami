@@ -25,32 +25,24 @@ var VAccountProfile = Marionette.ItemView.extend({
 
         self.model.save(null, {
             success: function(){
-                self.$(".return").html(new VFormSuccess().render().$el);
+               // self.$(".return").html(new VFormSuccess().render().$el);
+                //self.render();
+                //debugger;
+               /* var msg = {
+                    prop: "<fmt:message key=\"tatami.form.success\" />"
 
-                //Tatami.app.trigger('success', 'Profil sauvegardé');
+                    };   */
+                //accountLayout.avatar.show();
+                app.trigger('even-alert-success', app.formSuccess);
 
-                /*this.listenTo(Tatami.app, 'success', function(msg){
-
-                });*/
-                //self.render();  //Only with region ?
             },
             error: function(){
-                self.$(".return").html(new VFormError().render().$el);
-                //self.render();   // Only with region?
+                //self.$(".return").html(new VFormError().render().$el);
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }
 });
-
-var VFormSuccess = Marionette.ItemView.extend({
-   // tag: '.return', ok with region ?
-    template: "#form-success"
-} );
-
-var VFormError = Marionette.ItemView.extend({
-    tag: '.return',
-    template: "#form-error"
-} );
 
 var VAccountProfileDestroy = Marionette.ItemView.extend({
     tagName: 'form',
@@ -64,15 +56,13 @@ var VAccountProfileDestroy = Marionette.ItemView.extend({
         e.preventDefault();
         var self = this;
 
+        debugger;
         self.model.destroy({
             success: function(){
-                //self.$el.find('.return').append($('#form-success').html());
-                self.$(".return").html(new VFormSuccess().render().$el);
-                _.delay(_.bind(window.location.reload, window), 5000);
+                app.trigger('even-alert-success', app.formSuccess);
             },
             error: function(){
-                //self.$el.find('.return').append($('#form-error').html());
-                self.$(".return").html(new VFormSuccess().render().$el);
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }

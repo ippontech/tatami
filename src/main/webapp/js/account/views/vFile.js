@@ -14,11 +14,14 @@ var VFile = Marionette.ItemView.extend({
         this.model.destroy({
             success: function(){
                 self.remove();
+                app.trigger('even-alert-success', app.deleteFileSuccess);
                 app.trigger('refreshQuota');
-                app.trigger('deleteSucess');
+                //app.trigger('deleteSucess');
+
             },
             error: function(){
-                app.trigger('deleteError');
+                //app.trigger('deleteError');
+                app.trigger('even-alert-success', app.deleteFileError);
             }
         });
     }
@@ -60,21 +63,23 @@ var VFiles =  Marionette.CollectionView.extend({
 
             this.$el.addClass('row-fluid');
 
-            app.on('deleteSucess',function(){
-                $('.file-infos').append($('#delete-file-success').html());
+            /*app.on('deleteSucess',function(){
+                //$('.file-infos').append($('#delete-file-success').html());
+                app.trigger('even-alert-success', 'greg');
             });
 
             app.on('deleteError',function(){
-                $('.file-infos').append($('#delete-file-error').html());
-            }) ;
-        },
+                //$('.file-infos').append($('#delete-file-error').html());
+                app.trigger('even-alert-error', 'greg');
+            }) ;   */
+        }//,
 
-        onAfterItemAdded: function(itemView){
+        /*onAfterItemAdded: function(itemView){
             console.log("item was added");
         },
         onRender: function(){
             console.log("render");
-        }
+        }  */
 })  ;
 
 var VFilesMenu = Marionette.ItemView.extend({

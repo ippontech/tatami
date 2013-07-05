@@ -73,6 +73,13 @@ h4 {
 display: block;
 }
 
+
+
+div.jGrowl-notification{
+    background-color : none;
+    opacity : 1;
+}
+
 .little-marge-right{
     margin-right: 20px
 }

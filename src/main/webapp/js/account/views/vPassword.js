@@ -57,10 +57,12 @@ var VPassword = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 $(e.target)[0].reset();
-                self.$el.find('.return').append($('#form-success').html());
+                //self.$el.find('.return').append($('#form-success').html());
+                app.trigger('even-alert-success', app.formSuccess);
             },
             error: function(){
-                self.$el.find('.return').append($('#form-error').html());
+                //self.$el.find('.return').append($('#form-error').html());
+                app.trigger('even-alert-error', app.formError);
             }
         });
     }

@@ -4,7 +4,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
@@ -81,9 +84,10 @@
 </script>
 
 <c:if test="${wro4jEnabled eq false}">
+
   <script src="/js/vendor/raphael-min.js"></script>
   <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
-
+    <script src="/js/vendor/jquery.jgrowl.js"></script>
     <script src="/js/account/views/vTest.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
     <script src="/js/account/layout/lAccount.js"></script>

@@ -26,14 +26,10 @@ _.templateSettings = {
 
     resetView : function(){
         //Harsh way but the regionx.close() was buggy
-        /*contentLayout.close();
+
+        contentLayout.close();
         contentLayout = new ContentLayout();
-        ContentContainer.show(contentLayout);*/
-        contentLayout.region1.close();
-        contentLayout.region2.close();
-        contentLayout.region3.close();
-        contentLayout.region4.close();
-        contentLayout.region5.close();
+        ContentContainer.show(contentLayout);
     },
 
     routes: {
@@ -162,13 +158,13 @@ _.templateSettings = {
             this.selectMenu('groups');
             view.selectMenu('groups/search');
 
-            //this.resetView();
+            this.resetView();
             contentLayout.region1.show(view);
         },
 
         editGroup: function(id){
             this.selectMenu('');
-            this.resetView();
+
 
             var vEditGroup = new VEditGroup({
                 groupId : id
@@ -186,7 +182,7 @@ _.templateSettings = {
                 collection : collection,
                 groupId : id
             });
-
+            this.resetView();
             contentLayout.region1.show(vEditGroup);
             contentLayout.region2.show(vAddUserGroup);
             contentLayout.region3.show(vListUserGroup);

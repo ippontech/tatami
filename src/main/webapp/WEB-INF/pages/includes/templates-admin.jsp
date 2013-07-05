@@ -3,18 +3,26 @@
 
 
 
-<script type="text/template" id="form-success">
+<!--script type="text/template" id="form-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.form.success"/>
+        <!fmt:message key="tatami.form.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="form-success-label">
+    <fmt:message key="tatami.form.success"/>
 </script>
 
-<script type="text/template" id="form-error">
+<!--script type="text/template" id="form-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.form.error"/>
+        <!fmt:message key="tatami.form.error"/>
     </div>
+</script-->
+
+<script type="text/template" id="form-error-label">
+    <fmt:message key="tatami.form.error"/>
 </script>
 
 <script type="text/template" id="form-ldap">
@@ -436,19 +444,27 @@
 
 </script>
 
-<script type="text/template" id="groups-form-adduser-success">
+<!--script type="text/template" id="groups-form-adduser-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.group.edit.member.add.success"/>
+        <!fmt:message key="tatami.group.edit.member.add.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="groups-form-adduser-success-label">
+    <fmt:message key="tatami.group.edit.member.add.success"/>
 </script>
 
-<script type="text/template" id="groups-form-adduser-error">
+<!--script type="text/template" id="groups-form-adduser-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.group.edit.member.add.error"/>
+        <!fmt:message key="tatami.group.edit.member.add.error"/>
     </div>
 
+</script-->
+
+<script type="text/template" id="groups-form-adduser-error-label">
+    <fmt:message key="tatami.group.edit.member.add.error"/>
 </script>
 
 <script type="text/template" id="groups-header">
@@ -620,18 +636,26 @@
 </script>
 
 
-<script type="text/template" id="delete-file-success">
+<!--script type="text/template" id="delete-file-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.user.file.delete.success"/>
+        <!fmt:message key="tatami.user.file.delete.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="delete-file-success-label">
+    <fmt:message key="tatami.user.file.delete.success"/>
 </script>
 
-<script type="text/template" id="delete-file-error">
+<!--script type="text/template" id="delete-file-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.user.file.delete.error"/>
+        <!fmt:message key="tatami.user.file.delete.error"/>
     </div>
+</script-->
+
+<script type="text/template" id="delete-file-error-label">
+    <fmt:message key="tatami.user.file.delete.error"/>
 </script>
 
 <script type="text/template" id="search-filter">

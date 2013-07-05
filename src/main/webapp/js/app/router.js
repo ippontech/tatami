@@ -373,13 +373,28 @@
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
-        }//,
+        },
 
-        /*profileAccount: function(){
-            Tatami.app.body.close();
-            Tatami.app.side.close();
-            Tatami.app.header.close();
-        } */
+        profileAccount: function(){
+            //Tatami.app.body.close();
+           // Tatami.app.side.close();
+            //Tatami.app.header.close();
+            /*var profileBody = Tatami.Factories.Profile.profileBody(username);
+
+            var region = Tatami.Factories.Status.getTimelineRegion();
+            var timeline = Tatami.Factories.Profile.statuses(username);
+            Tatami.app.body.show(profileBody);
+
+            profileBody.tatams.show(region);
+            profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
+
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+            region.timeline.show(timeline);
+
+            timeline.collection.fetch(); */
+
+            //profileBody.show(new VAccountProfile());
+        }
     });
 
     Tatami.Router = Router;
