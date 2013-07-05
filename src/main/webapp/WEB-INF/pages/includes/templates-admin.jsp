@@ -250,17 +250,17 @@
 <script type="text/template" id="users-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/users">
+            <a href ="#users">
                 <fmt:message key="tatami.account.users.myfriends"/>
             </a>
         </li>
         <li>
-            <a href ="#/users/recommended">
+            <a href ="#users/recommended">
                 <fmt:message key="tatami.account.users.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/users/search">
+            <a href ="#users/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
@@ -292,17 +292,17 @@
 <script type="text/template" id="groups-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/groups">
+            <a href ="#groups">
                 <fmt:message key="tatami.account.groups.mygroups"/>
             </a>
         </li>
         <li>
-            <a href ="#/groups/recommended">
+            <a href ="#groups/recommended">
                 <fmt:message key="tatami.account.groups.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/groups/search">
+            <a href ="#groups/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
@@ -551,17 +551,17 @@
 <script type="text/template" id="tags-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/tags">
+            <a href ="#tags">
                 <fmt:message key="tatami.account.tags.mytags"/>
             </a>
         </li>
         <li>
-            <a href ="#/tags/recommended">
+            <a href ="#tags/recommended">
                 <fmt:message key="tatami.account.tags.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/tags/search">
+            <a href ="#tags/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
