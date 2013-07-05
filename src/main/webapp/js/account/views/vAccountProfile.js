@@ -25,16 +25,7 @@ var VAccountProfile = Marionette.ItemView.extend({
 
         self.model.save(null, {
             success: function(){
-               // self.$(".return").html(new VFormSuccess().render().$el);
-                //self.render();
-                //debugger;
-               /* var msg = {
-                    prop: "<fmt:message key=\"tatami.form.success\" />"
-
-                    };   */
-                //accountLayout.avatar.show();
                 app.trigger('even-alert-success', app.formSuccess);
-
             },
             error: function(){
                 //self.$(".return").html(new VFormError().render().$el);

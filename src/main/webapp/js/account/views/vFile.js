@@ -16,11 +16,8 @@ var VFile = Marionette.ItemView.extend({
                 self.remove();
                 app.trigger('even-alert-success', app.deleteFileSuccess);
                 app.trigger('refreshQuota');
-                //app.trigger('deleteSucess');
-
             },
             error: function(){
-                //app.trigger('deleteError');
                 app.trigger('even-alert-success', app.deleteFileError);
             }
         });

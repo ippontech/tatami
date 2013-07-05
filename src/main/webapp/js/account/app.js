@@ -105,15 +105,6 @@ app.on('even-alert-warning', function(msg){
     });
 });
 
-
-
-/*app.trigger('even-alert-success', 'Form Save');
-app.trigger('even-alert-error', 'Form Save');
-app.trigger('even-alert-warning', 'Form Save');     */
-
-
-
-
 accountLayout = new AccountLayout();
 AccountContainer.show(accountLayout);
 
@@ -124,22 +115,10 @@ accountLayout.navigation.show(new VNavigation());
 contentLayout = new ContentLayout();
 ContentContainer.show(contentLayout);
 
-                                                     /*
-                                                     /*
-contentLayout.region1.show(new VAccountProfile());
-contentLayout.region2.show(new VAccountProfile());
-contentLayout.region3.show(new VAccountProfile());
-contentLayout.region2.close();
-contentLayout.region2.show(new VAccountProfile()); */
-//contentLayout.region2.close();
-
-    /*.show(new VAvatar());
-accountLayout.navigation.show(new VNavigation()); */
-
 
 $(function() {
         //if (Backbone.History.started){
-      /* if (Backbone.history){
+      if (Backbone.history){
             app.router = new AdminRouter();
             Backbone.history.start({
                 pushState: true,
@@ -147,23 +126,24 @@ $(function() {
             });
 
             if (Backbone.history._hasPushState) {
-
                 $(document).delegate("a", "click", function(evt) {
                     var href = $(this).attr("href");
                     var protocol = this.protocol + "//";
+
                     if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol && /^#.+$/.test(href)) {
                         evt.preventDefault();
+                        console.log('route', href);
                         Backbone.history.navigate(href, true);
                     }
                 });
             }
-        }  */
+        }
 
   //  });
 
-    app.router = new AdminRouter();
+   /* app.router = new AdminRouter();
 
- if( ! Backbone.History.started) Backbone.history.start();
+ if( ! Backbone.History.started) Backbone.history.start();   */
 
 });
 

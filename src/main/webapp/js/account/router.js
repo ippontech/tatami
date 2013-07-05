@@ -16,12 +16,11 @@ _.templateSettings = {
 
     var AdminRouter = Backbone.Marionette.AppRouter.extend({
     initialize: function(){
-
     },
 
     selectMenu: function(menu) {
         $('.adminMenu a').parent().removeClass('active');
-        $('.adminMenu a[href="/tatami/account/#/' + menu + '"]').parent().addClass('active');
+        $('.adminMenu a[href="/tatami/account/' + menu + '"]').parent().addClass('active');
     },
 
     resetView : function(){
