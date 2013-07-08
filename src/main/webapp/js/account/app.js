@@ -11,8 +11,6 @@ _.templateSettings = {
     escape: /\<\@\-(.+?)\@\>/gim
 };
 
-
-
 /*var Account = {
     views: {},
     collections: {},
@@ -132,7 +130,7 @@ $(function() {
 
                     if (typeof href !== 'undefined' && href.slice(protocol.length) !== protocol && /^#.+$/.test(href)) {
                         evt.preventDefault();
-                        console.log('route', href);
+                       // console.log('route', href);
                         Backbone.history.navigate(href, true);
                     }
                 });
