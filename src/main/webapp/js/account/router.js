@@ -63,7 +63,6 @@ _.templateSettings = {
 
         preferences: function(){
             this.selectMenu('preferences');
-
             var mPreferences = new MPreferences();
             var vPreferences = new VPreferences({model : mPreferences});
             this.resetView();

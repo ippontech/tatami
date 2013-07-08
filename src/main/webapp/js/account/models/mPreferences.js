@@ -8,6 +8,14 @@
 //(function(Backbone, Tatami){
 
 var MPreferences = Backbone.Model.extend({
-    url: '/tatami/rest/account/preferences'
+    url: '/tatami/rest/account/preferences',
+
+    defaults: {
+        mentionEmail: true,
+        dailyDigest : true,
+        weeklyDigest : true,
+        rssUidActive : true,
+        rssUid : true
+    }
 });
 //})(Backbone, Tatami);

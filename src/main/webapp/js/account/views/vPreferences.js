@@ -8,14 +8,13 @@
 
 var VPreferences = Marionette.ItemView.extend({
     tagName: 'form',
-    template: _.template($('#account-preferences').html()),
-
+    //template: _.template($('#account-preferences').html()),
+    template: '#account-preferences',
     initialize: function(){
         this.$el.addClass('form-horizontal row-fluid');
-
         this.model = new MPreferences();
         this.model.fetch({
-            success:_.bind(this.render, this)
+            //success:_.bind(this.render, this)
         });
     },
 
@@ -23,14 +22,14 @@ var VPreferences = Marionette.ItemView.extend({
         'submit': 'submit'
     },
 
-    render: function(){
+    /*render: function(){
         this.$el.empty();
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
         this.delegateEvents();
         return this.$el;
-    },
+    },  */
 
     submit: function(e){
         e.preventDefault();
@@ -45,13 +44,9 @@ var VPreferences = Marionette.ItemView.extend({
         var self = this;
         self.model.save(null, {
             success: function(){
-                //self.render();
-                //self.$el.find('.return').append($('#form-success').html());
                 app.trigger('even-alert-success',app.formSuccess);
             },
             error: function(){
-                //self.render();
-                //self.$el.find('.return').append($('#form-error').html());
                 app.trigger('even-alert-error', app.formError);
             }
         });

@@ -161,24 +161,24 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
+                    <input name="mentionEmail" type="checkbox" <@   if(mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
+                    <input name="dailyDigest" type="checkbox" <@ if(dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="weeklyDigest" type="checkbox" <@ if(preferences.weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
+                    <input name="weeklyDigest" type="checkbox" <@ if(weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                    <input name="rssUidActive" type="checkbox" <@ if (rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
                 </label>
-                <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
+                <@ if (rssUidActive) { @> <a href="/tatami/syndic/<@=rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
             </div>
         </div>
     </fieldset>
