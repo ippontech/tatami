@@ -298,8 +298,10 @@ _.templateSettings = {
 
         status_of_the_day: function(){
             this.selectMenu('status_of_the_day');
-            if(!app.views.daily)
-                app.views.daily = new VDailyStats();
+              //debugger;
+            var cDailyStats = new CDailyStat();
+           // if(!app.views.daily)
+            app.views.daily = new VDailyStats({ collection : cDailyStats});
             var view = app.views.daily;
 
             this.resetView();
@@ -323,8 +325,8 @@ _.templateSettings = {
 
             this.resetView();
             contentLayout.region1.show(new VFilesMenu());
-            contentLayout.region2.show(new VQuotaFiles());
-            contentLayout.region3.show(new VFilesHeader);
+            contentLayout.region2.show(new VQuotaFiles({model : new MQuota()}));
+            contentLayout.region3.show(new VFilesHeader());
             contentLayout.region4.show(view);
             this.selectMenu('files');
         }

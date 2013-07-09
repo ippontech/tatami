@@ -25,29 +25,30 @@ var VFile = Marionette.ItemView.extend({
 });
 
 var VQuotaFiles = Marionette.ItemView.extend({
-    template: _.template($('#files-quota').html()),
+
+    template: '#files-quota',
+    //tagName : 'span',
 
     initialize: function(){
-        this.model = new MQuota();
-        //this.model.bind('change', this.render, this);
+
         this.model.fetch();
 
-        var self = this;
-
-        app.on('refreshQuota', function() {
-            self.model.fetch();
-        });
+        app.on('refreshQuota', _.bind(this.model.fetch, this.model));
     },
 
     modelEvents: {
-        "change" : "render"
-    } ,
+        //"change" : "render"  ,
+       // "change" : "round render"
+        "sync" : "render"
+    },
 
-    render: function(){
+    onRender: function(){
+       console.log(this.model.toJSON());
+    },
+
+    round: function(){
         var quota = this.model.get(0);
         quota = Math.round(quota);
-        this.$el.html(this.template({quota: quota}));
-        return this.$el;
     }
 });
 
@@ -59,24 +60,7 @@ var VFiles =  Marionette.CollectionView.extend({
             _.bindAll(this);
 
             this.$el.addClass('row-fluid');
-
-            /*app.on('deleteSucess',function(){
-                //$('.file-infos').append($('#delete-file-success').html());
-                app.trigger('even-alert-success', 'greg');
-            });
-
-            app.on('deleteError',function(){
-                //$('.file-infos').append($('#delete-file-error').html());
-                app.trigger('even-alert-error', 'greg');
-            }) ;   */
-        }//,
-
-        /*onAfterItemAdded: function(itemView){
-            console.log("item was added");
-        },
-        onRender: function(){
-            console.log("render");
-        }  */
+        }
 })  ;
 
 var VFilesMenu = Marionette.ItemView.extend({

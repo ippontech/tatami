@@ -8,11 +8,18 @@
 
 
 var VAccountProfile = Marionette.ItemView.extend({
+    initialize : function(){
+         this.model.fetch();
+    },
     tagName: 'form',
     template: '#account-profile',
 
     events: {
         'submit': 'saveForm'
+    },
+
+    modelEvents: {
+        'sync': 'render'
     },
 
     saveForm: function(e){
@@ -28,7 +35,6 @@ var VAccountProfile = Marionette.ItemView.extend({
                 app.trigger('even-alert-success', app.formSuccess);
             },
             error: function(){
-                //self.$(".return").html(new VFormError().render().$el);
                 app.trigger('even-alert-error', app.formError);
             }
         });
@@ -47,7 +53,6 @@ var VAccountProfileDestroy = Marionette.ItemView.extend({
         e.preventDefault();
         var self = this;
 
-        debugger;
         self.model.destroy({
             success: function(){
                 app.trigger('even-alert-success', app.formSuccess);

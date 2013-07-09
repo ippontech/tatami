@@ -17,7 +17,7 @@
             lastName: '',
             jobTitle: '',
             phoneNumber: '',
-            attachementsSize: 0,
+            attachmentsSize: 0,
             friendsCount: 0,
             followersCount: 0,
             statusCount: 0,

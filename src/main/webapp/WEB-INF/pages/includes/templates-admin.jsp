@@ -26,9 +26,7 @@
 </script>
 
 <script type="text/template" id="form-ldap">
-    <div class="alert alert-danger">
-        <fmt:message key="tatami.user.password.ldap"/>
-    </div>
+    <fmt:message key="tatami.user.password.ldap"/>
 </script>
 
 <script type="text/template" id="follow-button">
@@ -86,7 +84,7 @@
             </label>
 
             <div class="controls">
-                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="${user.firstName}"/>
+                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= firstName @>"/>
             </div>
         </div>
 
@@ -96,7 +94,7 @@
             </label>
 
             <div class="controls">
-                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="${user.lastName}"/>
+                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= lastName @>"/>
             </div>
         </div>
 
@@ -106,7 +104,7 @@
             </label>
 
             <div class="controls">
-                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="${user.jobTitle}"/>
+                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="<@= jobTitle @>"/>
             </div>
         </div>
 
@@ -116,7 +114,7 @@
             </label>
 
             <div class="controls">
-                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="${user.phoneNumber}"/>
+                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= phoneNumber @> "/>
             </div>
         </div>
 
@@ -601,8 +599,8 @@
         <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;"></div>
         <@ }else{@>
         <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;"></div>
-        <@ } @>
-        <span class="quota"><@= quota @>%</span>
+        <@ }@>
+        <span class="quota"><@=  quota @>%</span>
     </div>
 </script>
 

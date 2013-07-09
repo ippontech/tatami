@@ -13,12 +13,12 @@ var VPassword = Marionette.ItemView.extend({
     initialize: function(){
         this.$el.addClass('form-horizontal row-fluid');
 
-        this.model = new MPassword();
-        this.model.fetch({
-            error:_.bind(this.disable, this)
-        });
+        this.model.fetch();
+        //this.$el.empty();  //Ca sert à quoi?
+    },
 
-        this.$el.empty();
+    modelEvents: {
+        'error' : 'disable'
     },
 
     events: {
@@ -30,7 +30,7 @@ var VPassword = Marionette.ItemView.extend({
     disable: function(){
         this.$el.find('[name]').attr('disabled', 'disabled');
         this.$el.find('button[type="submit"]').attr('disabled', 'disabled');
-        this.$el.find('.return').append($('#form-ldap').html());
+        app.trigger('even-alert-error', app.formErrorLDAP);
     },
 
     validation: function(){
@@ -57,11 +57,9 @@ var VPassword = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 $(e.target)[0].reset();
-                //self.$el.find('.return').append($('#form-success').html());
                 app.trigger('even-alert-success', app.formSuccess);
             },
             error: function(){
-                //self.$el.find('.return').append($('#form-error').html());
                 app.trigger('even-alert-error', app.formError);
             }
         });

@@ -56,7 +56,7 @@ app.deleteFileSuccess = $('#delete-file-success-label').text().trim();
 app.deleteFileError = $('#delete-file-error-label').text().trim();
 app.memberAddSuccess = $('#groups-form-adduser-success-label').text().trim();
 app.memberAddError = $('#groups-form-adduser-error-label').text().trim();
-
+app.formErrorLDAP = $('#form-ldap').text().trim();
 
 app.on('even-alert-success', function(msg){
 
@@ -78,7 +78,7 @@ app.on('even-alert-error', function(msg){
     $.jGrowl(msg, {
         theme: 'alert-danger',
         //speed: 'slow',
-        life: 4000
+        life: 5000
         /* animateOpen: {
          height: "show"
          },

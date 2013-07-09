@@ -70,7 +70,7 @@
 <body>
 
 <jsp:include page="includes/templates-admin.jsp"/>
-
+<jsp:include page="includes/templates.jsp"/>
 <jsp:include page="includes/topmenu.jsp"/>
 
 <div id="the-container"></div>
@@ -85,6 +85,9 @@
 
 <c:if test="${wro4jEnabled eq false}">
 
+   <!-- <script src="/js/app/collections/users.js"></script>
+    <script src="/js/app/models/user.js"></script>
+    <script src="/js/app/views/userList.js"></script>    -->
   <script src="/js/vendor/raphael-min.js"></script>
   <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
@@ -96,6 +99,7 @@
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
     <script src="/js/account/models/mPassword.js"></script>
+    <script src="/js/account/models/mUser.js"></script>
     <script src="/js/account/views/vFile.js"></script>
     <script src="/js/account/views/vGroup.js"></script>
 
@@ -108,6 +112,7 @@
     <script src="/js/account/views/vDailyStat.js"></script>
     <script src="/js/account/views/vTab.js"></script>
     <script src="/js/account/collections/cFiles.js"></script>
+    <script src="/js/account/collections/cUsers.js"></script>
     <script src="/js/account/models/mGroup.js"></script>
     <script src="/js/account/models/mUserSearch.js"></script>
     <script src="/js/account/collections/cUserSearch.js"></script>

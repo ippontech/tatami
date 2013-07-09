@@ -9,9 +9,7 @@
 var VDailyStats = Marionette.ItemView.extend({
     initialize:function () {
         var self = this;
-        this.model = new CDailyStat();
-        this.model.bind('reset', this.render, this);
-        this.model.fetch({
+        this.collection.fetch({
             success: function() {
                 self.render();
             }
@@ -19,12 +17,17 @@ var VDailyStats = Marionette.ItemView.extend({
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
+   /* collectionEvents: {
+        //'reset': 'render',
+        'success' : 'render'
+    }, */
+
     render:function () {
         var values = [];
         var labels = [];
-        this.model.each(function (model) {
-            values.push(model.get('statusCount'));
-            labels.push(model.get('username'));
+        this.collection.each(function (collection) {
+            values.push(collection.get('statusCount'));
+            labels.push(collection.get('username'));
         });
         this.$el.pie(values, labels);
 

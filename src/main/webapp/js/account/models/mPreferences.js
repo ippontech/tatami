@@ -10,12 +10,15 @@
 var MPreferences = Backbone.Model.extend({
     url: '/tatami/rest/account/preferences',
 
+    //Ne prends pas les valeurs préenegistré
     defaults: {
-        mentionEmail: true,
-        dailyDigest : true,
-        weeklyDigest : true,
-        rssUidActive : true,
-        rssUid : true
-    }
+        mentionEmail: '',
+        dailyDigest :'',
+        weeklyDigest : '',
+        rssUidActive : '',
+        rssUid : ''
+    } //,
+
+
 });
 //})(Backbone, Tatami);
