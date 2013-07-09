@@ -21,6 +21,10 @@
     }
 }
 
+.noRadius {
+    border-radius: 0px;
+}
+
 .alertColor{
     padding: 8px 15px 8px 14px;
     margin-bottom: 20px;
@@ -377,6 +381,7 @@ h4 {
 .tatam-border-lr {
     border-right: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
+    margin-bottom: 5px;
 }
 
 .tatam-first {
