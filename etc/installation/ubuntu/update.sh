@@ -16,7 +16,7 @@ export TATAMI_DIR=/opt/tatami
 #################################
 cd $TATAMI_DIR/application/tatami
 git pull
-cd /opt/tatami/application/tatami && mvn -Ppreprod -DskipTests clean package
+cd /opt/tatami/application/tatami && mvn -Pprod -DskipTests clean package
 sudo /etc/init.d/jetty stop
 sudo cp /opt/tatami/application/tatami/target/root.war /opt/jetty/webapps/root.war
 sudo /etc/init.d/jetty start
