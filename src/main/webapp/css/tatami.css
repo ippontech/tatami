@@ -20,6 +20,10 @@
         padding: 0px;
     }
 }
+.noRadius
+{
+    border-radius: 0px;
+}
 
 .alertColor{
     padding: 8px 15px 8px 14px;
@@ -391,6 +395,7 @@ div.jGrowl-notification{
 .tatam-border-lr {
     border-right: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
+    margin-bottom: 5px;
 }
 
 .tatam-first {
