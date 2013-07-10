@@ -70,11 +70,6 @@ h4 {
   margin-left: 45%;
 }
 
-.noOverFlow{
-    height:100%;
-   /*overflow: auto;*/
-}
-
 .nomargin {
       margin: 0px;
 }
