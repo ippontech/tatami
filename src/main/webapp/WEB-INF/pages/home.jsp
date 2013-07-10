@@ -1,5 +1,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    request.setAttribute("currentPage", "home");
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,9 +19,10 @@
 </div>
 
 <div class="row">
+    <span class="col-span-1"></span>
     <aside id="tatamiSide" class="col-span-3">
     </aside>
-    <section id="tatamiBody" class="col-span-9">
+    <section id="tatamiBody" class="col-span-7">
     </section>
 </div>
 

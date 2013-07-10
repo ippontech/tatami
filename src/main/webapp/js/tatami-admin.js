@@ -157,18 +157,11 @@ app.View.Preferences = Backbone.View.extend({
     },
 
     events: {
-        'submit': 'submit',
-        'change [name="theme"]' : function(e){this.switchTheme($(e.target).val());}
-    },
-
-    switchTheme: function(theme){
-        var css = $('[href^="/css/themes/"]');
-        css.attr('href', '/css/themes/' + theme + '.css');
+        'submit': 'submit'
     },
 
     render: function(){
         this.$el.empty();
-        this.model.attributes.themesList = (this.model.attributes.themesList== undefined) ? [] : this.model.attributes.themesList;
         this.$el.html(this.template({
             preferences: this.model.toJSON()
         }));
@@ -181,8 +174,6 @@ app.View.Preferences = Backbone.View.extend({
 
         var form = $(e.target);
 
-        this.model.set('theme', form.find('[name="theme"]').val());
-        this.model.set('themesList', '');
         this.model.set('mentionEmail', form.find('[name="mentionEmail"]')[0].checked);
         this.model.set('dailyDigest', form.find('[name="dailyDigest"]')[0].checked);
         this.model.set('weeklyDigest', form.find('[name="weeklyDigest"]')[0].checked);
@@ -294,8 +285,10 @@ app.View.TabSearch = Backbone.View.extend({
 
     search: function(e){
         var input = e.target.value;
-        if(input != '')
+        if(input != '') {
+            this.collection.reset();
             this.collection.search(input);
+        }
     },
 
     selectMenu: function(menu) {
@@ -369,7 +362,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
         this.options.url = {
-            owned: '/tatami/rest/friends/lookup',
+            owned: '/tatami/rest/users',
             recommended: '/tatami/rest/users/suggestions',
             search: '/tatami/rest/search/users'
         };
@@ -387,7 +380,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
         this.fetch();
     },
     owned: function(){
-        this.url = this.options.url.owned;
+        this.url = this.options.url.owned + "/" + username + "/friends";
         this.parse = function(users){
             return users.map(function(user){
                 user.followed = true;
@@ -395,11 +388,7 @@ app.Collection.TabUser = Backbone.Collection.extend({
                 return user;
             });
         };
-        this.fetch({
-            data: {
-                screen_name : username
-            }
-        });
+        this.fetch();
     },
 
     search: function(query){
@@ -434,7 +423,6 @@ app.View.User = Backbone.View.extend({
         var user = this.model.get('username');
         var self = this;
 
-
         function onFinish(follow) {
             app.views.followButton = new app.View.FollowButtonView({
                 username: user,
@@ -458,6 +446,110 @@ app.View.User = Backbone.View.extend({
     }
 });
 
+app.Model.FollowUserModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/friendships/create';
+    }
+});
+
+app.Model.UnFollowUserModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/friendships/destroy';
+    }
+});
+
+app.View.FollowButtonView = Backbone.View.extend({
+    templateFollow: _.template($('#follow-button').html()),
+    templateFollowed: _.template($('#followed-button').html()),
+    templateUserEdit:_.template($('#edit-profile').html()),
+
+    initialize: function() {
+        this.set(this.options.owner, this.options.followed);
+    },
+
+    set: function(owner, followed) {
+        if(owner){
+            this.events = {
+                "click .btn": "editMyProfile"
+            };
+            this.editMyProfileRender();
+        }
+        else if(!owner && followed) {
+            this.events = {
+                "click .btn": "unfollow"
+            };
+            this.followedRender();
+        }
+        else if(!owner && !followed) {
+            this.events = {
+                "click .btn": "follow"
+            };
+            this.followRender();
+        }
+    },
+
+    editMyProfile: function() {
+        window.location = '/tatami/account/#/profile';
+    },
+
+    follow: function() {
+        var self = this;
+        this.undelegateEvents();
+        $(this.el).empty();
+
+        var m = new app.Model.FollowUserModel();
+        m.set('username', this.options.username);
+
+        m.save(null, {
+            success: function(){
+                self.set(self.options.owner, true);
+                self.delegateEvents();
+            },
+            error: function(){
+                self.set(self.options.owner, false);
+                self.delegateEvents();
+            }
+        });
+    },
+
+    unfollow: function() {
+        var self = this;
+        this.undelegateEvents();
+        $(this.el).empty();
+
+        var m = new app.Model.UnFollowUserModel();
+        m.set('username', this.options.username);
+
+        m.save(null, {
+            success: function(){
+                self.set(self.options.owner, false);
+                self.delegateEvents();
+            },
+            error: function(){
+                self.set(self.options.owner, true);
+                self.delegateEvents();
+            }
+        });
+    },
+
+    followRender: function() {
+        $(this.el).html(this.templateFollow());
+    },
+
+    followedRender: function() {
+        $(this.el).html(this.templateFollowed());
+    },
+
+    editMyProfileRender: function() {
+        $(this.el).html(this.templateUserEdit());
+    },
+
+    render: function() {
+        return $(this.el);
+    }
+
+});
+
 app.Collection.TabTag = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
@@ -474,6 +566,7 @@ app.Collection.TabTag = Backbone.Collection.extend({
                 return !(tag.followed);
             });
         };
+        this.reset();
         this.fetch();
     },
     owned: function(){
@@ -481,11 +574,13 @@ app.Collection.TabTag = Backbone.Collection.extend({
         this.parse = function(tags){
             return tags;
         };
+        this.reset();
         this.fetch();
     },
 
     search: function(query){
         this.url = this.options.url.search;
+        this.reset();
         this.fetch({
             data:{
                 q:query
@@ -520,18 +615,35 @@ app.View.Tag = Backbone.View.extend({
         m.save(null, {
             success : function(){
                 self.model.set('followed', !self.model.get('followed'));
+                self.render();
             }
         });
     },
 
     show: function(){
-        console.log(this.model.toJSON());
+
     },
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.delegateEvents();
         return this.$el;
+    }
+});
+
+
+/*
+ Tags
+ */
+app.Model.FollowTagModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/tagmemberships/create';
+    }
+});
+
+app.Model.UnFollowTagModel = Backbone.Model.extend({
+    url : function(){
+        return '/tatami/rest/tagmemberships/destroy';
     }
 });
 
@@ -642,6 +754,7 @@ app.View.Group = Backbone.View.extend({
         this.actionsView = new app.View.ActionsGroup({
             model : this.model
         });
+        this.actionsView.render();
     },
 
     template:_.template($('#groups-item').html()),
@@ -661,6 +774,28 @@ app.View.Group = Backbone.View.extend({
     }
 });
 
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        avatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
+    }
+});
+
 app.View.ActionsGroup = Backbone.View.extend({
     tagName : 'td',
     template : {
@@ -676,7 +811,11 @@ app.View.ActionsGroup = Backbone.View.extend({
             groupId : this.model.id
         };
         this.collection.on('reset', this.render, this);
-        this.collection.fetch();
+        this.collection.fetch({
+            success: function() {
+                self.render();
+            }
+        });
 
         this.actionModel = new app.Model.ListUserGroupModel({
             username : username
@@ -740,8 +879,9 @@ app.View.ActionsGroup = Backbone.View.extend({
         var isAdmin = app.collections.adminGroups.some(function(group){
             return (group.id === self.model.id);
         });
-        if (isAdmin) this.renderAdmin();
-        else {
+        if (isAdmin) {
+            this.renderAdmin();
+        } else {
             var isMember = this.collection.some(function(member){
                 return (member.id === username);
             });
@@ -804,6 +944,89 @@ app.View.EditGroup = Backbone.View.extend({
                 self.$el.find('.return').append($('#form-error').html());
             }
         });
+    }
+});
+
+app.View.ListUserGroup = Backbone.View.extend({
+    tagName : 'table',
+    attributes : {
+        'class' : 'table'
+    },
+    initialize : function(){
+        this.options = _.defaults(this.options, {
+            admin : true
+        });
+
+        this.collection.bind('reset', this.render, this);
+        this.collection.bind('add', this.addItem, this);
+
+        this.collection.fetch();
+    },
+
+    addItem : function(model){
+        var view = new app.View.ListUserGroupItem(
+            _.defaults({
+                model : model
+            }, this.options)
+        );
+        view.render();
+        this.$el.append(view.el);
+    },
+    render : function(){
+        var tableView = this;
+
+        this.$el.html($('#usergroup-header').html());
+        this.collection.forEach(this.addItem, this);
+
+        return this;
+    }
+});
+
+app.View.ListUserGroupItem = Backbone.View.extend({
+    tagName : 'tr',
+
+    template : _.template($('#usergroup-item').html()),
+
+    initialize : function(){
+        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);
+    },
+
+    events : {
+        'click .delete' : 'removeUser'
+    },
+
+    removeUser : function(){
+        this.model.destroy();
+    },
+
+    render : function(){
+        var locals = this.model.toJSON();
+        locals.admin = this.options.admin;
+        this.$el.html(this.template(locals));
+        return this;
+    }
+});
+
+app.Model.ListUserGroupModel = Backbone.Model.extend({
+    idAttribute : 'username',
+    defaults : {
+        avatar : '',
+        firstName : '',
+        lastName : '',
+        role : ''
+    },
+    toJSON : function(){
+        return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
+            avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+        });
+    }
+});
+
+app.Collection.ListUserGroupCollection = Backbone.Collection.extend({
+    model : app.Model.ListUserGroupModel,
+    url : function() {
+        return '/tatami/rest/groups/' + this.options.groupId + '/members/';
     }
 });
 
@@ -876,7 +1099,8 @@ app.View.AddUserGroup = Backbone.View.extend({
             },
             highlighter: function (item) {
               var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-              return '<img class="avatar avatar-small" src="/tatami/avatar/' + item.get('avatar') + '/photo.jpg" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              var avatar =  (item.get('avatar'))? '/tatami/avatar/' + item.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
+              return '<img class="avatar img-rounded img-small" src="' + avatar + '" />' + '@' + item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>';
               }) + ' - ' + item.get('firstName') + ' ' + item.get('lastName');
             }
@@ -925,9 +1149,14 @@ app.Collection.DailyStatCollection = Backbone.Collection.extend({
 
 app.View.DailyStatsView = Backbone.View.extend({
     initialize:function () {
+        var self = this;
         this.model = new app.Collection.DailyStatCollection();
         this.model.bind('reset', this.render, this);
-        this.model.fetch();
+        this.model.fetch({
+            success: function() {
+                self.render();
+            }
+        });
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
@@ -1158,7 +1387,11 @@ app.Router.AdminRouter = Backbone.Router.extend({
                 TabHeaderTemplate : _.template($('#groups-header').html())
             });
         if(!app.collections.adminGroups) app.collections.adminGroups = new app.Collection.AdminGroup();
-        app.collections.adminGroups.fetch();
+        app.collections.adminGroups.fetch({
+            success: function() {
+                app.views.groups.render();
+            }
+        });
         return app.views.groups;
     },
 
@@ -1268,7 +1501,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
         this.selectMenu('tags');
 
         view.collection.owned();
-
         if(this.views.indexOf(view)===-1){
             this.resetView();
             this.addView(view);

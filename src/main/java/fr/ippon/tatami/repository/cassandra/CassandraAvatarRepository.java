@@ -12,8 +12,8 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.AVATAR_CF;
 @Repository
 public class CassandraAvatarRepository implements AvatarRepository {
 
-    private final Log log = LogFactory.getLog(CassandraAttachmentRepository.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraAttachmentRepository.class);
 
     private final String CONTENT = "content";
     private final String FILENAME = "filename";
@@ -40,9 +40,8 @@ public class CassandraAvatarRepository implements AvatarRepository {
     public void createAvatar(Avatar avatar) {
 
         String avatarId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
-        if (log.isDebugEnabled()) {
-            log.debug("Creating avatar : " + avatar);
-        }
+        log.debug("Creating avatar : {}", avatar);
+
 
         avatar.setAvatarId(avatarId);
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
@@ -64,9 +63,8 @@ public class CassandraAvatarRepository implements AvatarRepository {
     @Override
     @CacheEvict(value = "avatar-cache")
     public void removeAvatar(String avatarId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Avatar deleted : " + avatarId);
-        }
+        log.debug("Avatar deleted : {}", avatarId);
+
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.addDeletion(avatarId, AVATAR_CF);
         mutator.execute();
@@ -78,9 +76,8 @@ public class CassandraAvatarRepository implements AvatarRepository {
         if (avatarId == null) {
             return null;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Finding avatar : " + avatarId);
-        }
+        log.debug("Finding avatar : {}", avatarId);
+
         Avatar avatar = this.findAttachmentMetadataById(avatarId);
 
         if (avatar == null) {

@@ -4,9 +4,9 @@ package fr.ippon.tatami.config;
  * @author Julien Dubois
  */
 public class ColumnFamilyKeys {
-    
+
     private ColumnFamilyKeys() {
-        
+
     }
 
     public static final String USER_CF = "User";
@@ -86,5 +86,9 @@ public class ColumnFamilyKeys {
     public static final String TATAMIBOT_CONFIGURATION_CF = "TatamibotConfiguration";
 
     public static final String AVATAR_CF = "Avatar";
+
+    public static final String APPLE_DEVICE_CF = "AppleDevice";
+
+    public static final String APPLE_DEVICE_USER_CF = "AppleDeviceUser";
 
 }

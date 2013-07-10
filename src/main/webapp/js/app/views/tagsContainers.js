@@ -10,17 +10,6 @@
                 selector: ".tatams-container"
             }
         }
-        // events: {
-        //     'click .toggleTag': 'toggleTag'
-        // },
-        // modelEvents: {
-        //     'change': 'render'
-        // },
-        // toggleTag: function(){
-        //     this.model.save({
-        //       followed: !this.model.get('followed')
-        //     });
-        // }
     });
 
     var TagsHeader = Backbone.Marionette.ItemView.extend({

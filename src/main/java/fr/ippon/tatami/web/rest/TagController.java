@@ -12,8 +12,8 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Tag;
 import fr.ippon.tatami.web.rest.dto.Trend;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ import java.util.List;
 @Controller
 public class TagController {
 
-    private final Log log = LogFactory.getLog(TagController.class);
+    private final Logger log = LoggerFactory.getLogger(TagController.class);
 
     @Inject
     private TimelineService timelineService;
@@ -63,9 +63,7 @@ public class TagController {
                                                   @RequestParam(required = false) String since_id,
                                                   @RequestParam(required = false) String max_id) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for tag : " + tagName);
-        }
+        log.debug("REST request to get statuses for tag : {}", tagName);
         if (count == null) {
             count = 20;
         }
@@ -78,31 +76,35 @@ public class TagController {
     }
 
     /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
      * POST /tagmemberships/create -> follow tag
      */
     @RequestMapping(value = "/rest/tagmemberships/create",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void followTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow tag : " + tag);
-        }
-        tagMembershipService.followTag(tag);
+    @Timed
+    @Deprecated
+    public boolean followTag(@RequestBody Tag tag) {
+        log.debug("REST request to follow tag : {}", tag);
+        return tagMembershipService.followTag(tag);
     }
 
     /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
      * POST /tagmemberships/destroy -> unfollow tag
      */
     @RequestMapping(value = "/rest/tagmemberships/destroy",
             method = RequestMethod.POST,
             consumes = "application/json")
     @ResponseBody
-    public void unfollowTag(@RequestBody Tag tag) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow tag  : " + tag);
-        }
-        tagMembershipService.unfollowTag(tag);
+    @Timed
+    @Deprecated
+    public boolean unfollowTag(@RequestBody Tag tag) {
+        log.debug("REST request to unfollow tag  : {}", tag);
+        return tagMembershipService.unfollowTag(tag);
     }
 
     /**
@@ -112,6 +114,7 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Tag lookupTag(@RequestParam("tag_name") String tagname) {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
@@ -130,6 +133,7 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Tag> getFollowedTags() {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
@@ -150,6 +154,7 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Tag> getPopularTags() {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -172,24 +177,24 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Collection<Tag> getTags(@RequestParam(required = false, value = "popular") String popular,
-                                      @RequestParam(required = false, value = "user") String username,
-                                      @RequestParam(required = false, value = "search") String search) {
+                                   @RequestParam(required = false, value = "user") String username,
+                                   @RequestParam(required = false, value = "search") String search) {
         Collection<Tag> tags = new ArrayList<Tag>();
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Collection<String> tagNames;
 
-        if(popular != null) {
+        if (popular != null) {
             List<Trend> trends;
             User user = null;
-            if(username != null) user = userService.getUserByUsername(username);
-            if(user != null) {
+            if (username != null) user = userService.getUserByUsername(username);
+            if (user != null) {
                 trendService.getTrendsForUser(user.getLogin());
                 trends = trendService.getTrendsForUser(user.getLogin());
-            }
-            else {
+            } else {
                 trends = trendService.getCurrentTrends(domain);
             }
 
@@ -199,8 +204,7 @@ public class TagController {
                 tag.setTrendingUp(trend.isTrendingUp());
                 tags.add(tag);
             }
-        }
-        else if (search != null && !search.isEmpty()) {
+        } else if (search != null && !search.isEmpty()) {
             String prefix = search.toLowerCase();
             tagNames = trendService.searchTags(domain, prefix, 5);
             for (String tagName : tagNames) {
@@ -208,8 +212,7 @@ public class TagController {
                 tag.setName(tagName);
                 tags.add(tag);
             }
-        }
-        else {
+        } else {
             tagNames = userTagRepository.findTags(currentUser.getLogin());
             for (String tagName : tagNames) {
                 Tag tag = new Tag();
@@ -221,7 +224,7 @@ public class TagController {
         for (Tag tag : tags) {
             if (followedTags.contains(tag.getName())) {
                 tag.setFollowed(true);
-            };
+            }
         }
 
         return tags;
@@ -232,8 +235,9 @@ public class TagController {
             method = RequestMethod.PUT,
             produces = "application/json")
     @ResponseBody
-    public Tag updateTagNEW(@RequestBody Tag tag) {
-        if(tag.isFollowed()){
+    @Timed
+    public Tag updateTag(@RequestBody Tag tag) {
+        if (tag.isFollowed()) {
             tagMembershipService.followTag(tag);
         } else {
             tagMembershipService.unfollowTag(tag);
@@ -246,7 +250,8 @@ public class TagController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Tag getTagNEW(@PathVariable("tag") String tagName) {
+    @Timed
+    public Tag getTag(@PathVariable("tag") String tagName) {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
         Tag tag = new Tag();

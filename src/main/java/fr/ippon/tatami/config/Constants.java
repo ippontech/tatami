@@ -14,8 +14,6 @@ public class Constants {
 
     public static final String EMBEDDED_ENGINE = "embedded";
 
-    public static final String DEFAULT_THEME = "bootstrap";
-
     public static String VERSION = null;
 
     public static String GOOGLE_ANALYTICS_KEY = null;

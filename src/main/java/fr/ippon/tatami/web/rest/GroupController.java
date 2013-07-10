@@ -11,8 +11,8 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ import java.util.Collection;
 @Controller
 public class GroupController {
 
-    private final Log log = LogFactory.getLog(GroupController.class);
+    private final Logger log = LoggerFactory.getLogger(GroupController.class);
 
     @Inject
     private TimelineService timelineService;
@@ -60,28 +60,25 @@ public class GroupController {
         Group publicGroup = groupService.getGroupById(domain, groupId);
         if (publicGroup != null && publicGroup.isPublicGroup()) {
             Group result = getGroupFromUser(currentUser, groupId);
-            Group groupClone = (Group) publicGroup.clone();            
-            if(result != null){
+            Group groupClone = (Group) publicGroup.clone();
+            if (result != null) {
                 groupClone.setMember(true);
-            } 
-            if(isGroupManagedByCurrentUser(publicGroup)){
-            	groupClone.setAdministrator(true);
+            }
+            if (isGroupManagedByCurrentUser(publicGroup)) {
+                groupClone.setAdministrator(true);
             }
             return groupClone;
         } else {
             Group result = getGroupFromUser(currentUser, groupId);
             Group groupClone = null;
             if (result == null) {
-                if (log.isInfoEnabled()) {
-                    log.info("Permission denied! User " + currentUser.getLogin() + " tried to access " +
-                            "group ID = " + groupId);
-                }
+                log.info("Permission denied! User {} tried to access group ID = {} ", currentUser.getLogin(), groupId);
                 return null;
             } else {
                 groupClone = (Group) result.clone();
                 groupClone.setMember(true);
-                if(isGroupManagedByCurrentUser(publicGroup)){
-                	groupClone.setAdministrator(true);
+                if (isGroupManagedByCurrentUser(publicGroup)) {
+                    groupClone.setAdministrator(true);
                 }
             }
             return groupClone;
@@ -127,9 +124,7 @@ public class GroupController {
                                                     @RequestParam(required = false) String since_id,
                                                     @RequestParam(required = false) String max_id) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get statuses for group : " + groupId);
-        }
+        log.debug("REST request to get statuses for group : {}", groupId);
         if (groupId == null) {
             return new ArrayList<StatusDTO>();
         }
@@ -155,9 +150,7 @@ public class GroupController {
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Trying to find group for non-existing username = " + username);
-            }
+            log.debug("Trying to find group for non-existing username = {}", username);
             return new ArrayList<Group>();
         }
         return groupService.getGroupsForUser(user);
@@ -264,7 +257,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId,currentUser.getLogin());
+            users = groupService.getMembersForGroup(groupId, currentUser.getLogin());
         }
 
         for (UserGroupDTO user : users) {
@@ -326,7 +319,7 @@ public class GroupController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
@@ -336,20 +329,23 @@ public class GroupController {
 
         if (currentUser == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
+            return false;
         } else if (currentGroup == null || userToremove == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
+            return false;
         } else {
             if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(groupId, userToremove);
             } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(groupId, userToremove);
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return false;
             }
         }
-        return dto;
+        return true;
     }
 
     private boolean isGroupManagedByCurrentUser(Group group) {
@@ -364,7 +360,7 @@ public class GroupController {
         return isGroupManagedByCurrentUser;
     }
 
-    private Group getGroupFromUser(User currentUser, String groupId){
+    private Group getGroupFromUser(User currentUser, String groupId) {
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(groupId)) {

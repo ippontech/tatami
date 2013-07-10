@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.17</version>
+    <version>3.0.27</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -55,10 +55,12 @@
             <id>preprod</id>
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
-                <spring.profiles.active></spring.profiles.active>
+                <spring.profiles.active>apple-push</spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>INFO</log4j.loglevel>
-                <log4j.appender>PAPERTRAIL</log4j.appender>
+                <logback.loglevel>DEBUG</logback.loglevel>
+                <logback.appender>PAPERTRAIL</logback.appender>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -111,10 +113,13 @@
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>INFO</log4j.loglevel>
-                <log4j.appender>PAPERTRAIL</log4j.appender>
+                <logback.loglevel>INFO</logback.loglevel>
+                <logback.appender>PAPERTRAIL</logback.appender>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.url>https://tatami.ippon.fr</tatami.url>
+                <tatami.url>http://app.tatamisoft.com</tatami.url>
+                <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
@@ -168,8 +173,8 @@
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
-                <log4j.appender>CONSOLE</log4j.appender>
+                <logback.loglevel>WARN</logback.loglevel>
+                <logback.appender>CONSOLE</logback.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
             </properties>
@@ -374,8 +379,9 @@
         <!-- Default project properties -->
         <jetty.port>8080</jetty.port>
         <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-        <log4j.loglevel>DEBUG</log4j.loglevel>
-        <log4j.appender>CONSOLE</log4j.appender>
+        <logback.loglevel>DEBUG</logback.loglevel>
+        <logback.appender>CONSOLE</logback.appender>
+        <logback.syslogHost>localhost</logback.syslogHost>
         <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
         <tatami.version>${project.version}</tatami.version>
         <tatami.url>http://localhost:8080</tatami.url>
@@ -409,9 +415,11 @@
         <spring.security.version>3.1.3.RELEASE</spring.security.version>
         <elasticsearch.version>0.20.6</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
-        <slf4j.version>1.5.8</slf4j.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <logback.version>1.0.13</logback.version>
         <httpclient.core.version>4.2.2</httpclient.core.version> <!-- pour compatiblité selenium -->
         <httpclient.client.version>4.2.2</httpclient.client.version> <!-- pour compatiblité selenium -->
+        <cassandra.version>1.2.6</cassandra.version>
         <hector.version>1.1-4</hector.version>
         <hector.mapper.version>3.1-09</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
@@ -427,13 +435,13 @@
         <junit.version>4.11</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
         <awaitility.version>1.3.5</awaitility.version>
-        <cassandra.unit.version>1.1.2.1</cassandra.unit.version>
+        <cassandra.unit.version>1.2.0.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
-        <camel.version>2.10.4</camel.version>
+        <camel.version>2.11.0</camel.version>
 
         <selenium.version>2.31.0</selenium.version>
 
@@ -443,7 +451,7 @@
         <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
-        <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
+        <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
         <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
@@ -556,6 +564,19 @@
             <artifactId>joda-time</artifactId>
             <version>${jodatime.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
@@ -684,7 +705,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
@@ -778,7 +799,7 @@
         <dependency>
             <groupId>org.apache.cassandra</groupId>
             <artifactId>cassandra-all</artifactId>
-            <version>1.2.5</version>
+            <version>${cassandra.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -949,6 +970,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cassandra-maven-plugin</artifactId>
                 <version>${maven.cassandra.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cassandra</groupId>
+                        <artifactId>cassandra-all</artifactId>
+                        <version>${cassandra.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>

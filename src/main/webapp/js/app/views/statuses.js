@@ -72,11 +72,12 @@
             'change:favorite': 'onRender',
             'change:discussion': 'onRender'
         },
-        events: {            
-            'click': 'showDetails',
-            'click a' : 'showLink',
+        events: {
+            'click #current': 'showDetails',
+            'click #current a' : 'showLink',
             'click .status-action-show' : 'showDetails',
             'click .status-action-reply': 'replyAction',
+            'click .status-action-reply a': '',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
             'click .status-action-announce': 'announceAction',
@@ -145,7 +146,7 @@
                             self.buttons.$el.slideToggle({duration: 200});
 
 
-                            if(self.model.getImages().length > 0){
+                            if (self.model.getImages() != null && self.model.getImages().length > 0) {
 
                                 self.preview.show(new Tatami.Views.StatusImagePreview({
                                     model: self.model
@@ -203,7 +204,7 @@
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 200});
                     }
-                    if(this.model.getImages().length > 0){
+                    if(this.model.getImages() != null && this.model.getImages().length > 0){
                         this.preview.$el.slideToggle({duration: 200});
                     }
                     if(isRoot){
@@ -442,7 +443,6 @@
             'click .slider-button-right': 'right'
         },
         left: function(event){
-            console.log(this.options.currentIndex);
             var index = this.options.currentIndex;
             var images = this.model.getImages();
             index--;

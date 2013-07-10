@@ -10,8 +10,8 @@ import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 @Service
 public class StatusUpdateService {
 
-    private static final Log log = LogFactory.getLog(StatusUpdateService.class);
+    private static final Logger log = LoggerFactory.getLogger(StatusUpdateService.class);
 
     private static final Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
 
@@ -108,7 +108,7 @@ public class StatusUpdateService {
         createStatus(content, false, null, "", "", "", null, user);
     }
 
-    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
+    public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
         AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
         if (abstractStatus != null &&
                 !abstractStatus.getType().equals(StatusType.STATUS) &&
@@ -160,7 +160,8 @@ public class StatusUpdateService {
                     group,
                     realOriginalStatus.getStatusId(),
                     status.getStatusId(),
-                    status.getUsername());
+                    status.getUsername(),
+                    attachmentIds);
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
@@ -172,7 +173,8 @@ public class StatusUpdateService {
                             group,
                             status.getStatusId(),
                             status.getStatusId(),
-                            status.getUsername());
+                            status.getUsername(),
+                            attachmentIds);
 
             discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
         }
@@ -183,7 +185,8 @@ public class StatusUpdateService {
                                 Group group,
                                 String discussionId,
                                 String replyTo,
-                                String replyToUsername) {
+                                String replyToUsername,
+                                Collection<String> attachmentIds) {
 
         return createStatus(
                 content,
@@ -192,7 +195,7 @@ public class StatusUpdateService {
                 discussionId,
                 replyTo,
                 replyToUsername,
-                new ArrayList<String>(),
+                attachmentIds,
                 null);
     }
 
@@ -209,9 +212,7 @@ public class StatusUpdateService {
         long startTime = 0;
         if (log.isInfoEnabled()) {
             startTime = Calendar.getInstance().getTimeInMillis();
-            if (log.isDebugEnabled()) {
-                log.debug("Creating new status : " + content);
-            }
+            log.debug("Creating new status : {}", content);
         }
         String currentLogin;
         if (user == null) {
@@ -319,9 +320,7 @@ public class StatusUpdateService {
         while (m.find()) {
             String tag = m.group(2);
             if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found tag : " + tag);
-                }
+                log.debug("Found tag : {}", tag);
                 taglineRepository.addStatusToTagline(status, tag);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 //Excludes the Tatami Bot from the global trend
@@ -344,9 +343,7 @@ public class StatusUpdateService {
                     !mentionedUsername.equals(currentLogin) &&
                     !followersForUser.contains(mentionedUsername)) {
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Mentionning : " + mentionedUsername);
-                }
+                log.debug("Mentionning : {}", mentionedUsername);
                 String mentionedLogin =
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 

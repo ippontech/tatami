@@ -10,8 +10,8 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.QueryResult;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
  */
 public abstract class AbstractCassandraLineRepository {
 
-    private final Log log = LogFactory.getLog(AbstractCassandraLineRepository.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractCassandraLineRepository.class);
 
     @Inject
     protected Keyspace keyspaceOperator;
@@ -103,14 +103,14 @@ public abstract class AbstractCassandraLineRepository {
                 mutator.insert(login, sharesColumnFamily, HFactory.createColumn(UUID.fromString(share.getOriginalStatusId()),
                         "", UUIDSerializer.get(), StringSerializer.get()));
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Shared status " + share.getOriginalStatusId() + " is already shared in " + columnFamily);
-                }
+
+                log.debug("Shared status {} is already shared in {}", share.getOriginalStatusId(), columnFamily);
+
             }
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("Shared status " + share.getOriginalStatusId() + " is already present in " + columnFamily);
-            }
+
+            log.debug("Shared status {} is already present in {}", share.getOriginalStatusId(), columnFamily);
+
         }
     }
 

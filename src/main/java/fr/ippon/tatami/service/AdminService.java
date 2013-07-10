@@ -15,8 +15,8 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminService {
 
-    private static final Log log = LogFactory.getLog(AdminService.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminService.class);
 
     @Inject
     private DomainRepository domainRepository;
@@ -122,9 +122,7 @@ public class AdminService {
                 if (user == null) {
                     log.warn("User defined in domain was not found in the user respository: " + login);
                 } else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Indexing user: " + login);
-                    }
+                    log.debug("Indexing user: {}", login);
                     users.add(user);
                     Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
                     for (Group group : groups) {

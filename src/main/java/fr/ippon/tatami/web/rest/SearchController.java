@@ -14,8 +14,8 @@ import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
 import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +34,7 @@ import java.util.List;
 @Controller
 public class SearchController {
 
-    private final Log log = LogFactory.getLog(SearchController.class);
+    private final Logger log = LoggerFactory.getLogger(SearchController.class);
 
     @Inject
     private AuthenticationService authenticationService;
@@ -83,9 +83,7 @@ public class SearchController {
                                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to search status containing these words (" + query + ").");
-        }
+        log.debug("REST request to search status containing these words ({}).", query);
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         List<String> line;
@@ -117,14 +115,12 @@ public class SearchController {
         Collection<Tag> tags = new ArrayList<Tag>();
 
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find tags starting with : " + prefix);
-            }
-            for(String trend : trends){
+            this.log.debug("REST request to find tags starting with : {}", prefix);
+            for (String trend : trends) {
                 Tag tag = new Tag();
                 tag.setName(trend);
-                if(followedTags.contains(trend)){
-                   tag.setFollowed(true);
+                if (followedTags.contains(trend)) {
+                    tag.setFollowed(true);
                 }
                 tags.add(tag);
             }
@@ -149,9 +145,7 @@ public class SearchController {
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         Collection<Group> groups;
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find groups starting with : " + prefix);
-            }
+            this.log.debug("REST request to find groups starting with : {}", prefix);
             groups = searchService.searchGroupByPrefix(domain, prefix, 5);
         } else {
             groups = new ArrayList<Group>();
@@ -182,9 +176,7 @@ public class SearchController {
         Collection<User> users;
 
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find users starting with : " + prefix);
-            }
+            this.log.debug("REST request to find users starting with : {}", prefix);
             users = userService.getUsersByLogin(logins);
         } else {
             users = new ArrayList<User>();

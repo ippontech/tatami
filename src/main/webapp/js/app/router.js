@@ -115,7 +115,6 @@
         },
 
         tags: function(tag) {
-            // Tatami.app.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
             if (!ios) {
                 Tatami.app.navbar.displaySearch("#"+tag);

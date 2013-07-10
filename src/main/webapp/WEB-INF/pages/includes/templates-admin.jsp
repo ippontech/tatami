@@ -21,6 +21,18 @@
     </div>
 </script>
 
+<script type="text/template" id="follow-button">
+    <span class="btn btn-block input-block-level"><fmt:message key="tatami.user.follow"/></span>
+</script>
+
+<script type="text/template" id="followed-button">
+    <span class="btn btn-primary btn-block input-block-level"><fmt:message key="tatami.user.followed"/></span>
+</script>
+
+<script type="text/template" id="edit-profile">
+    <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
+</script>
+
 <script type="text/template" id="account-profile">
     <h2>
         <fmt:message key="tatami.account.update.title"/>
@@ -48,10 +60,11 @@
             </label>
 
             <div class="controls">
-                <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
-                <div id="updateAvatar"  class="btn btn-info btn-mini">
-                    <p><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile"  data-url="/tatami/rest/fileupload/avatar"/>
+
+                <div id="updateAvatar" class="dropzone well">
+                    <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
+                    <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
+                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
                 </div>
             </div>
         </div>
@@ -129,31 +142,6 @@
     <h2>
         <fmt:message key="tatami.menu.preferences"/>
     </h2>
-
-    <fieldset>
-
-        <legend>
-            <fmt:message key="tatami.preferences.theme"/>
-        </legend>
-
-        <div class="control-group">
-            <label class="control-label" for="theme">
-                <fmt:message
-                        key="tatami.preferences.theme.current"/>
-            </label>
-            <div class="controls">
-                <select class="input-xlarge col-span-12" name="theme">
-                    <@  preferences.themesList.forEach(function(theme){ @>
-                        <option value="<@= theme @>" <@ if(preferences.theme === theme) { @>selected="true" <@ } @>>
-                            <@= function(string){ return string.charAt(0).toUpperCase() + string.slice(1) }(theme) @>
-                            </option>
-                    <@ }); @>
-                </select>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset>
 
         <legend>
             <fmt:message key="tatami.preferences.notifications"/>
@@ -279,9 +267,9 @@
 
 <script type="text/template" id="users-item">
     <td>
-        <img class="avatar avatar-small" src="<@= avatar @>"
+        <img class="avatar img-small" src="<@= avatar @>"
          alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
-        <a href="/tatami/profile/<@= username @>/" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/home/users/<@= username @>" title="<fmt:message key="tatami.user.profile.show"/> <@= ['@' + username,firstName,lastName].filter(function(value){return value;}).join(' ') @>">
             <@= username @>
         </a>
     </td>
@@ -471,7 +459,7 @@
 
 <script type="text/template" id="groups-item">
     <td>
-        <a href="/tatami/#/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
+        <a href="/tatami/home/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
     </td>
     <td>
         <@ if(publicGroup && !archivedGroup) { @>
@@ -503,6 +491,42 @@
     <button type="button" class="btn btn-danger btn-block">
         <fmt:message key="tatami.group.edit.quit"/>
     </button>
+</script>
+
+<script type="text/template" id="usergroup-header">
+    <tr>
+        <th><fmt:message key="tatami.username"/></th>
+        <th><fmt:message key="tatami.user.lastName"/></th>
+        <th><fmt:message key="tatami.group.role"/></th>
+    </tr>
+</script>
+
+<script type="text/template" id="usergroup-item">
+    <td style="text-align: left">
+        <img class="avatar img-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
+        <a href="/tatami/profile/<@= username @>/">
+            <@= username @>
+        </a>
+    </td>
+    <td>
+        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
+    </td>
+    <td>
+        <@ if(role === 'ADMIN'){ @>
+        <fmt:message key="tatami.group.role.admin"/>
+        <@ } else { @>
+        <fmt:message key="tatami.group.role.member"/>
+        <@ } @>
+    </td>
+    <@ if(admin){ @>
+    <td>
+        <@ if (window.username !== username) { @>
+        <button type="button" class="btn btn-success input-block-level delete">
+            <fmt:message key="tatami.group.edit.member.delete"/>
+        </button>
+        <@ } @>
+    </td>
+    <@ } @>
 </script>
 
 <script type="text/template" id="tags-menu">

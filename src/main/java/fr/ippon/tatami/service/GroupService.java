@@ -6,8 +6,8 @@ import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.TreeSet;
 @Service
 public class GroupService {
 
-    private final Log log = LogFactory.getLog(GroupService.class);
+    private final Logger log = LoggerFactory.getLogger(GroupService.class);
 
     @Inject
     private AuthenticationService authenticationService;
@@ -48,15 +48,13 @@ public class GroupService {
 
     @Inject
     private SearchService searchService;
-    
+
     @Inject
     private FriendRepository friendRepository;
 
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating group : " + name);
-        }
+        log.debug("Creating group : {}", name);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String groupId = groupRepository.createGroup(domain);
@@ -70,9 +68,7 @@ public class GroupService {
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
-        if (log.isDebugEnabled()) {
-            log.debug("Editing group : " + group.getGroupId());
-        }
+        log.debug("Editing group : {}", group.getGroupId());
         groupDetailsRepository.editGroupDetails(group.getGroupId(),
                 group.getName(),
                 group.getDescription(),
@@ -95,11 +91,11 @@ public class GroupService {
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
-            if(friendLogins.contains(user.getLogin())){
-            	dto.setFriend(true);
+            if (friendLogins.contains(user.getLogin())) {
+                dto.setFriend(true);
             }
-            if(login.equals(user.getLogin())){
-            	dto.setYou(true);
+            if (login.equals(user.getLogin())) {
+                dto.setYou(true);
             }
             userGroupDTOs.add(dto);
         }
@@ -179,13 +175,11 @@ public class GroupService {
         }
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getLogin());
-            log.debug("user="+user);
+            log.debug("user=" + user);
             groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("User " + user.getLogin() + " is already a member of group " + group.getName());
-            }
+            log.debug("User {} is already a member of group {}", user.getLogin(), group.getName());
         }
     }
 
@@ -204,9 +198,7 @@ public class GroupService {
             groupCounterRepository.decrementGroupCounter(user.getDomain(), groupId);
             userGroupRepository.removeGroup(user.getLogin(), groupId);
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("User " + user.getLogin() + " is not a member of group " + group.getName());
-            }
+            log.debug("User {} is not a member of group {}", user.getLogin(), group.getName());
         }
     }
 }

@@ -11,8 +11,8 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
 @Repository
 public class CassandraRegistrationRepository implements RegistrationRepository {
 
-    private static final Log log = LogFactory.getLog(CassandraRegistrationRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(CassandraRegistrationRepository.class);
 
     private final static String ROW_KEY = "registration_key";
 
@@ -93,9 +93,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
         for (HColumn<String, String> hColumn : columns) {
             // WARN : here we don't handle multiple registrationKey for one login
             registrationKeyByLogin.put(hColumn.getValue(), hColumn.getName());
-            if (log.isDebugEnabled()) {
-                log.debug("Key=" + hColumn.getValue() + "|Value=" + hColumn.getName());
-            }
+            log.debug("Key={}|Value={}", hColumn.getValue(), hColumn.getName());
         }
         return registrationKeyByLogin;
     }

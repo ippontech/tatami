@@ -1,15 +1,15 @@
 package fr.ippon.tatami.web.rest;
 
+import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetails;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.dto.UserPassword;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,7 +33,7 @@ import javax.validation.ConstraintViolationException;
 @Controller
 public class AccountController {
 
-    private final Log log = LogFactory.getLog(AccountController.class);
+    private final Logger log = LoggerFactory.getLogger(AccountController.class);
 
     @Inject
     private UserService userService;
@@ -51,10 +51,9 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public User getProfile() {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's profile");
-        }
+        this.log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
         return userService.getUserByLogin(currentUser.getLogin());
     }
@@ -65,6 +64,7 @@ public class AccountController {
     @RequestMapping(value = "/rest/account/profile",
             method = RequestMethod.PUT)
     @ResponseBody
+    @Timed
     public User updateUserProfile(@RequestBody User updatedUser, HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         currentUser.setFirstName(updatedUser.getFirstName().replace("<", " "));
@@ -77,19 +77,16 @@ public class AccountController {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("User updated : " + currentUser);
-        }
+        log.debug("User updated : {}", currentUser);
         return currentUser;
     }
 
     @RequestMapping(value = "/rest/account/profile",
             method = RequestMethod.DELETE)
+    @Timed
     public void suppressUserProfile() {
         User currentUser = authenticationService.getCurrentUser();
-        if (log.isDebugEnabled()) {
-            log.debug("Suppression du compte utilisateur : " + currentUser);
-        }
+        log.debug("Suppression du compte utilisateur : {}", currentUser);
         userService.deleteUser(currentUser);
     }
 
@@ -101,17 +98,13 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Preferences getPreferences() {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get account's preferences");
-        }
+        this.log.debug("REST request to get account's preferences");
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
 
         Preferences preferences = new Preferences(user);
-        String themes = env.getProperty("tatami.authorized.theme");
-        preferences.setThemesList(themes);
-
         return preferences;
     }
 
@@ -122,17 +115,12 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to set account's preferences");
-        }
+        this.log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
-            if (newPreferences.getTheme().isEmpty()) {
-                throw new Exception("Theme can't be null");
-            }
-            currentUser.setTheme(newPreferences.getTheme());
             currentUser.setPreferencesMentionEmail(newPreferences.getMentionEmail());
             currentUser.setDailyDigestSubscription(newPreferences.getDailyDigest());
             currentUser.setWeeklyDigestSubscription(newPreferences.getWeeklyDigest());
@@ -146,27 +134,22 @@ public class AccountController {
             userService.updateDailyDigestRegistration(newPreferences.getDailyDigest());
             userService.updateWeeklyDigestRegistration(newPreferences.getWeeklyDigest());
 
-            userService.updateThemePreferences(newPreferences.getTheme());
-            TatamiUserDetails userDetails =
-                    (TatamiUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            org.springframework.security.core.userdetails.User securityUser =
+                    (org.springframework.security.core.userdetails.User)
+                            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            userDetails.setTheme(newPreferences.getTheme());
             Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails,
-                            userDetails.getPassword(),
-                            userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(securityUser,
+                            securityUser.getPassword(),
+                            securityUser.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            if (log.isDebugEnabled()) {
-                log.debug("User updated : " + currentUser);
-            }
+            log.debug("User updated : {}", currentUser);
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
-            String themes = env.getProperty("tatami.authorized.theme");
-            preferences.setThemesList(themes);
             return preferences;
         }
     }
@@ -179,6 +162,7 @@ public class AccountController {
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
@@ -197,18 +181,15 @@ public class AccountController {
             method = RequestMethod.POST,
             produces = "application/json")
     @ResponseBody
+    @Timed
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to set account's password");
-        }
+        this.log.debug("REST request to set account's password");
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!encoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
-                if (log.isDebugEnabled()) {
-                    log.debug("The old password is incorrect : " + userPassword.getOldPassword());
-                }
+                log.debug("The old password is incorrect : {}", userPassword.getOldPassword());
                 throw new Exception("oldPassword");
             }
 
@@ -220,9 +201,7 @@ public class AccountController {
 
             userService.updatePassword(currentUser);
 
-            if (log.isDebugEnabled()) {
-                log.debug("User password updated : " + currentUser);
-            }
+            log.debug("User password updated : {}", currentUser);
             return new UserPassword();
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

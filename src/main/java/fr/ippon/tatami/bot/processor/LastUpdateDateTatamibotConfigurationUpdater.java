@@ -15,10 +15,10 @@ public class LastUpdateDateTatamibotConfigurationUpdater {
     private TatamibotConfigurationRepository tatamibotConfigurationRepository;
 
     public void updateLastDate(@Header("tatamibotLastUpdateDate") Date lastUpdateDate,
-            @Header("tatamibotConfiguration") TatamibotConfiguration tatamibotConfigurationUsedByRoute) {
+                               @Header("tatamibotConfiguration") TatamibotConfiguration tatamibotConfigurationUsedByRoute) {
 
         String tatamibotConfigurationId = tatamibotConfigurationUsedByRoute.getTatamibotConfigurationId();
-        
+
         TatamibotConfiguration lastTatamibotConfiguration = tatamibotConfigurationRepository
                 .findTatamibotConfigurationById(tatamibotConfigurationId);
 

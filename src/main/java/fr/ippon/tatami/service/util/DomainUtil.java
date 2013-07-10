@@ -1,7 +1,7 @@
 package fr.ippon.tatami.service.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for managing the user domain.
@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class DomainUtil {
 
-    private final Log log = LogFactory.getLog(DomainUtil.class);
+    private final Logger log = LoggerFactory.getLogger(DomainUtil.class);
 
     private DomainUtil() {
     }

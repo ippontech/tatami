@@ -36,5 +36,5 @@ public abstract class SourceRouteBuilderBase extends RouteBuilder {
     public void setTatamiBotLogin(String tatamiBotLogin) {
         this.tatamiBotLogin = tatamiBotLogin;
     }
-    
+
 }

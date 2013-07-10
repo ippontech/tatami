@@ -28,17 +28,13 @@ public class CassandraPersistenceProvider implements PersistenceProvider {
     @Override
     public EntityManagerFactory createContainerEntityManagerFactory(
             PersistenceUnitInfo info, Map map) {
-        if (log.isDebugEnabled()) {
-            log.debug("creating EntityManagerFactory {} with properties {} ", "null", map);
-        }
+        log.debug("creating EntityManagerFactory {} with properties {} ", null, map);
         return null;
     }
 
     @Override
     public EntityManagerFactory createEntityManagerFactory(String emName, Map map) {
-        if (log.isDebugEnabled()) {
-            log.debug("creating EntityManagerFactory {} with properties {} ", emName, map);
-        }
+        log.debug("creating EntityManagerFactory {} with properties {} ", emName, map);
         if (map == null || map.isEmpty()) {
             return new EntityManagerFactoryImpl();
         }

@@ -64,9 +64,10 @@ public class AttachmentController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public void DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
+    public Attachment DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         attachmentService.deleteAttachment(attachment);
+        return attachment;
     }
 
     /**

@@ -64,10 +64,6 @@ public class User implements Serializable {
     @JsonIgnore
     private String openIdUrl;
 
-    @Column(name = "theme")
-    @JsonIgnore
-    private String theme;
-
     @Column(name = "preferences_mention_email")
     @JsonIgnore
     private Boolean preferencesMentionEmail;
@@ -173,14 +169,6 @@ public class User implements Serializable {
         this.openIdUrl = openIdUrl;
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
     public Boolean getPreferencesMentionEmail() {
         return preferencesMentionEmail;
     }
@@ -275,7 +263,6 @@ public class User implements Serializable {
                 ", jobTitle='" + jobTitle + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", openIdUrl='" + openIdUrl + '\'' +
-                ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", rssUid=" + rssUid +
                 ", dailyDigestSubscription=" + dailyDigestSubscription +

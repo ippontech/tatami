@@ -3,9 +3,11 @@ package fr.ippon.tatami.service;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.exceptions.NetworkIOException;
-import fr.ippon.tatami.domain.status.AbstractStatus;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.repository.AppleDeviceRepository;
+import fr.ippon.tatami.repository.AppleDeviceUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,12 +26,18 @@ import java.util.Map;
 @Profile("apple-push")
 public class ApplePushService {
 
-    private static final Log log = LogFactory.getLog(ApplePushService.class);
+    private static final Logger log = LoggerFactory.getLogger(ApplePushService.class);
 
     private ApnsService apnsService;
 
     @Inject
     private Environment env;
+
+    @Inject
+    private AppleDeviceRepository appleDeviceRepository;
+
+    @Inject
+    private AppleDeviceUserRepository appleDeviceUserRepository;
 
     @PostConstruct
     public void init() {
@@ -52,18 +61,29 @@ public class ApplePushService {
     /**
      * Notifies the user with APNS.
      */
-    public void notifyUser(String login, AbstractStatus abstractStatus) {
-        if (log.isDebugEnabled()) {
-            log.debug("Notifying user with Apple Push: " + login);
-        }
+    public void notifyUser(String login, Status status) {
+        log.debug("Notifying user with Apple Push: {}", login);
         try {
+            String message =
+                    "@" +
+                            status.getUsername() +
+                            "\n" +
+                            status.getContent();
+
+            if (message.length() > 256) {
+                message = message.substring(0, 252) + "...";
+            }
+
             String payload =
                     APNS.newPayload()
-                        .badge(3)
-                        .alertBody("Hello from Tatami!").build();
+                            .alertBody(message).build();
 
-            String token = "test token";
-            apnsService.push(token, payload);
+            Collection<String> deviceIds = appleDeviceRepository.findAppleDevices(login);
+            for (String deviceId : deviceIds) {
+                log.debug("Notifying user : {} - device : {}", login, deviceId);
+                apnsService.push(deviceId, payload);
+            }
+
         } catch (Exception e) {
             log.warn("Apple Push error: " + e.getMessage());
         }
@@ -74,11 +94,18 @@ public class ApplePushService {
      */
     @Scheduled(cron = "0 0 23 * * ?")
     public void feedbackService() {
-        log.info("Checking the Apple feedback service for inactive devices");
-        Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
-        for (String deviceToken : inactiveDevices.keySet()) {
-            Date inactiveAsOf = inactiveDevices.get(deviceToken);
-            log.debug("Device '" + deviceToken + "' is inactive");
+        log.info("Checking the Apple Feedback Service for inactive devices");
+        try {
+            Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
+            for (String deviceId : inactiveDevices.keySet()) {
+                log.debug("Device {} is inactive", deviceId);
+                String login = appleDeviceUserRepository.findLoginForDeviceId(deviceId);
+                log.debug("Removing device for user {}" + login);
+                appleDeviceRepository.removeAppleDevice(login, deviceId);
+                appleDeviceUserRepository.removeAppleDeviceForUser(deviceId);
+            }
+        } catch (Exception e) {
+            log.warn("Apple Feedback Service error: " + e.getMessage());
         }
     }
 }

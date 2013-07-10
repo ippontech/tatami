@@ -9,8 +9,8 @@ import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ import java.util.Collection;
 @Service
 public class AttachmentService {
 
-    private static final Log log = LogFactory.getLog(AttachmentService.class);
+    private static final Logger log = LoggerFactory.getLogger(AttachmentService.class);
 
     @Inject
     private AttachmentRepository attachmentRepository;
@@ -74,17 +74,13 @@ public class AttachmentService {
                 userAttachmentRepository.
                         findAttachmentIds(authenticationService.getCurrentUser().getLogin());
 
-        if (log.isDebugEnabled()) {
-            log.debug("Collection of attachments : " + attachmentIds.size());
-        }
+        log.debug("Collection of attachments : {}", attachmentIds.size());
 
         return attachmentIds;
     }
 
     public void deleteAttachment(Attachment attachment) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing attachment : " + attachment);
-        }
+        log.debug("Removing attachment : {}", attachment);
         User currentUser = authenticationService.getCurrentUser();
 
         for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getLogin())) {
@@ -112,9 +108,7 @@ public class AttachmentService {
         Collection<Long> taux = new ArrayList<Long>();
         taux.add(quota);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Domain quota attachments : " + quota);
-        }
+        log.debug("Domain quota attachments : {}", quota);
 
         return taux;
     }

@@ -21,6 +21,10 @@
     }
 }
 
+.noRadius {
+    border-radius: 0px;
+}
+
 .alertColor{
     padding: 8px 15px 8px 14px;
     margin-bottom: 20px;
@@ -75,6 +79,9 @@ h4 {
     height: 10px;
 }
 
+.little-padding-top{
+    padding-top: 3px;
+}
 .little-marge-top{
     margin-top: 5px;
 }
@@ -84,21 +91,20 @@ h4 {
     padding: 0.10em 0.6em;
 }
 #updateAvatar{
-       position: relative;
-
+    position: relative;
+    cursor: hand;
+    cursor: pointer;
 }
-
-
 
 #updateAvatar input[type=file] {
     opacity: 0;
     position: absolute;
     top: 0;
     left: 0;
-    height: 40px;
-    width: 130px;
-}
+    height: 210px;
+    width: 550px;
 
+}
 
 .avatar-float-left-container  {
     margin-left: 15px;
@@ -162,9 +168,9 @@ h4 {
 .navbar-edit {
     line-height: 14px;
     left: 10px;
-    right: initial;
     width: 48px;
     padding: 4px 13px 3px;
+    background-color: #428bca;
 }
 
 .navbar-edit:hover,
@@ -329,7 +335,7 @@ h4 {
 .edit-tatam-float-right {
     position: absolute;
     right: 0;
-    margin-right: 20px;
+    margin-right: 40px;
     padding: 2px;
 }
 
@@ -375,6 +381,7 @@ h4 {
 .tatam-border-lr {
     border-right: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
+    margin-bottom: 5px;
 }
 
 .tatam-first {

@@ -6,8 +6,8 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Component
 public class CassandraIdempotentRepository implements fr.ippon.tatami.repository.IdempotentRepository {
 
-    private final Log log = LogFactory.getLog(CassandraIdempotentRepository.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraIdempotentRepository.class);
 
     private final static String KEY = "Default";
 
@@ -54,9 +54,8 @@ public class CassandraIdempotentRepository implements fr.ippon.tatami.repository
 
     @Override
     public boolean contains(String key) {
-        if (log.isDebugEnabled()) {
-            log.debug("Test message duplication with key : " + key);
-        }
+
+        log.debug("Test message duplication with key : {}", key);
         ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
 
         HColumn<String, String> column =

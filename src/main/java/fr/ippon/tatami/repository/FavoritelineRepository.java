@@ -22,5 +22,5 @@ public interface FavoritelineRepository {
      * - The key is the statusId of the statuses
      * - The value is always null
      */
-   List<String> getFavoriteline(String login);
+    List<String> getFavoriteline(String login);
 }

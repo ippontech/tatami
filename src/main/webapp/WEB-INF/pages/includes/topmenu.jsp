@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:if test="${ios == null || !ios}">
-    <div id="navbar" class="navbar">
+    <div id="navbar" class="navbar noRadius">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -20,11 +20,16 @@
         <div class="nav-collapse navbar-responsive-collapse collapse">
             <ul class="nav">
                 <li>
-                    <a href="/tatami/home">
+                    <c:if test="${currentPage != null && currentPage == 'home'}">
+                      <a href="#/home/timeline">
+                    </c:if>
+                    <c:if test="${currentPage == null || currentPage != 'home'}">
+                      <a href="/tatami/home">
+                    </c:if>
                     <span>
-                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="glyphicon glyphicon-th-list"></span>
                         <span class="hidden-tablet">
-                            <fmt:message key="tatami.home"/>
+                            <fmt:message key="tatami.timeline"/>
                         </span>
                     </span>
                     </a>
@@ -112,6 +117,7 @@
                 </li>
             </ul>
 
+            <c:if test="${currentPage != null && currentPage == 'home'}">
             <sec:authorize ifAnyGranted="ROLE_USER">
             <ul class="nav pull-right">
                 <li class="dropdown pointer">
@@ -209,6 +215,7 @@
                 <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
             </form>
             </sec:authorize>
+            </c:if>
         </div>
     </div>
 </c:if>

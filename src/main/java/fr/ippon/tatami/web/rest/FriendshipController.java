@@ -5,6 +5,8 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,8 @@ import java.util.Collection;
  */
 @Controller
 public class FriendshipController {
+
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Inject
     private FriendshipService friendshipService;
@@ -69,5 +73,64 @@ public class FriendshipController {
             friendshipService.unfollowUser(username);
         }
         return userService.buildUserDTO(userService.getUserByUsername(username));
+    }
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * POST /friendships/create -> follow user
+     */
+    @RequestMapping(value = "/rest/friendships/create",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public boolean followUser(@RequestBody User user, HttpServletResponse response) {
+        log.debug("REST request to follow username : {}", user.getUsername());
+        boolean success = friendshipService.followUser(user.getUsername());
+        if (!success) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return success;
+    }
+
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * POST /friendships/destroy -> unfollow user
+     */
+    @RequestMapping(value = "/rest/friendships/destroy",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public boolean unfollowUser(@RequestBody User user, HttpServletResponse response) {
+        log.debug("REST request to unfollow username  : {}", user.getUsername());
+        boolean success = friendshipService.unfollowUser(user.getUsername());
+        if (!success) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return success;
+    }
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * GET /friendships -> is the user a friend ?
+     */
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public Boolean followUser(@RequestParam("screen_name") String username) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get friendship status : " + username);
+        }
+        return friendshipService.isFollowing(username);
     }
 }
