@@ -118,7 +118,7 @@
                 <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
                 <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.url>http://app.tatamisoft.com</tatami.url>
+                <tatami.url>https://app.tatamisoft.com</tatami.url>
                 <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
