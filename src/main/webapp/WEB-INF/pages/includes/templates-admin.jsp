@@ -575,6 +575,7 @@
 
 <script type="text/template" id="tags-item">
     <td>
+        <!--@debugger;@-->
         <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
     </td>
     <td class="follow">

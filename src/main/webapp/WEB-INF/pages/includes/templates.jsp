@@ -2,9 +2,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="TagsHeader">
+<script type="text/html" id="TagsHeader">
     <h3>
-      <span class="text-center"><strong>#<@= name @></strong></span>
+        <!--@debugger;@-->
+      <span class="text-center"><strong> #<@= name @></strong></span>
       <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
       <@ if(followed) { @>
         <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -81,6 +82,7 @@
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
+    <!--@debugger;@-->
     <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
 <script type="text/template" id="StatusItem">
@@ -141,7 +143,7 @@
 
                 </div>
             </small>
-        </div>        
+        </div>
     </div>
     <div id="preview">
 

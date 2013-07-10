@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.24</version>
+    <version>3.0.27</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -55,11 +55,12 @@
             <id>preprod</id>
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
-                <spring.profiles.active></spring.profiles.active>
+                <spring.profiles.active>apple-push</spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
@@ -114,9 +115,11 @@
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <logback.loglevel>INFO</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.url>https://tatami.ippon.fr</tatami.url>
+                <tatami.url>https://app.tatamisoft.com</tatami.url>
+                <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
                 <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
@@ -416,6 +419,7 @@
         <logback.version>1.0.13</logback.version>
         <httpclient.core.version>4.2.2</httpclient.core.version> <!-- pour compatiblité selenium -->
         <httpclient.client.version>4.2.2</httpclient.client.version> <!-- pour compatiblité selenium -->
+        <cassandra.version>1.2.6</cassandra.version>
         <hector.version>1.1-4</hector.version>
         <hector.mapper.version>3.1-09</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
@@ -437,7 +441,7 @@
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
-        <camel.version>2.10.4</camel.version>
+        <camel.version>2.11.0</camel.version>
 
         <selenium.version>2.31.0</selenium.version>
 
@@ -447,7 +451,7 @@
         <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
         <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
-        <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
+        <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
         <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
@@ -795,7 +799,7 @@
         <dependency>
             <groupId>org.apache.cassandra</groupId>
             <artifactId>cassandra-all</artifactId>
-            <version>1.2.5</version>
+            <version>${cassandra.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -966,6 +970,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cassandra-maven-plugin</artifactId>
                 <version>${maven.cassandra.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cassandra</groupId>
+                        <artifactId>cassandra-all</artifactId>
+                        <version>${cassandra.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>

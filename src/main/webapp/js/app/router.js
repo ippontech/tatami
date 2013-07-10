@@ -142,6 +142,7 @@
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
+            //debugger;
         },
 
         search: function(input){

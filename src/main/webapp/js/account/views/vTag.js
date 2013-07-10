@@ -13,6 +13,7 @@ var VTag = Backbone.View.extend({
 
     },
 
+
     template:_.template($('#tags-item').html()),
     tagName: 'tr',
 
@@ -43,7 +44,9 @@ var VTag = Backbone.View.extend({
     },
 
     render: function(){
+        //debugger;
         this.$el.html(this.template(this.model.toJSON()));
+        //debugger;
         this.delegateEvents();
         return this.$el;
     }

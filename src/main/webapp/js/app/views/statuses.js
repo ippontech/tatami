@@ -72,11 +72,12 @@
             'change:favorite': 'onRender',
             'change:discussion': 'onRender'
         },
-        events: {            
-            'click': 'showDetails',
-            'click a' : 'showLink',
+        events: {
+            'click #current': 'showDetails',
+            'click #current a' : 'showLink',
             'click .status-action-show' : 'showDetails',
             'click .status-action-reply': 'replyAction',
+            'click .status-action-reply a': '',
             'click .status-action-share': 'shareAction',
             'click .status-action-favorite': 'favoriteAction',
             'click .status-action-announce': 'announceAction',
@@ -203,7 +204,7 @@
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 200});
                     }
-                    if(this.model.getImages().length > 0){
+                    if(this.model.getImages() != null && this.model.getImages().length > 0){
                         this.preview.$el.slideToggle({duration: 200});
                     }
                     if(isRoot){

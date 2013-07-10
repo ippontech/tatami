@@ -4,8 +4,6 @@
 
 <c:if test="${ios == null || !ios}">
     <div id="navbar" class="navbar noRadius">
-
-
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

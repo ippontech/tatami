@@ -271,11 +271,11 @@ public class TimelineService {
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,
-                             StatusDTO statusDTO,
-                             AbstractStatus abstractStatus,
-                             User statusUser,
-                             Collection<Group> usergroups,
-                             List<String> favoriteLine) {
+                                 StatusDTO statusDTO,
+                                 AbstractStatus abstractStatus,
+                                 User statusUser,
+                                 Collection<Group> usergroups,
+                                 List<String> favoriteLine) {
 
         Status status = (Status) abstractStatus;
         // Group check
@@ -436,6 +436,11 @@ public class TimelineService {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);
+            }
+        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            User currentUser = authenticationService.getCurrentUser();
+            if (abstractStatus.getLogin().equals(currentUser.getLogin())) {
+                statusRepository.removeStatus(abstractStatus);
             }
         } else {
             log.debug("Cannot remove status of this type");

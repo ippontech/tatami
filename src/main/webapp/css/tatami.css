@@ -26,6 +26,10 @@
     border-radius: 0px;
 }
 
+.noRadius {
+    border-radius: 0px;
+}
+
 .alertColor{
     padding: 8px 15px 8px 14px;
     margin-bottom: 20px;
