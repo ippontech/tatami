@@ -95,13 +95,62 @@
                 <span class="glyphicon glyphicon-retweet"></span>
             <@ } else if (type == 'MENTION_FRIEND') { @>
                 <span class="glyphicon glyphicon-download"></span>
-            <@ } else { @>
+            <@ } else { @>                
                 <img class="img-rounded <@= root?'img-medium':'img-reply' @>" style="background-image: url(<@= avatarURL @>);">
             <@ } @>
         </div>
         <div id="status-content-container">
             <div class="pull-right text-right">
-                <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
+                <@ if(type == 'STATUS'){ @>
+                <div id="buttons-desktop" >
+                    <small class="statusitem-footer">   
+                        <a href="#status/<@= statusId @>" class="btn-link status-action button-ios buttons-hidden">
+                            <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+                        </a>
+                        <button class="btn-link status-action status-action-reply button-ios buttons-hidden">
+                            <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
+                        </button>
+                            <!-- //TODO CodingParty : Afficher l'annulation du partage -->
+                            <!-- @ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @-->
+                        <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>    
+                            <button class="btn-link status-action status-action-share button-ios buttons-hidden" success-text='<fmt:message key="tatami.user.status.share.success"/>' confirmation-text-share='<p><fmt:message key="tatami.timeline.confirm.share"/></p><p class="text-center">
+                                                         <button class="btn btn-default status-action-share-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                                         <button class="btn btn-danger status-action-share-confirm" href="#"><fmt:message key="tatami.user.status.share"/></button>
+                                                         </p>' confirmation-text-delete='<p><fmt:message key="tatami.timeline.confirm.delete"/></p><p class="text-center">
+                                                         <button class="btn btn-default status-action-share-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                                         <button class="btn btn-danger status-action-share-delete" href="#"><fmt:message key="tatami.user.status.delete"/></button>
+                                                         </p>'>
+                                <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
+                            </button>
+                        <@ } @>
+                        <button class="btn-link status-action status-action-favorite button-ios buttons-hidden">
+                            <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
+                        </button>
+                        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+                            <@ if (statusPrivate == false && groupId == '') { @>
+                            <button class="btn-link status-action status-action-announce button-ios buttons-hidden"
+                                    confirmation-text='<p><fmt:message key="tatami.user.status.confirm.announce"/></p><p class="text-center">
+                                                         <a class="btn btn-default status-action-announce-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
+                                                         <a class="btn btn-danger status-action-announce-confirm" href="#"><fmt:message key="tatami.user.status.announce"/></a>
+                                                         </p>'>
+                                <i class="glyphicon glyphicon-bullhorn"></i> <fmt:message key="tatami.user.status.announce"/>
+                            </button>
+                            <@ } @>
+                        </sec:authorize>
+                        <@ if (Tatami.app.user.get('username') == username) { @>
+                            <button class="btn-link status-action status-action-delete button-ios buttons-hidden"
+                                    confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                                         <button class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                                         <button class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></button>
+                                                         </p>'>
+                                <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
+                            </button>
+                        <@ } @>   
+                        <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>      
+                    </small> 
+                </div>
+                <@ } @>
+                <small><abbr class="timeago timeago-ios" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr></small>
             </div>
             <h5 class="statusitem-name">
                 <strong><a href="#users/<@= username @>"><@= fullName @></a></strong>
@@ -112,7 +161,7 @@
                     <fmt:message key="tatami.user.followed.you"/>
                 <@ } @>
             </h5>
-            <div class="markdown <@ if (type == 'MENTION_SHARE') { @>mention-share<@ } @>">
+            <div class="markdown <@ if (type == 'MENTION_SHARE') { @>mention-share<@ } @> statusItem-content">
                 <@= marked(content) @>
             </div>
             <small> 
@@ -143,12 +192,57 @@
             </small>
         </div>        
     </div>
+    <@ if(type == 'STATUS'){ @>
+    <div id="buttons-ios" >
+        <small class="statusitem-footer"> 
+            <button  class="btn-link button-ios status-action status-action-show">                
+                <i class="glyphicon glyphicon-eye-open"></i> <fmt:message key="tatami.user.status.show"/>
+            </button>
+            <button class="btn-link status-action status-action-reply button-ios">
+                <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
+            </button>
+                <!-- //TODO CodingParty : Afficher l'annulation du partage -->
+                <!-- @ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @-->
+            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>    
+                <button class="btn-link status-action status-action-share button-ios" success-text='<fmt:message key="tatami.user.status.share.success"/>' confirmation-text-share='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                             <button class="btn btn-default status-action-share-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                             <button class="btn btn-danger status-action-share-confirm" href="#"><fmt:message key="tatami.user.status.share"/></button>
+                                             </p>' confirmation-text-delete='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                             <button class="btn btn-default status-action-share-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                             <button class="btn btn-danger status-action-share-delete" href="#"><fmt:message key="tatami.user.status.delete"/></button>
+                                             </p>'>
+                    <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
+                </button>
+            <@ } @>
+            <button class="btn-link status-action status-action-favorite button-ios">
+                <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
+            </button>
+            <sec:authorize ifAnyGranted="ROLE_ADMIN">
+                <@ if (statusPrivate == false && groupId == '') { @>
+                <button class="btn-link status-action status-action-announce button-ios"
+                        confirmation-text='<p><fmt:message key="tatami.user.status.confirm.announce"/></p><p class="text-center">
+                                             <a class="btn btn-default status-action-announce-cancel" href="#"><fmt:message key="tatami.form.cancel"/></a>
+                                             <a class="btn btn-danger status-action-announce-confirm" href="#"><fmt:message key="tatami.user.status.announce"/></a>
+                                             </p>'>
+                    <i class="glyphicon glyphicon-bullhorn"></i> <fmt:message key="tatami.user.status.announce"/>
+                </button>
+                <@ } @>
+            </sec:authorize>
+            <@ if (Tatami.app.user.get('username') == username) { @>
+                <button class="btn-link status-action status-action-delete button-ios"
+                        confirmation-text='<p><fmt:message key="tatami.user.status.confirm.delete"/></p><p class="text-center">
+                                             <button class="btn btn-default status-action-delete-cancel" href="#"><fmt:message key="tatami.form.cancel"/></button>
+                                             <button class="btn btn-danger status-action-delete-confirm" href="#"><fmt:message key="tatami.user.status.delete"/></button>
+                                             </p>'>
+                    <i class="glyphicon glyphicon-trash"></i> <fmt:message key="tatami.user.status.delete"/>
+                </button>
+            <@ } @>   
+        </small> 
+    </div>
+    <@ } @>
     <div id="preview">
 
-    </div>    
-    <div id="buttons">
-
-    </div> 
+    </div>   
     <@if(root){ @>      
         <div id="after">
 

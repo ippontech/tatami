@@ -4,8 +4,9 @@
         initialize: function(){
             _.defaults(this.options, {
                 discussion: true,
-                isDelete: false
-            });
+                isDelete: false,
+                expanded: false
+            });            
 
         },
         updateDetailModel: function(model, id){
@@ -44,16 +45,6 @@
                 })
             },
 
-            buttons: {
-                selector: '#buttons',
-                regionType: Marionette.Region.extend({
-                    open: function(view){
-                        this.$el.css('display', 'none');
-                        this.$el.html(view.el);
-                    }
-                })
-            },
-
             preview: {
                 selector: '#preview',
                 regionType: Marionette.Region.extend({
@@ -73,12 +64,17 @@
             'change:discussion': 'onRender'
         },
         events: {
-            'click #current': 'showDetails',
+            'mouseenter' : 'showButtons',
+            'mouseleave' : 'hideButtons',
+            'click': 'showDetails',
             'click #current a' : 'showLink',
-            'click .status-action-show' : 'showDetails',
+            'click .status-action-show' : 'showPage',
             'click .status-action-reply': 'replyAction',
             'click .status-action-reply a': '',
             'click .status-action-share': 'shareAction',
+            'click .status-action-share-confirm': 'shareActionConfirm',
+            'click .status-action-share-delete': 'shareActionDelete',
+            'click .status-action-share-cancel': 'shareActionCancel',    
             'click .status-action-favorite': 'favoriteAction',
             'click .status-action-announce': 'announceAction',
             'click .status-action-announce-confirm': 'announceActionConfirm',
@@ -86,6 +82,16 @@
             'click .status-action-delete': 'deleteAction',
             'click .status-action-delete-confirm': 'deleteActionConfirm',
             'click .status-action-delete-cancel': 'deleteActionCancel'
+        },
+        showPage: function(){
+            Backbone.history.navigate("#status/"+this.model.id, true); 
+            return false;
+        },
+        showButtons: function(){     
+            this.$el.find('> #current .button-ios').removeClass('buttons-hidden');
+        },
+        hideButtons: function(){     
+            this.$el.find('> #current .button-ios').addClass('buttons-hidden');
         },
         onRender: function(){
             this.$el.find('> #current').toggleClass('favorite', this.model.get('favorite'));
@@ -118,6 +124,7 @@
             return false;
         }, 
         showDetails: function(){
+            this.options.testVariable = "OK";
             currentModel = this.model;
             if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
                 return;
@@ -127,24 +134,24 @@
                 statusDetail.set("groupId", this.model.get("groupId"));
                 statusDetail.set("statusPrivate", this.model.get("statusPrivate"));
                 statusDetail.set("type", this.model.get("type"));
-                if(!this.buttons.currentView){
+                if(!this.options.expanded){
+                    this.options.expanded = true;
                     var self = this;
                     statusDetail.set('refDate', this.model.get('statusDate'));
                     statusDetail.fetch({
                         success: function(){                
                             var shares = statusDetail.get('sharedByLogins');
-                            self.share.show(new Tatami.Views.StatusShares({
-                                collection: new Tatami.Collections.Users(shares)
-                            }));
-                            if(shares.length){
-                                self.share.$el.slideToggle({duration: 200});
+
+                            if(!self.share.currentView){
+                                self.share.show(new Tatami.Views.StatusShares({
+                                    collection: new Tatami.Collections.Users(shares)
+                                }));
+                                if(shares.length){
+                                    self.share.$el.slideToggle({duration: 200});
+                                }
                             }
-
-                            //TODO CodingParty : Afficher l'annulation du partage
+                            
                             currentModel.set('sharedByMe', statusDetail.isSharedBy(Tatami.app.user.get('username')));
-                            self.buttons.show(new StatusFooters({model: currentModel}));
-                            self.buttons.$el.slideToggle({duration: 200});
-
 
                             if (self.model.getImages() != null && self.model.getImages().length > 0) {
 
@@ -198,8 +205,7 @@
                         }
 
                     });
-                } else {
-                    this.buttons.$el.slideToggle({duration: 200});
+                } else {                    
                     var shares = statusDetail.get('sharedByLogins');
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 200});
@@ -218,7 +224,9 @@
                         $(this.el).toggleClass('tatam-hover');
                         $(this.el).toggleClass('tatam-expand-container');
                     }
-                    this.buttons.currentView = null;
+                    this.options.expanded = false;
+                    this.before.currentView = null;
+                    this.share.currentView = null;
                 }
             return false;        
         },
@@ -233,7 +241,6 @@
                     }));
                     if(shares.length){
                         self.share.$el.slideToggle({duration: 200});
-                        self.$el.find('.status-action-share').hide();
                     }
                 }
             });
@@ -253,6 +260,38 @@
             return false;
         },
         shareAction: function(){
+
+            var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+            var self = this;
+            statusDetail.fetch({
+                success: function(){
+                    var isShareByMe = statusDetail.isSharedBy(Tatami.app.user.get('username'));
+                    var content;
+                    if(isShareByMe){
+                        content  = self.$el.find('.status-action-share').attr('confirmation-text-delete');
+                    } else {
+                        content = self.$el.find('.status-action-share').attr('confirmation-text-share');
+                    }
+                    var popoverNode = self.$el.find('.status-action-share');
+                    popoverNode.popover({
+                        html: true,
+                        animation: true,
+                        placement: 'top',
+                        trigger: 'manual',
+                        content: content
+                    });
+                    popoverNode.popover('show');
+                }
+            });            
+            return false;
+        },
+        shareActionDelete: function(){
+            //TODO CodingParty : Afficher l'annulation du partage
+            this.$el.find('.status-action-share').popover('hide');   
+            this.hideButtons();  
+            return false;
+        },
+        shareActionConfirm: function(){
             var self = this;
             this.model.save({
                 shared: !this.model.get('shared')
@@ -260,19 +299,17 @@
                 patch: true,
                 success: function(){
                     var popoverNode = self.$el.find('.status-action-share');
-                    popoverNode.popover({
-                            animation: true,
-                            placement: 'top',
-                            trigger: 'manual',
-                            content: self.$el.find('.status-action-share').attr('success-text')
-                        });
-                    popoverNode.popover('show');
+                    popoverNode.popover('hide');
                     setTimeout(function() {
-                        popoverNode.popover('hide');
                         self.refreshDetails();
-                    }, 500);
+                    }, 100);
                 }
             });
+            return false;
+        },
+        shareActionCancel: function(){
+            this.$el.find('.status-action-share').popover('hide');   
+            this.hideButtons();     
             return false;
         },
         announceAction: function() {
