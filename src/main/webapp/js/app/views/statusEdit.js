@@ -1,9 +1,30 @@
 (function(Backbone, _, Tatami){
-    var StatusEdit = Backbone.Marionette.Layout.extend({
-        initialize: function(){
+    var StatusEdit;
+    StatusEdit = Backbone.Marionette.Layout.extend({
+        initialize: function () {
             this.model = new Tatami.Models.PostStatus();
+            this.geolocalize(this);
         },
-        onRender: function(){
+
+        geolocalize: function(that){
+            if (navigator.geolocation) {
+                _.bindAll(that);
+                var options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                };
+                navigator.geolocation.getCurrentPosition(this.onSuccessGeolocation, function (error) {
+                }, options);
+            }
+        },
+
+        onSuccessGeolocation: function (position) {
+            this.model.set('latitude', position.coords.latitude);
+            this.model.set('longitude', position.coords.longitude);
+        },
+
+        onRender: function () {
             _.defaults(this.options, {
                 maxLength: 749
             });
@@ -171,6 +192,7 @@
             this.el.reset();
 
             this.model = new Tatami.Models.PostStatus();
+            this.geolocalize(this);
 
             var $reply = this.$el.find('.reply');
             $reply.css('display', 'none');
