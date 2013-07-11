@@ -827,3 +827,20 @@ h4 {
     bottom: 50%;
 }
 
+.socialIcons img {
+    width: 24px;
+    height: 24px;
+    margin: 10px 1px 0 0;
+}
+
+.socialIcons a {
+    text-decoration: none;
+}
+
+input.socialPrefix {
+    width: 39%;
+}
+
+input.socialSuffix {
+    width: 60%;
+}

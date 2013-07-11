@@ -71,6 +71,13 @@ public class AccountController {
         currentUser.setLastName(updatedUser.getLastName().replace("<", " "));
         currentUser.setJobTitle(StringEscapeUtils.escapeHtml(updatedUser.getJobTitle().replace("<", " ")));
         currentUser.setPhoneNumber(updatedUser.getPhoneNumber().replace("<", " "));
+        currentUser.setTwitter(updatedUser.getTwitter().replace("<", " "));
+        currentUser.setFacebook(updatedUser.getFacebook().replace("<", " "));
+        currentUser.setGooglePlus(updatedUser.getGooglePlus().replace("<", " "));
+        currentUser.setViadeo(updatedUser.getViadeo().replace("<", " "));
+        currentUser.setLinkedIn(updatedUser.getLinkedIn().replace("<", " "));
+        currentUser.setSkype(updatedUser.getSkype().replace("<", " "));
+        currentUser.setHireDate(updatedUser.getHireDate());
         try {
             userService.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {

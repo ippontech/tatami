@@ -1,6 +1,7 @@
 package fr.ippon.tatami.service.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * DTO to present a "complete" status to the presentation layer.
@@ -20,6 +21,20 @@ public class UserDTO implements Serializable {
     private String jobTitle;
 
     private String phoneNumber;
+
+    private String viadeo;
+
+    private String linkedIn;
+
+    private String skype;
+
+    private String twitter;
+
+    private String googlePlus;
+
+    private String facebook;
+
+    private Date hireDate;
 
     private long attachmentsSize;
 
@@ -139,6 +154,62 @@ public class UserDTO implements Serializable {
         isYou = you;
     }
 
+    public String getViadeo() {
+        return viadeo;
+    }
+
+    public void setViadeo(String viadeo) {
+        this.viadeo = viadeo;
+    }
+
+    public String getLinkedIn() {
+        return linkedIn;
+    }
+
+    public void setLinkedIn(String linkedIn) {
+        this.linkedIn = linkedIn;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getGooglePlus() {
+        return googlePlus;
+    }
+
+    public void setGooglePlus(String googlePlus) {
+        this.googlePlus = googlePlus;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public Date getHireDate() {
+        return hireDate;
+    }
+
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -165,6 +236,13 @@ public class UserDTO implements Serializable {
                 ", lastName=" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", skype='" + skype + '\'' +
+                ", viadeo='" + viadeo + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", linkedIn='" + linkedIn + '\'' +
+                ", googlePlus='" + googlePlus + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", hireDate='" + hireDate + '\'' +
                 ", attachmentsSize=" + attachmentsSize +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
