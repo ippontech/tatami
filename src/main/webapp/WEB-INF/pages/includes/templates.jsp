@@ -242,7 +242,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-    <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    <img class="img-rounded img-small share-img-fffix" style="background-image: url(<@= avatarURL @>);">
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>

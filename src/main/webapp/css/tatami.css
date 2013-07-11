@@ -619,6 +619,10 @@ div.jGrowl-notification{
     overflow: auto;
 }
 
+.share-img-fffix{
+    display: inline-block;
+}
+
 .background-image-fffix img {
     display: block;
 }
