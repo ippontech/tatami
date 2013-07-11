@@ -433,6 +433,13 @@ public class UserService {
         friend.setLastName(user.getLastName());
         friend.setJobTitle(user.getJobTitle());
         friend.setPhoneNumber(user.getPhoneNumber());
+        friend.setTwitter(user.getTwitter());
+        friend.setFacebook(user.getFacebook());
+        friend.setGooglePlus(user.getGooglePlus());
+        friend.setViadeo(user.getViadeo());
+        friend.setLinkedIn(user.getLinkedIn());
+        friend.setSkype(user.getSkype());
+        friend.setHireDate(user.getHireDate());
         friend.setAttachmentsSize(user.getAttachmentsSize());
         friend.setStatusCount(user.getStatusCount());
         friend.setFriendsCount(user.getFriendsCount());

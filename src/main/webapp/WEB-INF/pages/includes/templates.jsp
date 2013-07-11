@@ -510,6 +510,7 @@
         </div>
     </div>
 </script>
+
 <script type="text/template" id="ProfileInformations">
     <h4 class="profile-card background-image-fffix">
         <img class="img-rounded img-big" style="background-image: url(<@= avatarURL @>);">
@@ -520,6 +521,7 @@
             <fmt:message key="tatami.user.informations"/>
         </h4>
 
+        <@ if(firstName) {@>
         <p>
             <strong>
                 <fmt:message key="tatami.user.firstName"/> :
@@ -527,12 +529,14 @@
             <@= firstName @>
         </p>
 
+        <@} if(lastName) {@>
         <p>
             <strong>
                 <fmt:message key="tatami.user.lastName"/> :
             </strong>
             <@= lastName @>
         </p>
+        <@}@>
 
         <p>
             <strong>
@@ -541,6 +545,7 @@
             <@= login @>
         </p>
 
+        <@ if(jobTitle) {@>
         <p>
             <strong>
                 <fmt:message key="tatami.user.jobTitle"/> :
@@ -548,12 +553,52 @@
             <@= jobTitle @>
         </p>
 
+        <@} if(hireDate) {@>
+        <p>
+            <strong>
+                <fmt:message key="tatami.user.hireDate"/> :
+            </strong>
+            <@= new Date(hireDate).toLocaleDateString() @>
+        </p>
+
+        <@} if(phoneNumber) {@>
         <p>
             <strong>
                 <fmt:message key="tatami.user.phoneNumber"/> :
             </strong>
             <@= phoneNumber @>
         </p>
+        <@} if(facebook || linkedIn || viadeo || skype || twitter || googlePlus) {@>
+        <div class="socialIcons">
+            <p>
+                <strong>
+                    <fmt:message key="tatami.user.socialNetworks"/>
+                </strong>
+            </p>
+
+            <@ if(facebook) {@>
+                <a href=" <@= facebookURL @>" target="_blank">
+                    <img src="https://fbstatic-a.akamaihd.net/rsrc.php/yl/r/H3nktOa7ZMg.ico"/>
+                </a>
+            <@ } if(linkedIn) {@>
+                <a href="<@= linkedInURL @>" target="_blank">
+                    <img src="http://s.c.lnkd.licdn.com/scds/common/u/img/favicon_v3.ico"/>
+                </a>
+            <@ } if(viadeo) {@>
+                <a href="<@= viadeoURL @>" target="_blank">
+                    <img src="http://static2.viadeo-static.com/v_img160830/visuel/favicon.ico"/>
+                </a>
+            <@ } if(twitter) {@>
+                <a href="<@= twitterURL @>" target="_blank">
+                    <img src="https://abs.twimg.com/favicons/favicon.ico"/>
+                </a>
+            <@ } if(googlePlus) {@>
+                <a href="<@= googlePlusURL @>" target="_blank">
+                    <img src="https://ssl.gstatic.com/s2/oz/images/faviconr3.ico"/>
+                </a>
+            <@ }@>
+        </div>
+        <@ }@>
     </div>
 </script>
 <script type="text/template" id="ProfileSide">

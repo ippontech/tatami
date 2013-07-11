@@ -5,14 +5,12 @@ import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A user.
@@ -59,6 +57,34 @@ public class User implements Serializable {
     @Size(min = 0, max = 20)
     @Column(name = "phoneNumber")
     private String phoneNumber;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "viadeo")
+    private String viadeo;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "linkedIn")
+    private String linkedIn;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "skype")
+    private String skype;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "twitter")
+    private String twitter;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "googlePlus")
+    private String googlePlus;
+
+    @Size(min = 0, max = 250)
+    @Column(name = "facebook")
+    private String facebook;
+
+    @Column(name = "hireDate")
+    @Temporal(TemporalType.DATE)
+    private Date hireDate;
 
     @Column(name = "openIdUrl")
     @JsonIgnore
@@ -233,6 +259,61 @@ public class User implements Serializable {
         this.dailyDigestSubscription = dailyDigestSubscription;
     }
 
+    public String getViadeo() {
+        return viadeo;
+    }
+
+    public void setViadeo(String viadeo) {
+        this.viadeo = viadeo;
+    }
+
+    public String getLinkedIn() {
+        return linkedIn;
+    }
+
+    public void setLinkedIn(String linkedIn) {
+        this.linkedIn = linkedIn;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getGooglePlus() {
+        return googlePlus;
+    }
+
+    public void setGooglePlus(String googlePlus) {
+        this.googlePlus = googlePlus;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public Date getHireDate() {
+        return hireDate;
+    }
+
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -262,6 +343,13 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", skype='" + skype + '\'' +
+                ", viadeo='" + viadeo + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", linkedIn='" + linkedIn + '\'' +
+                ", googlePlus='" + googlePlus + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", hireDate='" + hireDate + '\'' +
                 ", openIdUrl='" + openIdUrl + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", rssUid=" + rssUid +

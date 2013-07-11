@@ -100,12 +100,89 @@
         </div>
 
         <div class="control-group">
+            <label class="control-label" for="hireDate">
+                <fmt:message key="tatami.user.hireDate"/>
+            </label>
+
+            <div class="controls">
+                <input name="hireDate" type="date"  size="10" maxlength="10" class="input-xlarge col-span-12" value="<@= new Date(user.hireDate).toISOString().substring(0,10) @>"/>
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label" for="phoneNumber">
                 <fmt:message key="tatami.user.phoneNumber"/>
             </label>
 
             <div class="controls">
                 <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= user.phoneNumber @>"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="facebook">
+                <fmt:message key="tatami.user.facebook"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="https://www.facebook.com/"/>
+                <input name="facebook" type="text" size="10" maxlength="250" value="<@= user.facebook @>" class="socialSuffix"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="linkedIn">
+                <fmt:message key="tatami.user.linkedIn"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="http://www.linkedin.com/"/>
+                <input name="linkedIn" type="text" size="10" maxlength="250" value="<@= user.linkedIn @>" class="socialSuffix"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="viadeo">
+                <fmt:message key="tatami.user.viadeo"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="http://www.viadeo.com/"/>
+                <input name="viadeo" type="text" size="10" maxlength="250" value="<@= user.viadeo @>" class="socialSuffix"/>
+            </div>
+        </div>
+<%--
+        <div class="control-group">
+            <label class="control-label" for="skype">
+                <fmt:message key="tatami.user.skype"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="http://www.skype.com/"/>
+                <input name="skype" type="text" size="10" maxlength="250" value="<@= user.skype @>" class="socialSuffix"/>
+            </div>
+        </div>
+        --%>
+
+        <div class="control-group">
+            <label class="control-label" for="twitter">
+                <fmt:message key="tatami.user.twitter"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="https://twitter.com/"/>
+                <input name="twitter" type="text" size="10" maxlength="250" value="<@= user.twitter @>" class="socialSuffix"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="googlePlus">
+                <fmt:message key="tatami.user.googlePlus"/>
+            </label>
+
+            <div class="controls">
+                <input type="text" disabled="true" class="col-span-12 socialPrefix" value="https://plus.google.com/"/>
+                <input name="googlePlus" type="text" size="10" maxlength="250" value="<@= user.googlePlus @>" class="socialSuffix"/>
             </div>
         </div>
 
