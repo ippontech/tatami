@@ -38,6 +38,7 @@ public class ApplicationConfiguration {
      * Spring profiles can be configured with a system property -Dspring.profiles.active=your-active-profile
      * <p/>
      * Available profiles are :
+     * - "apple-push" : for enabling Apple Push notifications
      * - "metrics" : for enabling Yammer Metrics
      * - "tatamibot" : for enabling the Tatami bot
      */

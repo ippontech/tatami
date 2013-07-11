@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.25</version>
+    <version>3.0.27</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -55,14 +55,15 @@
             <id>preprod</id>
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
-                <spring.profiles.active></spring.profiles.active>
+                <spring.profiles.active>apple-push</spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
@@ -114,10 +115,12 @@
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <logback.loglevel>INFO</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com:38143</logback.syslogHost>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.url>https://tatami.ippon.fr</tatami.url>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.url>https://app.tatamisoft.com</tatami.url>
+                <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
@@ -438,7 +441,7 @@
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
-        <camel.version>2.10.4</camel.version>
+        <camel.version>2.11.0</camel.version>
 
         <selenium.version>2.31.0</selenium.version>
 
