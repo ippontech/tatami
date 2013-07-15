@@ -20,7 +20,6 @@ var MAccountProfile = Backbone.Model.extend({
         phoneNumber : ''
     },
     toJSON : function(){
-        //debugger;
         return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
             avatar : (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png'
         });

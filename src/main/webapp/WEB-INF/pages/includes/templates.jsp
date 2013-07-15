@@ -4,7 +4,6 @@
 
 <script type="text/html" id="TagsHeader">
     <h3>
-        <!--@debugger;@-->
       <span class="text-center"><strong> #<@= name @></strong></span>
       <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
       <@ if(followed) { @>
@@ -82,7 +81,6 @@
         <span class="glyphicon glyphicon-<@= (followed)?'minus':'plus' @>"></span>
     </span>
     <span class="glyphicon glyphicon-arrow-<@= (trendingUp)? 'up': 'down' @>"></span>
-    <!--@debugger;@-->
     <a href="#tags/<@= name @>">#<@= name @></a>
 </script>
 <script type="text/template" id="StatusItem">

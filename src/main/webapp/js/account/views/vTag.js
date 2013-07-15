@@ -44,9 +44,7 @@ var VTag = Backbone.View.extend({
     },
 
     render: function(){
-        //debugger;
         this.$el.html(this.template(this.model.toJSON()));
-        //debugger;
         this.delegateEvents();
         return this.$el;
     }

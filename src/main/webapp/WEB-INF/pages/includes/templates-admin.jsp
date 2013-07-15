@@ -575,7 +575,6 @@
 
 <script type="text/template" id="tags-item">
     <td>
-        <!--@debugger;@-->
         <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
     </td>
     <td class="follow">
@@ -595,14 +594,14 @@
 
     <div class="progress">
         <@ if(quota < 50){@>
-        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;">
         <@ }else if(quota > 50 && quota < 80) {@>
-        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;">
         <@ }else{@>
-        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;">
         <@ }@>
         <span class="quota"><@=  quota @>%</span>
-    </div>
+    </div>          </div>
 </script>
 
 <script type="text/template" id="files-menu">

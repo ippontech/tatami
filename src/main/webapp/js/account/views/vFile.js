@@ -3,6 +3,7 @@ var VFile = Marionette.ItemView.extend({
     template: '#files-item',
     tagName: 'tr',
     initialize: function(){
+        this.$el.addClass('fileItem');
     },
 
     events:{
@@ -69,6 +70,12 @@ var VFilesMenu = Marionette.ItemView.extend({
 });
 
 var VFilesHeader = Marionette.ItemView.extend({
-    template: '#files-header'
+    template: '#files-header',
+    tag :'div',
+    initialize: function() {
+
+
+        this.$el.addClass('littleMargeBot');
+    }
 
 });

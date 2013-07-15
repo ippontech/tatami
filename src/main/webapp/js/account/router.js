@@ -298,7 +298,6 @@ _.templateSettings = {
 
         status_of_the_day: function(){
             this.selectMenu('status_of_the_day');
-              //debugger;
             var cDailyStats = new CDailyStat();
            // if(!app.views.daily)
             app.views.daily = new VDailyStats({ collection : cDailyStats});

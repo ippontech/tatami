@@ -9,7 +9,6 @@
 var MUser = Backbone.Model.extend({
     initialize: function(){
         this.listenTo(this, 'sync', function(model){
-            //debugger;
             if(Tatami.app.user.id === model.id)
                 Tatami.app.user.set(model.toJSON());
         });
