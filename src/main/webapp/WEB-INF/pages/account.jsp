@@ -74,6 +74,7 @@
 <jsp:include page="includes/templates.jsp"/>
 <jsp:include page="includes/topmenu.jsp"/>
 
+
 <div id="the-container"></div>
 
 <jsp:include page="includes/footer.jsp"/>
