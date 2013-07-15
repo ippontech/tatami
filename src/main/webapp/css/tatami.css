@@ -21,6 +21,10 @@
     }
 }
 
+#tatamiBody {
+    max-width: 800px;
+}
+
 .noRadius {
     border-radius: 0px;
 }
@@ -669,33 +673,46 @@ h4 {
     margin-top: 5px;
 }
 
-@media screen and (min-width: 767px) {
-    #buttons {
-        clear: both;
-        margin-left: 60px;
-    }
-}
 @media screen and (max-width: 767px) {
-    #buttons {
+    #buttons-ios {
         clear: both;
+        width: 100%;
+    }
+
+    #buttons-desktop {
+        display: none;
     }
 
     .statusitem-footer {
-        background-color: #ECF1F7;
-        border-top: 1px solid #CCCCCC;
-        padding-left: 8px;
+        display: table;
+        width: 100%;
+    }
+
+    #buttons-ios {
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
     }
 
     .button-ios {
-        margin-left: -2px;
-        margin-right: -2px;
-        margin: 2px 4px 2px 0px; 
-    }
-
-    .button-ios-right {
+        width: 25%;
+        padding: 10px 4px 10px 4px;
+        background-color: #F8F8FF;
         border-right: 1px solid #CCCCCC;
+        border-top: 1px solid #CCCCCC;
+        border-collapse: collapse;
     }
 
+}
+
+@media screen and (min-width: 767px) {
+    .timeago-ios {
+        display: none;    
+    }
+
+    #buttons-ios {
+        display: none;
+    }
 }
 
 .image-preview-template {
@@ -831,4 +848,14 @@ h4 {
     right: 10px;
     bottom: 50%;
 }
+
+.statusItem-content {
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+
+.buttons-hidden {
+    visibility: hidden;
+}
+
 
