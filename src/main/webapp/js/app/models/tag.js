@@ -1,4 +1,4 @@
-(function(Backbone, Tatami2){
+(function(Backbone, Tatami){
 
     var Tag = Backbone.Model.extend({
         initialize: function(){
