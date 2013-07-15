@@ -65,6 +65,7 @@
 
 <script id="template-navigation" type="text/html">
     <jsp:include page="includes/navigation-admin.jsp"/>
+
 </script>
 
 <body>
@@ -102,6 +103,7 @@
     <script src="/js/account/models/mUser.js"></script>
     <script src="/js/account/views/vFile.js"></script>
     <script src="/js/account/views/vGroup.js"></script>
+
 
     <script src="/js/account/models/mFile.js"></script>
     <script src="/js/account/collections/cTabTag.js"></script>
