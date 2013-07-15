@@ -1,7 +1,5 @@
 (function(Backbone, _, Tatami){
     var Router = Backbone.Marionette.AppRouter.extend({
-
-
         routes: {
             'timeline' : 'homeTimeline',
             'mentions' : 'homeMentions',
@@ -15,8 +13,6 @@
             'groups/:group/members' : 'groupsMembers',
             'search/:input' : 'search',
             'company' : 'company',
-            'account' : 'profileAccount',
-            'account/profile' : 'profileAccount',
             '*actions' : 'defaults'
         },
 
