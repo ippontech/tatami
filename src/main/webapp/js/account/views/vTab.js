@@ -33,7 +33,7 @@ var VTabSearch = Backbone.View.extend({
 
     selectMenu: function(menu) {
         this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
-        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
     },
 
     render: function(){
