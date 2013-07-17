@@ -26,7 +26,7 @@ public class AccountWebController {
     @Inject
     private AuthenticationService authenticationService;
 
-    @RequestMapping(value = "/account",
+    @RequestMapping(value = {"/account", "/account/**"},
             method = RequestMethod.GET)
     public ModelAndView getUserProfile() {
         log.debug("Request to get account");
