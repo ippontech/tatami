@@ -5,7 +5,7 @@
         },
         onRender: function(){
             _.defaults(this.options, {
-                maxLength: 749
+                maxLength: 750
             });
 
             this.$editContent = this.$el.find('.edit-tatam');
@@ -110,7 +110,7 @@
         },
 
         events: {
-            'keypress .edit-tatam > textarea': 'updatecount',
+            'keydown .edit-tatam > textarea': 'updatecount',
             'click .edit-tatam-float-right': 'togglePreview',
             'submit': 'submit'
         },

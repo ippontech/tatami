@@ -6,6 +6,7 @@
     .nav > li > .dropdown-menu {
         position: static;
         float: none;
+
     }
 
     .nav li.dropdown-submenu > ul.dropdown-menu {
@@ -19,6 +20,10 @@
     #tatamiBody {
         padding: 0px;
     }
+}
+.noRadius
+{
+    border-radius: 0px;
 }
 
 .noRadius {
@@ -65,22 +70,56 @@ h4 {
 
     }
 .quota {
-
-  margin-left: 45%;
+    color: #333333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+;
 }
+
 .nomargin {
       margin: 0px;
 }
+
+.file-table
+{
+display: block;
+}
+
+.displayBlock
+{
+    display: block;
+}
+
+.fileItem
+{
+    width: 100%;
+    display: inline-table;
+    border-top: 1px solid #dddddd;
+    padding: 8px;
+}
+
+
+div.jGrowl-notification{
+    background-color : none;
+    opacity : 1;
+}
+
 .little-marge-right{
     margin-right: 20px
+
 }
 
 .little-height{
     height: 10px;
 }
 
+.littleMargeBot{
+    margin-bottom: 10px;
+}
+
 .little-padding-top{
     padding-top: 3px;
+
 }
 .little-marge-top{
     margin-top: 5px;
@@ -105,6 +144,7 @@ h4 {
     width: 550px;
 
 }
+
 
 .avatar-float-left-container  {
     margin-left: 15px;
@@ -505,7 +545,7 @@ h4 {
 }
 
 .hasCategory .item{
-    height: 33px;
+    height: 100%;
     margin-left: 40px;
     background: #FFFFFF;
     cursor: pointer;
@@ -599,6 +639,10 @@ h4 {
     overflow: auto;
 }
 
+.share-img-fffix{
+    display: inline-block;
+}
+
 .background-image-fffix img {
     display: block;
 }
@@ -629,6 +673,7 @@ h4 {
     padding: 0;
     margin: 0;
     margin-top: -4px;
+    margin-bottom: 7px;
 }
 
 .statusitem-content {
@@ -645,7 +690,7 @@ h4 {
 }
 
 #current {
-    padding: 5px;
+    padding: 12px;
 }
 
 #before{
@@ -658,7 +703,9 @@ h4 {
 }
 
 #status-content-container {
-    margin-left: 60px;
+    margin-left: 65px;
+    margin-right: 30px;
+    text-align: justify;
 }
 
 .statusitem-img {

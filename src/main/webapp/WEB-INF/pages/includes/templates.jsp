@@ -2,9 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="TagsHeader">
+<script type="text/html" id="TagsHeader">
     <h3>
-      <span class="text-center"><strong>#<@= name @></strong></span>
+      <span class="text-center"><strong> #<@= name @></strong></span>
       <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
       <@ if(followed) { @>
         <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -141,7 +141,7 @@
 
                 </div>
             </small>
-        </div>        
+        </div>
     </div>
     <div id="preview">
 
@@ -240,7 +240,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-    <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    <img class="img-rounded img-small share-img-fffix" style="background-image: url(<@= avatarURL @>);">
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
