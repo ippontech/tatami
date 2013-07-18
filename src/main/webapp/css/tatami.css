@@ -26,6 +26,15 @@
     border-radius: 0px;
 }
 
+.noCollapse
+{
+    border-collapse: separate;
+}
+
+.noBorder{
+    border-top : 0;
+}
+
 .noRadius {
     border-radius: 0px;
 }
@@ -59,6 +68,15 @@ h4 {
 
 .well h4 {
     margin: 0px;
+}
+
+.labelSizeNormal{
+    font-size: 100%;
+}
+
+.tabMenu{
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 .navbar {
@@ -106,7 +124,10 @@ div.jGrowl-notification{
 
 .little-marge-right{
     margin-right: 20px
+}
 
+.smallPaddingLeft {
+    padding-left: 10px;
 }
 
 .little-height{
@@ -286,6 +307,7 @@ div.jGrowl-notification{
 
 .useritem, .useritemmini {
     display: block;
+    padding: 5px;
 }
 
 .mention-share {

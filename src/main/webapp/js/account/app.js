@@ -30,10 +30,18 @@ var Tatami = {
     views: {},
     collections: {},
     View: {},
+    Views: {},
     Collection: {},
+    Collections: {},
     Model: {},
-    Router: {}
+    Models: {},
+    Router: {}   ,
+    Factories: {}
 };
+
+Tatami.app = new Backbone.Marionette.Application();
+ Tatami.app.user = {} ;
+Tatami.app.user.id = '';
 
 if(!window.app){
     app = window.app = _.extend({

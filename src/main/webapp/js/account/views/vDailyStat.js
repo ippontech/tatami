@@ -7,6 +7,7 @@
  */
 
 var VDailyStats = Marionette.ItemView.extend({
+
     initialize:function () {
         var self = this;
         this.collection.fetch({
@@ -17,10 +18,10 @@ var VDailyStats = Marionette.ItemView.extend({
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
-   /* collectionEvents: {
+      /*collectionEvents: {
         //'reset': 'render',
-        'success' : 'render'
-    }, */
+        'success' : 'myRender'
+    },     */
 
     render:function () {
         var values = [];

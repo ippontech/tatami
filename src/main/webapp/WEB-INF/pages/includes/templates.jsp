@@ -2,6 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
+
+
 <script type="text/html" id="TagsHeader">
     <h3>
       <span class="text-center"><strong> #<@= name @></strong></span>
@@ -465,8 +468,8 @@
         </li>
     <@} else { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
-            <img class="img-rounded img-small" style="background-image: url(/img/default_image_profile.png);">
-            <h4><a href="#"><@= item.label @></a></h4>
+            <@ console.log(item.category) @>
+            <h4 class="smallPaddingLeft"><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
         </li>
     <@}@>
@@ -694,4 +697,29 @@
         <div class="items">
         </div>
     </div>
+</script>
+
+<script type="text/html" id="TagsListTemplate">
+    <table class="table noCollapse">
+         <tr>
+            <th style="border-top :0"><fmt:message key="tatami.tag"/></th>
+            <th style="border-top :0" />
+         </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
+
+</script>
+
+<script type="text/html" id="GroupsSuscribeTemplate">
+    <table class="table noCollapse">
+        <tr>
+            <th style="border-top :0"><fmt:message key="tatami.group.name"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.add.access"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.counter"/></th>
+            <th style="border-top :0"></th>
+        </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
 </script>

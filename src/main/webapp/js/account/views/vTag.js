@@ -10,9 +10,7 @@
 var VTag = Backbone.View.extend({
     initialize: function(){
         this.model.bind('change', this.render, this);
-
     },
-
 
     template:_.template($('#tags-item').html()),
     tagName: 'tr',
