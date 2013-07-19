@@ -28,7 +28,6 @@ var VFile = Marionette.ItemView.extend({
 var VQuotaFiles = Marionette.ItemView.extend({
 
     template: '#files-quota',
-    //tagName : 'span',
 
     initialize: function(){
 
@@ -38,13 +37,11 @@ var VQuotaFiles = Marionette.ItemView.extend({
     },
 
     modelEvents: {
-        //"change" : "render"  ,
-       // "change" : "round render"
         "sync" : "render"
     },
 
     onRender: function(){
-
+       console.log(this.model.toJSON());
     },
 
     round: function(){
@@ -72,9 +69,8 @@ var VFilesMenu = Marionette.ItemView.extend({
 var VFilesHeader = Marionette.ItemView.extend({
     template: '#files-header',
     tag :'div',
+
     initialize: function() {
-
-
         this.$el.addClass('littleMargeBot');
     }
 

@@ -17,6 +17,7 @@
         urlRoot: '/tatami/rest/tags',
         idAttribute: 'name',
         defaults: {
+            name : '',
             followed: false,
             trendingUp: false
         }

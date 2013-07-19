@@ -8,7 +8,7 @@
             var model = new Tatami.Models.HomeBody({'tabName':tabName});
             return new Tatami.Views.HomeBody({'model': model});
         },
-        tagTrends: function(username){
+       tagTrends: function(username){
             var data = _.extend({
                 popular: true
             }, (username)?{
@@ -28,6 +28,23 @@
 
             return tagTrends;
         },
+
+        tagsFollow: function(){
+            var c = new Tatami.Collections.TagsFollow();
+            c.fetch();
+            return new Tatami.Views.TagsList({
+                collection: c
+            });
+        },
+
+        tagsRecommended : function(){
+            var c = new Tatami.Collections.TagsRecommended();
+            c.fetch();
+            return new Tatami.Views.TagsList({
+                collection: c
+            });
+        },
+
         cardProfile: function(){
             var cardProfile = new Tatami.Views.CardProfile({
                 model: Tatami.app.user
@@ -47,6 +64,30 @@
             var c = new Tatami.Collections.WhoToFollow();
             c.fetch();
             return new Tatami.Views.WhoToFollow({
+                collection: c
+            });
+        },
+
+        usersRecommended: function(){
+            var c = new Tatami.Collections.WhoToFollow();
+            c.fetch();
+            return  new Tatami.Views.UserList({
+                collection: c
+            });
+        },
+
+      groupsSubscribe: function(){
+            var c = new Tatami.Collections.GroupsList();
+            c.fetch();
+            return new Tatami.Views.GroupsList({
+                collection: c
+            });
+        },
+
+        groupsRecommended: function(){
+            var c = new Tatami.Collections.GroupsRecommended();
+            c.fetch();
+            return new Tatami.Views.GroupsList({
                 collection: c
             });
         }

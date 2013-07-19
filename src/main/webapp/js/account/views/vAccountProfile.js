@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 26/06/13
- * Time: 14:50
- * To change this template use File | Settings | File Templates.
- */
-
 
 var VAccountProfile = Marionette.ItemView.extend({
     initialize : function(){
@@ -20,7 +12,15 @@ var VAccountProfile = Marionette.ItemView.extend({
 
     modelEvents: {
         'sync': 'render'
+        //'change' : 'triggerSuccess'
     },
+
+    //Affichage du message au chargement d'une nouvelle image.
+    /*triggerSuccess: function(e){
+
+           console.log('File UpLoad') ;
+        app.trigger('even-alert-success', app.formSuccess);
+    }     ,    */
 
     saveForm: function(e){
         e.preventDefault();

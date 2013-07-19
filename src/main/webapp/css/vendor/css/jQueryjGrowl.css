@@ -80,18 +80,15 @@ div.center div.jGrowl-notification, div.center div.jGrowl-closer {
 }
 
 div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
-	/*background-color: 		#000;*/
-	/*opacity: 				.85;*/
 	-ms-filter: 			"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; 
 	filter: 				progid:DXImageTransform.Microsoft.Alpha(Opacity=85); 
 	zoom: 					1;
-	width: 					235px;
+	width: 					400px;
 	padding: 				10px;
 	margin-top: 			5px;
 	margin-bottom: 			5px;
 	font-family: 			Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 				1.2em;
-	/*font-weight:bold;*/
+	font-size: 				1.4em;
 	text-align: 			left;
 	display: 				none;
 	-moz-border-radius: 	5px;

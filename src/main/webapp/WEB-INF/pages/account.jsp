@@ -87,48 +87,82 @@
 
 <c:if test="${wro4jEnabled eq false}">
 
-   <!-- <script src="/js/app/collections/users.js"></script>
-    <script src="/js/app/models/user.js"></script>
-    <script src="/js/app/views/userList.js"></script>    -->
-  <script src="/js/vendor/raphael-min.js"></script>
-  <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+    <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
+    <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+
+    <script src="/js/account/models/mAccountProfile.js"></script>
+    <script src="/js/account/models/mPreferences.js"></script>
+    <script src="/js/account/models/mPassword.js"></script>
+    <script src="/js/account/models/mFile.js"></script>
+    <script src="/js/account/models/mFollowTag.js"></script>
+    <script src="/js/account/models/mGroup.js"></script>
+    <script src="/js/account/models/mUserSearch.js"></script>
+    <script src="/js/account/models/mUserGroup.js"></script>
+    <script src="/js/account/models/mFollowUser.js"></script>
+
+    <script src="/js/account/collections/cTabTag.js"></script>
+    <script src="/js/account/collections/cDailyStat.js"></script>
+    <script src="/js/account/collections/cFiles.js"></script>
+    <script src="/js/account/collections/cUsers.js"></script>
+    <script src="/js/account/collections/cUserSearch.js"></script>
+    <script src="/js/account/collections/cAdminGroup.js"></script>
+    <script src="/js/account/collections/cUsers.js"></script>
+
     <script src="/js/account/views/vTest.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
-    <script src="/js/account/layout/lAccount.js"></script>
-    <script src="/js/account/layout/lContent.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
-    <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
-    <script src="/js/account/models/mPassword.js"></script>
-    <script src="/js/account/models/mUser.js"></script>
     <script src="/js/account/views/vFile.js"></script>
     <script src="/js/account/views/vGroup.js"></script>
-
-
-    <script src="/js/account/models/mFile.js"></script>
-    <script src="/js/account/collections/cTabTag.js"></script>
-    <script src="/js/account/models/mFollowTag.js"></script>
-    <script src="/js/account/collections/cDailyStat.js"></script>
     <script src="/js/account/views/vUser.js"></script>
     <script src="/js/account/views/vTag.js"></script>
     <script src="/js/account/views/vDailyStat.js"></script>
     <script src="/js/account/views/vTab.js"></script>
-    <script src="/js/account/collections/cFiles.js"></script>
-    <script src="/js/account/collections/cUsers.js"></script>
-    <script src="/js/account/models/mGroup.js"></script>
-    <script src="/js/account/models/mUserSearch.js"></script>
-    <script src="/js/account/collections/cUserSearch.js"></script>
-    <script src="/js/account/models/mUserGroup.js"></script>
-    <script src="/js/account/collections/cAdminGroup.js"></script>
-    <script src="/js/account/models/mFollowUser.js"></script>
-    <script src="/js/account/collections/cTabUser.js"></script>
 
-    <script src="/js/account/models/mAccountProfile.js"></script>
+    <script src="/js/account/layout/lAccount.js"></script>
+    <script src="/js/account/layout/lContent.js"></script>
     <script src="/js/account/router.js"></script>
-    <!--script src="/js/app/router.js"></script-->
     <script src="/js/account/app.js"></script>
 
+
+    <!--APP-->
+    <script src="/js/app/plugins/tatami.search.js"></script>
+    <script src="/js/app/plugins/suggester.js"></script>
+    <script src="/js/app/models/user.js"></script>
+    <script src="/js/app/collections/users.js"></script>
+    <script src="/js/app/models/postStatus.js"></script>
+    <script src="/js/app/models/status.js"></script>
+    <script src="/js/app/models/homeBody.js"></script>
+    <script src="/js/app/collections/statuses.js"></script>
+    <script src="/js/app/models/tag.js"></script>
+    <script src="/js/app/collections/tags.js"></script>
+    <script src="/js/app/models/group.js"></script>
+    <script src="/js/app/collections/groups.js"></script>
+    <script src="/js/app/models/statusDetails.js"></script>
+    <script src="/js/app/models/search.js"></script>
+    <script src="/js/app/views/cardProfile.js"></script>
+    <script src="/js/app/views/navbar.js"></script>
+    <script src="/js/app/views/homeContainers.js"></script>
+    <script src="/js/app/views/tagsContainers.js"></script>
+    <script src="/js/app/views/profileContainers.js"></script>
+    <script src="/js/app/views/groupsContainers.js"></script>
+    <script src="/js/app/views/statuses.js"></script>
+    <script src="/js/app/views/statusEdit.js"></script>
+    <script src="/js/app/views/statusUpdateButton.js"></script>
+    <script src="/js/app/views/welcome.js"></script>
+    <script src="/js/app/views/userList.js"></script>
+    <script src="/js/app/views/statusShares.js"></script>
+    <script src="/js/app/views/tagTrends.js"></script>
+    <script src="/js/app/views/groups.js"></script>
+    <script src="/js/app/views/profileSide.js"></script>
+    <script src="/js/app/views/search.js"></script>
+    <script src="/js/app/factories/home.js"></script>
+    <script src="/js/app/factories/profile.js"></script>
+    <script src="/js/app/factories/status.js"></script>
+    <script src="/js/app/factories/tags.js"></script>
+    <script src="/js/app/factories/search.js"></script>
+    <script src="/js/app/factories/groups.js"></script>
 
 
 
@@ -136,9 +170,8 @@
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>
     <script src="/tatami/static/${version}/app/plugins/jquery-raphael-tatami-pie.js"></script>
-    <script src="/tatami/static/${version}/views.js"></script>
-    <script src="/tatami/static/${version}/models.js"></script>
-    <script src="/tatami/static/${version}/account/app.js"></script>
+    <script src="/tatami/static-wro4j/${version}/tatami-account.js"></script>
+    <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
 </c:if>
 
 </body>

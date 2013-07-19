@@ -26,6 +26,15 @@
     border-radius: 0px;
 }
 
+.noCollapse
+{
+    border-collapse: separate;
+}
+
+.noBorder{
+    border-top : 0;
+}
+
 .noRadius {
     border-radius: 0px;
 }
@@ -61,13 +70,22 @@ h4 {
     margin: 0px;
 }
 
+.labelSizeNormal{
+    font-size: 100%;
+}
+
+.tabMenu{
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
 .navbar {
     background-color: black;
 }
 .controle-group
 {
   padding: 0px 0px 5px;
-
+    padding-top: 10px;
     }
 .quota {
     color: #333333;
@@ -106,7 +124,10 @@ div.jGrowl-notification{
 
 .little-marge-right{
     margin-right: 20px
+}
 
+.smallPaddingLeft {
+    padding-left: 10px;
 }
 
 .little-height{
@@ -119,7 +140,6 @@ div.jGrowl-notification{
 
 .little-padding-top{
     padding-top: 3px;
-
 }
 .little-marge-top{
     margin-top: 5px;
@@ -286,6 +306,7 @@ div.jGrowl-notification{
 
 .useritem, .useritemmini {
     display: block;
+    padding: 5px;
 }
 
 .mention-share {

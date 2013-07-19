@@ -210,7 +210,7 @@
                     </a>
                 </li>
             </ul>
-            <form id="searchform" class="navbar-form pull-right col-span-5" action="">
+            <form id="searchform" class="navbar-form pull-right col-span-4" action="">
                 <input name="search" type="text" class="col-span-12" id="searchinput" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
                 <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
             </form>
