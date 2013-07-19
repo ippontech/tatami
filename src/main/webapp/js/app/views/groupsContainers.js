@@ -69,7 +69,7 @@
             'sync': 'render'
         },
         events: {
-            'click .toggleTag': 'subscription'
+            'click .toggleGroup': 'subscription'
         },
         subscription: function(event){
             this.model.url = this.model.urlRoot+'/'+this.model.id+'/members/'+Tatami.app.user.id;

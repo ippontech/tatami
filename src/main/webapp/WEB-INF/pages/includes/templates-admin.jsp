@@ -490,11 +490,11 @@
         <@ } @>
     </td>
     <td>
-        <@= counter @>
+        <@= counter  @>
     </td>
-      <td>
+      <!--td>
           <@ if(publicGroup && !administrator) { @>
-          <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
+          <a class="btn-title toggleGroup pull-right label <@= (member)?'label-info':'' @>">
               <@ if(member) { @>
               <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
               <@ } else { @>
@@ -506,7 +506,7 @@
               <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
           </a>
           <@ } @>
-      </td>
+      </td-->
 </script>
 
 <script type="text/template" id="groups-admin">

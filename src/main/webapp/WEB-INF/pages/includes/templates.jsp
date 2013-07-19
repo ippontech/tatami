@@ -468,7 +468,6 @@
         </li>
     <@} else { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
-            <@ console.log(item.category) @>
             <h4 class="smallPaddingLeft"><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
         </li>

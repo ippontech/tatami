@@ -136,17 +136,7 @@ _.templateSettings = {
             contentLayout.region2.show(vTabMenu);
             vTabMenu.selectMenu("groups");
             contentLayout.region3.show(listGroups);
-            //listGroups.collection.fetch();
 
-            ///////////////
-
-
-
-            /*var listTags = Tatami.Factories.Home.tagsFollow();
-
-
-             contentLayout.region2.show(listTags);
-             listTags.collection.fetch();*/
         },
 
         recommendedGroups: function(){
@@ -169,11 +159,7 @@ _.templateSettings = {
             //contentLayout.region3.show(view);
             contentLayout.region3.show(listGroupsRecommended);
             listGroupsRecommended.collection.fetch();
-            /*var listTags = Tatami.Factories.Home.tagsFollow();
 
-
-             contentLayout.region2.show(listTags);
-             listTags.collection.fetch();*/
         },
 
         initSearchGroups: function(){
@@ -304,9 +290,7 @@ _.templateSettings = {
             this.selectMenu('users');
             var vTabMenu = new VTabMenu({template : '#users-menu'});
 
-            var listFriends = Tatami.Factories.Profile.friends(username);
-
-
+            var listFriends = Tatami.Factories.Profile.friends(Tatami.app.user.get('username'));
 
             this.resetView();
 
