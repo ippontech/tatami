@@ -85,7 +85,7 @@ h4 {
 .controle-group
 {
   padding: 0px 0px 5px;
-
+    padding-top: 10px;
     }
 .quota {
     color: #333333;
@@ -140,7 +140,6 @@ div.jGrowl-notification{
 
 .little-padding-top{
     padding-top: 3px;
-
 }
 .little-marge-top{
     margin-top: 5px;
