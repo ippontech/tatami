@@ -168,6 +168,8 @@
 
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
+    <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>
+    <script src="/tatami/static/${version}/app/plugins/jquery-raphael-tatami-pie.js"></script>
     <script src="/tatami/static-wro4j/${version}/tatami-account.js"></script>
     <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
 </c:if>
