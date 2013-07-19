@@ -1,10 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 08/07/13
- * Time: 16:00
- * To change this template use File | Settings | File Templates.
- */
 
 var MUser = Backbone.Model.extend({
     initialize: function(){

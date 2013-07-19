@@ -1,10 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 26/06/13
- * Time: 17:07
- * To change this template use File | Settings | File Templates.
- */
 
 var VPreferences = Marionette.ItemView.extend({
     tagName: 'form',
