@@ -7,7 +7,7 @@
 
 <script type="text/html" id="TagsHeader">
     <h3>
-      <span class="text-center"><strong> #<@= name @></strong></span>
+      <span class="text-center"><strong><fmt:message key="tatami.tag"/> : #<@= name @></strong></span>
       <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
       <@ if(followed) { @>
         <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -19,7 +19,7 @@
 </script>
 <script type="text/template" id="GroupsHeader">
     <h3>
-        <strong><@= name @><strong>
+        <strong><fmt:message key="tatami.group.name"/> : <@= name @><strong>
         <@ if(publicGroup && !administrator) { @>
             <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
                 <@ if(member) { @>
@@ -36,10 +36,10 @@
     </h3>
 </script>
 <script type="text/template" id="SearchHeader">
-    <h3><strong><@= input @></strong></h3>
+    <h3><strong> <fmt:message key="tatami.user.search.searchInStatus"/> :  "<@= input @>"</strong></h3>
 </script>
 <script type="text/template" id="ProfileHeader">
-    <h3><strong>@<@= username @></strong>
+    <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
         <@ if(!you) { @>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
