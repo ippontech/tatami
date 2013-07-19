@@ -63,7 +63,7 @@
                 <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
