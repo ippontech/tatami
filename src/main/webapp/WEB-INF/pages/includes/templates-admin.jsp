@@ -21,6 +21,8 @@
     </div>
 </script-->
 
+
+
 <script type="text/template" id="form-error-label">
     <fmt:message key="tatami.form.error"/>
 </script>
@@ -42,11 +44,26 @@
 </script>
 
 <script type="text/template" id="account-profile" >
-
-    <h2>
+     <h2>
         <fmt:message key="tatami.account.update.title"/>
     </h2>
+             </br>
+    <fieldset class="form-horizontal row-fluid">
+    <div class="control-group dashed">
+        <label class="control-label">
 
+        </label>
+
+        <div class="controls">
+
+            <div id="updateAvatar" class="dropzone well">
+                <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
+                <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
+                <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+            </div>
+        </div>
+    </div>
+    </fieldset>
 
     <fieldset class="form-horizontal row-fluid">
         <legend>
@@ -63,20 +80,6 @@
             </div>
         </div>
 
-        <div class="control-group dashed">
-            <label class="control-label">
-                <fmt:message key="tatami.user.picture"/>
-            </label>
-
-            <div class="controls">
-
-                <div id="updateAvatar" class="dropzone well">
-                    <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
-                    <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
-                </div>
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label" for="firstName">
@@ -488,8 +491,23 @@
         <@ } @>
     </td>
     <td>
-        <@= counter @>
+        <@= counter  @>
     </td>
+      <!--td>
+          <@ if(publicGroup && !administrator) { @>
+          <a class="btn-title toggleGroup pull-right label <@= (member)?'label-info':'' @>">
+              <@ if(member) { @>
+              <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+              <@ } else { @>
+              <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+              <@ } @>
+          </a>
+          <@ } else if(administrator) { @>
+          <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info hidden-phone">
+              <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
+          </a>
+          <@ } @>
+      </td-->
 </script>
 
 <script type="text/template" id="groups-admin">
@@ -575,19 +593,19 @@
 
 <script type="text/template" id="tags-item">
     <td>
-        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
+        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>">#<@= name @></a>
     </td>
     <td class="follow">
-        <@ if (followed) { @>
-            <span class="btn btn-primary btn-block">
-                <fmt:message key="tatami.user.followed"/>
-            </span>
-        <@ } else { @>
-            <span class="btn btn-block">
-                <fmt:message key="tatami.user.follow"/>
-            </span>
-        <@ } @>
+        <a class="btn-title toggleTag pull-right label labelSizeNormal <@= (followed)?'label-info':'' @> ">
+            <@ if(followed) { @>
+            <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+            <@ } else { @>
+            <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+            <@ } @>
+        </a>
     </td>
+
+
 </script>
 
 <script type="text/template" id="files-quota">

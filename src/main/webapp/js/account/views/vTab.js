@@ -1,12 +1,21 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 28/06/13
- * Time: 14:15
- * To change this template use File | Settings | File Templates.
- */
 
-var VTabSearch = Backbone.View.extend({
+var VTabMenu = Marionette.ItemView.extend({
+
+        //Le template de la navigation change, le template est donc défini dans le router directement
+
+        initialize: function(myTemplate){
+            this.$el.addClass('tabMenu');
+
+        },
+
+        selectMenu: function(menu) {
+            $('ul.nav.nav-tabs a').parent().removeClass('active');
+            $('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
+        }
+} );
+
+
+var VTabSearch = Marionette.ItemView.extend({
     templateSearch: _.template($('#search-filter').html()),
     initialize: function(){
         this.$el.addClass('row-fluid');
@@ -31,14 +40,9 @@ var VTabSearch = Backbone.View.extend({
         }
     },
 
-    selectMenu: function(menu) {
-        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
-        this.$el.find('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
-    },
-
     render: function(){
         this.$el.empty();
-        this.$el.append(this.options.MenuTemplate());
+        //this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.templateSearch());
         this.$el.append(this.views.tab.render());
         this.delegateEvents();
@@ -60,12 +64,12 @@ var VTabContainer = Marionette.ItemView.extend({
 
     selectMenu: function(menu) {
         this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
-        this.$el.find('ul.nav.nav-tabs a[href="#/' + menu + '"]').parent().addClass('active');
+        this.$el.find('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
     },
 
     render: function(){
         this.$el.empty();
-        this.$el.append(this.options.MenuTemplate());
+       // this.$el.append(this.options.MenuTemplate());
         this.$el.append(this.views.tab.render());
         this.delegateEvents();
         return this.$el;

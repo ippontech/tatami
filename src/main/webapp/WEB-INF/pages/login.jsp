@@ -120,13 +120,17 @@
             </form>
 
             <div class="well">
-                <div class="row-fluid" data-toggle="collapse" data-target="#lostPasswordDiv">
+                <div class="row-fluid share-img-fffix" >
+                    <div class="col-span-12">
+                <div data-toggle="collapse" data-target="#lostPasswordDiv">
                     <button class="col-span-12 btn btn-info">
                         <fmt:message key="tatami.lost.password.title"/>
                     </button>
+                    </br></br>
                 </div>
-                <br/>
+                    </div>
 
+                    <div class="col-span-12">
                 <div id="lostPasswordDiv" class="collapse little-height" >
                     <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
                         <fieldset>
@@ -137,7 +141,7 @@
                                 <input name="email" type="email" required="required" class="col-span-12"
                                        placeholder="Your e-mail..."/>
                             </div>
-                            <div class="controle-group">
+                            <div class="controle-group ">
                                 <button type="submit" class="col-span-12 btn btn-success">
                                     <fmt:message key="tatami.lost.password.button"/>
                                 </button>
@@ -145,8 +149,9 @@
                         </fieldset>
                     </form>
                 </div>
-            </div>
-        </div>
+                    </div>
+            </div>  </div> </div>
+
 
         <div class="col-span-4">
             <h1><fmt:message key="tatami.authentication.google.title"/></h1>

@@ -1,10 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 02/07/13
- * Time: 16:19
- * To change this template use File | Settings | File Templates.
- */
+
 var ContentContainer = new Backbone.Marionette.Region({
     el: "#content-container"
 });

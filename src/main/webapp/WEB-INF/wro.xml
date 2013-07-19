@@ -15,6 +15,7 @@
         <js>/js/vendor/backbone.marionette.js</js>
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/modernizr.js</js>
+        <js>/js/vendor/jquery.jgrowl.js</js>
     </group>
     <group name='tatami-app'>
         <js>/js/app/app.js</js>
@@ -26,5 +27,13 @@
         <js>/js/app/plugins/suggester.js</js>
         <js>/js/app/plugins/tatami.atmosphere.js</js>
         <js>/js/app/plugins/tatami.search.js</js>
+    </group>
+    <group name='tatami-account'>
+        <js>/js/account/models/**.js</js>
+        <js>/js/account/collections/**.js</js>
+        <js>/js/account/views/**.js</js>
+        <js>/js/account/layout/**.js</js>
+        <js>/js/account/router.js</js>
+        <js>/js/account/app.js</js>
     </group>
 </groups>

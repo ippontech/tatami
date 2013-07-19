@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Gregoire
- * Date: 28/06/13
- * Time: 14:50
- * To change this template use File | Settings | File Templates.
- */
-
 
 var VUser = Marionette.ItemView.extend({
     initialize: function(){
