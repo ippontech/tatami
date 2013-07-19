@@ -44,11 +44,26 @@
 </script>
 
 <script type="text/template" id="account-profile" >
-
-    <h2>
+     <h2>
         <fmt:message key="tatami.account.update.title"/>
     </h2>
+             </br>
+    <fieldset class="form-horizontal row-fluid">
+    <div class="control-group dashed">
+        <label class="control-label">
 
+        </label>
+
+        <div class="controls">
+
+            <div id="updateAvatar" class="dropzone well">
+                <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
+                <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
+                <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+            </div>
+        </div>
+    </div>
+    </fieldset>
 
     <fieldset class="form-horizontal row-fluid">
         <legend>
@@ -65,20 +80,6 @@
             </div>
         </div>
 
-        <div class="control-group dashed">
-            <label class="control-label">
-                <fmt:message key="tatami.user.picture"/>
-            </label>
-
-            <div class="controls">
-
-                <div id="updateAvatar" class="dropzone well">
-                    <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
-                    <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
-                </div>
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label" for="firstName">
