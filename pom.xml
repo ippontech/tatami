@@ -120,7 +120,7 @@
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.url>https://app.tatamisoft.com</tatami.url>
                 <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>

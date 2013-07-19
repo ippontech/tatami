@@ -41,6 +41,7 @@ var VQuotaFiles = Marionette.ItemView.extend({
     },
 
     onRender: function(){
+       console.log(this.model.toJSON());
     },
 
     round: function(){
