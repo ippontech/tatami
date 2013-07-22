@@ -326,10 +326,13 @@
     <section class='timeline'></section>
 </script>
 <script type="text/template" id="StatusUpdateButton">
-    <span class="badge"><@= count @></span>
-    <@ if (count == 1) { @>
+    <@ if (count == 0) { @>
+
+    <@} else if (count == 1) { @>
+        <span class="badge"><@= count @></span>
         <fmt:message key="tatami.timeline.message"/>
     <@ } else { @>
+     <span class="badge"><@= count @></span>
         <fmt:message key="tatami.timeline.messages"/>
     <@ } @>
 </script>
