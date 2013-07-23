@@ -40,6 +40,7 @@ _.templateSettings = {
             'tags/search':'searchTags',
             'users':'users',
             'users/recommended':'recommendedUsers',
+            'users/search/:inputURL':'searchUsers',
             'users/search':'searchUsers',
             'status_of_the_day' : 'status_of_the_day',
             'files' : 'files',
@@ -156,27 +157,20 @@ _.templateSettings = {
 
         },
 
-        initSearchGroups: function(){
 
-            if(!app.views.SearchGroups)
-                app.views.SearchGroups = new VTabSearch({
-                    collection: new CTabGroup(),
-                    ViewModel: VGroup,
-                    //MenuTemplate: _.template($('#groups-menu').html()),
-                    TabHeaderTemplate : _.template($('#groups-header').html())
-                });
-            return app.views.SearchGroups;
-        },
 
         searchGroup: function(){
-            var view = this.initSearchGroups();
             this.selectMenu('groups');
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
+            var vTabSearch = new VTabSearch();
+            //Faire une nouvelle factory ici
+            //var vUserList = Tatami.Factories.Profile
 
             this.resetView();
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("groups/search");
-            contentLayout.region2.show(view);
+            contentLayout.region2.show(vTabSearch);
+            //contentLayout.region3.show(vUserList);
         },
 
         editGroup: function(id){
@@ -205,16 +199,7 @@ _.templateSettings = {
             contentLayout.region3.show(vListUserGroup);
         },
 
-        initTags: function(){
-            if(!app.views.tags)
-                app.views.tags = new VTabContainer({
-                    collection: new CTabTag(),
-                    ViewModel: VTag,
-                    MenuTemplate: _.template($('#tags-menu').html()),
-                    TabHeaderTemplate : _.template($('#tags-header').html())
-                });
-            return app.views.tags;
-        },
+
 
         tags: function(){
 
@@ -246,7 +231,7 @@ _.templateSettings = {
             contentLayout.region2.show(listTags);
         },
 
-        initSearchTags: function(){
+        /*initSearchTags: function(){
             if(!app.views.SearchTags)
                 app.views.SearchTags = new VTabSearch({
                     collection: new CTabTag(),
@@ -255,41 +240,31 @@ _.templateSettings = {
                     TabHeaderTemplate : _.template($('#tags-header').html())
                 });
             return app.views.SearchTags;
-        },
+        }, */
 
         searchTags: function(){
-            var view = this.initSearchTags();
+            //var vTagList = Tatami.Factories.Profile //Create
             this.selectMenu('tags');
             var vTabMenu = new VTabMenu({template :'#tags-menu'});
+            var vTabSearch = new VTabSearch();
+
             this.resetView();
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("tags/search");
-            contentLayout.region2.show(view);
+            contentLayout.region2.show(vTabSearch);
+            //contentLayout.region3.show(view);
 
-        },
-
-        initUsers: function(){
-            if(!app.views.users)
-                app.views.users = new VTabContainer({
-                    collection: new CUsers(),
-                    ViewModel: VUser,
-                    MenuTemplate: _.template($('#users-menu').html()),
-                    TabHeaderTemplate :_.template($('#users-header').html())
-                });
-            return app.views.users;
         },
 
         users: function(){
 
             this.selectMenu('users');
             var vTabMenu = new VTabMenu({template : '#users-menu'});
-
             var listFriends = Tatami.Factories.Profile.friends(Tatami.app.user.get('username'));
-
             this.resetView();
 
             contentLayout.region1.show(vTabMenu);
-                            vTabMenu.selectMenu("users");
+            vTabMenu.selectMenu("users");
             contentLayout.region2.show(listFriends);
             listFriends.collection.fetch();
         },
@@ -309,7 +284,7 @@ _.templateSettings = {
             listFollowers.collection.fetch();
         },
 
-        initSearchUser: function(){
+        /*initSearchUser: function(){
             if(!app.views.SearchUsers)
                 app.views.SearchUsers = new VTabSearch({
                     collection: new CUsers(),
@@ -318,20 +293,26 @@ _.templateSettings = {
                     TabHeaderTemplate :_.template($('#users-header').html())
                 });
             return app.views.SearchUsers;
-        },
+        },     */
 
-        searchUsers: function(){
+        searchUsers: function(inputURL){
 
             var vTabMenu = new VTabMenu({template : '#users-menu'});
-            var view = this.initSearchUser();
+            var vTabSearch = new VTabSearch({inputURL : "greg"});
+            var vListUser = Tatami.Factories.Search.searchUsers(inputURL);
+
+            vTabSearch.on('search', function(input){
+              vListUser.collection.fetch({data: {q : input} });
+            });
+
             this.selectMenu('users');
             this.resetView();
 
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("users/search");
-            contentLayout.region2.show(view);
-
-            //view.selectMenu('users/search');
+            contentLayout.region2.show(vTabSearch);
+            contentLayout.region3.show(vListUser);
+            //vListUser.collection.fetch();
         },
 
         status_of_the_day: function(){

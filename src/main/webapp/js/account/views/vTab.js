@@ -16,7 +16,51 @@ var VTabMenu = Marionette.ItemView.extend({
 
 
 var VTabSearch = Marionette.ItemView.extend({
-    templateSearch: _.template($('#search-filter').html()),
+
+    template : '#search-filter',
+    tagName : 'form',
+
+    initialize: function(){
+        this.$el.addClass('row-fluid');
+        console.log($('[name="result_filter"]'));
+        $('#block_filter').val(this.options.inputURL) ;
+        debugger;
+   },
+
+
+
+    events:{
+        'submit':'submit',
+        'keyup':'change',
+
+        'initialize:after' : 'refreshField'
+    },
+
+    refreshField : function(){
+        $('[name="result_filter"]').val(this.options.inputURL) ;
+    },
+
+    change: function(e){
+        var input = e.target.value;
+        this.search(input);
+    },
+
+    submit: function(e){
+        e.preventDefault();
+        var input = $(e.target).find('[name="result_filter"]').val();
+        this.search(input);
+    },
+
+    search: function(input){
+
+        this.trigger('search', input);
+        Backbone.history.navigate('users/search/' + input, {trigger: false});
+        /*if(input != '') {
+            this.collection.reset();
+            this.collection.search(input);
+        }*/
+    }
+    /*templateSearch: _.template($('#search-filter').html()),
     initialize: function(){
         this.$el.addClass('row-fluid');
 
@@ -26,32 +70,12 @@ var VTabSearch = Marionette.ItemView.extend({
             ViewModel : this.options.ViewModel,
             template: this.options.TabHeaderTemplate
         });
-    },
-
-    events:{
-        'keyup :input#block_filter':'search'
-    },
-
-    search: function(e){
-        var input = e.target.value;
-        if(input != '') {
-            this.collection.reset();
-            this.collection.search(input);
-        }
-    },
-
-    render: function(){
-        this.$el.empty();
-        //this.$el.append(this.options.MenuTemplate());
-        this.$el.append(this.templateSearch());
-        this.$el.append(this.views.tab.render());
-        this.delegateEvents();
-        return this.$el;
     }
+
 });
 
 var VTabContainer = Marionette.ItemView.extend({
-    initialize: function(){
+   /* initialize: function(){
         this.$el.addClass('row-fluid');
 
         this.views = {};
@@ -73,11 +97,11 @@ var VTabContainer = Marionette.ItemView.extend({
         this.$el.append(this.views.tab.render());
         this.delegateEvents();
         return this.$el;
-    }
+    }*/
 });
 
 var VTab = Marionette.ItemView.extend({
-    initialize: function() {
+   /* initialize: function() {
         this.$el.addClass('table');
         this.template = this.options.template;
         this.collection.bind('reset', this.render, this);
@@ -98,5 +122,5 @@ var VTab = Marionette.ItemView.extend({
         this.collection.forEach(this.addItem, this);
         this.delegateEvents();
         return this.$el;
-    }
+    }  */
 });

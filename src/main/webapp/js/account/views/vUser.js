@@ -1,5 +1,5 @@
 
-var VUser = Marionette.ItemView.extend({
+/*var VUser = Marionette.ItemView.extend({
     initialize: function(){
         app.views = {};
     },
@@ -129,4 +129,4 @@ var VFollowButton = Marionette.ItemView.extend({
         return $(this.el);
     }
 
-});
+});       */

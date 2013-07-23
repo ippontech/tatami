@@ -28,10 +28,19 @@
         }
     });
 
+    var AllUsers = Users.extend({
+        url: function(){
+            return '/tatami/rest/users/search';
+        }
+    });
+
+
+
     Tatami.Collections.Users = Users;
     Tatami.Collections.Friends = Friends;
     Tatami.Collections.Followers = Followers;
     Tatami.Collections.WhoToFollow = WhoToFollow;
     Tatami.Collections.UsersInGroup = UsersInGroup;
+    Tatami.Collections.AllUsers = AllUsers;
 
 })(Backbone, Tatami);

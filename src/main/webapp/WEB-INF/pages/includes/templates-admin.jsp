@@ -675,8 +675,5 @@
 </script>
 
 <script type="text/template" id="search-filter">
-    <form>
-        <input id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="<fmt:message key="tatami.search.filter"/>">
-    </form>
-    <br />
+    <input id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="<fmt:message key="tatami.search.filter"/>">
 </script>

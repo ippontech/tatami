@@ -16,6 +16,15 @@
             var searcHeader = new Tatami.Views.SearchHeader({model: searchModel});
 
             return searcHeader;
+        },
+
+        searchUsers: function(input){
+           var c = new Tatami.Collections.AllUsers();
+            if(input) c.fetch({data: {q : input} });
+
+            return  new Tatami.Views.UserList({
+                collection: c
+            });
         }
     };
 
