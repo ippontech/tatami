@@ -4,12 +4,9 @@ var VAddGroup = Marionette.ItemView.extend({
 
     initialize: function(){
         this.$el.addClass('form-horizontal row-fluid');
-
-        this.model = new MGroup();
-        this.$el.html(this.template(this.model.toJSON()));
     },
 
-    template:_.template($('#groups-form').html()),
+    template:'#groups-form',
 
     events:{
         'click .show': 'toggle',
@@ -19,11 +16,6 @@ var VAddGroup = Marionette.ItemView.extend({
 
     toggle: function(){
         this.$el.find('fieldset').toggle();
-    },
-
-    render: function(){
-        this.delegateEvents();
-        return this.$el;
     },
 
     submit: function(e){
@@ -39,12 +31,10 @@ var VAddGroup = Marionette.ItemView.extend({
         self.model.save(null, {
             success: function(){
                 $(e.target)[0].reset();
-                //self.$el.find('.return').append($('#form-success').html());
                 app.trigger('even-alert-success', app.formSuccess);
                 self.trigger('success');
             },
             error: function(){
-                //self.$el.find('.return').append($('#form-error').html());
                 app.trigger('even-alert-error', app.formError);
             }
         });

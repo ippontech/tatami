@@ -34,10 +34,12 @@ _.templateSettings = {
             'groups': 'groups',
             'groups/recommended': 'recommendedGroups',
             'groups/search':'searchGroup',
+            'groups/search/:inputURL':'searchGroup',
             'groups/:id': 'editGroup',
             'tags':'tags',
             'tags/recommended':'recommendedTags',
             'tags/search':'searchTags',
+            'tags/search/:inputURL':'searchTags',
             'users':'users',
             'users/recommended':'recommendedUsers',
             'users/search/:inputURL':'searchUsers',
@@ -86,7 +88,7 @@ _.templateSettings = {
             contentLayout.region1.show(vPassword);
         },
 
-        initGroups: function(){
+       /* initGroups: function(){
 
             if(!app.views.groups)
                 app.views.groups = new VTabContainer({
@@ -113,21 +115,22 @@ _.templateSettings = {
             }
             return app.views.addgroup;
         },
-
+              */
         groups: function(){
             this.selectMenu('groups');
 
-            var view = this.initGroups();
+            //var view = this.initGroups();
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
+            var mGroup = new MGroup();
+            var vNewGroup = new VAddGroup({model : mGroup});
+            //view.collection.owned();
 
-            view.collection.owned();
+            //var addview = this.initAddGroup(view);
 
-            var addview = this.initAddGroup(view);
-
-            addview.collection = view.collection;
+            //addview.collection = view.collection;
             var listGroups = Tatami.Factories.Home.groupsSubscribe();
             this.resetView();
-            contentLayout.region1.show(addview);
+            contentLayout.region1.show(vNewGroup);
             contentLayout.region2.show(vTabMenu);
             vTabMenu.selectMenu("groups");
             contentLayout.region3.show(listGroups);
@@ -138,39 +141,31 @@ _.templateSettings = {
 
             this.selectMenu('groups');
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
-            var view = this.initGroups();
-
-            view.collection.recommended();
-
-            var addview = this.initAddGroup(view);
-
-            addview.collection = view.collection;
             var listGroupsRecommended = Tatami.Factories.Home.groupsRecommended();
 
             this.resetView();
-            contentLayout.region1.show(addview);
             contentLayout.region2.show(vTabMenu);
             vTabMenu.selectMenu("groups/recommended");
-            //contentLayout.region3.show(view);
             contentLayout.region3.show(listGroupsRecommended);
             listGroupsRecommended.collection.fetch();
 
         },
 
-
-
-        searchGroup: function(){
+        searchGroup: function(inputURL){
             this.selectMenu('groups');
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
-            var vTabSearch = new VTabSearch();
-            //Faire une nouvelle factory ici
-            //var vUserList = Tatami.Factories.Profile
+            var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'groups/search/'});
+            var vGroupList = Tatami.Factories.Search.searchGroups(inputURL);
+
+            vTabSearch.on('search', function(input){
+                vGroupList.collection.fetch({data: {q : input} });
+            });
 
             this.resetView();
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("groups/search");
             contentLayout.region2.show(vTabSearch);
-            //contentLayout.region3.show(vUserList);
+            contentLayout.region3.show(vGroupList);
         },
 
         editGroup: function(id){
@@ -242,18 +237,22 @@ _.templateSettings = {
             return app.views.SearchTags;
         }, */
 
-        searchTags: function(){
+        searchTags: function(inputURL){
             //var vTagList = Tatami.Factories.Profile //Create
             this.selectMenu('tags');
             var vTabMenu = new VTabMenu({template :'#tags-menu'});
-            var vTabSearch = new VTabSearch();
+            var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'tags/search/'});
+            var vTagList = Tatami.Factories.Search.searchTags(inputURL);
+
+            vTabSearch.on('search', function(input){
+                vTagList.collection.fetch({data: {q : input} });
+            });
 
             this.resetView();
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("tags/search");
             contentLayout.region2.show(vTabSearch);
-            //contentLayout.region3.show(view);
-
+            contentLayout.region3.show(vTagList);
         },
 
         users: function(){
@@ -298,7 +297,7 @@ _.templateSettings = {
         searchUsers: function(inputURL){
 
             var vTabMenu = new VTabMenu({template : '#users-menu'});
-            var vTabSearch = new VTabSearch({inputURL : "greg"});
+            var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'users/search/'});
             var vListUser = Tatami.Factories.Search.searchUsers(inputURL);
 
             vTabSearch.on('search', function(input){
@@ -312,7 +311,6 @@ _.templateSettings = {
             vTabMenu.selectMenu("users/search");
             contentLayout.region2.show(vTabSearch);
             contentLayout.region3.show(vListUser);
-            //vListUser.collection.fetch();
         },
 
         status_of_the_day: function(){

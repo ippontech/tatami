@@ -20,14 +20,21 @@ var VTabSearch = Marionette.ItemView.extend({
     template : '#search-filter',
     tagName : 'form',
 
-    initialize: function(){
-        this.$el.addClass('row-fluid');
+    initialize: function(options){
+        this.$el.addClass('row-fluid littleMargeBot');
         console.log($('[name="result_filter"]'));
-        $('#block_filter').val(this.options.inputURL) ;
-        debugger;
+        console.log(this.options.inputURL);
+       // debugger;
    },
 
 
+    serializeData : function(){
+//        Backbone.Model.prototype.toJSON.apply(this)
+        //var data =    Backbone.Marionette.model.a
+        //$('#block_filter').val(this.options.inputURL) ;
+        //return this.model.attributes;
+        //$('#block_filter').val(this.options.inputURL) ;
+    },
 
     events:{
         'submit':'submit',
@@ -51,10 +58,12 @@ var VTabSearch = Marionette.ItemView.extend({
         this.search(input);
     },
 
+
     search: function(input){
 
         this.trigger('search', input);
-        Backbone.history.navigate('users/search/' + input, {trigger: false});
+        //ARTHUR GREG WHY?
+        Backbone.history.navigate(this.options.urlHistory + input, {trigger: false});
         /*if(input != '') {
             this.collection.reset();
             this.collection.search(input);

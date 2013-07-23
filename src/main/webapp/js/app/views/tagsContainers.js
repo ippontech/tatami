@@ -56,4 +56,5 @@
     Tatami.Views.TagsBody = TagsBody;
     Tatami.Views.TagsHeader = TagsHeader;
     Tatami.Views.TagsList = TagsList;
+
 })(Backbone, _, Tatami);

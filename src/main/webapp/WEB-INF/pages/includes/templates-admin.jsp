@@ -493,7 +493,7 @@
     <td>
         <@= counter  @>
     </td>
-      <!--td>
+      <td>
           <@ if(publicGroup && !administrator) { @>
           <a class="btn-title toggleGroup pull-right label <@= (member)?'label-info':'' @>">
               <@ if(member) { @>
@@ -507,7 +507,7 @@
               <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
           </a>
           <@ } @>
-      </td-->
+      </td>
 </script>
 
 <script type="text/template" id="groups-admin">

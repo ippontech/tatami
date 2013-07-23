@@ -28,7 +28,7 @@
         }
     });
 
-    var AllUsers = Users.extend({
+    var SearchUsers = Users.extend({
         url: function(){
             return '/tatami/rest/users/search';
         }
@@ -41,6 +41,6 @@
     Tatami.Collections.Followers = Followers;
     Tatami.Collections.WhoToFollow = WhoToFollow;
     Tatami.Collections.UsersInGroup = UsersInGroup;
-    Tatami.Collections.AllUsers = AllUsers;
+    Tatami.Collections.SearchUsers = SearchUsers;
 
 })(Backbone, Tatami);

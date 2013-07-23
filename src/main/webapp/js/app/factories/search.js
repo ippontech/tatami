@@ -19,10 +19,28 @@
         },
 
         searchUsers: function(input){
-           var c = new Tatami.Collections.AllUsers();
+           var c = new Tatami.Collections.SearchUsers();
             if(input) c.fetch({data: {q : input} });
 
             return  new Tatami.Views.UserList({
+                collection: c
+            });
+        },
+
+        searchGroups: function(input){
+            var c = new Tatami.Collections.SearchGroups();
+            if(input) c.fetch({data: {q : input} });
+
+            return  new Tatami.Views.GroupsList({
+                collection: c
+            });
+        },
+
+        searchTags: function(input){
+            var c = new Tatami.Collections.SearchTags();
+            if(input) c.fetch({data: {q : input} });
+
+            return  new Tatami.Views.TagsList({
                 collection: c
             });
         }
