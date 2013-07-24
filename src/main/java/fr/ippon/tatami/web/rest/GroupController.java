@@ -46,6 +46,23 @@ public class GroupController {
     @Inject
     private SuggestionService suggestionService;
 
+
+
+    /**
+     * Get groups of the current user.
+     */
+    @RequestMapping(value = "/rest/groups",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    public Collection<Group> getGroups() {
+        User currentUser = authenticationService.getCurrentUser();
+        return groupService.getGroupsForUser(currentUser);
+    }
+
+
+
     /**
      * GET  /group/:groupId -> returns the group with the requested id
      */
@@ -85,6 +102,9 @@ public class GroupController {
         }
     }
 
+
+
+
     /**
      * PUT  /group/:groupId -> update the group with the requested id
      */
@@ -113,6 +133,11 @@ public class GroupController {
             return null;
         }
     }
+
+
+
+
+
 
     @RequestMapping(value = "/rest/groups/{groupId}/timeline",
             method = RequestMethod.GET,
@@ -156,18 +181,7 @@ public class GroupController {
         return groupService.getGroupsForUser(user);
     }
 
-    /**
-     * Get groups of the current user.
-     */
-    @RequestMapping(value = "/rest/groups",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<Group> getGroups() {
-        User currentUser = authenticationService.getCurrentUser();
-        return groupService.getGroupsForUser(currentUser);
-    }
+
 
     /**
      * Get groups where the current user is admin.
