@@ -652,13 +652,13 @@
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>
         <@ } @>
-        <a href="#users/<@= username @>">
+        <a href="/tatami/home/#/users/<@= username @>">
             <strong>
                 <@= fullName @>
             </strong>
         </a>
         <br>
-        <a href="#users/<@= username @>">
+        <a href="/tatami/home/#/users/<@= username @>">
             <small>
                 @<@= username @>
             </small>

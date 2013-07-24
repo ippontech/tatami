@@ -593,7 +593,7 @@
 
 <script type="text/template" id="tags-item">
     <td>
-        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>">#<@= name @></a>
+        <a href="/tatami/home/#/tags/<@= name @>" title="<@= name @>">#<@= name @></a>
     </td>
     <td class="follow">
         <a class="btn-title toggleTag pull-right label labelSizeNormal <@= (followed)?'label-info':'' @> ">
