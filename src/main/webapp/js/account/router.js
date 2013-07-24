@@ -157,7 +157,7 @@ _.templateSettings = {
             var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'groups/search/'});
             var vGroupList = Tatami.Factories.Search.searchGroups(inputURL);
 
-            vTabSearch.on('search', function(input){
+            vGroupList.listenTo(vTabSearch, 'search', function(input){
                 vGroupList.collection.fetch({data: {q : input} });
             });
 
@@ -244,7 +244,7 @@ _.templateSettings = {
             var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'tags/search/'});
             var vTagList = Tatami.Factories.Search.searchTags(inputURL);
 
-            vTabSearch.on('search', function(input){
+            vTagList.listenTo(vTabSearch, 'search', function(input){
                 vTagList.collection.fetch({data: {q : input} });
             });
 
@@ -300,7 +300,7 @@ _.templateSettings = {
             var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'users/search/'});
             var vListUser = Tatami.Factories.Search.searchUsers(inputURL);
 
-            vTabSearch.on('search', function(input){
+            vListUser.listenTo(vTabSearch, 'search', function(input){
               vListUser.collection.fetch({data: {q : input} });
             });
 
