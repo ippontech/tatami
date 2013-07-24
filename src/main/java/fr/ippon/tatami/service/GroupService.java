@@ -151,6 +151,12 @@ public class GroupService {
         return buildGroupIdsList(user, groupIds);
     }
 
+    @Cacheable(value = "group-user-cache", key = "#user.login")
+    public Collection<Group> getGroupsOfUser(User user) {
+        Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
+        return getGroupDetails(user, groupIds);
+    }
+
 
     @Cacheable(value = "group-cache")
     public Group getGroupById(String domain, String groupId) {
@@ -265,7 +271,7 @@ public class GroupService {
 
     //GREG COPY FROM GROUP CONTROLLER + ADAPTE
     private Group getGroupFromUser(User currentUser, String groupId) {
-        Collection<Group> groups = getGroupsForUser(currentUser);
+        Collection<Group> groups = getGroupsOfUser(currentUser);
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(groupId)) {
                 return testGroup;
@@ -301,8 +307,20 @@ public class GroupService {
                 group.setAdministrator(true);
                 group.setMember(true);
             }
-            else if(group != null && group.isPublicGroup()) {
-
+            else if(group.isPublicGroup()) {
+                Group result = getGroupFromUser(user, group.getGroupId());
+                if (result != null) {
+                    group.setMember(true);
+                }
+            }
+            else {
+                Group result = getGroupFromUser(user, group.getGroupId());
+                if (result == null) {
+                    log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
+                    return null;
+                } else {
+                    group.setMember(true);
+                }
             }
         }
         /*if (group != null && group.isPublicGroup()) {

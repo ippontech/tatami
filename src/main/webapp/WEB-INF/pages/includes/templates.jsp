@@ -29,7 +29,7 @@
                 <@ } @>
             </a>
         <@ } else if(administrator) { @>
-            <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info hidden-phone">
+            <a href="/tatami/account/#/groups/<@= groupId @>" class="btn-title toggleTag pull-right label label-info hidden-phone">
                 <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
             </a>
         <@ } @>
