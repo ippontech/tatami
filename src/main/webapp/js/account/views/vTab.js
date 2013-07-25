@@ -22,18 +22,26 @@ var VTabSearch = Marionette.ItemView.extend({
 
     initialize: function(options){
         this.$el.addClass('row-fluid littleMargeBot');
+
+
+
         console.log($('[name="result_filter"]'));
         console.log(this.options.inputURL);
-       // debugger;
    },
 
 
     serializeData : function(){
-//        Backbone.Model.prototype.toJSON.apply(this)
-        //var data =    Backbone.Marionette.model.a
-        //$('#block_filter').val(this.options.inputURL) ;
-        //return this.model.attributes;
-        //$('#block_filter').val(this.options.inputURL) ;
+       /* var self = this;
+        Backbone.Marionette.TemplateCache.prototype.loadTemplate = function(templateId){
+            // load your template here, returning the data needed for the compileTemplate
+            // function. For example, you have a function that creates templates based on the
+            // value of templateId
+            self.$el.html(Backbone.Marionette.TemplateCache.get("#groups-form-adduser"));
+            var newTemp = $('#search-filter',this.$el).val(self.options.inputURL) ;
+
+            // send the template back
+            return newTemp;
+        }  */
     },
 
     events:{
@@ -58,55 +66,13 @@ var VTabSearch = Marionette.ItemView.extend({
         this.search(input);
     },
 
-
     search: function(input){
 
         this.trigger('search', input);
         //ARTHUR GREG WHY?
         Backbone.history.navigate(this.options.urlHistory + input, {trigger: false});
-        /*if(input != '') {
-            this.collection.reset();
-            this.collection.search(input);
-        }*/
-    }
-    /*templateSearch: _.template($('#search-filter').html()),
-    initialize: function(){
-        this.$el.addClass('row-fluid');
-
-        this.views = {};
-        this.views.tab = new VTab({
-            collection : this.collection,
-            ViewModel : this.options.ViewModel,
-            template: this.options.TabHeaderTemplate
-        });
     }
 
-});
-
-var VTabContainer = Marionette.ItemView.extend({
-   /* initialize: function(){
-        this.$el.addClass('row-fluid');
-
-        this.views = {};
-        this.views.tab = new VTab({
-            collection : this.collection,
-            ViewModel : this.options.ViewModel,
-            template: this.options.TabHeaderTemplate
-        });
-    },
-
-    selectMenu: function(menu) {
-        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
-        this.$el.find('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
-    },
-
-    render: function(){
-        this.$el.empty();
-       // this.$el.append(this.options.MenuTemplate());
-        this.$el.append(this.views.tab.render());
-        this.delegateEvents();
-        return this.$el;
-    }*/
 });
 
 var VTab = Marionette.ItemView.extend({

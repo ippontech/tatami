@@ -4,6 +4,14 @@
         model: Tatami.Models.User
     });
 
+    var UsersInGroup = Backbone.Collection.extend({
+        model: Tatami.Models.UserGroup,
+
+        url: function(){
+            return '/tatami/rest/groups/' + this.group + '/members/';
+        }
+    });
+
     var Friends = Users.extend({
         url: function(){
           return '/tatami/rest/users/' + this.user + '/friends';
@@ -12,19 +20,13 @@
 
     var Followers = Users.extend({
         url: function(){
-          return '/tatami/rest/users/' + this.user + '/followers';
+            return '/tatami/rest/users/' + this.user + '/followers';
         }
     });
 
     var WhoToFollow = Users.extend({
         url: function(){
           return '/tatami/rest/users/suggestions';
-        }
-    });
-
-    var UsersInGroup = Users.extend({
-        url: function(){
-            return '/tatami/rest/groups/' + this.group + '/members/';
         }
     });
 

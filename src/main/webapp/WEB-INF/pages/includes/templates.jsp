@@ -725,3 +725,16 @@
         </tbody>
     </table>
 </script>
+
+<script type="text/html" id="UserGroupList">
+    <table class="table noCollapse">
+        <tr>
+            <th style="border-top :0"><fmt:message key="tatami.username"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.role"/></th>
+            <th style="border-top :0"></th>
+        </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
+
+</script>

@@ -536,16 +536,31 @@
     </tr>
 </script>
 
+
+
 <script type="text/template" id="usergroup-item">
     <td style="text-align: left">
-        <img class="avatar img-small" src="<@=avatar@>" alt="<@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>">
-        <a href="/tatami/profile/<@= username @>/">
-            <@= username @>
-        </a>
+        <div class='pull-left background-image-fffix little-marge-right'>
+
+            <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+        </div>
+        <h4>
+
+            <a href="/tatami/home/#/users/<@= username @>">
+                <strong>
+                    <@= fullName @>
+                </strong>
+            </a>
+            <br>
+            <a href="/tatami/home/#/users/<@= username @>">
+                <small>
+                    @<@= username @>
+                </small>
+            </a>
+        </h4>
+
     </td>
-    <td>
-        <@= [firstName,lastName].filter(function(value){return value;}).join(' ') @>
-    </td>
+
     <td>
         <@ if(role === 'ADMIN'){ @>
         <fmt:message key="tatami.group.role.admin"/>
@@ -553,7 +568,7 @@
         <fmt:message key="tatami.group.role.member"/>
         <@ } @>
     </td>
-    <@ if(admin){ @>
+    <!--@ if(admin){ @-->
     <td>
         <@ if (window.username !== username) { @>
         <button type="button" class="btn btn-success input-block-level delete">
@@ -561,7 +576,7 @@
         </button>
         <@ } @>
     </td>
-    <@ } @>
+    <!--@ } @-->
 </script>
 
 <script type="text/template" id="tags-menu">

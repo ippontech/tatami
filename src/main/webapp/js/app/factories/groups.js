@@ -34,7 +34,17 @@
             return new Tatami.Views.UserList({
                 collection: c
             });         
+        }  ,
+
+        groupUsers: function(groupId){
+            var c = new Tatami.Collections.UsersInGroup();
+            c.group = groupId;
+            return new Tatami.Views.UserGroupList({
+                collection: c
+            });
         }
+
+
     };
 
 })(Backbone, Tatami);

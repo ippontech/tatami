@@ -61,7 +61,7 @@
 
 
     var GroupItemsDetails = Backbone.Marionette.ItemView.extend({
-        template: '#groups-item' ,
+        template: '#groups-item',
         tagName : 'tr',
 
         modelEvents: {
