@@ -314,6 +314,8 @@ public class TimelineService {
             statusDTO.setLastName(statusUser.getLastName());
             statusDTO.setAvatar(statusUser.getAvatar());
             statusDTO.setDetailsAvailable(status.isDetailsAvailable());
+            statusDTO.setLatitude(status.getLatitude());
+            statusDTO.setLongitude(status.getLongitude());
             line.add(statusDTO);
         }
     }

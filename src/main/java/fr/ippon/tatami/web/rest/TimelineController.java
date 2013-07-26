@@ -173,7 +173,7 @@ public class TimelineController {
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo(), attachmentIds);
         } else if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
             log.debug("Private status");
-            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds);
+            statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), status.getLatitude(), status.getLongitude(), attachmentIds);
         } else {
             User currentUser = authenticationService.getCurrentUser();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
@@ -193,7 +193,7 @@ public class TimelineController {
                         "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
-                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
+                statusUpdateService.postStatusToGroup(escapedContent, group, status.getLatitude(), status.getLongitude(), attachmentIds);
             }
         }
         return "{}";

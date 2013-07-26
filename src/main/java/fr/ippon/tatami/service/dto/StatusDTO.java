@@ -87,6 +87,10 @@ public class StatusDTO implements Serializable {
 
     private boolean detailsAvailable;
 
+    private String latitude;
+
+    private String longitude;
+
     /**
      * If this status was shared, username of the user who shared it.
      */
@@ -281,6 +285,22 @@ public class StatusDTO implements Serializable {
         this.sharedByUsername = sharedByUsername;
     }
 
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -311,6 +331,8 @@ public class StatusDTO implements Serializable {
                 ", attachmentIds=" + attachmentIds +
                 ", attachments=" + attachments +
                 ", content='" + content + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 ", statusDate=" + statusDate +
                 ", iso8601StatusDate='" + iso8601StatusDate + '\'' +
                 ", prettyPrintStatusDate='" + prettyPrintStatusDate + '\'' +

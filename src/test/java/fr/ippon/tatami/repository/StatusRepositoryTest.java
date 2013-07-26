@@ -32,7 +32,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         assertThat(statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", ""), notNullValue());
+                content, "", "", "", "", ""), notNullValue());
     }
 
     @Test(expected = ValidationException.class)
@@ -45,7 +45,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -60,7 +60,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -75,7 +75,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", "", "");
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -93,6 +93,6 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String domain = "ippon.fr";
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", "", "");
     }
 }

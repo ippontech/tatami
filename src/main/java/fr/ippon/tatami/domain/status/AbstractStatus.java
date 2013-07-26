@@ -27,6 +27,10 @@ public abstract class AbstractStatus implements Serializable {
 
     private boolean removed;
 
+    private String latitude;
+
+    private String longitude;
+
     public String getStatusId() {
         return statusId;
     }
@@ -83,6 +87,22 @@ public abstract class AbstractStatus implements Serializable {
         this.removed = removed;
     }
 
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +128,8 @@ public abstract class AbstractStatus implements Serializable {
                 ", login='" + login + '\'' +
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 ", statusDate=" + statusDate +
                 ", removed=" + removed +
                 "} " + super.toString();

@@ -105,6 +105,10 @@
         <div id="status-content-container">
             <div class="pull-right text-right">
                 <abbr class="timeago" title="<@= iso8601StatusDate @>"><@= prettyPrintStatusDate @></abbr>
+                <@ if (latitude) { @>
+                    <a target="_blank" class="glyphicon glyphicon-globe status-action-location" href="http://www.openstreetmap.org/?mlat=<@=latitude@>&mlon=<@=longitude@>&zoom=14">
+                    </a>
+                <@ } @>
             </div>
             <h5 class="statusitem-name">
                 <strong><a href="#users/<@= username @>"><@= fullName @></a></strong>
@@ -418,6 +422,7 @@
                         <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
                     </label>
                 </div>
+
             </fieldset>
         </div>
         <div class="modal-footer">

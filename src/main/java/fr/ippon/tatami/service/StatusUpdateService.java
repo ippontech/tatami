@@ -96,16 +96,16 @@ public class StatusUpdateService {
     @Inject
     private AtmosphereService atmosphereService;
 
-    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
-        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
+    public void postStatus(String content, boolean statusPrivate, String latitude, String longitude, Collection<String> attachmentIds) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, latitude, longitude);
     }
 
-    public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
-        createStatus(content, false, group, "", "", "", attachmentIds, null);
+    public void postStatusToGroup(String content, Group group, String latitude, String longitude, Collection<String> attachmentIds) {
+        createStatus(content, false, group, "", "", "", attachmentIds, null, latitude, longitude);
     }
 
-    public void postStatusAsUser(String content, User user) {
-        createStatus(content, false, null, "", "", "", null, user);
+    public void postStatusAsUser(String content, String latitude, String longitude, User user) {
+        createStatus(content, false, null, "", "", "", null, user, latitude, longitude);
     }
 
     public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
@@ -161,6 +161,8 @@ public class StatusUpdateService {
                     realOriginalStatus.getStatusId(),
                     status.getStatusId(),
                     status.getUsername(),
+                    status.getLatitude(),
+                    status.getLongitude(),
                     attachmentIds);
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
@@ -174,6 +176,8 @@ public class StatusUpdateService {
                             status.getStatusId(),
                             status.getStatusId(),
                             status.getUsername(),
+                            status.getLatitude(),
+                            status.getLongitude(),
                             attachmentIds);
 
             discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
@@ -186,6 +190,8 @@ public class StatusUpdateService {
                                 String discussionId,
                                 String replyTo,
                                 String replyToUsername,
+                                String latitude,
+                                String longitude,
                                 Collection<String> attachmentIds) {
 
         return createStatus(
@@ -196,7 +202,9 @@ public class StatusUpdateService {
                 replyTo,
                 replyToUsername,
                 attachmentIds,
-                null);
+                null,
+                latitude,
+                longitude);
     }
 
     private Status createStatus(String content,
@@ -206,7 +214,9 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername,
                                 Collection<String> attachmentIds,
-                                User user) {
+                                User user,
+                                String latitude,
+                                String longitude) {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
@@ -230,7 +240,9 @@ public class StatusUpdateService {
                         content,
                         discussionId,
                         replyTo,
-                        replyToUsername);
+                        replyToUsername,
+                        latitude,
+                        longitude);
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {

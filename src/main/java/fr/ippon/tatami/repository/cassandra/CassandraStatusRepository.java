@@ -48,6 +48,8 @@ public class CassandraStatusRepository implements StatusRepository {
     private static final String USERNAME = "username";
     private static final String DOMAIN = "domain";
     private static final String STATUS_DATE = "statusDate";
+	private static final String LATITUDE = "latitude";
+	private static final String LONGITUDE = "longitude";
 
     //Normal status
     private static final String STATUS_PRIVATE = "statusPrivate";
@@ -107,7 +109,9 @@ public class CassandraStatusRepository implements StatusRepository {
                                String content,
                                String discussionId,
                                String replyTo,
-                               String replyToUsername)
+                               String replyToUsername,
+							   String latitude,
+							   String longitude)
             throws ConstraintViolationException {
 
         Status status = new Status();
@@ -119,6 +123,8 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setDomain(domain);
 
         status.setContent(content);
+        status.setLatitude(latitude);
+        status.setLongitude(longitude);
 
         Set<ConstraintViolation<Status>> constraintViolations = validator.validate(status);
         if (!constraintViolations.isEmpty()) {
@@ -133,6 +139,13 @@ public class CassandraStatusRepository implements StatusRepository {
         ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(status);
 
         updater.setString(CONTENT, content);
+
+        if (status.getLatitude() != null) {
+            updater.setString(LATITUDE, status.getLatitude());
+        }
+        if (status.getLongitude() != null) {
+            updater.setString(LONGITUDE, status.getLongitude());
+        }
 
         status.setStatusPrivate(statusPrivate);
         updater.setBoolean(STATUS_PRIVATE, statusPrivate);
@@ -322,6 +335,8 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setStatusId(statusId);
         status.setLogin(result.getString(LOGIN));
         status.setUsername(result.getString(USERNAME));
+        status.setLatitude(result.getString(LATITUDE));
+        status.setLongitude(result.getString(LONGITUDE));
 
         String domain = result.getString(DOMAIN);
         if (domain != null) {
@@ -343,6 +358,8 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setStatusId(statusId);
         status.setType(StatusType.STATUS);
         status.setContent(result.getString(CONTENT));
+        status.setLatitude(result.getString(LATITUDE));
+        status.setLongitude(result.getString(LONGITUDE));
         status.setStatusPrivate(result.getBoolean(STATUS_PRIVATE));
         status.setGroupId(result.getString(GROUP_ID));
         status.setHasAttachments(result.getBoolean(HAS_ATTACHMENTS));

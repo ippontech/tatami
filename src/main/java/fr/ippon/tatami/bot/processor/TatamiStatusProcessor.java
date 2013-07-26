@@ -31,7 +31,7 @@ public class TatamiStatusProcessor {
 
         // TODO : handle posting in group ...
 
-        statusUpdateService.postStatusAsUser(content, tatamiBotUser);
+        statusUpdateService.postStatusAsUser(content, null, null, tatamiBotUser);
 
     }
 }

@@ -98,9 +98,9 @@ public class TatamibotTest extends CamelTestSupport {
         String msg2 = "[Business – Ippon Technologies acquiert Atomes et renforce son offre Cloud](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/wK-Y47WGZBQ/)";
         String msg3 = "[Les Méthodes Agiles – Définition de l’Agilité](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/hSqyt1MCOoo/)";
 
-        verify(statusUpdateService).postStatusAsUser(msg1 + " #BlogIppon", tatamibotUser);
-        verify(statusUpdateService).postStatusAsUser(msg2 + " #BlogIppon", tatamibotUser);
-        verify(statusUpdateService).postStatusAsUser(msg3 + " #BlogIppon", tatamibotUser);
+        verify(statusUpdateService).postStatusAsUser(msg1 + " #BlogIppon", null, null, tatamibotUser);
+        verify(statusUpdateService).postStatusAsUser(msg2 + " #BlogIppon", null, null, tatamibotUser);
+        verify(statusUpdateService).postStatusAsUser(msg3 + " #BlogIppon", null, null, tatamibotUser);
         verifyNoMoreInteractions(statusUpdateService);
 
         // TODO : the repository is updated three times ... 
