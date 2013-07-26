@@ -1,24 +1,34 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="form-success">
+
+
+<!--script type="text/template" id="form-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.form.success"/>
+        <!fmt:message key="tatami.form.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="form-success-label">
+    <fmt:message key="tatami.form.success"/>
 </script>
 
-<script type="text/template" id="form-error">
+<!--script type="text/template" id="form-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.form.error"/>
+        <!fmt:message key="tatami.form.error"/>
     </div>
+</script-->
+
+
+
+<script type="text/template" id="form-error-label">
+    <fmt:message key="tatami.form.error"/>
 </script>
 
 <script type="text/template" id="form-ldap">
-    <div class="alert alert-danger">
-        <fmt:message key="tatami.user.password.ldap"/>
-    </div>
+    <fmt:message key="tatami.user.password.ldap"/>
 </script>
 
 <script type="text/template" id="follow-button">
@@ -33,13 +43,29 @@
     <span class="btn btn-primary btn-info input-block-level"><fmt:message key="tatami.user.profile.edit"/></span>
 </script>
 
-<script type="text/template" id="account-profile">
-    <h2>
+<script type="text/template" id="account-profile" >
+     <h2>
         <fmt:message key="tatami.account.update.title"/>
     </h2>
+             </br>
+    <fieldset class="form-horizontal row-fluid">
+    <div class="control-group dashed">
+        <label class="control-label">
 
+        </label>
 
-    <fieldset>
+        <div class="controls">
+
+            <div id="updateAvatar" class="dropzone well">
+                <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
+                <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
+                <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+
+    <fieldset class="form-horizontal row-fluid">
         <legend>
             <fmt:message key="tatami.account.update.legend"/>
         </legend>
@@ -54,20 +80,6 @@
             </div>
         </div>
 
-        <div class="control-group dashed">
-            <label class="control-label">
-                <fmt:message key="tatami.user.picture"/>
-            </label>
-
-            <div class="controls">
-
-                <div id="updateAvatar" class="dropzone well">
-                    <img class="nomargin avatar" src="<@= user.avatar @>" alt=""/>
-                    <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
-                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
-                </div>
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label" for="firstName">
@@ -75,7 +87,7 @@
             </label>
 
             <div class="controls">
-                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.firstName @>"/>
+                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= firstName @>"/>
             </div>
         </div>
 
@@ -85,7 +97,7 @@
             </label>
 
             <div class="controls">
-                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= user.lastName @>"/>
+                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="<@= lastName @>"/>
             </div>
         </div>
 
@@ -95,7 +107,7 @@
             </label>
 
             <div class="controls">
-                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="<@= user.jobTitle @>"/>
+                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="<@= jobTitle @>"/>
             </div>
         </div>
 
@@ -105,22 +117,22 @@
             </label>
 
             <div class="controls">
-                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= user.phoneNumber @>"/>
+                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="<@= phoneNumber @> "/>
             </div>
         </div>
+
+        <div class="return"/>
 
         <div class="form-actions">
             <button type="submit" class="input-xlarge btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-
-        <div class="return"/>
     </fieldset>
 </script>
 
 <script type="text/template" id="account-destroy">
-    <fieldset>
+    <fieldset class="form-horizontal row-fluid">
         <legend><fmt:message key="tatami.user.suppress"/></legend>
         <div class="return"/>
         <div class="form-actions">
@@ -150,36 +162,35 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
-                    <input name="mentionEmail" type="checkbox" <@ if(preferences.mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
+                    <input name="mentionEmail" type="checkbox" <@   if(mentionEmail){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.mention"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="dailyDigest" type="checkbox" <@ if(preferences.dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
+                    <input name="dailyDigest" type="checkbox" <@ if(dailyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.dailyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="weeklyDigest" type="checkbox" <@ if(preferences.weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
+                    <input name="weeklyDigest" type="checkbox" <@ if(weeklyDigest){ @> checked="true" <@ } @>/> <fmt:message key="tatami.preferences.notifications.email.weeklyDigest"/>
                 </label>
             </div>
             <div class="controls">
                 <label class="checkbox">
-                    <input name="rssUidActive" type="checkbox" <@ if (preferences.rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
+                    <input name="rssUidActive" type="checkbox" <@ if (rssUidActive) {@> checked="true" <@ } @>/>  <fmt:message key="tatami.preferences.notifications.rss.timeline"/>
                 </label>
-                <@ if (preferences.rssUidActive) { @> <a href="/tatami/syndic/<@=preferences.rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
+                <@ if (rssUidActive) { @> <a href="/tatami/syndic/<@=rssUid@>" ><fmt:message key="tatami.preferences.notifications.rss.timeline.link"/> </a><@ } @>
             </div>
         </div>
     </fieldset>
 
     <fieldset>
+        <div class="return"/>
         <div class="form-actions">
             <button type="submit" class="input-xlarge btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-
-        <div class="return"/>
     </fieldset>
 
 </script>
@@ -227,12 +238,12 @@
                 <input name="newPasswordConfirmation" type="password" required="required" size="15" maxlength="40" class="input-xlarge col-span-12"/>
             </div>
         </div>
+        <div class="return"/>
         <div class="form-actions">
             <button type="submit" class="btn btn-primary btn-block">
                 <fmt:message key="tatami.form.save"/>
             </button>
         </div>
-        <div class="return"/>
     </fieldset>
 
 </script>
@@ -240,17 +251,17 @@
 <script type="text/template" id="users-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/users">
+            <a href ="#users">
                 <fmt:message key="tatami.account.users.myfriends"/>
             </a>
         </li>
         <li>
-            <a href ="#/users/recommended">
+            <a href ="#users/recommended">
                 <fmt:message key="tatami.account.users.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/users/search">
+            <a href ="#users/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
@@ -282,17 +293,17 @@
 <script type="text/template" id="groups-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/groups">
+            <a href ="#groups">
                 <fmt:message key="tatami.account.groups.mygroups"/>
             </a>
         </li>
         <li>
-            <a href ="#/groups/recommended">
+            <a href ="#groups/recommended">
                 <fmt:message key="tatami.account.groups.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/groups/search">
+            <a href ="#groups/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
@@ -382,6 +393,9 @@
             </div>
         <@ } @>
 
+        <br/>
+        <div class="return"/>
+        <br/>
         <div class="form-actions">
             <@ if (typeof groupId === 'undefined') { @>
                 <button type="submit" class="btn btn-success col-span-7 little-marge-right">
@@ -399,9 +413,7 @@
 
     </fieldset>
 
-    <br/>
-    <div class="return"/>
-    <br/>
+
 
 </script>
 
@@ -419,7 +431,9 @@
                 <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12"/>
             </div>
         </div>
-
+        <br/>
+        <div class="return"/>
+        <br/>
         <div class="form-actions">
             <button type="submit" class="btn btn-success col-span-12">
                 <fmt:message key="tatami.form.save"/>
@@ -428,24 +442,30 @@
 
     </fieldset>
 
-    <br/>
-    <div class="return"/>
-    <br/>
+
 </script>
 
-<script type="text/template" id="groups-form-adduser-success">
+<!--script type="text/template" id="groups-form-adduser-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.group.edit.member.add.success"/>
+        <!fmt:message key="tatami.group.edit.member.add.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="groups-form-adduser-success-label">
+    <fmt:message key="tatami.group.edit.member.add.success"/>
 </script>
 
-<script type="text/template" id="groups-form-adduser-error">
+<!--script type="text/template" id="groups-form-adduser-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.group.edit.member.add.error"/>
+        <!fmt:message key="tatami.group.edit.member.add.error"/>
     </div>
 
+</script-->
+
+<script type="text/template" id="groups-form-adduser-error-label">
+    <fmt:message key="tatami.group.edit.member.add.error"/>
 </script>
 
 <script type="text/template" id="groups-header">
@@ -471,8 +491,23 @@
         <@ } @>
     </td>
     <td>
-        <@= counter @>
+        <@= counter  @>
     </td>
+      <!--td>
+          <@ if(publicGroup && !administrator) { @>
+          <a class="btn-title toggleGroup pull-right label <@= (member)?'label-info':'' @>">
+              <@ if(member) { @>
+              <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+              <@ } else { @>
+              <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+              <@ } @>
+          </a>
+          <@ } else if(administrator) { @>
+          <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info hidden-phone">
+              <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
+          </a>
+          <@ } @>
+      </td-->
 </script>
 
 <script type="text/template" id="groups-admin">
@@ -532,17 +567,17 @@
 <script type="text/template" id="tags-menu">
     <ul class="nav nav-tabs">
         <li>
-            <a href ="#/tags">
+            <a href ="#tags">
                 <fmt:message key="tatami.account.tags.mytags"/>
             </a>
         </li>
         <li>
-            <a href ="#/tags/recommended">
+            <a href ="#tags/recommended">
                 <fmt:message key="tatami.account.tags.recommended"/>
             </a>
         </li>
         <li>
-            <a href ="#/tags/search">
+            <a href ="#tags/search">
                 <fmt:message key="tatami.search.placeholder"/>
             </a>
         </li>
@@ -558,33 +593,33 @@
 
 <script type="text/template" id="tags-item">
     <td>
-        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>"><@= name @></a>
+        <a href="/tatami/#/tags/<@= name @>" title="<@= name @>">#<@= name @></a>
     </td>
     <td class="follow">
-        <@ if (followed) { @>
-            <span class="btn btn-primary btn-block">
-                <fmt:message key="tatami.user.followed"/>
-            </span>
-        <@ } else { @>
-            <span class="btn btn-block">
-                <fmt:message key="tatami.user.follow"/>
-            </span>
-        <@ } @>
+        <a class="btn-title toggleTag pull-right label labelSizeNormal <@= (followed)?'label-info':'' @> ">
+            <@ if(followed) { @>
+            <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+            <@ } else { @>
+            <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+            <@ } @>
+        </a>
     </td>
+
+
 </script>
 
 <script type="text/template" id="files-quota">
 
     <div class="progress">
         <@ if(quota < 50){@>
-        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-success" style="width: <@= quota @>%;">
         <@ }else if(quota > 50 && quota < 80) {@>
-        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;"></div>
+        <div class="progress-bar progress-bar-warning" style="width: <@= quota @>%;">
         <@ }else{@>
-        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;"></div>
-        <@ } @>
-        <span class="quota"><@= quota @>%</span>
-    </div>
+        <div class="progress-bar progress-bar-danger" style="width: <@= quota @>%;">
+        <@ }@>
+        <span class="quota"><@=  quota @>%</span>
+    </div>          </div>
 </script>
 
 <script type="text/template" id="files-menu">
@@ -593,46 +628,50 @@
 </script>
 
 <script type="text/template" id="files-header">
-<thead>
-    <tr>
-     <th><fmt:message key="tatami.user.file.name"/></th>
-     <th><fmt:message key="tatami.user.file.size"/></th>
-     <th><fmt:message key="tatami.user.file.creation.date"/></th>
-     <th></th>
-    </tr>
-</thead>
+<div>
+     <span class="col-span-5"><b><fmt:message key="tatami.user.file.name"/></b></span>
+     <span class="col-span-3"><b><fmt:message key="tatami.user.file.size"/></b></span>
+     <span class="col-span-2"><b><fmt:message key="tatami.user.file.creation.date"/></b></span>
+     <span class="col-span-2">  </span>
+</div>
+    </br>
 </script>
 
 <script type="text/template" id="files-item">
-    <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
-    <td><@= (size/1000) @> kb</td>
-    <td><@= prettyPrintCreationDate @> </td>
-    <td>
+
+
+    <span class="col-span-5 file-table"><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></span>
+    <span class="col-span-3"><@= (size/1000) @> kb</span>   </tr>
+    <span class="col-span-2"><@= prettyPrintCreationDate @> </span>
+    <span class="col-span-2">
         <span class="btn btn-primary btn-block">
-                <fmt:message key="tatami.user.status.delete"/>
+            <fmt:message key="tatami.user.status.delete"/>
         </span>
-    </td>
+    </span>
+
 </script>
 
-<script type="text/template" id="files-pagination">
-    <ul class="pager">
-        <li class="previous"><a href="#">Previous</a></li>
-        <li class="next"><a href="#">Next</a></li>
-    </ul>
-</script>
 
-<script type="text/template" id="delete-file-success">
+<!--script type="text/template" id="delete-file-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.user.file.delete.success"/>
+        <!fmt:message key="tatami.user.file.delete.success"/>
     </div>
+</script-->
+
+<script type="text/template" id="delete-file-success-label">
+    <fmt:message key="tatami.user.file.delete.success"/>
 </script>
 
-<script type="text/template" id="delete-file-error">
+<!--script type="text/template" id="delete-file-error">
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <fmt:message key="tatami.user.file.delete.error"/>
+        <!fmt:message key="tatami.user.file.delete.error"/>
     </div>
+</script-->
+
+<script type="text/template" id="delete-file-error-label">
+    <fmt:message key="tatami.user.file.delete.error"/>
 </script>
 
 <script type="text/template" id="search-filter">

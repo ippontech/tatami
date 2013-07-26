@@ -6,6 +6,7 @@
     .nav > li > .dropdown-menu {
         position: static;
         float: none;
+
     }
 
     .nav li.dropdown-submenu > ul.dropdown-menu {
@@ -19,6 +20,19 @@
     #tatamiBody {
         padding: 0px;
     }
+}
+.noRadius
+{
+    border-radius: 0px;
+}
+
+.noCollapse
+{
+    border-collapse: separate;
+}
+
+.noBorder{
+    border-top : 0;
 }
 
 .noRadius {
@@ -56,27 +70,72 @@ h4 {
     margin: 0px;
 }
 
+.labelSizeNormal{
+    font-size: 100%;
+}
+
+.tabMenu{
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
 .navbar {
     background-color: black;
 }
 .controle-group
 {
   padding: 0px 0px 5px;
-
+    padding-top: 10px;
     }
 .quota {
-
-  margin-left: 45%;
+    color: #333333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+;
 }
+
 .nomargin {
       margin: 0px;
 }
+
+.file-table
+{
+display: block;
+}
+
+.displayBlock
+{
+    display: block;
+}
+
+.fileItem
+{
+    width: 100%;
+    display: inline-table;
+    border-top: 1px solid #dddddd;
+    padding: 8px;
+}
+
+
+div.jGrowl-notification{
+    background-color : none;
+    opacity : 1;
+}
+
 .little-marge-right{
     margin-right: 20px
 }
 
+.smallPaddingLeft {
+    padding-left: 10px;
+}
+
 .little-height{
     height: 10px;
+}
+
+.littleMargeBot{
+    margin-bottom: 10px;
 }
 
 .little-padding-top{
@@ -105,6 +164,7 @@ h4 {
     width: 550px;
 
 }
+
 
 .avatar-float-left-container  {
     margin-left: 15px;
@@ -246,6 +306,7 @@ h4 {
 
 .useritem, .useritemmini {
     display: block;
+    padding: 5px;
 }
 
 .mention-share {
@@ -505,7 +566,7 @@ h4 {
 }
 
 .hasCategory .item{
-    height: 33px;
+    height: 100%;
     margin-left: 40px;
     background: #FFFFFF;
     cursor: pointer;
@@ -599,6 +660,10 @@ h4 {
     overflow: auto;
 }
 
+.share-img-fffix{
+    display: inline-block;
+}
+
 .background-image-fffix img {
     display: block;
 }
@@ -629,6 +694,7 @@ h4 {
     padding: 0;
     margin: 0;
     margin-top: -4px;
+    margin-bottom: 7px;
 }
 
 .statusitem-content {
@@ -645,7 +711,7 @@ h4 {
 }
 
 #current {
-    padding: 5px;
+    padding: 12px;
 }
 
 #before{
@@ -658,7 +724,8 @@ h4 {
 }
 
 #status-content-container {
-    margin-left: 60px;
+    margin-left: 65px;
+    margin-right: 30px;
 }
 
 .statusitem-img {

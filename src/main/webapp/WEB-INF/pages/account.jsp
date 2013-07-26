@@ -3,100 +3,80 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
 
+<script id="template-account" type="text/template">
+
+    <div id="mainPanel" class="container">
+        <c:choose>
+            <c:when test="${not empty user}">
+                <div id="avatar"></div>
+                <br/>
+                <div class="row">
+                <div id="navigation"></div>
+                    <div class="col-span-8">
+                        <div id="accountContent" class="alert alert-status">
+                            <div id="content-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="row-fluid">
+                    <fmt:message key="tatami.user.undefined"/>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+</script>
+
+<script id="template-avatar" type="text/html">
+    <jsp:include page="includes/topavatar.jsp"/>
+</script>
+
+<script id="template-navigation" type="text/html">
+    <jsp:include page="includes/navigation-admin.jsp"/>
+</script>
+
+<script id="template-content" type="text/template">
+    <div id="region1"></div>
+    <div id="region2"></div>
+    <div id="region3"></div>
+    <div id="region4"></div>
+    <div id="region5"></div>
+</script>
+
+<script id="template-account-profile" type="text/template">
+    <div id="profile-change"></div>
+    <div id="profile-destroy"></div>
+</script>
+
+<script id="template-avatar" type="text/html">
+    <jsp:include page="includes/topavatar.jsp"/>
+</script>
+
+<script id="template-navigation" type="text/html">
+    <jsp:include page="includes/navigation-admin.jsp"/>
+
+</script>
+
 <body>
 
+<jsp:include page="includes/templates-admin.jsp"/>
+<jsp:include page="includes/templates.jsp"/>
 <jsp:include page="includes/topmenu.jsp"/>
 
-<div id="mainPanel" class="container">
-    <c:choose>
-        <c:when test="${not empty user}">
 
-            <div class="nomargin well row avatar-float-left-container">
-                <div class="col-span-5 text-center">
-                    <a href="/tatami/home/users/${user.username}/">
-                        <c:if test="${empty user.avatar}">
-                            <img class="pull-left nomargin avatar avatar-float-left" src="/img/default_image_profile.png" alt="">
-                        </c:if>
-                        <c:if test="${not empty user.avatar}">
-                            <img class="pull-left nomargin avatar avatar-float-left" src="/tatami/avatar/${user.avatar}/photo.jpg" alt="">
-                        </c:if>
-                        <h3 class="user-profile">${user.firstName} ${user.lastName}</h3>
-                        <p>@${user.username}</p>
-                    </a>
-                </div>
-            </div>
-            <br/>
-            <div class="row">
-                <div class="col-span-4">
-                    <div class="tabbable alert alert-status">
-                        <ul class="adminMenu nav nav-pills nav-stacked nomargin">
-                            <li class="active">
-                                <a href="/tatami/account/#/profile">
-                                    <i class="glyphicon glyphicon-user"></i> <fmt:message key="tatami.menu.profile"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/preferences">
-                                    <i class="glyphicon glyphicon-picture"></i> <fmt:message key="tatami.menu.preferences"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/password">
-                                    <i class="glyphicon glyphicon-lock"></i> <fmt:message key="tatami.menu.password"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/files">
-                                    <i class="glyphicon glyphicon-file"></i> <fmt:message key="tatami.menu.files"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/users">
-                                    <i class="glyphicon glyphicon-globe"></i> <fmt:message key="tatami.menu.directory"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/groups">
-                                    <i class="glyphicon glyphicon-th-large"></i> <fmt:message key="tatami.menu.groups"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/tags">
-                                    <i class="glyphicon glyphicon-tags"></i> <fmt:message key="tatami.menu.tags"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/account/#/status_of_the_day">
-                                    <i class="glyphicon glyphicon-signal"></i> <fmt:message key="tatami.menu.status.of.the.day"/>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-span-8">
-                    <div id="accountContent" class="alert alert-status">
+<div id="the-container"></div>
 
-
-                    </div>
-                </div>
-            </div>
-        </c:when>
-        <c:otherwise>
-
-            <div class="row-fluid">
-                <fmt:message key="tatami.user.undefined"/>
-            </div>
-
-        </c:otherwise>
-    </c:choose>
-</div>
-
-<jsp:include page="includes/templates-admin.jsp"/>
 <jsp:include page="includes/footer.jsp"/>
 
 <script type="text/javascript">
@@ -106,14 +86,92 @@
 </script>
 
 <c:if test="${wro4jEnabled eq false}">
-  <script src="/js/vendor/raphael-min.js"></script>
-  <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
-  <script src="/js/tatami-admin.js"></script>
+
+    <script src="/js/vendor/raphael-min.js"></script>
+    <script src="/js/vendor/jquery.jgrowl.js"></script>
+    <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+
+    <script src="/js/account/models/mAccountProfile.js"></script>
+    <script src="/js/account/models/mPreferences.js"></script>
+    <script src="/js/account/models/mPassword.js"></script>
+    <script src="/js/account/models/mFile.js"></script>
+    <script src="/js/account/models/mFollowTag.js"></script>
+    <script src="/js/account/models/mGroup.js"></script>
+    <script src="/js/account/models/mUserSearch.js"></script>
+    <script src="/js/account/models/mUserGroup.js"></script>
+    <script src="/js/account/models/mFollowUser.js"></script>
+
+    <script src="/js/account/collections/cTabTag.js"></script>
+    <script src="/js/account/collections/cDailyStat.js"></script>
+    <script src="/js/account/collections/cFiles.js"></script>
+    <script src="/js/account/collections/cUsers.js"></script>
+    <script src="/js/account/collections/cUserSearch.js"></script>
+    <script src="/js/account/collections/cAdminGroup.js"></script>
+    <script src="/js/account/collections/cUsers.js"></script>
+
+    <script src="/js/account/views/vTest.js"></script>
+    <script src="/js/account/views/vAccountProfile.js"></script>
+    <script src="/js/account/views/vPreferences.js"></script>
+    <script src="/js/account/views/vPassword.js"></script>
+    <script src="/js/account/views/vFile.js"></script>
+    <script src="/js/account/views/vGroup.js"></script>
+    <script src="/js/account/views/vUser.js"></script>
+    <script src="/js/account/views/vTag.js"></script>
+    <script src="/js/account/views/vDailyStat.js"></script>
+    <script src="/js/account/views/vTab.js"></script>
+
+    <script src="/js/account/layout/lAccount.js"></script>
+    <script src="/js/account/layout/lContent.js"></script>
+    <script src="/js/account/router.js"></script>
+    <script src="/js/account/app.js"></script>
+
+
+    <!--APP-->
+    <script src="/js/app/plugins/tatami.search.js"></script>
+    <script src="/js/app/plugins/suggester.js"></script>
+    <script src="/js/app/models/user.js"></script>
+    <script src="/js/app/collections/users.js"></script>
+    <script src="/js/app/models/postStatus.js"></script>
+    <script src="/js/app/models/status.js"></script>
+    <script src="/js/app/models/homeBody.js"></script>
+    <script src="/js/app/collections/statuses.js"></script>
+    <script src="/js/app/models/tag.js"></script>
+    <script src="/js/app/collections/tags.js"></script>
+    <script src="/js/app/models/group.js"></script>
+    <script src="/js/app/collections/groups.js"></script>
+    <script src="/js/app/models/statusDetails.js"></script>
+    <script src="/js/app/models/search.js"></script>
+    <script src="/js/app/views/cardProfile.js"></script>
+    <script src="/js/app/views/navbar.js"></script>
+    <script src="/js/app/views/homeContainers.js"></script>
+    <script src="/js/app/views/tagsContainers.js"></script>
+    <script src="/js/app/views/profileContainers.js"></script>
+    <script src="/js/app/views/groupsContainers.js"></script>
+    <script src="/js/app/views/statuses.js"></script>
+    <script src="/js/app/views/statusEdit.js"></script>
+    <script src="/js/app/views/statusUpdateButton.js"></script>
+    <script src="/js/app/views/welcome.js"></script>
+    <script src="/js/app/views/userList.js"></script>
+    <script src="/js/app/views/statusShares.js"></script>
+    <script src="/js/app/views/tagTrends.js"></script>
+    <script src="/js/app/views/groups.js"></script>
+    <script src="/js/app/views/profileSide.js"></script>
+    <script src="/js/app/views/search.js"></script>
+    <script src="/js/app/factories/home.js"></script>
+    <script src="/js/app/factories/profile.js"></script>
+    <script src="/js/app/factories/status.js"></script>
+    <script src="/js/app/factories/tags.js"></script>
+    <script src="/js/app/factories/search.js"></script>
+    <script src="/js/app/factories/groups.js"></script>
+
+
+
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>
     <script src="/tatami/static/${version}/app/plugins/jquery-raphael-tatami-pie.js"></script>
-    <script src="/tatami/static/${version}/tatami-admin.js"></script>
+    <script src="/tatami/static-wro4j/${version}/tatami-account.js"></script>
+    <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
 </c:if>
 
 </body>

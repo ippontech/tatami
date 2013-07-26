@@ -2,9 +2,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/template" id="TagsHeader">
+
+
+
+<script type="text/html" id="TagsHeader">
     <h3>
-      <span class="text-center"><strong>#<@= name @></strong></span>
+      <span class="text-center"><strong><fmt:message key="tatami.tag"/> : #<@= name @></strong></span>
       <a class="btn-title toggleTag pull-right label <@= (followed)?'label-info':'' @> ">
       <@ if(followed) { @>
         <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -16,7 +19,7 @@
 </script>
 <script type="text/template" id="GroupsHeader">
     <h3>
-        <strong><@= name @><strong>
+        <strong><fmt:message key="tatami.group.name"/> : <@= name @><strong>
         <@ if(publicGroup && !administrator) { @>
             <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
                 <@ if(member) { @>
@@ -33,10 +36,10 @@
     </h3>
 </script>
 <script type="text/template" id="SearchHeader">
-    <h3><strong><@= input @></strong></h3>
+    <h3><strong> <fmt:message key="tatami.user.search.searchInStatus"/> :  "<@= input @>"</strong></h3>
 </script>
 <script type="text/template" id="ProfileHeader">
-    <h3><strong>@<@= username @></strong>
+    <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
         <@ if(!you) { @>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
@@ -145,7 +148,7 @@
 
                 </div>
             </small>
-        </div>        
+        </div>
     </div>
     <div id="preview">
 
@@ -244,7 +247,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-    <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+    <img class="img-rounded img-small share-img-fffix" style="background-image: url(<@= avatarURL @>);">
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
@@ -470,8 +473,7 @@
         </li>
     <@} else { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
-            <img class="img-rounded img-small" style="background-image: url(/img/default_image_profile.png);">
-            <h4><a href="#"><@= item.label @></a></h4>
+            <h4 class="smallPaddingLeft"><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
         </li>
     <@}@>
@@ -699,4 +701,29 @@
         <div class="items">
         </div>
     </div>
+</script>
+
+<script type="text/html" id="TagsListTemplate">
+    <table class="table noCollapse">
+         <tr>
+            <th style="border-top :0"><fmt:message key="tatami.tag"/></th>
+            <th style="border-top :0" />
+         </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
+
+</script>
+
+<script type="text/html" id="GroupsSuscribeTemplate">
+    <table class="table noCollapse">
+        <tr>
+            <th style="border-top :0"><fmt:message key="tatami.group.name"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.add.access"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.counter"/></th>
+            <th style="border-top :0"></th>
+        </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
 </script>
