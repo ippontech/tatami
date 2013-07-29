@@ -22,28 +22,21 @@ var VTabSearch = Marionette.ItemView.extend({
 
     initialize: function(options){
         this.$el.addClass('row-fluid littleMargeBot');
-
-
-
-        console.log($('[name="result_filter"]'));
+    /*    console.log($('[name="result_filter"]'));
         console.log(this.options.inputURL);
+        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
+        this.$el.find('[name="username"]').val(this.options.inputURL)   ; */
    },
 
-
+   /* onRender: function(){
+        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
+        this.$el.find('[name="username"]').val(this.options.inputURL)   ;
+    }   ,
     serializeData : function(){
-       /* var self = this;
-        Backbone.Marionette.TemplateCache.prototype.loadTemplate = function(templateId){
-            // load your template here, returning the data needed for the compileTemplate
-            // function. For example, you have a function that creates templates based on the
-            // value of templateId
-            self.$el.html(Backbone.Marionette.TemplateCache.get("#groups-form-adduser"));
-            var newTemp = $('#search-filter',this.$el).val(self.options.inputURL) ;
-
-            // send the template back
-            return newTemp;
-        }  */
+        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
+        this.$el.find('[name="username"]').val(this.options.inputURL)   ;
     },
-
+         */
     events:{
         'submit':'submit',
         'keyup':'change',
@@ -69,33 +62,8 @@ var VTabSearch = Marionette.ItemView.extend({
     search: function(input){
 
         this.trigger('search', input);
-        //ARTHUR GREG WHY?
+        //GREG WHY?
         Backbone.history.navigate(this.options.urlHistory + input, {trigger: false});
     }
 
-});
-
-var VTab = Marionette.ItemView.extend({
-   /* initialize: function() {
-        this.$el.addClass('table');
-        this.template = this.options.template;
-        this.collection.bind('reset', this.render, this);
-        this.collection.bind('add', this.addItem, this);
-    },
-
-    tagName: 'table',
-
-    addItem: function(item) {
-        this.$el.append(new this.options.ViewModel({
-            model: item
-        }).render());
-    },
-
-    render: function() {
-        this.$el.empty();
-        this.$el.append(this.template());
-        this.collection.forEach(this.addItem, this);
-        this.delegateEvents();
-        return this.$el;
-    }  */
 });

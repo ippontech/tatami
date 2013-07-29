@@ -5,21 +5,6 @@ _.templateSettings = {
     escape: /\<\@\-(.+?)\@\>/gim
 };
 
-/*var Account = {
-    views: {},
-    collections: {},
-    View: {},
-    Collection: {},
-    Model: {},
-    Router: {}
-};
-
-Account.app = new Backbone.Marionette.Application();
-
-if(!window.app){
-       window.app = Account.app;
-}       */
-
 var Tatami = {
     views: {},
     collections: {},
@@ -62,14 +47,10 @@ app.on('even-alert-success', function(msg){
 
     $.jGrowl(msg, {
         theme: 'alert-success',
-        //speed: 'slow',
-        life: 2500 ,
+        life: 4000 ,
          animateOpen: {
          height: "show"
-         }//,
-         /*animateClose: {
-         height: "hide"
-         }  */
+         }
     });
 });
 
@@ -77,14 +58,7 @@ app.on('even-alert-error', function(msg){
 
     $.jGrowl(msg, {
         theme: 'alert-danger',
-        //speed: 'slow',
-        life: 5000
-        /* animateOpen: {
-         height: "show"
-         },
-         animateClose: {
-         height: "hide"
-         } */
+        life: 6000
     });
 });
 
@@ -92,7 +66,6 @@ app.on('even-alert-warning', function(msg){
 
     $.jGrowl(msg, {
         theme: 'alertColor',
-        //speed: 'slow',
         life: 3000,
          animateOpen: {
          height: "show"
@@ -108,7 +81,6 @@ AccountContainer.show(accountLayout);
 
 accountLayout.avatar.show(new VAvatar());
 accountLayout.navigation.show(new VNavigation());
-//accountLayout.content.show(new VContent());
 
 contentLayout = new ContentLayout();
 ContentContainer.show(contentLayout);
@@ -143,7 +115,6 @@ Tatami.app.addInitializer(function(){
 });
 
 Tatami.app.on("initialize:after", function(options){
-    //if (Backbone.History.started){
     if (Backbone.history){
             app.router = new AdminRouter();
         Backbone.history.start({
@@ -162,8 +133,6 @@ Tatami.app.on("initialize:after", function(options){
         }
     }
 });
-
-
 
 $(function(){
     var onStart = _.after(2, function(){

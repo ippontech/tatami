@@ -7,7 +7,7 @@ var VPassword = Marionette.ItemView.extend({
         this.$el.addClass('form-horizontal row-fluid');
 
         this.model.fetch();
-        //this.$el.empty();  //Ca sert à quoi?
+        //this.$el.empty();  //PK? GREG
     },
 
     modelEvents: {

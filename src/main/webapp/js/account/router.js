@@ -20,8 +20,6 @@ _.templateSettings = {
 
 
     resetView : function(){
-        //Harsh way but the regionx.close() was buggy
-
         contentLayout.close();
         contentLayout = new ContentLayout();
         ContentContainer.show(contentLayout);

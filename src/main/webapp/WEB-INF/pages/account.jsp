@@ -109,7 +109,7 @@
     <script src="/js/account/collections/cAdminGroup.js"></script>
     <script src="/js/account/collections/cUsers.js"></script>
 
-    <script src="/js/account/views/vTest.js"></script>
+    <script src="/js/account/views/vHeader.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
