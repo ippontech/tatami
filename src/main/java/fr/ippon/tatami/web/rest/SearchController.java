@@ -5,10 +5,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.*;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -48,6 +45,9 @@ public class SearchController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private GroupService groupService;
 
     @Inject
     private TrendService trendService;
@@ -151,7 +151,7 @@ public class SearchController {
         } else {
             groups = new ArrayList<Group>();
         }
-        return groups;
+        return groupService.buildGroupList(groups);
     }
 
     /**
