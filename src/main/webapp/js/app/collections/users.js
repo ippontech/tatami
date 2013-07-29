@@ -32,7 +32,7 @@
 
     var SearchUsers = Users.extend({
         url: function(){
-            return '/tatami/rest/users/search';
+            return '/tatami/rest/search/users';
         }
     });
 

@@ -407,9 +407,9 @@ public class UserService {
             userDTOs.add(userDTO);
         }
         return userDTOs;
-    }
+    };
 
-    ;
+
 
     public UserDTO buildUserDTO(User user) {
         User currentUser = authenticationService.getCurrentUser();

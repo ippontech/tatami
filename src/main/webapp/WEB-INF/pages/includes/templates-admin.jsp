@@ -568,7 +568,7 @@
         <fmt:message key="tatami.group.role.member"/>
         <@ } @>
     </td>
-    <!--@ if(admin){ @-->
+    <@ if(administrator){ >
     <td>
         <@ if (window.username !== username) { @>
         <button type="button" class="btn btn-success input-block-level delete">
@@ -576,7 +576,7 @@
         </button>
         <@ } @>
     </td>
-    <!--@ } @-->
+    <@ } >
 </script>
 
 <script type="text/template" id="tags-menu">

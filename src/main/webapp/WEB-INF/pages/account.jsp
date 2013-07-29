@@ -115,8 +115,6 @@
     <script src="/js/account/views/vPassword.js"></script>
     <script src="/js/account/views/vFile.js"></script>
     <script src="/js/account/views/vGroup.js"></script>
-    <script src="/js/account/views/vUser.js"></script>
-    <script src="/js/account/views/vTag.js"></script>
     <script src="/js/account/views/vDailyStat.js"></script>
     <script src="/js/account/views/vTab.js"></script>
 

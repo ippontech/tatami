@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.TrendService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
 import fr.ippon.tatami.web.rest.dto.Tag;
@@ -167,7 +168,7 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<User> searchUsers(@RequestParam("q") String query) {
+    public Collection<UserDTO> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
 
         User currentUser = authenticationService.getCurrentUser();
@@ -181,7 +182,7 @@ public class SearchController {
         } else {
             users = new ArrayList<User>();
         }
-        return users;
+        return userService.buildUserDTOList(users);
 
     }
 
