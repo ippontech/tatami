@@ -483,11 +483,11 @@
     </td>
     <td>
         <@ if(publicGroup && !archivedGroup) { @>
-            <span class="label label-warning"><fmt:message key="tatami.group.add.public"/></span>
+            <span class="label labelSizeNormal label-warning"><fmt:message key="tatami.group.add.public"/></span>
         <@ } else if(publicGroup && archivedGroup || !publicGroup && archivedGroup) { @>
-            <span class="label"><fmt:message key="tatami.group.add.archived"/></span>
+            <span class="label labelSizeNormal"><fmt:message key="tatami.group.add.archived"/></span>
         <@ } else {@>
-            <span class="label label-info"><fmt:message key="tatami.group.add.private"/></span>
+            <span class="label labelSizeNormal label-info"><fmt:message key="tatami.group.add.private"/></span>
         <@ } @>
     </td>
     <td>
@@ -495,7 +495,7 @@
     </td>
       <td>
           <@ if(publicGroup && !administrator) { @>
-          <a class="btn-title toggleGroup pull-right label <@= (member)?'label-info':'' @>">
+          <a class="btn-title toggleGroup pull-right label labelSizeNormal <@= (member)?'label-info':'' @>">
               <@ if(member) { @>
               <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
               <@ } else { @>
@@ -503,7 +503,7 @@
               <@ } @>
           </a>
           <@ } else if(administrator) { @>
-          <a href="/tatami/account/#/groups/<@= groupId @>"  class="btn-title toggleTag pull-right label label-info hidden-phone">
+          <a href="/tatami/account/#/groups/<@= groupId @>"  class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
               <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
           </a>
           <@ } @>
