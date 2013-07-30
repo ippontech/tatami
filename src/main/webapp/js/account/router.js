@@ -1,7 +1,4 @@
 
-
-//(function(Backbone, _, Tatami){
-
 _.templateSettings = {
     interpolate: /\<\@\=(.+?)\@\>/gim,
     evaluate: /\<\@(.+?)\@\>/gim,
@@ -16,8 +13,6 @@ _.templateSettings = {
         $('.adminMenu a').parent().removeClass('active');
         $('.adminMenu a[href="#' + menu + '"]').parent().addClass('active');
         },
-
-
 
     resetView : function(){
         contentLayout.close();
@@ -44,26 +39,15 @@ _.templateSettings = {
             'users/search':'searchUsers',
             'status_of_the_day' : 'status_of_the_day',
             'files' : 'files',
-            'test' : 'test',
             '*action': 'profile'
         },
 
-        test: function(){
-
-            var listFriends = Tatami.Factories.Profile.friends(username);
-            this.resetView();
-            contentLayout.region1.show(listFriends);
-            listFriends.collection.fetch();
-
-        },
-
         profile: function() {
-
             this.selectMenu('profile');
-
             var mAccountProfile = new MAccountProfile();
             var vAccountProfile = new VAccountProfile({model: mAccountProfile});
             var vAccountProfileDestroy = new VAccountProfileDestroy({model: mAccountProfile});
+
             this.resetView();
             contentLayout.region1.show(vAccountProfile);
             contentLayout.region2.show(vAccountProfileDestroy) ;
@@ -73,49 +57,44 @@ _.templateSettings = {
             this.selectMenu('preferences');
             var mPreferences = new MPreferences();
             var vPreferences = new VPreferences({model : mPreferences});
+
             this.resetView();
             contentLayout.region1.show(vPreferences);
         },
 
         password: function(){
             this.selectMenu('password');
-
             var mPassword = new MPassword();
             var vPassword = new VPassword({model : mPassword});
+
             this.resetView();
             contentLayout.region1.show(vPassword);
         },
 
-
         groups: function(){
             this.selectMenu('groups');
-
-
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
             var mGroup = new MGroup();
             var vNewGroup = new VAddGroup({model : mGroup});
-
             var listGroups = Tatami.Factories.Home.groupsSubscribe();
+
             this.resetView();
             contentLayout.region1.show(vNewGroup);
             contentLayout.region2.show(vTabMenu);
             vTabMenu.selectMenu("groups");
             contentLayout.region3.show(listGroups);
-
         },
 
         recommendedGroups: function(){
-
             this.selectMenu('groups');
             var vTabMenu = new VTabMenu({template :'#groups-menu'});
             var listGroupsRecommended = Tatami.Factories.Home.groupsRecommended();
 
             this.resetView();
-            contentLayout.region2.show(vTabMenu);
+            contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("groups/recommended");
-            contentLayout.region3.show(listGroupsRecommended);
+            contentLayout.region2.show(listGroupsRecommended);
             listGroupsRecommended.collection.fetch();
-
         },
 
         searchGroup: function(inputURL){
@@ -138,7 +117,6 @@ _.templateSettings = {
         editGroup: function(id){
             this.selectMenu('');
 
-
             var vEditGroup = new VEditGroup({
                 groupId : id
             });
@@ -150,25 +128,22 @@ _.templateSettings = {
             var vAddUserGroup = new VAddUserGroup({
                 collection : collection
             });
-            this.resetView();
 
             var vListUsersInGroup = Tatami.Factories.Groups.groupUsers(id);
+
+            this.resetView();
             contentLayout.region1.show(vEditGroup);
             contentLayout.region2.show(vAddUserGroup);
             contentLayout.region3.show(vListUsersInGroup);
             vListUsersInGroup.collection.fetch();
         },
 
-
-
         tags: function(){
             this.selectMenu('tags');
             var vTabMenu = new VTabMenu({template :'#tags-menu'});
-
             var listTags = Tatami.Factories.Home.tagsFollow();
 
             this.resetView();
-
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("tags");
             contentLayout.region2.show(listTags);
@@ -176,21 +151,17 @@ _.templateSettings = {
         },
 
         recommendedTags: function(){
-
             this.selectMenu('tags');
             var vTabMenu = new VTabMenu({template :'#tags-menu'});
-
             var listTags = Tatami.Factories.Home.tagsRecommended() ;
 
             this.resetView();
-
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("tags/recommended");
             contentLayout.region2.show(listTags);
         },
 
         searchTags: function(inputURL){
-
             this.selectMenu('tags');
             var vTabMenu = new VTabMenu({template :'#tags-menu'});
             var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'tags/search/'});
@@ -208,12 +179,11 @@ _.templateSettings = {
         },
 
         users: function(){
-
             this.selectMenu('users');
             var vTabMenu = new VTabMenu({template : '#users-menu'});
             var listFriends = Tatami.Factories.Profile.friends(Tatami.app.user.get('username'));
-            this.resetView();
 
+            this.resetView();
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("users");
             contentLayout.region2.show(listFriends);
@@ -223,11 +193,9 @@ _.templateSettings = {
         recommendedUsers: function(){
             this.selectMenu('users');
             var vTabMenu = new VTabMenu({template : '#users-menu'});
-
             var listFollowers = Tatami.Factories.Home.usersRecommended();
 
             this.resetView();
-
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("users/recommended");
             contentLayout.region2.show(listFollowers);
@@ -235,18 +203,15 @@ _.templateSettings = {
         },
 
         searchUsers: function(inputURL){
-
+            this.selectMenu('users');
             var vTabMenu = new VTabMenu({template : '#users-menu'});
             var vTabSearch = new VTabSearch({inputURL : inputURL, urlHistory : 'users/search/'});
             var vListUser = Tatami.Factories.Search.searchUsers(inputURL);
-
             vListUser.listenTo(vTabSearch, 'search', function(input){
               vListUser.collection.fetch({data: {q : input} });
             });
 
-            this.selectMenu('users');
             this.resetView();
-
             contentLayout.region1.show(vTabMenu);
             vTabMenu.selectMenu("users/search");
             contentLayout.region2.show(vTabSearch);
@@ -275,15 +240,14 @@ _.templateSettings = {
         files: function(){
             this.selectMenu('files');
             var view = this.initFiles();
-
             view.collection.fetch();
-
             this.resetView();
             contentLayout.region1.show(new VFilesMenu());
+
+            this.selectMenu('files');
             contentLayout.region2.show(new VQuotaFiles({model : new MQuota()}));
             contentLayout.region3.show(new VFilesHeader());
             contentLayout.region4.show(view);
-            this.selectMenu('files');
         }
     });
 

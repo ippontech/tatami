@@ -34,7 +34,6 @@ else {
     app = window.app;
 }
 
-//app.formSuccess = "Form Save";
 app.formSuccess = $('#form-success-label').text().trim();
 app.formError =   $('#form-error-label').text().trim();
 app.deleteFileSuccess = $('#delete-file-success-label').text().trim();

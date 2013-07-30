@@ -12,15 +12,7 @@ var VAccountProfile = Marionette.ItemView.extend({
 
     modelEvents: {
         'sync': 'render'
-        //'change' : 'triggerSuccess'
     },
-
-    //Affichage du message au chargement d'une nouvelle image.
-    /*triggerSuccess: function(e){
-
-           console.log('File UpLoad') ;
-        app.trigger('even-alert-success', app.formSuccess);
-    }     ,    */
 
     saveForm: function(e){
         e.preventDefault();

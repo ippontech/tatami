@@ -1,17 +1,17 @@
 
 var VAddGroup = Marionette.ItemView.extend({
-    tagName: 'form',
-
-    initialize: function(){
-        this.$el.addClass('form-horizontal row-fluid');
-    },
 
     template:'#groups-form',
+    tagName: 'form',
 
     events:{
         'click .show': 'toggle',
         'submit': 'submit',
         'reset': 'toggle'
+    },
+
+    initialize: function(){
+        this.$el.addClass('form-horizontal row-fluid');
     },
 
     toggle: function(){
@@ -44,7 +44,16 @@ var VAddGroup = Marionette.ItemView.extend({
 
 
 var VEditGroup = Marionette.ItemView.extend({
+
     tagName: 'form',
+
+    template: '#groups-form',
+
+    events:{
+        'submit': 'submit' ,
+        'sync' : 'render'
+    },
+
     attributes : {
         'class' : 'form-horizontal row-fluid'
     },
@@ -55,13 +64,6 @@ var VEditGroup = Marionette.ItemView.extend({
         });
         this.model.bind('change', this.render, this);
         this.model.fetch();
-    },
-
-    template: '#groups-form',
-
-    events:{
-        'submit': 'submit' ,
-        'sync' : 'render'
     },
 
     submit: function(e){

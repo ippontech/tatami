@@ -60,9 +60,7 @@ var VTabSearch = Marionette.ItemView.extend({
     },
 
     search: function(input){
-
         this.trigger('search', input);
-        //GREG WHY?
         Backbone.history.navigate(this.options.urlHistory + input, {trigger: false});
     }
 
