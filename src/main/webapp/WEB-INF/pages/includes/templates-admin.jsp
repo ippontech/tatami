@@ -299,7 +299,7 @@
         </li>
         <li>
             <a href ="#groups/recommended">
-                <fmt:message key="tatami.account.groups.recommended"/>
+                <fmt:message key="tatami.trends.title"/>
             </a>
         </li>
         <li>
@@ -588,7 +588,7 @@
         </li>
         <li>
             <a href ="#tags/recommended">
-                <fmt:message key="tatami.account.tags.recommended"/>
+                <fmt:message key="tatami.trends.title"/>
             </a>
         </li>
         <li>

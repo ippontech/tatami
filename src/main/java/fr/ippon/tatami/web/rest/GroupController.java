@@ -222,7 +222,7 @@ public class GroupController {
     @Timed
     public Collection<Group> suggestions() {
         String login = authenticationService.getCurrentUser().getLogin();
-        return suggestionService.suggestGroups(login);
+        return groupService.buildGroupList(suggestionService.suggestGroups(login));
     }
 
 
