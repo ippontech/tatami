@@ -83,17 +83,20 @@ _.templateSettings = {
 
         recommendedGroups: function(){
             this.selectMenu('groups');
+            var vNewGroup = Tatami.Factories.Groups.newGroup();
             var vTabMenu = Tatami.Factories.Admin.tabMenu('#groups-menu');
             var listGroupsRecommended = Tatami.Factories.Groups.groupsRecommended();
 
             this.resetView();
-            contentLayout.region1.show(vTabMenu);
-            contentLayout.region2.show(listGroupsRecommended);
+            contentLayout.region1.show(vNewGroup);
+            contentLayout.region2.show(vTabMenu);
+            contentLayout.region3.show(listGroupsRecommended);
             vTabMenu.selectMenu("groups/recommended");
         },
 
         searchGroup: function(inputURL){
             this.selectMenu('groups');
+            var vNewGroup = Tatami.Factories.Groups.newGroup();
             var vTabMenu = Tatami.Factories.Admin.tabMenu('#groups-menu');
             var vTabSearch = Tatami.Factories.Admin.tabSearch(inputURL, 'groups/search/');
             var vGroupList = Tatami.Factories.Search.searchGroups(inputURL);
@@ -103,9 +106,10 @@ _.templateSettings = {
             });
 
             this.resetView();
-            contentLayout.region1.show(vTabMenu);
-            contentLayout.region2.show(vTabSearch);
-            contentLayout.region3.show(vGroupList);
+            contentLayout.region1.show(vNewGroup);
+            contentLayout.region2.show(vTabMenu);
+            contentLayout.region3.show(vTabSearch);
+            contentLayout.region4.show(vGroupList);
             vTabMenu.selectMenu("groups/search");
         },
 
