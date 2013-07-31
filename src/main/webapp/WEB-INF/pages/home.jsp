@@ -75,6 +75,7 @@
     <script src="/js/app/factories/tags.js"></script>
     <script src="/js/app/factories/search.js"></script>
     <script src="/js/app/factories/groups.js"></script>
+    <script src="/js/app/factories/fAdmin.js"></script>
 
     <script src="/js/app/router.js"></script>
 </c:if>

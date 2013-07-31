@@ -39,9 +39,33 @@
         groupUsers: function(groupId){
             var c = new Tatami.Collections.UsersInGroup();
             c.group = groupId;
+            c.fetch();
             return new Tatami.Views.UserGroupList({
                 collection: c
             });
+        },
+
+        groupsSubscribe: function(){
+            var c = new Tatami.Collections.GroupsList();
+            c.fetch();
+            return new Tatami.Views.GroupsList({
+                collection: c
+            });
+        },
+
+        groupsRecommended: function(){
+            var c = new Tatami.Collections.GroupsRecommended();
+            c.fetch();
+            return new Tatami.Views.GroupsList({
+                collection: c
+            });
+        },
+
+        newGroup: function(){
+            var mGroup = new MGroup();
+            var vNewGroup = new VAddGroup({model : mGroup});
+
+            return vNewGroup
         }
 
 

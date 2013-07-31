@@ -74,22 +74,6 @@
             return  new Tatami.Views.UserList({
                 collection: c
             });
-        },
-
-      groupsSubscribe: function(){
-            var c = new Tatami.Collections.GroupsList();
-            c.fetch();
-            return new Tatami.Views.GroupsList({
-                collection: c
-            });
-        },
-
-        groupsRecommended: function(){
-            var c = new Tatami.Collections.GroupsRecommended();
-            c.fetch();
-            return new Tatami.Views.GroupsList({
-                collection: c
-            });
         }
     };
 
