@@ -101,9 +101,7 @@
     <script src="/js/account/models/mUserGroup.js"></script>
     <script src="/js/account/models/mFollowUser.js"></script>
 
-    <script src="/js/account/collections/cTabTag.js"></script>
     <script src="/js/account/collections/cDailyStat.js"></script>
-    <script src="/js/account/collections/cFiles.js"></script>
     <script src="/js/account/collections/cUsers.js"></script>
     <script src="/js/account/collections/cUserSearch.js"></script>
     <script src="/js/account/collections/cAdminGroup.js"></script>
@@ -113,7 +111,6 @@
     <script src="/js/account/views/vAccountProfile.js"></script>
     <script src="/js/account/views/vPreferences.js"></script>
     <script src="/js/account/views/vPassword.js"></script>
-    <script src="/js/account/views/vFile.js"></script>
     <script src="/js/account/views/vGroup.js"></script>
     <script src="/js/account/views/vDailyStat.js"></script>
     <script src="/js/account/views/vTab.js"></script>
@@ -139,6 +136,7 @@
     <script src="/js/app/collections/cGroups.js"></script>
     <script src="/js/app/models/mStatusDetails.js"></script>
     <script src="/js/app/models/mSearch.js"></script>
+    <script src="/js/app/collections/cFiles.js"></script>
     <script src="/js/app/views/vCardProfile.js"></script>
     <script src="/js/app/views/vNavbar.js"></script>
     <script src="/js/app/views/vHomeContainers.js"></script>
@@ -155,6 +153,7 @@
     <script src="/js/app/views/vGroups.js"></script>
     <script src="/js/app/views/vProfileSide.js"></script>
     <script src="/js/app/views/vSearch.js"></script>
+    <script src="/js/app/views/vFiles.js"></script>
     <script src="/js/app/factories/fHome.js"></script>
     <script src="/js/app/factories/fProfile.js"></script>
     <script src="/js/app/factories/fStatus.js"></script>

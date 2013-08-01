@@ -53,6 +53,8 @@
     <script src="/js/app/collections/cGroups.js"></script>
     <script src="/js/app/models/mStatusDetails.js"></script>
     <script src="/js/app/models/mSearch.js"></script>
+
+    <script src="/js/app/collections/cFiles.js"></script>
     <script src="/js/app/views/vCardProfile.js"></script>
     <script src="/js/app/views/vNavbar.js"></script>
     <script src="/js/app/views/vHomeContainers.js"></script>
@@ -69,6 +71,7 @@
     <script src="/js/app/views/vGroups.js"></script>
     <script src="/js/app/views/vProfileSide.js"></script>
     <script src="/js/app/views/vSearch.js"></script>
+    <script src="/js/app/views/vFiles.js"></script>
     <script src="/js/app/factories/fHome.js"></script>
     <script src="/js/app/factories/fProfile.js"></script>
     <script src="/js/app/factories/fStatus.js"></script>

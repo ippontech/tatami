@@ -211,26 +211,16 @@ _.templateSettings = {
             contentLayout.region1.show(vDailyStats);
         },
 
-        initFiles: function(){
-            if(!app.views.files)
-                app.views.files = new VFiles({
-                    collection: new CFiles()
-                });
-
-            return app.views.files;
-        },
-
         files: function(){
             this.selectMenu('files');
-            var view = this.initFiles();
-            view.collection.fetch();
-            this.resetView();
-            contentLayout.region1.show(new VFilesMenu());
 
+            var vQuotaFiles = Tatami.Factories.Admin.quotaFiles();
+            var vListFiles = Tatami.Factories.Admin.listFiles();
+            this.resetView();
+            contentLayout.region1.show(new Tatami.Views.FilesMenu);
+            contentLayout.region2.show(vQuotaFiles);
+            contentLayout.region4.show(vListFiles);
             this.selectMenu('files');
-            contentLayout.region2.show(new VQuotaFiles({model : new MQuota()}));
-            contentLayout.region3.show(new VFilesHeader());
-            contentLayout.region4.show(view);
         }
     });
 

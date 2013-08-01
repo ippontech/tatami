@@ -50,7 +50,6 @@
         itemView: TagsAdmin,
         itemViewContainer: '.items',
         template :'#TagsListTemplate'
-
     });
 
     Tatami.Views.TagsBody = TagsBody;

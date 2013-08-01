@@ -667,6 +667,31 @@
 </script>
 
 
+<script type="text/html" id="FilesListTemplate">
+    <table class="table noCollapse">
+        <tr>
+            <th style="border-top :0"><b><fmt:message key="tatami.user.file.name"/></b></th>
+            <th style="border-top :0"><b><fmt:message key="tatami.user.file.size"/></b></th>
+            <th style="border-top :0"><b><fmt:message key="tatami.user.file.creation.date"/></b></th>
+            <th style="border-top :0">  </th>
+        </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
+
+</script>
+
+<script type="text/template" id="FileItemTemplate">
+    <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
+    <td><@= (size/1000) @> kb</td>
+    <td><@= prettyPrintCreationDate @> </td>
+    <td>
+        <span class="btn btn-primary btn-block">
+            <fmt:message key="tatami.user.status.delete"/>
+        </span>
+    </td>
+</script>
+
 <!--script type="text/template" id="delete-file-success">
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>

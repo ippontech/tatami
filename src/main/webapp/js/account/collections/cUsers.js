@@ -1,7 +1,7 @@
 
 
 //(function(Backbone, Tatami){
-var CUsers = Backbone.Collection.extend({
+/*var CUsers = Backbone.Collection.extend({
     initialize: function(){
         this.options= {};
         this.options.url = {
@@ -50,4 +50,4 @@ var CUsers = Backbone.Collection.extend({
 
     }
 });
-//})(Backbone, Tatami);
+//})(Backbone, Tatami);*/

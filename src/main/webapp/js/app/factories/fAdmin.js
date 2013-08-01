@@ -7,7 +7,6 @@
  */
 (function(Backbone, Tatami){
 
-
     Tatami.Factories.Admin = {
         profile: function(){
             var mAccountProfile = new MAccountProfile();
@@ -58,8 +57,19 @@
 
         tabSearch: function(inputURL, url ){
              return new VTabSearch({inputURL : inputURL, urlHistory : 'tags/search/'});
-        }
+        },
 
+        quotaFiles: function(){
+            return new Tatami.Views.QuotaFiles({model : new MQuota()});
+        },
+
+        listFiles: function(){
+            var c = new Tatami.Collections.Files();
+            c.fetch();
+            return new Tatami.Views.FilesList({
+                collection: c
+            });
+        }
     };
 
 })(Backbone, Tatami);

@@ -6,15 +6,9 @@ _.templateSettings = {
 };
 
 var Tatami = {
-    views: {},
-    collections: {},
-    View: {},
     Views: {},
-    Collection: {},
     Collections: {},
-    Model: {},
     Models: {},
-    Router: {}   ,
     Factories: {}
 };
 
@@ -150,5 +144,6 @@ $(function(){
         success: onStart
     });
 });
+
 
 
