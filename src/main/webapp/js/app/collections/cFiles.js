@@ -5,8 +5,6 @@
         url: '/tatami/rest/attachments'
     });
 
-
-
     Tatami.Collections.Files = CFiles;
 
 })(Backbone, Tatami);

@@ -42,6 +42,7 @@
     <script src="/js/app/plugins/tatami.search.js"></script>
     <script src="/js/app/plugins/suggester.js"></script>
     <script src="/js/app/models/mUser.js"></script>
+    <script src="/js/account/models/mFile.js"></script>
     <script src="/js/app/collections/cUsers.js"></script>
     <script src="/js/app/models/mPostStatus.js"></script>
     <script src="/js/app/models/mStatus.js"></script>
