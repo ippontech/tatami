@@ -2,7 +2,7 @@
 var VPreferences = Marionette.ItemView.extend({
     tagName: 'form',
 
-    template: '#account-preferences',
+    template: '#accountPreferences',
     initialize: function(){
 
         this.$el.addClass('form-horizontal row-fluid');

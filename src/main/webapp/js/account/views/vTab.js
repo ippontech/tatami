@@ -16,87 +16,39 @@ var VTabMenu = Marionette.ItemView.extend({
 
 
 var VTabSearch = Marionette.ItemView.extend({
-    templateSearch: _.template($('#search-filter').html()),
-    initialize: function(){
-        this.$el.addClass('row-fluid');
 
-        this.views = {};
-        this.views.tab = new VTab({
-            collection : this.collection,
-            ViewModel : this.options.ViewModel,
-            template: this.options.TabHeaderTemplate
-        });
-    },
+    template : '#search-filter',
+    tagName : 'form',
+
+    initialize: function(options){
+        this.$el.addClass('row-fluid littleMargeBot');
+   },
 
     events:{
-        'keyup :input#block_filter':'search'
+        'submit':'submit',
+        'keyup':'change',
+        'initialize:after' : 'refreshField'
     },
 
-    search: function(e){
+    refreshField : function(){
+        $('[name="result_filter"]').val(this.options.inputURL) ;
+    },
+
+    change: function(e){
         var input = e.target.value;
-        if(input != '') {
-            this.collection.reset();
-            this.collection.search(input);
-        }
+        this.search(input);
     },
 
-    render: function(){
-        this.$el.empty();
-        //this.$el.append(this.options.MenuTemplate());
-        this.$el.append(this.templateSearch());
-        this.$el.append(this.views.tab.render());
-        this.delegateEvents();
-        return this.$el;
+    submit: function(e){
+        e.preventDefault();
+        var input = $(e.target).find('[name="result_filter"]').val();
+        this.search(input);
+    },
+
+    search: function(input){
+
+        if(input) this.trigger('search', input);
+        Backbone.history.navigate(this.options.urlHistory + input, {trigger: false});
     }
-});
 
-var VTabContainer = Marionette.ItemView.extend({
-    initialize: function(){
-        this.$el.addClass('row-fluid');
-
-        this.views = {};
-        this.views.tab = new VTab({
-            collection : this.collection,
-            ViewModel : this.options.ViewModel,
-            template: this.options.TabHeaderTemplate
-        });
-    },
-
-    selectMenu: function(menu) {
-        this.$el.find('ul.nav.nav-tabs a').parent().removeClass('active');
-        this.$el.find('ul.nav.nav-tabs a[href="#' + menu + '"]').parent().addClass('active');
-    },
-
-    render: function(){
-        this.$el.empty();
-       // this.$el.append(this.options.MenuTemplate());
-        this.$el.append(this.views.tab.render());
-        this.delegateEvents();
-        return this.$el;
-    }
-});
-
-var VTab = Marionette.ItemView.extend({
-    initialize: function() {
-        this.$el.addClass('table');
-        this.template = this.options.template;
-        this.collection.bind('reset', this.render, this);
-        this.collection.bind('add', this.addItem, this);
-    },
-
-    tagName: 'table',
-
-    addItem: function(item) {
-        this.$el.append(new this.options.ViewModel({
-            model: item
-        }).render());
-    },
-
-    render: function() {
-        this.$el.empty();
-        this.$el.append(this.template());
-        this.collection.forEach(this.addItem, this);
-        this.delegateEvents();
-        return this.$el;
-    }
 });

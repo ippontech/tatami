@@ -5,11 +5,9 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.*;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
 import fr.ippon.tatami.web.rest.dto.Tag;
@@ -47,6 +45,9 @@ public class SearchController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private GroupService groupService;
 
     @Inject
     private TrendService trendService;
@@ -150,7 +151,7 @@ public class SearchController {
         } else {
             groups = new ArrayList<Group>();
         }
-        return groups;
+        return groupService.buildGroupList(groups);
     }
 
     /**
@@ -167,7 +168,7 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<User> searchUsers(@RequestParam("q") String query) {
+    public Collection<UserDTO> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
 
         User currentUser = authenticationService.getCurrentUser();
@@ -181,7 +182,7 @@ public class SearchController {
         } else {
             users = new ArrayList<User>();
         }
-        return users;
+        return userService.buildUserDTOList(users);
 
     }
 

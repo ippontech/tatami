@@ -29,7 +29,7 @@
                 <@ } @>
             </a>
         <@ } else if(administrator) { @>
-            <a href="/tatami/account/#/groups" class="btn-title toggleTag pull-right label label-info hidden-phone">
+            <a href="/tatami/account/#/groups/<@= groupId @>" class="btn-title toggleTag pull-right label label-info hidden-phone">
                 <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
             </a>
         <@ } @>
@@ -326,10 +326,13 @@
     <section class='timeline'></section>
 </script>
 <script type="text/template" id="StatusUpdateButton">
-    <span class="badge"><@= count @></span>
-    <@ if (count == 1) { @>
+    <@ if (count == 0) { @>
+
+    <@} else if (count == 1) { @>
+        <span class="badge"><@= count @></span>
         <fmt:message key="tatami.timeline.message"/>
     <@ } else { @>
+     <span class="badge"><@= count @></span>
         <fmt:message key="tatami.timeline.messages"/>
     <@ } @>
 </script>
@@ -649,13 +652,13 @@
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>
         <@ } @>
-        <a href="#users/<@= username @>">
+        <a href="/tatami/home/#/users/<@= username @>">
             <strong>
                 <@= fullName @>
             </strong>
         </a>
         <br>
-        <a href="#users/<@= username @>">
+        <a href="/tatami/home/#/users/<@= username @>">
             <small>
                 @<@= username @>
             </small>
@@ -721,4 +724,17 @@
         <tbody class="items">
         </tbody>
     </table>
+</script>
+
+<script type="text/html" id="UserGroupList">
+    <table class="table noCollapse">
+        <tr>
+            <th style="border-top :0"><fmt:message key="tatami.username"/></th>
+            <th style="border-top :0"><fmt:message key="tatami.group.role"/></th>
+            <th style="border-top :0"></th>
+        </tr>
+        <tbody class="items">
+        </tbody>
+    </table>
+
 </script>

@@ -1,5 +1,4 @@
 
-//(function(Backbone, Tatami){
 var MUserGroup = Backbone.Model.extend({
     idAttribute : 'username',
     defaults : {
@@ -14,4 +13,3 @@ var MUserGroup = Backbone.Model.extend({
         });
     }
 });
-//})(Backbone, Tatami);

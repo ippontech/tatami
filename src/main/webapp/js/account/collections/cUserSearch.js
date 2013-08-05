@@ -1,6 +1,4 @@
 
-
-//(function(Backbone, Tatami){
 var CUserSearch = Backbone.Collection.extend({
     url : '/tatami/rest/users/search',
 
@@ -34,4 +32,3 @@ var CUserSearch = Backbone.Collection.extend({
         }
     }
 });
-//})(Backbone, Tatami);

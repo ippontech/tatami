@@ -4,8 +4,10 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.GroupController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -13,9 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Service bean for managing groups.
@@ -120,11 +120,19 @@ public class GroupService {
         return null;
     }
 
+
     @Cacheable(value = "group-user-cache", key = "#user.login")
     public Collection<Group> getGroupsForUser(User user) {
         Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
+        return buildGroupIdsList(user, groupIds);
+    }
+
+    @Cacheable(value = "group-user-cache", key = "#user.login")
+    public Collection<Group> getGroupsOfUser(User user) {
+        Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
         return getGroupDetails(user, groupIds);
     }
+
 
     @Cacheable(value = "group-cache")
     public Group getGroupById(String domain, String groupId) {
@@ -136,11 +144,6 @@ public class GroupService {
         return getGroupDetails(user, groupIds);
     }
 
-    public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
-        User currentUser = authenticationService.getCurrentUser();
-        return getGroupsWhereUserIsAdmin(currentUser);
-    }
-
     private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
@@ -149,6 +152,11 @@ public class GroupService {
             groups.add(group);
         }
         return groups;
+    }
+
+    public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
+        User currentUser = authenticationService.getCurrentUser();
+        return getGroupsWhereUserIsAdmin(currentUser);
     }
 
     private Group internalGetGroupById(String domain, String groupId) {
@@ -200,5 +208,99 @@ public class GroupService {
         } else {
             log.debug("User {} is not a member of group {}", user.getLogin(), group.getName());
         }
+    }
+
+
+    public Collection<Group> buildGroupList(Collection<Group> groups) {
+        User currentUser = authenticationService.getCurrentUser();
+        return buildGroupList(currentUser, groups);
+    }
+
+    public Collection<Group> buildGroupList(User user, Collection<Group> groups) {
+
+        for (Group group : groups) {
+            buildGroup(user, group);
+        }
+
+        return groups;
+    }
+
+    public Group buildGroup(Group group) {
+        User currentUser = authenticationService.getCurrentUser();
+        return buildGroup(currentUser, group);
+    }
+
+    private Group getGroupFromUser(User currentUser, String groupId) {
+        Collection<Group> groups = getGroupsOfUser(currentUser);
+        for (Group testGroup : groups) {
+            if (testGroup.getGroupId().equals(groupId)) {
+                return testGroup;
+            }
+        }
+        return null;
+    }
+
+    private boolean isGroupManagedByCurrentUser(Group group) {
+        Collection<Group> groups = getGroupsWhereCurrentUserIsAdmin();
+        boolean isGroupManagedByCurrentUser = false;
+        for (Group testGroup : groups) {
+            if (testGroup.getGroupId().equals(group.getGroupId())) {
+                isGroupManagedByCurrentUser = true;
+                break;
+            }
+        }
+        return isGroupManagedByCurrentUser;
+    }
+
+    public Group buildGroup(User user, Group group) {
+        if(group != null ) {
+            if (isGroupManagedByCurrentUser(group)) {
+                group.setAdministrator(true);
+                group.setMember(true);
+            }
+            else if(group.isPublicGroup()) {
+                Group result = getGroupFromUser(user, group.getGroupId());
+                if (result != null) {
+                    group.setMember(true);
+                }
+            }
+            else {
+                Group result = getGroupFromUser(user, group.getGroupId());
+                if (result == null) {
+                    log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
+                    return null;
+                } else {
+                    group.setMember(true);
+                }
+            }
+
+            group.setCounter(getMembersForGroup(group.getGroupId(),authenticationService.getCurrentUser().getLogin()).size());
+        }
+        return group;
+    }
+
+    public Collection<Group> buildGroupIdsList(Collection<String> groupIds) {
+        User currentUser = authenticationService.getCurrentUser();
+        return buildGroupIdsList(currentUser, groupIds);
+    }
+
+    public Collection<Group> buildGroupIdsList(User user, Collection<String> groupIds) {
+        Collection<Group> groups = new TreeSet<Group>();
+        for (String groupId : groupIds) {
+            groups.add(buildGroupIds(groupId));
+        }
+
+        return groups;
+    }
+
+    public Group buildGroupIds(String groupId) {
+        User currentUser = authenticationService.getCurrentUser();
+        return buildGroupIds(currentUser, groupId);
+    }
+
+    public Group buildGroupIds(User user, String groupId) {
+        String domain = DomainUtil.getDomainFromLogin(user.getLogin());
+        Group group = getGroupById(domain, groupId);
+        return buildGroup(group);
     }
 }
