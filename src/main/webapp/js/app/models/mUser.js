@@ -57,6 +57,13 @@
         }
     });
 
+
+    var UserGroup = User.extend({
+        urlRoot : ''
+    });
+
     Tatami.Models.User = User;
+    Tatami.Models.UserGroup = UserGroup;
+
 
 })(Backbone, _, Tatami, Modernizr, window);

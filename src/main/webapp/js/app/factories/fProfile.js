@@ -77,6 +77,7 @@
         friends: function(username){
             var c = new Tatami.Collections.Friends();
             c.user = username;
+            c.fetch();
             return  new Tatami.Views.UserList({
                 collection: c
             });

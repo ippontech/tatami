@@ -50,10 +50,10 @@
         itemView: TagsAdmin,
         itemViewContainer: '.items',
         template :'#TagsListTemplate'
-
     });
 
     Tatami.Views.TagsBody = TagsBody;
     Tatami.Views.TagsHeader = TagsHeader;
     Tatami.Views.TagsList = TagsList;
+
 })(Backbone, _, Tatami);

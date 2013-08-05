@@ -11,11 +11,6 @@ var VDailyStats = Marionette.ItemView.extend({
         $(window).bind("resize.app", _.bind(this.render, this));
     },
 
-      /*collectionEvents: {
-        //'reset': 'render',
-        'success' : 'myRender'
-    },     */
-
     render:function () {
         var values = [];
         var labels = [];

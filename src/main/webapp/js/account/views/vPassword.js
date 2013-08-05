@@ -1,13 +1,12 @@
 
 var VPassword = Marionette.ItemView.extend({
     tagName: 'form',
-    template: '#account-password',
+    template: '#accountPassword',
 
     initialize: function(){
         this.$el.addClass('form-horizontal row-fluid');
 
         this.model.fetch();
-        //this.$el.empty();  //Ca sert à quoi?
     },
 
     modelEvents: {
@@ -30,7 +29,7 @@ var VPassword = Marionette.ItemView.extend({
         var newPassword = this.$el.find('[name="newPassword"]');
         var newPasswordConfirmation = this.$el.find('[name="newPasswordConfirmation"]');
         if(newPassword.val() !== newPasswordConfirmation.val()){
-            newPasswordConfirmation[0].setCustomValidity($('#account-password-newPasswordConfirmation').text());
+            newPasswordConfirmation[0].setCustomValidity($('#accountNewPasswordConfirmation').text());
             return;
         }
         newPasswordConfirmation[0].setCustomValidity('');

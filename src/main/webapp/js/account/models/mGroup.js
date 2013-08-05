@@ -1,5 +1,4 @@
 
-//(function(Backbone, Tatami){
 var MGroup = Backbone.Model.extend({
     urlRoot: '/tatami/rest/groups',
     idAttribute: 'groupId',
@@ -10,4 +9,3 @@ var MGroup = Backbone.Model.extend({
         archivedGroup: false
     }
 });
-//})(Backbone, Tatami);

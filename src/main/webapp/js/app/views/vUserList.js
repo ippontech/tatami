@@ -39,6 +39,36 @@
         template: '#WhoToFollow'
     });
 
+    var UserGroupItems =  Backbone.Marionette.ItemView.extend({
+
+        template: '#usergroup-item',
+        tagName : 'tr',
+
+        modelEvents: {
+            'change': 'render',
+            'sync': 'render'
+
+        },
+        events: {
+            'click .delete' : 'removeUser'
+        },
+
+        removeUser : function(){
+
+            this.model.destroy();
+
+        }
+
+    });
+
+    var UserGroupList = Backbone.Marionette.CompositeView.extend({
+        itemView: UserGroupItems,
+        itemViewContainer: '.items',
+        template: '#UserGroupList',
+        className: 'useritem'
+    });
+
     Tatami.Views.UserList = UserList;
     Tatami.Views.WhoToFollow = WhoToFollow;
+    Tatami.Views.UserGroupList = UserGroupList;
 })(Backbone, _, Tatami);
