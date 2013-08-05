@@ -56,7 +56,7 @@
         },
 
         tabSearch: function(inputURL, url ){
-             return new VTabSearch({inputURL : inputURL, urlHistory : 'tags/search/'});
+             return new VTabSearch({inputURL : inputURL, urlHistory : url});
         },
 
         quotaFiles: function(){

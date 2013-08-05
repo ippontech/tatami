@@ -8,7 +8,5 @@ var AccountLayout = Backbone.Marionette.Layout.extend({
     regions: {
         avatar: "#avatar",
         navigation: "#navigation"
-        //content: "#content"
-        //Ajout future des messages d'erreurs/validation (en haut au milieu de l'écran)
     }
 });

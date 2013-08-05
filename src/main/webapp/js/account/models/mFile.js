@@ -1,5 +1,4 @@
 
-//(function(Backbone, Tatami){
 var MFile = Backbone.Model.extend({
     idAttribute: 'attachmentId',
     initialize: function(){
@@ -22,4 +21,3 @@ var MQuota = Backbone.Model.extend({
         quota : ''
     }
 });
-//})(Backbone, Tatami);

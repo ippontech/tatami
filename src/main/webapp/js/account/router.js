@@ -214,10 +214,11 @@ _.templateSettings = {
         files: function(){
             this.selectMenu('files');
 
+            var vFileHeader = new Tatami.Views.FilesMenu;
             var vQuotaFiles = Tatami.Factories.Admin.quotaFiles();
             var vListFiles = Tatami.Factories.Admin.listFiles();
             this.resetView();
-            contentLayout.region1.show(new Tatami.Views.FilesMenu);
+            contentLayout.region1.show(vFileHeader);
             contentLayout.region2.show(vQuotaFiles);
             contentLayout.region4.show(vListFiles);
             this.selectMenu('files');

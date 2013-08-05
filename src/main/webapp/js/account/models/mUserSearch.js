@@ -1,5 +1,4 @@
 
-//(function(Backbone, Tatami){
 var MUserSearch = Backbone.Model.extend({
     toString : function(){
         return this.get('username');
@@ -11,4 +10,3 @@ var MUserSearch = Backbone.Model.extend({
         return this.toString().replace(a, b, c);
     }
 });
-//})(Backbone, Tatami);

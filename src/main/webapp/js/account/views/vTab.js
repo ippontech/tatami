@@ -22,25 +22,11 @@ var VTabSearch = Marionette.ItemView.extend({
 
     initialize: function(options){
         this.$el.addClass('row-fluid littleMargeBot');
-    /*    console.log($('[name="result_filter"]'));
-        console.log(this.options.inputURL);
-        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
-        this.$el.find('[name="username"]').val(this.options.inputURL)   ; */
    },
 
-   /* onRender: function(){
-        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
-        this.$el.find('[name="username"]').val(this.options.inputURL)   ;
-    }   ,
-    serializeData : function(){
-        this.$el.html(Backbone.Marionette.TemplateCache.get("#search-filter"));
-        this.$el.find('[name="username"]').val(this.options.inputURL)   ;
-    },
-         */
     events:{
         'submit':'submit',
         'keyup':'change',
-
         'initialize:after' : 'refreshField'
     },
 

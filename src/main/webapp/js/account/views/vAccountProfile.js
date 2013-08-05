@@ -4,7 +4,7 @@ var VAccountProfile = Marionette.ItemView.extend({
          this.model.fetch();
     },
     tagName: 'form',
-    template: '#account-profile',
+    template: '#accountProfile',
 
     events: {
         'submit': 'saveForm'
@@ -35,7 +35,7 @@ var VAccountProfile = Marionette.ItemView.extend({
 
 var VAccountProfileDestroy = Marionette.ItemView.extend({
     tagName: 'form',
-    template: '#account-destroy',
+    template: '#accountDestroy',
 
     events: {
         'submit': 'destroy'

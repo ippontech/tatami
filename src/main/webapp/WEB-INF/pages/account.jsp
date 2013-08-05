@@ -3,9 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -95,17 +92,13 @@
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/models/mPassword.js"></script>
     <script src="/js/account/models/mFile.js"></script>
-    <script src="/js/account/models/mFollowTag.js"></script>
     <script src="/js/account/models/mGroup.js"></script>
     <script src="/js/account/models/mUserSearch.js"></script>
     <script src="/js/account/models/mUserGroup.js"></script>
-    <script src="/js/account/models/mFollowUser.js"></script>
 
     <script src="/js/account/collections/cDailyStat.js"></script>
-    <script src="/js/account/collections/cUsers.js"></script>
     <script src="/js/account/collections/cUserSearch.js"></script>
     <script src="/js/account/collections/cAdminGroup.js"></script>
-    <script src="/js/account/collections/cUsers.js"></script>
 
     <script src="/js/account/views/vHeader.js"></script>
     <script src="/js/account/views/vAccountProfile.js"></script>
@@ -161,8 +154,6 @@
     <script src="/js/app/factories/fSearch.js"></script>
     <script src="/js/app/factories/fGroups.js"></script>
     <script src="/js/app/factories/fAdmin.js"></script>
-
-
 
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
