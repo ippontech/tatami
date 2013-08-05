@@ -24,7 +24,7 @@
                       <a href="#/home/timeline">
                     </c:if>
                     <c:if test="${currentPage == null || currentPage != 'home'}">
-                      <a href="/tatami/home">
+                      <a href="/tatami/home/timeline">
                     </c:if>
                     <span>
                         <span class="glyphicon glyphicon-th-list"></span>
