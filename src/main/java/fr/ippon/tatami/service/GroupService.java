@@ -124,7 +124,7 @@ public class GroupService {
     @Cacheable(value = "group-user-cache", key = "#user.login")
     public Collection<Group> getGroupsForUser(User user) {
         Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
-        return buildGroupIdsList(user, groupIds);
+        return buildGroupIdsList(groupIds);
     }
 
     @Cacheable(value = "group-user-cache", key = "#user.login")
@@ -280,16 +280,10 @@ public class GroupService {
     }
 
     public Collection<Group> buildGroupIdsList(Collection<String> groupIds) {
-        User currentUser = authenticationService.getCurrentUser();
-        return buildGroupIdsList(currentUser, groupIds);
-    }
-
-    public Collection<Group> buildGroupIdsList(User user, Collection<String> groupIds) {
         Collection<Group> groups = new TreeSet<Group>();
         for (String groupId : groupIds) {
             groups.add(buildGroupIds(groupId));
         }
-
         return groups;
     }
 
