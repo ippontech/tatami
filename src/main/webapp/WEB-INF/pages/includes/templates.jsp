@@ -469,7 +469,7 @@
             <h4><a href="#"><@= item.fullName @></a></h4>
             <p><@= item.label @></p>
         </li>
-    <@} else { @>
+    <@} else if(item.label) { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
             <h4 class="smallPaddingLeft"><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
