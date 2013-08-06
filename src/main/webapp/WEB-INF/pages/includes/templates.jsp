@@ -407,7 +407,7 @@
                     <label>
                         <fmt:message key="tatami.menu.files"/>
                     </label>
-                    <div class="attachmentBar progress progress-striped active">
+                    <div class="attachmentBar progress progress-striped active" style="display: none;">
                         <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
                     </div>
                     <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
