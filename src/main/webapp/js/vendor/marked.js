@@ -750,7 +750,7 @@ InlineLexer.prototype.output = function(src) {
 
 InlineLexer.prototype.outputLink = function(cap, link) {
   if (cap[0][0] !== '!') {
-    return '<a href="'
+    return '<a target="_blank" href="'
       + escape(link.href)
       + '"'
       + (link.title
