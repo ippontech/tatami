@@ -380,6 +380,7 @@
 
 
 <script type="text/template" id="groups-item">
+     <@ if(name) { @>
     <td>
         <a href="/tatami/home/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
     </td>
@@ -410,6 +411,7 @@
           </a>
           <@ } @>
       </td>
+    <@ } @>
 </script>
 
 <script type="text/template" id="usergroup-item">
