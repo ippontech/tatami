@@ -8,7 +8,7 @@ var MFile = Backbone.Model.extend({
 var MQuota = Backbone.Model.extend({
     url : '/tatami/rest/attachments/quota',
 
-    parse : function(data){  /// [56]
+    parse : function(data){
         var response = {};
 
         response.quota = data[0];
