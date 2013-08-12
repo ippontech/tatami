@@ -407,8 +407,8 @@
                     <label>
                         <fmt:message key="tatami.menu.files"/>
                     </label>
-                    <div class=".attachmentBar progress progress-striped active" style="display: none;">
-                        <div class="bar" style="width: 0%;"></div>
+                    <div class="attachmentBar progress progress-striped active" style="display: none;">
+                        <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
                     </div>
                     <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
                     <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
@@ -469,7 +469,7 @@
             <h4><a href="#"><@= item.fullName @></a></h4>
             <p><@= item.label @></p>
         </li>
-    <@} else { @>
+    <@} else if(item.label) { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
             <h4 class="smallPaddingLeft"><a href="#"><@= item.label @></a></h4>
             <p><@= item.nb @> <fmt:message key="tatami.group.counter"/></p>
