@@ -11,11 +11,10 @@
             return searchBody;
         },
         searchHeader: function(input){
-            if(searchModel==null)
-                searchModel = new Tatami.Models.Search({"input": input});
-            var searcHeader = new Tatami.Views.SearchHeader({model: searchModel});
+            searchModel = new Tatami.Models.Search({"input": input});
+            var vSearchHeader = new Tatami.Views.SearchHeader({model: searchModel});
 
-            return searcHeader;
+            return vSearchHeader;
         },
 
         searchUsers: function(input){
