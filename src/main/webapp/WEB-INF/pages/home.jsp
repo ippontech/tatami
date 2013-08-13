@@ -85,6 +85,7 @@
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
+    <script src="/tatami/static-wro4j/${version}/tatami-app-account.js"></script>
 </c:if>
 
 <jsp:include page="includes/templates.jsp"/>
