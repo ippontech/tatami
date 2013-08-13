@@ -91,7 +91,6 @@
     <script src="/js/account/models/mAccountProfile.js"></script>
     <script src="/js/account/models/mPreferences.js"></script>
     <script src="/js/account/models/mPassword.js"></script>
-    <script src="/js/account/models/mFile.js"></script>
     <script src="/js/account/models/mGroup.js"></script>
     <script src="/js/account/models/mUserSearch.js"></script>
     <script src="/js/account/models/mUserGroup.js"></script>
@@ -119,6 +118,7 @@
     <script src="/js/app/plugins/suggester.js"></script>
     <script src="/js/app/models/mUser.js"></script>
     <script src="/js/app/collections/cUsers.js"></script>
+    <script src="/js/app/models/mFile.js"></script>
     <script src="/js/app/models/mPostStatus.js"></script>
     <script src="/js/app/models/mStatus.js"></script>
     <script src="/js/app/models/mHomeBody.js"></script>
