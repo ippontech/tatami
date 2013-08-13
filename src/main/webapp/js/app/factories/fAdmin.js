@@ -60,7 +60,7 @@
         },
 
         quotaFiles: function(){
-            return new Tatami.Views.QuotaFiles({model : new MQuota()});
+            return new Tatami.Views.QuotaFiles({model : new Tatami.Models.Quota()});
         },
 
         listFiles: function(){
