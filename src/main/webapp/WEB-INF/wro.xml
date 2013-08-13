@@ -21,7 +21,6 @@
         <js>/js/app/app.js</js>
         <js>/js/app/router.js</js>
         <js>/js/app/models/**.js</js>
-        <js>/js/account/models/mFile.js</js>
         <js>/js/app/collections/**.js</js>
         <js>/js/app/views/**.js</js>
         <js>/js/app/factories/**.js</js>

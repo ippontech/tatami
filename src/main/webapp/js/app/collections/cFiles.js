@@ -1,7 +1,7 @@
 (function(Backbone, Tatami){
 
     var CFiles = Backbone.Collection.extend({
-        model: MFile,
+        model: Tatami.Models.File,
         url: '/tatami/rest/attachments'
     });
 
