@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.28</version>
+    <version>3.0.29</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -68,10 +68,6 @@
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
             </properties>
             <build>
                 <plugins>
@@ -88,7 +84,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app,tatami-account</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
@@ -150,7 +146,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <targetGroups>tatami-vendor,tatami-app</targetGroups>
+                            <targetGroups>tatami-vendor,tatami-app,tatami-account</targetGroups>
                             <minimize>false</minimize>
                             <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
                             <contextFolder>${basedir}/src/main/webapp</contextFolder>
