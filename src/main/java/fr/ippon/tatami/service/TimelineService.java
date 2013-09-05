@@ -221,6 +221,7 @@ public class TimelineService {
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
                             statusUser = userService.getUserByLogin(originalStatus.getLogin());
+                            shareByMe(statusDTO);
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Original status has been deleted");
@@ -232,6 +233,7 @@ public class TimelineService {
                             statusDTO.setTimelineId(mentionShare.getStatusId());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
                             statusUser = userService.getUserByLogin(mentionShare.getLogin());
+                            shareByMe(statusDTO);
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Mentioned status has been deleted");
@@ -259,7 +261,6 @@ public class TimelineService {
                         }
                     } else { // Normal status
                         statusDTO.setTimelineId(abstractStatus.getStatusId());
-//                        shareByMe(statusDTO);
                         addStatusToLine(statuses, statusDTO, abstractStatus, statusUser, usergroups, favoriteLine);
                     }
                 } else {
