@@ -1,7 +1,9 @@
 package fr.ippon.tatami.service.dto;
 
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusType;
+import fr.ippon.tatami.repository.SharesRepository;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -91,6 +93,17 @@ public class StatusDTO implements Serializable {
      * If this status was shared, username of the user who shared it.
      */
     private String sharedByUsername;
+
+    private boolean shareByMe;
+
+
+    public boolean isShareByMe() {
+        return shareByMe;
+    }
+
+    public void setShareByMe(boolean shareByMe) {
+        this.shareByMe = shareByMe;
+    }
 
     public String getISO8601StatusDate() {
         return this.iso8601StatusDate;
@@ -322,6 +335,7 @@ public class StatusDTO implements Serializable {
                 ", favorite=" + favorite +
                 ", detailsAvailable=" + detailsAvailable +
                 ", sharedByUsername='" + sharedByUsername + '\'' +
+                ", shareByMe='" + shareByMe + '\'' +
                 '}';
     }
 }

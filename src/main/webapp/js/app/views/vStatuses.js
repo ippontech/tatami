@@ -73,6 +73,8 @@
             'change:discussion': 'onRender'
         },
         events: {
+            'mouseenter #current' : 'showAction',
+            'mouseleave #current' : 'hideAction',
             'click #current': 'showDetails',
             'click #current a' : 'showLink',
             'click .status-action-show' : 'showDetails',
@@ -88,7 +90,9 @@
             'click .status-action-delete-cancel': 'deleteActionCancel'
         },
         onRender: function(){
-            this.$el.find('> #current').toggleClass('favorite', this.model.get('favorite'));
+            var current = this.$el.find('> #current');
+
+            current.toggleClass('favorite', this.model.get('favorite'));
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))
@@ -116,7 +120,46 @@
             }
 
             return false;
-        }, 
+        },
+        /*--------------------------------------------------------*/
+        showAction :function(){
+            currentModel = this.model;
+            if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
+                return;
+            }
+
+            if(!this.buttons.currentView){
+                var self = this;
+
+                        self.buttons.show(new StatusFooters({model: currentModel}));
+                        //self.buttons.$el.toggle({duration: 200});
+                        self.buttons.$el.css('display' , 'block')  ;
+                        self.buttons.$el.css('visibility' , 'visible')  ;
+
+            }
+            return false;
+        },
+
+        hideAction :function(){
+            currentModel = this.model;
+            if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
+                return;
+            }
+            var statusDetail = Tatami.Factories.Status.getStatusDetail(this.model.id);
+            statusDetail.set("groupId", this.model.get("groupId"));
+            statusDetail.set("statusPrivate", this.model.get("statusPrivate"));
+            statusDetail.set("type", this.model.get("type"));
+            //this.buttons.$el.toggle({duration: 200});
+            this.buttons.$el.css('visibility' , 'hidden')  ;
+
+            this.buttons.currentView = null;
+
+
+
+            return false;
+        },
+
+        /*----------------------------------------------------------------------------------------*/
         showDetails: function(){
             currentModel = this.model;
             if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
@@ -127,7 +170,7 @@
                 statusDetail.set("groupId", this.model.get("groupId"));
                 statusDetail.set("statusPrivate", this.model.get("statusPrivate"));
                 statusDetail.set("type", this.model.get("type"));
-                if(!this.buttons.currentView){
+                if(!this.share.$el){
                     var self = this;
                     statusDetail.set('refDate', this.model.get('statusDate'));
                     statusDetail.fetch({
@@ -137,14 +180,12 @@
                                 collection: new Tatami.Collections.Users(shares)
                             }));
                             if(shares.length){
-                                self.share.$el.slideToggle({duration: 200});
+                                self.share.$el.slideToggle({duration: 100});
                             }
+                            self.buttons.$el.css('visibility' , 'visible')  ;
 
                             //TODO CodingParty : Afficher l'annulation du partage
                             currentModel.set('sharedByMe', statusDetail.isSharedBy(Tatami.app.user.get('username')));
-                            self.buttons.show(new StatusFooters({model: currentModel}));
-                            self.buttons.$el.slideToggle({duration: 200});
-
 
                             if (self.model.getImages() != null && self.model.getImages().length > 0) {
 
@@ -159,9 +200,9 @@
                             }
 
                             if(isRoot){
-                                $(self.el).animate({marginTop: '+=10', marginBottom: '+=10'}, 200);
+                                $(self.el).animate({marginTop: '+=0', marginBottom: '+=0'}, 100);
                                 $(self.el).toggleClass('tatam-hover');
-                                $(self.el).toggleClass('tatam-expand-container').animate(200);
+                                $(self.el).toggleClass('tatam-expand-container').animate(100);
                                 var befores = statusDetail.getStatusBefore();
                                 var before = new Tatami.Views.Statuses({
                                     collection: new Tatami.Collections.Statuses(befores),
@@ -199,22 +240,23 @@
 
                     });
                 } else {
-                    this.buttons.$el.slideToggle({duration: 200});
+                    //this.buttons.$el.slideToggle({duration: 200});
+                    //this.buttons.$el.css('visibility' , 'hidden')  ;
                     var shares = statusDetail.get('sharedByLogins');
                     if(shares.length){
-                        this.share.$el.slideToggle({duration: 200});
+                        this.share.$el.slideToggle({duration: 100});
                     }
                     if(this.model.getImages() != null && this.model.getImages().length > 0){
-                        this.preview.$el.slideToggle({duration: 200});
+                        this.preview.$el.slideToggle({duration: 100});
                     }
                     if(isRoot){
                         if($(this.el).attr('class').indexOf('tatam-expand-container') != -1){
-                            $(this.el).animate({marginTop: '-=10', marginBottom: '-=10'}, 200);
+                            $(this.el).animate({marginTop: '-=0', marginBottom: '-=0'}, 100);
                         } else {
-                            $(this.el).animate({marginTop: '+=10', marginBottom: '+=10'}, 200);
+                            $(this.el).animate({marginTop: '+=0', marginBottom: '+=0'}, 100);
                         }
-                        this.before.$el.slideToggle({duration: 200});
-                        this.after.$el.slideToggle({duration: 200});
+                        if(this.before.$el) this.before.$el.slideToggle({duration: 100});
+                        if(this.after.$el) this.after.$el.slideToggle({duration: 100});
                         $(this.el).toggleClass('tatam-hover');
                         $(this.el).toggleClass('tatam-expand-container');
                     }

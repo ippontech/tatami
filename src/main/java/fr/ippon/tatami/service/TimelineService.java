@@ -206,6 +206,7 @@ public class TimelineService {
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(abstractStatus.getStatusId());
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
+                    shareByMe(statusDTO);
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);
@@ -258,6 +259,7 @@ public class TimelineService {
                         }
                     } else { // Normal status
                         statusDTO.setTimelineId(abstractStatus.getStatusId());
+//                        shareByMe(statusDTO);
                         addStatusToLine(statuses, statusDTO, abstractStatus, statusUser, usergroups, favoriteLine);
                     }
                 } else {
@@ -268,6 +270,15 @@ public class TimelineService {
             }
         }
         return statuses;
+    }
+
+
+    private void shareByMe(StatusDTO statusDTO)
+    {
+        Collection<String> loginWhoShare = sharesRepository.findLoginsWhoSharedAStatus(statusDTO.getStatusId());
+        User currentUser = authenticationService.getCurrentUser();
+        if(loginWhoShare.contains(currentUser.getLogin())) statusDTO.setShareByMe(true);
+        else    statusDTO.setShareByMe(false);
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,

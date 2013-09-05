@@ -126,6 +126,10 @@ div.jGrowl-notification{
     margin-right: 20px
 }
 
+.mediumHeight{
+    height: 13px;
+}
+
 .smallPaddingLeft {
     padding-left: 10px;
 }
@@ -322,6 +326,18 @@ div.jGrowl-notification{
 
 .favorite {
     background-image: url(img/favorite.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+
+.tatam.shared {
+    background-image: url(img/shared.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+
+.shared {
+    background-image: url(img/shared.png);
     background-repeat: no-repeat;
     background-position: left top;
 }
@@ -711,7 +727,8 @@ div.jGrowl-notification{
 }
 
 #current {
-    padding: 12px;
+    padding: 10px;
+    padding-top : 7px;
 }
 
 #before{

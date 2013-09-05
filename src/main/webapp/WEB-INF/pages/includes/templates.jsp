@@ -145,13 +145,14 @@
                 </div>
             </small>
         </div>
+        <div id="preview">
+
+        </div>
+        <div id="buttons" class="mediumHeight little-marge-top">
+
+        </div>
     </div>
-    <div id="preview">
 
-    </div>    
-    <div id="buttons">
-
-    </div> 
     <@if(root){ @>      
         <div id="after">
 
@@ -201,12 +202,15 @@
                 <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
+
+
             <!-- //TODO CodingParty : Afficher l'annulation du partage -->
-            <@ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
+        <@ if (!shareByMe) { @>
+            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn-link status-action status-action-share button-ios" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
             </button>
-            <@ } @>
+            <@ } }@>
             <button class="btn-link status-action status-action-favorite button-ios">
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
