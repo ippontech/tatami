@@ -92,7 +92,18 @@
         onRender: function(){
             var current = this.$el.find('> #current');
 
-            current.toggleClass('favorite', this.model.get('favorite'));
+            if(this.model.get('favorite') && this.model.get('shareByMe') )
+            {
+                current.toggleClass('favorite', false);
+                current.toggleClass('share', false);
+                current.toggleClass('both', true);
+            }
+            else
+            {
+                current.toggleClass('both', false);
+                current.toggleClass('favorite', this.model.get('favorite'));
+                current.toggleClass('share', this.model.get('shareByMe'));
+            }
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))

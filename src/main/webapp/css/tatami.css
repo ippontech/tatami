@@ -321,25 +321,37 @@ div.jGrowl-notification{
 .tatam.favorite {
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
 }
 
 .favorite {
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
 }
 
-.tatam.shared {
+.tatam.share {
     background-image: url(img/shared.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
 }
 
-.shared {
+.share {
     background-image: url(img/shared.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
+}
+
+.tatam.both {
+    background-image: url(img/both.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.both {
+    background-image: url(img/both.png);
+    background-repeat: no-repeat;
+    background-position: right top;
 }
 
 .pointer {
