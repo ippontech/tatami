@@ -14,6 +14,52 @@ var VAccountProfile = Marionette.ItemView.extend({
         'sync': 'render'
     },
 
+    onRender: function(){
+        this.initFileUpload();
+        this.initFileUploadBind();
+    },
+
+    initFileUpload: function(){
+        var self = this;
+        this.$dropzone = self.$el.find('.dropzone');
+        this.$el.find('#avatarFile').fileupload({
+            dataType: 'json',
+            sequentialUploads: 'true',
+
+            dropZone: this.$dropzone
+
+        });
+    },
+    initFileUploadBind: _.once(function(){
+        var self = this;
+
+        $(document).bind('dragover', function (e) {
+
+            var dropZone = self.$dropzone,
+                timeout = window.dropZoneTimeout;
+            if (!timeout) {
+                dropZone.addClass('in');
+            } else {
+                clearTimeout(timeout);
+            }
+            if (e.target === dropZone[0]) {
+                dropZone.addClass('hover');
+            } else {
+                dropZone.removeClass('hover');
+            }
+            window.dropZoneTimeout = setTimeout(function () {
+                window.dropZoneTimeout = null;
+                dropZone.removeClass('in hover');
+            }, jQuery.fx.speeds._default);
+        });
+        $(document).bind('drop dragover', function (e) {
+            return false;
+        });
+        self.$el.find('.dropzone').bind('click', function(){
+            self.$el.find('#avatarFile').click();
+        });
+    }),
+
     saveForm: function(e){
         e.preventDefault();
         var self = this;
