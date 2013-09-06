@@ -13,14 +13,18 @@
         </label>
 
         <div class="controls">
-
             <div id="updateAvatar" class="dropzone well">
                 <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
                 <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar"/>
             </div>
+            <div class="attachmentBar progress progress-striped active" style="display: none;">
+                <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+            </div>
         </div>
+
     </div>
+
     </fieldset>
 
     <fieldset class="form-horizontal row-fluid">

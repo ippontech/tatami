@@ -25,14 +25,44 @@ var VAccountProfile = Marionette.ItemView.extend({
         this.$el.find('#avatarFile').fileupload({
             dataType: 'json',
             sequentialUploads: 'true',
-
-            dropZone: this.$dropzone
-
+            progressall: function (e, data) {
+                self.$el.find('.attachmentBar').show();
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                self.$el.find('.attachmentBar .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            },
+            dropZone: this.$dropzone,
+            done: function (e, data) {
+                self.$el.find('.attachmentBar').hide();
+                self.$el.find('.attachmentBar .bar').css(
+                    'width','0%'
+                );
+                $.each(data.result, function (index, attachment) {
+                    var size = "";
+                    if (attachment.size < 1000000) {
+                        size = (attachment.size / 1000).toFixed(0) + "K";
+                    } else {
+                        size = (attachment.size / 1000000).toFixed(2) + "M";
+                    }
+                    $("<p>" + attachment.name + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                });
+            },
+            fail: function (e, data) {
+                self.$el.find('.attachmentBar').hide();
+                self.$el.find('.attachmentBar .bar').css(
+                    'width','0%'
+                );
+                if (data.errorThrown == "Forbidden") {
+                    self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
+                }
+            }
         });
     },
     initFileUploadBind: _.once(function(){
         var self = this;
-
+            self.render();
         $(document).bind('dragover', function (e) {
 
             var dropZone = self.$dropzone,
