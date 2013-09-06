@@ -85,7 +85,7 @@
 
         followers: function(username){
             var c = new Tatami.Collections.Followers();
-            //c.user = username;  //Useless
+            c.user = username;  //Useless
             return  new Tatami.Views.UserList({
                 collection: c
             });
