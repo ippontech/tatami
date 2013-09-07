@@ -10,6 +10,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,16 +33,22 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToTagline(Status status, String tag) {
+    public void addStatusToTagline(String tag, Status status) {
+        addStatus(getKey(status.getDomain(), tag), TAGLINE_CF, status.getStatusId());
+    }
+
+    @Override
+    public void removeStatusesFromTagline(String tag, String domain, Collection<String> statusIdsToDelete) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(
-                getKey(status.getDomain(), tag),
-                TAGLINE_CF,
-                HFactory.createColumn(
-                        UUID.fromString(status.getStatusId()),
-                        "",
-                        UUIDSerializer.get(),
-                        StringSerializer.get()));
+        for (String statusId : statusIdsToDelete) {
+            mutator.addDeletion(
+                    getKey(domain, tag),
+                    TAGLINE_CF,
+                    UUID.fromString(statusId),
+                    UUIDSerializer.get());
+
+        }
+        mutator.execute();
 
     }
 

@@ -1,14 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.repository.MentionlineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.MENTIONLINE_CF;
 
@@ -27,9 +23,12 @@ public class CassandraMentionlineRepository extends AbstractCassandraLineReposit
 
     @Override
     public void addStatusToMentionline(String mentionedLogin, String statusId) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(mentionedLogin, MENTIONLINE_CF, HFactory.createColumn(UUID.fromString(statusId),
-                "", UUIDSerializer.get(), StringSerializer.get()));
+        addStatus(mentionedLogin, MENTIONLINE_CF, statusId);
+    }
+
+    @Override
+    public void removeStatusesFromMentionline(String mentionedLogin, Collection<String> statusIdsToDelete) {
+        removeStatuses(mentionedLogin, MENTIONLINE_CF, statusIdsToDelete);
     }
 
     @Override

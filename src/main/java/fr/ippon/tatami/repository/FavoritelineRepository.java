@@ -1,7 +1,5 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.status.AbstractStatus;
-
 import java.util.List;
 
 /**
@@ -11,9 +9,9 @@ import java.util.List;
  */
 public interface FavoritelineRepository {
 
-    void addStatusToFavoriteline(AbstractStatus status, String login);
+    void addStatusToFavoriteline(String login, String statusId);
 
-    void removeStatusFromFavoriteline(AbstractStatus status, String login);
+    void removeStatusFromFavoriteline(String login, String statusId);
 
     void deleteFavoriteline(String login);
 

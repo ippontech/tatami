@@ -2,8 +2,8 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.status.Announcement;
 import fr.ippon.tatami.domain.status.Share;
-import fr.ippon.tatami.domain.status.Status;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,7 +20,9 @@ public interface TimelineRepository {
 
     boolean isStatusInTimeline(String login, String statusId);
 
-    void addStatusToTimeline(String login, Status status);
+    void addStatusToTimeline(String login, String statusId);
+
+    void removeStatusesFromTimeline(String login, Collection<String> statusIdsToDelete);
 
     void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Share share);
 

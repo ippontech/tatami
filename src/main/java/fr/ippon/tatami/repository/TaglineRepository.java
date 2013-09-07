@@ -2,6 +2,7 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.status.Status;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,9 +13,14 @@ import java.util.List;
 public interface TaglineRepository {
 
     /**
-     * Analyze a message in order to extract and reference eventual hashtags.
+     * Add a status to the Tag line.
      */
-    void addStatusToTagline(Status status, String tag);
+    void addStatusToTagline(String tag, Status status);
+
+    /**
+     * Remove a collection of statuses from the Tag line.
+     */
+    void removeStatusesFromTagline(String tag, String domain, Collection<String> statusIdsToDelete);
 
     /**
      * The tagline : the statuses for a given tag.

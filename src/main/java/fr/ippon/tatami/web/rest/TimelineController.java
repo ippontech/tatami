@@ -100,6 +100,9 @@ public class TimelineController {
             count = 20; //Default value
         }
         log.debug("REST request to get someone's status (username={}).", username);
+        if (username == null || username.length() == 0) {
+            return new ArrayList<StatusDTO>();
+        }
         try {
             return timelineService.getUserline(username, count, since_id, max_id);
         } catch (Exception e) {

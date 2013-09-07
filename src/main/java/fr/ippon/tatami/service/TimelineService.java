@@ -264,10 +264,32 @@ public class TimelineService {
                     log.debug("Deleted user : {}", abstractStatus.getLogin());
                 }
             } else {
-                log.debug("Invisible status : {}", statusId);
+                log.debug("Deleted status : {}", statusId);
             }
         }
         return statuses;
+    }
+
+    /**
+     * Find old statuses.
+     *
+     * Statuses might not be up to date on the current line : they might have been deleted, or the user has lost the
+     * permission to see them.
+     */
+    private Collection<String> findStatusesToCleanUp(List<String> statuses, Collection<StatusDTO> dtos) {
+        Collection<String> statusIdsToCleanUp = new ArrayList<String>();
+        for (String statusId : statuses) {
+            boolean statusToDelete = true;
+            for (StatusDTO statusDTO : dtos) {
+                if (statusDTO.getStatusId().equals(statusId)) {
+                    statusToDelete = false;
+                }
+            }
+            if (statusToDelete) {
+                statusIdsToCleanUp.add(statusId);
+            }
+        }
+        return statusIdsToCleanUp;
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,
@@ -325,10 +347,16 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getMentionline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
-        List<String> line =
+        List<String> statuses =
                 mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, since_id, max_id);
 
-        return buildStatusList(line);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            mentionlineRepository.removeStatusesFromMentionline(currentUser.getLogin(), statusIdsToDelete);
+            return getMentionline(nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
     /**
@@ -344,8 +372,15 @@ public class TimelineService {
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        List<String> line = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
-        return buildStatusList(line);
+        List<String> statuses = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
+
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
+            return getTagline(tag, nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
     /**
@@ -353,9 +388,15 @@ public class TimelineService {
      *
      * @return a status list
      */
-    public Collection<StatusDTO> getGroupline(String groupId, Integer count, String since_id, String max_id) {
-        List<String> line = grouplineRepository.getGroupline(groupId, count, since_id, max_id);
-        return buildStatusList(line);
+    public Collection<StatusDTO> getGroupline(String groupId, Integer nbStatus, String since_id, String max_id) {
+        List<String> statuses = grouplineRepository.getGroupline(groupId, nbStatus, since_id, max_id);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
+            return getGroupline(groupId, nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
     /**
@@ -366,27 +407,32 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getTimeline(int nbStatus, String since_id, String max_id) {
         String login = authenticationService.getCurrentUser().getLogin();
-        List<String> line =
-                timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
-
-        return buildStatusList(line);
+        return getUserTimeline(login, nbStatus, since_id, max_id);
     }
 
     /**
      * The timeline contains the user's status merged with his friends status.
+     *
      * getUserTimeline returns the time line for an arbitrary user (and not only
-     * the logged-in users)
+     * the logged-in user).
+     *
+     * This is used for RSS syndication.
      *
      * @param login    of the user we want the timeline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
     public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String since_id, String max_id) {
-
-        List<String> line =
+        List<String> statuses =
                 timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
 
-        return buildStatusList(line);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            timelineRepository.removeStatusesFromTimeline(login, statusIdsToDelete);
+            return getTimeline(nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
     /**
@@ -399,10 +445,16 @@ public class TimelineService {
     public Collection<StatusDTO> getDomainline(int nbStatus, String since_id, String max_id) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        List<String> line =
+        List<String> statuses =
                 domainlineRepository.getDomainline(domain, nbStatus, since_id, max_id);
 
-        return buildStatusList(line);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
+            return getDomainline(nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
 
@@ -422,8 +474,14 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        List<String> line = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
-        return this.buildStatusList(line);
+        List<String> statuses = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
+            return getUserline(username, nbStatus, since_id, max_id);
+        }
+        return dtos;
     }
 
     public void removeStatus(String statusId) {
@@ -492,7 +550,7 @@ public class TimelineService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus.getType().equals(StatusType.STATUS)) {
             String login = authenticationService.getCurrentUser().getLogin();
-            favoritelineRepository.addStatusToFavoriteline(abstractStatus, login);
+            favoritelineRepository.addStatusToFavoriteline(login, statusId);
         } else {
             log.warn("Cannot favorite this type of status: " + abstractStatus);
         }
@@ -503,7 +561,7 @@ public class TimelineService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus.getType().equals(StatusType.STATUS)) {
             User currentUser = authenticationService.getCurrentUser();
-            favoritelineRepository.removeStatusFromFavoriteline(abstractStatus, currentUser.getLogin());
+            favoritelineRepository.removeStatusFromFavoriteline(currentUser.getLogin(), statusId);
         } else {
             log.warn("Cannot un-favorite this type of status: " + abstractStatus);
         }
@@ -550,8 +608,16 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getFavoritesline() {
         String currentLogin = authenticationService.getCurrentUser().getLogin();
-        List<String> line = favoritelineRepository.getFavoriteline(currentLogin);
-        return this.buildStatusList(line);
+        List<String> statuses = favoritelineRepository.getFavoriteline(currentLogin);
+        Collection<StatusDTO> dtos = buildStatusList(statuses);
+        if (statuses.size() != dtos.size()) {
+            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+            for (String statusId : statusIdsToDelete) {
+                favoritelineRepository.removeStatusFromFavoriteline(currentLogin, statusId);
+            }
+            return getFavoritesline();
+        }
+        return dtos;
     }
 
     /**

@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.status.Announcement;
 import fr.ippon.tatami.domain.status.Share;
-import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.TimelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -12,6 +11,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.QueryResult;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,10 +40,13 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public void addStatusToTimeline(String login, Status status) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
-                "", UUIDSerializer.get(), StringSerializer.get()));
+    public void addStatusToTimeline(String login, String statusId) {
+        addStatus(login, TIMELINE_CF, statusId);
+    }
+
+    @Override
+    public void removeStatusesFromTimeline(String login, Collection<String> statusIdsToDelete) {
+        removeStatuses(login, TIMELINE_CF, statusIdsToDelete);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.status.Status;
-
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +13,12 @@ public interface DomainlineRepository {
     /**
      * Add a status to the Domain line.
      */
-    void addStatusToDomainline(Status status, String domain);
+    void addStatusToDomainline(String domain, String statusId);
+
+    /**
+     * Remove a collection of statuses from the Domain line.
+     */
+    void removeStatusFromDomainline(String domain, Collection<String> statusIdsToDelete);
 
     /**
      * The Domainline : the public status for a domain.

@@ -252,7 +252,7 @@ public class StatusUpdateService {
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status);
+            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -282,7 +282,7 @@ public class StatusUpdateService {
 
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
-            grouplineRepository.addStatusToGroupline(status, group.getGroupId());
+            grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId());
             Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
             for (String groupMemberLogin : groupMemberLogins) {
@@ -305,7 +305,7 @@ public class StatusUpdateService {
 
     private void addToCompanyWall(Status status, Group group) {
         if (isPublicGroup(group)) {
-            domainlineRepository.addStatusToDomainline(status, status.getDomain());
+            domainlineRepository.addStatusToDomainline(status.getDomain(), status.getStatusId());
         }
     }
 
@@ -321,7 +321,7 @@ public class StatusUpdateService {
             String tag = m.group(2);
             if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
                 log.debug("Found tag : {}", tag);
-                taglineRepository.addStatusToTagline(status, tag);
+                taglineRepository.addStatusToTagline(tag, status);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 //Excludes the Tatami Bot from the global trend
                 if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
@@ -399,7 +399,7 @@ public class StatusUpdateService {
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
     private void addStatusToTimelineAndNotify(String login, Status status) {
-        timelineRepository.addStatusToTimeline(login, status);
+        timelineRepository.addStatusToTimeline(login, status.getStatusId());
         atmosphereService.notifyUser(login, status);
     }
 }

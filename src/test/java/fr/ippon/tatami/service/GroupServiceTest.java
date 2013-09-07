@@ -101,6 +101,10 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
         assertEquals(1, groupService.getGroupsForUser(user).size());
         assertEquals(0, groupService.getGroupsForUser(member).size());
+
+        // Clean up
+        groupService.removeMemberFromGroup(user, group);
+        assertEquals(0, groupService.getGroupsForUser(user).size());
     }
 
     private void mockAuthentication(String login) {

@@ -270,7 +270,6 @@
                                     <goal>start</goal>
                                 </goals>
                             </execution>
-                            <!-- TODO : add stop also ? -->
                         </executions>
                     </plugin>
                     <plugin>
