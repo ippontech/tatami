@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -206,7 +207,6 @@ public class TimelineService {
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(abstractStatus.getStatusId());
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
-
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);
@@ -271,22 +271,26 @@ public class TimelineService {
         }
 
         for(StatusDTO statusDTO : statuses)
-            shareByMe(statusDTO);
+            statusDTO.setShareByMe(shareByMe(statusDTO));
 
         return statuses;
     }
 
-
-    private void shareByMe(StatusDTO statusDTO)
+    @Cacheable("isSharedByMe")
+    private Boolean shareByMe(StatusDTO statusDTO)
     {
+        Boolean isSharedByMe;
+
         Collection<String> loginWhoShare = sharesRepository.findLoginsWhoSharedAStatus(statusDTO.getStatusId());
         User currentUser = authenticationService.getCurrentUser();
         if(loginWhoShare.contains(currentUser.getLogin()) )
-            statusDTO.setShareByMe(true);
-        else if(currentUser.getUsername().equals(statusDTO.getSharedByUsername()))
-            statusDTO.setShareByMe(true);
+            isSharedByMe = true;
+        else if(currentUser.getUsername().equals(statusDTO.getSharedByUsername())) //Greg ce n'est pas normal de devoir faire ça
+            isSharedByMe = true;
         else
-            statusDTO.setShareByMe(false);
+            isSharedByMe = false;
+
+        return isSharedByMe;
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,
