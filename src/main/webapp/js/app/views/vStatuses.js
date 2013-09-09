@@ -93,11 +93,17 @@
         onRender: function(){
             var current = this.$el.find('> #current');
 
-            if(this.model.get('favorite') && this.model.get('shared') )
+            if(this.model.get('favorite') && (this.model.get('shared')|| this.model.get('shareByMe') ))
             {
                 current.toggleClass('favorite', false);
                 current.toggleClass('share', false);
                 current.toggleClass('both', true);
+            }
+            else if(this.model.get('shareByMe') )
+            {
+                current.toggleClass('favorite', false);
+                current.toggleClass('both', false);
+                current.toggleClass('share', true);
             }
             else
             {

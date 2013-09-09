@@ -206,7 +206,7 @@ public class TimelineService {
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(abstractStatus.getStatusId());
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
-                    shareByMe(statusDTO);
+
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);
@@ -221,7 +221,6 @@ public class TimelineService {
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
                             statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                            shareByMe(statusDTO);
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Original status has been deleted");
@@ -233,7 +232,6 @@ public class TimelineService {
                             statusDTO.setTimelineId(mentionShare.getStatusId());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
                             statusUser = userService.getUserByLogin(mentionShare.getLogin());
-                            shareByMe(statusDTO);
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Mentioned status has been deleted");
@@ -267,9 +265,14 @@ public class TimelineService {
                     log.debug("Deleted user : {}", abstractStatus.getLogin());
                 }
             } else {
-                log.debug("Invisible status : {}", statusId);
+                log.debug("Deleted status : {}", statusId);
+                //TODO delete in the timeline / groupline / userline / favoriteline
             }
         }
+
+        for(StatusDTO statusDTO : statuses)
+            shareByMe(statusDTO);
+
         return statuses;
     }
 
@@ -278,8 +281,12 @@ public class TimelineService {
     {
         Collection<String> loginWhoShare = sharesRepository.findLoginsWhoSharedAStatus(statusDTO.getStatusId());
         User currentUser = authenticationService.getCurrentUser();
-        if(loginWhoShare.contains(currentUser.getLogin())) statusDTO.setShareByMe(true);
-        else    statusDTO.setShareByMe(false);
+        if(loginWhoShare.contains(currentUser.getLogin()) )
+            statusDTO.setShareByMe(true);
+        else if(currentUser.getUsername().equals(statusDTO.getSharedByUsername()))
+            statusDTO.setShareByMe(true);
+        else
+            statusDTO.setShareByMe(false);
     }
 
     private void addStatusToLine(Collection<StatusDTO> line,

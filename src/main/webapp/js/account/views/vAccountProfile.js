@@ -10,6 +10,11 @@ var VAccountProfile = Marionette.ItemView.extend({
         'submit': 'saveForm'
     },
 
+
+    modelEvents: {
+        'change:avatar': 'render'
+    },
+
     modelEvents: {
         'sync': 'render'
     },
