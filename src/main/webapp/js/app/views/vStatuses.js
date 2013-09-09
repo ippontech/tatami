@@ -70,6 +70,7 @@
         modelEvents: {
             'change:statusId': 'updateDetailModel',
             'change:favorite': 'onRender',
+            'change:shared': 'onRender',
             'change:discussion': 'onRender'
         },
         events: {
@@ -92,7 +93,7 @@
         onRender: function(){
             var current = this.$el.find('> #current');
 
-            if(this.model.get('favorite') && this.model.get('shareByMe') )
+            if(this.model.get('favorite') && this.model.get('shared') )
             {
                 current.toggleClass('favorite', false);
                 current.toggleClass('share', false);
@@ -102,7 +103,7 @@
             {
                 current.toggleClass('both', false);
                 current.toggleClass('favorite', this.model.get('favorite'));
-                current.toggleClass('share', this.model.get('shareByMe'));
+                current.toggleClass('share', this.model.get('shared'));
             }
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
@@ -119,6 +120,41 @@
             }
             this.$el.addClass('tatam-id-'+this.model.id);
         },
+
+        favoriteAction: function(){
+            var self = this;
+            this.model.save(
+                {favorite: !self.model.get('favorite')},
+                {patch: true}
+            );
+            return false;
+        },
+
+        shareAction: function(){
+            var self = this;
+            self.model.save({
+                shared: !self.model.get('shared')
+            }, {
+                patch: true,
+                success: function(){
+                    var popoverNode = self.$el.find('.status-action-share');
+                    popoverNode.popover({
+                        animation: true,
+                        placement: 'top',
+                        trigger: 'manual',
+                        content: self.$el.find('.status-action-share').attr('success-text')
+                    });
+                    popoverNode.popover('show');
+                    setTimeout(function() {
+                        popoverNode.popover('hide');
+                        self.refreshDetails();
+                    }, 500);
+
+                }
+            });
+            return false;
+        },
+
         showLink: function(e){
             var target = e.target.target;
             var href = e.target.href;
@@ -297,37 +333,7 @@
             });
             return false;
         },
-        favoriteAction: function(){
-            var self = this;
-            this.model.save(
-                {favorite: !self.model.get('favorite')}, 
-                {patch: true}
-            );
-            return false;
-        },
-        shareAction: function(){
-            var self = this;
-            this.model.save({
-                shared: !this.model.get('shared')
-            }, {
-                patch: true,
-                success: function(){
-                    var popoverNode = self.$el.find('.status-action-share');
-                    popoverNode.popover({
-                            animation: true,
-                            placement: 'top',
-                            trigger: 'manual',
-                            content: self.$el.find('.status-action-share').attr('success-text')
-                        });
-                    popoverNode.popover('show');
-                    setTimeout(function() {
-                        popoverNode.popover('hide');
-                        self.refreshDetails();
-                    }, 500);
-                }
-            });
-            return false;
-        },
+
         announceAction: function() {
             var self = this;
             var popoverNode = self.$el.find('.status-action-announce');

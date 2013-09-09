@@ -41,7 +41,8 @@
             root: true,
             first: false,
             last: false,
-            shareByMe: ''
+            shareByMe: '',
+            shared: false
         },
 
         urlRoot: '/tatami/rest/statuses/',
