@@ -10,13 +10,10 @@ var VAccountProfile = Marionette.ItemView.extend({
         'submit': 'saveForm'
     },
 
-
     modelEvents: {
-        'change:avatar': 'render'
-    },
-
-    modelEvents: {
-        'sync': 'render'
+        'change:avatar': 'render',
+        'change' :'render',
+        'sync' : 'render'
     },
 
     onRender: function(){
@@ -53,6 +50,7 @@ var VAccountProfile = Marionette.ItemView.extend({
                     }
                     $("<p>" + attachment.name + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
                 });
+                app.trigger('even-alert-success',app.formSuccess);
             },
             fail: function (e, data) {
                 self.$el.find('.attachmentBar').hide();
@@ -62,6 +60,7 @@ var VAccountProfile = Marionette.ItemView.extend({
                 if (data.errorThrown == "Forbidden") {
                     self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
                 }
+                app.trigger('even-alert-error', app.formError);
             }
         });
     },

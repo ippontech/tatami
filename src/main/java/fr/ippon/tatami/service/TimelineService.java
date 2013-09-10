@@ -276,7 +276,7 @@ public class TimelineService {
         return statuses;
     }
 
-    @Cacheable("isSharedByMe")
+    //@Cacheable("isSharedByMe")
     private Boolean shareByMe(StatusDTO statusDTO)
     {
         Boolean isSharedByMe;
