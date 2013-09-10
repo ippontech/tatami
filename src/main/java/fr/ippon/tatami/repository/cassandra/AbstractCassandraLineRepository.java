@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +37,35 @@ public abstract class AbstractCassandraLineRepository {
 
     @Inject
     protected Keyspace keyspaceOperator;
+
+    /**
+     * Add a status to the CF.
+     */
+    protected void addStatus(String key, String cf, String statusId) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(key, cf, HFactory.createColumn(UUID.fromString(statusId),
+                "", UUIDSerializer.get(), StringSerializer.get()));
+    }
+
+    /**
+     * Add a status with a time-to-live.
+     */
+    protected void addStatus(String key, String cf, String statusId, int ttl) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        mutator.insert(key, cf, HFactory.createColumn(UUID.fromString(statusId),
+                "", ttl, UUIDSerializer.get(), StringSerializer.get()));
+    }
+
+    /**
+     * Remove a collection of statuses.
+     */
+    protected void removeStatuses(String key, String cf, Collection<String> statusIdsToDelete) {
+        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+        for (String statusId : statusIdsToDelete) {
+            mutator.addDeletion(key, cf, UUID.fromString(statusId), UUIDSerializer.get());
+        }
+        mutator.execute();
+    }
 
     List<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
         List<HColumn<UUID, String>> result;

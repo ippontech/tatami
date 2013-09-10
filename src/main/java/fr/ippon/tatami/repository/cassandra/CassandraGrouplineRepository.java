@@ -1,17 +1,12 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.GrouplineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE_CF;
 
@@ -32,17 +27,13 @@ public class CassandraGrouplineRepository extends AbstractCassandraLineRepositor
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToGroupline(Status status, String groupId) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(
-                groupId,
-                GROUPLINE_CF,
-                HFactory.createColumn(
-                        UUID.fromString(status.getStatusId()),
-                        "",
-                        UUIDSerializer.get(),
-                        StringSerializer.get()));
+    public void addStatusToGroupline(String groupId, String statusId) {
+        addStatus(groupId, GROUPLINE_CF, statusId);
+    }
 
+    @Override
+    public void removeStatusesFromGroupline(String groupId, Collection<String> statusIdsToDelete) {
+        removeStatuses(groupId, GROUPLINE_CF, statusIdsToDelete);
     }
 
     @Override

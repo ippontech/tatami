@@ -1,8 +1,8 @@
 package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.status.Share;
-import fr.ippon.tatami.domain.status.Status;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +14,15 @@ import java.util.List;
  */
 public interface UserlineRepository {
 
-    void addStatusToUserline(Status status);
+    /**
+     * Add a status to the user line.
+     */
+    void addStatusToUserline(String login, String statusId);
+
+    /**
+     * Remove a collection of statuses from the user line.
+     */
+    void removeStatusesFromUserline(String login, Collection<String> statusIdsToDelete);
 
     void shareStatusToUserline(String currentLogin, Share share);
 

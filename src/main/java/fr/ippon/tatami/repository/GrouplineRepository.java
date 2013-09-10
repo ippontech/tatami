@@ -1,7 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.status.Status;
-
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +13,12 @@ public interface GrouplineRepository {
     /**
      * Add a status to the Group line.
      */
-    void addStatusToGroupline(Status status, String groupId);
+    void addStatusToGroupline(String groupId, String statusId);
+
+    /**
+     * Remove a collection of statuses from the Group line.
+     */
+    void removeStatusesFromGroupline(String groupId, Collection<String> statusIdsToDelete);
 
     /**
      * The Groupline : the statuses for a given group.

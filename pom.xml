@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.29</version>
+    <version>3.0.30</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -270,7 +270,6 @@
                                     <goal>start</goal>
                                 </goals>
                             </execution>
-                            <!-- TODO : add stop also ? -->
                         </executions>
                     </plugin>
                     <plugin>

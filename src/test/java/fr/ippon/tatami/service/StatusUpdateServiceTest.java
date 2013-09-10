@@ -27,7 +27,6 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldPostStatus() throws Exception {
-        String login = "userWhoPostStatus@ippon.fr";
         String username = "userWhoPostStatus";
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");

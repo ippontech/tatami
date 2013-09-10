@@ -1,7 +1,6 @@
 package fr.ippon.tatami.web.rest.dto;
 
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.dto.UserDTO;
 
 import java.io.Serializable;

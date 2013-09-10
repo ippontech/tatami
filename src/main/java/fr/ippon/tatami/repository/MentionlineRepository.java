@@ -1,5 +1,6 @@
 package fr.ippon.tatami.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,6 +14,11 @@ public interface MentionlineRepository {
      * Add a status to the Mention line.
      */
     void addStatusToMentionline(String mentionedLogin, String statusId);
+
+    /**
+     * Remove a collection of statuses from the Mention line.
+     */
+    void removeStatusesFromMentionline(String mentionedLogin, Collection<String> statusIdsToDelete);
 
     /**
      * The mention line : the mentions for a given user.

@@ -1,6 +1,5 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.repository.FavoritelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -39,17 +38,17 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addStatusToFavoriteline(AbstractStatus status, String login) {
+    public void addStatusToFavoriteline(String login, String statusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()), "",
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(statusId), "",
                 UUIDSerializer.get(), StringSerializer.get()));
     }
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeStatusFromFavoriteline(AbstractStatus status, String login) {
+    public void removeStatusFromFavoriteline(String login, String statusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, UUID.fromString(status.getStatusId()), UUIDSerializer.get());
+        mutator.delete(login, FAVLINE_CF, UUID.fromString(statusId), UUIDSerializer.get());
     }
 
     @Override
