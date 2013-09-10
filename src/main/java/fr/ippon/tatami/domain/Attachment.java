@@ -29,6 +29,11 @@ public class Attachment implements Serializable {
 
     @JsonIgnore
     private byte[] content;
+    
+    @JsonIgnore
+    private byte[] thumbnail;
+    
+    private boolean hasThumbnail = false;
 
     private long size;
 
@@ -72,6 +77,22 @@ public class Attachment implements Serializable {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+    
+    public byte[] getThumbnail() {
+    	return thumbnail;
+    }
+    
+    public void setThumbnail(byte[] thumbnail) {
+    	this.thumbnail = thumbnail;
+    }
+    
+    public boolean getHasThumbnail() {
+    	return this.hasThumbnail;
+    }
+    
+    public void setHasThumbnail(boolean hasThumbnail) {
+    	this.hasThumbnail = hasThumbnail;
     }
 
     public long getSize() {
