@@ -84,6 +84,7 @@ public class AttachmentService {
         //Computing the thumbnail if it does not exists
         if(! attachment.getHasThumbnail()) {
         	attachment.setThumbnail(computeThumbnail(attachment));
+        	attachmentRepository.updateThumbnail(attachment);
         }
         return attachment;
     }
