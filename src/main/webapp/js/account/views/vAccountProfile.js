@@ -11,8 +11,89 @@ var VAccountProfile = Marionette.ItemView.extend({
     },
 
     modelEvents: {
-        'sync': 'render'
+        'change:avatar': 'render',
+        'change' :'render',
+        'sync' : 'render'
     },
+
+    onRender: function(){
+        this.initFileUpload();
+        this.initFileUploadBind();
+    },
+
+    initFileUpload: function(){
+        var self = this;
+        this.$dropzone = self.$el.find('.dropzone');
+        this.$el.find('#avatarFile').fileupload({
+            dataType: 'json',
+            sequentialUploads: 'true',
+            progressall: function (e, data) {
+                self.$el.find('.attachmentBar').show();
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                self.$el.find('.attachmentBar .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            },
+            dropZone: this.$dropzone,
+            done: function (e, data) {
+                self.$el.find('.attachmentBar').hide();
+                self.$el.find('.attachmentBar .bar').css(
+                    'width','0%'
+                );
+                $.each(data.result, function (index, attachment) {
+                    var size = "";
+                    if (attachment.size < 1000000) {
+                        size = (attachment.size / 1000).toFixed(0) + "K";
+                    } else {
+                        size = (attachment.size / 1000000).toFixed(2) + "M";
+                    }
+                    $("<p>" + attachment.name + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                });
+                app.trigger('even-alert-success',app.formSuccess);
+                self.$el.find('.avatar').attr('src', data.result[0].url);
+            },
+            fail: function (e, data) {
+                self.$el.find('.attachmentBar').hide();
+                self.$el.find('.attachmentBar .bar').css(
+                    'width','0%'
+                );
+                if (data.errorThrown == "Forbidden") {
+                    self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
+                }
+                app.trigger('even-alert-error', app.formError);
+            }
+        });
+    },
+    initFileUploadBind: _.once(function(){
+        var self = this;
+            self.render();
+        $(document).bind('dragover', function (e) {
+
+            var dropZone = self.$dropzone,
+                timeout = window.dropZoneTimeout;
+            if (!timeout) {
+                dropZone.addClass('in');
+            } else {
+                clearTimeout(timeout);
+            }
+            if (e.target === dropZone[0]) {
+                dropZone.addClass('hover');
+            } else {
+                dropZone.removeClass('hover');
+            }
+            window.dropZoneTimeout = setTimeout(function () {
+                window.dropZoneTimeout = null;
+                dropZone.removeClass('in hover');
+            }, jQuery.fx.speeds._default);
+        });
+        $(document).bind('drop dragover', function (e) {
+            return false;
+        });
+        self.$el.find('.dropzone').bind('click', function(){
+            self.$el.find('#avatarFile').click();
+        });
+    }),
 
     saveForm: function(e){
         e.preventDefault();
@@ -55,5 +136,4 @@ var VAccountProfileDestroy = Marionette.ItemView.extend({
         });
     }
 });
-
 
