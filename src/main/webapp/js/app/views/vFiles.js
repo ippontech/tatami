@@ -55,8 +55,19 @@
     var VFilesList  = Backbone.Marionette.CompositeView.extend({
         itemView: VFile,
         itemViewContainer: '.items',
-        template :'#FilesListTemplate'
+        template :'#FilesListTemplate',
+
+        initialize: function(){
+            var self = this;
+            this.listenTo(Tatami.app, 'next', function(){
+                self.collection.next();
+            });
+        }
     });
+
+    VFilesList.prototype.events = {
+        "click: #NextAttachements"  : 'getNextAttachements'
+    };
 
     var VFilesMenu = Marionette.ItemView.extend({
         template: '#files-menu'
