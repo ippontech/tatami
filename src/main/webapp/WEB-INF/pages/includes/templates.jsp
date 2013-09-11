@@ -39,8 +39,10 @@
     <h3><strong> <fmt:message key="tatami.user.search.searchInStatus"/> :  "<@= input @>"</strong></h3>
 </script>
 <script type="text/template" id="ProfileHeader">
+    <@ if(!you) { @>
     <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
-        <@ if(!you) { @>
+        <@if(follower){ @> (Vous suit) <@ }@>
+
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
                   <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -48,7 +50,10 @@
                 <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
                 <@ } @>
             </a>
+        <@ } else {@>
+        <h3><strong><fmt:message key="tatami.user.profile.yourProfil"/></strong></h3>
         <@ } @>
+
     </h3>
 </script>
 <script type="text/template" id="CardProfile">
