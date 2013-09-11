@@ -50,6 +50,7 @@ var VAccountProfile = Marionette.ItemView.extend({
                     }
                     $("<p>" + attachment.name + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + attachment.attachmentId + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
                 });
+                self.$el.find('.avatar').attr('src', data.result[0].url);
                 app.trigger('even-alert-success',app.formSuccess);
             },
             fail: function (e, data) {

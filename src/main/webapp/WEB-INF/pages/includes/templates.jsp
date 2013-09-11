@@ -41,8 +41,7 @@
 <script type="text/template" id="ProfileHeader">
     <@ if(!you) { @>
     <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
-        <@if(follower){ @> (Vous suit) <@ }@>
-
+        <@if(follower){ @> (<fmt:message key="tatami.user.follows.you"/>) <@ }@>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
                   <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
