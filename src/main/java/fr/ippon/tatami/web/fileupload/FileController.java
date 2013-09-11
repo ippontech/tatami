@@ -107,6 +107,45 @@ public class FileController {
         }
 
     }
+    
+    @RequestMapping(value = "/thumbnail/{attachmentId}/*",
+			method = RequestMethod.GET)
+    @Timed
+    public void thumbnail(@PathVariable("attachmentId") String attachmentId,
+            			  HttpServletRequest request,
+            			  HttpServletResponse response) throws IOException {
+    	// Cache the file in the browser
+        response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
+        response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
+
+        // Put the file in the response
+        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        if (attachment == null || attachment.getThumbnail().length == 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.sendRedirect("/tatami/file/file_not_found");
+        } else {
+            // ETag support
+            response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
+            String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
+            if (requestETag != null && requestETag.equals(attachmentId)) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            } else {
+                try {
+                    byte[] fileContent = attachment.getThumbnail();
+                    response.getOutputStream().write(fileContent);
+                } catch (IOException e) {
+                    log.info("Error writing file to output stream. {}", e.getMessage());
+                }
+            }
+        }
+
+        try {
+            response.flushBuffer();
+        } catch (IOException e) {
+            log.info("Error flushing the output stream. {}", e.getMessage());
+        }
+    }
+
 
 
     @RequestMapping(value = "/avatar/{avatarId}/*",
