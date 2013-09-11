@@ -65,10 +65,6 @@
         }
     });
 
-    VFilesList.prototype.events = {
-        "click: #NextAttachements"  : 'getNextAttachements'
-    };
-
     var VFilesMenu = Marionette.ItemView.extend({
         template: '#files-menu'
     });
