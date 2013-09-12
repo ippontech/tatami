@@ -41,7 +41,7 @@
     
     <filter-mapping>
     	<filter-name>CharacterEncodingFilter</filter-name>
-    	<url-pattern>/*</url-pattern>
+    	<url-pattern>/tatami/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
