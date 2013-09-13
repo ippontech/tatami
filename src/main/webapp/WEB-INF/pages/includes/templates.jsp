@@ -201,11 +201,11 @@
                     <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
                 </a>
             </button>
-            <@ } else { @>
+        <@ } else { @>
             <button class="btn-link status-action status-action-reply button-ios">
-                <i class="glyphicon glyphicon-comment"> </i><fmt:message key="tatami.user.status.reply"/>
+                <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
             </button>
-            <@ } @>
+        <@ } @>
 
         <@ if (!shareByMe) { @>
             <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
