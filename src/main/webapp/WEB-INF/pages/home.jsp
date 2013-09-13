@@ -20,7 +20,6 @@
 </div>
 
 <div class="row">
-    <span class="col-span-1"></span>
     <aside id="tatamiSide" class="col-span-3">
     </aside>
     <section id="tatamiBody" class="col-span-7">

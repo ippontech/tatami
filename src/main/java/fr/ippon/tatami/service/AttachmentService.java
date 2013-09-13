@@ -89,10 +89,10 @@ public class AttachmentService {
         return attachment;
     }
 
-    public Collection<String> getAttachmentIdsForCurrentUser(int pagination) {
+    public Collection<String> getAttachmentIdsForCurrentUser(int pagination, String max_id) {
         Collection<String> attachmentIds =
                 userAttachmentRepository.
-                        findAttachmentIds(authenticationService.getCurrentUser().getLogin());
+                        findAttachmentIds(authenticationService.getCurrentUser().getLogin(), pagination,max_id);
 
         log.debug("Collection of attachments : {}", attachmentIds.size());
 

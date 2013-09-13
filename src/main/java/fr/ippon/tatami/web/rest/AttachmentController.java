@@ -25,14 +25,15 @@ public class AttachmentController {
     @ResponseBody
     @Timed
     public Collection<Attachment> getAttachments(
-            @RequestParam(required = false) Integer pagination) {
+            @RequestParam(required = false) Integer pagination,
+            @RequestParam(required = false) String max_id) {
 
         if (pagination == null) {
-            pagination = 0;
+            pagination = 10;
         }
 
         Collection<String> attachmentIds =
-                attachmentService.getAttachmentIdsForCurrentUser(pagination);
+                attachmentService.getAttachmentIdsForCurrentUser(pagination, max_id);
 
         Collection<Attachment> attachments =
                 new ArrayList<Attachment>();

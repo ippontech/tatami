@@ -64,7 +64,7 @@
         },
 
         listFiles: function(){
-            var c = new Tatami.Collections.Files();
+            var c = new Tatami.Collections.FilesPage();
             c.fetch();
             return new Tatami.Views.FilesList({
                 collection: c

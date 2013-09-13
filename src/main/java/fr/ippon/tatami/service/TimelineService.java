@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -267,7 +268,28 @@ public class TimelineService {
                 log.debug("Deleted status : {}", statusId);
             }
         }
+
+        for(StatusDTO statusDTO : statuses)
+            statusDTO.setShareByMe(shareByMe(statusDTO));
+
         return statuses;
+    }
+
+    //@Cacheable("isSharedByMe")
+    private Boolean shareByMe(StatusDTO statusDTO)
+    {
+        Boolean isSharedByMe;
+
+        Collection<String> loginWhoShare = sharesRepository.findLoginsWhoSharedAStatus(statusDTO.getStatusId());
+        User currentUser = authenticationService.getCurrentUser();
+        if(loginWhoShare.contains(currentUser.getLogin()) )
+            isSharedByMe = true;
+        else if(currentUser.getUsername().equals(statusDTO.getSharedByUsername())) //Greg ce n'est pas normal de devoir faire ça
+            isSharedByMe = true;
+        else
+            isSharedByMe = false;
+
+        return isSharedByMe;
     }
 
     /**

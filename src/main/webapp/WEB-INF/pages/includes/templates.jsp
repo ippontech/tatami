@@ -39,8 +39,9 @@
     <h3><strong> <fmt:message key="tatami.user.search.searchInStatus"/> :  "<@= input @>"</strong></h3>
 </script>
 <script type="text/template" id="ProfileHeader">
+    <@ if(!you) { @>
     <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
-        <@ if(!you) { @>
+        <@if(follower){ @> (<fmt:message key="tatami.user.follows.you"/>) <@ }@>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
                   <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -48,7 +49,10 @@
                 <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
                 <@ } @>
             </a>
+        <@ } else {@>
+        <h3><strong><fmt:message key="tatami.user.profile.yourProfil"/></strong></h3>
         <@ } @>
+
     </h3>
 </script>
 <script type="text/template" id="CardProfile">
@@ -145,13 +149,14 @@
                 </div>
             </small>
         </div>
+        <div id="preview">
+
+        </div>
+        <div id="buttons" class="mediumHeight little-marge-top">
+
+        </div>
     </div>
-    <div id="preview">
 
-    </div>    
-    <div id="buttons">
-
-    </div> 
     <@if(root){ @>      
         <div id="after">
 
@@ -192,21 +197,24 @@
         </a>
         <@ if (ios) { @>
             <button class="btn-link status-action button-ios">
-                <a href="tatami://sendResponse?replyTo=<@= statusId @>&replyToUsername=<@= username @>">
+                <a href="tatami://sendResponse?replyTo=<@= statusId @>&replyToUsername=<@= username @>&groupId=<@= groupId @>">
                     <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
                 </a>
             </button>
             <@ } else { @>
             <button class="btn-link status-action status-action-reply button-ios">
-                <i class="glyphicon glyphicon-comment"></i> <fmt:message key="tatami.user.status.reply"/>
+                <i class="glyphicon glyphicon-comment"></i><fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
+
+
             <!-- //TODO CodingParty : Afficher l'annulation du partage -->
-            <@ if (Tatami.app.user.get('username') !== username && sharedByMe == false && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
+        <@ if (!shareByMe) { @>
+            <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn-link status-action status-action-share button-ios" success-text="<fmt:message key="tatami.user.status.share.success"/>">
                 <i class="glyphicon glyphicon-retweet"></i> <fmt:message key="tatami.user.status.share"/>
             </button>
-            <@ } @>
+            <@ } }@>
             <button class="btn-link status-action status-action-favorite button-ios">
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
