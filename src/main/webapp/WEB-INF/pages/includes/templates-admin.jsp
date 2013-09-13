@@ -518,6 +518,7 @@
 <script type="text/template" id="FilesListTemplate">
     <table class="table noCollapse">
         <tr>
+            <th style="border-top :0">  </th>
             <th style="border-top :0"><b><fmt:message key="tatami.user.file.name"/></b></th>
             <th style="border-top :0"><b><fmt:message key="tatami.user.file.size"/></b></th>
             <th style="border-top :0"><b><fmt:message key="tatami.user.file.creation.date"/></b></th>
@@ -530,6 +531,12 @@
 </script>
 
 <script type="text/template" id="FileItemTemplate">
+    <td><@ if(hasThumbnail) { @>
+			<a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><img src="/tatami/thumbnail/<@= attachmentId @>/<@= filename @>" /></a>
+		<@ } else { @>
+			<a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><img src="/img/document_icon.png" /></a>
+		<@ } @>
+	</td>
     <td><a href="/tatami/file/<@= attachmentId @>/<@= filename @>" target="_blank"><@= filename @></a></td>
     <td><@= (size/1000) @> kb</td>
     <td><@= prettyPrintCreationDate @> </td>
