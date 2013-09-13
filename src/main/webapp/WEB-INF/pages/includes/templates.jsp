@@ -203,7 +203,7 @@
             </button>
             <@ } else { @>
             <button class="btn-link status-action status-action-reply button-ios">
-                <i class="glyphicon glyphicon-comment"></i><fmt:message key="tatami.user.status.reply"/>
+                <i class="glyphicon glyphicon-comment"> </i><fmt:message key="tatami.user.status.reply"/>
             </button>
             <@ } @>
 
