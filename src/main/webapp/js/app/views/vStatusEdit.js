@@ -1,5 +1,17 @@
 (function(Backbone, _, Tatami){
     var StatusEdit = Backbone.Marionette.Layout.extend({
+
+        template: '#StatusEdit',
+        regions: {
+            tatamReply: ".tatam-reply"
+        },
+
+        events: {
+            'keydown .edit-tatam > textarea': 'updatecount',
+            'click .edit-tatam-float-right': 'togglePreview',
+            'submit': 'submit'
+        },
+
         initialize: function(){
             this.model = new Tatami.Models.PostStatus();
         },
@@ -105,15 +117,6 @@
             });
         },
 
-        regions: {
-            tatamReply: ".tatam-reply"
-        },
-
-        events: {
-            'keydown .edit-tatam > textarea': 'updatecount',
-            'click .edit-tatam-float-right': 'togglePreview',
-            'submit': 'submit'
-        },
 
         updatecount: function(e){
             var $textarea = $(e.currentTarget);
@@ -200,9 +203,9 @@
 
         cancel: function(){
             return false;
-        },
+        }
 
-        template: '#StatusEdit'
+
     });
 
     Tatami.Views.StatusEdit = StatusEdit;

@@ -40,7 +40,9 @@
             sharedByUsername: false, 
             root: true,
             first: false,
-            last: false
+            last: false,
+            shareByMe: '',
+            shared: false
         },
 
         urlRoot: '/tatami/rest/statuses/',

@@ -126,6 +126,10 @@ div.jGrowl-notification{
     margin-right: 20px
 }
 
+.mediumHeight{
+    height: 13px;
+}
+
 .smallPaddingLeft {
     padding-left: 10px;
 }
@@ -317,13 +321,37 @@ div.jGrowl-notification{
 .tatam.favorite {
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
 }
 
 .favorite {
     background-image: url(img/favorite.png);
     background-repeat: no-repeat;
-    background-position: left top;
+    background-position: right top;
+}
+
+.tatam.share {
+    background-image: url(img/shared.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.share {
+    background-image: url(img/shared.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.tatam.both {
+    background-image: url(img/both.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.both {
+    background-image: url(img/both.png);
+    background-repeat: no-repeat;
+    background-position: right top;
 }
 
 .pointer {
@@ -711,7 +739,8 @@ div.jGrowl-notification{
 }
 
 #current {
-    padding: 12px;
+    padding: 10px;
+    padding-top : 7px;
 }
 
 #before{

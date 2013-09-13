@@ -26,6 +26,8 @@
 
     <cache name="favorites-cache"/>
 
+    <cache name="shared-cache"/>
+
     <cache name="friends-cache"/>
 
     <cache name="followers-cache"/>
