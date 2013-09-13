@@ -146,8 +146,8 @@ public class GroupController {
     @Timed
     public Collection<StatusDTO> listStatusForGroup(@PathVariable(value = "groupId") String groupId,
                                                     @RequestParam(required = false) Integer count,
-                                                    @RequestParam(required = false) String since_id,
-                                                    @RequestParam(required = false) String max_id) {
+                                                    @RequestParam(required = false) String start,
+                                                    @RequestParam(required = false) String finish) {
 
         log.debug("REST request to get statuses for group : {}", groupId);
         if (groupId == null) {
@@ -160,7 +160,7 @@ public class GroupController {
         if (group == null) {
             return new ArrayList<StatusDTO>();
         } else {
-            return timelineService.getGroupline(groupId, count, since_id, max_id);
+            return timelineService.getGroupline(groupId, count, start, finish);
         }
     }
 

@@ -25,5 +25,5 @@ public interface DomainlineRepository {
      * - The name is the statusId of the statuses
      * - Value is always null
      */
-    List<String> getDomainline(String domain, int size, String since_id, String max_id);
+    List<String> getDomainline(String domain, int size, String start, String finish);
 }

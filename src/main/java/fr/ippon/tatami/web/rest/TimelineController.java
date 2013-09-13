@@ -68,13 +68,13 @@ public class TimelineController {
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
-                                            @RequestParam(required = false) String since_id,
-                                            @RequestParam(required = false) String max_id) {
+                                            @RequestParam(required = false) String start,
+                                            @RequestParam(required = false) String finish) {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
         try {
-            return timelineService.getTimeline(count, since_id, max_id);
+            return timelineService.getTimeline(count, start, finish);
         } catch (Exception e) {
             StringWriter stack = new StringWriter();
             PrintWriter pw = new PrintWriter(stack);
@@ -93,8 +93,8 @@ public class TimelineController {
     @ResponseBody
     public Collection<StatusDTO> listStatusForUser(@PathVariable("username") String username,
                                                    @RequestParam(required = false) Integer count,
-                                                   @RequestParam(required = false) String since_id,
-                                                   @RequestParam(required = false) String max_id) {
+                                                   @RequestParam(required = false) String start,
+                                                   @RequestParam(required = false) String finish) {
 
         if (count == null || count == 0) {
             count = 20; //Default value
@@ -104,7 +104,7 @@ public class TimelineController {
             return new ArrayList<StatusDTO>();
         }
         try {
-            return timelineService.getUserline(username, count, since_id, max_id);
+            return timelineService.getUserline(username, count, start, finish);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 e.printStackTrace();

@@ -67,24 +67,24 @@ public abstract class AbstractCassandraLineRepository {
         mutator.execute();
     }
 
-    List<String> getLineFromCF(String cf, String login, int size, String since_id, String max_id) {
+    List<String> getLineFromCF(String cf, String login, int size, String start, String finish) {
         List<HColumn<UUID, String>> result;
-        if (max_id != null) {
+        if (finish != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                     StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                     .setColumnFamily(cf)
                     .setKey(login)
-                    .setRange(UUID.fromString(max_id), null, true, size)
+                    .setRange(UUID.fromString(finish), null, true, size)
                     .execute()
                     .get();
 
             result = query.getColumns().subList(1, query.getColumns().size());
-        } else if (since_id != null) {
+        } else if (start != null) {
             ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
                     StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                     .setColumnFamily(cf)
                     .setKey(login)
-                    .setRange(null, UUID.fromString(since_id), true, size)
+                    .setRange(null, UUID.fromString(start), true, size)
                     .execute()
                     .get();
 

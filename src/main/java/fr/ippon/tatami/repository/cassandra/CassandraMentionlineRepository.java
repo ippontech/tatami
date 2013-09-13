@@ -32,7 +32,7 @@ public class CassandraMentionlineRepository extends AbstractCassandraLineReposit
     }
 
     @Override
-    public List<String> getMentionline(String login, int size, String since_id, String max_id) {
-        return getLineFromCF(MENTIONLINE_CF, login, size, since_id, max_id);
+    public List<String> getMentionline(String login, int size, String start, String finish) {
+        return getLineFromCF(MENTIONLINE_CF, login, size, start, finish);
     }
 }

@@ -36,17 +36,17 @@ public class CompanyWallController {
     @ResponseBody
     @Timed
     public Collection<StatusDTO> getCompanyWall(@RequestParam(required = false) Integer count,
-                                                @RequestParam(required = false) String since_id,
-                                                @RequestParam(required = false) String max_id) {
+                                                @RequestParam(required = false) String start,
+                                                @RequestParam(required = false) String finish) {
 
         if (count == null) {
             count = 20;
         }
         try {
-            return timelineService.getDomainline(count, since_id, max_id);
+            return timelineService.getDomainline(count, start, finish);
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getDomainline(20, since_id, max_id);
+            return timelineService.getDomainline(20, start, finish);
         }
     }
 }

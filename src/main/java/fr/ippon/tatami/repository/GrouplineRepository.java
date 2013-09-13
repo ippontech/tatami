@@ -25,5 +25,5 @@ public interface GrouplineRepository {
      * - The name is the statusId of the statuses
      * - Value is always null
      */
-    List<String> getGroupline(String groupId, int size, String since_id, String max_id);
+    List<String> getGroupline(String groupId, int size, String start, String finish);
 }

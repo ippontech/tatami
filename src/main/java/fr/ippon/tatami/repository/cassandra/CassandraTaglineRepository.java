@@ -53,8 +53,8 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
     }
 
     @Override
-    public List<String> getTagline(String domain, String tag, int size, String since_id, String max_id) {
-        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, since_id, max_id);
+    public List<String> getTagline(String domain, String tag, int size, String start, String finish) {
+        return getLineFromCF(TAGLINE_CF, getKey(domain, tag), size, start, finish);
     }
 
     /**

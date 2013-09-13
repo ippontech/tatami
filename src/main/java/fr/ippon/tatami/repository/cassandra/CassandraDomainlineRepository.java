@@ -39,7 +39,7 @@ public class CassandraDomainlineRepository extends AbstractCassandraLineReposito
     }
 
     @Override
-    public List<String> getDomainline(String domain, int size, String since_id, String max_id) {
-        return getLineFromCF(DOMAINLINE_CF, domain, size, since_id, max_id);
+    public List<String> getDomainline(String domain, int size, String start, String finish) {
+        return getLineFromCF(DOMAINLINE_CF, domain, size, start, finish);
     }
 }

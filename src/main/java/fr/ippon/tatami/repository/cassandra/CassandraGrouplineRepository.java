@@ -37,7 +37,7 @@ public class CassandraGrouplineRepository extends AbstractCassandraLineRepositor
     }
 
     @Override
-    public List<String> getGroupline(String groupId, int size, String since_id, String max_id) {
-        return getLineFromCF(GROUPLINE_CF, groupId, size, since_id, max_id);
+    public List<String> getGroupline(String groupId, int size, String start, String finish) {
+        return getLineFromCF(GROUPLINE_CF, groupId, size, start, finish);
     }
 }

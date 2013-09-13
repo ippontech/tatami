@@ -27,5 +27,5 @@ public interface TaglineRepository {
      * - The name is the statusId of the statuses
      * - Value is always null
      */
-    List<String> getTagline(String domain, String tag, int size, String since_id, String max_id);
+    List<String> getTagline(String domain, String tag, int size, String start, String finish);
 }

@@ -65,14 +65,14 @@ public class CassandraUserAttachmentRepository
     }
 
     @Override
-    public Collection<String> findAttachmentIds(String login, int pagination, String max_id) {
+    public Collection<String> findAttachmentIds(String login, int pagination, String finish) {
         List<HColumn<UUID, Long>> result;
-        if (max_id != null) {
+        if (finish != null) {
         ColumnSlice<UUID, Long> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), LongSerializer.get())
                 .setColumnFamily(USER_ATTACHMENT_CF)
                 .setKey(login)
-                .setRange(UUID.fromString(max_id), null, true, pagination)
+                .setRange(UUID.fromString(finish), null, true, pagination)
                 .execute()
                 .get();
 

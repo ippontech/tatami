@@ -60,18 +60,18 @@ public class TagController {
     @Timed
     public Collection<StatusDTO> listStatusForTag(@PathVariable String tagName,
                                                   @RequestParam(required = false) Integer count,
-                                                  @RequestParam(required = false) String since_id,
-                                                  @RequestParam(required = false) String max_id) {
+                                                  @RequestParam(required = false) String start,
+                                                  @RequestParam(required = false) String finish) {
 
         log.debug("REST request to get statuses for tag : {}", tagName);
         if (count == null) {
             count = 20;
         }
         try {
-            return timelineService.getTagline(tagName, count, since_id, max_id);
+            return timelineService.getTagline(tagName, count, start, finish);
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getTagline(tagName, 20, since_id, max_id);
+            return timelineService.getTagline(tagName, 20, start, finish);
         }
     }
 

@@ -367,16 +367,16 @@ public class TimelineService {
      *
      * @return a status list
      */
-    public Collection<StatusDTO> getMentionline(int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getMentionline(int nbStatus, String start, String finish) {
         User currentUser = authenticationService.getCurrentUser();
         List<String> statuses =
-                mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, since_id, max_id);
+                mentionlineRepository.getMentionline(currentUser.getLogin(), nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             mentionlineRepository.removeStatusesFromMentionline(currentUser.getLogin(), statusIdsToDelete);
-            return getMentionline(nbStatus, since_id, max_id);
+            return getMentionline(nbStatus, start, finish);
         }
         return dtos;
     }
@@ -388,19 +388,19 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getTagline(String tag, int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getTagline(String tag, int nbStatus, String start, String finish) {
         if (tag == null || tag.isEmpty()) {
             tag = hashtagDefault;
         }
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        List<String> statuses = taglineRepository.getTagline(domain, tag, nbStatus, since_id, max_id);
+        List<String> statuses = taglineRepository.getTagline(domain, tag, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
-            return getTagline(tag, nbStatus, since_id, max_id);
+            return getTagline(tag, nbStatus, start, finish);
         }
         return dtos;
     }
@@ -410,13 +410,13 @@ public class TimelineService {
      *
      * @return a status list
      */
-    public Collection<StatusDTO> getGroupline(String groupId, Integer nbStatus, String since_id, String max_id) {
-        List<String> statuses = grouplineRepository.getGroupline(groupId, nbStatus, since_id, max_id);
+    public Collection<StatusDTO> getGroupline(String groupId, Integer nbStatus, String start, String finish) {
+        List<String> statuses = grouplineRepository.getGroupline(groupId, nbStatus, start, finish);
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
-            return getGroupline(groupId, nbStatus, since_id, max_id);
+            return getGroupline(groupId, nbStatus, start, finish);
         }
         return dtos;
     }
@@ -427,9 +427,9 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getTimeline(int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getTimeline(int nbStatus, String start, String finish) {
         String login = authenticationService.getCurrentUser().getLogin();
-        return getUserTimeline(login, nbStatus, since_id, max_id);
+        return getUserTimeline(login, nbStatus, start, finish);
     }
 
     /**
@@ -444,15 +444,15 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getUserTimeline(String login, int nbStatus, String start, String finish) {
         List<String> statuses =
-                timelineRepository.getTimeline(login, nbStatus, since_id, max_id);
+                timelineRepository.getTimeline(login, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             timelineRepository.removeStatusesFromTimeline(login, statusIdsToDelete);
-            return getTimeline(nbStatus, since_id, max_id);
+            return getTimeline(nbStatus, start, finish);
         }
         return dtos;
     }
@@ -464,17 +464,17 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getDomainline(int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getDomainline(int nbStatus, String start, String finish) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         List<String> statuses =
-                domainlineRepository.getDomainline(domain, nbStatus, since_id, max_id);
+                domainlineRepository.getDomainline(domain, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
-            return getDomainline(nbStatus, since_id, max_id);
+            return getDomainline(nbStatus, start, finish);
         }
         return dtos;
     }
@@ -487,7 +487,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserline(String username, int nbStatus, String since_id, String max_id) {
+    public Collection<StatusDTO> getUserline(String username, int nbStatus, String start, String finish) {
         String login;
         User currentUser = authenticationService.getCurrentUser();
         if (username == null || username.isEmpty()) { // current user
@@ -496,12 +496,12 @@ public class TimelineService {
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
             login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
-        List<String> statuses = userlineRepository.getUserline(login, nbStatus, since_id, max_id);
+        List<String> statuses = userlineRepository.getUserline(login, nbStatus, start, finish);
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
-            return getUserline(username, nbStatus, since_id, max_id);
+            return getUserline(username, nbStatus, start, finish);
         }
         return dtos;
     }

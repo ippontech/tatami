@@ -36,17 +36,17 @@ public class MentionsController {
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listMentionStatus(@RequestParam(required = false) Integer count,
-                                                   @RequestParam(required = false) String since_id,
-                                                   @RequestParam(required = false) String max_id) {
+                                                   @RequestParam(required = false) String start,
+                                                   @RequestParam(required = false) String finish) {
 
         if (count == null) {
             count = 20;
         }
         try {
-            return timelineService.getMentionline(count, since_id, max_id);
+            return timelineService.getMentionline(count, start, finish);
         } catch (NumberFormatException e) {
             log.warn("Page size undefined ; sizing to default", e);
-            return timelineService.getMentionline(20, since_id, max_id);
+            return timelineService.getMentionline(20, start, finish);
         }
     }
 }

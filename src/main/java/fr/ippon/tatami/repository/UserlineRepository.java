@@ -33,5 +33,5 @@ public interface UserlineRepository {
      * - The key is the statusId of the statuses
      * - The value is always null
      */
-    List<String> getUserline(String login, int size, String since_id, String max_id);
+    List<String> getUserline(String login, int size, String start, String finish);
 }

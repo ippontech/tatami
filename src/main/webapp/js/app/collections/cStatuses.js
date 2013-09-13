@@ -24,7 +24,7 @@
                 if(self.last())
                     options = _.extend(options, {
                         data: {
-                            max_id:  self.last().get('timelineId')
+                            finish:  self.last().get('timelineId')
                         }
                     });
                 return self.fetch(options);
@@ -48,7 +48,7 @@
                 if(self.first())
                     options = _.extend(options, {
                         data: {
-                            since_id: self.first().get('timelineId')
+                            start: self.first().get('timelineId')
                         }
                     });
                 return self.fetch(options);

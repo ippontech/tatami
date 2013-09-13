@@ -20,7 +20,7 @@
                 if(self.last())
                     options = _.extend(options, {
                         data: {
-                            max_id:  self.last().get('attachmentId')
+                            finish:  self.last().get('attachmentId')
                         }
                     });
                 return self.fetch(options);

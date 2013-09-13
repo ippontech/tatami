@@ -66,8 +66,8 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
     }
 
     @Override
-    public List<String> getTimeline(String login, int size, String since_id, String max_id) {
-        return getLineFromCF(TIMELINE_CF, login, size, since_id, max_id);
+    public List<String> getTimeline(String login, int size, String start, String finish) {
+        return getLineFromCF(TIMELINE_CF, login, size, start, finish);
     }
 
     @Override

@@ -192,13 +192,13 @@ public class MailDigestService {
      */
     private int getStatusesForDigest(final User user, final Date since_date,
                                      int nbStatus, List<StatusDTO> digestStatuses) {
-        String max_id = null;
+        String finish = null;
         boolean dateReached = false;
         List<StatusDTO> allStatuses = new ArrayList<StatusDTO>(50);
 
         // collect all statuses since 'since_date' from the timeline
         while (!dateReached) {
-            Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, max_id);
+            Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, finish);
             statuses.size();
             int count = 0;
             if (statuses.isEmpty()) {
@@ -217,7 +217,7 @@ public class MailDigestService {
                 }
                 count++;
                 if (count == statuses.size() && !dateReached) {
-                    max_id = status.getStatusId();
+                    finish = status.getStatusId();
                 }
             }
         }
