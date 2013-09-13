@@ -207,8 +207,6 @@
             </button>
             <@ } @>
 
-
-            <!-- //TODO CodingParty : Afficher l'annulation du partage -->
         <@ if (!shareByMe) { @>
             <@ if (Tatami.app.user.get('username') !== username && statusPrivate == false && groupId == '' && type != 'ANNOUNCEMENT') { @>
             <button class="btn-link status-action status-action-share button-ios" success-text="<fmt:message key="tatami.user.status.share.success"/>">
