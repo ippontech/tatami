@@ -38,7 +38,7 @@ public class CassandraSharesRepository implements SharesRepository {
     private Keyspace keyspaceOperator;
 
     @Override
-    @CacheEvict(value = "status-cache", key = "#statusId")
+    @CacheEvict(value = "shared-cache", key = "#statusId")
     public void newShareByLogin(String statusId, String sharedByLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
         mutator.insert(statusId, SHARES_CF,
@@ -49,8 +49,8 @@ public class CassandraSharesRepository implements SharesRepository {
                         StringSerializer.get()));
     }
 
-    @Override
-    @Cacheable("shared-cache")
+   @Override
+   @Cacheable("shared-cache")
     public Collection<String> findLoginsWhoSharedAStatus(String statusId) {
         ColumnSlice<Long, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
