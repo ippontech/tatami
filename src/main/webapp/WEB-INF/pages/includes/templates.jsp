@@ -483,6 +483,7 @@
             <img class="img-rounded img-small" style="background-image: url(<@= item.avatarURL @>);">
             <h4><a href="#"><@= item.fullName @></a></h4>
             <p><@= item.label @></p>
+            <@ if(!item.activated) { @><span class=""><i><fmt:message key="tatami.user.desactivate.msg2"/></i></span><@ } @>
         </li>
     <@} else if(item.label) { @>
         <li class="item groups background-image-fffix" data-value="<@= item.label @>" rel="<@= item.id @>">
