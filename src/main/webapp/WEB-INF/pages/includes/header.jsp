@@ -37,7 +37,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/img/shortcut-icon.png">
+    <link rel="shortcut icon" type="image/png" href="/img/company-logo.ico">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <link rel="apple-touch-startup-image" href="/img/startup.png">
     <meta name="apple-mobile-web-app-capable" content="yes" />
