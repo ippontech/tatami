@@ -401,18 +401,33 @@
         <@= counter  @>
     </td>
       <td>
-          <@ if(publicGroup && !administrator) { @>
-          <a class="btn-title toggleGroup pull-right label labelSizeNormal <@= (member)?'label-info':'' @>">
-              <@ if(member) { @>
-              <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
-              <@ } else { @>
-              <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
-              <@ } @>
-          </a>
-          <@ } else if(administrator) { @>
-          <a href="/tatami/account/#/groups/<@= groupId @>"  class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-              <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
-          </a>
+          <@ if(administrator) { @>
+              <a href="/tatami/account/#/groups/<@= groupId @>"  class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
+                  <span class="glyphicon glyphicon-th-large"> <span><fmt:message key="tatami.group.edit.link"/></span></span>
+              </a>
+          <@ } else if(publicGroup) { @>
+              <a class="btn-title toggleGroup pull-right label labelSizeNormal <@= (member)?'label-info':'' @>">
+                  <@ if(member) { @>
+                      <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
+                  <@ } else { @>
+                      <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
+                  <@ } @>
+              </a>
+          <@ } else { @>
+                  <@ if(member) { @>
+                      <a class="btn-title toggleGroup pull-right label labelSizeNormal <@= (member)?'label-info':'' @>">
+                          <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.group.leave"/></span></span>
+                      </a>
+                  <@ } else { @>
+                      <@ if(waitingForApproval) { @>
+                          <span class="hidden-phone">Demande d'invitation envoyée</span>
+                      <@ } else { @>
+                          <a class="btn-title toggleGroup pull-right label labelSizeNormal <@= (member)?'label-info':'' @>">
+                              <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.group.join"/></span></span>
+                          </a>
+                      <@ } @>
+                  <@ } @>
+              </a>
           <@ } @>
       </td>
     <@ } @>
@@ -444,15 +459,24 @@
     <td>
         <@ if(role === 'ADMIN'){ @>
         <fmt:message key="tatami.group.role.admin"/>
-        <@ } else { @>
+        <@ } else if(role === 'MEMBER') { @>
         <fmt:message key="tatami.group.role.member"/>
+        <@ } else { @>
+        <fmt:message key="tatami.group.role.pending"/>
         <@ } @>
     </td>
     <@ if(administrator){ >
     <td>
-        <@ if (window.username !== username) { @>
+        <@ if (window.username !== username && role === 'MEMBER') { @>
         <button type="button" class="btn btn-success input-block-level delete">
             <fmt:message key="tatami.group.edit.member.delete"/>
+        </button>
+        <@ }  else if(role === 'PENDING') { @>
+        <button type="button" class="btn btn-success input-block-level accept">
+            Accepter
+        </button>
+        <button type="button" class="btn btn-danger input-block-level reject">
+            Rejeter
         </button>
         <@ } @>
     </td>
