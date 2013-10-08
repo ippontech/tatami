@@ -83,11 +83,23 @@ public class User implements Serializable {
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
+    @Column(name="activated")
+    private Boolean activated=true;
+
     private long statusCount;
 
     private long friendsCount;
 
     private long followersCount;
+
+
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
 
     public String getLogin() {
         return login;
@@ -268,6 +280,7 @@ public class User implements Serializable {
                 ", dailyDigestSubscription=" + dailyDigestSubscription +
                 ", weeklyDigestSubscription=" + weeklyDigestSubscription +
                 ", attachmentsSize=" + attachmentsSize +
+                ", activated=" + activated +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +

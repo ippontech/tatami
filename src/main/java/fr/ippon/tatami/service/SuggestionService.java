@@ -58,7 +58,9 @@ public class SuggestionService {
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUser : mostFollowedUsers) {
             User suggestion = userService.getUserByLogin(mostFollowedUser);
-            userSuggestions.add(suggestion);
+            if ( suggestion.getActivated() ){
+                userSuggestions.add(suggestion);
+            }
         }
         if (userSuggestions.size() > SUGGESTIONS_SIZE) {
             return userSuggestions.subList(0, SUGGESTIONS_SIZE);

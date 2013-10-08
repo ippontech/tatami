@@ -4,7 +4,6 @@
 
 
 
-
 <script type="text/html" id="TagsHeader">
     <h3>
       <span class="text-center"><strong><fmt:message key="tatami.tag"/> : #<@= name @></strong></span>
@@ -40,8 +39,9 @@
 </script>
 <script type="text/template" id="ProfileHeader">
     <@ if(!you) { @>
-    <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @></strong>
+    <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @> </strong><@ if(!activated) { @><span><i><fmt:message key="tatami.user.desactivate.msg2"/></i></span><@ } @>
         <@if(follower){ @> (<fmt:message key="tatami.user.follows.you"/>) <@ }@>
+          <@if(activated) {@>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
                   <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -49,6 +49,7 @@
                 <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
                 <@ } @>
             </a>
+          <@ } @>
         <@ } else {@>
         <h3><strong><fmt:message key="tatami.user.profile.yourProfil"/></strong></h3>
         <@ } @>
@@ -148,7 +149,15 @@
 
                 </div>
             </small>
+            <@  if(!activated) { @>
+                <div class="little-marge-top">
+                <span class="glyphicon glyphicon-off">
+                   <fmt:message key="tatami.user.desactivate.msg"/>
+                </span>
+                </div>
+            <@ } @>
         </div>
+
         <div id="preview">
 
         </div>
@@ -653,7 +662,14 @@
         <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
     </div>
     <h4>
-        <@ if(!you) { @>
+       <@  if(!activated) { @>
+        <span>
+            <span class="glyphicon glyphicon-off">
+               <fmt:message key="tatami.user.desactivate.msg"/>
+            </span>
+        </span>
+        <@ } @>
+        <@ if(!you && activated) { @>
             <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>
@@ -669,6 +685,13 @@
                 @<@= username @>
             </small>
         </a>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+            <span class="desactivateUser pointer pull-right label label-<@ if(activated) { @>danger<@ } else {@>success<@} @>">
+              <span class="glyphicon glyphicon-<@= (activated)? 'minus':'plus'@>">
+                  <@= (activated)? '<fmt:message key="tatami.user.desactivate"/>':'<fmt:message key="tatami.user.activate"/>'@>
+              </span>
+            </span>
+        </sec:authorize>
     </h4>
 </script>
 <script type="text/template" id="UserItemsMini">

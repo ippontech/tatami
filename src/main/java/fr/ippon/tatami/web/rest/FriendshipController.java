@@ -62,15 +62,27 @@ public class FriendshipController {
         return userService.buildUserDTOList(friends);
     }
 
+    /**
+     * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
+     * @param action
+     * @param username
+     * @return
+     */
     @RequestMapping(value = "/rest/users/{username}",
             method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriend(@RequestBody UserDTO user, @PathVariable String username) {
-        if (user.isFriend()) {
-            friendshipService.followUser(username);
-        } else {
-            friendshipService.unfollowUser(username);
+    public UserDTO updateFriend(@RequestBody fr.ippon.tatami.web.rest.dto.UserActionStatus action, @PathVariable("username") String username) {
+        if ( action.getFriendShip() != null && action.getFriendShip() ) {
+            if ( action.getFriend() ) {
+                friendshipService.followUser(username);
+            } else {
+                friendshipService.unfollowUser(username);
+            }
+        }
+        else if ( action.getActivate() != null &&  action.getActivate()) {
+            this.log.debug("REST request to desactivate Profile : {}", username);
+            userService.desactivateUser(username);
         }
         return userService.buildUserDTO(userService.getUserByUsername(username));
     }

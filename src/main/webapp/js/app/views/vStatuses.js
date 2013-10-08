@@ -111,6 +111,7 @@
                 current.toggleClass('favorite', this.model.get('favorite'));
                 current.toggleClass('share', this.model.get('shared'));
             }
+
             this.$el.toggleClass('discussion', this.model.get('detailsAvailable'));
             this.attachments.show(new Tatami.Views.StatusAttachments({
                 collection: new Backbone.Collection(this.model.get('attachments'))
@@ -125,6 +126,13 @@
                 this.$el.addClass('tatam-background');
             }
             this.$el.addClass('tatam-id-'+this.model.id);
+
+            if ( !this.model.get('activated') ) {
+                this.$el.addClass("desactivated");
+            }
+            else {
+                this.$el.removeClass("desactivated");
+            }
         },
 
         favoriteAction: function(){

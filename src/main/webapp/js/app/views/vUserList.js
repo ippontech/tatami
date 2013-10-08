@@ -6,14 +6,35 @@
             'change': 'render'
         },
         events: {
-            'click .toggleFriend': 'toggleFriend'
+            'click .toggleFriend': 'toggleFriend',
+            'click .desactivateUser': 'desactivateUser'
+        },
+        onRender : function (){
+            if ( !this.model.get("activated") ) {
+                this.$el.addClass("desactivated");
+            }
+            else {
+                this.$el.removeClass("desactivated");
+            }
         },
         toggleFriend: function(){
-            this.model.save({
-                friend: !this.model.get('friend')
-            }, {
+            this.model.save(
+            {
+                friendShip: true,
+                isFriend: !this.model.get("friend")
+            },
+            {
                 patch: true
             });
+        },
+        desactivateUser: function() {
+            this.model.save(
+                {
+                    activate: true
+                },
+                {
+                    patch: true
+                });
         }
     });
 
@@ -29,7 +50,8 @@
             'change': 'render'
         },
         events: {
-            'click .toggleFriend': 'toggleFriend'
+            'click .toggleFriend': 'toggleFriend',
+            'click .desactivateUser': 'desactivateUser'
         }
     });
 

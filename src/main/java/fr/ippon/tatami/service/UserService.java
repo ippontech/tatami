@@ -8,6 +8,8 @@ import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
+import org.springframework.security.access.annotation.Secured;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import java.nio.file.SecureDirectoryStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -249,6 +252,27 @@ public class UserService {
     }
 
     /**
+     * Set activated Field to false.
+     * @param user
+     */
+    @Secured("ROLE_ADMIN")
+    public boolean desactivateUser( String username ) {
+        User user = getUserByUsername(username);
+        if ( user != null ) {
+            // Desactivate/Activate User
+            if ( user.getActivated() ) {
+                userRepository.desactivateUser(user);
+                log.debug("User " + user.getLogin() + " has been successfully desactivated !");
+            }  else {
+                userRepository.reactivateUser(user);
+                log.debug("User " + user.getLogin() + " has been successfully reactivated !");
+            }
+            return true;
+        }
+        log.debug("User " + user.getLogin() + " NOT FOUND !");
+        return false;
+    }
+    /**
      * Creates a User and sends a registration e-mail.
      */
     public void registerUser(User user) {
@@ -437,6 +461,7 @@ public class UserService {
         friend.setStatusCount(user.getStatusCount());
         friend.setFriendsCount(user.getFriendsCount());
         friend.setFollowersCount(user.getFollowersCount());
+        friend.setActivated(user.getActivated());
         return friend;
     }
 }

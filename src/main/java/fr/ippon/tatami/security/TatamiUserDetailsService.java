@@ -71,6 +71,9 @@ public class TatamiUserDetailsService implements UserDetailsService {
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
         }
+        else if ( userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false ) {
+            throw new UsernameNotFoundException("User " + lowercaseLogin + " is deactivated. Contact administrator for further details." );
+        }
         return getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
     }
 
