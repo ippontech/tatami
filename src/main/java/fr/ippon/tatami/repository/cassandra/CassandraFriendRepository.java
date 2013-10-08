@@ -35,8 +35,7 @@ public class CassandraFriendRepository extends AbstractCassandraFriendRepository
     }
 
     @Override
-    //@Cacheable("friends-cache")
-    @CacheEvict(value="friends-cache", key="#login")
+    @Cacheable("friends-cache")
     public List<String> findFriendsForUser(String login) {
         return super.findFriends(login);
     }
