@@ -134,6 +134,10 @@
         Tatami.app.edit = new Tatami.Views.StatusEdit({
             el: $('#tatamiEdit')
         });
+
+        Tatami.app.favi = new Favico({
+            animation : 'popFade'
+        });
     });
 
     if(!ios) {

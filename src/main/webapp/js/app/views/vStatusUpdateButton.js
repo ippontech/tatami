@@ -27,10 +27,12 @@
                 $(this.el).addClass('refresh-button-style');
                 document.title = "Tatami (" + this.options.count + ")";
                 this.$el.slideDown();
+                Tatami.app.favi.badge(this.options.count) ;
             } else {
                 $(this.el).removeClass('refresh-button-style');
                 document.title = "Tatami";
                 this.$el.slideUp();
+                Tatami.app.favi.reset();
             }
         },
         className: 'text-center',
