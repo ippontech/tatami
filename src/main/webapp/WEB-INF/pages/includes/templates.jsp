@@ -686,6 +686,7 @@
                 @<@= username @>
             </small>
         </a>
+        <@ if(desactivable) { @>
         <sec:authorize ifAnyGranted="ROLE_ADMIN">
             <span class="desactivateUser pointer pull-right label label-<@ if(activated) { @>danger<@ } else {@>success<@} @>">
               <span class="glyphicon glyphicon-<@= (activated)? 'minus':'plus'@>">
@@ -693,6 +694,7 @@
               </span>
             </span>
         </sec:authorize>
+        <@ } @>
     </h4>
 </script>
 <script type="text/template" id="UserItemsMini">
@@ -700,7 +702,7 @@
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
     </div>
     <h6>
-        <@ if(!you) { @>
+        <@ if(!you && activated) { @>
             <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>

@@ -96,12 +96,14 @@ public class CassandraUserRepository implements UserRepository {
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#user.login")
     public void desactivateUser( User user ) {
         user.setActivated(false);
         em.persist(user);
     }
 
     @Override
+    @CacheEvict(value = "user-cache", key = "#user.login")
     public void reactivateUser( User user ) {
         user.setActivated(true);
         em.persist(user);

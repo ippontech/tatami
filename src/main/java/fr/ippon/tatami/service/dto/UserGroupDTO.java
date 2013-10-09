@@ -23,7 +23,17 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     private boolean friend;
 
+    private boolean activated;
+
     private boolean you;
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
     public String getLogin() {
         return login;

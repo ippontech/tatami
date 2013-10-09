@@ -33,7 +33,7 @@
             c.group = groupId;
             return new Tatami.Views.UserList({
                 collection: c
-            });         
+            });
         }  ,
 
         groupUsers: function(groupId){

@@ -9,6 +9,11 @@
             'click .toggleFriend': 'toggleFriend',
             'click .desactivateUser': 'desactivateUser'
         },
+        serializeData: function(){
+            var res = Backbone.Marionette.ItemView.prototype.serializeData.apply(this, arguments);
+            res.desactivable = this.options.desactivable;
+            return res;
+        },
         onRender : function (){
             if ( !this.model.get("activated") ) {
                 this.$el.addClass("desactivated");
@@ -34,13 +39,15 @@
                 },
                 {
                     patch: true
-                });
+                }
+            );
         }
     });
 
     var UserList = Backbone.Marionette.CollectionView.extend({
         itemView: UserItems,
-        itemViewContainer: '.items'
+        itemViewContainer: '.items',
+        itemViewOptions:{desactivable:false}
     });
 
     var UserItemsMini = UserItems.extend({
@@ -50,8 +57,7 @@
             'change': 'render'
         },
         events: {
-            'click .toggleFriend': 'toggleFriend',
-            'click .desactivateUser': 'desactivateUser'
+            'click .toggleFriend': 'toggleFriend'
         }
     });
 
@@ -74,7 +80,14 @@
         events: {
             'click .delete' : 'removeUser'
         },
-
+        onRender : function (){
+            if ( !this.model.get("activated") ) {
+                this.$el.addClass("desactivated");
+            }
+            else {
+                this.$el.removeClass("desactivated");
+            }
+        },
         removeUser : function(){
 
             this.model.destroy();

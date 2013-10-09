@@ -2,6 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.DigestType;
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.CacheEvict;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -37,6 +39,12 @@ public class UserService {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private GroupService groupService;
+
+    @Inject
+    private GroupCounterRepository groupCounterRepository;
 
     @Inject
     private DomainRepository domainRepository;
@@ -253,14 +261,21 @@ public class UserService {
 
     /**
      * Set activated Field to false.
-     * @param user
+     * @param username
      */
     @Secured("ROLE_ADMIN")
+    @CacheEvict(value = {"group-user-cache", "group-cache","suggest-users-cache"}, allEntries = true)
     public boolean desactivateUser( String username ) {
         User user = getUserByUsername(username);
         if ( user != null ) {
             // Desactivate/Activate User
             if ( user.getActivated() ) {
+                //Decrement Group counters
+                Collection<Group> groups = groupService.getGroupsOfUser(user);
+                for ( Group group : groups ) {
+                    groupCounterRepository.decrementGroupCounter(group.getDomain(),group.getGroupId());
+                    groupService.editGroup(group);
+                }
                 userRepository.desactivateUser(user);
                 log.debug("User " + user.getLogin() + " has been successfully desactivated !");
             }  else {
