@@ -79,7 +79,8 @@
             c.user = username;
             c.fetch();
             return  new Tatami.Views.UserList({
-                collection: c
+                collection: c,
+                itemViewOptions:{desactivable:true}
             });
         },
 

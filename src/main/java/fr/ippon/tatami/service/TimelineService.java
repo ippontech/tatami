@@ -207,6 +207,7 @@ public class TimelineService {
                     StatusDTO statusDTO = new StatusDTO();
                     statusDTO.setStatusId(abstractStatus.getStatusId());
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
+                    statusDTO.setActivated(statusUser.getActivated());
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);

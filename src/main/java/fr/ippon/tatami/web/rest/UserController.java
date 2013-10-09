@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.SearchService;
@@ -123,4 +124,6 @@ public class UserController {
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
+
+
 }

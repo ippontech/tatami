@@ -62,7 +62,6 @@ public class GroupController {
     }
 
 
-
     /**
      * GET  /group/:groupId -> returns the group with the requested id
      */
