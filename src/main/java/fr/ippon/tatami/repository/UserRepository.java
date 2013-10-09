@@ -17,5 +17,9 @@ public interface UserRepository {
 
     void deleteUser(User user);
 
+    void desactivateUser( User user );
+
+    void reactivateUser( User user );
+
     User findUserByLogin(String login);
 }

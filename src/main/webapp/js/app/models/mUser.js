@@ -23,7 +23,8 @@
             statusCount: 0,
             you: false,
             friend: false,
-            follower: false
+            follower: false,
+            activated: true
         },
 
         urlRoot: '/tatami/rest/users/',

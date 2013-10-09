@@ -6,20 +6,48 @@
             'change': 'render'
         },
         events: {
-            'click .toggleFriend': 'toggleFriend'
+            'click .toggleFriend': 'toggleFriend',
+            'click .desactivateUser': 'desactivateUser'
+        },
+        serializeData: function(){
+            var res = Backbone.Marionette.ItemView.prototype.serializeData.apply(this, arguments);
+            res.desactivable = this.options.desactivable;
+            return res;
+        },
+        onRender : function (){
+            if ( !this.model.get("activated") ) {
+                this.$el.addClass("desactivated");
+            }
+            else {
+                this.$el.removeClass("desactivated");
+            }
         },
         toggleFriend: function(){
-            this.model.save({
-                friend: !this.model.get('friend')
-            }, {
+            this.model.save(
+            {
+                friendShip: true,
+                friend: !this.model.get("friend")
+            },
+            {
                 patch: true
             });
+        },
+        desactivateUser: function() {
+            this.model.save(
+                {
+                    activate: true
+                },
+                {
+                    patch: true
+                }
+            );
         }
     });
 
     var UserList = Backbone.Marionette.CollectionView.extend({
         itemView: UserItems,
-        itemViewContainer: '.items'
+        itemViewContainer: '.items',
+        itemViewOptions:{desactivable:false}
     });
 
     var UserItemsMini = UserItems.extend({
@@ -52,7 +80,14 @@
         events: {
             'click .delete' : 'removeUser'
         },
-
+        onRender : function (){
+            if ( !this.model.get("activated") ) {
+                this.$el.addClass("desactivated");
+            }
+            else {
+                this.$el.removeClass("desactivated");
+            }
+        },
         removeUser : function(){
 
             this.model.destroy();

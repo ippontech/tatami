@@ -35,6 +35,16 @@ public class UserDTO implements Serializable {
 
     private boolean isYou = false;
 
+    private boolean isActivated=true;
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.isActivated = activated;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -172,6 +182,7 @@ public class UserDTO implements Serializable {
                 ", isFriend=" + isFriend +
                 ", isFollower=" + isFollower +
                 ", isYou=" + isYou +
+                ", activated=" + isActivated +
                 '}';
     }
 

@@ -22,7 +22,8 @@
             if(input) c.fetch({data: {q : input} });
 
             return  new Tatami.Views.UserList({
-                collection: c
+                collection: c,
+                itemViewOptions:{desactivable:true}
             });
         },
 

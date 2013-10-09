@@ -31,6 +31,7 @@
                 obj.label = '@'+v.username;
                 obj.fullName = v.firstName+' '+ v.lastName;
                 obj.avatar = v.avatar;
+                obj.activated = v.activated;
                 obj.category = "users";
                 data.push(obj);
             });
