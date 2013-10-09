@@ -3,9 +3,6 @@ package fr.ippon.tatami.web.rest.dto;
 import java.io.Serializable;
 
 /**
- * User: ber
- * Date: 07/10/13
- * Time: 18:29
  * This class is used in order to specify the action of PATCH request (cf vUserList.js).
  * The action can be "addFriend" ( friendShip = true ) or "activate/desactivate" ( activate = true ).
  */

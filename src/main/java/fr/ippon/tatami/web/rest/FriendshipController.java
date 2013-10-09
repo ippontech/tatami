@@ -64,9 +64,6 @@ public class FriendshipController {
 
     /**
      * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
-     * @param action
-     * @param username
-     * @return
      */
     @RequestMapping(value = "/rest/users/{username}",
             method = RequestMethod.PATCH)

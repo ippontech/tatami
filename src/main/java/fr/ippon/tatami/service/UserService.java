@@ -261,7 +261,6 @@ public class UserService {
 
     /**
      * Set activated Field to false.
-     * @param username
      */
     @Secured("ROLE_ADMIN")
     @CacheEvict(value = {"group-user-cache", "group-cache","suggest-users-cache"}, allEntries = true)
