@@ -26,7 +26,7 @@
             this.model.save(
             {
                 friendShip: true,
-                isFriend: !this.model.get("friend")
+                friend: !this.model.get("friend")
             },
             {
                 patch: true

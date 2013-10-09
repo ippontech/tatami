@@ -268,20 +268,19 @@ public class UserService {
     public boolean desactivateUser( String username ) {
         User user = getUserByUsername(username);
         if ( user != null ) {
+
             // Desactivate/Activate User
             if ( user.getActivated() ) {
-                //Decrement Group counters
-                Collection<Group> groups = groupService.getGroupsOfUser(user);
-                for ( Group group : groups ) {
-                    groupCounterRepository.decrementGroupCounter(group.getDomain(),group.getGroupId());
-                    groupService.editGroup(group);
-                }
                 userRepository.desactivateUser(user);
+                favoritelineRepository.deleteFavoriteline(user.getLogin());
                 log.debug("User " + user.getLogin() + " has been successfully desactivated !");
-            }  else {
+            }
+
+            else {
                 userRepository.reactivateUser(user);
                 log.debug("User " + user.getLogin() + " has been successfully reactivated !");
             }
+
             return true;
         }
         log.debug("User " + user.getLogin() + " NOT FOUND !");
