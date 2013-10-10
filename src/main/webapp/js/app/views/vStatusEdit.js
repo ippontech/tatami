@@ -48,15 +48,20 @@
             if (navigator.geolocation)   {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var geoLocalization = position.coords.latitude +', ' + position.coords.longitude;
-                   // self.model.set('geoLocalization', geoLocalization);
                     this.currentGeoLocalization = geoLocalization;
                 });
             }
+            else{
+                //Mettre un initialize after
+                if(this.currentGeoLocalization=='')   {this.$el.find('#statusGeoLocalization').css('display', 'none');   }
+            }
+
+
 
         },
 
         geolocBind : function(){
-            if($('#statusGeoLocalization').is(':checked'))
+            if($('#statusGeoLocalization').is(':checked') && currentGeoLocalization != '')
             {
             this.model.set('geoLocalization', currentGeoLocalization);
             }
@@ -64,12 +69,13 @@
             {
                 this.model.set('geoLocalization', '');
              }
-        }   ,
+        },
 
         initMap: function() {
             self = this;
             var geoLocalization = self.currentGeoLocalization;
             console.debug(geoLocalization);
+            if(geoLocalization!= '')        {
             var latitude =       geoLocalization.split(',')[0].trim();
             var longitude =   geoLocalization.split(',')[1].trim();
 
@@ -89,6 +95,7 @@
             console.debug(lonLat);
             markers.addMarker(new OpenLayers.Marker(lonLat));
             map.setCenter(position, zoom );
+            }
         },
 
         initFileUpload: function(){
