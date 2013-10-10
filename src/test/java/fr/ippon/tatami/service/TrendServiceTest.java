@@ -31,7 +31,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
         assertEquals(0, tags.size());
         tags = trendService.searchTags(domain, "Test", 1);
         assertEquals(0, tags.size());
-        statusUpdateService.postStatus("Message #Test", false, new ArrayList<String>());
+        statusUpdateService.postStatus("Message #Test", false, new ArrayList<String>(), null);
         tags = trendService.searchTags(domain, "Te", 1);
         assertEquals(1, tags.size());
         tags = trendService.searchTags(domain, "Test", 1);
@@ -49,7 +49,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             }
         }
         for (int i = 0; i < 5; i++) {
-            statusUpdateService.postStatus("Trending message " + i + " #Trending", false, new ArrayList<String>());
+            statusUpdateService.postStatus("Trending message " + i + " #Trending", false, new ArrayList<String>(), null);
         }
         trends = trendService.getCurrentTrends(domain);
         boolean foundTrend = false;
@@ -63,7 +63,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             fail("#Trending should have been trending");
         }
         for (int i = 0; i < 7; i++) {
-            statusUpdateService.postStatus("New trending message " + i + " #NewTrend", false, new ArrayList<String>());
+            statusUpdateService.postStatus("New trending message " + i + " #NewTrend", false, new ArrayList<String>(), null);
         }
         trends = trendService.getCurrentTrends(domain);
         foundTrend = false;
@@ -96,7 +96,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             }
         }
         for (int i = 0; i < 5; i++) {
-            statusUpdateService.postStatus("User trending message " + i + " #MyTrend", false, new ArrayList<String>());
+            statusUpdateService.postStatus("User trending message " + i + " #MyTrend", false, new ArrayList<String>(), null);
         }
         trends = trendService.getTrendsForUser(login);
         boolean foundTrend = false;
@@ -117,7 +117,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
         mockAuthentication(login);
 
         for (int i = 0; i < 5; i++) {
-            statusUpdateService.postStatus("@anotheruser private message " + i + " #NoTrend", true, new ArrayList<String>());
+            statusUpdateService.postStatus("@anotheruser private message " + i + " #NoTrend", true, new ArrayList<String>(), null);
         }
 
         Collection<Trend> trends = trendService.getCurrentTrends("domain.com");

@@ -96,16 +96,16 @@ public class StatusUpdateService {
     @Inject
     private AtmosphereService atmosphereService;
 
-    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
-        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
+    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
 
     public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
-        createStatus(content, false, group, "", "", "", attachmentIds, null);
+        createStatus(content, false, group, "", "", "", attachmentIds, null, null);
     }
 
     public void postStatusAsUser(String content, User user) {
-        createStatus(content, false, null, "", "", "", null, user);
+        createStatus(content, false, null, "", "", "", null, user, null);
     }
 
     public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
@@ -196,7 +196,7 @@ public class StatusUpdateService {
                 replyTo,
                 replyToUsername,
                 attachmentIds,
-                null);
+                null, null);
     }
 
     private Status createStatus(String content,
@@ -206,7 +206,8 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername,
                                 Collection<String> attachmentIds,
-                                User user) {
+                                User user,
+                                String geoLocalization) {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
@@ -230,7 +231,8 @@ public class StatusUpdateService {
                         content,
                         discussionId,
                         replyTo,
-                        replyToUsername);
+                        replyToUsername,
+                        geoLocalization);
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {

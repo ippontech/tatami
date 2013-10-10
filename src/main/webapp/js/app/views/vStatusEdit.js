@@ -9,11 +9,15 @@
         events: {
             'keydown .edit-tatam > textarea': 'updatecount',
             'click .edit-tatam-float-right': 'togglePreview',
-            'submit': 'submit'
+            'submit': 'submit' ,
+            'click #statusGeoLocalization' : 'geolocBind'
         },
+
+        currentGeoLocalization : '',
 
         initialize: function(){
             this.model = new Tatami.Models.PostStatus();
+            this.initGeoLocalization();
         },
         onRender: function(){
             _.defaults(this.options, {
@@ -30,12 +34,61 @@
 
             this.initFileUpload();
             this.initFileUploadBind();
-
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0 );
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
 
             this.$el.modal('show');
+            this.initMap();
+        },
+
+        initGeoLocalization: function() {
+            var self = this;
+
+            if (navigator.geolocation)   {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var geoLocalization = position.coords.latitude +', ' + position.coords.longitude;
+                   // self.model.set('geoLocalization', geoLocalization);
+                    this.currentGeoLocalization = geoLocalization;
+                });
+            }
+
+        },
+
+        geolocBind : function(){
+            if($('#statusGeoLocalization').is(':checked'))
+            {
+            this.model.set('geoLocalization', currentGeoLocalization);
+            }
+            else
+            {
+                this.model.set('geoLocalization', '');
+             }
+        }   ,
+
+        initMap: function() {
+            self = this;
+            var geoLocalization = self.currentGeoLocalization;
+            console.debug(geoLocalization);
+            var latitude =       geoLocalization.split(',')[0].trim();
+            var longitude =   geoLocalization.split(',')[1].trim();
+
+            map = new OpenLayers.Map("basicMap");
+            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var lonLat = new OpenLayers.LonLat(parseFloat(longitude),parseFloat(latitude)).transform( fromProjection, toProjection);
+            var mapnik         = new OpenLayers.Layer.OSM();
+            var position       = lonLat;
+            var zoom           = 12;
+
+            map.addLayer(mapnik);
+
+            var markers = new OpenLayers.Layer.Markers( "Markers" );
+            map.addLayer(markers);
+
+            console.debug(lonLat);
+            markers.addMarker(new OpenLayers.Marker(lonLat));
+            map.setCenter(position, zoom );
         },
 
         initFileUpload: function(){
@@ -187,6 +240,17 @@
             this.model.set('content', this.$edit.val());
             this.model.set('groupId', this.$el.find('[name="groupId"]').val());
             this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
+            //if(this.currentGeoLocalization) {
+            //if($('#statusGeoLocalization').val() == "true")
+            //{
+                //this.model.set('geoLocalization', currentGeoLocalization);
+            //}
+            //else
+            //{
+            //    this.model.set('geoLocalization', '');
+           // }
+
+            //this.model.set('geoLocalization', this.currentGeoLocalization);
             this.model.save(null, {
                 success: function (model, response) {
                     self.hide();

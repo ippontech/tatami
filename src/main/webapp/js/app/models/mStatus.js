@@ -53,6 +53,7 @@
             attr.fullName = this.getFullName();
             attr.avatarURL = this.getAvatarURL();
             attr.attachmentsImage = this.getImages();
+            attr.geoLocalizationURL = this.getGeoLocalizationUrl();
 
             return attr;
         },
@@ -68,7 +69,16 @@
 
         getAvatarURL: function(){
             return (this.get('avatar'))? '/tatami/avatar/' + this.get('avatar') + '/photo.jpg': '/img/default_image_profile.png';
-        }, 
+        },
+
+        getGeoLocalizationUrl: function() {
+            var geoLocalization = this.get('geoLocalization');
+            if(geoLocalization) {
+                var latitude = geoLocalization.split(',')[0].trim();
+                var longitude = geoLocalization.split(',')[1].trim();
+                return "http://www.openstreetmap.org/?lon="+longitude+"&lat="+latitude+"&mlon="+longitude+"&mlat="+latitude+"&zoom=12";
+            }
+        },
 
         getImages: function(){
             if (this.get('attachments') != null) {

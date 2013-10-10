@@ -121,7 +121,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         String content = "voilà un message qui devrait se retrouver dans le digest ! ";
-        statusUpdateService.postStatus(content, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 
@@ -146,7 +146,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         String content2 = "voilà un message 2 qui devrait se retrouver dans le digest ! ";
-        statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content2, false, new ArrayList<String>(), null);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 
@@ -171,7 +171,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         for (int i = 0; i < 20; i++) {
             String content2 = "voilà un message " + i + " qui devrait se retrouver dans le digest ! ";
-            statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content2, false, new ArrayList<String>(), null);
         }
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
@@ -227,7 +227,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         String content = "voilà un message qui devrait se retrouver dans le digest ! ";
-        statusUpdateService.postStatus(content, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 
@@ -252,7 +252,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         String content2 = "voilà un message 2 qui devrait se retrouver dans le digest ! ";
-        statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content2, false, new ArrayList<String>(), null);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 
@@ -277,7 +277,7 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostForDigests@ippon.fr");
         for (int i = 0; i < 20; i++) {
             String content2 = "voilà un message " + i + " qui devrait se retrouver dans le digest ! ";
-            statusUpdateService.postStatus(content2, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content2, false, new ArrayList<String>(), null);
         }
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);

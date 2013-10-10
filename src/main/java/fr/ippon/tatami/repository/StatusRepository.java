@@ -20,7 +20,8 @@ public interface StatusRepository {
                         String content,
                         String discussionId,
                         String replyTo,
-                        String replyToUsername) throws ConstraintViolationException;
+                        String replyToUsername,
+                        String geoLocalization) throws ConstraintViolationException;
 
     Share createShare(String login,
                       String originalStatusId);

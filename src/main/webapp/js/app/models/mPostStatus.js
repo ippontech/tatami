@@ -6,6 +6,7 @@
             groupId: '',
             attachmentIds: [],
             replyTo: '',
+            geoLocalization:'' ,
             statusPrivate: false
         },
 

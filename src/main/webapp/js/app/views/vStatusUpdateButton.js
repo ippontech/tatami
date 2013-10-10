@@ -32,7 +32,7 @@
                 $(this.el).removeClass('refresh-button-style');
                 document.title = "Tatami";
                 this.$el.slideUp();
-                Tatami.app.favi.reset();
+
             }
         },
         className: 'text-center',
