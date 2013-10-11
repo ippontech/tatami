@@ -294,7 +294,7 @@ div.jGrowl-notification{
     /* Fallback for web browsers that don't support RGBa */
     background-color: rgb(255,64,64);
     /* RGBa with 0.6 opacity */
-    background-color: rgba(255,64,64,0.65) !important;
+    background-color: rgba(241, 241, 241, 0.65) !important;
 }
 .useritemmini {
     padding: 0px 5px 1px 35px;
