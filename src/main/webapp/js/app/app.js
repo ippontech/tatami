@@ -104,7 +104,7 @@
     Tatami.app.addInitializer(function(){
         var autoRefresh = function(){
             Tatami.app.trigger('refresh');
-            _.delay(autoRefresh, 20000);
+            _.delay(autoRefresh, 10000);
         };
         autoRefresh();
     });

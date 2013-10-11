@@ -447,7 +447,7 @@
                     self.collection.next();
                 });
                 this.listenTo(Tatami.app, 'display', this.onRender);
-            } 
+            }
 
             this.listenTo(this.collection, 'add', function(model, collection, options){
                 model.hidden = (options.at === 0);

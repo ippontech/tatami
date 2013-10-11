@@ -260,17 +260,6 @@
             this.model.set('content', this.$edit.val());
             this.model.set('groupId', this.$el.find('[name="groupId"]').val());
             this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
-            //if(this.currentGeoLocalization) {
-            //if($('#statusGeoLocalization').val() == "true")
-            //{
-            //this.model.set('geoLocalization', currentGeoLocalization);
-            //}
-            //else
-            //{
-            //    this.model.set('geoLocalization', '');
-            // }
-
-            //this.model.set('geoLocalization', this.currentGeoLocalization);
             this.model.save(null, {
                 success: function (model, response) {
                     self.hide();
