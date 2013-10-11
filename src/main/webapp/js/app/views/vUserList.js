@@ -78,7 +78,9 @@
 
         },
         events: {
-            'click .delete' : 'removeUser'
+            'click .delete' : 'removeUser',
+            'click .accept' : 'acceptUser',
+            'click .reject' : 'rejectUser'
         },
         onRender : function (){
             if ( !this.model.get("activated") ) {
@@ -92,6 +94,16 @@
 
             this.model.destroy();
 
+        },
+
+        acceptUser : function() {
+        	this.model.url = this.model.urlRoot+'/tatami/rest/groups/'+this.model.attributes.groupId+'/requests/'+this.model.id;
+        	this.model.save();
+        },
+
+        rejectUser : function() {
+        	this.model.url = this.model.urlRoot+'/tatami/rest/groups/'+this.model.attributes.groupId+'/requests/'+this.model.id;
+        	this.model.destroy();
         }
 
     });

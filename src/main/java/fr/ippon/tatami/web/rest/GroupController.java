@@ -317,6 +317,9 @@ public class GroupController {
             } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
                 dto = groupService.getMembersForGroup(groupId, userToAdd);
+            } else if(! currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
+            	groupService.requestToJoin(userToAdd, currentGroup);
+            	dto = groupService.getMembersForGroup(groupId, userToAdd);
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             }
@@ -359,6 +362,73 @@ public class GroupController {
             }
         }
         return true;
+    }
+    
+    /**
+     * PUT /groups/{groupId}/requests/{userLogin} -> accept a join request 
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/requests/{username}",
+    		method = RequestMethod.PUT,
+    		produces = "application/json")
+    @ResponseBody
+    @Timed
+    public boolean acceptJoinRequest(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    	
+    	User currentUser = authenticationService.getCurrentUser();
+    	Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+    	User userToAccept = userService.getUserByUsername(username);
+    	
+    	log.debug("CurrentUser : {}", currentUser);
+    	
+    	log.debug("UserToAccept : {}", userToAccept);
+    	
+    	if (currentUser == null) {
+    		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
+    		return false;
+    	} else if (currentGroup == null || userToAccept == null) {
+    		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    		return false;
+    	} else {
+    		if ( !currentGroup.isPublicGroup() && isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAccept)) {
+    			groupService.acceptRequestToJoin(userToAccept, currentGroup);
+    		} else {
+    			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    			log.debug("Error : {} {} {}",  !currentGroup.isPublicGroup(), isGroupManagedByCurrentUser(currentGroup), !currentUser.equals(userToAccept));
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    
+    /**
+     * DELETE /groups/{groupId}/requests/{userLogin} -> accept a join request 
+     */
+    @RequestMapping(value = "/rest/groups/{groupId}/requests/{username}",
+    		method = RequestMethod.DELETE,
+    		produces = "application/json")
+    @ResponseBody
+    @Timed
+    public boolean rejectJoinRequest(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    	
+    	User currentUser = authenticationService.getCurrentUser();
+    	Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+    	User userToAccept = userService.getUserByUsername(username);
+    	
+    	if (currentUser == null) {
+    		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
+    		return false;
+    	} else if (currentGroup == null || userToAccept == null) {
+    		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    		return false;
+    	} else {
+    		if ( !currentGroup.isPublicGroup() && isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAccept)) {
+    			groupService.rejectRequestToJoin(userToAccept, currentGroup);
+    		} else {
+    			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     private boolean isGroupManagedByCurrentUser(Group group) {

@@ -18,6 +18,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
     private String lastName;
 
     private String role;
+    
+    private String groupId;
 
     private Boolean isMember = true;
 
@@ -81,6 +83,14 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+    
+    public String getGroupId() {
+    	return groupId;
+    }
+    
+    public void setGroupId(String groupId) {
+    	this.groupId = groupId;
     }
 
     public Boolean getIsMember() {

@@ -79,6 +79,8 @@ public class GroupService {
 
     public Collection<UserGroupDTO> getMembersForGroup(String groupId, String login) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
+        Map<String, String> pendingMembersMap = groupMembersRepository.findPendingMembers(groupId);
+        membersMap.putAll(pendingMembersMap);
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
@@ -91,6 +93,7 @@ public class GroupService {
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
             dto.setActivated(user.getActivated());
+            dto.setGroupId(groupId);
             if (friendLogins.contains(user.getLogin())) {
                 dto.setFriend(true);
             }
@@ -117,6 +120,7 @@ public class GroupService {
                 dto.setFirstName(user.getFirstName());
                 dto.setLastName(user.getLastName());
                 dto.setRole(member.getValue());
+                dto.setGroupId(groupId);
                 return dto;
             }
         }
@@ -212,6 +216,46 @@ public class GroupService {
             log.debug("User {} is not a member of group {}", user.getLogin(), group.getName());
         }
     }
+    
+    public void requestToJoin(User user, Group group) {
+    	String groupId = group.getGroupId();
+    	Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+    	boolean userIsAlreadyAMember = false;
+    	for (String testGroupId : userCurrentGroupIds) {
+    		if(testGroupId.equals(groupId)) {
+    			userIsAlreadyAMember = true;
+    		}
+    	}
+    	if (!userIsAlreadyAMember) {
+    		groupMembersRepository.requestApproval(groupId, user.getLogin());
+    	} else {
+    		log.debug("User {} is already a member of group {}", user.getLogin(), group.getName());
+    	}
+    }
+    
+    public void acceptRequestToJoin(User user, Group group) {
+    	String groupId = group.getGroupId();
+        Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+        boolean userIsAlreadyAMember = false;
+        for (String testGroupId : userCurrentGroupIds) {
+            if (testGroupId.equals(groupId)) {
+                userIsAlreadyAMember = true;
+            }
+        }
+        if (!userIsAlreadyAMember) {
+        	groupMembersRepository.acceptRequest(group.getGroupId(), user.getLogin());
+            log.debug("user=" + user);
+            groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
+            userGroupRepository.addGroupAsMember(user.getLogin(), groupId);
+        } else {
+            log.debug("User {} is already a member of group {}", user.getLogin(), group.getName());
+        }
+    }
+    
+    @CacheEvict(value = "group-cache", allEntries = true)
+    public void rejectRequestToJoin(User user, Group group) {
+    	groupMembersRepository.rejectRequest(group.getGroupId(), user.getLogin());
+    }
 
 
     public Collection<Group> buildGroupList(Collection<Group> groups) {
@@ -242,6 +286,10 @@ public class GroupService {
         }
         return null;
     }
+    
+    private boolean isUserWaitingForApproval(User currentUser, String groupId) {
+    	return groupMembersRepository.isUserWaitingForApproval(groupId, currentUser.getLogin());
+    }
 
     private boolean isGroupManagedByCurrentUser(Group group) {
         Collection<Group> groups = getGroupsWhereCurrentUserIsAdmin();
@@ -269,7 +317,10 @@ public class GroupService {
             }
             else {
                 Group result = getGroupFromUser(user, group.getGroupId());
-                if (result == null) {
+                if(isUserWaitingForApproval(user, group.getGroupId())) {
+                	group.setWaitingForApproval(true);
+                }
+                else if (result == null) {
                     log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
                     return null;
                 } else {
@@ -283,6 +334,7 @@ public class GroupService {
                 }
             }
             group.setCounter(counter);
+
         }
         return group;
     }

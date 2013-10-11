@@ -79,7 +79,12 @@
                 this.model.set('member',false);
             } else {
                 this.model.save();
-                this.model.set('member',true);
+                if(this.model.get('publicGroup')) {
+                	this.model.set('member',true);
+                }
+                else {
+                	this.model.set('waitingForApproval', true);
+                }
             }
         }
     });
