@@ -151,7 +151,6 @@ public class GroupService {
         return getGroupDetails(user, groupIds);
     }
 
-
     private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();

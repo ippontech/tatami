@@ -41,6 +41,7 @@
     <@ if(!you) { @>
     <h3><strong><fmt:message key="tatami.user.profile.show"/> : @<@= username @> </strong><@ if(!activated) { @><span><i><fmt:message key="tatami.user.desactivate.msg2"/></i></span><@ } @>
         <@if(follower){ @> (<fmt:message key="tatami.user.follows.you"/>) <@ }@>
+          <@if(activated) {@>
             <a class="btn-title toggleFriend pull-right label <@= (friend)?'label-info':'' @>">
                 <@ if(friend) { @>
                   <span class="glyphicon glyphicon-minus"> <span class="hidden-phone"><fmt:message key="tatami.user.followed"/></span></span>
@@ -48,6 +49,7 @@
                 <span class="glyphicon glyphicon-plus"> <span class="hidden-phone"><fmt:message key="tatami.user.follow"/></span></span>
                 <@ } @>
             </a>
+          <@ } @>
         <@ } else {@>
         <h3><strong><fmt:message key="tatami.user.profile.yourProfil"/></strong></h3>
         <@ } @>
@@ -668,7 +670,7 @@
             </span>
         </span>
         <@ } @>
-        <@ if(!you) { @>
+        <@ if(!you && activated) { @>
             <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>
@@ -700,7 +702,7 @@
         <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
     </div>
     <h6>
-        <@ if(!you) { @>
+        <@ if(!you && activated) { @>
             <span class="toggleFriend pointer pull-right label <@ if(friend) { @>label-info<@ } @>">
                 <span class="glyphicon glyphicon-<@= (friend)? 'minus':'plus'@>"></span>
             </span>

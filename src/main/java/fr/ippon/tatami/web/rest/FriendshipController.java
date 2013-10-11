@@ -79,8 +79,7 @@ public class FriendshipController {
         }
         else if ( action.getActivate() != null &&  action.getActivate()) {
             this.log.debug("REST request to desactivate Profile : {}", username);
-            User user = userService.getUserByUsername(username);
-            userService.desactivateUser(user.getLogin());
+            userService.desactivateUser(username);
         }
         return userService.buildUserDTO(userService.getUserByUsername(username));
     }
