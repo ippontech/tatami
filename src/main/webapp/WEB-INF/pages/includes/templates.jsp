@@ -406,11 +406,13 @@
 
                  <div class="controls groups">
                      <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
+                         <div id="GeolocImpossible"></div> <p></p>
                          <div class="controls geoLocalization" id="geolocCheckboxDiv">
                              <label class="checkbox">
                                  <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
                              </label>
                          </div>
+
 
                          <div id="geolocalisationCheckbox" class="collapse">
                              <div id="basicMap" style="height:250px; width:250px"></div>

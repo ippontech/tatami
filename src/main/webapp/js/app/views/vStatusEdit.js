@@ -10,7 +10,8 @@
             'keydown .edit-tatam > textarea': 'updatecount',
             'click .edit-tatam-float-right': 'togglePreview',
             'submit': 'submit' ,
-            'click #statusGeoLocalization' : 'geolocBind'
+            'click #statusGeoLocalization' : 'geolocBind'   ,
+            //'initialize:after' : 'checkGeoloc'
         },
 
         currentGeoLocalization : '',
@@ -19,6 +20,7 @@
             this.model = new Tatami.Models.PostStatus();
             this.initGeoLocalization();
         },
+
         onRender: function(){
             _.defaults(this.options, {
                 maxLength: 750
@@ -39,11 +41,13 @@
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
 
             this.$el.modal('show');
+
             this.initMap();
+            this.checkGeoloc();
         },
 
         initGeoLocalization: function() {
-            var self = this;
+
 
             if (navigator.geolocation)   {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -60,10 +64,32 @@
 
         },
 
+        checkGeoloc : function() {
+           self = this;
+            var testPosition = '';
+            if (navigator.geolocation)   {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    testPosition = position.coords.latitude;
+                });
+                if(testPosition =='')   {
+                    self.$el.find('#geolocCheckboxDiv').remove();
+                    self.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color','red');
+                }
+            }
+            else
+            {
+                this.$el.find('#geolocCheckboxDiv').remove();
+                this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color','red');
+            }
+
+
+
+        },
+
         geolocBind : function(){
             if($('#statusGeoLocalization').is(':checked') && currentGeoLocalization != '')
             {
-            this.model.set('geoLocalization', currentGeoLocalization);
+                this.model.set('geoLocalization', currentGeoLocalization);
             }
             else
             {
@@ -74,7 +100,6 @@
         initMap: function() {
             self = this;
             var geoLocalization = self.currentGeoLocalization;
-            console.debug(geoLocalization);
             if(geoLocalization!= '')        {
             var latitude =       geoLocalization.split(',')[0].trim();
             var longitude =   geoLocalization.split(',')[1].trim();
