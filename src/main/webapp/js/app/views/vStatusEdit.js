@@ -24,7 +24,7 @@
             _.defaults(this.options, {
                 maxLength: 750
             });
-
+            console.log("onRender function");
             this.$editContent = this.$el.find('.edit-tatam');
             this.$edit = this.$editContent.find('textarea[name="content"]');
             this.$previewContent = this.$el.find('.preview-tatam');
@@ -46,40 +46,33 @@
         },
 
         initGeoLocalization: function () {
+            console.log("initGeoLocalization : initialisation");
             if (navigator.geolocation) {
+                console.log("initGeoLocalization : le navigateur peut théoriquement géolocaliser");
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var geoLocalization = position.coords.latitude + ', ' + position.coords.longitude;
                     this.currentGeoLocalization = geoLocalization;
                 });
             }
             else {
-                if (this.currentGeoLocalization == '') {
-                    this.$el.find('#statusGeoLocalization').css('display', 'none');
-                }
+                this.$el.find('#geolocCheckboxDiv').remove();
+                this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
             }
 
 
         },
 
         checkGeoloc: function () {
-            self = this;
-            var testPosition = '';
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    testPosition = position.coords.latitude;
-                });
-                if (testPosition == '') {
-                    self.$el.find('#geolocCheckboxDiv').remove();
-                    self.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
-                }
-            }
-            else {
+            if (typeof currentGeoLocalization == "undefined")
+            {
+                console.log("checkGeoloc Erreur : Le navigateur ne peut pas");
                 this.$el.find('#geolocCheckboxDiv').remove();
                 this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
             }
         },
 
         geolocBind: function () {
+            console.log("Geoloc Bind : le model va se mettre à jour");
             if ($('#statusGeoLocalization').is(':checked') && currentGeoLocalization != '') {
                 this.model.set('geoLocalization', currentGeoLocalization);
             }
@@ -89,8 +82,10 @@
         },
 
         initMap: function () {
+            try {
+            console.log("initMap : début" + currentGeoLocalization);
             self = this;
-            var geoLocalization = self.currentGeoLocalization;
+            var geoLocalization = currentGeoLocalization;
             if (geoLocalization != '') {
                 var latitude = geoLocalization.split(',')[0].trim();
                 var longitude = geoLocalization.split(',')[1].trim();
@@ -108,6 +103,12 @@
                 map.addLayer(markers);
                 markers.addMarker(new OpenLayers.Marker(lonLat));
                 map.setCenter(position, zoom);
+                console.log("initMap : OK");
+            }
+            else {
+                console.log("initMap : Erreur");
+            }  } catch(e){
+
             }
         },
 
