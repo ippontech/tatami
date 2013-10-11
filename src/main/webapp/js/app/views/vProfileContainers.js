@@ -47,7 +47,8 @@
         },
         toggleFriend: function(){
             this.model.save({
-                friend: !this.model.get('friend')
+                friend: !this.model.get('friend'),
+                friendShip:true
             }, {
                 patch: true
             });

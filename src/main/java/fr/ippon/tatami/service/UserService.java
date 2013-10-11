@@ -263,26 +263,25 @@ public class UserService {
      * Set activated Field to false.
      */
     @Secured("ROLE_ADMIN")
-    @CacheEvict(value = {"group-user-cache", "group-cache","suggest-users-cache"}, allEntries = true)
-    public boolean desactivateUser( String username ) {
-        User user = getUserByUsername(username);
+    @CacheEvict(value = {"group-user-cache", "suggest-users-cache"}, allEntries=true)
+    public boolean desactivateUser( String userLogin ) {
+        User user = getUserByLogin(userLogin);
         if ( user != null ) {
-
             // Desactivate/Activate User
             if ( user.getActivated() ) {
                 userRepository.desactivateUser(user);
-                favoritelineRepository.deleteFavoriteline(user.getLogin());
-                log.debug("User " + user.getLogin() + " has been successfully desactivated !");
+                favoritelineRepository.deleteFavoriteline(userLogin);
+                log.debug("User " + userLogin + " has been successfully desactivated !");
             }
 
             else {
                 userRepository.reactivateUser(user);
-                log.debug("User " + user.getLogin() + " has been successfully reactivated !");
+                log.debug("User " + userLogin + " has been successfully reactivated !");
             }
 
             return true;
         }
-        log.debug("User " + user.getLogin() + " NOT FOUND !");
+        log.debug("User " + userLogin + " NOT FOUND !");
         return false;
     }
     /**
