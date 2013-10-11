@@ -196,7 +196,7 @@ public class TimelineController {
                         "group ID = {}", currentUser.getLogin(), status.getGroupId());
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             } else {
-                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds);
+                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds, status.getGeoLocalization());
             }
         }
         return "{}";
