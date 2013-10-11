@@ -26,8 +26,6 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
     private long counter;
 
     private boolean member;
-    
-    private boolean waitingForApproval;
 
     private boolean administrator;
 
@@ -61,14 +59,6 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
 
     public void setName(String name) {
         this.name = name;
-    }
-    
-    public boolean isWaitingForApproval() {
-    	return this.waitingForApproval;
-    }
-    
-    public void setWaitingForApproval(boolean waitingForApproval) {
-    	this.waitingForApproval = waitingForApproval;
     }
 
     public String getDescription() {

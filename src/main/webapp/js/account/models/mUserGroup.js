@@ -5,8 +5,7 @@ var MUserGroup = Backbone.Model.extend({
         avatar : '',
         firstName : '',
         lastName : '',
-        role : '',
-        groupId : ''
+        role : ''
     },
     toJSON : function(){
         return _.extend(Backbone.Model.prototype.toJSON.apply(this), {
