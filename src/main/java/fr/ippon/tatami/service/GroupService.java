@@ -73,7 +73,6 @@ public class GroupService {
                 group.getName(),
                 group.getDescription(),
                 group.isArchivedGroup());
-
         searchService.removeGroup(group);
         searchService.addGroup(group);
     }
@@ -91,6 +90,7 @@ public class GroupService {
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
+            dto.setActivated(user.getActivated());
             if (friendLogins.contains(user.getLogin())) {
                 dto.setFriend(true);
             }
@@ -101,6 +101,9 @@ public class GroupService {
         }
         return userGroupDTOs;
     }
+
+
+
 
     public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
@@ -273,8 +276,13 @@ public class GroupService {
                     group.setMember(true);
                 }
             }
-
-            group.setCounter(getMembersForGroup(group.getGroupId(),authenticationService.getCurrentUser().getLogin()).size());
+            long counter = 0;
+            for ( UserGroupDTO userGroup :  getMembersForGroup(group.getGroupId(),authenticationService.getCurrentUser().getLogin()) ) {
+                if(userGroup.isActivated()) {
+                    counter++;
+                }
+            }
+            group.setCounter(counter);
         }
         return group;
     }

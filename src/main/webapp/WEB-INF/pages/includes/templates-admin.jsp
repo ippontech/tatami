@@ -425,7 +425,13 @@
             <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
         </div>
         <h4>
-
+            <@  if(!activated) { @>
+            <span>
+                <span class="glyphicon glyphicon-off">
+                   <fmt:message key="tatami.user.desactivate.msg"/>
+                </span>
+            </span>
+            <@ } @>
             <a href="/tatami/home/#/users/<@= username @>">
                 <strong>
                     <@= fullName @>

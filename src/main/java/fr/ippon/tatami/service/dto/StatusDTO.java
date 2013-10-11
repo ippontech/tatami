@@ -51,6 +51,8 @@ public class StatusDTO implements Serializable {
 
     private boolean statusPrivate;
 
+    private boolean activated;
+
     private String groupId;
 
     private String groupName;
@@ -98,6 +100,13 @@ public class StatusDTO implements Serializable {
 
     private boolean shareByMe;
 
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
     public boolean isShareByMe() {
         return shareByMe;

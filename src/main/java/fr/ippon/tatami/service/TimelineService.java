@@ -208,6 +208,7 @@ public class TimelineService {
                     statusDTO.setStatusId(abstractStatus.getStatusId());
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
                     statusDTO.setGeoLocalization(abstractStatus.getGeoLocalization());
+                    statusDTO.setActivated(statusUser.getActivated());
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);

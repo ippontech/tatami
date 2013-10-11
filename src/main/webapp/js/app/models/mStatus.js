@@ -42,7 +42,8 @@
             first: false,
             last: false,
             shareByMe: '',
-            shared: false
+            shared: false,
+            activated: true
         },
 
         urlRoot: '/tatami/rest/statuses/',
