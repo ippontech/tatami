@@ -412,8 +412,6 @@
                                  <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
                              </label>
                          </div>
-
-
                          <div id="geolocalisationCheckbox" class="collapse">
                              <div id="basicMap" style="height:250px; width:250px"></div>
                          </div>
