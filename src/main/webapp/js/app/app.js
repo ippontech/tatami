@@ -104,7 +104,7 @@
     Tatami.app.addInitializer(function(){
         var autoRefresh = function(){
             Tatami.app.trigger('refresh');
-            _.delay(autoRefresh, 20000);
+            _.delay(autoRefresh, 10000);
         };
         autoRefresh();
     });
@@ -133,6 +133,10 @@
     Tatami.app.addInitializer(function(){
         Tatami.app.edit = new Tatami.Views.StatusEdit({
             el: $('#tatamiEdit')
+        });
+
+        Tatami.app.favi = new Favico({
+            animation : 'popFade'
         });
     });
 

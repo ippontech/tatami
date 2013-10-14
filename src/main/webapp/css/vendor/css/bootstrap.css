@@ -1825,7 +1825,7 @@ select:focus:invalid:focus {
   font-weight: 500;
   line-height: 20px;
   text-align: center;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   vertical-align: middle;
   cursor: pointer;
   border: 1px solid #a7a9aa;

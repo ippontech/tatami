@@ -1,4 +1,4 @@
-(function(Backbone, _, Tatami){
+(function (Backbone, _, Tatami) {
     var StatusEdit = Backbone.Marionette.Layout.extend({
 
         template: '#StatusEdit',
@@ -9,17 +9,22 @@
         events: {
             'keydown .edit-tatam > textarea': 'updatecount',
             'click .edit-tatam-float-right': 'togglePreview',
-            'submit': 'submit'
+            'submit': 'submit',
+            'click #statusGeoLocalization': 'geolocBind'
         },
 
-        initialize: function(){
+        options : {currentGeoLocalization : ''},
+
+        initialize: function () {
             this.model = new Tatami.Models.PostStatus();
+            this.initGeoLocalization();
         },
-        onRender: function(){
+
+        onRender: function () {
             _.defaults(this.options, {
                 maxLength: 750
             });
-
+            console.log("onRender function");
             this.$editContent = this.$el.find('.edit-tatam');
             this.$edit = this.$editContent.find('textarea[name="content"]');
             this.$previewContent = this.$el.find('.preview-tatam');
@@ -30,15 +35,76 @@
 
             this.initFileUpload();
             this.initFileUploadBind();
-
-            this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0 );
+            this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
 
             this.$el.modal('show');
+
+            this.initMap();
+            this.checkGeoloc();
         },
 
-        initFileUpload: function(){
+        initGeoLocalization: function () {
+             var self = this;
+            console.log("initGeoLocalization : initialisation");
+            if (navigator.geolocation) {
+                console.log("initGeoLocalization : le navigateur peut théoriquement géolocaliser");
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var geoLocalization = position.coords.latitude + ', ' + position.coords.longitude;
+                    console.log("geoLocalization : " + geoLocalization);
+                    self.options.currentGeoLocalization = geoLocalization;
+                });
+            }
+        },
+
+        checkGeoloc: function () {
+            if (this.options.currentGeoLocalization === '')
+            {
+                console.log("checkGeoloc Erreur : Le navigateur ne peut pas");
+                this.$el.find('#geolocCheckboxDiv').remove();
+                this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
+            }
+        },
+
+        geolocBind: function () {
+            console.log("Geoloc Bind : le model va se mettre à jour");
+            if ($('#statusGeoLocalization').is(':checked') && this.options.currentGeoLocalization !== '') {
+                this.model.set('geoLocalization', this.options.currentGeoLocalization);
+            }
+            else {
+                this.model.set('geoLocalization', '');
+            }
+        },
+
+        initMap: function () {
+            if (this.options.currentGeoLocalization !== '') {
+                console.log("initMap : début" + this.options.currentGeoLocalization);
+                var geoLocalization = this.options.currentGeoLocalization;
+                var latitude = geoLocalization.split(',')[0].trim();
+                var longitude = geoLocalization.split(',')[1].trim();
+
+                map = new OpenLayers.Map("basicMap");
+                var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
+                var mapnik = new OpenLayers.Layer.OSM();
+                var position = lonLat;
+                var zoom = 12;
+
+                map.addLayer(mapnik);
+                var markers = new OpenLayers.Layer.Markers("Markers");
+                map.addLayer(markers);
+                markers.addMarker(new OpenLayers.Marker(lonLat));
+                map.setCenter(position, zoom);
+                console.log("initMap : OK");
+            }
+            else {
+                console.log("initMap : Erreur");
+            }
+        },
+
+        initFileUpload: function () {
             var self = this;
             self.model.resetAttachments();
             this.$dropzone = self.$el.find('.dropzone');
@@ -57,7 +123,7 @@
                 done: function (e, data) {
                     self.$el.find('.attachmentBar').hide();
                     self.$el.find('.attachmentBar .bar').css(
-                      'width','0%'
+                        'width', '0%'
                     );
                     $.each(data.result, function (index, attachment) {
                         var size = "";
@@ -73,7 +139,7 @@
                 fail: function (e, data) {
                     self.$el.find('.attachmentBar').hide();
                     self.$el.find('.attachmentBar .bar').css(
-                        'width','0%'
+                        'width', '0%'
                     );
                     if (data.errorThrown == "Forbidden") {
                         self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
@@ -82,12 +148,12 @@
             });
         },
 
-        initFileUploadBind: _.once(function(){
+        initFileUploadBind: _.once(function () {
             var self = this;
 
             $(document).bind('dragover', function (e) {
                 var dropZone = self.$dropzone,
-                timeout = window.dropZoneTimeout;
+                    timeout = window.dropZoneTimeout;
                 if (!timeout) {
                     dropZone.addClass('in');
                 } else {
@@ -106,19 +172,19 @@
             $(document).bind('drop dragover', function (e) {
                 return false;
             });
-            self.$el.find('.dropzone').bind('click', function(){
+            self.$el.find('.dropzone').bind('click', function () {
                 self.$el.find('.updateStatusFileupload').click();
             });
         }),
 
-        serializeData: function(){
+        serializeData: function () {
             return _.extend(Backbone.Marionette.Layout.prototype.serializeData.apply(this, arguments), {
                 groups: (new Tatami.Collections.Groups(Tatami.app.groups.where({archivedGroup: false}))).toJSON()
             });
         },
 
 
-        updatecount: function(e){
+        updatecount: function (e) {
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
 
@@ -126,25 +192,25 @@
             $label.text(value);
         },
 
-        togglePreview: function(){
-            try{
+        togglePreview: function () {
+            try {
                 this.$preview.html(marked(this.$edit.val()));
             }
-            catch(e){
+            catch (e) {
                 console.log(e);
             }
             this.$el.find('.glyphicon-eye-open, .glyphicon-edit').add(this.$editContent).add(this.$previewContent).toggleClass('hide');
         },
 
-        show: function(options){
-            options = (options)? options: {};
-            if(options.status) {
+        show: function (options) {
+            options = (options) ? options : {};
+            if (options.status) {
                 var self = this;
                 var statusReply = new Tatami.Models.Status({
                     statusId: options.status
                 });
                 statusReply.fetch({
-                    success: function(model){
+                    success: function (model) {
                         self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
@@ -165,12 +231,12 @@
             this.render();
         },
 
-        hide: function(){
+        hide: function () {
             this.$el.modal('hide');
             this.reset();
         },
 
-        reset: function(){
+        reset: function () {
             this.el.reset();
 
             this.model = new Tatami.Models.PostStatus();
@@ -179,7 +245,7 @@
             $reply.css('display', 'none');
         },
 
-        submit: function(e){
+        submit: function (e) {
             e.preventDefault();
             e.stopPropagation();
             var self = this;
@@ -201,7 +267,7 @@
             });
         },
 
-        cancel: function(){
+        cancel: function () {
             return false;
         }
 
