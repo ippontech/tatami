@@ -13,7 +13,7 @@
             'click #statusGeoLocalization': 'geolocBind'
         },
 
-        currentGeoLocalization: '',
+        options : {currentGeoLocalization : ''},
 
         initialize: function () {
             this.model = new Tatami.Models.PostStatus();
@@ -46,24 +46,20 @@
         },
 
         initGeoLocalization: function () {
+             var self = this;
             console.log("initGeoLocalization : initialisation");
             if (navigator.geolocation) {
                 console.log("initGeoLocalization : le navigateur peut théoriquement géolocaliser");
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var geoLocalization = position.coords.latitude + ', ' + position.coords.longitude;
-                    this.currentGeoLocalization = geoLocalization;
+                    console.log("geoLocalization : " + geoLocalization);
+                    self.options.currentGeoLocalization = geoLocalization;
                 });
             }
-            else {
-                this.$el.find('#geolocCheckboxDiv').remove();
-                this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
-            }
-
-
         },
 
         checkGeoloc: function () {
-            if (typeof currentGeoLocalization == "undefined")
+            if (this.options.currentGeoLocalization === '')
             {
                 console.log("checkGeoloc Erreur : Le navigateur ne peut pas");
                 this.$el.find('#geolocCheckboxDiv').remove();
@@ -73,8 +69,8 @@
 
         geolocBind: function () {
             console.log("Geoloc Bind : le model va se mettre à jour");
-            if ($('#statusGeoLocalization').is(':checked') && currentGeoLocalization != '') {
-                this.model.set('geoLocalization', currentGeoLocalization);
+            if ($('#statusGeoLocalization').is(':checked') && this.options.currentGeoLocalization !== '') {
+                this.model.set('geoLocalization', this.options.currentGeoLocalization);
             }
             else {
                 this.model.set('geoLocalization', '');
@@ -82,11 +78,9 @@
         },
 
         initMap: function () {
-            try {
-            console.log("initMap : début" + currentGeoLocalization);
-            self = this;
-            var geoLocalization = currentGeoLocalization;
-            if (geoLocalization != '') {
+            if (this.options.currentGeoLocalization !== '') {
+                console.log("initMap : début" + this.options.currentGeoLocalization);
+                var geoLocalization = this.options.currentGeoLocalization;
                 var latitude = geoLocalization.split(',')[0].trim();
                 var longitude = geoLocalization.split(',')[1].trim();
 
@@ -107,8 +101,6 @@
             }
             else {
                 console.log("initMap : Erreur");
-            }  } catch(e){
-
             }
         },
 
