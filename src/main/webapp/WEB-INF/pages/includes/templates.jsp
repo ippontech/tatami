@@ -2,9 +2,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script src="/js/vendor/OpenLayers.js"></script>
-
-
 
 <script type="text/template" id="TagsHeader">
     <h3>
@@ -161,10 +158,13 @@
                 </div>
             <@ } @>
         </div>
+        <div id="geolocalizationInStatus">
 
+        </div>
         <div id="preview">
 
         </div>
+
         <div id="buttons" class="mediumHeight little-marge-top">
 
         </div>
@@ -197,8 +197,16 @@
             </div>
     <@  } } @>
     </div>
-</div>     
+</div>
 </script>
+
+<script type="text/template" id="GeolocPreview">
+        <div id="geolocMapPreview" style="height:250px; width:250px"></div>
+         <div class="itemGregou">
+             <span id="testItem">Test affichage de la region</span>
+         </div>
+</script>
+
 <script type="text/template" id="StatusFooters">
 <@ if (ios) { @>
     <div class="statusitem-footer"> 
@@ -415,7 +423,6 @@
                  <div class="controls groups">
                      <div id="GeolocImpossible"></div> <p></p>
                      <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
-
                          <div class="controls geoLocalization" id="geolocCheckboxDiv">
                              <label class="checkbox">
                                  <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
@@ -423,6 +430,9 @@
                          </div>
                          <div id="geolocalisationCheckbox" class="collapse">
                              <div id="basicMap" style="height:250px; width:250px"></div>
+                             <div class="geolocMap">
+
+                             </div>
                          </div>
                      </div>
 

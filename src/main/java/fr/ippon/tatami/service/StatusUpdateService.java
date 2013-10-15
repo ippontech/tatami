@@ -100,6 +100,10 @@ public class StatusUpdateService {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
 
+    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
+    }
+
     public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, false, group, "", "", "", attachmentIds, null, geoLocalization);
     }

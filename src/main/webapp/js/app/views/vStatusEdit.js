@@ -3,7 +3,8 @@
 
         template: '#StatusEdit',
         regions: {
-            tatamReply: ".tatam-reply"
+            tatamReply: ".tatam-reply",
+            geoloc: ".geolocMap"
         },
 
         events: {
@@ -24,7 +25,7 @@
             _.defaults(this.options, {
                 maxLength: 750
             });
-            console.log("onRender function");
+            var self = this;
             this.$editContent = this.$el.find('.edit-tatam');
             this.$edit = this.$editContent.find('textarea[name="content"]');
             this.$previewContent = this.$el.find('.preview-tatam');
@@ -41,34 +42,36 @@
 
             this.$el.modal('show');
 
-            this.initMap();
+
+            this.initMap();   //Ca marche avec un init map
+
+            this.geoloc.close();
+            this.geoloc.show(new Tatami.Views.StatusGeolocPreview({
+                currentGeoloc : self.options.currentGeoLocalization
+            }));   //Je n'arrive pas à afficher une carte avec une nouvelle région
+            this.geoloc.close();
+
             this.checkGeoloc();
         },
 
         initGeoLocalization: function () {
              var self = this;
-            console.log("initGeoLocalization : initialisation");
             if (navigator.geolocation) {
-                console.log("initGeoLocalization : le navigateur peut théoriquement géolocaliser");
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var geoLocalization = position.coords.latitude + ', ' + position.coords.longitude;
-                    console.log("geoLocalization : " + geoLocalization);
                     self.options.currentGeoLocalization = geoLocalization;
                 });
             }
         },
 
         checkGeoloc: function () {
-            if (this.options.currentGeoLocalization === '')
-            {
-                console.log("checkGeoloc Erreur : Le navigateur ne peut pas");
+            if (this.options.currentGeoLocalization === '') {
                 this.$el.find('#geolocCheckboxDiv').remove();
                 this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
             }
         },
 
         geolocBind: function () {
-            console.log("Geoloc Bind : le model va se mettre à jour");
             if ($('#statusGeoLocalization').is(':checked') && this.options.currentGeoLocalization !== '') {
                 this.model.set('geoLocalization', this.options.currentGeoLocalization);
             }
@@ -79,7 +82,6 @@
 
         initMap: function () {
             if (this.options.currentGeoLocalization !== '') {
-                console.log("initMap : début" + this.options.currentGeoLocalization);
                 var geoLocalization = this.options.currentGeoLocalization;
                 var latitude = geoLocalization.split(',')[0].trim();
                 var longitude = geoLocalization.split(',')[1].trim();
@@ -97,10 +99,6 @@
                 map.addLayer(markers);
                 markers.addMarker(new OpenLayers.Marker(lonLat));
                 map.setCenter(position, zoom);
-                console.log("initMap : OK");
-            }
-            else {
-                console.log("initMap : Erreur");
             }
         },
 
@@ -183,7 +181,6 @@
             });
         },
 
-
         updatecount: function (e) {
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
@@ -197,7 +194,6 @@
                 this.$preview.html(marked(this.$edit.val()));
             }
             catch (e) {
-                console.log(e);
             }
             this.$el.find('.glyphicon-eye-open, .glyphicon-edit').add(this.$editContent).add(this.$previewContent).toggleClass('hide');
         },
@@ -271,8 +267,47 @@
             return false;
         }
 
+    });
+
+    var StatusGeolocPreview = Backbone.Marionette.Layout.extend({
+        template: '#GeolocPreview',
+        className: 'geolocPreviewTemplate',
+
+        initialize : function(){
+
+        },
+
+        onRender: function() {
+            this.initMap();
+        },
+
+        initMap: function () {
+
+            //var self = this;
+            var geoLocalization = this.options.currentGeoloc;
+
+            if(geoLocalization !== undefined && geoLocalization !== '' ) {
+                var latitude = geoLocalization.split(',')[0].trim();
+                var longitude = geoLocalization.split(',')[1].trim();
+                //this.$el.find("#geolocMapPreview").hide(); //Test pour voir si on accède bien au DOM
+                map = new OpenLayers.Map("geolocMapPreview");
+                var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
+                var mapnik = new OpenLayers.Layer.OSM();
+                var position = lonLat;
+                var zoom = 12;
+
+                map.addLayer(mapnik);
+                var markers = new OpenLayers.Layer.Markers("Markers");
+                map.addLayer(markers);
+                markers.addMarker(new OpenLayers.Marker(lonLat));
+                map.setCenter(position, zoom);
+            }
+        }
 
     });
 
     Tatami.Views.StatusEdit = StatusEdit;
+    Tatami.Views.StatusGeolocPreview = StatusGeolocPreview;
 })(Backbone, _, Tatami);

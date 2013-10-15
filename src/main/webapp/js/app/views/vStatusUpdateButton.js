@@ -24,6 +24,7 @@
             this.$el.slideUp();
         },
         onRender: function(){
+            var self = this;
             if(this.options.count !== 0) {
                 $(this.el).addClass('refresh-button-style');
                 Tatami.app.favi.badge(this.options.count) ;
@@ -31,9 +32,11 @@
                 this.$el.slideDown();
             } else {
                 $(this.el).removeClass('refresh-button-style');
-                Tatami.app.favi.badge(0) ;
                 document.title = "Tatami";
                 this.$el.slideUp();
+                Tatami.app.trigger("changeFavicon", {
+                    countFavicon : self.options.count
+                });
             }
         },
         className: 'text-center',

@@ -62,7 +62,17 @@
                         this.$el.html(view.el);
                     }
                 })
-            },            
+            },
+
+            geoloc: {
+                selector: '#geolocalizationInStatus',
+                regionType: Marionette.Region.extend({
+                    open: function(view){
+                        this.$el.css('display', 'none');
+                        this.$el.html(view.el);
+                    }
+                })
+            },
 
             attachments: '.attachments'
 
@@ -223,6 +233,7 @@
         /*----------------------------------------------------------------------------------------*/
         showDetails: function(){
             currentModel = this.model;
+
             if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
                 return;
             }
@@ -248,6 +259,16 @@
                             //TODO CodingParty : Afficher l'annulation du partage
                             currentModel.set('sharedByMe', statusDetail.isSharedBy(Tatami.app.user.get('username')));
 
+                            if (self.model.getGeoLocalizationUrl()) {
+                               /* self.geoloc.show(new Tatami.Views.StatusGeolocPreview({
+                                    model: self.model
+                                })); */
+
+                                setTimeout(function() {
+                                    self.geoloc.$el.slideToggle({duration: 100});
+                                }, 500);
+                            }
+
                             if (self.model.getImages() != null && self.model.getImages().length > 0) {
 
                                 self.preview.show(new Tatami.Views.StatusImagePreview({
@@ -257,7 +278,6 @@
                                 setTimeout(function() {
                                     self.preview.$el.slideToggle({duration: 100});
                                 }, 500);  
-
                             }
 
                             if(isRoot){
@@ -301,14 +321,15 @@
 
                     });
                 } else {
-                    //this.buttons.$el.slideToggle({duration: 200});
-                    //this.buttons.$el.css('visibility' , 'hidden')  ;
                     var shares = statusDetail.get('sharedByLogins');
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 100});
                     }
                     if(this.model.getImages() != null && this.model.getImages().length > 0){
                         this.preview.$el.slideToggle({duration: 100});
+                    }
+                    if(this.model.getGeoLocalizationUrl() != null){
+                        this.geoloc.$el.slideToggle({duration: 100});
                     }
                     if(isRoot){
                         if($(this.el).attr('class').indexOf('tatam-expand-container') != -1){
@@ -411,18 +432,6 @@
             this.$el.find('.status-action-delete').popover('hide');
             return false;
         }
-        // remove: function(){
-        //     if(this.options.isDelete){
-        //         var statusToDelete = $(".tatam-id-"+this.model.id);
-        //         statusToDelete.each(function(status){
-        //             statusToDelete.hide(function(){
-        //                 $(this).remove();
-        //             }).slideDown();
-        //         }); 
-        //     } else {
-        //         $(this).remove();
-        //     }
-        // }
     });
 
     var StatusFooters = Backbone.Marionette.Layout.extend({
@@ -553,7 +562,6 @@
         showImage: function(event){
             var className = event.target.className;
             var current = className.replace(/.*slide-img-n(.*)/, '$1');
-            console.log(className+ " "+ current);
             var self = this;
             self.model.set('current', current);
             var slider = new StatusImageSlider({
@@ -572,6 +580,44 @@
 
     });
 
+   /* var StatusGeolocPreview = Backbone.Marionette.Layout.extend({
+        template: '#GeolocPreview',
+        className: 'geolocPreviewTemplate',
+        /*initialize: function(){
+
+             this.initMap();
+        }  ,  */
+
+       /* onRender: function() {
+            this.initMap();
+        },
+
+        initMap: function () {
+            var self = this;
+            var geoLocalization = self.model.get('geoLocalization');
+
+            var latitude = geoLocalization.split(',')[0].trim();
+            var longitude = geoLocalization.split(',')[1].trim();
+           // var mapDiv = this.$el.find('#geolocMapPreview');
+
+            var map = new OpenLayers.Map("geolocMapPreview");
+            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
+            var mapnik = new OpenLayers.Layer.OSM();
+
+            var position = lonLat;
+            var zoom = 12;
+
+            map.addLayer(mapnik);
+            var markers = new OpenLayers.Layer.Markers("Markers");
+            map.addLayer(markers);
+            markers.addMarker(new OpenLayers.Marker(lonLat));
+            map.setCenter(position, zoom);
+        }
+
+    });       */
+
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItem = StatusItem;
     Tatami.Views.StatusActions = StatusActions;
@@ -579,4 +625,5 @@
     Tatami.Views.StatusAttachmentItems = StatusAttachmentItems;
     Tatami.Views.StatusImagePreview = StatusImagePreview;
     Tatami.Views.StatusImageSlider = StatusImageSlider;
+    //Tatami.Views.StatusGeolocPreview = StatusGeolocPreview;
 })(Backbone, _, Tatami);
