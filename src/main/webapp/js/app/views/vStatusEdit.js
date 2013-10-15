@@ -42,15 +42,7 @@
 
             this.$el.modal('show');
 
-
-            this.initMap();   //Ca marche avec un init map
-
-            this.geoloc.close();
-            this.geoloc.show(new Tatami.Views.StatusGeolocPreview({
-                currentGeoloc : self.options.currentGeoLocalization
-            }));   //Je n'arrive pas à afficher une carte avec une nouvelle région
-            this.geoloc.close();
-
+            this.initMap();
             this.checkGeoloc();
         },
 
@@ -262,52 +254,10 @@
                 }
             });
         },
-
         cancel: function () {
             return false;
         }
-
-    });
-
-    var StatusGeolocPreview = Backbone.Marionette.Layout.extend({
-        template: '#GeolocPreview',
-        className: 'geolocPreviewTemplate',
-
-        initialize : function(){
-
-        },
-
-        onRender: function() {
-            this.initMap();
-        },
-
-        initMap: function () {
-
-            //var self = this;
-            var geoLocalization = this.options.currentGeoloc;
-
-            if(geoLocalization !== undefined && geoLocalization !== '' ) {
-                var latitude = geoLocalization.split(',')[0].trim();
-                var longitude = geoLocalization.split(',')[1].trim();
-                //this.$el.find("#geolocMapPreview").hide(); //Test pour voir si on accède bien au DOM
-                map = new OpenLayers.Map("geolocMapPreview");
-                var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-                var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
-                var mapnik = new OpenLayers.Layer.OSM();
-                var position = lonLat;
-                var zoom = 12;
-
-                map.addLayer(mapnik);
-                var markers = new OpenLayers.Layer.Markers("Markers");
-                map.addLayer(markers);
-                markers.addMarker(new OpenLayers.Marker(lonLat));
-                map.setCenter(position, zoom);
-            }
-        }
-
     });
 
     Tatami.Views.StatusEdit = StatusEdit;
-    Tatami.Views.StatusGeolocPreview = StatusGeolocPreview;
 })(Backbone, _, Tatami);
