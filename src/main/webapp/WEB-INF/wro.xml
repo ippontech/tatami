@@ -16,6 +16,8 @@
         <js>/js/vendor/marked.js</js>
         <js>/js/vendor/modernizr.js</js>
         <js>/js/vendor/jquery.jgrowl.js</js>
+        <js>/js/vendor/favico-0.3.0.min.js</js>
+        <js>/js/vendor/OpenLayers.js</js>
     </group>
 
     <group name='tatami-app'>

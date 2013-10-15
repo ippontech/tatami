@@ -139,6 +139,6 @@ public class Status extends AbstractStatus {
                 ", replyToUsername='" + replyToUsername + '\'' +
                 ", detailsAvailable=" + detailsAvailable +
                 ", removed=" + removed +
-                "} " + super.toString();
+                '}';
     }
 }

@@ -25,6 +25,16 @@ public abstract class AbstractStatus implements Serializable {
 
     private Date statusDate;
 
+    public String getGeoLocalization() {
+        return geoLocalization;
+    }
+
+    public void setGeoLocalization(String geoLocalization) {
+        this.geoLocalization = geoLocalization;
+    }
+
+    private String geoLocalization;
+
     private boolean removed;
 
     public String getStatusId() {
@@ -109,7 +119,8 @@ public abstract class AbstractStatus implements Serializable {
                 ", username='" + username + '\'' +
                 ", domain='" + domain + '\'' +
                 ", statusDate=" + statusDate +
+                ", geoLocalization='" + geoLocalization + '\'' +
                 ", removed=" + removed +
-                "} " + super.toString();
+                '}';
     }
 }

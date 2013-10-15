@@ -58,6 +58,7 @@ public class CassandraStatusRepository implements StatusRepository {
     private static final String REPLY_TO = "replyTo";
     private static final String REPLY_TO_USERNAME = "replyToUsername";
     private static final String REMOVED = "removed";
+    private static final String GEO_LOCALIZATION = "geoLocalization";
 
     //Share, Mention Share & Announcement
     private static final String ORIGINAL_STATUS_ID = "originalStatusId";
@@ -107,7 +108,8 @@ public class CassandraStatusRepository implements StatusRepository {
                                String content,
                                String discussionId,
                                String replyTo,
-                               String replyToUsername)
+                               String replyToUsername,
+                               String geoLocalization)
             throws ConstraintViolationException {
 
         Status status = new Status();
@@ -161,6 +163,10 @@ public class CassandraStatusRepository implements StatusRepository {
         if (replyToUsername != null) {
             status.setReplyToUsername(replyToUsername);
             updater.setString(REPLY_TO_USERNAME, replyToUsername);
+        }
+        if(geoLocalization!=null) {
+            status.setGeoLocalization(geoLocalization);
+            updater.setString(GEO_LOCALIZATION, geoLocalization);
         }
 
         log.debug("Persisting Status : {}", status);
@@ -349,6 +355,7 @@ public class CassandraStatusRepository implements StatusRepository {
         status.setDiscussionId(result.getString(DISCUSSION_ID));
         status.setReplyTo(result.getString(REPLY_TO));
         status.setReplyToUsername(result.getString(REPLY_TO_USERNAME));
+        status.setGeoLocalization(result.getString(GEO_LOCALIZATION));
         status.setRemoved(result.getBoolean(REMOVED));
         if (status.getRemoved() == Boolean.TRUE) {
             return null;
