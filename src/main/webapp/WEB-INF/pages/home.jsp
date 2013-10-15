@@ -37,6 +37,8 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
+    <script src="/js/vendor/favico-0.3.0.min.js"></script>
+    <script src="/js/vendor/OpenLayers.js"></script>
     <script src="/js/app/app.js"></script>
     <script src="/js/app/plugins/tatami.search.js"></script>
     <script src="/js/app/plugins/suggester.js"></script>

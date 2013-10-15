@@ -46,7 +46,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
         assertEquals(2, userlineStatuses.size());
 
         String content = "temporary status";
-        statusUpdateService.postStatus(content, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
 
         timelineStatuses = timelineService.getTimeline(10, null, null);
         assertEquals(3, timelineStatuses.size());
@@ -74,7 +74,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 10; i++) {
             String content = "temporary status " + i;
-            statusUpdateService.postStatus(content, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);
@@ -103,7 +103,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 10; i++) {
             String content = "temporary status " + i +  " #ippon";
-            statusUpdateService.postStatus(content, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
         }
 
         tagStatuses = timelineService.getTagline("ippon", 10, null, null);
@@ -140,7 +140,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 12; i++) {
             String content = "temporary status " + i;
-            statusUpdateService.postStatusToGroup(content, group, new ArrayList<String>());
+            statusUpdateService.postStatusToGroup(content, group, new ArrayList<String>(), "1,2");
         }
 
         groupStatuses = timelineService.getGroupline(group.getGroupId(), 10, null, null);
@@ -171,7 +171,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 10; i++) {
             String content = "temporary status " + i +  " #ippon";
-            statusUpdateService.postStatus(content, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);
@@ -215,7 +215,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnTimelineServiceWithACurrentUser(userWhoMentions);
         for (int i = 0; i < 10; i++) {
             String content = "Hello @uuser " + i;
-            statusUpdateService.postStatus(content, false, new ArrayList<String>());
+            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);

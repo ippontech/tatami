@@ -62,7 +62,7 @@
                         this.$el.html(view.el);
                     }
                 })
-            },            
+            },
 
             attachments: '.attachments'
 
@@ -223,6 +223,7 @@
         /*----------------------------------------------------------------------------------------*/
         showDetails: function(){
             currentModel = this.model;
+
             if (this.model.get('type') != 'STATUS' && this.model.get('type') != 'SHARE' && this.model.get('type') != 'ANNOUNCEMENT') {
                 return;
             }
@@ -257,7 +258,6 @@
                                 setTimeout(function() {
                                     self.preview.$el.slideToggle({duration: 100});
                                 }, 500);  
-
                             }
 
                             if(isRoot){
@@ -301,8 +301,6 @@
 
                     });
                 } else {
-                    //this.buttons.$el.slideToggle({duration: 200});
-                    //this.buttons.$el.css('visibility' , 'hidden')  ;
                     var shares = statusDetail.get('sharedByLogins');
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 100});
@@ -411,18 +409,6 @@
             this.$el.find('.status-action-delete').popover('hide');
             return false;
         }
-        // remove: function(){
-        //     if(this.options.isDelete){
-        //         var statusToDelete = $(".tatam-id-"+this.model.id);
-        //         statusToDelete.each(function(status){
-        //             statusToDelete.hide(function(){
-        //                 $(this).remove();
-        //             }).slideDown();
-        //         }); 
-        //     } else {
-        //         $(this).remove();
-        //     }
-        // }
     });
 
     var StatusFooters = Backbone.Marionette.Layout.extend({
@@ -455,7 +441,7 @@
                     self.collection.next();
                 });
                 this.listenTo(Tatami.app, 'display', this.onRender);
-            } 
+            }
 
             this.listenTo(this.collection, 'add', function(model, collection, options){
                 model.hidden = (options.at === 0);
@@ -553,7 +539,6 @@
         showImage: function(event){
             var className = event.target.className;
             var current = className.replace(/.*slide-img-n(.*)/, '$1');
-            console.log(className+ " "+ current);
             var self = this;
             self.model.set('current', current);
             var slider = new StatusImageSlider({
@@ -571,6 +556,7 @@
         }
 
     });
+
 
     Tatami.Views.Statuses = Statuses;
     Tatami.Views.StatusItem = StatusItem;

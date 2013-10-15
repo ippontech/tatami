@@ -134,6 +134,16 @@
         Tatami.app.edit = new Tatami.Views.StatusEdit({
             el: $('#tatamiEdit')
         });
+
+        Tatami.app.favi = new Favico({
+            animation : 'popFade'
+        });
+    });
+
+    Tatami.app.on('changeFavicon', function(options){
+        setTimeout(function(){
+            Tatami.app.favi.badge(options.countFavicon);
+        },1000)
     });
 
     if(!ios) {

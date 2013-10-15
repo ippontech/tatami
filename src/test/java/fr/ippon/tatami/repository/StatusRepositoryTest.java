@@ -27,12 +27,9 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String login = "jdubois@ippon.fr";
         String content = "content";
 
-        Status status = new Status();
-        status.setContent(content);
-        status.setLogin(login);
-
-        assertThat(statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", ""), notNullValue());
+        Status created = statusRepository.createStatus(login, false, null, new ArrayList<String>(),
+                content, "", "", "", "48.54654, 3.87987987");
+        assertThat(created, notNullValue());
     }
 
     @Test(expected = ValidationException.class)
@@ -45,7 +42,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", null);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -60,7 +57,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", null);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -75,7 +72,7 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         status.setLogin(login);
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", null);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -93,6 +90,6 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
         String domain = "ippon.fr";
 
         statusRepository.createStatus(login, false, null, new ArrayList<String>(),
-                content, "", "", "");
+                content, "", "", "", null);
     }
 }
