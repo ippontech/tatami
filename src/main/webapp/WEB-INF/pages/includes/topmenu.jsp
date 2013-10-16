@@ -13,10 +13,11 @@
             <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
             <fmt:message key="tatami.title"/>
         </a>
-
+    <c:if test="${currentPage != null && currentPage == 'home'}">
         <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
             <i class="close glyphicon glyphicon-pencil"></i>
         </button>
+    </c:if>
         <div class="nav-collapse navbar-responsive-collapse collapse">
             <ul class="nav">
                 <li>
@@ -188,7 +189,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="hidden-phone">
                     <button id="editTatam" class="editTatam btn btn-primary navbar-form">
                         <i class="glyphicon glyphicon-pencil"></i>
