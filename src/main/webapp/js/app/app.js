@@ -13,7 +13,7 @@
             youtube : function(text, url){
                 var cap;
                 if((cap = /(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/.exec(url))){
-                    return '<iframe width="420" height="315" src="http://www.youtube.com/embed/' +
+                    return '<iframe width="420" height="315" src="https://www.youtube.com/embed/' +
                         cap[5] +
                         '" frameborder="0" allowfullscreen></iframe>';
                 }
@@ -21,7 +21,7 @@
             vimeo : function(text, url){
                 var cap;
                 if((cap = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/.exec(url))){
-                    return '<iframe src="http://player.vimeo.com/video/' +
+                    return '<iframe src="https://player.vimeo.com/video/' +
                         cap[5] +
                         '" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
                 }
@@ -29,7 +29,7 @@
             dailymotion : function(text, url){
                 var cap;
                 if((cap = /^.+dailymotion.com\/(video|hub)\/([^_]+)[^#]*(#video=([^_&]+))?/.exec(url))){
-                    return '<iframe frameborder="0" width="480" height="271" src="http://www.dailymotion.com/embed/video/' +
+                    return '<iframe frameborder="0" width="480" height="271" src="https://www.dailymotion.com/embed/video/' +
                         cap[2] +
                         '"></iframe>';
                 }
