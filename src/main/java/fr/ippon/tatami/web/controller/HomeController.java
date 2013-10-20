@@ -128,6 +128,11 @@ public class HomeController {
         return "presentation";
     }
 
+    @RequestMapping(value = "/license", method = RequestMethod.GET)
+    public String license() {
+        return "license";
+    }
+
     /**
      * This maps any GET request to /tatami/customization/[subpath]
      * to the jsp named /customization/[subpath].jsp.
@@ -138,5 +143,4 @@ public class HomeController {
     public String anyOtherSubPath(@PathVariable String subPath) {
         return "/customization/" + subPath;
     }
-
 }
