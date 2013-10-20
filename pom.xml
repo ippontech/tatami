@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.36</version>
+    <version>3.0.37</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
