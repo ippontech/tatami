@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -21,8 +22,8 @@ public class AuthenticationService {
 
     public User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        org.springframework.security.core.userdetails.UserDetails springSecurityUser =
-                (org.springframework.security.core.userdetails.UserDetails) securityContext
+        UserDetails springSecurityUser =
+                (UserDetails) securityContext
                         .getAuthentication().getPrincipal();
 
         return userRepository.findUserByLogin(springSecurityUser.getUsername());
