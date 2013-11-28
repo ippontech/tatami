@@ -512,6 +512,10 @@ div.jGrowl-notification{
     }
 }
 
+.tatam blockquote p {
+    font-size: 0.8em;
+}
+
 .tatams-content-title {
     border-top: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
