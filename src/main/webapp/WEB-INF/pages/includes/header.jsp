@@ -12,7 +12,7 @@
 %>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><fmt:message key="tatami.title"/></title>
     <meta name="viewport" content="width=device-width, initial-scale = 1,user-scalable=no,maximum-scale=1.0">
     <meta name="description" content="">
@@ -23,16 +23,15 @@
     <link href="/css/vendor/css/jQueryjGrowl.css" rel="stylesheet">
 
 
+
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 
     <!--[if lt IE 7]>
     <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css">
     <![endif]-->
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
+    <script src="/js/vendor/respond.js"></script>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 

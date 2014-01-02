@@ -7,6 +7,7 @@
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>
     <script src="/js/vendor/underscore.js"></script>
+    <script src="/js/vendor/underscore-polyfill.js"></script>
     <script src="/js/vendor/backbone.js"></script>
     <script src="/js/vendor/marked.js"></script>
     <script src="/js/vendor/backbone.marionette.js"></script>
