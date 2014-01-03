@@ -6,20 +6,20 @@
         defaults: {
             discussionStatuses: [],
             sharedByLogins: []
-        }, 
+        },
 
         urlRoot: '/tatami/rest/statuses/details/',
 
         getStatusBefore: function(){
             var refDate = this.get('refDate');
-            var statusBefore = this.get('discussionStatuses').filter(function(element){      
+            var statusBefore = this.get('discussionStatuses').filter(function(element){
                 element.root = false;
                 return (element.statusDate < refDate);
             });
             if(statusBefore.length > 0){
                 statusBefore[0].first = true;
             }
-            return statusBefore;
+            return new Tatami.Collections.Statuses(statusBefore);
         },
 
         getStatusAfter: function(){
@@ -34,7 +34,7 @@
                 statusAfter[length].last = true;
             }
 
-            return statusAfter;
+            return new Tatami.Collections.Statuses(statusAfter);
         },
 
         isSharedBy: function(username){
