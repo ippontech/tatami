@@ -4,6 +4,10 @@
         evaluate: /<\@(.+?)\@\>/gim
     };
 
+    Backbone.$.ajaxSetup({
+        cache: false
+    });
+
     marked.setOptions({
         gfm: true,
         pedantic: false,
