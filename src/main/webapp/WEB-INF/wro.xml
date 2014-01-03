@@ -11,6 +11,7 @@
         <js>/js/vendor/bootstrap.js</js>
         <js>/js/vendor/bootstrap-tour.js</js>
         <js>/js/vendor/underscore.js</js>
+        <js>/js/vendor/underscore-polyfill.js</js>
         <js>/js/vendor/backbone.js</js>
         <js>/js/vendor/backbone.marionette.js</js>
         <js>/js/vendor/marked.js</js>
