@@ -56,7 +56,7 @@
 <script type="text/template" id="CardProfile">
     <div class="page-header">
         <h4 class="profile-card background-image-fffix">
-            <img class="img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);">
+            <div class="img img-rounded img-medium pull-left" style="background-image: url(<@= avatarURL @>);"/>
             <a href="#users/<@= username @>">
                 <strong>
                     <@= fullName @>
@@ -101,7 +101,7 @@
             <@ } else if (type == 'MENTION_FRIEND') { @>
                 <span class="glyphicon glyphicon-download"></span>
             <@ } else { @>
-                <img class="img-rounded <@= root?'img-medium':'img-reply' @>" style="background-image: url(<@= avatarURL @>);">
+                <div class="img img-rounded <@= root?'img-medium':'img-reply' @>" style="background-image: url(<@= avatarURL @>);" />
             <@ } @>
         </div>
         <div id="status-content-container">
@@ -270,7 +270,7 @@
         </span> :
 </script>
 <script type="text/template" id="StatusShareItems">
-    <img class="img-rounded img-small share-img-fffix" style="background-image: url(<@= avatarURL @>);">
+    <div class="img img-rounded img-small share-img-fffix" style="background-image: url(<@= avatarURL @>);" />
 </script>
 <script type="text/template" id="HomeSide">
     <section class='hidden-phone card-profile'></section>
@@ -508,7 +508,7 @@
         </li>
     <@} else if(item.category == 'users') { @>
         <li class="item users background-image-fffix" data-value="<@= item.label @>">
-            <img class="img-rounded img-small" style="background-image: url(<@= item.avatarURL @>);">
+            <div class="img img-rounded img-small" style="background-image: url(<@= item.avatarURL @>);" />
             <h4><a href="#"><@= item.fullName @></a></h4>
             <p><@= item.label @></p>
             <@ if(!item.activated) { @><span class=""><i><fmt:message key="tatami.user.desactivate.msg2"/></i></span><@ } @>
@@ -561,7 +561,7 @@
 </script>
 <script type="text/template" id="ProfileInformations">
     <h4 class="profile-card background-image-fffix">
-        <img class="img-rounded img-big" style="background-image: url(<@= avatarURL @>);">
+        <div class="img img-rounded img-big" style="background-image: url(<@= avatarURL @>);" />
     </h4>
     <div class="well well-small">
         <h4>
@@ -688,7 +688,7 @@
 </script>
 <script type="text/template" id="UserItems">
     <div class='pull-left background-image-fffix'>
-        <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+        <div class="img img-rounded img-medium" style="background-image: url(<@= avatarURL @>);" />
     </div>
     <h4>
        <@  if(!activated) { @>
@@ -727,7 +727,7 @@
 </script>
 <script type="text/template" id="UserItemsMini">
     <div class='pull-left background-image-fffix'>
-        <img class="img-rounded img-small" style="background-image: url(<@= avatarURL @>);">
+        <div class="img img-rounded img-small" style="background-image: url(<@= avatarURL @>);" />
     </div>
     <h6>
         <@ if(!you) { @>
