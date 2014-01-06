@@ -6,7 +6,7 @@ Presentation
 
 Tatami is an Open Source enterprise social network.
 
-A publicly installed version of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
+A public installation of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
 
 Tatami is made with the following technologies :
 
