@@ -20,6 +20,9 @@
 
     <link href="/css/vendor/css/bootstrap.css" rel="stylesheet">
     <link href="/css/tatami.css" rel="stylesheet">
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="/css/ie-only.css" />
+    <![endif]-->
     <link href="/css/vendor/css/jQueryjGrowl.css" rel="stylesheet">
 
 
