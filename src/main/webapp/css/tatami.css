@@ -224,6 +224,7 @@ div.jGrowl-notification{
     height: 25px;
     background-position: center center;
     background-size: cover;
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .img-reply {
@@ -232,6 +233,7 @@ div.jGrowl-notification{
     margin-left: 10px;
     background-position: center center;
     background-size: cover;
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .img-medium {
@@ -239,6 +241,7 @@ div.jGrowl-notification{
     height: 50px;
     background-position: center center;
     background-size: cover;
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .img-big {
@@ -246,6 +249,7 @@ div.jGrowl-notification{
     height: 70px;
     background-position: center center;
     background-size: cover;
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .navbar-edit {
