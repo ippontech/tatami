@@ -1,5 +1,5 @@
 (function(global){
-  "use strict";
+  'use strict';
 
   var _ = global._;
 
@@ -8,14 +8,15 @@
 
   var functionFactory = function(method){
     return function(){
-      var args = _.union([this], arguments);
-      return _[method].apply(args);
+      var args = Array.prototype.slice.apply(arguments);
+      args.unshift(this);
+      return _[method].apply(_, args);
     };
   };
 
   for (var index in arrayMethods){
     var method = arrayMethods[index];
-    if(typeof arrayPrototype[method] === 'undefined')
+    if(arrayPrototype[method] === undefined)
       arrayPrototype[method] = functionFactory(method);
   }
-}(self));
+}(window));

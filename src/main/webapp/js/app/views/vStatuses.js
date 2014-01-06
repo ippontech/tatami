@@ -266,7 +266,7 @@
                                 $(self.el).toggleClass('tatam-expand-container').animate(100);
                                 var befores = statusDetail.getStatusBefore();
                                 var before = new Tatami.Views.Statuses({
-                                    collection: new Tatami.Collections.Statuses(befores),
+                                    collection: befores,
                                     itemViewOptions: {
                                         discussion: false
                                     },
@@ -283,7 +283,7 @@
 
                                 var afters = statusDetail.getStatusAfter();
                                 var after = new Tatami.Views.Statuses({
-                                    collection: new Tatami.Collections.Statuses(afters),
+                                    collection: afters,
                                     itemViewOptions: {
                                         discussion: false
                                     },
