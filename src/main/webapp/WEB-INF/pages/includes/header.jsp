@@ -73,6 +73,14 @@
         <c:if test="${ios != null}">
             var ios = ${ios};
         </c:if>
+        var ie = (function(){
+            var v = 3, div = document.createElement('div'), a = div.all || [];
+            while (div.innerHTML = '<!--[if gt IE '+(++v)+']><br><![endif]-->', a[0]); 
+            if (Function('/*@cc_on return document.documentMode===10@*/')()){
+                v = 10;
+            }
+            return v > 4 ? v : !v;
+        }());
     </script>
 
 </head>
