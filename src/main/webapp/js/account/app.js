@@ -28,6 +28,12 @@ else {
     app = window.app;
 }
 
+if (!String.prototype["trim"]){
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g, '');
+    }
+}
+
 app.formSuccess = $('#form-success-label').text().trim();
 app.formError =   $('#form-error-label').text().trim();
 app.deleteFileSuccess = $('#delete-file-success-label').text().trim();
