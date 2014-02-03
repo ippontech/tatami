@@ -18,7 +18,9 @@
 
         initialize: function () {
             this.model = new Tatami.Models.PostStatus();
-            this.initGeoLocalization();
+            if (!ie || ie > 9){
+                this.initGeoLocalization();
+            }
         },
 
         onRender: function () {
@@ -34,16 +36,20 @@
             this.$reply = this.$el.find('.reply');
             this.$reply.css('display', 'none');
 
-            this.initFileUpload();
-            this.initFileUploadBind();
+            if (!ie || ie > 9){
+                this.initFileUpload();
+                this.initFileUploadBind();
+            }
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
 
             this.$el.modal('show');
 
-            this.initMap();
-            this.checkGeoloc();
+            if (!ie || ie > 9){
+                this.initMap();
+                this.checkGeoloc();
+            }
         },
 
         initGeoLocalization: function () {

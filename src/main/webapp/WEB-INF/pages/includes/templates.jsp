@@ -419,46 +419,47 @@
                 <legend>
                     <fmt:message key="tatami.status.options"/>
                 </legend>
-
-                 <div class="controls groups">
-                     <div id="GeolocImpossible"></div> <p></p>
-                     <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
-                         <div class="controls geoLocalization" id="geolocCheckboxDiv">
-                             <label class="checkbox">
-                                 <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
-                             </label>
-                         </div>
-                         <div id="geolocalisationCheckbox" class="collapse">
-                             <div id="basicMap" style="height:250px; width:250px"></div>
-                             <div class="geolocMap">
-
-                             </div>
-                         </div>
-                     </div>
-
-                    <label class="control-label"><fmt:message key="tatami.group.name"/></label>
-                    <select name="groupId">
-                        <option value=""></option>
-                        <@ for (index in groups) { @>
-                            <option value="<@= groups[index].groupId @>" <@ if(groupId === groups[index].groupId ){ @>selected="selected"<@ } @>>
-                                <@= groups[index].name @>
-                            </option>
+                    <div class="controls groups">
+                        <@ if (!ie || ie > 9){ @>
+                            <div id="GeolocImpossible"></div> <p></p>
+                            <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
+                                <div class="controls geoLocalization" id="geolocCheckboxDiv">
+                                    <label class="checkbox">
+                                    <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
+                                    </label>
+                                </div>
+                            <div id="geolocalisationCheckbox" class="collapse">
+                                <div id="basicMap" style="height:250px; width:250px"></div>
+                                    <div class="geolocMap">
+                                    </div>
+                                </div>
+                            </div>
                         <@ } @>
-                    </select>
-                </div>
-                <div class="controls status-files">
-                    <label>
-                        <fmt:message key="tatami.menu.files"/>
-                    </label>
-                    <div class="attachmentBar progress progress-striped active" style="display: none;">
-                        <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
-                    </div>
-                    <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
-                    <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
-                    <div class="fileUploadResults wrap">
+                            <label class="control-label"><fmt:message key="tatami.group.name"/></label>
+                            <select name="groupId">
+                                <option value=""></option>
+                                <@ for (index in groups) { @>
+                                    <option value="<@= groups[index].groupId @>" <@ if(groupId === groups[index].groupId ){ @>selected="selected"<@ } @>>
+                                        <@= groups[index].name @>
+                                    </option>
+                                <@ } @>
+                            </select>
+                        </div>
+                        <@ if (!ie || ie > 9){ @>
+                        <div class="controls status-files">
+                            <label>
+                                <fmt:message key="tatami.menu.files"/>
+                            </label>
+                            <div class="attachmentBar progress progress-striped active" style="display: none;">
+                                <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                            </div>
+                            <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
+                            <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+                            <div class="fileUploadResults wrap">
 
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                        <@ } @>
                 <div class="controls status-private">
                     <label class="checkbox">
                         <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
