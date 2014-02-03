@@ -17,7 +17,7 @@
 </script>
 <script type="text/template" id="GroupsHeader">
     <h3>
-        <strong><fmt:message key="tatami.group.name"/> : <@= name @><strong>
+        <span class="text-center"><strong><fmt:message key="tatami.group.name"/> : <@= name @></strong></span>
         <@ if(publicGroup && !administrator) { @>
             <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
                 <@ if(member) { @>
