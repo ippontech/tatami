@@ -87,6 +87,7 @@
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
     <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
+    <script src="/js/app/plugins/bootstrap-filestyle.min.js"></script>
 
     <script src="/js/account/models/mAccountProfile.js"></script>
     <script src="/js/account/models/mPreferences.js"></script>
@@ -159,6 +160,7 @@
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static/${version}/vendor/raphael-min.js"></script>
     <script src="/tatami/static/${version}/app/plugins/jquery-raphael-tatami-pie.js"></script>
+    <script src="/tatami/static/${version}/app/plugins/bootstrap-filestyle.min.js"></script>
     <script src="/tatami/static-wro4j/${version}/tatami-account.js"></script>
     <script src="/tatami/static-wro4j/${version}/tatami-app-account.js"></script>
 </c:if>

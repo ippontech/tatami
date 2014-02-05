@@ -34,9 +34,11 @@
                 $(this.el).removeClass('refresh-button-style');
                 document.title = "Tatami";
                 this.$el.slideUp();
-                Tatami.app.trigger("changeFavicon", {
-                    countFavicon : self.options.count
-                });
+                if (!ie || ie > 9){
+                    Tatami.app.trigger("changeFavicon", {
+                        countFavicon : self.options.count
+                    });
+                }
             }
         },
         className: 'text-center',

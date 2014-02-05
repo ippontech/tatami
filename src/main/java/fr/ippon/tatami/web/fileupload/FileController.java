@@ -220,6 +220,30 @@ public class FileController {
         return uploadedFiles;
 
     }
+	
+	    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
+            method = RequestMethod.POST)
+    @ResponseBody
+    @Timed
+    public void uploadAvatarIE(
+            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+
+        Avatar avatar = new Avatar();
+        avatar.setContent(file.getBytes());
+        avatar.setFilename(file.getOriginalFilename());
+        avatar.setSize(file.getSize());
+        avatar.setCreationDate(new Date());
+
+        avatarService.createAvatar(avatar);
+
+        log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
+
+        User user = authenticationService.getCurrentUser();
+        user.setAvatar(avatar.getAvatarId());
+
+        userRepository.updateUser(user);
+
+    }
 
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
