@@ -17,6 +17,7 @@
     <script src="/js/vendor/jquery.fileupload.js"></script>
     <script src="/js/vendor/jquery.atmosphere.js"></script>
     <script src="/js/vendor/jquery-timeago.js"></script>
+    <script src="/js/vendor/jquery.placeholder.js"></script>
     <script src="/js/app/plugins/tatami.atmosphere.js"></script>
     <script src="/js/app/plugins/bootstrap-filestyle.min.js"></script>
 </c:if>

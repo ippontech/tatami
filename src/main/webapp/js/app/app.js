@@ -104,6 +104,10 @@
 
     Tatami.app = new Backbone.Marionette.Application();
 
+    Tatami.app.addInitializer(function(){
+        $('input, textarea').placeholder();
+    });
+
     // Polling : used as long as Atmosphere is not working with the proxy
     Tatami.app.addInitializer(function(){
         var autoRefresh = function(){
