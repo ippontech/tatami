@@ -39,7 +39,15 @@
             if (!ie || ie > 9){
                 this.initFileUpload();
                 this.initFileUploadBind();
-            }
+            } else {
+                this.initFileUploadIE();
+                $(":file").filestyle({
+                    input: false,
+                    
+                    classButton: "btn btn-primary",
+                    icon: false
+                });
+            } 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
@@ -140,6 +148,36 @@
                     if (data.errorThrown == "Forbidden") {
                         self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
                     }
+                }
+            });
+        },
+
+        initFileUploadIE: function(){
+            var self = this;
+            this.$el.find('#tatamFile').fileupload({
+                dataType: 'text',
+                sequentialUploads: 'true',
+                dropZone: this.$dropzone,
+                done: function (e, data) {
+                    var size = "";
+                    var result = data.result.split(":::");
+                    if (result[0].indexOf("An error has occurred") != -1) {
+                        self.$el.find('.upload-ko').css('display','inline');
+                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
+                    } else {
+                        if (result[2] < 1000000) {
+                            size = (result[2] / 1000).toFixed(0) + "K";
+                        } else {
+                            size = (result[2] / 1000000).toFixed(2) + "M";
+                        }
+                        self.model.addAttachment(result[0]);
+                        $("<p>" + result[1] + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + result[0] + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-ok ok-ko');
+                    }
+                },
+                fail: function (e, data) {
+                    self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
+                    
                 }
             });
         },

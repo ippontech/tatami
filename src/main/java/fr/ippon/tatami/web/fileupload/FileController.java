@@ -273,6 +273,28 @@ public class FileController {
         uploadedFiles.add(uploadedFile);
         return uploadedFiles;
     }
+	
+	@RequestMapping(value = "/rest/fileuploadIE", headers = "content-type=multipart/*",
+    		method = RequestMethod.POST, produces = "text/html")
+    @ResponseBody
+    @Timed
+    public String uploadIE(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
+
+        Attachment attachment = new Attachment();
+        attachment.setContent(file.getBytes());
+        attachment.setFilename(file.getName());
+        attachment.setSize(file.getSize());
+        attachment.setFilename(file.getOriginalFilename());
+        attachment.setCreationDate(new Date());
+
+        attachmentService.createAttachment(attachment);
+
+        log.debug("Created attachment : {}", attachment.getAttachmentId());
+        
+        return attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize();
+		
+    }
 
     @RequestMapping(value = "/file/file_not_found",
             method = RequestMethod.GET)
