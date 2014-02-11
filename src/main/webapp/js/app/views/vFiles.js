@@ -25,7 +25,7 @@
                     app.trigger('refreshQuota');
                 },
                 error: function(){
-                    app.trigger('even-alert-success', app.deleteFileError);
+                    app.trigger('even-alert-error', app.deleteFileError);
                 }
             });
         }
