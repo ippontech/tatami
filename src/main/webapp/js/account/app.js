@@ -34,16 +34,16 @@ if (!String.prototype["trim"]){
     }
 }
 
-app.formSuccess = $('#form-success-label').text().trim();
-app.formError =   $('#form-error-label').text().trim();
-app.deleteFileSuccess = $('#delete-file-success-label').text().trim();
-app.deleteFileError = $('#delete-file-error-label').text().trim();
-app.memberAddSuccess = $('#groups-form-adduser-success-label').text().trim();
-app.memberAddError = $('#groups-form-adduser-error-label').text().trim();
-app.formErrorLDAP = $('#form-ldap').text().trim();
+app.formSuccess = $('#form-success-label').html().trim();
+app.formError =   $('#form-error-label').html().trim();
+app.deleteFileSuccess = $('#delete-file-success-label').html().trim();
+app.deleteFileError = $('#delete-file-error-label').html().trim();
+app.memberAddSuccess = $('#groups-form-adduser-success-label').html().trim();
+app.memberAddError = $('#groups-form-adduser-error-label').html().trim();
+app.formErrorLDAP = $('#form-ldap').html().trim();
 
 app.on('even-alert-success', function(msg){
-
+    
     $.jGrowl(msg, {
         theme: 'alert-success',
         life: 4000 ,
