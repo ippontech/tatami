@@ -462,7 +462,7 @@
                         <@ } else { @>
                             <label class="control-label"></label>
                             <div class="controlsIE">
-                            <p><fmt:message key="tatami.user.picture.buttonIE" /></p>
+                            <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
                                 <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText=<fmt:message key="tatami.user.upload.buttonIE-ko" /> data-icon="false"/>
                             <span class="glyphicon glyphicon-search ok-ko"></span>
                             <div class="fileUploadResults wrap">
