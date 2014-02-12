@@ -21,6 +21,7 @@
             if (!ie || ie > 9){
                 this.initGeoLocalization();
             }
+            $('input, textarea').placeholder();
         },
 
         onRender: function () {
@@ -280,23 +281,36 @@
         submit: function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var self = this;
-            var replyTo = self.model.get('replyTo');
-            this.model.set('content', this.$edit.val());
-            this.model.set('groupId', this.$el.find('[name="groupId"]').val());
-            this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
-            this.model.save(null, {
-                success: function (model, response) {
-                    self.hide();
-                    Tatami.app.trigger('refresh', {
-                        display: true,
-                        replyTo: replyTo
+            if (ie && ie<10 && !this.$edit.val()) {
+                    $.jGrowl("Comment is mandatory", {
+                        theme: 'alertColor',
+                        life: 3000,
+                        animateOpen: {
+                            height: "show"
+                        },
+                        animateClose: {
+                            height: "hide"
+                        }
                     });
-                    Tatami.app.user.set('statusCount', Tatami.app.user.get('statusCount') + 1);
-                },
-                error: function (model, response) {
-                }
-            });
+            } else {
+                var self = this;
+                var replyTo = self.model.get('replyTo');
+                this.model.set('content', this.$edit.val());
+                this.model.set('groupId', this.$el.find('[name="groupId"]').val());
+                this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
+                this.model.save(null, {
+                    success: function (model, response) {
+                        self.hide();
+                        Tatami.app.trigger('refresh', {
+                            display: true,
+                            replyTo: replyTo
+                        });
+                        Tatami.app.user.set('statusCount', Tatami.app.user.get('statusCount') + 1);
+                    },
+                    error: function (model, response) {
+                    }
+                });
+            }
         },
         cancel: function () {
             return false;

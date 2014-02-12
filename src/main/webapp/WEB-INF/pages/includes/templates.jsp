@@ -400,7 +400,7 @@
                 <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
             </a>
             <fieldset class="edit-tatam row-fluid">
-                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5"></textarea>
+                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
                     <span class="countstatus badge"></span>
