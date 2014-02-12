@@ -42,9 +42,7 @@
 
             homeBody.tatams.show(region);
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
 
             region.timeline.show(timeline);
 
@@ -80,9 +78,8 @@
 
             homeBody.tatams.show(region);
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -110,9 +107,8 @@
 
             homeBody.tatams.show(region);
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -141,9 +137,8 @@
 
             tagsBody.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -236,9 +231,8 @@
             profileBody.tatams.show(region);
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -266,9 +260,8 @@
             profileBody.tatams.show(region);
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             window.c = timeline.collection;
@@ -297,9 +290,8 @@
             profileBody.tatams.show(region);
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -327,9 +319,8 @@
             groupsBody.tatams.show(region);
             groupsBody.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -382,9 +373,8 @@
 
             homeBody.tatams.show(region);
 
-            if (!ie || ie > 9){
-                region.refresh.show(Tatami.Factories.Status.getUpdateButton());
-            }
+            region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
