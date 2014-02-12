@@ -20,9 +20,11 @@ var VPassword = Marionette.ItemView.extend({
     },
 
     disable: function(){
-        this.$el.find('[name]').attr('disabled', 'disabled');
-        this.$el.find('button[type="submit"]').attr('disabled', 'disabled');
-        app.trigger('even-alert-error', app.formErrorLDAP);
+        if (login.indexOf("&#64;ippon&#46;fr") != -1){
+            this.$el.find('[name]').attr('disabled', 'disabled');
+            this.$el.find('button[type="submit"]').attr('disabled', 'disabled');
+            app.trigger('even-alert-error', app.formErrorLDAP);
+        }
     },
 
     validation: function(){
