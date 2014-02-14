@@ -37,8 +37,6 @@
             this.$reply = this.$el.find('.reply');
             this.$reply.css('display', 'none');
 
-
-
             if (!ie || ie > 9){
                 this.initFileUpload();
                 this.initFileUploadBind();
@@ -50,7 +48,6 @@
                     classButton: "btn btn-primary",
                     icon: false
                 });
-                
             }
             this.$el.find(".submit").val(this.$el.find(".submit-label").html()); 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
@@ -251,6 +248,7 @@
                 statusReply.fetch({
                     success: function (model) {
                         self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");
+                        self.$el.find(".countstatus").html(751-self.$el.find('.edit-tatam > textarea').val().length);
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
