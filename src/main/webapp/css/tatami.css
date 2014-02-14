@@ -503,7 +503,7 @@ margin-bottom: 20px;
     
 }
 
-.controlsIE span.upload-ko, .controlsIE span.upload-ok {
+.controlsIE span.upload-ko, .controlsIE span.upload-ok, span.hidden-label {
     display: none;
 }
 

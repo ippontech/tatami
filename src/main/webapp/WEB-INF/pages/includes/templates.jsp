@@ -403,7 +403,7 @@
                 <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
-                    <span class="countstatus badge"></span>
+                    <span class="countstatus badge">751</span>
                 </em>
             </fieldset>
             <fieldset class="preview-tatam row-fluid hide">
@@ -462,8 +462,9 @@
                         <@ } else { @>
                             <label class="control-label"></label>
                             <div class="controlsIE">
+							<span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
                             <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
-                                <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText=<fmt:message key="tatami.user.upload.buttonIE-ko" /> data-icon="false"/>
+                                <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
                             <span class="glyphicon glyphicon-search ok-ko"></span>
                             <div class="fileUploadResults wrap">
                                 <span class="upload-ko"><fmt:message key="tatami.user.upload.buttonIE-ko" /></span>
@@ -480,7 +481,9 @@
             <a class="btn" data-dismiss="modal" aria-hidden="true">
                 <fmt:message key="tatami.form.cancel"/>
             </a>
-            <input type="submit" class="btn btn-primary" title="<fmt:message key="tatami.form.save"/>">
+            <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
+            <span class="hidden-label tatam-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
+            <input type="submit" class="btn btn-primary submit" data-buttonText="">
         </div>
     </div>
 </script>

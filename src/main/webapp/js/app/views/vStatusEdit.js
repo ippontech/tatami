@@ -37,6 +37,8 @@
             this.$reply = this.$el.find('.reply');
             this.$reply.css('display', 'none');
 
+
+
             if (!ie || ie > 9){
                 this.initFileUpload();
                 this.initFileUploadBind();
@@ -44,11 +46,13 @@
                 this.initFileUploadIE();
                 $(":file").filestyle({
                     input: false,
-                    
+                    buttonText: this.$el.find(".choose-label").html(),
                     classButton: "btn btn-primary",
                     icon: false
                 });
-            } 
+                
+            }
+            this.$el.find(".submit").val(this.$el.find(".submit-label").html()); 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
@@ -155,13 +159,15 @@
 
         initFileUploadIE: function(){
             var self = this;
+            self.model.resetAttachments();
             this.$el.find('#tatamFile').fileupload({
                 dataType: 'text',
                 sequentialUploads: 'true',
                 dropZone: this.$dropzone,
                 done: function (e, data) {
                     var size = "";
-                    var result = data.result.split(":::");
+                    var result = decodeURIComponent(data.result);
+                    result = result.split(":::");
                     if (result[0].indexOf("An error has occurred") != -1) {
                         self.$el.find('.upload-ko').css('display','inline');
                         self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
@@ -282,7 +288,7 @@
             e.preventDefault();
             e.stopPropagation();
             if (ie && ie<10 && !this.$edit.val()) {
-                    $.jGrowl("Comment is mandatory", {
+                    $.jGrowl(this.$el.find(".tatam-mandatory").html(), {
                         theme: 'alertColor',
                         life: 3000,
                         animateOpen: {

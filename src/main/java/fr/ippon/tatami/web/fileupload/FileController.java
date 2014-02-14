@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.fileupload;
 
 import com.yammer.metrics.annotation.Timed;
+
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
@@ -10,6 +11,7 @@ import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -22,7 +24,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -292,7 +296,9 @@ public class FileController {
 
         log.debug("Created attachment : {}", attachment.getAttachmentId());
         
-        return attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize();
+        String result = attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize(); 
+        
+        return URLEncoder.encode(result, "UTF-8");
 		
     }
 
