@@ -564,11 +564,12 @@
         var htmlImages="";
         var attachmentsImage= el.model.attributes.attachments;
         for(index in attachmentsImage){
-            if(index < 4){
-                htmlImages=htmlImages.concat('<div class="image-preview-element-ie8">'+
-                    '<img src="/tatami/file/'+decodeURIComponent(attachmentsImage[index].attachmentId)+'/'+decodeURIComponent(attachmentsImage[index].filename) +'" target="_blank">'+
-                    '</div>');
+            if (!attachmentsImage[index].attachmentId){
+                break;
             }
+            htmlImages=htmlImages.concat('<div class="image-preview-element-ie8">'+
+                '<img src="/tatami/file/'+decodeURIComponent(attachmentsImage[index].attachmentId)+'/'+decodeURIComponent(attachmentsImage[index].filename) +'" target="_blank">'+
+                '</div>');
         }
         return '<div class="images">'+ htmlImages +'</div>'
     };
