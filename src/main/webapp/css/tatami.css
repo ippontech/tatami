@@ -486,6 +486,27 @@ div.jGrowl-notification{
     border-color: #0088cc;
 }
 
+/* Style for degradated fileUpload on IE8 */
+.controlsIE {
+text-align: left;
+vertical-align: center;
+margin-bottom: 20px;
+}
+
+.controlsIE p {
+    font-size: 1.1em;
+}
+
+.controlsIE span.glyphicon, span.upload-ko, span.upload-ok {
+    padding-left: 15px;
+    margin-top: 10px;
+    
+}
+
+.controlsIE span.upload-ko, .controlsIE span.upload-ok, span.hidden-label {
+    display: none;
+}
+
 .tatam {
     background-color: white;
     border-top: 1px solid #CCCCCC;

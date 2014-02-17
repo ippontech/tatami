@@ -18,7 +18,10 @@
 
         initialize: function () {
             this.model = new Tatami.Models.PostStatus();
-            this.initGeoLocalization();
+            if (!ie || ie > 9){
+                this.initGeoLocalization();
+            }
+            $('input, textarea').placeholder();
         },
 
         onRender: function () {
@@ -34,16 +37,29 @@
             this.$reply = this.$el.find('.reply');
             this.$reply.css('display', 'none');
 
-            this.initFileUpload();
-            this.initFileUploadBind();
+            if (!ie || ie > 9){
+                this.initFileUpload();
+                this.initFileUploadBind();
+            } else {
+                this.initFileUploadIE();
+                $(":file").filestyle({
+                    input: false,
+                    buttonText: this.$el.find(".choose-label").html(),
+                    classButton: "btn btn-primary",
+                    icon: false
+                });
+            }
+            this.$el.find(".submit").val(this.$el.find(".submit-label").html()); 
             this.$el.find('.groups').toggleClass('hide', Tatami.app.groups.length === 0);
 
             this.$edit.typeahead(new Tatami.Suggester(this.$edit));
 
             this.$el.modal('show');
 
-            this.initMap();
-            this.checkGeoloc();
+            if (!ie || ie > 9){
+                this.initMap();
+                this.checkGeoloc();
+            }
         },
 
         initGeoLocalization: function () {
@@ -138,6 +154,38 @@
             });
         },
 
+        initFileUploadIE: function(){
+            var self = this;
+            self.model.resetAttachments();
+            this.$el.find('#tatamFile').fileupload({
+                dataType: 'text',
+                sequentialUploads: 'true',
+                dropZone: this.$dropzone,
+                done: function (e, data) {
+                    var size = "";
+                    var result = decodeURIComponent(data.result);
+                    result = result.split(":::");
+                    if (result[0].indexOf("An error has occurred") != -1) {
+                        self.$el.find('.upload-ko').css('display','inline');
+                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
+                    } else {
+                        if (result[2] < 1000000) {
+                            size = (result[2] / 1000).toFixed(0) + "K";
+                        } else {
+                            size = (result[2] / 1000000).toFixed(2) + "M";
+                        }
+                        self.model.addAttachment(result[0]);
+                        $("<p>" + result[1] + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + result[0] + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-ok ok-ko');
+                    }
+                },
+                fail: function (e, data) {
+                    self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
+                    
+                }
+            });
+        },
+
         initFileUploadBind: _.once(function () {
             var self = this;
 
@@ -200,6 +248,7 @@
                 statusReply.fetch({
                     success: function (model) {
                         self.$el.find('.edit-tatam > textarea').val("@" + model.get('username') + " ");
+                        self.$el.find(".countstatus").html(751-self.$el.find('.edit-tatam > textarea').val().length);
                         self.$el.find('.groups').hide();
                         self.$el.find('.status-private').hide();
                         self.$reply.slideDown();
@@ -236,23 +285,36 @@
         submit: function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var self = this;
-            var replyTo = self.model.get('replyTo');
-            this.model.set('content', this.$edit.val());
-            this.model.set('groupId', this.$el.find('[name="groupId"]').val());
-            this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
-            this.model.save(null, {
-                success: function (model, response) {
-                    self.hide();
-                    Tatami.app.trigger('refresh', {
-                        display: true,
-                        replyTo: replyTo
+            if (ie && ie<10 && !this.$edit.val()) {
+                    $.jGrowl(this.$el.find(".tatam-mandatory").html(), {
+                        theme: 'alertColor',
+                        life: 3000,
+                        animateOpen: {
+                            height: "show"
+                        },
+                        animateClose: {
+                            height: "hide"
+                        }
                     });
-                    Tatami.app.user.set('statusCount', Tatami.app.user.get('statusCount') + 1);
-                },
-                error: function (model, response) {
-                }
-            });
+            } else {
+                var self = this;
+                var replyTo = self.model.get('replyTo');
+                this.model.set('content', this.$edit.val());
+                this.model.set('groupId', this.$el.find('[name="groupId"]').val());
+                this.model.set('statusPrivate', this.$el.find('#statusPrivate').prop('checked'));
+                this.model.save(null, {
+                    success: function (model, response) {
+                        self.hide();
+                        Tatami.app.trigger('refresh', {
+                            display: true,
+                            replyTo: replyTo
+                        });
+                        Tatami.app.user.set('statusCount', Tatami.app.user.get('statusCount') + 1);
+                    },
+                    error: function (model, response) {
+                    }
+                });
+            }
         },
         cancel: function () {
             return false;

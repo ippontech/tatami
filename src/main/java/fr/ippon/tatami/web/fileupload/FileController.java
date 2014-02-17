@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.fileupload;
 
 import com.yammer.metrics.annotation.Timed;
+
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
@@ -10,6 +11,7 @@ import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -22,7 +24,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -220,6 +224,30 @@ public class FileController {
         return uploadedFiles;
 
     }
+	
+	    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
+            method = RequestMethod.POST)
+    @ResponseBody
+    @Timed
+    public void uploadAvatarIE(
+            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+
+        Avatar avatar = new Avatar();
+        avatar.setContent(file.getBytes());
+        avatar.setFilename(file.getOriginalFilename());
+        avatar.setSize(file.getSize());
+        avatar.setCreationDate(new Date());
+
+        avatarService.createAvatar(avatar);
+
+        log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
+
+        User user = authenticationService.getCurrentUser();
+        user.setAvatar(avatar.getAvatarId());
+
+        userRepository.updateUser(user);
+
+    }
 
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
@@ -248,6 +276,30 @@ public class FileController {
 
         uploadedFiles.add(uploadedFile);
         return uploadedFiles;
+    }
+	
+	@RequestMapping(value = "/rest/fileuploadIE", headers = "content-type=multipart/*",
+    		method = RequestMethod.POST, produces = "text/html")
+    @ResponseBody
+    @Timed
+    public String uploadIE(@RequestParam("uploadFile") MultipartFile file)
+            throws IOException, StorageSizeException {
+
+        Attachment attachment = new Attachment();
+        attachment.setContent(file.getBytes());
+        attachment.setFilename(file.getName());
+        attachment.setSize(file.getSize());
+        attachment.setFilename(file.getOriginalFilename());
+        attachment.setCreationDate(new Date());
+
+        attachmentService.createAttachment(attachment);
+
+        log.debug("Created attachment : {}", attachment.getAttachmentId());
+        
+        String result = attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize(); 
+        
+        return URLEncoder.encode(result, "UTF-8");
+		
     }
 
     @RequestMapping(value = "/file/file_not_found",

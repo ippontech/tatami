@@ -54,7 +54,11 @@
             attr.fullName = this.getFullName();
             attr.avatarURL = this.getAvatarURL();
             attr.attachmentsImage = this.getImages();
-            attr.geoLocalizationURL = this.getGeoLocalizationUrl();
+            if (!ie || ie>9){
+                attr.geoLocalizationURL = this.getGeoLocalizationUrl();
+            } else {
+                attr.geoLocalizationURL = '';
+            }
 
             return attr;
         },

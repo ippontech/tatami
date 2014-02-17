@@ -17,7 +17,10 @@
     <script src="/js/vendor/jquery.fileupload.js"></script>
     <script src="/js/vendor/jquery.atmosphere.js"></script>
     <script src="/js/vendor/jquery-timeago.js"></script>
+    <script src="/js/vendor/jquery.placeholder.js"></script>
     <script src="/js/app/plugins/tatami.atmosphere.js"></script>
+    <script src="/js/app/plugins/bootstrap-filestyle.min.js"></script>
+    <script src="/js/vendor/jquery.jgrowl.js"></script>
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/tatami-vendor.js"></script>

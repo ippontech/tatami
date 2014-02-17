@@ -17,8 +17,18 @@ var VAccountProfile = Marionette.ItemView.extend({
     },
 
     onRender: function(){
+      if (!ie || ie>9){
         this.initFileUpload();
         this.initFileUploadBind();
+      } else {
+        this.initFileUploadIE();
+        $(":file").filestyle({
+            input: false,
+            buttonText: "Photo",
+            classButton: "btn btn-primary",
+            icon: false
+        });
+      } 
     },
 
     initFileUpload: function(){
@@ -65,6 +75,25 @@ var VAccountProfile = Marionette.ItemView.extend({
             }
         });
     },
+
+    initFileUploadIE: function(){
+        var self = this;
+        this.$el.find('#avatarFile').fileupload({
+            dataType: 'text',
+            sequentialUploads: 'true',
+            dropZone: this.$dropzone,
+            done: function (e, data) {
+                self.$el.find('.glyphicon').attr('class', 'glyphicon glyphicon-ok');
+                self.$el.find('.upload-ok').css('display','inline');
+            },
+            fail: function (e, data) {
+                self.$el.find('.glyphicon').attr('class', 'glyphicon glyphicon-remove');
+                self.$el.find('.upload-ko').css('display','inline');
+            }
+        });
+
+    },
+
     initFileUploadBind: _.once(function(){
         var self = this;
             self.render();

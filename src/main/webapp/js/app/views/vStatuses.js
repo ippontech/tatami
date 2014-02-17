@@ -238,6 +238,7 @@
                     statusDetail.fetch({
                         success: function(){                
                             var shares = statusDetail.get('sharedByLogins');
+                            self.shares = {};
                             self.share.show(new Tatami.Views.StatusShares({
                                 collection: new Tatami.Collections.Users(shares)
                             }));

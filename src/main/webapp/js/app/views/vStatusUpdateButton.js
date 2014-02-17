@@ -19,7 +19,9 @@
         onClick: function(){
             $(this.el).removeClass('refresh-button-style');
             Tatami.app.trigger('display');
-            Tatami.app.favi.badge(0) ;
+            if (!ie || ie>9){
+                Tatami.app.favi.badge(0) ;
+            }
             document.title = "Tatami";
             this.$el.slideUp();
         },
@@ -27,16 +29,20 @@
             var self = this;
             if(this.options.count !== 0) {
                 $(this.el).addClass('refresh-button-style');
-                Tatami.app.favi.badge(this.options.count) ;
+                if (!ie || ie>9){
+                    Tatami.app.favi.badge(this.options.count) ;
+                }
                 document.title = "Tatami (" + this.options.count + ")";
                 this.$el.slideDown();
             } else {
                 $(this.el).removeClass('refresh-button-style');
                 document.title = "Tatami";
                 this.$el.slideUp();
-                Tatami.app.trigger("changeFavicon", {
-                    countFavicon : self.options.count
-                });
+                if (!ie || ie > 9){
+                    Tatami.app.trigger("changeFavicon", {
+                        countFavicon : self.options.count
+                    });
+                }
             }
         },
         className: 'text-center',

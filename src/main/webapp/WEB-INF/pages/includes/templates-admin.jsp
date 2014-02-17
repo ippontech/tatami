@@ -7,12 +7,13 @@
     </h2>
              </br>
     <fieldset class="form-horizontal row-fluid">
+    <@ if (!ie || ie>9){ @>
     <div class="control-group dashed">
         <label class="control-label">
 
         </label>
 
-        <div class="controls">
+          <div class="controls">
             <div id="updateAvatar" class="dropzone well">
                 <img class="nomargin avatar" src="<@= avatar @>" alt=""/>
                 <p class=little-padding-top><fmt:message key="tatami.user.picture.button" /></p>
@@ -22,8 +23,19 @@
                 <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
             </div>
         </div>
-
     </div>
+    <@ } else { @>
+         <label class="control-label">
+
+        </label>
+          <div class="controlsIE">
+            <p><fmt:message key="tatami.user.picture.buttonIE" /></p>
+            <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatarIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="Photo" data-icon="false"/>
+            <span class="glyphicon glyphicon-search"></span>
+            <span class="upload-ok"><fmt:message key="tatami.user.picture.buttonIE-ok" /></span>
+            <span class="upload-ko"><fmt:message key="tatami.user.picture.buttonIE-ko" /></span>
+          </div>
+    <@ } @>
 
     </fieldset>
 
@@ -384,7 +396,7 @@
 
 
 <script type="text/template" id="groups-item">
-    <@ if(name) { @><!-- Afin que les groupes privés dont le nom est caché n'apparaissent pas -->
+    <@ if(name) { @><!-- Afin que les groupes privés dont le nom est caché n apparaissent pas -->
     <td>
         <a href="/tatami/home/groups/<@= groupId @>" title="<@= description @>"><@= name @></a>
     </td>
@@ -422,7 +434,7 @@
     <td style="text-align: left">
         <div class='pull-left background-image-fffix little-marge-right'>
 
-            <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);">
+            <img class="img-rounded img-medium" style="background-image: url(<@= avatarURL @>);"></img>
         </div>
         <h4>
             <@  if(!activated) { @>
@@ -454,15 +466,15 @@
         <fmt:message key="tatami.group.role.member"/>
         <@ } @>
     </td>
-    <@ if(administrator){ >
     <td>
-        <@ if (window.username !== username) { @>
-        <button type="button" class="btn btn-success input-block-level delete">
-            <fmt:message key="tatami.group.edit.member.delete"/>
-        </button>
-        <@ } @>
+       
+            <@ if (window.username !== username) { @>
+                <button type="button" class="btn btn-success input-block-level delete">
+                    <fmt:message key="tatami.group.edit.member.delete"/>
+                </button>
+            <@ } @>
+       
     </td>
-    <@ } >
 </script>
 
 <script type="text/template" id="tags-menu">

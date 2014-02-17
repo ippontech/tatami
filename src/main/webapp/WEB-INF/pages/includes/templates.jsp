@@ -17,7 +17,7 @@
 </script>
 <script type="text/template" id="GroupsHeader">
     <h3>
-        <strong><fmt:message key="tatami.group.name"/> : <@= name @><strong>
+        <span class="text-center"><strong><fmt:message key="tatami.group.name"/> : <@= name @></strong></span>
         <@ if(publicGroup && !administrator) { @>
             <a class="btn-title toggleTag pull-right label <@= (member)?'label-info':'' @>">
                 <@ if(member) { @>
@@ -400,10 +400,10 @@
                 <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
             </a>
             <fieldset class="edit-tatam row-fluid">
-                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5"></textarea>
+                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
-                    <span class="countstatus badge"></span>
+                    <span class="countstatus badge">751</span>
                 </em>
             </fieldset>
             <fieldset class="preview-tatam row-fluid hide">
@@ -419,46 +419,57 @@
                 <legend>
                     <fmt:message key="tatami.status.options"/>
                 </legend>
-
-                 <div class="controls groups">
-                     <div id="GeolocImpossible"></div> <p></p>
-                     <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
-                         <div class="controls geoLocalization" id="geolocCheckboxDiv">
-                             <label class="checkbox">
-                                 <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
-                             </label>
-                         </div>
-                         <div id="geolocalisationCheckbox" class="collapse">
-                             <div id="basicMap" style="height:250px; width:250px"></div>
-                             <div class="geolocMap">
-
-                             </div>
-                         </div>
-                     </div>
-
-                    <label class="control-label"><fmt:message key="tatami.group.name"/></label>
-                    <select name="groupId">
-                        <option value=""></option>
-                        <@ for (index in groups) { @>
-                            <option value="<@= groups[index].groupId @>" <@ if(groupId === groups[index].groupId ){ @>selected="selected"<@ } @>>
-                                <@= groups[index].name @>
-                            </option>
+                    <div class="controls groups">
+                        <@ if (!ie || ie > 9){ @>
+                            <div id="GeolocImpossible"></div> <p></p>
+                            <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
+                                <div class="controls geoLocalization" id="geolocCheckboxDiv">
+                                    <label class="checkbox">
+                                    <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
+                                    </label>
+                                </div>
+                            <div id="geolocalisationCheckbox" class="collapse">
+                                <div id="basicMap" style="height:250px; width:250px"></div>
+                                    <div class="geolocMap">
+                                    </div>
+                                </div>
+                            </div>
                         <@ } @>
-                    </select>
-                </div>
-                <div class="controls status-files">
-                    <label>
-                        <fmt:message key="tatami.menu.files"/>
-                    </label>
-                    <div class="attachmentBar progress progress-striped active" style="display: none;">
-                        <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
-                    </div>
-                    <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
-                    <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
-                    <div class="fileUploadResults wrap">
+                            <label class="control-label"><fmt:message key="tatami.group.name"/></label>
+                            <select name="groupId">
+                                <option value=""></option>
+                                <@ for (index in groups) { @>
+                                    <option value="<@= groups[index].groupId @>" <@ if(groupId === groups[index].groupId ){ @>selected="selected"<@ } @>>
+                                        <@= groups[index].name @>
+                                    </option>
+                                <@ } @>
+                            </select>
+                        </div>
+                        <@ if (!ie || ie > 9){ @>
+                        <div class="controls status-files">
+                            <label>
+                                <fmt:message key="tatami.menu.files"/>
+                            </label>
+                            <div class="attachmentBar progress progress-striped active" style="display: none;">
+                                <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                            </div>
+                            <div class="dropzone well"><fmt:message key="tatami.status.update.drop.file"/></div>
+                            <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+                            <div class="fileUploadResults wrap">
 
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                        <@ } else { @>
+                            <label class="control-label"></label>
+                            <div class="controlsIE">
+							<span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
+                            <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
+                                <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
+                            <span class="glyphicon glyphicon-search ok-ko"></span>
+                            <div class="fileUploadResults wrap">
+                                <span class="upload-ko"><fmt:message key="tatami.user.upload.buttonIE-ko" /></span>
+                            </div>
+                        <@ } @>
                 <div class="controls status-private">
                     <label class="checkbox">
                         <input id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
@@ -470,7 +481,9 @@
             <a class="btn" data-dismiss="modal" aria-hidden="true">
                 <fmt:message key="tatami.form.cancel"/>
             </a>
-            <input type="submit" class="btn btn-primary" title="<fmt:message key="tatami.form.save"/>">
+            <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
+            <span class="hidden-label tatam-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
+            <input type="submit" class="btn btn-primary submit" data-buttonText="">
         </div>
     </div>
 </script>

@@ -43,6 +43,7 @@
             homeBody.tatams.show(region);
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch({
@@ -60,7 +61,7 @@
         homeMentions: function(){
             Tatami.app.header.close();
 
-            if (!ios) {
+            if (!ios) { 
                 Tatami.app.navbar.displaySearch();
                 var homeSide = Tatami.Factories.Home.homeSide();
                 Tatami.app.side.show(homeSide);
@@ -78,6 +79,7 @@
             homeBody.tatams.show(region);
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -106,6 +108,7 @@
             homeBody.tatams.show(region);
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -135,6 +138,7 @@
             tagsBody.header.show(Tatami.Factories.Tags.tagsHeader(tag));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -228,6 +232,7 @@
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -256,6 +261,7 @@
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             window.c = timeline.collection;
@@ -285,6 +291,7 @@
             profileBody.header.show(Tatami.Factories.Profile.profileHeader(username));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -313,6 +320,7 @@
             groupsBody.header.show(Tatami.Factories.Groups.groupsHeader(group));
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
@@ -366,6 +374,7 @@
             homeBody.tatams.show(region);
 
             region.refresh.show(Tatami.Factories.Status.getUpdateButton());
+
             region.timeline.show(timeline);
 
             timeline.collection.fetch();
