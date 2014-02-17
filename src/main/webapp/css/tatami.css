@@ -94,6 +94,7 @@ h4 {
 
 .navbar {
     background-color: black;
+    z-index: 1000;
 }
 .controle-group
 {
