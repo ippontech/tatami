@@ -886,7 +886,7 @@ margin-bottom: 20px;
     max-height: 400px;
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 769px) {
 
     .slider-container {
         display: table;
@@ -914,7 +914,7 @@ margin-bottom: 20px;
 
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 769px) {
 
     .slider-container {
         display: table;
