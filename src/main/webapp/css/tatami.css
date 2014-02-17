@@ -865,6 +865,11 @@ margin-bottom: 20px;
     float: left;
 }
 
+.image-preview-element-ie8 {
+    margin-top: 15px;
+    
+}
+
 .image-preview-element img {
     max-width: 245px;
     max-height: 195px;

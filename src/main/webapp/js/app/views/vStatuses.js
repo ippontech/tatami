@@ -59,7 +59,11 @@
                 regionType: Marionette.Region.extend({
                     open: function(view){
                         this.$el.css('display', 'none');
-                        this.$el.html(view.el);
+                        if (ie){
+                            this.$el.html(images4Ie8(view));
+                        } else {
+                            this.$el.html(view.el);
+                        }
                     }
                 })
             },
@@ -306,7 +310,7 @@
                     if(shares.length){
                         this.share.$el.slideToggle({duration: 100});
                     }
-                    if(this.model.getImages() != null && this.model.getImages().length > 0){
+                    if(this.model.getImages() != null && this.model.getImages().length > 0 ){
                         this.preview.$el.slideToggle({duration: 100});
                     }
                     if(isRoot){
@@ -554,9 +558,20 @@
             var href = event.target.src;
             window.open(href,'_blank');
             return false;
-        }
+        }});
 
-    });
+    var images4Ie8 = function(el){
+        var htmlImages="";
+        var attachmentsImage= el.model.attributes.attachments;
+        for(index in attachmentsImage){
+            if(index < 4){
+                htmlImages=htmlImages.concat('<div class="image-preview-element-ie8">'+
+                    '<img src="/tatami/file/'+decodeURIComponent(attachmentsImage[index].attachmentId)+'/'+decodeURIComponent(attachmentsImage[index].filename) +'" target="_blank">'+
+                    '</div>');
+            }
+        }
+        return '<div class="images">'+ htmlImages +'</div>'
+    };
 
 
     Tatami.Views.Statuses = Statuses;
