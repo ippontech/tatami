@@ -394,6 +394,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><fmt:message key="tatami.status.update"/></h4>
+            <span class="hidden-label file-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
         </div>
         <div class="modal-body">
             <a class="edit-tatam-float-right">
@@ -462,7 +463,7 @@
                         <@ } else { @>
                             <label class="control-label"></label>
                             <div class="controlsIE">
-							<span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
+                            <span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
                             <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
                                 <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
                             <span class="glyphicon glyphicon-search ok-ko"></span>
@@ -482,7 +483,6 @@
                 <fmt:message key="tatami.form.cancel"/>
             </a>
             <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
-            <span class="hidden-label tatam-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
             <input type="submit" class="btn btn-primary submit" data-buttonText="">
         </div>
     </div>

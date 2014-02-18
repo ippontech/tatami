@@ -286,16 +286,9 @@
             e.preventDefault();
             e.stopPropagation();
             if (ie && ie<10 && !this.$edit.val()) {
-                    $.jGrowl(this.$el.find(".tatam-mandatory").html(), {
-                        theme: 'alertColor',
-                        life: 3000,
-                        animateOpen: {
-                            height: "show"
-                        },
-                        animateClose: {
-                            height: "hide"
-                        }
-                    });
+                    var fileMan = this.$el.find(".file-mandatory");
+                    fileMan.removeClass("hidden-label");
+                    setTimeout(function(){fileMan.addClass("hidden-label")},4000);
             } else {
                 var self = this;
                 var replyTo = self.model.get('replyTo');

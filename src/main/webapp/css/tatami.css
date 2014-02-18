@@ -504,6 +504,11 @@ margin-bottom: 20px;
     
 }
 
+span.file-mandatory {
+    font-size: 0.9em; 
+    color:red;
+}
+
 .controlsIE span.upload-ko, .controlsIE span.upload-ok, span.hidden-label {
     display: none;
 }
