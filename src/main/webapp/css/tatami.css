@@ -927,21 +927,21 @@ span.file-mandatory {
         margin-top: 20px;
         background-color: black;
         position: relative;
-        width: 500px;
+        width: 700px;
         height: 550px;
     }
 
     .slider-container .slider-container-img {
         background-color: black;
         text-align: center;   
-        width: 500px;
+        width: 700px;
         line-height: 550px;
         height: 550px;
     }
 
     .slider-container .slider-container-img img {
         vertical-align: middle;
-        max-width: 500px;
+        max-width: 700px;
         max-height: 550px;
     }
 
