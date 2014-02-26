@@ -12,6 +12,7 @@ import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -46,6 +47,8 @@ public class FileController {
     private static final String HEADER_ETAG = "ETag";
 
     private static final String HEADER_IF_NONE_MATCH = "If-None-Match";
+    
+    private static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
 
     private String tatamiUrl;
 
@@ -89,8 +92,13 @@ public class FileController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.sendRedirect("/tatami/file/file_not_found");
         } else {
+            String extension = FilenameUtils.getExtension(attachment.getFilename());
+            if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("gif") && !extension.equals("bmp")){
+            	response.setHeader(HEADER_CONTENT_DISPOSITION, "attachment; filename=\""+attachment.getFilename()+"\"" );
+            }
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
+
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
             if (requestETag != null && requestETag.equals(attachmentId)) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
