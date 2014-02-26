@@ -482,7 +482,7 @@
             <a class="btn" data-dismiss="modal" aria-hidden="true">
                 <fmt:message key="tatami.form.cancel"/>
             </a>
-            <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
+            <span class="hidden-label submit-label"><fmt:message key="tatami.tatam.send"/></span>
             <input type="submit" class="btn btn-primary submit" data-buttonText="">
         </div>
     </div>
