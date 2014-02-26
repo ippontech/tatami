@@ -224,9 +224,15 @@
         updatecount: function (e) {
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
-
-            var value = this.options.maxLength - $textarea.val().length;
-            $label.text(value);
+            var maxLength = this.options.maxLength;
+            setTimeout(function(){
+                var size = $textarea.val().length;
+                if (size>750 && (ie && ie<10)){
+                    $textarea.val($textarea.val().slice(0, 750));
+                }
+                var value = maxLength - size;
+                $label.text(Math.max(value,0));
+            }, 200);
         },
 
         togglePreview: function () {

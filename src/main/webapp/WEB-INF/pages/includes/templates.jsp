@@ -404,7 +404,7 @@
                 <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
-                    <span class="countstatus badge">751</span>
+                    <span class="countstatus badge">750</span>
                 </em>
             </fieldset>
             <fieldset class="preview-tatam row-fluid hide">
