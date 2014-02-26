@@ -567,9 +567,17 @@
             if (!attachmentsImage[index].attachmentId){
                 break;
             }
-            htmlImages=htmlImages.concat('<div class="image-preview-element-ie8">'+
-                '<img src="/tatami/file/'+decodeURIComponent(attachmentsImage[index].attachmentId)+'/'+decodeURIComponent(attachmentsImage[index].filename) +'" target="_blank">'+
-                '</div>');
+            var extension = attachmentsImage[index].filename.split('.').pop().toLowerCase();
+            if ( extension === 'png' 
+                || extension === 'jpg' 
+                || extension === 'jpeg' 
+                || extension === 'gif' 
+                || extension === 'bmp') 
+            {
+                htmlImages=htmlImages.concat('<div class="image-preview-element-ie8">'+
+                    '<img src="/tatami/file/'+decodeURIComponent(attachmentsImage[index].attachmentId)+'/'+decodeURIComponent(attachmentsImage[index].filename) +'" target="_blank">'+
+                    '</div>');
+            }
         }
         return '<div class="images">'+ htmlImages +'</div>'
     };
