@@ -87,7 +87,12 @@ public class FileController {
         response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
 
         // Put the file in the response
-        Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        Attachment attachment = null;
+        try {
+        	attachment = attachmentService.getAttachmentById(attachmentId);
+		} catch (Exception e) {
+			log.info("Error retrieving attachment. {}", e.getMessage());
+		}
         if (attachment == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.sendRedirect("/tatami/file/file_not_found");

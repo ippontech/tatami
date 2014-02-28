@@ -17,7 +17,7 @@ public class IeRefreshWrapper extends HttpServletRequestWrapper {
     }
     
     public String getHeader(String name) {
-        return (name != "Accept" && name != "accept") ? super.getHeader(name) : accept;
+        return (!name.equals("Accept") && !name.equals("accept")) ? super.getHeader(name) : accept;
     }
  
 }
