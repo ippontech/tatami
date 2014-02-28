@@ -147,9 +147,7 @@
                     self.$el.find('.attachmentBar .bar').css(
                         'width', '0%'
                     );
-                    if (data.errorThrown == "Forbidden") {
-                        self.$el.find("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo($("#fileUploadResults"));
-                    }
+                    $("<p>Attachment failed! You do not have enough free disk space.</p>").appendTo(self.$el.find(".fileUploadResults"));
                 }
             });
         },
@@ -165,31 +163,40 @@
                     var size = "";
                     var result = decodeURIComponent(data.result);
                     result = result.split(":::");
-                    if (result[0].indexOf("An error has occurred") != -1) {
-                        self.$el.find('.upload-ko').css('display','inline');
-                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
-                    } else {
-                        if (result[2] < 1000000) {
-                            size = (result[2] / 1000).toFixed(0) + "K";
+                    if (result.length>1){
+                    	if (result[0].indexOf("An error has occurred") != -1) {
+                            self.$el.find('.upload-ko').css('display','inline');
+                            self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
                         } else {
-                            size = (result[2] / 1000000).toFixed(2) + "M";
+                            if (result[2] < 1000000) {
+                                size = (result[2] / 1000).toFixed(0) + "K";
+                            } else {
+                                size = (result[2] / 1000000).toFixed(2) + "M";
+                            }
+                            self.model.addAttachment(result[0]);
+                            $("<p>" + result[1] + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + result[0] + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
+                            self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-ok ok-ko');
+                            self.$el.find('.upload-ko').css('display','none');
                         }
-                        self.model.addAttachment(result[0]);
-                        $("<p>" + result[1] + " (" + size + ")" + "<input type='hidden' name='attachmentIds[]' value='" + result[0] + "'/></p>").appendTo(self.$el.find(".fileUploadResults"));
-                        self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-ok ok-ko');
+                    } else {
+                    	self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove ok-ko');
+                    	self.$el.find('.upload-ok').css('display','none');
+                        self.$el.find('.upload-ko').css('display','inline');
                     }
+                    
                 },
                 fail: function (e, data) {
                     self.$el.find('.ok-ko').attr('class', 'glyphicon glyphicon-remove');
-                    
+                    self.$el.find('.upload-ok').css('display','none');
+                    self.$el.find('.upload-ko').css('display','inline');
                 }
             });
         },
 
-        initFileUploadBind: _.once(function () {
+        initFileUploadBind: function () {
             var self = this;
 
-            $(document).bind('dragover', function (e) {
+            $(document).bind('dragover', _.once(function (e) {
                 var dropZone = self.$dropzone,
                     timeout = window.dropZoneTimeout;
                 if (!timeout) {
@@ -206,33 +213,31 @@
                     window.dropZoneTimeout = null;
                     dropZone.removeClass('in hover');
                 }, jQuery.fx.speeds._default);
-            });
+            }));
             $(document).bind('drop dragover', function (e) {
                 return false;
             });
             self.$el.find('.dropzone').bind('click', function () {
                 self.$el.find('.updateStatusFileupload').click();
             });
-        }),
+        },
 
         serializeData: function () {
             return _.extend(Backbone.Marionette.Layout.prototype.serializeData.apply(this, arguments), {
                 groups: (new Tatami.Collections.Groups(Tatami.app.groups.where({archivedGroup: false}))).toJSON()
             });
         },
-
+        
         updatecount: function (e) {
             var $textarea = $(e.currentTarget);
             var $label = this.$el.find('.countstatus');
             var maxLength = this.options.maxLength;
-            setTimeout(function(){
-                var size = $textarea.val().length;
-                if (size>750 && (ie && ie<10)){
-                    $textarea.val($textarea.val().slice(0, 750));
-                }
-                var value = maxLength - size;
-                $label.text(Math.max(value,0));
-            }, 200);
+            var size = $textarea.val().length;
+            if (size>750 && (ie && ie<10)){
+                $textarea.val($textarea.val().slice(0, 750));
+            }
+            var value = maxLength - size;
+            $label.text(Math.max(value,0));
         },
 
         togglePreview: function () {

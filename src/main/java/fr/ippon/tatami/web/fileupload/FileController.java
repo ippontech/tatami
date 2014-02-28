@@ -275,20 +275,24 @@ public class FileController {
         attachment.setSize(file.getSize());
         attachment.setFilename(file.getOriginalFilename());
         attachment.setCreationDate(new Date());
+        try {
+            attachmentService.createAttachment(attachment);
 
-        attachmentService.createAttachment(attachment);
+            log.debug("Created attachment : {}", attachment.getAttachmentId());
 
-        log.debug("Created attachment : {}", attachment.getAttachmentId());
+            List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+            UploadedFile uploadedFile = new UploadedFile(
+                    attachment.getAttachmentId(),
+                    file.getOriginalFilename(),
+                    Long.valueOf(file.getSize()).intValue(),
+                    tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
 
-        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-        UploadedFile uploadedFile = new UploadedFile(
-                attachment.getAttachmentId(),
-                file.getOriginalFilename(),
-                Long.valueOf(file.getSize()).intValue(),
-                tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
-
-        uploadedFiles.add(uploadedFile);
-        return uploadedFiles;
+            uploadedFiles.add(uploadedFile);
+            return uploadedFiles;
+		} catch (Exception e) {
+			log.debug("Error creating attachment : {}", attachment.getAttachmentId());
+			return null;
+		}
     }
 	
 	@RequestMapping(value = "/rest/fileuploadIE", headers = "content-type=multipart/*",
@@ -305,12 +309,18 @@ public class FileController {
         attachment.setFilename(file.getOriginalFilename());
         attachment.setCreationDate(new Date());
 
-        attachmentService.createAttachment(attachment);
+        String result = "";
+        
+        try {
+        	attachmentService.createAttachment(attachment);
 
-        log.debug("Created attachment : {}", attachment.getAttachmentId());
-        
-        String result = attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize(); 
-        
+            log.debug("Created attachment : {}", attachment.getAttachmentId());
+            
+            result = attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize(); 
+		} catch (Exception e) {
+			log.debug("Error creating attachment : {}", attachment.getAttachmentId());
+		}
+                
         return URLEncoder.encode(result, "UTF-8");
 		
     }

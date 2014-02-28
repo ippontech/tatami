@@ -401,7 +401,7 @@
                 <i class="glyphicon glyphicon-edit close hide" title="<fmt:message key="tatami.status.editor"/>"></i><i class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
             </a>
             <fieldset class="edit-tatam row-fluid">
-                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
+                <textarea name="content" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" cols="50000000" required="required"></textarea>
                 <em>
                     <fmt:message key="tatami.status.characters.left"/>
                     <span class="countstatus badge">750</span>
@@ -464,11 +464,12 @@
                             <label class="control-label"></label>
                             <div class="controlsIE">
                             <span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
-                            <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
+                            <p><fmt:message key="tatami.user.upload.buttonIE" /></p>
                                 <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
                             <span class="glyphicon glyphicon-search ok-ko"></span>
+                            <span class="upload-ko"><fmt:message key="tatami.user.upload.buttonIE-ko" /></span>
                             <div class="fileUploadResults wrap">
-                                <span class="upload-ko"><fmt:message key="tatami.user.upload.buttonIE-ko" /></span>
+                                
                             </div>
                         <@ } @>
                 <div class="controls status-private">
