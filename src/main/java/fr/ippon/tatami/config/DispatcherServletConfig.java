@@ -99,7 +99,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(10000000); // 10 Mo max file size
+        Long maxSize = Long.parseLong(env.getProperty("file.max.size"));
+        multipartResolver.setMaxUploadSize(maxSize); // 10 Mo max file size by default
         return multipartResolver;
     }
 
