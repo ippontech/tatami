@@ -54,6 +54,14 @@ public class CassandraConfiguration {
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
         String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+        
+        int cassandraReplicationFactor = 1;
+        
+        try {
+        	cassandraReplicationFactor =  Integer.parseInt(env.getProperty("cassandra.replicationFactor"));
+        } catch (NumberFormatException nfe) {
+        	log.warn("cassandra.replicationFactor property should contains a integer. Default to 1.");
+        }
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         cassandraHostConfigurator.setMaxActive(100);
@@ -71,6 +79,7 @@ public class CassandraConfiguration {
         if (keyspaceDef == null) {
             log.warn("Keyspace \" {} \" does not exist, creating it!", cassandraKeyspace);
             keyspaceDef = new ThriftKsDef(cassandraKeyspace);
+            ((ThriftKsDef)keyspaceDef).setReplicationFactor(cassandraReplicationFactor);
             cluster.addKeyspace(keyspaceDef, true);
 
             addColumnFamily(cluster, USER_CF, 0);
