@@ -1,7 +1,10 @@
 package fr.ippon.tatami.config;
 
 import com.yammer.metrics.HealthChecks;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.reporting.GraphiteReporter;
+import com.yammer.metrics.reporting.JmxReporter;
 import com.yammer.metrics.reporting.RiemannReporter;
 import com.yammer.metrics.reporting.RiemannReporter.ConfigBuilder;
 
@@ -56,7 +59,7 @@ public class MetricsConfiguration {
 		if (!StringUtils.isEmpty(graphiteHost)) {
 		    log.debug("Initializing Metrics Graphite reporting");
 		    Integer graphitePort = env.getProperty("tatami.metrics.graphite.port", Integer.class);
-		    GraphiteReporter.enable(1,
+		    GraphiteReporter.enable(Metrics.defaultRegistry(), 1,
 		            TimeUnit.MINUTES,
 		            graphiteHost,
 		            graphitePort);
@@ -66,12 +69,14 @@ public class MetricsConfiguration {
 	}
 
 	private void initRiemann() {
+		
 		String riemannHost = env.getProperty("tatami.metrics.riemann.host");
 		if (!StringUtils.isEmpty(riemannHost)) {
 			log.debug("Initializing Metrics Riemann reporting");
 			
 			ConfigBuilder builder = RiemannReporter.Config.newBuilder();
 			builder.host(riemannHost);
+			builder.metricsRegistry(Metrics.defaultRegistry());
 
 			Integer riemannPort = env.getProperty("tatami.metrics.riemann.port", Integer.class);
 			if (riemannPort != null)
