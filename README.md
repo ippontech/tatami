@@ -15,11 +15,11 @@ Tatami is made with the following technologies :
 - [Apache Cassandra](http://cassandra.apache.org/)
 - [Elastic Search](http://www.elasticsearch.org/)
 
-Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
+Tatami is developed by [Ippon Technologies](http://www.ippon.fr)
 
 Current build status: [![Build Status](https://drone.io/github.com/ippontech/tatami/status.png)](https://drone.io/github.com/ippontech/tatami/latest)
 
-Installation for developpers
+Installation for developers
 ---------------------------------------
 
 ### 5 minutes installation
