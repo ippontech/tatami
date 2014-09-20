@@ -22,7 +22,7 @@ Current build status: [![Build Status](https://drone.io/github.com/ippontech/tat
 Installation for developers
 ---------------------------------------
 
-### 5 minutes installation
+### 5 minute installation
 
 - Clone, fork or download the source code from this Github page
 - Install [Maven 3](http://maven.apache.org/)
