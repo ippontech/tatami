@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:if test="${wro4jEnabled eq false}">
+    <script src="/js/vendor/angular.js"></script>
+    <script src="/js/vendor/angular-resource.js"></script>
+
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>

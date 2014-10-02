@@ -4,13 +4,14 @@
     request.setAttribute("currentPage", "home");
 %>
 
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="Tatami">
 
 <jsp:include page="includes/header.jsp"/>
 
 <body>
+
+<jsp:include page="includes/ng-timeline.jsp"/>
 
 <jsp:include page="includes/topmenu.jsp"/>
 
@@ -37,6 +38,8 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
+    <script src="/js/app/controllers/ng-timeline.js"></script>
+
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
     <script src="/js/vendor/OpenLayers.js"></script>
     <script src="/js/app/app.js"></script>
