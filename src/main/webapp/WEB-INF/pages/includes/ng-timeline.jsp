@@ -33,7 +33,7 @@
                                 </div>
                                 <div id="current">
                                     <div class="pull-left background-image-fffix statusitem-img">
-                                        <div class="img img-rounded img-medium" ng-style="{ 'background-image': tatam.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(tatam.avatar)' }"></div>
+                                        <div class="img img-rounded img-medium" ng-style="{ 'background-image': tatam.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/{{ tatam.avatar }}/photo.jpg)' }"></div>
                                     </div>
                                     <div id="status-content-container">
                                         <div class="pull-right text-right">
