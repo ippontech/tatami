@@ -1,0 +1,15 @@
+{
+  "name": "angular-resource",
+  "_cacheHeaders": {
+    "ETag": "\"542cd633-68b7\"",
+    "Last-Modified": "Thu, 02 Oct 2014 04:36:03 GMT",
+    "Content-Length": "26807",
+    "Content-Type": "application/x-javascript"
+  },
+  "_release": "e-tag:542cd633-",
+  "main": "index.js",
+  "_source": "https://code.angularjs.org/1.3.0-rc.4/angular-resource.js",
+  "_target": "*",
+  "_originalSource": "https://code.angularjs.org/1.3.0-rc.4/angular-resource.js",
+  "_direct": true
+}
