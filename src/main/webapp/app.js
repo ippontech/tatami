@@ -1,0 +1,1 @@
+var tatami = angular.module('Tatami', ['ngResource']);
