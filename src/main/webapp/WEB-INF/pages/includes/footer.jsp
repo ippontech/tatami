@@ -4,7 +4,7 @@
 
 <c:if test="${wro4jEnabled eq false}">
     <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-resource/index.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
 
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
