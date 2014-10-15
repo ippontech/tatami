@@ -1,5 +1,5 @@
-tatami.filter('markdown', function() {
-  return function(content) {
-    return marked(content);
-  };
-});
+tatami.filter('markdown', ['$sce', function($sce) {
+    return function(content) {
+        return $sce.trustAsHtml(marked(content));
+    };
+}]);
