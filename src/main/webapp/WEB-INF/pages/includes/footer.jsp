@@ -5,6 +5,8 @@
 <c:if test="${wro4jEnabled eq false}">
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/bower_components/marked/lib/marked.js"></script>
 
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
@@ -12,7 +14,7 @@
     <script src="/js/vendor/underscore.js"></script>
     <script src="/js/vendor/underscore-polyfill.js"></script>
     <script src="/js/vendor/backbone.js"></script>
-    <script src="/js/vendor/marked.js"></script>
+    <!--<script src="/js/vendor/marked.js"></script>-->
     <script src="/js/vendor/backbone.marionette.js"></script>
     <script src="/js/vendor/modernizr.js"></script>
     <script src="/js/vendor/jquery.ui.widget.js"></script>
