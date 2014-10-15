@@ -45,10 +45,7 @@
                                             <strong><a href="#users/{{tatam.username}}">{{tatam.firstName + " " + tatam.lastName}}</a></strong>
                                             <small><a href="#users/{{tatam.username}}">@{{tatam.username}}</a></small>
                                         </h5>
-                                        <div class="markdown">
-                                            <!-- Need to properly generate links for mentions and hashtags, along with other markdown features. -->
-                                            <p>{{ tatam.content }}</p>
-                                        </div>
+                                        <div class="markdown" ng-bind-html="tatam.content | markdown"></div>
                                         <small ng-if="tatam.replyTo != ''">
                                             <span class="glyphicon glyphicon-share-alt"></span> In reply to <a ng-href="#status/{{ tatam.replyTo }}">@{{ tatam.replyToUsername }}</a><br>
                                         </small>

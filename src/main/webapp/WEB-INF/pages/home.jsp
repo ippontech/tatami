@@ -39,6 +39,8 @@
 
 <c:if test="${wro4jEnabled eq false}">
     <script src="/app.js"></script>
+    <script src="/Timeline/MarkedOptions.js"></script>
+    <script src="/Timeline/MarkdownFilter.js"></script>
     <script src="/Timeline/TimelineController.js"></script>
 
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
