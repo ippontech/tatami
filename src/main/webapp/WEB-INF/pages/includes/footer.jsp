@@ -6,6 +6,9 @@
     <script src="/assets/bower_components/angular/angular.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
     <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/assets/bower_components/moment/moment.js"></script>
+    <script src="/assets/bower_components/angular-moment/angular-moment.js"></script>
+
     <script src="/assets/bower_components/marked/lib/marked.js"></script>
 
     <script src="/js/vendor/jquery.js"></script>

@@ -1,1 +1,1 @@
-var tatami = angular.module('Tatami', ['ngResource', 'ngSanitize']);
+var tatami = angular.module('Tatami', ['ngResource', 'ngSanitize', 'angularMoment']);

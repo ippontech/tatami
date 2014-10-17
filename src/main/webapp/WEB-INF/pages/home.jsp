@@ -39,9 +39,11 @@
 
 <c:if test="${wro4jEnabled eq false}">
     <script src="/app/app.js"></script>
-    <script src="/app/components/home/timeline/MarkedOptions.js"></script>
     <script src="/app/components/home/timeline/MarkdownFilter.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
+
+    <script src="/app/components/home/timeline/MarkedConfig.js"></script>
+    <script src="/app/components/home/timeline/MomentConfig.js"></script>
 
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
     <script src="/js/vendor/OpenLayers.js"></script>

@@ -21,6 +21,7 @@
             <div class="tatams-content-title">
                 <h3>
                     <!-- Need to change title based on current tab; Routing? -->
+                    <!-- Need to make tab class="active" if current tab -->
                     <!-- Replace all hardcoded text with translatable text -->
                     Timeline
                 </h3>
@@ -39,8 +40,8 @@
                                     </div>
                                     <div id="status-content-container">
                                         <div class="pull-right text-right">
-                                            <abbr class="timeago" title="{{ tatam.prettyPrintStatusDate }}">Timeago</abbr>
-                                            <!-- Replace Timeago with angular-timeago -->
+                                            <abbr title="{{ tatam.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="tatam.statusDate"></abbr>
+                                            <!-- Make status month and day display after 24h have passed? -->
                                         </div>
                                         <h5 class="statusitem-name">
                                             <strong><a href="#users/{{ tatam.username }}">{{tatam.firstName + " " + tatam.lastName}}</a></strong>
@@ -79,6 +80,7 @@
                                             </div>
                                         </small>
                                     </div>
+
                                     <div id="geolocalizationInStatus">
                                         <!-- Need a fully generated web page to see what should be here -->
                                     </div>
