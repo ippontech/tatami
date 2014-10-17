@@ -34,7 +34,7 @@
                             <div style="display: block;" class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ tatam.statusId }}">
                                 <div id="before">
                                 </div>
-                                <div id="current" ng-mouseenter="showButtonRow=true" ng-mouseleave="showButtonRow=false" ng-class="{ 'favorite' : tatam.favorite }">
+                                <div id="current" ng-mouseenter="showButtonRow=true" ng-mouseleave="showButtonRow=false" ng-class="{ 'favorite' : tatam.favorite, 'share' : tatam.shareByMe }">
                                     <div class="pull-left background-image-fffix statusitem-img">
                                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': tatam.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/{{ tatam.avatar }}/photo.jpg)' }"></div>
                                     </div>
@@ -57,7 +57,7 @@
                                         </small>
 
                                         <small ng-show="tatam.statusPrivate">
-                                            <span class="glyphicon glyphicon-lock"></span> Private Message&nbsp;
+                                            <span class="glyphicon glyphicon-lock"></span> Private Message
                                             <br>
                                         </small>
 
@@ -82,12 +82,11 @@
                                     </div>
 
                                     <div id="geolocalizationInStatus">
-                                        <!-- Need a fully generated web page to see what should be here -->
                                     </div>
                                     <div id="preview">
                                     </div>
 
-                                    <div ng-style="{ visibility : showButtonRow ? 'shown' : 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
+                                    <div ng-style="{ visibility : showButtonRow ? 'visible' : 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
                                         <div>
                                             <small class="statusitem-footer"> 
                                             <a href="#status/{{ tatam.statusId }}" class="btn-link status-action button-ios">
@@ -99,13 +98,20 @@
                                             <button class="btn-link status-action status-action-favorite button-ios">
                                             <i class="glyphicon glyphicon-star"></i> Favorite
                                             </button>
+
+                                            <!--
                                             <button class="btn-link status-action status-action-delete button-ios" confirmation-text="&lt;p&gt;Are you sure you want to delete this status?&lt;/p&gt;
                                                 &lt;p class=&quot;text-center&quot;&gt;
                                                     &lt;button class=&quot;btn btn-default status-action-delete-cancel&quot; href=&quot;#&quot;&gt;Cancel&lt;/button&gt;
                                                     &lt;button class=&quot;btn btn-danger status-action-delete-confirm&quot; href=&quot;#&quot;&gt;Delete&lt;/button&gt;
                                                 &lt;/p&gt;">
-                                            <i class="glyphicon glyphicon-trash"></i> Delete
+                                                <i class="glyphicon glyphicon-trash"></i> Delete
                                             </button>
+                                            <button class="btn-link status-action status-action-share button-ios" success-text="Status Successfully Shared!">
+                                                <i class="glyphicon glyphicon-retweet"></i> Share
+                                            </button>
+                                            -->
+
                                             </small> 
                                         </div>
                                     </div>
