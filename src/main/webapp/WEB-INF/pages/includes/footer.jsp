@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-resource/angular-resource.js"></script>
-    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="/bower_components/marked/lib/marked.js"></script>
+    <script src="/assets/bower_components/angular/angular.js"></script>
+    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/assets/bower_components/marked/lib/marked.js"></script>
 
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
