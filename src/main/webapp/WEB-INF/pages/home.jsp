@@ -85,14 +85,14 @@
     <script src="/js/app/router.js"></script>
 
     <!-- Angular libraries -->
-    <script src="/js/vendor/bower_components/angular/angular.js"></script>
-    <script src="/js/vendor/bower_components/angular-route/angular-route.js"></script>
-    <script src="/js/vendor/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
 
     <!-- tatami angular scripts -->
-    <script src="/js/app/tatamiapp.js"></script>
-    <script src="/js/app/services/sStatus.js"></script>
-    <script src="/js/app/controllers/cStatusCreate.js"></script>
+    <script src="/tatamiapp.js"></script>
+    <script src="/timeline/sStatus.js"></script>
+    <script src="/timeline/cStatusCreate.js"></script>
 
 
 </c:if>
