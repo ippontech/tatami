@@ -32,7 +32,7 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusServic
      */
     $scope.toJSON = function(){
         console.log(angular.toJson(jstatus));
-        return angular.toJson(status);
+        return angular.toJson($scope.status);
     }
 
     /**

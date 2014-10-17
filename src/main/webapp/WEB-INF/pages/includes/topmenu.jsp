@@ -281,7 +281,7 @@
                                     </div>
                                     <div class="controls status-private">
                                         <label class="checkbox">
-                                            <input ng-model="statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
+                                            <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
                                             <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
                                         </label>
                                     </div>
