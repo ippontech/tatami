@@ -6,7 +6,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="tatamiApp">
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -83,6 +83,18 @@
     <script src="/js/app/factories/fAdmin.js"></script>
 
     <script src="/js/app/router.js"></script>
+
+    <!-- Angular libraries -->
+    <script src="/js/vendor/bower_components/angular/angular.js"></script>
+    <script src="/js/vendor/bower_components/angular-route/angular-route.js"></script>
+    <script src="/js/vendor/bower_components/angular-resource/angular-resource.js"></script>
+
+    <!-- tatami angular scripts -->
+    <script src="/js/app/tatamiapp.js"></script>
+    <script src="/js/app/services/sStatus.js"></script>
+    <script src="/js/app/controllers/cStatusCreate.js"></script>
+
+
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>

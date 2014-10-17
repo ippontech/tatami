@@ -5,13 +5,16 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', ['$scope', function($scope){
-    $scope.content="";              // The content contained in this tatam
-    $scope.preview=false;           // Determines if the tatam is being previewed by the user
-    $scope.groupId="";              // The groupId that this tatam is being broadcast to
-    $scope.attachmentIds=[];        // An array of all the attachments contained in the tatam
-    $scope.geoLocalization="";      // The geo location of the user when sending the tatam
-    $scope.statusPrivate=false;      // Determines whether the tatam is private
+tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusService){
+    preview=false;           // Determines if the tatam is being previewed by the user
+    $scope.status = {
+        content:"",              // The content contained in this tatam
+        groupId:"",              // The groupId that this tatam is being broadcast to
+        attachmentIds:[],        // An array of all the attachments contained in the tatam
+        geoLocalization:"",      // The geo location of the user when sending the tatam
+        statusPrivate:false      // Determines whether the tatam is private
+    }
+
 
     /**
      *
@@ -20,7 +23,7 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', function($scope){
      * Simple function to change the current tatam content status
      */
     $scope.statusChange = function(param){
-        $scope.content = param;
+        $scope.status.content = param;
     }
 
     /**
@@ -28,20 +31,27 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', function($scope){
      * stored in the database.
      */
     $scope.toJSON = function(){
-        var jsonObj = {
-            content: $scope.content,
-            groupId: $scope.groupId,
-            attachmentIds: $scope.attachmentIds,
-            geoLocalization: $scope.geoLocalization,
-            statusPrivate: $scope.statusPrivate
-        }
-        console.log(angular.toJson(jsonObj));
+        console.log(angular.toJson(jstatus));
+        return angular.toJson(status);
     }
 
-    $scope.storeStatus = function($scope, $http){
-        $http.post(/tatami/statuses, toJSON()).
-        success(function(){}).
-            error(function(){});
+    /**
+     * Resets any previously set status data
+     */
+    $scope.reset = function(){
+        $scope.status.content = "";
+        $scope.status.preview = false;
+        $scope.status.groupId = "";
+        $scope.status.attachmentIds = [];
+        $scope.status.geoLocalization = "";
+        $scope.status.statusPrivate = false;
+    }
+    /**
+     * Create a new status based on the current data in the controller.
+     * Uses the StatusService for this purpose
+     */
+    $scope.newStatus = function(){
+        StatusService.newStatus();
     }
 
-}])
+})
