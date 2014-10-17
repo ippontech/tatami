@@ -33,7 +33,7 @@
                             <div style="display: block;" class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ tatam.statusId }}">
                                 <div id="before">
                                 </div>
-                                <div id="current" ng-class="{ 'favorite' : tatam.favorite }">
+                                <div id="current" ng-mouseenter="showButtonRow=true" ng-mouseleave="showButtonRow=false" ng-class="{ 'favorite' : tatam.favorite }">
                                     <div class="pull-left background-image-fffix statusitem-img">
                                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': tatam.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/{{ tatam.avatar }}/photo.jpg)' }"></div>
                                     </div>
@@ -79,8 +79,7 @@
                                     <div id="preview">
                                     </div>
 
-                                    <!-- Show hide when hover over -->
-                                    <div style="display: block; visibility: shown;" id="buttons" class="mediumHeight little-marge-top">
+                                    <div ng-style="{ visibility : showButtonRow ? 'shown' : 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
                                         <div>
                                             <small class="statusitem-footer"> 
                                             <a href="#status/{{ tatam.statusId }}" class="btn-link status-action button-ios">
