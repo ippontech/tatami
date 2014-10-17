@@ -20,8 +20,8 @@
         <section class="tatams-content tatams-margin">
             <div class="tatams-content-title">
                 <h3>
-                    <!-- Need to change title based on current tab -->
-                    <!-- Replace hardcoded text with translatable text -->
+                    <!-- Need to change title based on current tab; Routing? -->
+                    <!-- Replace all hardcoded text with translatable text -->
                     Timeline
                 </h3>
             </div>
@@ -30,27 +30,41 @@
                     <!-- Need to use a service along with the controller in the future? -->
                     <section class="timeline" ng-controller="TimelineController">
                         <div class="tatams" ng-repeat="tatam in tatams">
-                            <div class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ tatam.statusId }}" style="display: block;">
+                            <div style="display: block;" class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ tatam.statusId }}">
                                 <div id="before">
                                 </div>
-                                <div id="current">
+                                <div id="current" ng-class="{ 'favorite' : tatam.favorite }">
                                     <div class="pull-left background-image-fffix statusitem-img">
                                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': tatam.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/{{ tatam.avatar }}/photo.jpg)' }"></div>
                                     </div>
                                     <div id="status-content-container">
                                         <div class="pull-right text-right">
                                             <abbr class="timeago" title="{{ tatam.prettyPrintStatusDate }}">Timeago</abbr>
-                                            <!-- Replace Timeago JQuery plugin? Learn how time updates automatically. -->
+                                            <!-- Replace Timeago with angular-timeago -->
                                         </div>
                                         <h5 class="statusitem-name">
-                                            <strong><a href="#users/{{tatam.username}}">{{tatam.firstName + " " + tatam.lastName}}</a></strong>
-                                            <small><a href="#users/{{tatam.username}}">@{{tatam.username}}</a></small>
+                                            <strong><a href="#users/{{ tatam.username }}">{{tatam.firstName + " " + tatam.lastName}}</a></strong>
+                                            <small><a href="#users/{{ tatam.username }}">@{{ tatam.username }}</a></small>
                                         </h5>
                                         <div class="markdown" ng-bind-html="tatam.content | markdown"></div>
-                                        <small ng-if="tatam.replyTo != ''">
-                                            <span class="glyphicon glyphicon-share-alt"></span> In reply to <a ng-href="#status/{{ tatam.replyTo }}">@{{ tatam.replyToUsername }}</a><br>
+
+                                        <small ng-show="tatam.groupId">
+                                            <a class="label" ng-class="tatam.publicGroup ? 'label-info' : 'label-warning'" ng-href="#groups/{{ tatam.groupId }}">
+                                            {{ tatam.groupName }}
+                                            </a>
+                                            <br>
                                         </small>
-                                        <!-- Need to make sure having multiple small tags doesn't change the original look -->
+
+                                        <small ng-show="tatam.statusPrivate">
+                                            <span class="glyphicon glyphicon-lock"></span> Private Message&nbsp;
+                                            <br>
+                                        </small>
+
+                                        <small ng-show="tatam.replyTo">
+                                            <span class="glyphicon glyphicon-share-alt"></span> In reply to <a ng-href="#status/{{ tatam.replyTo }}">@{{ tatam.replyToUsername }}</a>
+                                            <br>
+                                        </small>
+
                                         <small>
                                             <div class="attachments">
                                                 <div></div>
@@ -60,10 +74,33 @@
                                         </small>
                                     </div>
                                     <div id="geolocalizationInStatus">
+                                        <!-- Need a fully generated web page to see what should be here -->
                                     </div>
                                     <div id="preview">
                                     </div>
-                                    <div id="buttons" class="mediumHeight little-marge-top">
+
+                                    <!-- Show hide when hover over -->
+                                    <div style="display: block; visibility: shown;" id="buttons" class="mediumHeight little-marge-top">
+                                        <div>
+                                            <small class="statusitem-footer"> 
+                                            <a href="#status/{{ tatam.statusId }}" class="btn-link status-action button-ios">
+                                            <i class="glyphicon glyphicon-eye-open"></i> View
+                                            </a>
+                                            <button class="btn-link status-action status-action-reply button-ios">
+                                            <i class="glyphicon glyphicon-comment"></i> Reply
+                                            </button>
+                                            <button class="btn-link status-action status-action-favorite button-ios">
+                                            <i class="glyphicon glyphicon-star"></i> Favorite
+                                            </button>
+                                            <button class="btn-link status-action status-action-delete button-ios" confirmation-text="&lt;p&gt;Are you sure you want to delete this status?&lt;/p&gt;
+                                                &lt;p class=&quot;text-center&quot;&gt;
+                                                    &lt;button class=&quot;btn btn-default status-action-delete-cancel&quot; href=&quot;#&quot;&gt;Cancel&lt;/button&gt;
+                                                    &lt;button class=&quot;btn btn-danger status-action-delete-confirm&quot; href=&quot;#&quot;&gt;Delete&lt;/button&gt;
+                                                &lt;/p&gt;">
+                                            <i class="glyphicon glyphicon-trash"></i> Delete
+                                            </button>
+                                            </small> 
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="after">
