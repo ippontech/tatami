@@ -8,11 +8,21 @@ tatamiApp.factory('StatusService', function($resource){
     return {
         /**
          * Create a new status update
-         * @param status
+         * @param tatam
          */
-        newStatus: function(status){
-            var Status = $resource('/tatami/rest/statuses');
-            Status.save(status);
+        newStatus: function(tatam){
+            /*
+            $http.post(
+                '/tatami/rest/statuses/',
+                tatam
+            ).success(function(data, status, headers, config){
+                console.log('Post made');
+            }).error(function(data,status,headers,config){
+
+            });
+            */
+            var Status = $resource('/tatami/rest/statuses/');
+            Status.save(tatam);
         }
 
         /**

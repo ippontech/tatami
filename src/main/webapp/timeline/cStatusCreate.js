@@ -5,14 +5,15 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusService){
+tatamiApp.controller('tatamCreateCtrl', function($scope, StatusService){
     preview=false;           // Determines if the tatam is being previewed by the user
     $scope.status = {
-        content:"",              // The content contained in this tatam
-        groupId:"",              // The groupId that this tatam is being broadcast to
-        attachmentIds:[],        // An array of all the attachments contained in the tatam
-        geoLocalization:"",      // The geo location of the user when sending the tatam
-        statusPrivate:false      // Determines whether the tatam is private
+        content:"",             // The content contained in this tatam
+        groupId:"",             // The groupId that this tatam is being broadcast to
+        replyTo:"",             // The person we are replying to
+        attachmentIds:[],       // An array of all the attachments contained in the tatam
+        geoLocalization:"",     // The geo location of the user when sending the tatam
+        statusPrivate:false     // Determines whether the tatam is private
     }
 
 
@@ -27,15 +28,6 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusServic
     }
 
     /**
-     * Constructs a JSON object from the data of our scope. This JSON object will be
-     * stored in the database.
-     */
-    $scope.toJSON = function(){
-        console.log(angular.toJson(jstatus));
-        return angular.toJson($scope.status);
-    }
-
-    /**
      * Resets any previously set status data
      */
     $scope.reset = function(){
@@ -44,6 +36,7 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusServic
         $scope.status.groupId = "";
         $scope.status.attachmentIds = [];
         $scope.status.geoLocalization = "";
+        $scope.status.replyTo = "";
         $scope.status.statusPrivate = false;
     }
     /**
@@ -51,7 +44,7 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, $resource, StatusServic
      * Uses the StatusService for this purpose
      */
     $scope.newStatus = function(){
-        StatusService.newStatus();
+        StatusService.newStatus(JSON.stringify($scope.status));
     }
 
 })
