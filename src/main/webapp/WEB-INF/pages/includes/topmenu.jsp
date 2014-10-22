@@ -207,18 +207,18 @@
                             <h4 class="modal-title"><fmt:message key="tatami.status.update"/></h4>
                         </div>
                         <div class="modal-body">
-                            <a ng-click="preview = !preview" class="edit-tatam-float-right">
-                                <i ng-if="preview" class="glyphicon glyphicon-edit close" title="<fmt:message key="tatami.status.editor"/>"></i>
-                                <i ng-if="!preview" class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
+                            <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">
+                                <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="<fmt:message key="tatami.status.editor"/>"></i>
+                                <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="<fmt:message key="tatami.status.preview"/>"></i>
                             </a>
-                            <fieldset ng-if="!preview" class="edit-tatam row-fluid">
+                            <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
                                 <textarea ng-model="status.content" ng-change="statusChange(status.content)" placeholder="<fmt:message key="tatami.status.update"/>" maxlength="750" rows="5" required="required"></textarea>
                                 <em>
                                     <fmt:message key="tatami.status.characters.left"/>
                                     <span class="countstatus badge">{{750-status.content.length}}</span>
                                 </em>
                             </fieldset>
-                            <fieldset ng-if="preview" class="preview-tatam row-fluid">
+                            <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
                                 <div class="well well-small markdown">{{status.content}}</div>
                             </fieldset>
                             <fieldset class="reply row-fluid">
@@ -294,7 +294,7 @@
                             </a>
                             <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
                             <span class="hidden-label tatam-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
-                            <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" data-buttonText="">
+                            <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" data-buttonText="" data-dismiss="modal">
                         </div>
                     </div>
                 </div>
