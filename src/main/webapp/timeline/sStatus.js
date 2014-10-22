@@ -13,12 +13,12 @@ tatamiApp.factory('StatusService', function($resource, $http){
          */
 
         newStatus: function(tatam){
-            var Status = $resource('/tatami/rest/statuses/');
+            var Status = $resource('/tatami/rest/statuses/:statusId');
             Status.save(tatam);
-            getTimelineStatuses();
+            //getTimelineStatuses();
         },
 
-        getTimmelineStatuses: function(){
+        getTimelineStatuses: function(){
             var Status = $resource('/tatami/rest/statuses/home_timeline');
             Status.get();
         }

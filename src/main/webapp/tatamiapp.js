@@ -4,6 +4,12 @@
 var tatamiApp = angular.module('tatamiApp', ['ngResource']);
 
 /*
+tatamiapp.config(['$resourceProvider', function ($resourceProvider) {
+    // Don't strip trailing slashes from calculated URLs
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+}]);
+*/
+/*
  tatamiApp
  .config(function($routeProvider){
  $routeProvider
