@@ -5,7 +5,7 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', function($scope, StatusService){
+tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', function($scope, StatusService, GeolocalisationService){
     $scope.current = {          // This is the current instance of the tatam window
         preview: false,         // Determines if the tatam is being previewed by the user
         geoLoc: false           // Determine if the geolocalization checkbox is checked
@@ -43,7 +43,18 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, StatusService){
         $scope.status.geoLocalization = "";
         $scope.status.replyTo = "";
         $scope.status.statusPrivate = false;
-    }
+    },
+
+    /**
+     * Determine whether the user means to use location data on the current Tatam
+     */
+    $scope.UpdateLocation = function(){
+        if(geoLoc){
+            $scope.status.geoLocalization = GeolocalisationService.getGeolocalisation();
+        } else{
+            $scope.status.geoLocalization = '';
+        }
+    },
     /**
      * Create a new status based on the current data in the controller.
      * Uses the StatusService for this purpose
@@ -52,4 +63,4 @@ tatamiApp.controller('tatamCreateCtrl', function($scope, StatusService){
         StatusService.newStatus($scope.status);
     }
 
-})
+}])
