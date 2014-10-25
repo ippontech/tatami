@@ -1,14 +1,14 @@
 /**
- * Created by kenny on 10/2/14.
  *
  * The purpose of this controller is to collect and maintain data in the tatam creation
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', function($scope, StatusService, GeolocalisationService){
-    $scope.current = {          // This is the current instance of the tatam window
-        preview: false,         // Determines if the tatam is being previewed by the user
-        geoLoc: false           // Determine if the geolocalization checkbox is checked
+tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', function($scope, StatusService, GeolocalisationService, GroupService){
+    $scope.current = {                      // This is the current instance of the tatam window
+        preview: false,                     // Determines if the tatam is being previewed by the user
+        geoLoc: false,                      // Determine if the geolocalization checkbox is checked
+        groups: GroupService.getGroups()    // The groups the user belongs to
     },
     $scope.status = {           // This is the current user tatam information
         content:"",             // The content contained in this tatam
@@ -30,10 +30,14 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', function($sc
         $scope.status.content = param;
     },
 
+    $scope.getGroups = function () {
+        return GroupService.getGroups();
+    },
     /**
      * Resets any previously set status data
      */
     $scope.reset = function(){
+        console.log($scope.current.geoLoc);
         $scope.current.preview = false;
         $scope.current.geoLoc = false;
 
@@ -48,19 +52,50 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', function($sc
     /**
      * Determine whether the user means to use location data on the current Tatam
      */
-    $scope.UpdateLocation = function(){
-        if(geoLoc){
-            $scope.status.geoLocalization = GeolocalisationService.getGeolocalisation();
+    $scope.updateLocation = function(){
+        if($scope.current.geoLoc){
+            GeolocalisationService.getGeolocalisation($scope.getLocationString);
         } else{
-            $scope.status.geoLocalization = '';
+            $scope.status.geoLocalization = "";
         }
+
     },
+
+    $scope.getLocationString = function (position) {
+        $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
+        $scope.initMap();
+    },
+
     /**
      * Create a new status based on the current data in the controller.
-     * Uses the StatusService for this purpose
+     * Uses the StatusService for this purpose, and we do nothing if no
+     * content has been provided by the user.
      */
     $scope.newStatus = function(){
-        StatusService.newStatus($scope.status);
+        StatusService.newStatus($scope);
+    },
+
+    $scope.initMap = function () {
+        if ($scope.current.geoLoc) {
+            var geoLocalization = $scope.status.geoLocalization;
+            var latitude = geoLocalization.split(',')[0].trim();
+            var longitude = geoLocalization.split(',')[1].trim();
+
+            map = new OpenLayers.Map("simpleMap");
+            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
+            var mapnik = new OpenLayers.Layer.OSM();
+            var position = lonLat;
+            var zoom = 12;
+
+            map.addLayer(mapnik);
+            var markers = new OpenLayers.Layer.Markers("Markers");
+            map.addLayer(markers);
+            markers.addMarker(new OpenLayers.Marker(lonLat));
+            map.setCenter(position, zoom);
+        }
+
     }
 
 }])

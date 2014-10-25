@@ -1,5 +1,4 @@
 /**
- * Created by kenny on 10/11/14.
  *
  * The StatusService is used to create new statuses, and edit existing statuses.
  */
@@ -13,14 +12,20 @@ tatamiApp.factory('StatusService', [ '$resource', function($resource){
          */
 
         newStatus: function(tatam){
-            var Status = $resource('/tatami/rest/statuses/:statusId');
-            Status.save(tatam);
-            //getTimelineStatuses();
+            var Status = $resource('/tatami/rest/statuses/');
+            Status.save(tatam.status, function () {
+                tatam.reset();
+            });
         },
 
         getTimelineStatuses: function(){
             var Status = $resource('/tatami/rest/statuses/home_timeline');
             Status.get();
+        },
+
+        getStatus: function(statusId){
+            var Status = $resource('/tatami/rest/statuses/:sId', {sId: '@id'});
+            Status.get({sId: statusId});
         }
     }
 

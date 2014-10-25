@@ -1,5 +1,4 @@
 /**
- * Created by kenny on 10/23/14.
  *
  * This service is used to handle getting the geolocalisation of a user
  */
@@ -12,22 +11,12 @@ tatamiApp.factory('GeolocalisationService', function(){
          *              "lat, lon"
          *          Otherwise, we return the empty string.
          */
-        getGeolocalisation: function(){
+        getGeolocalisation: function(callback){
             if(navigator.geolocation){
-                return navigator.geolocation.getCurrentPosition(getPosition);
-            } else{
-                return '';
+                navigator.geolocation.getCurrentPosition(function(position){
+                    callback(position);
+                });
             }
-        },
-
-        /**
-         * Function passed into the navigator.geolocation.getCurrentPosition
-         * @param position The location data
-         * @returns {string} The result is the location string of the form
-         *          "lat, lon".
-         */
-        getPosition: function(position){
-            return position.coords.latitude + ', ' + position.coords.longitude;
         },
 
         /**

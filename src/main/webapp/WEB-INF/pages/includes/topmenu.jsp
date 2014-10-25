@@ -203,7 +203,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="reset()">&times;</button>
                             <h4 class="modal-title"><fmt:message key="tatami.status.update"/></h4>
                         </div>
                         <div class="modal-body">
@@ -231,15 +231,35 @@
                                 <legend>
                                     <fmt:message key="tatami.status.options"/>
                                 </legend>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()"><span class="glyphicon glyphicon-map-marker">
+                                        </span>
+                                        <fmt:message key="tatami.status.geoLocalization"/>
+                                    </label>
+                                    <div ng-if="current.geoLoc">
+                                        <!-- Was width:250px, changed it to 500 -->
+                                        <div id="simpleMap" style="height:250px; width:500px"></div>
+                                        <div class="geolocMap">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="control-label"><fmt:message key="tatami.group.name"/></label>
+                                    <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <!--
                                 <div class="controls groups">
                                     <div id="GeolocImpossible"></div> <p></p>
-                                    <div data-toggle="collapse" data-target="#geolocalisationCheckbox">
-                                        <div class="controls geoLocalization" id="geolocCheckboxDiv">
+                                    <div data-toggle="collapse" >
+                                        <div class="controls geoLocalization" >
                                             <label class="checkbox">
-                                                <input id="statusGeoLocalization" name="statusGeoLocalization" type="checkbox" value="true"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
+                                                <input type="checkbox"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
                                             </label>
                                         </div>
-                                        <div id="geolocalisationCheckbox" class="collapse">
+                                        <div id="geolocalisationCheckbox" ng-if="current.geoLoc">
                                             <div id="basicMap" style="height:250px; width:250px"></div>
                                             <div class="geolocMap">
                                             </div>
@@ -251,7 +271,7 @@
                                         <option value="<@= groups[index].groupId @>">
                                         </option>
                                     </select>
-                                </div>
+                                </div>-->
                                 <div class="controls status-files">
                                     <label>
                                         <fmt:message key="tatami.menu.files"/>
@@ -268,6 +288,7 @@
 
                                     </div>
                                 </div>
+                                <!--
                                 <label class="control-label"></label>
                                 <div class="controlsIE">
                                     <span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
@@ -279,13 +300,13 @@
                                             <fmt:message key="tatami.user.upload.buttonIE-ko" />
                                         </span>
                                     </div>
+                                    -->
                                     <div class="controls status-private">
                                         <label class="checkbox">
                                             <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
                                             <span class="glyphicon glyphicon-lock"></span> <fmt:message key="tatami.status.private"/>
                                         </label>
                                     </div>
-                                </div>
                             </fieldset>
                         </div>
                         <div class="modal-footer">

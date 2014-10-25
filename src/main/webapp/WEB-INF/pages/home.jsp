@@ -93,6 +93,8 @@
     <script src="/tatamiapp.js"></script>
     <script src="/timeline/sStatus.js"></script>
     <script src="/timeline/cStatusCreate.js"></script>
+    <script src="/timeline/sGeoloc.js"></script>
+    <script src="/timeline/sGroups.js"></script>
 
 
 </c:if>
