@@ -221,7 +221,7 @@
                             <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
                                 <div class="well well-small markdown">{{status.content}}</div>
                             </fieldset>
-                            <fieldset class="reply row-fluid">
+                            <fieldset ng-show="current.reply" class="reply row-fluid">
                                 <legend>
                                     <fmt:message key="tatami.status.reply"/>
                                 </legend>

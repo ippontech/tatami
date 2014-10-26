@@ -8,7 +8,8 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
     $scope.current = {                      // This is the current instance of the tatam window
         preview: false,                     // Determines if the tatam is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-        groups: GroupService.query()    // The groups the user belongs to
+        groups: GroupService.query(),       // The groups the user belongs to
+        reply: false                        // Determine if this tatam is a reply to another user
     },
     $scope.status = {           // This is the current user tatam information
         content:"",             // The content contained in this tatam
@@ -78,7 +79,11 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
      * content has been provided by the user.
      */
     $scope.newStatus = function(){
-        StatusService.newStatus($scope);
+        /*
+        StatusService.newStatus($scope);*/
+        StatusService.save($scope.status, function () {
+            $scope.reset();
+        });
     },
 
     /**
@@ -106,5 +111,4 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
         }
 
     }
-
 }]);
