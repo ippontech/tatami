@@ -1,4 +1,4 @@
-var tatamiApp = angular.module('tatamiApp', ['ngResource']);
+var tatamiApp = angular.module('tatamiApp', ['ngResource', 'ui.bootstrap']);
 
 
 tatamiApp.config(['$resourceProvider', function ($resourceProvider) {

@@ -88,6 +88,7 @@
     <script src="/assets/bower_components/angular/angular.js"></script>
     <script src="/assets/bower_components/angular-route/angular-route.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
     <!-- tatami angular scripts -->
     <script src="/app/tatamiapp.js"></script>

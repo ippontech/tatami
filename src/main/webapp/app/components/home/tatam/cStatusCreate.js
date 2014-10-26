@@ -4,7 +4,7 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', function($scope, StatusService, GeolocalisationService, GroupService){
+tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modal', function($scope, StatusService, GeolocalisationService, GroupService, $modal){
     $scope.current = {                      // This is the current instance of the tatam window
         preview: false,                     // Determines if the tatam is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
@@ -19,6 +19,12 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
         geoLocalization:"",     // The geo location of the user when sending the tatam
         statusPrivate:false     // Determines whether the tatam is private
     },
+        
+    $scope.open = function () {
+        var tatam = $modal.open({
+            templateUrl: 'vStatus.html'
+        });
+    }
 
 
     /**
