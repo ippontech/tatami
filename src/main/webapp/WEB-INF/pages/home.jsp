@@ -96,6 +96,7 @@
     <script src="/app/components/home/tatam/cStatusCreate.js"></script>
     <script src="/app/components/home/tatam/sGeoloc.js"></script>
     <script src="/app/components/home/tatam/sGroups.js"></script>
+    <script src="/app/components/home/tatam/cTatamManager.js"></script>
 
 
 </c:if>

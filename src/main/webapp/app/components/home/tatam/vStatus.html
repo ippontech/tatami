@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="vStatus.html">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="reset()">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
         <h4 class="modal-title"><fmt:message key="tatami.status.update"/></h4>
     </div>
     <div class="modal-body">
@@ -107,11 +107,11 @@
         </fieldset>
     </div>
     <div class="modal-footer">
-        <a class="btn" data-dismiss="modal" aria-hidden="true" ng-click="reset()">
+        <a class="btn" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">
             <fmt:message key="tatami.form.cancel"/>
         </a>
         <span class="hidden-label submit-label"><fmt:message key="tatami.form.save"/></span>
         <span class="hidden-label tatam-mandatory"><fmt:message key="tatami.tatam.mandatory"/></span>
-        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" data-buttonText="" data-dismiss="modal">
+        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" data-buttonText="">
     </div>
 </script>
