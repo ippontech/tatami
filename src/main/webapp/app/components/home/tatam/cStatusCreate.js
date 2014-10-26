@@ -8,7 +8,7 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
     $scope.current = {                      // This is the current instance of the tatam window
         preview: false,                     // Determines if the tatam is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-        groups: GroupService.getGroups()    // The groups the user belongs to
+        groups: GroupService.query()    // The groups the user belongs to
     },
     $scope.status = {           // This is the current user tatam information
         content:"",             // The content contained in this tatam
@@ -30,6 +30,9 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
         $scope.status.content = param;
     },
 
+    /**
+     * Retrieve all the groups the user is part of
+     */
     $scope.getGroups = function () {
         return GroupService.getGroups();
     },
@@ -37,7 +40,6 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
      * Resets any previously set status data
      */
     $scope.reset = function(){
-        console.log($scope.current.geoLoc);
         $scope.current.preview = false;
         $scope.current.geoLoc = false;
 
@@ -61,6 +63,10 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
 
     },
 
+    /**
+     * Callback function used in getGeolocalisation. This function sets the status geolocation,
+     * and brings up a map.
+     */
     $scope.getLocationString = function (position) {
         $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
         $scope.initMap();
@@ -75,6 +81,9 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
         StatusService.newStatus($scope);
     },
 
+    /**
+     * Create a map displaying the users current location in the tatam
+     */
     $scope.initMap = function () {
         if ($scope.current.geoLoc) {
             var geoLocalization = $scope.status.geoLocalization;
@@ -98,4 +107,4 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
 
     }
 
-}])
+}]);

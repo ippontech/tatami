@@ -85,16 +85,16 @@
     <script src="/js/app/router.js"></script>
 
     <!-- Angular libraries -->
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-route/angular-route.js"></script>
-    <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/assets/bower_components/angular/angular.js"></script>
+    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
+    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
 
     <!-- tatami angular scripts -->
-    <script src="/tatamiapp.js"></script>
-    <script src="/timeline/sStatus.js"></script>
-    <script src="/timeline/cStatusCreate.js"></script>
-    <script src="/timeline/sGeoloc.js"></script>
-    <script src="/timeline/sGroups.js"></script>
+    <script src="/app/tatamiapp.js"></script>
+    <script src="/app/components/home/tatam/sStatus.js"></script>
+    <script src="/app/components/home/tatam/cStatusCreate.js"></script>
+    <script src="/app/components/home/tatam/sGeoloc.js"></script>
+    <script src="/app/components/home/tatam/sGroups.js"></script>
 
 
 </c:if>
