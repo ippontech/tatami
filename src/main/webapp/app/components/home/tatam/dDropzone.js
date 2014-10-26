@@ -1,5 +1,5 @@
 /**
- * Created by kenny on 10/15/14.
+ * .
  */
 angular.module('tatamiApp')
     .directive('file-dropzone',function(){
@@ -13,4 +13,4 @@ angular.module('tatamiApp')
                 })
             }
         }
-    })
+    });
