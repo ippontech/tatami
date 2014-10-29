@@ -4,12 +4,16 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', function($scope, StatusService, GeolocalisationService, GroupService){
+tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService',
+        function($scope, StatusService, GeolocalisationService, GroupService, $upload){
     $scope.current = {                      // This is the current instance of the tatam window
         preview: false,                     // Determines if the tatam is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
         groups: GroupService.query(),       // The groups the user belongs to
-        reply: false                        // Determine if this tatam is a reply to another user
+        reply: false,                       // Determine if this tatam is a reply to another user
+        uploadDone: true,                   // If the file upload is done, we should not show the progess bar
+        uploadProgress: 0,                  // The progress of the file currently being uploaded
+        upload:[]
     },
     $scope.status = {           // This is the current user tatam information
         content:"",             // The content contained in this tatam
@@ -31,6 +35,23 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
         $scope.reset();
     }
     */
+
+    $scope.onFilesSelect = function ($files) {
+        for(var i = 0; i < $files.length; ++i){
+            var files = $files[i];
+            $scope.current.uploadDone = false;
+
+            $scope.current.upload = $upload.upload({
+                url: '/tatami/rest/fileupload',
+                method: 'POST'
+            }).progress(function (evt) {
+                $scope.current.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function (data, status, headers, config) {
+                $scope.current.uploadDone = true;
+                console.log(data);
+            })
+        }
+    },
 
 
     /**

@@ -272,18 +272,18 @@
                                         </option>
                                     </select>
                                 </div>-->
-                                <div class="controls status-files">
+                                <div class="controls status-files" file-dropzone>
                                     <label>
                                         <fmt:message key="tatami.menu.files"/>
                                     </label>
-                                    <div class="attachmentBar progress progress-striped active" style="display: none;">
-                                        <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                                    <div ng-if="!current.uploadDone" class="attachmentBar progress progress-striped active">
+                                        <div class="bar progress-bar progress-bar-info" style="width: {{current.uploadProgress}}%;"></div>
                                     </div>
-                                    <div class="dropzone well" file-dropzone>
+                                    <div class="dropzone well">
                                             <fmt:message key="tatami.status.update.drop.file"/>
                                     </div>
 
-                                    <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+                                    <input ng-file-drop="onFileSelect($files)" style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
                                     <div class="fileUploadResults wrap">
 
                                     </div>

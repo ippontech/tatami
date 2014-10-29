@@ -85,7 +85,10 @@
     <script src="/js/app/router.js"></script>
 
     <!-- Angular libraries -->
+    <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
     <script src="/assets/bower_components/angular/angular.js"></script>
+    <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
+
     <script src="/assets/bower_components/angular-route/angular-route.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
