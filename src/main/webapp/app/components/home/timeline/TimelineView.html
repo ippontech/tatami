@@ -90,28 +90,20 @@
                                         <div>
                                             <small class="statusitem-footer"> 
                                             <a href="#status/{{ tatam.statusId }}" class="btn-link status-action button-ios">
-                                            <i class="glyphicon glyphicon-eye-open"></i> View
+                                                <i class="glyphicon glyphicon-eye-open"></i> View
                                             </a>
                                             <button class="btn-link status-action status-action-reply button-ios">
-                                            <i class="glyphicon glyphicon-comment"></i> Reply
+                                                <i class="glyphicon glyphicon-comment"></i> Reply
                                             </button>
-                                            <button class="btn-link status-action status-action-favorite button-ios">
-                                            <i class="glyphicon glyphicon-star"></i> Favorite
-                                            </button>
-
-                                            <!--
-                                            <button class="btn-link status-action status-action-delete button-ios" confirmation-text="&lt;p&gt;Are you sure you want to delete this status?&lt;/p&gt;
-                                                &lt;p class=&quot;text-center&quot;&gt;
-                                                    &lt;button class=&quot;btn btn-default status-action-delete-cancel&quot; href=&quot;#&quot;&gt;Cancel&lt;/button&gt;
-                                                    &lt;button class=&quot;btn btn-danger status-action-delete-confirm&quot; href=&quot;#&quot;&gt;Delete&lt;/button&gt;
-                                                &lt;/p&gt;">
+                                            <button ng-if="tatam.username == profileInfo.username" class="btn-link status-action status-action-delete button-ios">
                                                 <i class="glyphicon glyphicon-trash"></i> Delete
                                             </button>
-                                            <button class="btn-link status-action status-action-share button-ios" success-text="Status Successfully Shared!">
+                                            <button ng-if="tatam.username != profileInfo.username && !tatam.shareByMe" class="btn-link status-action status-action-share button-ios">
                                                 <i class="glyphicon glyphicon-retweet"></i> Share
                                             </button>
-                                            -->
-
+                                            <button class="btn-link status-action status-action-favorite button-ios">
+                                                <i class="glyphicon glyphicon-star"></i> Favorite
+                                            </button>
                                             </small> 
                                         </div>
                                     </div>
