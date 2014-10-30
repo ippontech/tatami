@@ -3,17 +3,17 @@
         <ul class="homebody-nav nav nav-justified">
             <li class="active">
                 <a href="#timeline">
-                <i class="glyphicon glyphicon-th-list"></i> Timeline
+                <i class="glyphicon glyphicon-th-list"> </i><span translate="tatami.timeline"></span>
                 </a>
             </li>
             <li>
                 <a href="#mentions">
-                <i class="glyphicon glyphicon-user"></i> Mentions
+                <i class="glyphicon glyphicon-user"> </i><span translate="tatami.mentions"></span>
                 </a>
             </li>
             <li>
                 <a href="#favorites">
-                <i class="glyphicon glyphicon-star"></i> Favorites
+                <i class="glyphicon glyphicon-star"> </i><span translate="tatami.favorites"></span>
                 </a>
             </li>
         </ul>
@@ -23,7 +23,7 @@
                     <!-- Need to change title based on current tab; Routing? -->
                     <!-- Need to make tab class="active" if current tab -->
                     <!-- Replace all hardcoded text with translatable text -->
-                    Timeline
+                    <span translate="tatami.timeline"></span>
                 </h3>
             </div>
             <section class="tatams-container">
@@ -41,7 +41,7 @@
                                     <div id="status-content-container">
                                         <div class="pull-right text-right">
                                             <abbr title="{{ tatam.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="tatam.statusDate"></abbr>
-                                            <!-- Make status month and day display after 24h have passed? -->
+                                            <!-- Make status abbr month and day display after 24h have passed? -->
                                         </div>
                                         <h5 class="statusitem-name">
                                             <strong><a href="#users/{{ tatam.username }}">{{tatam.firstName + " " + tatam.lastName}}</a></strong>
@@ -57,12 +57,12 @@
                                         </small>
 
                                         <small ng-show="tatam.statusPrivate">
-                                            <span class="glyphicon glyphicon-lock"></span> Private Message
+                                            <span class="glyphicon glyphicon-lock"></span> <span translate="tatami.status.private"></span>
                                             <br>
                                         </small>
 
                                         <small ng-show="tatam.replyTo">
-                                            <span class="glyphicon glyphicon-share-alt"></span> In reply to <a ng-href="#status/{{ tatam.replyTo }}">@{{ tatam.replyToUsername }}</a>
+                                            <span class="glyphicon glyphicon-share-alt"></span> <span translate="tatami.status.replyto"></span> <a ng-href="#status/{{ tatam.replyTo }}">@{{ tatam.replyToUsername }}</a>
                                             <br>
                                         </small>
 
@@ -90,19 +90,19 @@
                                         <div>
                                             <small class="statusitem-footer"> 
                                             <a href="#status/{{ tatam.statusId }}" class="btn-link status-action button-ios">
-                                                <i class="glyphicon glyphicon-eye-open"></i> View
+                                                <i class="glyphicon glyphicon-eye-open"></i> <span translate="tatami.status.view"></span>
                                             </a>
                                             <button class="btn-link status-action status-action-reply button-ios">
-                                                <i class="glyphicon glyphicon-comment"></i> Reply
+                                                <i class="glyphicon glyphicon-comment"></i> <span translate="tatami.status.reply"></span>
                                             </button>
                                             <button ng-if="tatam.username == profileInfo.username" class="btn-link status-action status-action-delete button-ios">
-                                                <i class="glyphicon glyphicon-trash"></i> Delete
+                                                <i class="glyphicon glyphicon-trash"></i> <span translate="tatami.status.delete"></span>
                                             </button>
                                             <button ng-if="tatam.username != profileInfo.username && !tatam.shareByMe" class="btn-link status-action status-action-share button-ios">
-                                                <i class="glyphicon glyphicon-retweet"></i> Share
+                                                <i class="glyphicon glyphicon-retweet"></i> <span translate="tatami.status.share"></span>
                                             </button>
                                             <button class="btn-link status-action status-action-favorite button-ios">
-                                                <i class="glyphicon glyphicon-star"></i> Favorite
+                                                <i class="glyphicon glyphicon-star"></i> <span translate="tatami.status.favorite"></span>
                                             </button>
                                             </small> 
                                         </div>
