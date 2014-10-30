@@ -76,6 +76,8 @@ tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'Geolocalisa
     $scope.reset = function(){
         $scope.current.preview = false;
         $scope.current.geoLoc = false;
+        $scope.current.uploadDone = true;
+        $scope.current.uploadProgress = 0;
 
         $scope.status.content = "";
         $scope.status.groupId = "";
