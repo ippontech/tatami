@@ -4,10 +4,14 @@
 
 <c:if test="${wro4jEnabled eq false}">
     <script src="/assets/bower_components/angular/angular.js"></script>
-    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+
     <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+
     <script src="/assets/bower_components/moment/moment.js"></script>
+    <script src="/assets/bower_components/moment/locale/fr.js"></script>
     <script src="/assets/bower_components/angular-moment/angular-moment.js"></script>
+    <script src="/assets/bower_components/angular-translate/angular-translate.js"></script>
 
     <script src="/assets/bower_components/marked/lib/marked.js"></script>
 
