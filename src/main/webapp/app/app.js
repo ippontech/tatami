@@ -1,1 +1,0 @@
-var tatami = angular.module('Tatami', ['ngResource', 'ngSanitize', 'angularMoment']);

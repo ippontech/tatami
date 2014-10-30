@@ -9,7 +9,7 @@
 
 <jsp:include page="includes/header.jsp"/>
 
-<body ng-app="Tatami">
+<body ng-app="TatamiApp">
 
 <jsp:include page="/app/components/home/timeline/TimelineView.html"/>
 
@@ -38,12 +38,13 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/app/app.js"></script>
-    <script src="/app/components/home/timeline/MarkdownFilter.js"></script>
+    <script src="/app/tatamiApp.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
-
-    <script src="/app/components/home/timeline/MarkedConfig.js"></script>
     <script src="/app/components/home/timeline/MomentConfig.js"></script>
+
+    <script src="/app/shared/filters/MarkdownFilter.js"></script>
+    <script src="/app/shared/configs/MarkedConfig.js"></script>
+    <script src="/app/shared/configs/TranslateConfig.js"></script>
 
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
     <script src="/js/vendor/OpenLayers.js"></script>
