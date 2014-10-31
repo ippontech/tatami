@@ -83,26 +83,6 @@
     <script src="/js/app/factories/fAdmin.js"></script>
 
     <script src="/js/app/router.js"></script>
-
-    <!-- Angular libraries -->
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
-    <script src="/assets/bower_components/angular/angular.js"></script> <!-- Update to latest version -->
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
-
-    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
-    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
-    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-
-    <!-- tatami angular scripts -->
-    <script src="/app/TatamiApp.js"></script>
-    <script src="/app/components/home/tatam/TatamModule.js"></script>
-    <script src="/app/shared/services/TatamService.js"></script>
-    <script src="/app/components/home/tatam/TatamController.js"></script>
-    <script src="/app/shared/services/GeolocService.js"></script>
-    <script src="/app/shared/services/GroupService.js"></script>
-    <script src="/app/components/home/tatam/TatamManagerController.js"></script>
-
-
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/tatami-app.js"></script>
