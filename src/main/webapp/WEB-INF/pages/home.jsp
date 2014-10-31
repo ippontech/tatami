@@ -86,7 +86,7 @@
 
     <!-- Angular libraries -->
     <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
-    <script src="/assets/bower_components/angular/angular.js"></script>
+    <script src="/assets/bower_components/angular/angular.js"></script> <!-- Update to latest version -->
     <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
 
     <script src="/assets/bower_components/angular-route/angular-route.js"></script>
@@ -95,11 +95,11 @@
 
     <!-- tatami angular scripts -->
     <script src="/app/tatamiapp.js"></script>
-    <script src="/app/components/home/tatam/sStatus.js"></script>
-    <script src="/app/components/home/tatam/cStatusCreate.js"></script>
-    <script src="/app/components/home/tatam/sGeoloc.js"></script>
-    <script src="/app/components/home/tatam/sGroups.js"></script>
-    <script src="/app/components/home/tatam/cTatamManager.js"></script>
+    <script src="/app/shared/services/StatusService.js"></script>
+    <script src="/app/components/home/tatam/TatamController.js"></script>
+    <script src="/app/shared/services/GeolocService.js"></script>
+    <script src="/app/shared/services/GroupService.js"></script>
+    <script src="/app/components/home/tatam/TatamManagerController.js"></script>
 
 
 </c:if>
