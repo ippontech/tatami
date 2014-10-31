@@ -1,4 +1,4 @@
-tatamiApp.filter('markdown', ['$sce', function($sce) {
+TatamiApp.filter('markdown', ['$sce', function($sce) {
     return function(content) {
         return $sce.trustAsHtml(marked(content));
     };

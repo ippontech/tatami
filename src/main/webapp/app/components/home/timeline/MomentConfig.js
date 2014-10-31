@@ -1,4 +1,4 @@
-tatamiApp.run(function(amMoment) {
+TatamiApp.run(function(amMoment) {
     amMoment.changeLocale('en');
 });
 

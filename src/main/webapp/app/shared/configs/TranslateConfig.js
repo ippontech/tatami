@@ -1,4 +1,4 @@
-tatamiApp.config(function ($translateProvider) {
+TatamiApp.config(function ($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami' : {

@@ -1,4 +1,4 @@
-tatamiApp.controller('TimelineController', ['$scope', '$resource', function($scope, $resource) {
+TatamiApp.controller('TimelineController', ['$scope', '$resource', function($scope, $resource) {
         var timeline = $resource('/tatami/rest/statuses/home_timeline');
         $scope.tatams = timeline.query();
 
