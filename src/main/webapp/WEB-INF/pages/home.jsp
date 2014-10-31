@@ -38,7 +38,8 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/app/tatamiApp.js"></script>
+    <script src="/app/TatamiApp.js"></script>
+    <script src="/app/components/home/timeline/TimelineModule.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
     <script src="/app/components/home/timeline/MomentConfig.js"></script>
 
