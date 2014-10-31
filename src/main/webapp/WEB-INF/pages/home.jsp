@@ -5,7 +5,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="tatamiApp">
 
 <jsp:include page="includes/header.jsp"/>
 

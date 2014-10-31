@@ -1,1 +1,1 @@
-var TatamiApp = angular.module('TatamiApp', ['TimelineModule']);
+var TatamiApp = angular.module('TatamiApp', ['TimelineModule', 'TatamModule']);
