@@ -4,7 +4,7 @@
  * window.
  */
 
-tatamiApp.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService',
+TatamModule.controller('tatamCreateCtrl', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService',
         function($scope, StatusService, GeolocalisationService, GroupService, $upload, $modalInstance){
     $scope.current = {                      // This is the current instance of the tatam window
         preview: false,                     // Determines if the tatam is being previewed by the user

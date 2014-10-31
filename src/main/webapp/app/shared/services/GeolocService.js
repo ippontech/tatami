@@ -2,7 +2,7 @@
  *
  * This service is used to handle getting the geolocalisation of a user
  */
-tatamiApp.factory('GeolocalisationService', function(){
+TatamiApp.factory('GeolocalisationService', function(){
     return{
         /**
          * Uses HTML5 to get geolocation information from the user

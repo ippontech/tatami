@@ -1,7 +1,7 @@
 /**
  * .
  */
-angular.module('tatamiApp')
+angular.module('TatamiApp')
     .directive('file-dropzone',function(){
         return{
             restrict: 'A',

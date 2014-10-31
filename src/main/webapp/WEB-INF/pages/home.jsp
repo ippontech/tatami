@@ -94,7 +94,8 @@
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
     <!-- tatami angular scripts -->
-    <script src="/app/tatamiapp.js"></script>
+    <script src="/app/TatamiApp.js"></script>
+    <script src="/app/components/home/tatam/TatamModule.js"></script>
     <script src="/app/shared/services/TatamService.js"></script>
     <script src="/app/components/home/tatam/TatamController.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
