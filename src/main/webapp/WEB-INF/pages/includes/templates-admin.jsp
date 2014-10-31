@@ -299,7 +299,7 @@
         <@ if (typeof groupId === 'undefined') { @>
             <div class="control-group">
                 <label class="control-label" for="publicGroup">
-                    <fmt:message key="tatami.group.add.access"/>
+                    <fmt:message key="tatami.group.add.access"/>TEST
                 </label>
 
                 <div class="controls">
