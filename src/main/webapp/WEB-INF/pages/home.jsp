@@ -95,7 +95,7 @@
 
     <!-- tatami angular scripts -->
     <script src="/app/tatamiapp.js"></script>
-    <script src="/app/shared/services/StatusService.js"></script>
+    <script src="/app/shared/services/TatamService.js"></script>
     <script src="/app/components/home/tatam/TatamController.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
