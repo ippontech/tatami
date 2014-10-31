@@ -75,7 +75,7 @@
         checkGeoloc: function () {
             if (this.options.currentGeoLocalization === '') {
                 this.$el.find('#geolocCheckboxDiv').remove();
-                this.$el.find('#GeolocImpossible').text("Geolocalisation impossible").css('color', 'red');
+                this.$el.find('#GeolocImpossible').text("Géolocalisation impossible").css('color', 'red');
             }
         },
 

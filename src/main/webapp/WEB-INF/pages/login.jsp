@@ -120,31 +120,30 @@
             </fieldset>
         </form>
 
-        <div class="well row-fluid share-img-fffix">
+        <div class="well row-fluid share-img-fffix col-span-12">
             <div data-toggle="collapse" data-target="#lostPasswordDiv">
                 <button class="col-span-12 btn btn-info">
                     <fmt:message key="tatami.lost.password.title"/>
                 </button>
-
-                <div class="col-span-12">
-                    <div id="lostPasswordDiv" class="collapse little-height">
-                        <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
-                            <fieldset>
-                                <div class="controle-group">
-                                    <label class="little-marge-top">
-                                        <fmt:message key="tatami.login"/> :
-                                    </label>
-                                    <input name="email" type="email" required="required" class="col-span-12"
-                                           placeholder="Your e-mail..."/>
-                                </div>
-                                <div class="controle-group ">
-                                    <button type="submit" class="col-span-12 btn btn-success">
-                                        <fmt:message key="tatami.lost.password.button"/>
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
+            </div>
+            <div class="col-span-12">
+                <div id="lostPasswordDiv" class="collapse little-height">
+                    <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
+                        <fieldset>
+                            <div class="controle-group">
+                                <label class="little-marge-top">
+                                    <fmt:message key="tatami.login"/> :
+                                </label>
+                                <input name="email" type="email" required="required" class="col-span-12"
+                                       placeholder="Your e-mail..."/>
+                            </div>
+                            <div class="controle-group">
+                                <button type="submit" class="col-span-12 btn btn-success">
+                                    <fmt:message key="tatami.lost.password.button"/>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
