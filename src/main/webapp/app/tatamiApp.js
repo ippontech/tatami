@@ -1,1 +1,0 @@
-var tatamiApp = angular.module('TatamiApp', ['ngResource', 'ngSanitize', 'angularMoment', 'pascalprecht.translate']);
