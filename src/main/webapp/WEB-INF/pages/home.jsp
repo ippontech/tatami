@@ -5,7 +5,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="en" ng-app="tatamiApp">
+<html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -38,14 +38,9 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/app/TatamiApp.js"></script>
     <script src="/app/components/home/timeline/TimelineModule.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
     <script src="/app/components/home/timeline/MomentConfig.js"></script>
-
-    <script src="/app/shared/filters/MarkdownFilter.js"></script>
-    <script src="/app/shared/configs/MarkedConfig.js"></script>
-    <script src="/app/shared/configs/TranslateConfig.js"></script>
 
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
     <script src="/js/vendor/OpenLayers.js"></script>

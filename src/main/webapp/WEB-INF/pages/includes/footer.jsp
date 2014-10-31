@@ -3,9 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:if test="${wro4jEnabled eq false}">
-<<<<<<< HEAD
+    <!-- Angular libraries -->
+    <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
     <script src="/assets/bower_components/angular/angular.js"></script>
+    <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
 
+    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
     <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
 
@@ -15,27 +18,27 @@
     <script src="/assets/bower_components/angular-translate/angular-translate.js"></script>
 
     <script src="/assets/bower_components/marked/lib/marked.js"></script>
-=======
-
-    <!-- Angular libraries -->
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
-    <script src="/assets/bower_components/angular/angular.js"></script>
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
-
-    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
-    <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+    
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
-    <!-- tatami angular scripts -->
+    <!-- Tatami Angular scripts -->
     <script src="/app/TatamiApp.js"></script>
-    <script src="/app/components/home/tatam/TatamModule.js"></script>
+
+    <script src="/app/shared/filters/MarkdownFilter.js"></script>
+    <script src="/app/shared/configs/MarkedConfig.js"></script>
+    <script src="/app/shared/configs/TranslateConfig.js"></script>
+
     <script src="/app/shared/services/TatamService.js"></script>
-    <script src="/app/components/home/tatam/TatamController.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
-    <script src="/app/components/home/tatam/TatamManagerController.js"></script>
->>>>>>> upstream/havoc
 
+    <!-- Move these to another file? -->
+    <script src="/app/components/home/tatam/TatamModule.js"></script>
+    <script src="/app/components/home/tatam/TatamController.js"></script>
+    <script src="/app/components/home/tatam/TatamManagerController.js"></script>
+
+
+    <!-- Other libraries -->
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>
