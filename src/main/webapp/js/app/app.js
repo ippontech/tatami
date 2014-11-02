@@ -8,6 +8,7 @@
         cache: false
     });
 
+    /*
     marked.setOptions({
         gfm: true,
         pedantic: false,
@@ -63,6 +64,7 @@
             }
         }
     });
+    */
 
     var show = Backbone.Marionette.Region.prototype.show;
     _.extend(Backbone.Marionette.Region.prototype, {
