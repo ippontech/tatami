@@ -30,6 +30,7 @@
 
     <script src="/app/shared/services/ProfileService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
+    <script src="/app/shared/services/TagService.js"></script>
     <script src="/app/shared/services/StatusService.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
 
