@@ -199,7 +199,7 @@
                 </li>
             </ul>
             <!-- Start of modal -->
-            <div id="editTatam" class="modal fade" ng-controller="tatamCreateCtrl">
+            <div id="editTatam" class="modal fade" ng-controller="StatusCreateController">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

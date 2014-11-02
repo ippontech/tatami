@@ -1,15 +1,16 @@
 /**
  * Handles group management
  */
-tatamiApp.controller('groupController', ['$scope', 'GroupService', function ($scope, GroupService) {
+
+TatamiApp.controller('GroupController', ['$scope', 'GroupService', function($scope, GroupService) {
     $scope.groups = {
-        name:"",
-        description:"",
-        publicGroup:true,
-        archivedGroup:false
+        name: "",
+        description: "",
+        publicGroup: true,
+        archivedGroup: false
     },
 
-    $scope.newGroup = function () {
+    $scope.newGroup = function() {
         GroupService.save($scope.groups);
     }
 }]);
