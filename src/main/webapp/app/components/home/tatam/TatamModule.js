@@ -1,1 +1,0 @@
-var TatamModule = angular.module('TatamModule', ['ngResource', 'ui.bootstrap', 'angularFileUpload']);

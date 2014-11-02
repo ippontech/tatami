@@ -1,0 +1,1 @@
+var SidebarModule = angular.module('SidebarModule', ['ngResource']);

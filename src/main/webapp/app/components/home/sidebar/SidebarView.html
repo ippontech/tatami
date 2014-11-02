@@ -1,0 +1,71 @@
+<aside class="col-span-3">
+    <!-- id="tatamiSide" -->
+    <div>
+        <section ng-controller="UserController" class="hidden-phone card-profile">
+            <div>
+                <div class="page-header">
+                    <h4 class="profile-card background-image-fffix">
+                        <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': user.avatar=='' ? 'url(/img/default_image_user.png)' : 'url(/tatami/avatar/' + user.avatar + '/photo.jpg)' }"></div>
+                        <a href="#users/{{ user.username }}">
+                        <strong>
+                        {{ user.firstName + ' ' + user.lastName }}
+                        </strong>
+                        </a>
+                        <br>
+                        <a href="#users/{{ user.username }}">
+                        <small>
+                        @{{ user.username }}
+                        </small>
+                        </a>
+                    </h4>
+                </div>
+            </div>
+        </section>
+        <section ng-controller="GroupsController" class="hidden-phone groups">
+            <div>
+                <div class="well well-small">
+                    <h4 id="groups-list-title">
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                        &nbsp;My Groups
+                    </h4>
+                    <div class="items">
+                        <div ng-repeat="group in groups">
+                            <a href="#groups/{{ group.groupId }}">{{ group.name }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="hidden-phone who-to-follow">
+            <div>
+                <div class="well well-small">
+                    <h4 id="follow-suggest-title">
+                        <span class="glyphicon glyphicon-random"></span>
+                        &nbsp;Who To Follow?
+                    </h4>
+                    <div class="items">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section ng-controller="TrendsController" class="hidden-phone tag-trends">
+            <div>
+                <div class="well well-small">
+                    <h4 id="profile-trends-title">
+                        <span class="glyphicon glyphicon-fire"></span>
+                        &nbsp;Trends
+                    </h4>
+                    <div class="items">
+                        <div ng-repeat="tag in tags">
+                            <span class="little-padding toggleTag pointer pull-right label">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            </span>
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                            <a href="#tags/{{tag.name}}">#{{ tag.name }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</aside>

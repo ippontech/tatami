@@ -1,4 +1,4 @@
-var TatamiApp = angular.module('TatamiApp', ['TimelineModule', 'TatamModule']);
+var TatamiApp = angular.module('TatamiApp', ['TimelineModule', 'SidebarModule', 'StatusModule']);
 
 TatamiApp.config(['$resourceProvider', function ($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs

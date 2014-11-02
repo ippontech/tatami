@@ -1,9 +1,10 @@
 /**
- *
  * This service is used to handle getting the geolocalisation of a user
  */
-TatamiApp.factory('GeolocalisationService', function(){
-    return{
+
+TatamiApp.factory('GeolocalisationService', function() {
+    return {
+        
         /**
          * Uses HTML5 to get geolocation information from the user
          * @returns If geolocation data can be found for the user
@@ -11,9 +12,9 @@ TatamiApp.factory('GeolocalisationService', function(){
          *              "lat, lon"
          *          Otherwise, we return the empty string.
          */
-        getGeolocalisation: function(callback){
+        getGeolocalisation: function(callback) {
             if(navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(function(position){
+                navigator.geolocation.getCurrentPosition(function(position) {
                     callback(position);
                 });
             }
@@ -24,10 +25,10 @@ TatamiApp.factory('GeolocalisationService', function(){
          * @param position The users position
          * @returns {string} The URL to openstreetmaps
          */
-        getGeolocUrl: function(position){
+        getGeolocUrl: function(position) {
             var latitude = position.split(',')[0].trim();
             var longitude = position.split(',')[1].trim();
             return "http://www.openstreetmap.org/?lon="+longitude+"&lat="+latitude+"&mlon="+longitude+"&mlat="+latitude+"&zoom=12";
         }
     }
-})
+});
