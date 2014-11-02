@@ -28,15 +28,15 @@
     <script src="/app/shared/configs/MarkedConfig.js"></script>
     <script src="/app/shared/configs/TranslateConfig.js"></script>
 
-    <script src="/app/shared/services/TatamService.js"></script>
-    <script src="/app/shared/services/GeolocService.js"></script>
+    <script src="/app/shared/services/ProfileService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
+    <script src="/app/shared/services/StatusService.js"></script>
+    <script src="/app/shared/services/GeolocService.js"></script>
 
     <!-- Move these to another file? -->
-    <script src="/app/components/home/tatam/TatamModule.js"></script>
-    <script src="/app/components/home/tatam/TatamController.js"></script>
-    <script src="/app/components/home/tatam/TatamManagerController.js"></script>
-
+    <script src="/app/components/home/status/StatusModule.js"></script>
+    <script src="/app/components/home/status/StatusCreateController.js"></script>
+    <script src="/app/components/home/status/StatusManagerController.js"></script>
 
     <!-- Other libraries -->
     <script src="/js/vendor/jquery.js"></script>
@@ -61,4 +61,3 @@
 <c:if test="${wro4jEnabled eq true}">
     <script src="/tatami/static-wro4j/${version}/tatami-vendor.js"></script>
 </c:if>
-
