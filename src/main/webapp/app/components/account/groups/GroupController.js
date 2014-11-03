@@ -13,4 +13,8 @@ TatamiApp.controller('GroupController', ['$scope', 'GroupService', function($sco
     $scope.newGroup = function() {
         GroupService.save($scope.groups);
     }
+
+    $scope.test = function () {
+        console.log('Angular works');
+    }
 }]);

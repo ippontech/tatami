@@ -1,0 +1,96 @@
+<section ng-controller="GroupController">
+    <h2>
+        <fmt:message key="tatami.group.name"/>
+    </h2>
+    <button class="show btn btn-xlarge btn-block btn-primary" type="button" ng-click="test()">
+        <fmt:message key="tatami.group.add"/>Add
+    </button>
+    <fieldset>
+    <legend>
+        <!-- create new group -->
+        <fmt:message key="tatami.group.add"/>
+        <!-- edit existing group -->
+        <fmt:message key="tatami.group.edit.details"/>
+
+    </legend>
+    <div class="control-group">
+        <label class="control-label">
+            Name of the group
+        </label>
+
+        <div class="controls">
+            <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-span-12" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" >
+            Description
+        </label>
+
+        <div class="controls">
+            <textarea name="description" class="input-xlarge col-span-12"></textarea>
+        </div>
+    </div>
+
+
+    <div class="control-group">
+        <label class="control-label" for="publicGroup">
+            Acess
+        </label>
+
+        <div class="controls">
+            <label class="radio">
+                <input type="radio" name="publicGroup" value="public" required>
+                Public
+            </label>
+            <label class="radio">
+                <input type="radio" name="publicGroup" value="private" required>
+                Private
+            </label>
+        </div>
+    </div>
+
+    <div class="alertColor">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Warning! If this group is public, everybody can access it
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            Do you want to archive this group?
+        </label>
+
+        <div class="controls">
+            <label class="radio">
+                <input type="radio" name="archivedGroup" value="true" required>
+                Yes, this group should be archived
+            </label>
+            <label class="radio">
+                <input type="radio" name="archivedGroup" value="false" required>
+                No, this group is still in use
+            </label>
+        </div>
+    </div>
+
+    <div class="alert">
+        <i class="icon-warning-sign"></i>
+        Archived groups are read-only
+    </div>
+
+    <br/>
+    <div class="return"/>
+    <br/>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success col-span-7 little-marge-right">
+            Save
+        </button>
+        <button type="reset" class="btn btn-danger col-span-4">
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-success col-span-12">
+            Save
+        </button>
+    </div>
+
+    </fieldset>
+</section>

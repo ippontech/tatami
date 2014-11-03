@@ -7,6 +7,8 @@
 
 <html lang="en">
 
+<jsp:include page="/app/components/account/groups/Groups.html"/>
+
 <jsp:include page="includes/header.jsp"/>
 
 <script id="template-account" type="text/template">
