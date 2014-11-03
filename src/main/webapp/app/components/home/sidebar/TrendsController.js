@@ -1,3 +1,3 @@
 SidebarModule.controller('TrendsController',['$scope', 'TagService', function($scope, TagService) {
-	$scope.tags = TagService.query();
+	$scope.tags = TagService.query({popular: true});
 }]);
