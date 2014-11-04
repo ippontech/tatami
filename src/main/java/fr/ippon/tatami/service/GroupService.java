@@ -111,7 +111,7 @@ public class GroupService {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findUserByLogin(member.getKey());
-            if (user.getLogin() == userWanted.getLogin()) {
+            if (user != null && user.getLogin() == userWanted.getLogin()) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
