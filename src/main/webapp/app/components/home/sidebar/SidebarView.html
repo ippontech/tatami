@@ -5,15 +5,15 @@
             <div>
                 <div class="page-header">
                     <h4 class="profile-card background-image-fffix">
-                        <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': user.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/' + user.avatar + '/photo.jpg)' }"></div>
-                        <a href="#users/{{ user.username }}">
-                        <strong>
+                        <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + avatarUrl + ')' }"></div>
+                        <a ng-cloak href="#users/{{ user.username }}">
+                        <strong ng-cloak>
                         {{ user.firstName + ' ' + user.lastName }}
                         </strong>
                         </a>
                         <br>
-                        <a href="#users/{{ user.username }}">
-                        <small>
+                        <a ng-cloak href="#users/{{ user.username }}">
+                        <small ng-cloak>
                         @{{ user.username }}
                         </small>
                         </a>
@@ -30,13 +30,13 @@
                     </h4>
                     <div class="items">
                         <div ng-repeat="group in groups">
-                            <a href="#groups/{{ group.groupId }}">{{ group.name }}</a>
+                            <a ng-cloak href="#groups/{{ group.groupId }}">{{ group.name }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="hidden-phone who-to-follow">
+        <section ng-cloak class="hidden-phone who-to-follow">
             <div>
                 <div class="well well-small">
                     <h4 id="follow-suggest-title">
@@ -61,7 +61,7 @@
                             <span class="glyphicon glyphicon-plus"></span>
                             </span>
                             <span class="glyphicon glyphicon-arrow-up"></span>
-                            <a href="#tags/{{tag.name}}">#{{ tag.name }}</a>
+                            <a ng-cloak href="#tags/{{tag.name}}">#{{ tag.name }}</a>
                         </div>
                     </div>
                 </div>
