@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Optional;
+
 @Component
 public class TatamiStatusProcessor {
 
@@ -24,7 +26,12 @@ public class TatamiStatusProcessor {
 
     public void sendStatus(@Body String content, @Header("login") String login) throws Exception {
 
-        User tatamiBotUser = userService.getUserByLogin(login);
+        Optional<User> userByLogin = userService.getUserByLogin(login);
+        if (!userByLogin.isPresent()) {
+            log.error("No bot user found");
+        }
+
+        User tatamiBotUser = userByLogin.get();
 
         log.debug("Posting content to Tatami : {}", content);
 

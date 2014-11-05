@@ -1,20 +1,46 @@
 package fr.ippon.tatami.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.google.common.base.Optional;
+
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.domain.status.*;
-import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Announcement;
+import fr.ippon.tatami.domain.status.MentionFriend;
+import fr.ippon.tatami.domain.status.MentionShare;
+import fr.ippon.tatami.domain.status.Share;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.domain.status.StatusDetails;
+import fr.ippon.tatami.domain.status.StatusType;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.DiscussionRepository;
+import fr.ippon.tatami.repository.DomainRepository;
+import fr.ippon.tatami.repository.DomainlineRepository;
+import fr.ippon.tatami.repository.FavoritelineRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.GrouplineRepository;
+import fr.ippon.tatami.repository.MentionlineRepository;
+import fr.ippon.tatami.repository.SharesRepository;
+import fr.ippon.tatami.repository.StatusRepository;
+import fr.ippon.tatami.repository.TaglineRepository;
+import fr.ippon.tatami.repository.TimelineRepository;
+import fr.ippon.tatami.repository.UserlineRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.util.*;
 
 /**
  * Manages the timeline.
@@ -194,11 +220,12 @@ public class TimelineService {
         for (String statusId : line) {
             AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
             if (abstractStatus != null) {
-                User statusUser = userService.getUserByLogin(abstractStatus.getLogin());
-                if (statusUser != null) {
+                Optional<User> userByLogin = userService.getUserByLogin(abstractStatus.getLogin());
+                if (userByLogin.isPresent()) {
+                    User statusUser = userByLogin.get();
                     // Security check
-                    // bypass the security check when no user is logged in 
-                    // => for non-authenticated rss access 
+                    // bypass the security check when no user is logged in
+                    // => for non-authenticated rss access
                     if ((currentUser != null) && !statusUser.getDomain().equals(currentUser.getDomain())) {
                         throw new DomainViolationException("User " + currentUser + " tried to access " +
                                 " status : " + abstractStatus);
@@ -222,8 +249,13 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the original status
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
-                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            String originalStatusUserLogin = originalStatus.getLogin();
+                            Optional<User> originalStatusUser = userService.getUserByLogin(originalStatusUserLogin);
+                            if (originalStatusUser.isPresent()) {
+                                addStatusToLine(statuses, statusDTO, originalStatus, originalStatusUser.get(), usergroups, favoriteLine);
+                            } else {
+                                log.debug("No share since original status user ({}) has been deleted", originalStatusUserLogin);
+                            }
                         } else {
                             log.debug("Original status has been deleted");
                         }
@@ -233,29 +265,45 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was shared
                             statusDTO.setTimelineId(mentionShare.getStatusId());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
-                            statusUser = userService.getUserByLogin(mentionShare.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            String mentionLogin = mentionShare.getLogin();
+                            Optional<User> mentionUser = userService.getUserByLogin(mentionLogin);
+                            if (mentionUser.isPresent()) {
+                                addStatusToLine(statuses, statusDTO, originalStatus, mentionUser.get(), usergroups, favoriteLine);
+                            } else {
+                                log.warn("Cannot share mention, unknown user {}", mentionLogin);
+                            }
                         } else {
                             log.debug("Mentioned status has been deleted");
                         }
                     } else if (abstractStatus.getType().equals(StatusType.MENTION_FRIEND)) {
                         MentionFriend mentionFriend = (MentionFriend) abstractStatus;
-                        statusDTO.setTimelineId(mentionFriend.getStatusId());
-                        statusDTO.setSharedByUsername(mentionFriend.getUsername());
-                        statusUser = userService.getUserByLogin(mentionFriend.getFollowerLogin());
-                        statusDTO.setFirstName(statusUser.getFirstName());
-                        statusDTO.setLastName(statusUser.getLastName());
-                        statusDTO.setAvatar(statusUser.getAvatar());
-                        statusDTO.setUsername(statusUser.getUsername());
-                        statuses.add(statusDTO);
+                        String followerLogin = mentionFriend.getFollowerLogin();
+                        Optional<User> optFollower = userService.getUserByLogin(followerLogin);
+                        if (optFollower.isPresent()) {
+                            User follower = optFollower.get();
+                            statusDTO.setTimelineId(mentionFriend.getStatusId());
+                            statusDTO.setSharedByUsername(mentionFriend.getUsername());
+                            statusDTO.setFirstName(follower.getFirstName());
+                            statusDTO.setLastName(follower.getLastName());
+                            statusDTO.setAvatar(follower.getAvatar());
+                            statusDTO.setUsername(follower.getUsername());
+                            statuses.add(statusDTO);
+                        } else {
+                            log.debug("Cannot mention friend: unknown user ({})", followerLogin);
+                        }
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;
                         AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
                         if (originalStatus != null) { // Find the status that was announced
-                            statusDTO.setTimelineId(announcement.getStatusId());
-                            statusDTO.setSharedByUsername(announcement.getUsername());
-                            statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            String login = originalStatus.getLogin();
+                            Optional<User> announcedUser = userService.getUserByLogin(login);
+                            if (announcedUser.isPresent()) {
+                                statusDTO.setTimelineId(announcement.getStatusId());
+                                statusDTO.setSharedByUsername(announcement.getUsername());
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("Cannot announce message: user has deleted his account ({})", login);
+                            }
                         } else {
                             log.debug("Announced status has been deleted");
                         }

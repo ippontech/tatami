@@ -17,6 +17,8 @@ import org.springframework.security.ldap.authentication.LdapAuthenticator;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Optional;
+
 /**
  * Tatami specific LdapAuthenticationProvider.
  *
@@ -83,14 +85,16 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         }
 
         //Automatically create LDAP users in Tatami
-        User user = userService.getUserByLogin(login);
-        if (user == null) {
+        User user;
+        Optional<User> userByLogin = userService.getUserByLogin(login);
+        if (userByLogin.isPresent()) {
+            // ensure that this user has access to its domain if it has been created before
+            user = userByLogin.get();
+            domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
+        } else {
             user = new User();
             user.setLogin(login);
             userService.createUser(user);
-        } else {
-            // ensure that this user has access to its domain if it has been created before
-            domainRepository.updateUserInDomain(user.getDomain(), user.getLogin());
         }
 
         // The real authentication object uses the login, and not the username

@@ -1,8 +1,7 @@
 package fr.ippon.tatami.web.controller;
 
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
+import com.google.common.base.Optional;
+
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * @author Julien Dubois
@@ -41,8 +44,13 @@ public class AccountWebController {
     private ModelAndView basicModelAndView() {
         ModelAndView mv = new ModelAndView();
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
-        mv.addObject("user", user);
+        String login = currentUser.getLogin();
+        Optional<User> userByLogin = userService.getUserByLogin(login);
+        if (userByLogin.isPresent()) {
+            mv.addObject("user", userByLogin.get());
+        } else {
+            log.warn("Rendering basic model and view with unknown user: ", login);
+        }
         return mv;
     }
 }

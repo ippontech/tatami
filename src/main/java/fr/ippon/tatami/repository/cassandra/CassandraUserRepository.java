@@ -22,6 +22,8 @@ import java.util.Set;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USER_CF;
 
+import com.google.common.base.Optional;
+
 /**
  * Cassandra implementation of the user repository.
  *
@@ -79,20 +81,20 @@ public class CassandraUserRepository implements UserRepository {
 
     @Override
     @Cacheable("user-cache")
-    public User findUserByLogin(String login) {
+    public Optional<User> findUserByLogin(String login) {
         User user;
         try {
             user = em.find(User.class, login);
         } catch (Exception e) {
             log.debug("Exception while looking for user {} : {}", login, e.toString());
-            return null;
+            return Optional.absent();
         }
         if (user != null) {
             user.setStatusCount(counterRepository.getStatusCounter(login));
             user.setFollowersCount(counterRepository.getFollowersCounter(login));
             user.setFriendsCount(counterRepository.getFriendsCounter(login));
         }
-        return user;
+        return Optional.fromNullable(user);
     }
 
     @Override

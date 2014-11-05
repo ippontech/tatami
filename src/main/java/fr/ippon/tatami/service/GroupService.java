@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
 
+import com.google.common.base.Optional;
+
 /**
  * Service bean for managing groups.
  */
@@ -83,8 +85,9 @@ public class GroupService {
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            User user = userRepository.findUserByLogin(member.getKey());
-            if(user != null) { //User might be deleted
+            Optional<User> userByLogin = userRepository.findUserByLogin(member.getKey());
+            if (userByLogin.isPresent()) {
+                User user = userByLogin.get();
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
@@ -112,16 +115,19 @@ public class GroupService {
 
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            User user = userRepository.findUserByLogin(member.getKey());
-            if (user != null && userWanted.getLogin().equals(user.getLogin())) {
-                UserGroupDTO dto = new UserGroupDTO();
-                dto.setLogin(user.getLogin());
-                dto.setUsername(user.getUsername());
-                dto.setAvatar(user.getAvatar());
-                dto.setFirstName(user.getFirstName());
-                dto.setLastName(user.getLastName());
-                dto.setRole(member.getValue());
-                return dto;
+            Optional<User> userByLogin = userRepository.findUserByLogin(member.getKey());
+            if (userByLogin.isPresent()) {
+                User user = userByLogin.get();
+                if (userWanted.getLogin().equals(user.getLogin())) {
+                    UserGroupDTO dto = new UserGroupDTO();
+                    dto.setLogin(user.getLogin());
+                    dto.setUsername(user.getUsername());
+                    dto.setAvatar(user.getAvatar());
+                    dto.setFirstName(user.getFirstName());
+                    dto.setLastName(user.getLastName());
+                    dto.setRole(member.getValue());
+                    return dto;
+                }
             }
         }
         return null;

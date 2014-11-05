@@ -17,11 +17,14 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import com.google.common.base.Optional;
 
 public class UserControllerTest extends AbstractCassandraTatamiTest {
 
@@ -72,8 +75,9 @@ public class UserControllerTest extends AbstractCassandraTatamiTest {
         String validatedLogin = userService.validateRegistration(registrationKey);
         assertEquals(newUserLogin.toLowerCase(), validatedLogin);
 
-        User validatedUser = userService.getUserByLogin(validatedLogin);
+        Optional<User> validatedUser = userService.getUserByLogin(validatedLogin);
         assertNotNull(validatedUser);
+        assertTrue(validatedUser.isPresent());
     }
 
     private void mockAuthentication(String login) {

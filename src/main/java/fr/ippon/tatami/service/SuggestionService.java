@@ -12,6 +12,8 @@ import java.util.*;
 
 import static fr.ippon.tatami.service.util.AnalysisUtil.*;
 
+import com.google.common.base.Optional;
+
 /**
  * Analyses data to find suggestions of users, groups... for the current user.
  */
@@ -57,9 +59,12 @@ public class SuggestionService {
         List<String> mostFollowedUsers = findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUser : mostFollowedUsers) {
-            User suggestion = userService.getUserByLogin(mostFollowedUser);
-            if ( suggestion.getActivated() ){
-                userSuggestions.add(suggestion);
+            Optional<User> userByLogin = userService.getUserByLogin(mostFollowedUser);
+            if (userByLogin.isPresent()) {
+                User suggestion = userByLogin.get();
+                if (suggestion.getActivated()) {
+                    userSuggestions.add(suggestion);
+                }
             }
         }
         if (userSuggestions.size() > SUGGESTIONS_SIZE) {

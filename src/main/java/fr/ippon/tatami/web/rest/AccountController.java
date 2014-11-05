@@ -1,12 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
-import com.yammer.metrics.annotation.Timed;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.Preferences;
-import fr.ippon.tatami.web.rest.dto.UserPassword;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
+import com.google.common.base.Optional;
+import com.yammer.metrics.annotation.Timed;
+
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.Preferences;
+import fr.ippon.tatami.web.rest.dto.UserPassword;
 
 /**
  * REST controller for managing users.
@@ -55,7 +58,11 @@ public class AccountController {
     public User getProfile() {
         this.log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
-        return userService.getUserByLogin(currentUser.getLogin());
+        Optional<User> userByLogin = userService.getUserByLogin(currentUser.getLogin());
+        if (!userByLogin.isPresent()) {
+            throw new RuntimeException("Unknown user as current user: " + currentUser.getLogin());
+        }
+        return userByLogin.get();
     }
 
     /**
@@ -102,8 +109,12 @@ public class AccountController {
     public Preferences getPreferences() {
         this.log.debug("REST request to get account's preferences");
         User currentUser = authenticationService.getCurrentUser();
-        User user = userService.getUserByLogin(currentUser.getLogin());
+        Optional<User> userByLogin = userService.getUserByLogin(currentUser.getLogin());
+        if (!userByLogin.isPresent()) {
+            throw new RuntimeException("Current user (" + currentUser.getLogin() + ") account has been deleted");
+        }
 
+        User user = userByLogin.get();
         Preferences preferences = new Preferences(user);
         return preferences;
     }

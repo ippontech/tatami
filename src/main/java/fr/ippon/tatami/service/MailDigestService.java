@@ -18,6 +18,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
+import com.google.common.base.Optional;
+
 /**
  * This service generates digest emails for subscribed users.
  *
@@ -136,7 +138,13 @@ public class MailDigestService {
     private void handleDailyDigestPageForLogin(String login) {
         log.info("Preparing weekly digest for user " + login);
 
-        User user = userRepository.findUserByLogin(login);
+        Optional<User> userByLogin = userRepository.findUserByLogin(login);
+        if (!userByLogin.isPresent()) {
+            log.warn("Tried to send daily digest to unknown user.");
+            return;
+        }
+
+        User user = userByLogin.get();
 
         // we want statuses for the past 24 hours
         Calendar cal = Calendar.getInstance();
@@ -162,7 +170,13 @@ public class MailDigestService {
     private void handleWeeklyDigestPageForLogin(String login) {
         log.info("Preparing weekly digest for user " + login);
 
-        User user = userRepository.findUserByLogin(login);
+        Optional<User> userByLogin = userRepository.findUserByLogin(login);
+        if (!userByLogin.isPresent()) {
+            log.warn("Tried to send weekly digest to unknown user.");
+            return;
+        }
+
+        User user = userByLogin.get();
 
         // we want statuses for the past week
         Calendar cal = Calendar.getInstance();

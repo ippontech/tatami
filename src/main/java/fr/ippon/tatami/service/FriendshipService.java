@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 /**
  * Manages the user's frienships.
  * <p/>
@@ -58,30 +60,35 @@ public class FriendshipService {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
-        User followedUser = userRepository.findUserByLogin(loginToFollow);
-        if (followedUser != null && !followedUser.equals(currentUser)) {
-            if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
-                for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
-                    if (alreadyFollowingTest.equals(loginToFollow)) {
-                        log.debug("User {} already follows user {}", currentUser.getLogin(), followedUser.getLogin());
-                        return false;
+        Optional<User> userByLogin = userRepository.findUserByLogin(loginToFollow);
+        if (userByLogin.isPresent()) {
+            User followedUser = userByLogin.get();
+            if (!followedUser.equals(currentUser)) {
+                if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
+                    for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
+                        if (alreadyFollowingTest.equals(loginToFollow)) {
+                            log.debug("User {} already follows user {}", currentUser.getLogin(), followedUser.getLogin());
+                            return false;
+                        }
                     }
                 }
+                friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
+                counterRepository.incrementFriendsCounter(currentUser.getLogin());
+                followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
+                counterRepository.incrementFollowersCounter(followedUser.getLogin());
+                // mention the friend that the user has started following him
+                MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
+                mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
+                log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
+                return true;
+            } else {
+                log.debug("Followed user does not exist : " + loginToFollow);
+                return false;
             }
-            friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
-            counterRepository.incrementFriendsCounter(currentUser.getLogin());
-            followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
-            counterRepository.incrementFollowersCounter(followedUser.getLogin());
-            // mention the friend that the user has started following him
-            MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
-            mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
-            log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
-            return true;
         } else {
-            log.debug("Followed user does not exist : " + loginToFollow);
             return false;
         }
-    }
+}
 
     /**
      * Un-follow a user.
@@ -92,8 +99,14 @@ public class FriendshipService {
         log.debug("Removing followed user : {}", usernameToUnfollow);
         User currentUser = authenticationService.getCurrentUser();
         String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
-        User userToUnfollow = userRepository.findUserByLogin(loginToUnfollow);
-        return unfollowUser(currentUser, userToUnfollow);
+        Optional<User> userByLogin = userRepository.findUserByLogin(loginToUnfollow);
+        if (userByLogin.isPresent()) {
+            User userToUnfollow = userByLogin.get();
+            return unfollowUser(currentUser, userToUnfollow);
+        } else {
+            log.debug("User to unfollow does not exist (" + loginToUnfollow + ")");
+            return false;
+        }
     }
 
     /**
@@ -141,8 +154,10 @@ public class FriendshipService {
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<User> friends = new ArrayList<User>();
         for (String friendLogin : friendLogins) {
-            User friend = userRepository.findUserByLogin(friendLogin);
-            friends.add(friend);
+            Optional<User> userByLogin = userRepository.findUserByLogin(friendLogin);
+            if (userByLogin.isPresent()) {
+                friends.add(userByLogin.get());
+            }
         }
         return friends;
     }
@@ -152,8 +167,10 @@ public class FriendshipService {
         Collection<String> followersLogins = followerRepository.findFollowersForUser(login);
         Collection<User> followers = new ArrayList<User>();
         for (String followerLogin : followersLogins) {
-            User follower = userRepository.findUserByLogin(followerLogin);
-            followers.add(follower);
+            Optional<User> userByLogin = userRepository.findUserByLogin(followerLogin);
+            if (userByLogin.isPresent()) {
+                followers.add(userByLogin.get());
+            }
         }
         return followers;
     }

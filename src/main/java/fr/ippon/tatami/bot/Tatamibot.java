@@ -91,7 +91,7 @@ public class Tatamibot extends RouteBuilder {
     }
 
     private void automaticBotCreation(Domain domain, String tatamiBotLogin) {
-        if (userService.getUserByLogin(tatamiBotLogin) == null) {
+        if (!userService.getUserByLogin(tatamiBotLogin).isPresent()) {
             log.info("Tatami Bot user does not exist for domain " + domain.getName() + " - creating it");
             userService.createTatamibot(domain.getName());
             if (domain.getName().equals("ippon.fr")) {

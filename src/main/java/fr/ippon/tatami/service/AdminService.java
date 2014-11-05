@@ -1,5 +1,25 @@
 package fr.ippon.tatami.service;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+import com.google.common.base.Optional;
+
 import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
@@ -15,17 +35,6 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.util.*;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
 
 /**
  * Administration service. Only users with the "admin" role should access it.
@@ -118,17 +127,18 @@ public class AdminService {
             List<String> logins = domainRepository.getLoginsInDomain(domain.getName());
             Collection<User> users = new ArrayList<User>();
             for (String login : logins) {
-                User user = userRepository.findUserByLogin(login);
-                if (user == null) {
-                    log.warn("User defined in domain was not found in the user respository: " + login);
-                } else {
+                Optional<User> userByLogin = userRepository.findUserByLogin(login);
+                if (userByLogin.isPresent()) {
                     log.debug("Indexing user: {}", login);
+                    User user = userByLogin.get();
                     users.add(user);
                     Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
                     for (Group group : groups) {
                         searchService.addGroup(group);
                         groupCount++;
                     }
+                } else {
+                    log.warn("User defined in domain was not found in the user respository: " + login);
                 }
             }
             searchService.addUsers(users);

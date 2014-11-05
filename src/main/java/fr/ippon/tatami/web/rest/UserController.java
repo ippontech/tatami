@@ -115,7 +115,7 @@ public class UserController {
     @ResponseBody
     public void register(@RequestParam String email, HttpServletResponse response) {
         email = email.toLowerCase();
-        if (userService.getUserByLogin(email) != null) {
+        if (userService.getUserByLogin(email).isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }

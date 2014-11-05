@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Optional;
+
 /**
  * Notifies a user when he is mentionned.
  */
@@ -34,18 +36,20 @@ public class MentionService {
     public void mentionUser(String mentionedLogin, Status status) {
         mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId());
 
-        User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
-
-        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-            if (status.getStatusPrivate()) { // Private status
-                mailService.sendUserPrivateMessageEmail(mentionnedUser, status);
-                if (applePushService != null) {
-                    applePushService.notifyUser(mentionedLogin, status);
-                }
-            } else {
-                mailService.sendUserMentionEmail(mentionnedUser, status);
-                if (applePushService != null) {
-                    applePushService.notifyUser(mentionedLogin, status);
+        Optional<User> userByLogin = userRepository.findUserByLogin(mentionedLogin);
+        if (userByLogin.isPresent()) {
+            User mentionnedUser = userByLogin.get();
+            if (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true)) {
+                if (status.getStatusPrivate()) { // Private status
+                    mailService.sendUserPrivateMessageEmail(mentionnedUser, status);
+                    if (applePushService != null) {
+                        applePushService.notifyUser(mentionedLogin, status);
+                    }
+                } else {
+                    mailService.sendUserMentionEmail(mentionnedUser, status);
+                    if (applePushService != null) {
+                        applePushService.notifyUser(mentionedLogin, status);
+                    }
                 }
             }
         }
