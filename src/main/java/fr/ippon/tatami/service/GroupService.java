@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import com.google.common.base.Preconditions;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
@@ -105,13 +106,14 @@ public class GroupService {
     }
 
 
-
-
     public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
+        Preconditions.checkNotNull(userWanted);
+        Preconditions.checkNotNull(userWanted.getLogin());
+
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findUserByLogin(member.getKey());
-            if (user != null && user.getLogin() == userWanted.getLogin()) {
+            if (user != null && userWanted.getLogin().equals(user.getLogin())) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
