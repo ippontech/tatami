@@ -3,6 +3,7 @@
 <groups xmlns="http://www.isdc.ro/wro">
     <group name='tatami-vendor'>
         <js>/js/vendor/jquery.js</js>
+        <js>/js/vendor/jquery.placeholder.js</js>
         <js>/js/vendor/jquery.ui.widget.js</js>
         <js>/js/vendor/jquery.iframe-transport.js</js>
         <js>/js/vendor/jquery.fileupload.js</js>
