@@ -109,7 +109,7 @@
                 <div class="controle-group">
                     <input id="_spring_security_remember_me" name="_spring_security_remember_me"
                            type="checkbox"/>
-                    <fmt:message key="tatami.remember.password.time"/>
+                    <label for="_spring_security_remember_me"><fmt:message key="tatami.remember.password.time"/></label>
                 </div>
                 <div class="controle-group">
                     <button type="submit" class="col-span-12 btn btn-success" id="loginButton">
