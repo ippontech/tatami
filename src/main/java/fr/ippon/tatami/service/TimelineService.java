@@ -223,7 +223,11 @@ public class TimelineService {
                             statusDTO.setTimelineId(share.getStatusId());
                             statusDTO.setSharedByUsername(share.getUsername());
                             statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            if (statusUser != null) {
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("User of original status has been deleted");
+                            }
                         } else {
                             log.debug("Original status has been deleted");
                         }
@@ -234,7 +238,11 @@ public class TimelineService {
                             statusDTO.setTimelineId(mentionShare.getStatusId());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
                             statusUser = userService.getUserByLogin(mentionShare.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            if (statusUser != null) {
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("User of original status has been deleted");
+                            }
                         } else {
                             log.debug("Mentioned status has been deleted");
                         }
@@ -243,11 +251,15 @@ public class TimelineService {
                         statusDTO.setTimelineId(mentionFriend.getStatusId());
                         statusDTO.setSharedByUsername(mentionFriend.getUsername());
                         statusUser = userService.getUserByLogin(mentionFriend.getFollowerLogin());
-                        statusDTO.setFirstName(statusUser.getFirstName());
-                        statusDTO.setLastName(statusUser.getLastName());
-                        statusDTO.setAvatar(statusUser.getAvatar());
-                        statusDTO.setUsername(statusUser.getUsername());
-                        statuses.add(statusDTO);
+                        if (statusUser != null) {
+                            statusDTO.setFirstName(statusUser.getFirstName());
+                            statusDTO.setLastName(statusUser.getLastName());
+                            statusDTO.setAvatar(statusUser.getAvatar());
+                            statusDTO.setUsername(statusUser.getUsername());
+                            statuses.add(statusDTO);
+                        } else {
+                            log.debug("User of original status has been deleted");
+                        }
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;
                         AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
@@ -255,7 +267,11 @@ public class TimelineService {
                             statusDTO.setTimelineId(announcement.getStatusId());
                             statusDTO.setSharedByUsername(announcement.getUsername());
                             statusUser = userService.getUserByLogin(originalStatus.getLogin());
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            if (statusUser != null) {
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("User of original status has been deleted");
+                            }
                         } else {
                             log.debug("Announced status has been deleted");
                         }
