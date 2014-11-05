@@ -400,6 +400,9 @@
         <tatami.automatic.registration>false</tatami.automatic.registration>
         <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
         <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+        <tatami.metrics.riemann.host></tatami.metrics.riemann.host>
+        <tatami.metrics.riemann.port>5555</tatami.metrics.riemann.port>
+        <tatami.metrics.riemann.tags></tatami.metrics.riemann.tags>
 
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -456,6 +459,10 @@
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
             <url>http://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>clojars.org</id>
+            <url>http://clojars.org/repo</url>
         </repository>
     </repositories>
     <prerequisites>
@@ -787,6 +794,11 @@
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>${rome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aphyr</groupId>
+            <artifactId>riemann-java-client</artifactId>
+            <version>0.2.8</version>
         </dependency>
 
         <!-- Test dependencies -->
