@@ -25,8 +25,9 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void createAndGetGroup() {
-        mockAuthentication("uuser@ippon.fr");
-        User user = userService.getUserByLogin("uuser@ippon.fr");
+        String testLogin = "uuser@ippon.fr";
+        mockAuthentication(testLogin);
+        User user = userService.getUserByLogin(testLogin).get();
         String groupName = "Group name";
         String groupDescription = "Group description";
         boolean publicGroup = true;
@@ -45,9 +46,10 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void createGroup() {
-        mockAuthentication("jdubois@ippon.fr");
+        String testLogin = "jdubois@ippon.fr";
+        mockAuthentication(testLogin);
 
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
+        User user = userService.getUserByLogin(testLogin).get();
         assertEquals(0, groupService.getGroupsForUser(user).size());
 
         String groupName = "Group name";
@@ -66,9 +68,10 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void addAndRemoveGroupMember() {
-        mockAuthentication("userWithStatus@ippon.fr");
+        String testLogin = "userWithStatus@ippon.fr";
+        mockAuthentication(testLogin);
 
-        User user = userService.getUserByLogin("userWithStatus@ippon.fr");
+        User user = userService.getUserByLogin(testLogin).get();
         assertEquals(0, groupService.getGroupsForUser(user).size());
 
         String groupName = "Group name";
@@ -80,7 +83,7 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
         Group group = groups.iterator().next();
         String groupId = group.getGroupId();
 
-        User member = userService.getUserByLogin("userWhoPostStatus@ippon.fr");
+        User member = userService.getUserByLogin("userWhoPostStatus@ippon.fr").get();
 
         assertEquals(1, groupService.getGroupsForUser(user).size());
         assertEquals(0, groupService.getGroupsForUser(member).size());

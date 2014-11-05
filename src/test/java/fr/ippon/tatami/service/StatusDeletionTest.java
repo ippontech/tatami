@@ -123,7 +123,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
     public void deleteManyStatusesInAGroup() throws Exception {
         String login = "uuser@ippon.fr";
         mockAuthenticationOnTimelineServiceWithACurrentUser(login);
-        User user = userService.getUserByLogin(login);
+        User user = userService.getUserByLogin(login).get();
         int userGroupSize = groupService.getGroupsForUser(user).size();
 
         String groupName = "Group with messages to delete";

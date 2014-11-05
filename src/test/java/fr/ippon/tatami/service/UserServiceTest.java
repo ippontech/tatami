@@ -1,20 +1,32 @@
 package fr.ippon.tatami.service;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import com.google.common.base.Optional;
+
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.UserDTO;
-import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class UserServiceTest extends AbstractCassandraTatamiTest {
 
@@ -28,8 +40,11 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetAUserByLogin() {
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
-        assertThat(user, notNullValue());
+        Optional<User> opt = userService.getUserByLogin("jdubois@ippon.fr");
+        assertThat(opt, notNullValue());
+        assertTrue(opt.isPresent());
+
+        User user = opt.get();
         assertThat(user.getAvatar(), is("avatar"));
         assertThat(user.getFirstName(), is("Julien"));
         assertThat(user.getLastName(), is("Dubois"));
@@ -37,8 +52,8 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldNotGetAUserByLogin() {
-        User user = userService.getUserByLogin("unknownUserLogin");
-        assertThat(user, nullValue());
+        Optional<User> opt = userService.getUserByLogin("unknownUserLogin");
+        assertFalse(opt.isPresent());
     }
 
     @Test
@@ -67,7 +82,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
         userService.updateUser(userToUpdate);
 
-        User updatedUser = userService.getUserByLogin(login);
+        User updatedUser = userService.getUserByLogin(login).get();
 
         assertThat(updatedUser.getFirstName(), is(firstName));
         assertThat(updatedUser.getLastName(), is(lastName));
@@ -126,12 +141,12 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnUserService(login);
 
         userService.updateWeeklyDigestRegistration(true);
-        User updatedUser = userService.getUserByLogin(login);
+        User updatedUser = userService.getUserByLogin(login).get();
 
         assertTrue(updatedUser.getWeeklyDigestSubscription());
 
         userService.updateWeeklyDigestRegistration(false);
-        updatedUser = userService.getUserByLogin(login);
+        updatedUser = userService.getUserByLogin(login).get();
 
         assertFalse(updatedUser.getWeeklyDigestSubscription());
     }
@@ -144,12 +159,12 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnUserService(login);
 
         userService.updateDailyDigestRegistration(true);
-        User updatedUser = userService.getUserByLogin(login);
+        User updatedUser = userService.getUserByLogin(login).get();
 
         assertTrue(updatedUser.getDailyDigestSubscription());
 
         userService.updateDailyDigestRegistration(false);
-        updatedUser = userService.getUserByLogin(login);
+        updatedUser = userService.getUserByLogin(login).get();
 
         assertFalse(updatedUser.getDailyDigestSubscription());
     }
@@ -182,13 +197,13 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String login = "jdubois@ippon.fr";
         mockAuthenticationOnUserService(login);
 
-        User testUser = userService.getUserByLogin(login);
+        User testUser = userService.getUserByLogin(login).get();
         assertNull(testUser.getPassword());
 
         testUser.setPassword("newPassword");
         userService.updatePassword(testUser);
 
-        testUser = userService.getUserByLogin(login);
+        testUser = userService.getUserByLogin(login).get();
         assertNotNull(testUser.getPassword());
         assertNotEquals("newPassword", testUser.getPassword());
     }
@@ -198,7 +213,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         String login = "jdubois@ippon.fr";
         mockAuthenticationOnUserService(login);
 
-        User testUser = userService.getUserByLogin(login);
+        User testUser = userService.getUserByLogin(login).get();
         Collection<User> users = new ArrayList<User>();
         users.add(testUser);
 

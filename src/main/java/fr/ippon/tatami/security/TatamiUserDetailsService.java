@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.google.common.base.Optional;
+
 /**
  * Finds a user in Cassandra.
  *
@@ -67,11 +69,13 @@ public class TatamiUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
         log.debug("Authenticating {} with Cassandra", login);
         String lowercaseLogin = login.toLowerCase();
-        User userFromCassandra = userService.getUserByLogin(lowercaseLogin);
-        if (userFromCassandra == null) {
+        Optional<User> userByLogin = userService.getUserByLogin(lowercaseLogin);
+        if (!userByLogin.isPresent()) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
         }
-        else if ( userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false ) {
+
+        User userFromCassandra = userByLogin.get();
+        if ( userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false ) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " is deactivated. Contact administrator for further details." );
         }
         return getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());

@@ -4,6 +4,8 @@ import fr.ippon.tatami.domain.User;
 
 import javax.validation.ConstraintViolationException;
 
+import com.google.common.base.Optional;
+
 /**
  * The User Repository.
  *
@@ -21,5 +23,5 @@ public interface UserRepository {
 
     void reactivateUser( User user );
 
-    User findUserByLogin(String login);
+    Optional<User> findUserByLogin(String login);
 }

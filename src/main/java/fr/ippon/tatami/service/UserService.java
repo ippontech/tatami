@@ -1,30 +1,43 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.config.Constants;
-import fr.ippon.tatami.domain.DigestType;
-import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.dto.UserDTO;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.service.util.RandomUtil;
-import org.springframework.security.access.annotation.Secured;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.cache.annotation.CacheEvict;
-
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.core.env.Environment;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.google.common.base.Optional;
+
+import fr.ippon.tatami.config.Constants;
+import fr.ippon.tatami.domain.DigestType;
+import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.DomainRepository;
+import fr.ippon.tatami.repository.FavoritelineRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.FriendRepository;
+import fr.ippon.tatami.repository.MailDigestRepository;
+import fr.ippon.tatami.repository.RegistrationRepository;
+import fr.ippon.tatami.repository.RssUidRepository;
+import fr.ippon.tatami.repository.TimelineRepository;
+import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.UserlineRepository;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.UserDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.service.util.RandomUtil;
 
 /**
  * Manages the application's users.
@@ -87,7 +100,7 @@ public class UserService {
     @Inject
     Environment env;
 
-    public User getUserByLogin(String login) {
+    public Optional<User> getUserByLogin(String login) {
         return userRepository.findUserByLogin(login);
     }
 
@@ -99,7 +112,7 @@ public class UserService {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
-        return getUserByLogin(login);
+        return getUserByLogin(login).orNull();
     }
 
     /**
@@ -110,11 +123,11 @@ public class UserService {
      */
     public Collection<User> getUsersByLogin(Collection<String> logins) {
         final Collection<User> users = new ArrayList<User>();
-        User user;
+        Optional<User> user;
         for (String login : logins) {
             user = userRepository.findUserByLogin(login);
-            if (user != null) {
-                users.add(user);
+            if (user.isPresent()) {
+                users.add(user.get());
             }
         }
         return users;
@@ -126,8 +139,11 @@ public class UserService {
         List<String> logins = domainRepository.getLoginsInDomain(domain, pagination);
         List<User> users = new ArrayList<User>();
         for (String login : logins) {
-            User user = getUserByLogin(login);
-            users.add(user);
+            Optional<User> userByLogin = getUserByLogin(login);
+            if (userByLogin.isPresent()) {
+                User user = userByLogin.get();
+                users.add(user);
+            }
         }
         return users;
     }
@@ -218,16 +234,22 @@ public class UserService {
         // Unfollow this user
         Collection<String> followersIds = friendshipService.getFollowerIdsForUser(user.getLogin());
         for (String followerId : followersIds) {
-            User follower = getUserByLogin(followerId);
-            friendshipService.unfollowUser(follower, user);
+            Optional<User> userByLogin = getUserByLogin(followerId);
+            if (userByLogin.isPresent()) {
+                User follower = userByLogin.get();
+                friendshipService.unfollowUser(follower, user);
+            }
         }
         log.debug("Delete user step 1 : Unfollowed user " + user.getLogin());
 
         // Unfollow friends
         Collection<String> friendsIds = friendshipService.getFriendIdsForUser(user.getLogin());
         for (String friendId : friendsIds) {
-            User friend = getUserByLogin(friendId);
-            friendshipService.unfollowUser(user, friend);
+            Optional<User> userByLogin = getUserByLogin(friendId);
+            if (userByLogin.isPresent()) {
+                User friend = userByLogin.get();
+                friendshipService.unfollowUser(user, friend);
+            }
         }
         log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
 
@@ -308,8 +330,9 @@ public class UserService {
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
         String encryptedPassword = encoder.encode(password);
         if (login != null) {
-            User existingUser = getUserByLogin(login);
-            if (existingUser != null) {
+            Optional<User> userByLogin = getUserByLogin(login);
+            if (userByLogin.isPresent()) {
+                User existingUser = userByLogin.get();
                 log.debug("Reinitializing password for user {}", login);
                 existingUser.setPassword(encryptedPassword);
                 userRepository.updateUser(existingUser);

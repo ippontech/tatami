@@ -1,9 +1,7 @@
 package fr.ippon.tatami.web.controller;
 
-import fr.ippon.tatami.config.Constants;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -15,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
+import com.google.common.base.Optional;
+
+import fr.ippon.tatami.config.Constants;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
 
 /**
  * @author Julien Dubois
@@ -57,7 +60,7 @@ public class HomeController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String email) {
         email = email.toLowerCase();
-        if (userService.getUserByLogin(email) != null) {
+        if (userService.getUserByLogin(email).isPresent()) {
             return "redirect:/tatami/login?action=registerFailure";
         }
         User user = new User();
@@ -85,7 +88,7 @@ public class HomeController {
             return "redirect:/tatami/login";
         }
         email = email.toLowerCase();
-        if (userService.getUserByLogin(email) != null) {
+        if (userService.getUserByLogin(email).isPresent()) {
             log.debug("User {} already exists.", email);
             return "redirect:/tatami/login";
         }
@@ -105,11 +108,11 @@ public class HomeController {
 
     @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
     public String lostPassword(@RequestParam String email) {
-        email = email.toLowerCase();
-        User user = userService.getUserByLogin(email);
-        if (user == null) {
+        Optional<User> userByLogin = userService.getUserByLogin(email.toLowerCase());
+        if (!userByLogin.isPresent()) {
             return "redirect:/tatami/login?action=lostPasswordFailure";
         }
+        User user = userByLogin.get();
         if (userService.isDomainHandledByLDAP(user.getDomain())) {
             return "redirect:/tatami/login?action=ldapPasswordFailure";
         }

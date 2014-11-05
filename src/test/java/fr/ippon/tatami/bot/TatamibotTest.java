@@ -33,6 +33,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.*;
 
+import com.google.common.base.Optional;
+
 public class TatamibotTest extends CamelTestSupport {
 
     private static final Logger log = LoggerFactory.getLogger(TatamibotTest.class);
@@ -80,7 +82,7 @@ public class TatamibotTest extends CamelTestSupport {
         ReflectionTestUtils.setField(commonRouteBuilder, "lastUpdateDateTatamibotConfigurationUpdater", lastUpdateDateTatamibotConfigurationUpdater);
 
         // common mock configuration :
-        when(userService.getUserByLogin("tatamibot@ippon.fr")).thenReturn(tatamibotUser);
+        when(userService.getUserByLogin("tatamibot@ippon.fr")).thenReturn(Optional.of(tatamibotUser));
         when(tatamibotConfigurationRepository.findTatamibotConfigurationById(Mockito.anyString())).thenReturn(new TatamibotConfiguration());
     }
 
