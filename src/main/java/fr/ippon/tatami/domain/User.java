@@ -101,7 +101,7 @@ public class User implements Serializable {
         this.activated = activated;
     }
 
-    public String getLogin() {
+    public String   getLogin() {
         return login;
     }
 
