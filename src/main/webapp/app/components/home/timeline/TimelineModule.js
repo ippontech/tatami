@@ -1,1 +1,1 @@
-var TimelineModule = angular.module('TimelineModule', ['ngResource', 'ngSanitize', 'angularMoment', 'pascalprecht.translate']);
+var TimelineModule = angular.module('TimelineModule', ['ngResource', 'ngSanitize', 'angularMoment']);
