@@ -5,11 +5,11 @@
 %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="TatamiApp">
 
 <jsp:include page="includes/header.jsp"/>
 
-<body ng-app="TatamiApp">
+<body >
 
 <div class="row">
     <jsp:include page="/app/components/home/sidebar/SidebarView.html"/>

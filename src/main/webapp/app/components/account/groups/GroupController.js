@@ -10,7 +10,7 @@ TatamiApp.controller('GroupController', ['$scope', 'GroupService', function($sco
         archivedGroup: false
     },
 
-    $scope.newGroup = function() {
+    $scope.newGroup = function () {
         GroupService.save($scope.groups);
     }
 

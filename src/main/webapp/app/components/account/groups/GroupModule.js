@@ -1,3 +1,1 @@
-/**
- * Created by kenny on 11/5/14.
- */
+var GroupModule = angular.module('GroupModule', ['ngResource']);

@@ -1,3 +1,3 @@
-/**
- * Created by kenny on 11/5/14.
- */
+PreferenceModule.factory('PreferenceService', function ($resource){
+    return $resource('/tatami/rest/account/preferences/');
+})

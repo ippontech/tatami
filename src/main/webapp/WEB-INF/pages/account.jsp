@@ -5,9 +5,9 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" >
 
-<jsp:include page="/app/components/account/groups/Groups.html"/>
+<jsp:include page="/app/components/account/preferences/PreferenceView.html"/>
 
 <jsp:include page="includes/header.jsp"/>
 
