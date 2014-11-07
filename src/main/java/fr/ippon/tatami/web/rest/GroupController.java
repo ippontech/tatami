@@ -310,13 +310,17 @@ public class GroupController {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
         } else if (currentGroup == null || userToAdd == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
-        } else if (isChangeUserGroupForbidden(currentGroup, currentUser, userToAdd)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
-            groupService.addMemberToGroup(userToAdd, currentGroup);
-            dto = groupService.getMembersForGroup(groupId, userToAdd);
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAdd)) {
+                groupService.addMemberToGroup(userToAdd, currentGroup);
+                dto = groupService.getMembersForGroup(groupId, userToAdd);
+            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
+                groupService.addMemberToGroup(userToAdd, currentGroup);
+                dto = groupService.getMembersForGroup(groupId, userToAdd);
+            } else {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
         }
-
         return dto;
     }
 
@@ -334,32 +338,27 @@ public class GroupController {
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
         User userToremove = userService.getUserByUsername(username);
 
+        UserGroupDTO dto = null;
+
         if (currentUser == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
             return false;
         } else if (currentGroup == null || userToremove == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
             return false;
-        } else if (isChangeUserGroupForbidden(currentGroup, currentUser, userToremove)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return false;
+        } else {
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
+                groupService.removeMemberFromGroup(userToremove, currentGroup);
+                groupService.getMembersForGroup(groupId, userToremove);
+            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
+                groupService.removeMemberFromGroup(userToremove, currentGroup);
+                groupService.getMembersForGroup(groupId, userToremove);
+            } else {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return false;
+            }
         }
-
-        groupService.removeMemberFromGroup(userToremove, currentGroup);
-        groupService.getMembersForGroup(groupId, userToremove);
         return true;
-    }
-
-    /**
-     * Tells if the current user cannot change userToChange status for current group.
-     * @param currentGroup Current group.
-     * @param currentUser  Current user.
-     * @param userToChange User to add or remove.
-     * @return {@code true} if the change is forbidden.
-     */
-    private boolean isChangeUserGroupForbidden(Group currentGroup, User currentUser, User userToChange) {
-        return isGroupManagedByCurrentUser(currentGroup) ? currentUser.equals(userToChange) :
-                !currentGroup.isPublicGroup() || !currentUser.equals(userToChange);
     }
 
     private boolean isGroupManagedByCurrentUser(Group group) {
