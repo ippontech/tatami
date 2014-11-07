@@ -9,12 +9,14 @@
 
 <jsp:include page="includes/header.jsp"/>
 
-<body >
+<body>
 
-<div class="row">
+<div ng-app="TatamiApp" class="row">
+    <jsp:include page="/app/shared/topmenu/TopMenuView.html"/>
     <jsp:include page="/app/components/home/sidebar/SidebarView.html"/>
     <jsp:include page="/app/components/home/timeline/TimelineView.html"/>
 </div>
+<br>
 
 <jsp:include page="includes/topmenu.jsp"/>
 
