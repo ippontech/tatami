@@ -1,5 +1,6 @@
 package fr.ippon.tatami.service;
 
+import com.google.common.base.Preconditions;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
@@ -82,34 +83,37 @@ public class GroupService {
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findUserByLogin(member.getKey());
-            dto.setLogin(user.getLogin());
-            dto.setUsername(user.getUsername());
-            dto.setAvatar(user.getAvatar());
-            dto.setFirstName(user.getFirstName());
-            dto.setLastName(user.getLastName());
-            dto.setRole(member.getValue());
-            dto.setActivated(user.getActivated());
-            if (friendLogins.contains(user.getLogin())) {
-                dto.setFriend(true);
+            if(user != null) { //User might be deleted
+                UserGroupDTO dto = new UserGroupDTO();
+                dto.setLogin(user.getLogin());
+                dto.setUsername(user.getUsername());
+                dto.setAvatar(user.getAvatar());
+                dto.setFirstName(user.getFirstName());
+                dto.setLastName(user.getLastName());
+                dto.setRole(member.getValue());
+                dto.setActivated(user.getActivated());
+                if (friendLogins.contains(user.getLogin())) {
+                    dto.setFriend(true);
+                }
+                if (login.equals(user.getLogin())) {
+                    dto.setYou(true);
+                }
+                userGroupDTOs.add(dto);
             }
-            if (login.equals(user.getLogin())) {
-                dto.setYou(true);
-            }
-            userGroupDTOs.add(dto);
         }
         return userGroupDTOs;
     }
 
 
-
-
     public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
+        Preconditions.checkNotNull(userWanted);
+        Preconditions.checkNotNull(userWanted.getLogin());
+
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findUserByLogin(member.getKey());
-            if (user.getLogin() == userWanted.getLogin()) {
+            if (user != null && userWanted.getLogin().equals(user.getLogin())) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
