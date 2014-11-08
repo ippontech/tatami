@@ -5,13 +5,17 @@
 %>
 
 <!DOCTYPE html>
+<!--
+-    If the app isn't here, the post modal does not work, this location can be changed once the modal view is
+-    separated from the topmenu jsp
+-->
 <html lang="en" ng-app="TatamiApp">
 
 <jsp:include page="includes/header.jsp"/>
 
 <body>
 
-<div ng-app="TatamiApp" class="row">
+<div class="row">
     <jsp:include page="/app/shared/topmenu/TopMenuView.html"/>
     <jsp:include page="/app/components/home/sidebar/SidebarView.html"/>
     <jsp:include page="/app/components/home/timeline/TimelineView.html"/>

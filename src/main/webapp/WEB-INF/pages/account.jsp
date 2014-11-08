@@ -5,7 +5,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en" >
+<html lang="en">
 
 <jsp:include page="/app/components/account/preferences/PreferenceView.html"/>
 
