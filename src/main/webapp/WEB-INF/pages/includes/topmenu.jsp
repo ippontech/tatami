@@ -189,7 +189,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="hidden-phone">
+                <li class="hidden-phone" ng-controller="StatusManagerController">
                     <button class="btn btn-primary navbar-form" data-toggle="modal" data-target="#editTatam">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span class="visible-desktop">

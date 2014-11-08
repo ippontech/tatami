@@ -1,0 +1,47 @@
+<form class="form-horizontal row-fluid" ng-controller="PreferenceController">
+    <h2>
+        Preferences
+    </h2>
+
+    <legend>
+        Notifications
+    </legend>
+
+    <div ng-if="false">hi</div>
+
+    <div class="control-group">
+        <div class="controls" ng-model="prefs.mentionEmail">
+            <label class="checkbox">
+                <input name="mentionEmail" type="checkbox"> Get notified by e-mail when you are mentioned
+            </label>
+        </div>
+        <div class="controls" ng-model="prefs.dailyDigest">
+            <label class="checkbox">
+                <input name="dailyDigest" type="checkbox"> Get a daily digest e-mail
+            </label>
+        </div>
+        <div class="controls" ng-model="prefs.weeklyDigest">
+            <label class="checkbox">
+                <input name="weeklyDigest" type="checkbox"> Get a weekly digest e-mail
+            </label>
+        </div>
+        <div class="controls" ng-model="prefs.rssUidActive">
+            <label class="checkbox">
+                <input name="rssUidActive" type="checkbox">  Allow RSS feed publication of your timeline
+            </label>
+            <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{prefs.rssUid}}">Link to your timeline RSS stream </a>
+
+        </div>
+    </div>
+
+
+    <fieldset>
+        <div class="return"></div>
+        <div class="form-actions">
+            <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()">
+                Save
+            </button>
+        </div>
+    </fieldset>
+
+</form>

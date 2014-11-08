@@ -33,10 +33,31 @@
     <script src="/app/shared/services/StatusService.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
 
+    <!-- Account based includes, probably need to be moved to another file -->
+
+    <!-- Group based includes -->
+    <script src="/app/components/account/groups/GroupController.js"></script>
+    <script src="/app/components/account/groups/GroupModule.js"></script>
+
+    <!-- Preference based includes -->
+    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
+    <script src="/app/components/account/preferences/PreferenceController.js"></script>
+    <script src="/app/components/account/preferences/PreferenceService.js"></script>
+
     <!-- Move these to another file? -->
     <script src="/app/components/home/status/StatusModule.js"></script>
     <script src="/app/components/home/status/StatusCreateController.js"></script>
     <script src="/app/components/home/status/StatusManagerController.js"></script>
+
+    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
+    <script src="/app/components/home/sidebar/UserController.js"></script>
+    <script src="/app/components/home/sidebar/GroupsController.js"></script>
+    <script src="/app/components/home/sidebar/TrendsController.js"></script>
+
+    <script src="/app/components/home/timeline/TimelineModule.js"></script>
+    <script src="/app/components/home/timeline/TimelineController.js"></script>
+    <script src="/app/components/home/timeline/TimelineService.js"></script>
+    <script src="/app/components/home/timeline/MomentConfig.js"></script>
 
     <!-- Other libraries -->
     <script src="/js/vendor/jquery.js"></script>

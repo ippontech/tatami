@@ -25,11 +25,15 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
 
 
     $scope.submit = function() {
-        $scope.newStatus();
-        $modalInstance.close();
+        if($scope.status.content!=''){
+            $scope.newStatus();
+            $modalInstance.dismiss('Submit');
+        }
+
     },
 
     $scope.cancel = function() {
+        console.log($modalInstance);
         $modalInstance.close();
         $scope.reset();
     }
