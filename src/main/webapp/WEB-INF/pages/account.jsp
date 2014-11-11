@@ -86,6 +86,11 @@
 
 <c:if test="${wro4jEnabled eq false}">
 
+    <!-- Preference based includes -->
+    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
+    <script src="/app/components/account/preferences/PreferenceController.js"></script>
+    <script src="/app/components/account/preferences/PreferenceService.js"></script>
+
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
     <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
@@ -157,6 +162,11 @@
     <script src="/js/app/factories/fSearch.js"></script>
     <script src="/js/app/factories/fGroups.js"></script>
     <script src="/js/app/factories/fAdmin.js"></script>
+
+    <!-- Preference based includes -->
+    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
+    <script src="/app/components/account/preferences/PreferenceController.js"></script>
+    <script src="/app/components/account/preferences/PreferenceService.js"></script>
 
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
