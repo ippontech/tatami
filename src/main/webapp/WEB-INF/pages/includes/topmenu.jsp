@@ -189,8 +189,9 @@
                         </li>
                     </ul>
                 </li>
+                <!--data-toggle="modal" data-target="#editTatam"-->
                 <li class="hidden-phone" ng-controller="StatusManagerController">
-                    <button class="btn btn-primary navbar-form" data-toggle="modal" data-target="#editTatam">
+                    <button class="btn btn-primary navbar-form" ng-click="open()">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span class="visible-desktop">
                             <fmt:message key="tatami.tatam.publish"/>

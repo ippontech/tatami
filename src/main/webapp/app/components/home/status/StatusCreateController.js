@@ -3,7 +3,7 @@
  * creation window.
  */
 
-StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService',
+StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
         function($scope, StatusService, GeolocalisationService, GroupService, $upload, $modalInstance) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
@@ -27,14 +27,14 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
     $scope.submit = function() {
         if($scope.status.content!=''){
             $scope.newStatus();
-            $modalInstance.dismiss('Submit');
+            $scope.modalInstance.dismiss('Submit');
         }
 
     },
 
     $scope.cancel = function() {
         console.log($modalInstance);
-        $modalInstance.close();
+        $scope.modalInstance.close();
         $scope.reset();
     }
 

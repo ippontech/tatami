@@ -16,7 +16,19 @@ TatamiApp.config(function($translateProvider) {
                 'reply': 'Reply',
                 'delete': 'Delete',
                 'share': 'Share',
-                'favorite': 'Favorite'
+                'favorite': 'Favorite',
+                'update': 'Update your status',
+                'drop': {
+                    'file': 'Drop your files here'
+                },
+                'geoLocalization': 'Geolocalization',
+                'options': 'Options',
+                'statusReply': 'Reply to this status',
+                'characters': {
+                    'left': 'Characters left:'
+                },
+                'preview': 'Preview',
+                'editor': 'Edit'
             },
 
             'menu': {
@@ -57,7 +69,14 @@ TatamiApp.config(function($translateProvider) {
                     'companywall': 'Company Wall',
                     'logout': 'Logout'
                 },
-                'post': 'Post'
+                'post': 'Post',
+                'files': 'Files'
+            },
+            'form': {
+                'cancel': 'Cancel'
+            },
+            'group': {
+                'name': 'Group'
             }
         }
     });

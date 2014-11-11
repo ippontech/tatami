@@ -174,8 +174,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="hidden-phone">
-                    <button class="btn btn-primary navbar-form" data-toggle="modal" data-target="#editTatam">
+                <li class="hidden-phone" ng-controller="StatusManagerController">
+                    <button class="btn btn-primary navbar-form" ng-click="openStatusModal()">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span translate="tatami.menu.post" class="visible-desktop"></span>
                     </button>
