@@ -16,7 +16,7 @@
         </em>
     </fieldset>
     <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
-        <div class="well well-small markdown">{{status.content}}</div>
+        <div class="well well-small markdown" ng-bind-html="status.content | markdown"></div>
     </fieldset>
     <fieldset ng-show="current.reply" class="reply row-fluid">
         <legend translate="tatami.status.reply">
