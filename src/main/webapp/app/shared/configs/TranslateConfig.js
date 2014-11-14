@@ -8,6 +8,9 @@ TatamiApp.config(function($translateProvider) {
                 'mentions': 'Mentions',
                 'favorites': 'Favorites'
             },
+            'tatam': {
+                'mandatory': 'Comment is mandatory'
+            },
 
             'status': {
                 'replyto': 'In reply to',
@@ -28,7 +31,8 @@ TatamiApp.config(function($translateProvider) {
                     'left': 'Characters left:'
                 },
                 'preview': 'Preview',
-                'editor': 'Edit'
+                'editor': 'Edit',
+                'markdown': 'Markdown Supported'
             },
 
             'menu': {
@@ -73,7 +77,8 @@ TatamiApp.config(function($translateProvider) {
                 'files': 'Files'
             },
             'form': {
-                'cancel': 'Cancel'
+                'cancel': 'Cancel',
+                'post': 'Post'
             },
             'group': {
                 'name': 'Group'

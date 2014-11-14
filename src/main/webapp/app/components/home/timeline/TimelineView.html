@@ -30,7 +30,7 @@
                 </h3>
             </div>
             <section class="tatams-container">
-                <div>
+                <div ng-cloak>
                     <section class="timeline" ng-controller="TimelineController">
                         <div class="tatams" ng-repeat="status in statuses">
                             <div style="display: block;" class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ status.statusId }}">
@@ -41,11 +41,11 @@
                                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': status.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/' + status.avatar + '/photo.jpg)' }"></div>
                                     </div>
                                     <div id="status-content-container">
-                                        <div class="pull-right text-right">
+                                        <div class="pull-right text-right" ng-cloak>
                                             <abbr title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></abbr>
                                             <!-- Make status abbr month and day display after 24h have passed? -->
                                         </div>
-                                        <h5 class="statusitem-name">
+                                        <h5 class="statusitem-name" ng-cloak>
                                             <strong><a href="#users/{{ status.username }}">{{status.firstName + ' ' + status.lastName}}</a></strong>
                                             <small><a href="#users/{{ status.username }}">@{{ status.username }}</a></small>
                                         </h5>
@@ -98,9 +98,9 @@
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                                 <span translate="tatami.status.view"></span>
                                             </a>
-                                            <button class="btn-link status-action status-action-reply button-ios">
+                                            <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController">
                                                 <i class="glyphicon glyphicon-comment"></i>
-                                                <span translate="tatami.status.reply"></span>
+                                                <span translate="tatami.status.reply" ng-click="showModal()"></span>
                                             </button>
                                             <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
                                                 <i class="glyphicon glyphicon-trash"></i>

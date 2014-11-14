@@ -23,10 +23,14 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         statusPrivate: false     // Determines whether the status is private
     },
 
-    $scope.cancel = function() {
+    $scope.closeModal = function() {
         $modalInstance.dismiss();
         $scope.reset();
     },
+
+    $scope.replyTo = function (reply){
+
+    }
 
     /**
      *
@@ -84,7 +88,7 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
     $scope.newStatus = function() {
         /*
         StatusService.newStatus($scope);*/
-        if($scope.content != ''){
+        if($scope.status.content){
             StatusService.save($scope.status, function(){
                 $scope.reset();
                 $modalInstance.dismiss();
