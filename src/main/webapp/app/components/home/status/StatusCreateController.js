@@ -4,7 +4,7 @@
  */
 
 StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
-        function($scope, StatusService, GeolocalisationService, GroupService, $upload, $modalInstance) {
+        function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
@@ -23,39 +23,14 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         statusPrivate: false     // Determines whether the status is private
     },
 
-
-    $scope.submit = function() {
-        if($scope.status.content!=''){
-            $scope.newStatus();
-            $scope.modalInstance.dismiss('Submit');
-        }
-
-    },
-
-    $scope.cancel = function() {
-        console.log($modalInstance);
-        $scope.modalInstance.close();
+    $scope.closeModal = function() {
+        $modalInstance.dismiss();
         $scope.reset();
-    }
-
-
-    $scope.onFilesSelect = function($files) {
-        for(var i = 0; i < $files.length; ++i) {
-            var files = $files[i];
-            $scope.current.uploadDone = false;
-
-            $scope.current.upload = $upload.upload({
-                url: '/tatami/rest/fileupload',
-                method: 'POST'
-            }).progress(function(evt) {
-                $scope.current.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
-            }).success(function(data, status, headers, config) {
-                $scope.current.uploadDone = true;
-                console.log(data);
-            })
-        }
     },
 
+    $scope.replyTo = function (reply){
+
+    }
 
     /**
      *
@@ -113,9 +88,12 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
     $scope.newStatus = function() {
         /*
         StatusService.newStatus($scope);*/
-        StatusService.save($scope.status, function() {
-            $scope.reset();
-        });
+        if($scope.status.content){
+            StatusService.save($scope.status, function(){
+                $scope.reset();
+                $modalInstance.dismiss();
+            })
+        }
     },
 
     /**

@@ -17,7 +17,7 @@
     <script src="/assets/bower_components/angular-translate/angular-translate.js"></script>
 
     <script src="/assets/bower_components/marked/lib/marked.js"></script>
-    
+    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
     <!-- Tatami Angular scripts -->

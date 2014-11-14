@@ -3,13 +3,13 @@
  */
 
 StatusModule.controller('StatusManagerController', ['$scope', '$modal', function($scope, $modal) {
-    $scope.openStatusModal = function() {
-        var options = {
-            backdrop: 'static',
+    $scope.showModal = function(/*statusId*/) {
+        //ReplyStatus.replyToStatus = statusId;
+        var modalInstance = $modal.open({
             templateUrl: '/app/components/home/status/StatusView.html',
-
-            controller: 'StatusCreateController'
-        };
-        $scope.modalInstance = $modal.open(options);
-    }
+            controller: 'StatusCreateController',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
 }]);
