@@ -23,14 +23,24 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         statusPrivate: false     // Determines whether the status is private
     },
 
+
+    $scope.currentStatus,
+
+    /**
+     * In order to set reply to a status, we must be able to set current status
+     * after an asynchronous get request.
+     */
+    $modalInstance.setCurrentStatus = function (status){
+        $scope.currentStatus = status;
+        $scope.status.content = '@' + $scope.currentStatus.username;
+        $scope.current.reply = true;
+        $scope.status.replyTo = status.statusId;
+    },
+
     $scope.closeModal = function() {
         $modalInstance.dismiss();
         $scope.reset();
     },
-
-    $scope.replyTo = function (reply){
-
-    }
 
     /**
      *

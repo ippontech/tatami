@@ -2,14 +2,25 @@
  * This controller allows a modal instance to be created
  */
 
-StatusModule.controller('StatusManagerController', ['$scope', '$modal', function($scope, $modal) {
-    $scope.showModal = function(/*statusId*/) {
-        //ReplyStatus.replyToStatus = statusId;
+StatusModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusService', function($scope, $modal, StatusService) {
+    $scope.showModal = function(statusId) {
         var modalInstance = $modal.open({
             templateUrl: '/app/components/home/status/StatusView.html',
             controller: 'StatusCreateController',
             backdrop: 'static',
-            keyboard: false
+            keyboard: false,
+            resolve: {
+                currentStatus: function(){
+                    if(statusId){
+                        var promise = StatusService.get({statusId: statusId}, function (result){
+                            modalInstance.setCurrentStatus(result);
+                        });
+                    }
+                    else{
+                        return {}
+                    }
+                }
+            }
         });
     };
 }]);
