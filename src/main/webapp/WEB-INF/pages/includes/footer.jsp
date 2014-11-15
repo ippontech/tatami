@@ -48,6 +48,7 @@
     <script src="/app/components/home/status/StatusModule.js"></script>
     <script src="/app/components/home/status/StatusCreateController.js"></script>
     <script src="/app/components/home/status/StatusManagerController.js"></script>
+    <script src="/app/components/home/status/ReplyService.js"></script>
 
     <script src="/app/components/home/sidebar/SidebarModule.js"></script>
     <script src="/app/components/home/sidebar/UserController.js"></script>

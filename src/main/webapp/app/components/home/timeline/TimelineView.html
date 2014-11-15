@@ -100,7 +100,7 @@
                                             </a>
                                             <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController">
                                                 <i class="glyphicon glyphicon-comment"></i>
-                                                <span translate="tatami.status.reply" ng-click="showModal()"></span>
+                                                <span translate="tatami.status.reply" ng-click="showModal(status.statusId)"></span>
                                             </button>
                                             <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
                                                 <i class="glyphicon glyphicon-trash"></i>
