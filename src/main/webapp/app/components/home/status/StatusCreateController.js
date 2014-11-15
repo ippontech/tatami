@@ -3,8 +3,8 @@
  * creation window.
  */
 
-StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance', 'ReplyService',
-        function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance, ReplyService) {
+StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
+        function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
@@ -34,6 +34,7 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         $scope.currentStatus = status;
         $scope.status.content = '@' + $scope.currentStatus.username;
         $scope.current.reply = true;
+        $scope.status.replyTo = status.statusId;
     },
 
     $scope.closeModal = function() {
