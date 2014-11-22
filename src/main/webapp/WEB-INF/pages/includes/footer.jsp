@@ -23,6 +23,11 @@
     <!-- Tatami Angular scripts -->
     <script src="/app/TatamiApp.js"></script>
 
+    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
+    <script src="/app/components/account/password/PasswordModule.js"></script>
+    <script src="/app/components/account/AccountModule.js"></script>
+    <script src="/app/components/account/files/FileModule.js"></script>
+
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
     <script src="/app/shared/configs/MarkedConfig.js"></script>
     <script src="/app/shared/configs/TranslateConfig.js"></script>
@@ -34,6 +39,7 @@
     <script src="/app/shared/services/GeolocService.js"></script>
 
     <!-- Account based includes, probably need to be moved to another file -->
+
 
     <!-- Group based includes -->
     <script src="/app/components/account/groups/GroupController.js"></script>
