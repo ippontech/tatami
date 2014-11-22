@@ -8,10 +8,39 @@ TatamiApp.controller('GroupController', ['$scope', 'GroupService', function($sco
         description: "",
         publicGroup: true,
         archivedGroup: false
-    },
+    };
+
+    $scope.userGroups = {};
+
+    $scope.getGroups = function (){
+        GroupService.query(function (result){
+            $scope.userGroups = result;
+        })
+    }
+
+    $scope.current = {
+        createGroup: false
+    };
 
     $scope.newGroup = function() {
-        GroupService.save($scope.groups);
+        $scope.current.createGroup = true;
+    };
+
+    $scope.cancelGroupCreate = function(){
+        $scope.current.createGroup = false;
+    };
+
+    $scope.createNewGroup = function(){
+        console.log($scope.groups);
+        GroupService.save($scope.groups, function (){
+            $scope.reset();
+            $scope.current.createGroup = false;
+            // Alert user of new group creation
+        });
+    };
+
+    $scope.reset = function(){
+        $scope.groups = {};
     }
 
     $scope.test = function () {

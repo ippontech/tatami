@@ -5,7 +5,7 @@
 
 <!DOCTYPE html>
 <!-- To see the account page, put ng-app here -->
-<html lang="en">
+<html lang="en" ng-app="TatamiApp">
 
 
 <jsp:include page="/app/components/account/groups/GroupView.html"/>
@@ -96,6 +96,8 @@
 
     <script src="/app/components/account/files/FileController.js"></script>
     <script src="/app/components/account/files/FileService.js"></script>
+
+    <script src="/app/components/account/groups/GroupController.js"></script>
 
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>

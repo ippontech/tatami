@@ -27,6 +27,7 @@
     <script src="/app/components/account/password/PasswordModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/account/files/FileModule.js"></script>
+    <script src="/app/components/account/groups/GroupModule.js"></script>
 
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
     <script src="/app/shared/configs/MarkedConfig.js"></script>
