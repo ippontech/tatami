@@ -11,7 +11,8 @@ TatamiApp.config(function($translateProvider) {
                 'private': 'Private',
                 'warnPublic': 'Warning! If this group is public, everybody can access it',
                 'name': 'Group',
-                'counter': 'Members'
+                'counter': 'Members',
+                'manage': 'Manage'
             },
             'password': 'Password',
             'user': {

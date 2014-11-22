@@ -38,6 +38,7 @@
     <script src="/app/shared/services/TagService.js"></script>
     <script src="/app/shared/services/StatusService.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
+    <script src="/app/shared/services/GroupMemberService.js"></script>
 
     <!-- Account based includes, probably need to be moved to another file -->
 

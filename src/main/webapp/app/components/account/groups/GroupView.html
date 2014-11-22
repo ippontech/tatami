@@ -53,109 +53,57 @@
 
         </fieldset>
 
+        <div class="tabMenu">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#groups" ng-click="switchTabs(true, false, false)">
+                        My groups
+                    </a>
+                </li>
+                <li>
+                    <a href="#groups/recommended" ng-click="switchTabs(false, true, false)">
+                        Trends
+                    </a>
+                </li>
+                <li>
+                    <a href="#groups/search" ng-click="switchTabs(false, false, true)">
+                        Search
+                    </a>
+                </li>
+            </ul>
+        </div>
+
         <div>
             <table class="table noCollapse">
-                <tbody><tr>
-                    <th style="border-top :0" translate="tatami.group.name"></th>
-                    <th style="border-top :0" translate="tatami.group.access"></th>
-                    <th style="border-top :0" translate="tatami.group.counter"></th>
-                    <th style="border-top :0"></th>
-                </tr>
-                </tbody><tbody class="items">
-            <div ng-repeat="group in userGroups">
-                <tr>
-                    <td>
-                        <a href="/tatami/home/groups/{{ group.groupId }}">{{ group.name }}</a>
-                    </td>
-                    <td>
-                        <span class="label labelSizeNormal label-warning">Public</span>
-                    </td>
-                </tr>
-            <tr>
-                <!-- Afin que les groupes privÃ©s dont le nom est cachÃ© n apparaissent pas -->
-                <td>
-                    <a href="/tatami/home/groups/9a24a370-5c7c-11e4-b72f-fe54008898dc" title="">Test Group</a>
-                </td>
-                <td>
-
-                    <span class="label labelSizeNormal label-warning">Public</span>
-
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-
-                    <a href="/tatami/account/#/groups/9a24a370-5c7c-11e4-b72f-fe54008898dc" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-                        <span class="glyphicon glyphicon-th-large"> <span>Manage</span></span>
-                    </a>
-
-                </td>
-
-            </tr><tr>
-                <!-- Afin que les groupes privÃ©s dont le nom est cachÃ© n apparaissent pas -->
-                <td>
-                    <a href="/tatami/home/groups/f679bd40-4a75-11e4-b72f-fe54008898dc" title="Used to update the status publish windows">Test group</a>
-                </td>
-                <td>
-
-                    <span class="label labelSizeNormal label-warning">Public</span>
-
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-
-                    <a href="/tatami/account/#/groups/f679bd40-4a75-11e4-b72f-fe54008898dc" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-                        <span class="glyphicon glyphicon-th-large"> <span>Manage</span></span>
-                    </a>
-
-                </td>
-
-            </tr><tr>
-                <!-- Afin que les groupes privÃ©s dont le nom est cachÃ© n apparaissent pas -->
-                <td>
-                    <a href="/tatami/home/groups/b2a0cc50-5c02-11e4-b72f-fe54008898dc" title="">blah</a>
-                </td>
-                <td>
-
-                    <span class="label labelSizeNormal label-warning">Public</span>
-
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-
-                    <a href="/tatami/account/#/groups/b2a0cc50-5c02-11e4-b72f-fe54008898dc" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-                        <span class="glyphicon glyphicon-th-large"> <span>Manage</span></span>
-                    </a>
-
-                </td>
-
-            </tr><tr>
-                <!-- Afin que les groupes privÃ©s dont le nom est cachÃ© n apparaissent pas -->
-                <td>
-                    <a href="/tatami/home/groups/ddb9c6a0-5ca0-11e4-b72f-fe54008898dc" title="">figure out post data</a>
-                </td>
-                <td>
-
-                    <span class="label labelSizeNormal label-warning">Public</span>
-
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-
-                    <a href="/tatami/account/#/groups/ddb9c6a0-5ca0-11e4-b72f-fe54008898dc" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-                        <span class="glyphicon glyphicon-th-large"> <span>Manage</span></span>
-                    </a>
-
-                </td>
-
-            </tr></tbody>
+                <tbody>
+                    <tr>
+                        <th style="border-top :0" translate="tatami.group.name"></th>
+                        <th style="border-top :0" translate="tatami.group.access"></th>
+                        <th style="border-top :0" translate="tatami.group.counter"></th>
+                        <th style="border-top :0"></th>
+                    </tr>
+                </tbody>
+                <tbody class="items">
+                    <div>
+                        <tr ng-repeat="group in userGroups">
+                            <td>
+                                <a href="/tatami/home/groups/{{ group.groupId }}">{{ group.name }}</a>
+                            </td>
+                            <td>
+                                <span ng-show="group.publicGroup" class="label labelSizeNormal label-warning" translate="tatami.group.public"></span>
+                                <span ng-show="!group.publicGroup" class="label labelSizeNormal label-info" translate="tatami.group.private"></span>
+                            </td>
+                            <td>
+                               <!-- {{ getMembers('a680b880-62d4-11e4-b975-f8165431c969') }} -->
+                            </td>
+                            <td>
+                                <a href="/tatami/account/#/groups/{{group.groupId}}" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
+                                    <span class="glyphicon glyphicon-th-large"> <span translate="tatami.group.manage"></span></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </div>
+                </tbody>
             </table>
         </div>
     </form>

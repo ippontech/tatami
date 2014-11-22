@@ -5,7 +5,7 @@
 
 <!DOCTYPE html>
 <!-- To see the account page, put ng-app here -->
-<html lang="en" ng-app="TatamiApp">
+<html lang="en">
 
 
 <jsp:include page="/app/components/account/groups/GroupView.html"/>
