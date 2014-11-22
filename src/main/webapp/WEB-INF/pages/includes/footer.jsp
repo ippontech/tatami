@@ -27,6 +27,7 @@
     <script src="/app/components/account/password/PasswordModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/account/files/FileModule.js"></script>
+    <script src="/app/components/account/groups/GroupModule.js"></script>
 
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
     <script src="/app/shared/configs/MarkedConfig.js"></script>
@@ -37,6 +38,7 @@
     <script src="/app/shared/services/TagService.js"></script>
     <script src="/app/shared/services/StatusService.js"></script>
     <script src="/app/shared/services/GeolocService.js"></script>
+    <script src="/app/shared/services/GroupMemberService.js"></script>
 
     <!-- Account based includes, probably need to be moved to another file -->
 

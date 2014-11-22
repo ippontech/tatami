@@ -97,6 +97,8 @@
     <script src="/app/components/account/files/FileController.js"></script>
     <script src="/app/components/account/files/FileService.js"></script>
 
+    <script src="/app/components/account/groups/GroupController.js"></script>
+
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
     <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>

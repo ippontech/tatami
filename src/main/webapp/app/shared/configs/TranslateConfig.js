@@ -2,6 +2,18 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'group': {
+                'add': 'Create a new group',
+                'title': 'Name of the group',
+                'description': 'Description',
+                'access': 'Access',
+                'public': 'Public',
+                'private': 'Private',
+                'warnPublic': 'Warning! If this group is public, everybody can access it',
+                'name': 'Group',
+                'counter': 'Members',
+                'manage': 'Manage'
+            },
             'password': 'Password',
             'user': {
                 'password': {
@@ -62,6 +74,7 @@ TatamiApp.config(function($translateProvider) {
             },
 
             'menu': {
+                'groups': 'Group',
                 'preferences': 'Preferences',
                 'logo': 'Ippon Technologies Logo',
                 'title': 'Tatami',
@@ -107,9 +120,6 @@ TatamiApp.config(function($translateProvider) {
                 'cancel': 'Cancel',
                 'post': 'Post',
                 'save': 'Save'
-            },
-            'group': {
-                'name': 'Group'
             }
         }
     });
