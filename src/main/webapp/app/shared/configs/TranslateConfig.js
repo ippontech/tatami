@@ -2,6 +2,29 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'password': 'Password',
+            'user': {
+                'password': {
+                    'legend': 'Update your password',
+                    'old': 'Old password',
+                    'new': 'New password',
+                    'confirm': 'New password confirmation'
+                }
+            },
+            'preferences': {
+                'notification': {
+                    'email': {
+                        'mention': 'Get notified by e-mail when you are mentioned',
+                        'dailyDigest': 'Get a daily digest e-mail',
+                        'weeklyDigest': 'Get a weekly digest e-mail'
+                    },
+                    'rss': {
+                        'timeline': 'Allow RSS feed publication of your timeline',
+                        'link': 'Link to your timeline RSS stream'
+                    }
+                },
+                'notifications': 'Notifications'
+            },
             'timeline': 'Timeline',
             
             'home': {    
@@ -9,7 +32,10 @@ TatamiApp.config(function($translateProvider) {
                 'favorites': 'Favorites'
             },
             'tatam': {
-                'mandatory': 'Comment is mandatory'
+                'mandatory': 'Comment is mandatory',
+                'content': {
+                    'mandatory': 'Please fill out this field.'
+                }
             },
 
             'status': {
@@ -36,6 +62,7 @@ TatamiApp.config(function($translateProvider) {
             },
 
             'menu': {
+                'preferences': 'Preferences',
                 'logo': 'Ippon Technologies Logo',
                 'title': 'Tatami',
                 'about': {
@@ -78,7 +105,8 @@ TatamiApp.config(function($translateProvider) {
             },
             'form': {
                 'cancel': 'Cancel',
-                'post': 'Post'
+                'post': 'Post',
+                'save': 'Save'
             },
             'group': {
                 'name': 'Group'

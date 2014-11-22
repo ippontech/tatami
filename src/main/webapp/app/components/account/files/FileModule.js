@@ -1,0 +1,1 @@
+var FileModule = angular.module('FileModule', ['ngResource']);

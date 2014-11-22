@@ -1,36 +1,32 @@
 <div ng-controller="PreferenceController">
     <form class="form-horizontal row-fluid">
-        <h2>
-            Preferences
-        </h2>
+        <h2 translate="tatami.menu.preferences"></h2>
 
-        <legend>
-            Notifications
-        </legend>
+        <legend translate="tatami.preferences.notifications"></legend>
 
         <div ng-if="false">hi</div>
 
         <div class="control-group">
-            <div class="controls" ng-model="prefs.mentionEmail">
+            <div class="controls">
                 <label class="checkbox">
-                    <input name="mentionEmail" type="checkbox" ng-checked="prefs.mentionEmail"> Get notified by e-mail when you are mentioned
+                    <input name="mentionEmail" type="checkbox" ng-model="prefs.mentionEmail" ng-checked="prefs.mentionEmail">{{ 'tatami.preferences.notification.email.mention' | translate }}
                 </label>
             </div>
-            <div class="controls" ng-model="prefs.dailyDigest">
+            <div class="controls">
                 <label class="checkbox">
-                    <input name="dailyDigest" type="checkbox" ng-checked="prefs.dailyDigest"> Get a daily digest e-mail
+                    <input name="dailyDigest" type="checkbox" ng-model="prefs.dailyDigest" ng-checked="prefs.dailyDigest"> {{ 'tatami.preferences.notification.email.dailyDigest' | translate }}
                 </label>
             </div>
-            <div class="controls" ng-model="prefs.weeklyDigest">
+            <div class="controls">
                 <label class="checkbox">
-                    <input name="weeklyDigest" type="checkbox" ng-checked="prefs.weeklyDigest"> Get a weekly digest e-mail
+                    <input name="weeklyDigest" type="checkbox" ng-model="prefs.weeklyDigest" ng-checked="prefs.weeklyDigest"> {{ 'tatami.preferences.notification.email.weeklyDigest' | translate }}
                 </label>
             </div>
-            <div class="controls" ng-model="prefs.rssUidActive">
+            <div class="controls">
                 <label class="checkbox">
-                    <input name="rssUidActive" type="checkbox" ng-checked="prefs.rssUidActive">  Allow RSS feed publication of your timeline
+                    <input name="rssUidActive" type="checkbox" ng-model="prefs.rssUidActive" ng-checked="prefs.rssUidActive"> {{ 'tatami.preferences.notification.rss.timeline' | translate }}
                 </label>
-                <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{prefs.rssUid}}">Link to your timeline RSS stream </a>
+                <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{prefs.rssUid}}">{{ 'tatami.preferences.notification.rss.link' | translate }}</a>
 
             </div>
         </div>
@@ -39,9 +35,7 @@
         <fieldset>
             <div class="return"></div>
             <div class="form-actions">
-                <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()">
-                    Save
-                </button>
+                <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="tatami.form.save"></button>
             </div>
         </fieldset>
 

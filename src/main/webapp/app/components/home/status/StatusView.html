@@ -9,8 +9,9 @@
             <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{tatami.status.preview | translate}}"></i>
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
-            <textarea ng-if="!current.reply" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.status.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
-            <textarea ng-if="current.reply" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
+            <!-- The popover doesn't quite work yet, ideally the popover will show when current.contentEmpty is true -->
+            <textarea ng-if="!current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.status.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
+            <textarea ng-if="current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
             <div>
                 <em>
                     {{'tatami.status.characters.left' | translate}}

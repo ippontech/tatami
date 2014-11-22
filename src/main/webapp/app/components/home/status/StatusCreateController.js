@@ -12,7 +12,8 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         reply: false,                       // Determine if this status is a reply to another user
         uploadDone: true,                   // If the file upload is done, we should not show the progess bar
         uploadProgress: 0,                  // The progress of the file currently being uploaded
-        upload:[]
+        upload:[],
+        contentEmpty: true
     },
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status

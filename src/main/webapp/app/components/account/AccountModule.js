@@ -1,0 +1,1 @@
+var AccountModule = angular.module('AccountModule', ['ngResource']);

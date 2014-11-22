@@ -9,6 +9,7 @@
 -    If the app isn't here, the post modal does not work, this location can be changed once the modal view is
 -    separated from the topmenu jsp
 -->
+<!-- Put ng-app here to see timeline change -->
 <html lang="en" ng-app="TatamiApp">
 
 <jsp:include page="includes/header.jsp"/>

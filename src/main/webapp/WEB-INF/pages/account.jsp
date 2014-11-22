@@ -4,10 +4,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-
+<!-- To see the account page, put ng-app here -->
 <html lang="en">
 
-<jsp:include page="/app/components/account/preferences/PreferenceView.html"/>
+
+<jsp:include page="/app/components/account/groups/GroupView.html"/>
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -87,9 +88,14 @@
 <c:if test="${wro4jEnabled eq false}">
 
     <!-- Preference based includes -->
-    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
     <script src="/app/components/account/preferences/PreferenceService.js"></script>
+
+    <script src="/app/components/account/password/PasswordService.js"></script>
+    <script src="/app/components/account/password/PasswordController.js"></script>
+
+    <script src="/app/components/account/files/FileController.js"></script>
+    <script src="/app/components/account/files/FileService.js"></script>
 
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
@@ -167,6 +173,9 @@
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
     <script src="/app/components/account/preferences/PreferenceService.js"></script>
+
+    <script src="/app/components/account/AccountController.js"></script>
+    <script src="/app/components/account/AccountModule.js"></script>
 
 </c:if>
 <c:if test="${wro4jEnabled eq true}">
