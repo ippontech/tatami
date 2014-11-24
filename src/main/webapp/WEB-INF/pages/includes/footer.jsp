@@ -23,16 +23,23 @@
     <!-- Tatami Angular scripts -->
     <script src="/app/TatamiApp.js"></script>
 
+    <!-- Module includes -->
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/password/PasswordModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/account/files/FileModule.js"></script>
     <script src="/app/components/account/groups/GroupModule.js"></script>
+    <script src="/app/components/account/profile/ProfileModule.js"></script>
+    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
 
+    <!-- Shared filter includes -->
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
+
+    <!-- Shared config includes -->
     <script src="/app/shared/configs/MarkedConfig.js"></script>
     <script src="/app/shared/configs/TranslateConfig.js"></script>
 
+    <!-- Shared services includes -->
     <script src="/app/shared/services/ProfileService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
     <script src="/app/shared/services/TagService.js"></script>
@@ -40,28 +47,20 @@
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupMemberService.js"></script>
 
-    <!-- Account based includes, probably need to be moved to another file -->
+    <!-- Move these to another file? Perhaps into home.jsp, ultimately we will remove jsps though -->
 
-
-    <!-- Group based includes -->
-    <script src="/app/components/account/groups/GroupController.js"></script>
-    <script src="/app/components/account/groups/GroupModule.js"></script>
-
-    <!-- Preference based includes -->
-    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
-    <script src="/app/components/account/preferences/PreferenceController.js"></script>
-    <script src="/app/components/account/preferences/PreferenceService.js"></script>
-
-    <!-- Move these to another file? -->
+    <!-- Status based includes -->
     <script src="/app/components/home/status/StatusModule.js"></script>
     <script src="/app/components/home/status/StatusCreateController.js"></script>
     <script src="/app/components/home/status/StatusManagerController.js"></script>
 
+    <!-- Sidebar based includes -->
     <script src="/app/components/home/sidebar/SidebarModule.js"></script>
     <script src="/app/components/home/sidebar/UserController.js"></script>
     <script src="/app/components/home/sidebar/GroupsController.js"></script>
     <script src="/app/components/home/sidebar/TrendsController.js"></script>
 
+    <!-- Timeline based includes -->
     <script src="/app/components/home/timeline/TimelineModule.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
     <script src="/app/components/home/timeline/TimelineService.js"></script>
