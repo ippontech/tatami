@@ -10,7 +10,7 @@
 -    separated from the topmenu jsp
 -->
 <!-- Put ng-app here to see timeline change -->
-<html lang="en" ng-app="TatamiApp">
+<html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
 

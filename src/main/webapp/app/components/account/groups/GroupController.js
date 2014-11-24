@@ -4,7 +4,7 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-TatamiApp.controller('GroupController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
+GroupModule.controller('GroupController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}

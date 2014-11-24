@@ -16,7 +16,7 @@ PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceServic
      * This method is used to allow the user to modify what information is received via email
      * and whether an RSS feed can be used
      */
-    $scope.savePrefs = function (){
+    $scope.savePrefs = function(){
         PreferenceService.save($scope.prefs);
     };
 }]);

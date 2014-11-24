@@ -2,6 +2,13 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'account': {
+                'update': {
+                    'title': 'User profile',
+                    'legend': 'Update your profile'
+                },
+                'login': 'E-mail'
+            },
             'group': {
                 'add': 'Create a new group',
                 'title': 'Name of the group',
@@ -21,7 +28,13 @@ TatamiApp.config(function($translateProvider) {
                     'old': 'Old password',
                     'new': 'New password',
                     'confirm': 'New password confirmation'
-                }
+                },
+                'firstName': 'First name',
+                'lastName': 'Last name',
+                'jobTitle': 'Job title',
+                'phoneNumber': 'Phone number',
+                'confirmDelete': 'You are about to delete your account. Are you sure?',
+                'delete': 'Delete the current user account'
             },
             'preferences': {
                 'notification': {

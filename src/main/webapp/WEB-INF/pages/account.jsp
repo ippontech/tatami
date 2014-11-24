@@ -5,10 +5,10 @@
 
 <!DOCTYPE html>
 <!-- To see the account page, put ng-app here -->
-<html lang="en">
+<html lang="en" ng-app="TatamiApp">
 
 
-<jsp:include page="/app/components/account/groups/GroupView.html"/>
+<jsp:include page="/app/components/account/profile/ProfileView.html"/>
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -91,13 +91,20 @@
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
     <script src="/app/components/account/preferences/PreferenceService.js"></script>
 
+    <!-- Password based includes -->
     <script src="/app/components/account/password/PasswordService.js"></script>
     <script src="/app/components/account/password/PasswordController.js"></script>
 
+    <!-- File based includes -->
     <script src="/app/components/account/files/FileController.js"></script>
     <script src="/app/components/account/files/FileService.js"></script>
 
+    <!-- Group based includes -->
     <script src="/app/components/account/groups/GroupController.js"></script>
+
+    <!-- Profile based includes -->
+    <script src="/app/components/account/profile/ProfileController.js"></script>
+    <script src="/app/components/account/profile/ProfileService.js"></script>
 
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
