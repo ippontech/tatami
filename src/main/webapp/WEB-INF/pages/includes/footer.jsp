@@ -10,6 +10,7 @@
 
     <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
 
     <script src="/assets/bower_components/moment/moment.js"></script>
     <script src="/assets/bower_components/moment/locale/fr.js"></script>
@@ -44,22 +45,7 @@
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
     <script src="/app/components/account/preferences/PreferenceService.js"></script>
 
-    <!-- Move these to another file? -->
-    <script src="/app/components/home/status/StatusModule.js"></script>
-    <script src="/app/components/home/status/StatusCreateController.js"></script>
-    <script src="/app/components/home/status/StatusManagerController.js"></script>
-
-    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
-    <script src="/app/components/home/sidebar/UserController.js"></script>
-    <script src="/app/components/home/sidebar/GroupsController.js"></script>
-    <script src="/app/components/home/sidebar/TrendsController.js"></script>
-
-    <script src="/app/components/home/timeline/TimelineModule.js"></script>
-    <script src="/app/components/home/timeline/TimelineController.js"></script>
-    <script src="/app/components/home/timeline/TimelineService.js"></script>
-    <script src="/app/components/home/timeline/MomentConfig.js"></script>
-
-    <!-- Other libraries -->
+    <!-- Other Libraries -->
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>
