@@ -8,7 +8,7 @@
 <html lang="en" ng-app="TatamiApp">
 
 
-<jsp:include page="/app/components/account/tags/TagView.html"/>
+<jsp:include page="/app/components/account/users/UsersView.html"/>
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -108,6 +108,9 @@
 
     <!-- Tag based includes -->
     <script src="/app/components/account/tags/TagController.js"></script>
+
+    <!-- Users based includes -->
+    <script src="/app/components/account/users/UsersController.js"></script>
 
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>

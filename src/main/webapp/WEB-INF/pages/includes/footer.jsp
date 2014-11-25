@@ -33,6 +33,7 @@
     <script src="/app/components/account/profile/ProfileModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/tags/TagModule.js"></script>
+    <script src="/app/components/account/users/UsersModule.js"></script>
 
     <!-- Shared filter includes -->
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
@@ -49,7 +50,7 @@
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupMemberService.js"></script>
 
-    <!-- Other Libraries -->
+    <!-- Old Libraries -->
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>
