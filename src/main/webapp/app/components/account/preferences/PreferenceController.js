@@ -1,4 +1,4 @@
-PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceService', function($scope, PreferenceService){
+PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceService', function($scope, PreferenceService) {
 
     $scope.prefs = {                // Sets the users current preferences
         mentionEmail: false,         // Determine if the user wants to be notified of mentions via email
@@ -8,7 +8,7 @@ PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceServic
         rssUid: null                // The uid for the RSS feed
     };
 
-    var prefs = PreferenceService.get(function (result){
+    var prefs = PreferenceService.get(function(result) {
         $scope.prefs = result;
     });
 
@@ -16,7 +16,7 @@ PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceServic
      * This method is used to allow the user to modify what information is received via email
      * and whether an RSS feed can be used
      */
-    $scope.savePrefs = function(){
+    $scope.savePrefs = function() {
         PreferenceService.save($scope.prefs);
     };
 }]);

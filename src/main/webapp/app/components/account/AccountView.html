@@ -1,194 +1,171 @@
 <div ng-controller="AccountController">
-
     <div id="mainPanel" class="container">
-    <div ng-show="false">HI</div>
-
-        <div id="avatar"><div>
-
-
-
-
-            <div class="nomargin well row avatar-float-left-container">
-                <div class="col-span-5 text-center">
-                    <a href="/tatami/home/users/{{user.username}}/">
-
-                        <!-- Setting src="{{avatarUrl}}" causes a MIME type message, not sure why -->
-                        <img class="pull-left nomargin avatar avatar-float-left" src="{{avatarUrl}}" alt="">
-
-
-                        <h3 class="user-profile" ng-cloak>{{ user.firstName + ' ' + user.lastName }}</h3>
-                        <p ng-cloak>@{{user.username}}</p>
-                    </a>
-                </div>
-            </div>
-        </div></div>
-        <br>
-        <div class="row">
-            <div id="navigation"><div>
-                <div class="col-span-4">
-                    <div class="tabbable alert alert-status">
-                        <ul class="adminMenu nav nav-pills nav-stacked nomargin">
-                            <li class="active">
-                                <a href="#profile">
-                                    <i class="glyphicon glyphicon-user"></i> Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#preferences">
-                                    <i class="glyphicon glyphicon-picture"></i> Preferences
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#password">
-                                    <i class="glyphicon glyphicon-lock"></i> Password
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#files">
-                                    <i class="glyphicon glyphicon-file"></i> Files
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#users">
-                                    <i class="glyphicon glyphicon-globe"></i> Users
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#groups">
-                                    <i class="glyphicon glyphicon-th-large"></i> Groups
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#tags">
-                                    <i class="glyphicon glyphicon-tags"></i> Tags
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#status_of_the_day">
-                                    <i class="glyphicon glyphicon-signal"></i> Statuses of the day
-                                </a>
-                            </li>
-                        </ul>
+        <div ng-show="false">HI</div>
+        <div id="avatar">
+            <div>
+                <div class="nomargin well row avatar-float-left-container">
+                    <div class="col-span-5 text-center">
+                        <a href="/tatami/home/users/{{user.username}}/">
+                            <!-- Setting src="{{avatarUrl}}" causes a MIME type message, not sure why -->
+                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{avatarUrl}}" alt="">
+                            <h3 class="user-profile" ng-cloak>{{ user.firstName + ' ' + user.lastName }}</h3>
+                            <p ng-cloak>@{{ user.username }}</p>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div id="navigation">
+                <div>
+                    <div class="col-span-4">
+                        <div class="tabbable alert alert-status">
+                            <ul class="adminMenu nav nav-pills nav-stacked nomargin">
+                                <li class="active">
+                                    <a href="#profile">
+                                    <i class="glyphicon glyphicon-user"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#preferences">
+                                    <i class="glyphicon glyphicon-picture"></i> Preferences
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#password">
+                                    <i class="glyphicon glyphicon-lock"></i> Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#files">
+                                    <i class="glyphicon glyphicon-file"></i> Files
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#users">
+                                    <i class="glyphicon glyphicon-globe"></i> Users
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#groups">
+                                    <i class="glyphicon glyphicon-th-large"></i> Groups
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tags">
+                                    <i class="glyphicon glyphicon-tags"></i> Tags
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#status_of_the_day">
+                                    <i class="glyphicon glyphicon-signal"></i> Statuses of the Day
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-span-8">
                 <div id="accountContent" class="alert alert-status">
-                    <div id="content-container"><div>
-                        <div id="region1"><form>
-                            <h2>
-                                User profile
-                            </h2>
-                            <br>
-                            <fieldset class="form-horizontal row-fluid">
-
-                                <div class="control-group dashed">
-                                    <label class="control-label">
-
-                                    </label>
-
-                                    <div class="controls">
-                                        <div id="updateAvatar" class="dropzone well">
-                                            <img class="nomargin avatar" src="/img/default_image_profile.png" alt="">
-                                            <p class="little-padding-top">Drop your photo here to update it</p>
-                                            <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
+                    <div id="content-container">
+                        <div>
+                            <div id="region1">
+                                <form>
+                                    <h2>
+                                        User profile
+                                    </h2>
+                                    <br>
+                                    <fieldset class="form-horizontal row-fluid">
+                                        <div class="control-group dashed">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls">
+                                                <div id="updateAvatar" class="dropzone well">
+                                                    <img class="nomargin avatar" src="/img/default_image_profile.png" alt="">
+                                                    <p class="little-padding-top">Drop your photo here to update it</p>
+                                                    <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
+                                                </div>
+                                                <div class="attachmentBar progress progress-striped active" style="display: none;">
+                                                    <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="attachmentBar progress progress-striped active" style="display: none;">
-                                            <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                                    </fieldset>
+                                    <fieldset class="form-horizontal row-fluid">
+                                        <legend>
+                                            Update your profile
+                                        </legend>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                            E-mail
+                                            </label>
+                                            <div class="controls">
+                                                <input name="login" type="text" disabled="true" class="col-span-12" value="email@email.com">
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-
-
-                            </fieldset>
-
-                            <fieldset class="form-horizontal row-fluid">
-                                <legend>
-                                    Update your profile
-                                </legend>
-
-                                <div class="control-group">
-                                    <label class="control-label">
-                                        E-mail
-                                    </label>
-
-                                    <div class="controls">
-                                        <input name="login" type="text" disabled="true" class="col-span-12" value="hegelandka@mymail.vcu.edu">
-                                    </div>
-                                </div>
-
-
-                                <div class="control-group">
-                                    <label class="control-label" for="firstName">
-                                        First name
-                                    </label>
-
-                                    <div class="controls">
-                                        <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="Kenneth">
-                                    </div>
-                                </div>
-
-                                <div class="control-group">
-                                    <label class="control-label" for="lastName">
-                                        Last name
-                                    </label>
-
-                                    <div class="controls">
-                                        <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="Hegeland">
-                                    </div>
-                                </div>
-
-                                <div class="control-group">
-                                    <label class="control-label" for="jobTitle">
-                                        Job title
-                                    </label>
-
-                                    <div class="controls">
-                                        <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="">
-                                    </div>
-                                </div>
-
-                                <div class="control-group">
-                                    <label class="control-label" for="phoneNumber">
-                                        Phone number
-                                    </label>
-
-                                    <div class="controls">
-                                        <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value=" ">
-                                    </div>
-                                </div>
-
-                                <div class="return"></div>
-
-                                <div class="form-actions">
-                                    <button type="submit" class="input-xlarge btn btn-primary btn-block">
-                                        Save
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form></div>
-                        <div id="region2"><form>
-                            <fieldset class="form-horizontal row-fluid">
-                                <legend>Delete the current user account</legend>
-                                <div class="return"></div>
-                                <div class="form-actions">
-                                    <button type="submit" class="input-xlarge btn btn-danger btn-block" onclick="return(confirm('You are about to delete your account. Are you sure?'));">
-                                        Delete the current user account
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form></div>
-                        <div id="region3"></div>
-                        <div id="region4"></div>
-                        <div id="region5"></div>
-                    </div></div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">
+                                            First Name
+                                            </label>
+                                            <div class="controls">
+                                                <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" value="MyFirstName">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="lastName">
+                                            Last Name
+                                            </label>
+                                            <div class="controls">
+                                                <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" value="MyLastName">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="jobTitle">
+                                            Job Title
+                                            </label>
+                                            <div class="controls">
+                                                <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" value="">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="phoneNumber">
+                                            Phone Number
+                                            </label>
+                                            <div class="controls">
+                                                <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" value="">
+                                            </div>
+                                        </div>
+                                        <div class="return"></div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="input-xlarge btn btn-primary btn-block">
+                                            Save
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div id="region2">
+                                <form>
+                                    <fieldset class="form-horizontal row-fluid">
+                                        <legend>Delete Your Account</legend>
+                                        <div class="return"></div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="input-xlarge btn btn-danger btn-block" onclick="return(confirm('You are about to delete your account. Are you sure?'));">
+                                            Delete Your Account
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div id="region3"></div>
+                            <div id="region4"></div>
+                            <div id="region5"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
-
     </div>
-
 </div>
