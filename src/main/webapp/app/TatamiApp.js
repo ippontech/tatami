@@ -8,6 +8,11 @@ var TatamiApp = angular.module('TatamiApp', [
 /*
     'StatusModule', 
     'PreferenceModule',
+    'AccountModule', 
+    'PasswordModule', 
+    'GroupModule',
+    'ProfileModule', 
+    'TagModule'
 */
 
 TatamiApp.config(['$resourceProvider', '$routeProvider', '$locationProvider', 

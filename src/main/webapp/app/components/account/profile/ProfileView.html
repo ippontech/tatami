@@ -1,0 +1,89 @@
+<div ng-controller="ProfileController" ng-init="init()">
+    <form>
+        <h2 translate="tatami.account.update.title"></h2>
+        <br>
+        <fieldset class="form-horizontal row-fluid">
+
+            <div class="control-group dashed">
+                <label class="control-label">
+
+                </label>
+
+                <div class="controls">
+                    <div id="updateAvatar" class="dropzone well">
+                        <img class="nomargin avatar" src="/tatami/avatar/a680b880-62d4-11e4-b975-f8165431c969/photo.jpg" alt="">
+                        <p class="little-padding-top">Drop your photo here to update it</p>
+                        <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
+                    </div>
+                    <div class="attachmentBar progress progress-striped active" style="display: none;">
+                        <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+        <fieldset class="form-horizontal row-fluid">
+            <legend translate="tatami.account.update.legend"></legend>
+
+            <div class="control-group">
+                <label class="control-label" for="login" translate="tatami.account.login"></label>
+
+                <div class="controls">
+                    <input name="login" type="text" disabled="true" class="col-span-12" ng-model="userLogin">
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="firstName" translate="tatami.user.firstName">
+                </label>
+
+                <div class="controls">
+                    <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" ng-model="userProfile.firstName">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="lastName" translate="tatami.user.lastName"></label>
+
+                <div class="controls">
+                    <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" ng-model="userProfile.lastName">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="jobTitle" translate="tatami.user.jobTitle"></label>
+
+                <div class="controls">
+                    <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" ng-model="userProfile.jobTitle">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="phoneNumber" translate="tatami.user.phoneNumber"></label>
+
+                <div class="controls">
+                    <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" ng-model="userProfile.phoneNumber">
+                </div>
+            </div>
+
+            <div class="return"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="input-xlarge btn btn-primary btn-block" translate="tatami.form.save" ng-click="updateUser()"></button>
+            </div>
+        </fieldset>
+    </form>
+    <form>
+        <fieldset class="form-horizontal row-fluid">
+            <legend translate="tatami.user.delete"></legend>
+            <div class="return"></div>
+            <div class="form-actions">
+                <button type="submit" class="input-xlarge btn btn-danger btn-block" ng-click="deleteUser('You are about to delete your account. Are you sure?')" translate="tatami.user.delete">
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>

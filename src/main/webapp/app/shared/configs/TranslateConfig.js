@@ -2,6 +2,60 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'search': 'Search',
+            'account': {
+                'update': {
+                    'title': 'User profile',
+                    'legend': 'Update your profile'
+                },
+                'login': 'E-mail',
+                'tags': {
+                    'myTags': 'My tags'
+                }
+            },
+            'group': {
+                'add': 'Create a new group',
+                'title': 'Name of the group',
+                'description': 'Description',
+                'access': 'Access',
+                'public': 'Public',
+                'private': 'Private',
+                'warnPublic': 'Warning! If this group is public, everybody can access it',
+                'name': 'Group',
+                'counter': 'Members',
+                'manage': 'Manage'
+            },
+            'password': 'Password',
+            'user': {
+                'password': {
+                    'legend': 'Update your password',
+                    'old': 'Old password',
+                    'new': 'New password',
+                    'confirm': 'New password confirmation'
+                },
+                'firstName': 'First name',
+                'lastName': 'Last name',
+                'jobTitle': 'Job title',
+                'phoneNumber': 'Phone number',
+                'confirmDelete': 'You are about to delete your account. Are you sure?',
+                'delete': 'Delete the current user account',
+                'follow': 'Follow',
+                'followed': 'Followed'
+            },
+            'preferences': {
+                'notification': {
+                    'email': {
+                        'mention': 'Get notified by e-mail when you are mentioned',
+                        'dailyDigest': 'Get a daily digest e-mail',
+                        'weeklyDigest': 'Get a weekly digest e-mail'
+                    },
+                    'rss': {
+                        'timeline': 'Allow RSS feed publication of your timeline',
+                        'link': 'Link to your timeline RSS stream'
+                    }
+                },
+                'notifications': 'Notifications'
+            },
             'timeline': 'Timeline',
             
             'home': {    
@@ -9,7 +63,10 @@ TatamiApp.config(function($translateProvider) {
                 'favorites': 'Favorites'
             },
             'tatam': {
-                'mandatory': 'Comment is mandatory'
+                'mandatory': 'Comment is mandatory',
+                'content': {
+                    'mandatory': 'Please fill out this field.'
+                }
             },
 
             'status': {
@@ -36,6 +93,8 @@ TatamiApp.config(function($translateProvider) {
             },
 
             'menu': {
+                'groups': 'Group',
+                'preferences': 'Preferences',
                 'logo': 'Ippon Technologies Logo',
                 'title': 'Tatami',
                 'about': {
@@ -78,10 +137,11 @@ TatamiApp.config(function($translateProvider) {
             },
             'form': {
                 'cancel': 'Cancel',
-                'post': 'Post'
+                'post': 'Post',
+                'save': 'Save'
             },
-            'group': {
-                'name': 'Group'
+            'trends': {
+                'title': 'Trends'
             }
         }
     });
