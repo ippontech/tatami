@@ -32,6 +32,7 @@
     <script src="/app/components/account/profile/ProfileModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/tags/TagModule.js"></script>
+    <script src="/app/components/account/users/UsersModule.js"></script>
 
     <!-- Shared filter includes -->
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
