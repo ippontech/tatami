@@ -1,0 +1,36 @@
+<div ng-controller="UsersController" ng-init="getUsers()">
+    <div class="tabMenu">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#users" translate="tatami.users.myFriends"></a>
+            </li>
+            <li>
+                <a href="#users/recommended" translate="tatami.users.recommend"></a>
+            </li>
+            <li>
+                <a href="#users/search" translate="tatami.search"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="useritem" ng-repeat="users in usersGroup">
+        <div class="pull-left background-image-fffix">
+            <div class="img img-rounded img-medium" style="background-image: url(/tatami/avatar/{{ users.avatar }}/photo.jpg);"></div>
+        </div>
+        <h4>
+            <span class="toggleFriend pointer pull-right label label-info">
+                <span class="glyphicon glyphicon-minus"></span>
+            </span>
+            <a href="/tatami/home/#/users/{{ users.username }}">
+                <strong>
+                    {{ users.firstName }} + ' ' + {{ users.lastName }}
+                </strong>
+            </a>
+            <br>
+            <a href="/tatami/home/#/users/{{ users.username }}">
+                <small>
+                    @{{ users.username }}
+                </small>
+            </a>
+        </h4>
+    </div>
+</div>

@@ -2,6 +2,10 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'users': {
+                'recommend': 'Recommended',
+                'myFriends': 'My friends'
+            },
             'search': 'Search',
             'account': {
                 'update': {
