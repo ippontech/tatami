@@ -192,8 +192,13 @@
                 </li>
             </ul>
             <form id="searchform" class="navbar-form pull-right col-span-4" action="">
-                <input name="search" type="text" class="col-span-12" id="searchinput" placeholder="{{ 'tatami.menu.search' | translate }}" autocomplete="off">
-                <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
+                <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.menu.search' | translate }}">
+                
+                <!-- Clear search field when clicking the x icon ? -->
+                <!-- Probably should just remove it -->
+                <span class="deleteicon" style="display: none;">
+                    <i class="glyphicon glyphicon-remove-sign"></i>
+                </span>
             </form>
             <!--</sec:authorize>-->
             <!--</c:if>-->
