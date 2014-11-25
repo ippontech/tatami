@@ -1,0 +1,1 @@
+var HomeModule = angular.module('HomeModule', ['StatusModule', 'SidebarModule', 'TimelineModule']);
