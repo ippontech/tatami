@@ -2,12 +2,16 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'search': 'Search',
             'account': {
                 'update': {
                     'title': 'User profile',
                     'legend': 'Update your profile'
                 },
-                'login': 'E-mail'
+                'login': 'E-mail',
+                'tags': {
+                    'myTags': 'My tags'
+                }
             },
             'group': {
                 'add': 'Create a new group',
@@ -34,7 +38,9 @@ TatamiApp.config(function($translateProvider) {
                 'jobTitle': 'Job title',
                 'phoneNumber': 'Phone number',
                 'confirmDelete': 'You are about to delete your account. Are you sure?',
-                'delete': 'Delete the current user account'
+                'delete': 'Delete the current user account',
+                'follow': 'Follow',
+                'followed': 'Followed'
             },
             'preferences': {
                 'notification': {
@@ -133,6 +139,9 @@ TatamiApp.config(function($translateProvider) {
                 'cancel': 'Cancel',
                 'post': 'Post',
                 'save': 'Save'
+            },
+            'trends': {
+                'title': 'Trends'
             }
         }
     });

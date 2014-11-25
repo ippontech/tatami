@@ -1,0 +1,1 @@
+var TagModule = angular.module('TagModule', ['ngResource']);
