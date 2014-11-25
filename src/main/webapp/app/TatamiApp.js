@@ -23,7 +23,7 @@ TatamiApp.config(['$resourceProvider', '$routeProvider', '$locationProvider',
 
     $routeProvider
         .when('/', {
-            templateUrl: 'app/components/home/HomeView.html'
+            templateUrl: 'app/components/home/TimelineView.html'
         });
 
     $locationProvider.html5Mode(true);
