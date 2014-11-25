@@ -10,21 +10,21 @@ var TatamiApp = angular.module('TatamiApp', [
     'PreferenceModule',
     'AccountModule', 
     'PasswordModule', 
-    'GroupModule',
+    'GroupsModule',
     'ProfileModule', 
     'TagModule'
 */
 
-TatamiApp.config(['$resourceProvider', '$routeProvider', '$locationProvider', 
-    function($resourceProvider, $routeProvider, $locationProvider) {
+TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider', 
+    function($routeProvider, $resourceProvider, $locationProvider) {
     
+    $routeProvider
+        .otherwise({ 
+            redirectTo: '/home' 
+        });
+
     // Don't strip trailing slashes from REST URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
 
-    $routeProvider
-        .when('/', {
-            templateUrl: 'app/components/home/TimelineView.html'
-        });
-
-    $locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 }]);
