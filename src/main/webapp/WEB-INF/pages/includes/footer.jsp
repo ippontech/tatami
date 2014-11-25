@@ -29,7 +29,7 @@
     <script src="/app/components/account/password/PasswordModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/account/files/FileModule.js"></script>
-    <script src="/app/components/account/groups/GroupModule.js"></script>
+    <script src="/app/components/account/groups/GroupsModule.js"></script>
     <script src="/app/components/account/profile/ProfileModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/tags/TagModule.js"></script>
