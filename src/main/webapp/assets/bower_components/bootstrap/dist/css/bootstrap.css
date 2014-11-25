@@ -2155,8 +2155,8 @@ fieldset[disabled] .btn-link:focus {
   font-family: 'Glyphicons Halflings';
   font-style: normal;
   font-weight: normal;
-  src: url('../fonts/glyphicons-halflings-regular.eot');
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../fonts/glyphicons-halflings-regular-custom.eot');
+  src: url('../fonts/glyphicons-halflings-regular-custom.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular-custom.woff') format('woff'), url('../fonts/glyphicons-halflings-regular-custom.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular-custom.svg#glyphicons_halflingsregular') format('svg');
 }
 
 .glyphicon:before {
