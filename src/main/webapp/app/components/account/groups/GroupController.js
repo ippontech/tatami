@@ -100,7 +100,13 @@ GroupModule.controller('GroupController', ['$scope', 'GroupService', 'GroupMembe
         $scope.tab.groupTab = groupTab;
         $scope.tab.trendTab = trendTab;
         $scope.tab.searchTab = searchTab;
-    }
+    };
+
+    $scope.showGroup = function (){
+        $scope.tab.groupTab = true;
+        $scope.tab.trendTab = false;
+        $scope.tab.searchTab = false;
+    };
 
     /**
      * Resets the group creation view
