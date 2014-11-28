@@ -20,7 +20,7 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
     
     $routeProvider
         .otherwise({ 
-            redirectTo: '/home' 
+            redirectTo: '/home/timeline' 
         });
 
     // Don't strip trailing slashes from REST URLs
