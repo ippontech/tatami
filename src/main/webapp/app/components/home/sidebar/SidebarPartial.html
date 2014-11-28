@@ -1,18 +1,18 @@
 <div>
-    <section ng-controller="UserController" class="hidden-phone card-profile">
+    <section ng-controller="ProfileController" class="hidden-phone card-profile">
         <div>
             <div class="page-header">
                 <h4 class="profile-card background-image-fffix">
                     <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + avatarURL + ')' }"></div>
-                    <a ng-cloak href="#users/{{ user.username }}">
+                    <a ng-cloak href="#users/{{ profile.username }}">
                     <strong ng-cloak>
-                    {{ user.firstName + ' ' + user.lastName }}
+                    {{ profile.firstName + ' ' + profile.lastName }}
                     </strong>
                     </a>
                     <br>
-                    <a ng-cloak href="#users/{{ user.username }}">
+                    <a ng-cloak href="#users/{{ profile.username }}">
                     <small ng-cloak>
-                    @{{ user.username }}
+                    @{{ profile.username }}
                     </small>
                     </a>
                 </h4>
