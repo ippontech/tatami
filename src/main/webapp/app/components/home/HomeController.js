@@ -5,7 +5,7 @@ HomeModule.controller('HomeController', ['$scope', 'TimelineService', 'ProfileSe
         $scope.profile = ProfileService.get();
 
         $scope.favorite = function(statusId, isFavorited, index) {
-            response = StatusService.update({ statusId: statusId }, { favorite: !isFavorited }, 
+            StatusService.update({ statusId: statusId }, { favorite: !isFavorited }, 
                 function(response) { 
                     $scope.statuses[index] = response;
                     // should I only update the favorite property of the status 
