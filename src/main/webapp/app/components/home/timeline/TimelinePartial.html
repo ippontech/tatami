@@ -29,9 +29,9 @@
         </div>
         <section class="tatams-container">
             <div ng-cloak>
-                <section class="timeline" ng-controller="TimelineController">
+                <section class="timeline" ng-controller="HomeController">
                     <div class="tatams" ng-repeat="status in statuses">
-                        <!-- Put discussion class if discussion -->
+                        <!-- Put discussion class if discussion ? -->
                         <div class="tatam pointer tatam-border-lr tatam-hover tatam-id-{{ status.statusId }}" style="display: block;" >
                             <!--<div id="before"></div>-->
                             <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe }">
@@ -97,9 +97,9 @@
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                             <span translate="tatami.status.view"></span>
                                         </a>
-                                        <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController">
+                                        <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController" ng-click="showModal(status.statusId)">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span translate="tatami.status.reply" ng-click="showModal(status.statusId)"></span>
+                                            <span translate="tatami.status.reply"></span>
                                         </button>
                                         <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
@@ -109,7 +109,7 @@
                                             <i class="glyphicon glyphicon-retweet"></i>
                                             <span translate="tatami.status.share"></span>
                                         </button>
-                                        <button class="btn-link status-action status-action-favorite button-ios">
+                                        <button class="btn-link status-action status-action-favorite button-ios" ng-click="favorite(status.statusId, status.favorite, $index)">
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="tatami.status.favorite"></span>
                                         </button>
