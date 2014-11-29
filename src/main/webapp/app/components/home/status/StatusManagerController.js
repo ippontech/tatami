@@ -18,7 +18,7 @@ StatusModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusS
 
         modalInstance.opened.then(function() {
             if(statusId) {
-                var promise = StatusService.get({statusId: statusId}, function(result) {
+                var promise = StatusService.get({ statusId: statusId }, function(result) {
                     modalInstance.setCurrentStatus(result);
                 });
             }
