@@ -1,4 +1,4 @@
-PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', function($scope, PasswordService){
+PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', function($scope, PasswordService) {
     $scope.password = {
         oldPassword: '',
         newPassword: '',
@@ -15,22 +15,22 @@ PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', fu
         confirmChange: false
     };
 
-    $scope.changePassword = function(){
-        if(!$scope.password.oldPassword){
+    $scope.changePassword = function() {
+        if(!$scope.password.oldPassword) {
             // Display a popover on Old password field
             $scope.oldEmpty = true;
         }
-        else if(!$scope.password.newPassword){
+        else if(!$scope.password.newPassword) {
             // Display a popover on the new password field
             $scope.newEmpty = true;
         }
-        else if($scope.password.newPassword !== $scope.password.newPasswordConfirmation){
+        else if($scope.password.newPassword !== $scope.password.newPasswordConfirmation) {
             // Display a popover on password confirmation
             cofirmWrong = true;
         }
-        else{
+        else {
             // Everything is alright, we can send the new password
-            PasswordService.save($scope.password, function (){
+            PasswordService.save($scope.password, function() {
                 // Clear the fields after we have changed the password
                 $scope.reset();
                 // Alert user that the password has been changed
@@ -39,7 +39,7 @@ PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', fu
         }
     };
 
-    $scope.reset = function(){
+    $scope.reset = function() {
         $scope.password = {};
         $scope.status.oldEmpty = false;
         $scope.status.newEmpty = false;

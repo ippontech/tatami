@@ -1,3 +1,3 @@
-FileModule.controller('FileController', function($scope){
+FileModule.controller('FileController', function($scope) {
 
 })

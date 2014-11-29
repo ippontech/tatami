@@ -10,19 +10,19 @@ StatusModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusS
             backdrop: 'static',
             keyboard: false,
             resolve: {
-                currentStatus: function(){
+                currentStatus: function() {
 
                 }
             }
         });
 
-        modalInstance.opened.then(function (){
-            if(statusId){
-                var promise = StatusService.get({statusId: statusId}, function (result){
+        modalInstance.opened.then(function() {
+            if(statusId) {
+                var promise = StatusService.get({ statusId: statusId }, function(result) {
                     modalInstance.setCurrentStatus(result);
                 });
             }
-            else{
+            else {
                 return {}
             }
         });
