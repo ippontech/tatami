@@ -5,8 +5,8 @@
     </div>
     <div class="modal-body">
         <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">
-            <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{ tatami.post.edit | translate }}"></i>
-            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{ tatami.post.preview | translate }}"></i>
+            <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{ 'tatami.post.edit' | translate }}"></i>
+            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{ 'tatami.post.preview' | translate }}"></i>
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
             <!-- The popover doesn't quite work yet, ideally the popover will show when current.contentEmpty is true -->
