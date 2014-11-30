@@ -54,6 +54,18 @@ TatamiApp.config(function($translateProvider) {
                 'button': 'Post'
             },
 
+            //Sidebar View Text
+            'sidebar': {
+                'home': {
+                    'myGroups': 'My Groups',
+                    'whoToFollow': 'Who To Follow',
+                    'trends': 'Trends'
+                },
+                'profile': {
+                    
+                }
+            },
+
             //Home View Text
             'home': {
                 'timeline': 'Timeline',
@@ -61,7 +73,7 @@ TatamiApp.config(function($translateProvider) {
                 'favorites': 'Favorites'
             },
             'status': {
-                'replyto': 'In reply to',
+                'replyTo': 'In reply to',
                 'private': 'Private Message',
                 'view': 'View',
                 'reply': 'Reply',
