@@ -4,9 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-<!-- To see the account page, put ng-app here -->
 <html lang="en" ng-app="TatamiApp">
-
 
 <jsp:include page="/app/components/account/users/UsersView.html"/>
 
@@ -87,6 +85,12 @@
 
 <c:if test="${wro4jEnabled eq false}">
 
+    <!-- Highest Level Modules -->
+    <script src="/app/components/home/HomeModule.js"></script>
+    <script src="/app/components/home/post/PostModule.js"></script>
+    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
+    <script src="/app/components/home/timeline/TimelineModule.js"></script>
+
     <!-- Preference based includes -->
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
     <script src="/app/components/account/preferences/PreferenceService.js"></script>
@@ -100,7 +104,7 @@
     <script src="/app/components/account/files/FileService.js"></script>
 
     <!-- Group based includes -->
-    <script src="/app/components/account/groups/GroupController.js"></script>
+    <script src="/app/components/account/groups/GroupsController.js"></script>
 
     <!-- Profile based includes -->
     <script src="/app/components/account/profile/ProfileController.js"></script>
