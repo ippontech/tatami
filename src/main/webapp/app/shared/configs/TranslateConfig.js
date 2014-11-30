@@ -108,9 +108,9 @@ TatamiApp.config(function($translateProvider) {
                     'language': {
                         'language': 'Language',
                         'en': 'English',
-                        'fr': 'Français' // Change to French?
+                        'fr': 'Français'
                     },
-                    'license': 'Software License',
+                    'license': 'Source Code License',
                     'github': {
                         'issues': 'Submit a Bug Report',
                         'fork': 'Fork Tatami on Github'
