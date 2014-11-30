@@ -3,7 +3,7 @@
  * creation window.
  */
 
-StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
+PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
         function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
@@ -23,9 +23,6 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         geoLocalization: "",     // The geographical location of the user when posting the status
         statusPrivate: false     // Determines whether the status is private
     },
-
-
-    $scope.currentStatus,
 
     /**
      * In order to set reply to a status, we must be able to set current status
@@ -130,6 +127,5 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
             markers.addMarker(new OpenLayers.Marker(lonLat));
             map.setCenter(position, zoom);
         }
-
     }
 }]);

@@ -1,4 +1,4 @@
-var HomeModule = angular.module('HomeModule', ['StatusModule', 'SidebarModule', 'TimelineModule', 'ngRoute']);
+var HomeModule = angular.module('HomeModule', ['PostModule', 'SidebarModule', 'TimelineModule', 'ngRoute']);
 
 HomeModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider
