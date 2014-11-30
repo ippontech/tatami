@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
 <head>
     <meta charset="utf-8">
     <title>Tatami</title>
@@ -9,7 +9,7 @@
     <!--<meta name="description" content="">-->
 
     <!--<link href="/css/vendor/css/bootstrap.css" rel="stylesheet">-->
-    <link href="/assets/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/bower_components/bootstrap/dist/css/bootstrap-custom.css" rel="stylesheet">
     <link href="/assets/css/tatami.css" rel="stylesheet">
     <!--[if IE]>
         <link rel="stylesheet" type="text/css" href="/assets/css/ie-only.css" />
@@ -62,7 +62,7 @@
 
 </head>
 
-<body ng-app="TatamiApp">
+<body ng-init="showSearchAccountPost = false" ng-app="TatamiApp">
     <ng-view></ng-view>
 
     <!-- Begin Footer -->
@@ -81,7 +81,7 @@
         <script src="/assets/bower_components/angular-moment/angular-moment.js"></script>
         <script src="/assets/bower_components/angular-translate/angular-translate.js"></script>
 
-        <script src="/assets/bower_components/marked/lib/marked.js"></script>
+        <script src="/assets/bower_components/marked/lib/marked-custom.js"></script>
         <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
@@ -133,9 +133,9 @@
         
 
         <!-- Post New Status Modal -->
-        <script src="/app/components/home/status/StatusModule.js"></script>
-        <script src="/app/components/home/status/StatusManagerController.js"></script>
-        <script src="/app/components/home/status/StatusCreateController.js"></script>
+        <script src="/app/components/home/post/PostModule.js"></script>
+        <script src="/app/components/home/post/StatusManagerController.js"></script>
+        <script src="/app/components/home/post/StatusCreateController.js"></script>
 
         <!-- Shared Configs -->
         <script src="/app/shared/configs/TranslateConfig.js"></script>

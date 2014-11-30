@@ -3,7 +3,7 @@
         <li class="active">
             <a href="#/home/timeline">
             <i class="glyphicon glyphicon-th-list"></i>
-            <span translate="tatami.timeline"></span>
+            <span translate="tatami.home.timeline"></span>
             </a>
         </li>
         <li>
@@ -24,7 +24,7 @@
             <h3>
                 <!-- Need to change title based on current tab; Routing? -->
                 <!-- Need to make tab class="active" if current tab -->
-                <span translate="tatami.timeline"></span>
+                <span translate="tatami.home.timeline"></span>
             </h3>
         </div>
         <section class="tatams-container">
@@ -101,10 +101,6 @@
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.status.reply"></span>
                                         </button>
-                                        <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios" ng-click="deleteStatus(status)">
-                                            <i class="glyphicon glyphicon-trash"></i>
-                                            <span translate="tatami.status.delete"></span>
-                                        </button>
                                         <button ng-if="status.username != profile.username && !status.shareByMe" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
                                             <span translate="tatami.status.share"></span>
@@ -112,6 +108,10 @@
                                         <button class="btn-link status-action status-action-favorite button-ios" ng-click="favoriteStatus(status)">
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="tatami.status.favorite"></span>
+                                        </button>
+                                        <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios" ng-click="deleteStatus(status)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                            <span translate="tatami.status.delete"></span>
                                         </button>
                                         </small> 
                                     </div>

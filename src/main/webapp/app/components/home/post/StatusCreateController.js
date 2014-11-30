@@ -3,7 +3,7 @@
  * creation window.
  */
 
-StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
+PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
         function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
@@ -24,9 +24,12 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         statusPrivate: false     // Determines whether the status is private
     },
 
+<<<<<<< HEAD:src/main/webapp/app/components/home/status/StatusCreateController.js
     $scope.charCount = 750;
     $scope.currentStatus,
 
+=======
+>>>>>>> upstream/havoc:src/main/webapp/app/components/home/post/StatusCreateController.js
     /**
      * In order to set reply to a status, we must be able to set current status
      * after an asynchronous get request.
@@ -130,6 +133,5 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
             markers.addMarker(new OpenLayers.Marker(lonLat));
             map.setCenter(position, zoom);
         }
-
     }
 }]);

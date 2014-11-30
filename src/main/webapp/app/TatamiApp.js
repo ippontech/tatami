@@ -20,6 +20,15 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
     function($routeProvider, $resourceProvider, $locationProvider) {
     
     $routeProvider
+        .when('/presentation', {
+            templateUrl: 'app/components/about/PresentationView.html'
+        })
+        .when('/tos', {
+            templateUrl: 'app/components/about/TermsView.html'
+        })
+        .when('/license', {
+            templateUrl: 'app/components/about/LicenseView.html'
+        })
         .otherwise({
             redirectTo: '/home/timeline' 
         });

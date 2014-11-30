@@ -1,37 +1,43 @@
 <div>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()">&times;</button>
-        <h4 class="modal-title" translate="tatami.status.update"></h4>
+        <h4 class="modal-title" translate="tatami.post.update"></h4>
     </div>
     <div class="modal-body">
         <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">
-            <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{tatami.status.editor | translate}}"></i>
-            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{tatami.status.preview | translate}}"></i>
+            <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{ tatami.post.edit | translate }}"></i>
+            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{ tatami.post.preview | translate }}"></i>
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
             <!-- The popover doesn't quite work yet, ideally the popover will show when current.contentEmpty is true -->
+<<<<<<< HEAD:src/main/webapp/app/components/home/status/StatusView.html
             <textarea ng-trim="false" ng-if="!current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.status.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
             <textarea ng-trim="false" ng-if="current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
             <div>
                 <em>
                     {{'tatami.status.characters.left' | translate}}
                     <span class="countstatus badge">{{charCount-status.content.length}}</span>
+=======
+            <textarea ng-trim="false" ng-if="!current.reply" popover="{{ 'tatami.post.content.mandatory' | translate }}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.post.update' | translate }}" maxlength="750" rows="5" required="required"></textarea>
+            <textarea ng-trim="false" ng-if="current.reply" popover="{{ 'tatami.post.content.mandatory' | translate }}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
+            <div>
+                <em>
+                    {{'tatami.post.characters.left' | translate}}
+                    <span class="countstatus badge">{{ 750-status.content.length }}</span>
+>>>>>>> upstream/havoc:src/main/webapp/app/components/home/post/PostView.html
                 </em>
-                <a href="https://help.github.com/articles/markdown-basics/" translate="tatami.status.markdown"></a>
+                <a href="https://help.github.com/articles/markdown-basics/" translate="tatami.post.markdown"></a>
             </div>
         </fieldset>
         <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
             <div class="well well-small markdown" ng-bind-html="status.content | markdown"></div>
         </fieldset>
         <fieldset ng-show="current.reply" class="reply row-fluid">
-            <legend translate="tatami.status.statusReply">
-
+            <legend translate="tatami.post.reply">
             </legend>
             <!-- Start of reply section -->
-
             <div ng-show="current.reply" style="display: block;" class="tatam pointer discussion tatam-border-lr tatam-hover tatam-id-{{ currentStatus.statusId }}" ng-show="false">
-                <div id="before">
-                </div>
+                <!--<div id="before"></div>-->
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite' : currentStatus.favorite, 'share' : currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': currentStatus.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/' + currentStatus.avatar + '/photo.jpg)' }"></div>
@@ -39,9 +45,7 @@
                     <div id="status-content-container">
                         <div class="pull-right text-right">
                             <abbr title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="currentStatus.statusDate"></abbr>
-
                             <!-- Make status abbr month and day display after 24h have passed? -->
-
                         </div>
                         <h5 class="statusitem-name">
                             <strong><a href="#users/{{ currentStatus.username }}">{{currentStatus.firstName + ' ' + currentStatus.lastName}}</a></strong>
@@ -64,7 +68,7 @@
 
                         <small ng-show="currentStatus.replyTo">
                             <span class="glyphicon glyphicon-share-alt"></span>
-                            <span translate="tatami.status.replyto"></span>
+                            <span translate="tatami.post.replyto"></span>
                             <a ng-href="#status/{{ currentStatus.replyTo }}">@{{ currentStatus.replyToUsername }}</a>
                             <br>
                         </small>
@@ -96,42 +100,40 @@
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                     <span translate="tatami.status.view"></span>
                                 </a>
+                                <!--
                                 <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController">
                                     <i class="glyphicon glyphicon-comment"></i>
                                     <span translate="tatami.status.reply"></span>
                                 </button>
-                                <!--
-                                <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                    <span translate="tatami.status.delete"></span>
-                                </button>
                                 <button ng-if="status.username != profile.username && !status.shareByMe" class="btn-link status-action status-action-share button-ios">
                                     <i class="glyphicon glyphicon-retweet"></i>
-                                    <span translate="tatami.status.share"></span>
+                                    <span translate="tatami.post.share"></span>
                                 </button>
                                 <button class="btn-link status-action status-action-favorite button-ios">
                                     <i class="glyphicon glyphicon-star"></i>
-                                    <span translate="tatami.status.favorite"></span>
+                                    <span translate="tatami.post.favorite"></span>
+                                </button>
+                                <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    <span translate="tatami.post.delete"></span>
                                 </button>
                                 -->
                             </small>
                         </div>
                     </div>
                 </div>
-                <div id="after">
-                </div>
+                <!--<div id="after"></div>-->
             </div>
 
         </fieldset>
         <fieldset class="row-fluid">
-            <legend translate="tatami.status.options">
+            <legend translate="tatami.post.options">
 
             </legend>
             <div ng-show="!current.reply">
                 <label>
-                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()"><span class="glyphicon glyphicon-map-marker" translate="tatami.status.geoLocalization">
-                                    </span>
-
+                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
+                    <span class="glyphicon glyphicon-map-marker" translate="tatami.post.geoLocalization"></span>
                 </label>
                 <div ng-if="current.geoLoc">
                     <!-- Was width:250px, changed it to 500 -->
@@ -141,7 +143,7 @@
                 </div>
             </div>
             <div ng-show="!current.reply">
-                <label class="control-label" translate="tatami.group.name"></label>
+                <label class="control-label" translate="tatami.groups.group"></label>
                 <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups">
                     <option></option>
                 </select>
@@ -152,7 +154,7 @@
                 <div data-toggle="collapse" >
                     <div class="controls geoLocalization" >
                         <label class="checkbox">
-                            <input type="checkbox"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.status.geoLocalization"/>
+                            <input type="checkbox"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.post.geoLocalization"/>
                         </label>
                     </div>
                     <div id="geolocalisationCheckbox" ng-if="current.geoLoc">
@@ -169,13 +171,13 @@
                 </select>
             </div>-->
             <div class="controls status-files">
-                <label translate="tatami.menu.files">
+                <label translate="tatami.files.title">
 
                 </label>
                 <div class="attachmentBar progress progress-striped active" style="display: none;">
                     <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
                 </div>
-                <div class="dropzone well" file-dropzone translate="tatami.status.drop.file">
+                <div class="dropzone well" file-dropzone translate="tatami.post.drop.file">
 
                 </div>
 
@@ -206,11 +208,9 @@
         </fieldset>
     </div>
     <div class="modal-footer">
-        <a class="btn" aria-hidden="true" ng-click="closeModal()" translate="tatami.form.cancel">
-
-        </a>
-        <span class="hidden-label submit-label" translate="tatami.form.post"></span>
-        <span class="hidden-label tatam-mandatory" translate="tatami.tatam.mandatory"></span>
-        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" value="{{ 'tatami.form.post' | translate }}">
+        <a class="btn" aria-hidden="true" ng-click="closeModal()" translate="tatami.form.cancel"></a>
+        <span class="hidden-label submit-label" translate="tatami.post.button"></span>
+        <span class="hidden-label tatam-mandatory" translate="tatami.post.mandatory"></span>
+        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" value="{{ 'tatami.post.button' | translate }}">
     </div>
 </div>

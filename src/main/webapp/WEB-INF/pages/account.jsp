@@ -4,11 +4,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
+<<<<<<< HEAD
 <!-- To see the account page, put ng-app here -->
 <html lang="en">
 
 
 <jsp:include page="/app/components/account/tags/TagView.html"/>
+=======
+<html lang="en" ng-app="TatamiApp">
+
+<jsp:include page="/app/components/account/users/UsersView.html"/>
+>>>>>>> upstream/havoc
 
 <jsp:include page="includes/header.jsp"/>
 
@@ -86,6 +92,12 @@
 </script>
 
 <c:if test="${wro4jEnabled eq false}">
+
+    <!-- Highest Level Modules -->
+    <script src="/app/components/home/HomeModule.js"></script>
+    <script src="/app/components/home/post/PostModule.js"></script>
+    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
+    <script src="/app/components/home/timeline/TimelineModule.js"></script>
 
     <!-- Preference based includes -->
     <script src="/app/components/account/preferences/PreferenceController.js"></script>
