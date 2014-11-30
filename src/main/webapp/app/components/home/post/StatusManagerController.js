@@ -1,11 +1,11 @@
 /**
- * This controller allows a modal instance to be created
+ * This controller allows a post modal instance to be created
  */
 
-StatusModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusService', function($scope, $modal, StatusService) {
+PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusService', function($scope, $modal, StatusService) {
     $scope.showModal = function(statusId) {
         var modalInstance = $modal.open({
-            templateUrl: '/app/components/home/status/StatusView.html',
+            templateUrl: '/app/components/home/post/PostView.html',
             controller: 'StatusCreateController',
             backdrop: 'static',
             keyboard: false,
