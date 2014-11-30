@@ -1,8 +1,13 @@
 AccountModule.controller('AccountController', ['$scope', 'ProfileService', '$routeParams', function($scope, ProfileService, $routeParams) {
-    $scope.user = ProfileService.get(function() {
-        temp = $scope.user.avatar=='' ? '/img/default_image_profile.png' : '/tatami/avatar/' + $scope.user.avatar + '/photo.jpg';
-        $scope.setAvatar(temp);
-    });
+    $scope.init = function (){
+        ProfileService.get(function (result){
+            $scope.user = result;
+            temp = result.avatar=='' ? '/img/default_image_profile.png' : '/tatami/avatar/' + result.avatar + '/photo.jpg';
+            $scope.setAvatar(temp);
+        })
+    };
+
+    $scope.init();
 
     $scope.setAvatar = function(avatarUrl) {
         $scope.avatarUrl = avatarUrl;
