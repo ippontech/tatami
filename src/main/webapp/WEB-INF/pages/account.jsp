@@ -100,7 +100,7 @@
     <script src="/app/components/account/files/FileService.js"></script>
 
     <!-- Group based includes -->
-    <script src="/app/components/account/groups/GroupController.js"></script>
+    <script src="/app/components/account/groups/GroupsController.js"></script>
 
     <!-- Profile based includes -->
     <script src="/app/components/account/profile/ProfileController.js"></script>

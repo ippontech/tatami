@@ -24,7 +24,7 @@ StatusModule.controller('StatusCreateController', ['$scope', 'StatusService', 'G
         statusPrivate: false     // Determines whether the status is private
     },
 
-
+    $scope.charCount = 750;
     $scope.currentStatus,
 
     /**

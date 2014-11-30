@@ -19,7 +19,11 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
     function($routeProvider, $resourceProvider, $locationProvider) {
     
     $routeProvider
-        .otherwise({ 
+        .when('/tatami/account/profile', {
+            templateUrl: '/app/components/account/profile/ProfileView.html',
+            controller: 'ProfileController'
+        }).
+        otherwise({
             redirectTo: '/home/timeline' 
         });
 

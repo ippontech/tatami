@@ -10,12 +10,12 @@
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
             <!-- The popover doesn't quite work yet, ideally the popover will show when current.contentEmpty is true -->
-            <textarea ng-if="!current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.status.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
-            <textarea ng-if="current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
+            <textarea ng-trim="false" ng-if="!current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.status.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
+            <textarea ng-trim="false" ng-if="current.reply" popover="{{ 'tatami.tatam.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
             <div>
                 <em>
                     {{'tatami.status.characters.left' | translate}}
-                    <span class="countstatus badge">{{750-status.content.length}}</span>
+                    <span class="countstatus badge">{{charCount-status.content.length}}</span>
                 </em>
                 <a href="https://help.github.com/articles/markdown-basics/" translate="tatami.status.markdown"></a>
             </div>
