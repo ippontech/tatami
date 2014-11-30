@@ -1,5 +1,6 @@
 var TatamiApp = angular.module('TatamiApp', [ 
     'HomeModule',
+    'AccountModule',
     'ngRoute',
     'ngResource',
     'pascalprecht.translate'
@@ -28,7 +29,7 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
         .when('/license', {
             templateUrl: 'app/components/about/LicenseView.html'
         })
-        .otherwise({ 
+        .otherwise({
             redirectTo: '/home/timeline' 
         });
 

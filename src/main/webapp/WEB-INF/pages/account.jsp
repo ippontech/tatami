@@ -4,9 +4,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-<html lang="en" ng-app="TatamiApp">
-
-<jsp:include page="/app/components/account/users/UsersView.html"/>
+<!-- To see the account page, put ng-app here -->
+<html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
 

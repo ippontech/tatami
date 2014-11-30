@@ -3,7 +3,7 @@
  * the extra logic will be factored into ProfileService.
  */
 
-ProfileModule.controller('ProfileController', ['$scope', 'ProfileService', '$resource', function($scope, ProfileService, $resource){
+ProfileModule.controller('AccountProfileController', ['$scope', 'ProfileService', '$resource', function($scope, ProfileService, $resource){
 
     $scope.init = function(){
         // Get the user profile (which doesn't contain the login)
@@ -17,6 +17,8 @@ ProfileModule.controller('ProfileController', ['$scope', 'ProfileService', '$res
         });
     };
 
+    $scope.init();
+
     $scope.updateUser = function (){
         $resource('/tatami/rest/account/profile', null,
             {
@@ -25,14 +27,10 @@ ProfileModule.controller('ProfileController', ['$scope', 'ProfileService', '$res
         // Display success message
     };
 
-    $scope.display = function(){
-        console.log($scope.userProfile);
-    }
-
     $scope.deleteUser = function (confirmMessage){
         if(confirm(confirmMessage)){
-            console.log('Deleting');
-            ProfileService.delete();
+            // Backend doesn't handle this correctly atm
+            //ProfileService.delete();
             // Display success/failure message
         }
     }

@@ -4,7 +4,6 @@
     request.setAttribute("currentPage", "home");
 %>
 
-<!DOCTYPE html>
 <html lang="en">
 
 <jsp:include page="includes/header.jsp"/>

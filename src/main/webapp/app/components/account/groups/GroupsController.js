@@ -4,7 +4,7 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-GroupsModule.controller('GroupsController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
+GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}

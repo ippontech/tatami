@@ -1,35 +1,39 @@
-<div ng-controller="PreferenceController">
-    <form class="form-horizontal row-fluid">
-        <h2 translate="tatami.menu.preferences"></h2>
-        <legend translate="tatami.preferences.notifications"></legend>
-        <div class="control-group">
-            <div class="controls">
-                <label class="checkbox">
-                <input name="mentionEmail" type="checkbox" ng-model="prefs.mentionEmail" ng-checked="prefs.mentionEmail">{{ 'tatami.preferences.notification.email.mention' | translate }}
-                </label>
-            </div>
-            <div class="controls">
-                <label class="checkbox">
-                <input name="dailyDigest" type="checkbox" ng-model="prefs.dailyDigest" ng-checked="prefs.dailyDigest"> {{ 'tatami.preferences.notification.email.dailyDigest' | translate }}
-                </label>
-            </div>
-            <div class="controls">
-                <label class="checkbox">
-                <input name="weeklyDigest" type="checkbox" ng-model="prefs.weeklyDigest" ng-checked="prefs.weeklyDigest"> {{ 'tatami.preferences.notification.email.weeklyDigest' | translate }}
-                </label>
-            </div>
-            <div class="controls">
-                <label class="checkbox">
-                <input name="rssUidActive" type="checkbox" ng-model="prefs.rssUidActive" ng-checked="prefs.rssUidActive"> {{ 'tatami.preferences.notification.rss.timeline' | translate }}
-                </label>
-                <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{prefs.rssUid}}">{{ 'tatami.preferences.notification.rss.link' | translate }}</a>
-            </div>
+<div class="col-span-8">
+    <div class="alert alert-status">
+        <div ng-controller="PreferenceController">
+            <form class="form-horizontal row-fluid">
+                <h2 translate="tatami.preferences.title"></h2>
+                <legend translate="tatami.preferences.notifications"></legend>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="mentionEmail" type="checkbox" ng-model="prefs.mentionEmail" ng-checked="prefs.mentionEmail">{{ 'tatami.preferences.notification.email.mention' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="dailyDigest" type="checkbox" ng-model="prefs.dailyDigest" ng-checked="prefs.dailyDigest"> {{ 'tatami.preferences.notification.email.dailyDigest' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="weeklyDigest" type="checkbox" ng-model="prefs.weeklyDigest" ng-checked="prefs.weeklyDigest"> {{ 'tatami.preferences.notification.email.weeklyDigest' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="rssUidActive" type="checkbox" ng-model="prefs.rssUidActive" ng-checked="prefs.rssUidActive"> {{ 'tatami.preferences.notification.rss.timeline' | translate }}
+                        </label>
+                        <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{prefs.rssUid}}">{{ 'tatami.preferences.notification.rss.link' | translate }}</a>
+                    </div>
+                </div>
+                <fieldset>
+                    <div class="return"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="tatami.form.save"></button>
+                    </div>
+                </fieldset>
+            </form>
         </div>
-        <fieldset>
-            <div class="return"></div>
-            <div class="form-actions">
-                <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="tatami.form.save"></button>
-            </div>
-        </fieldset>
-    </form>
+    </div>
 </div>

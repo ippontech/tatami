@@ -1,46 +1,50 @@
-<div ng-controller="TagController" ng-init="getTags()">
-    <div class="tabMenu">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#tags" translate="tatami.account.tags.myTags"></a>
-            </li>
-            <li>
-                <a href="#tags/recommended" translate="tatami.trends.title"></a>
-            </li>
-            <li>
-                <a href="#tags/search" translate="tatami.search"></a>
-            </li>
-        </ul>
-    </div>
-    <table class="table noCollapse">
-        <tbody>
-            <tr>
-                <th style="border-top :0">Tag</th>
-                <th style="border-top :0"></th>
-            </tr>
-        </tbody>
-        <tbody class="items">
-            <div>
-                <tr ng-repeat="tag in tags">
-                    <td>
-                        <a href="/tatami/home/#/tags/{{ tag.name }}" title="{{ tag.name }}">#{{ tag.name }}</a>
-                    </td>
-                    <td class="follow" ng-show="!tag.followed">
-                        <a class="btn-title toggleTag pull-right label labelSizeNormal  " ng-click="follow(tag)">
-                            <span class="glyphicon glyphicon-plus">
-                                <span class="hidden-phone" translate="tatami.user.follow"></span>
-                            </span>
-                        </a>
-                    </td>
-                    <td class="follow" ng-show="tag.followed">
-                        <a class="btn-title toggleTag pull-right label labelSizeNormal label-info " ng-click="follow(tag)">
-                            <span class="glyphicon glyphicon-minus">
-                                <span class="hidden-phone" translate="tatami.user.followed"></span>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
+<div class="col-span-8">
+    <div class="alert alert-status">
+        <div ng-controller="TagController" ng-init="getTags()">
+            <div class="tabMenu">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tags" translate="tatami.tags.myTags"></a>
+                    </li>
+                    <li>
+                        <a href="#tags/recommended" translate="tatami.tags.trends"></a>
+                    </li>
+                    <li>
+                        <a href="#tags/search" translate="tatami.tags.search"></a>
+                    </li>
+                </ul>
             </div>
-        </tbody>
-    </table>
+            <table class="table noCollapse">
+                <tbody>
+                    <tr>
+                        <th style="border-top :0" translate="tatami.tags.tag"></th>
+                        <th style="border-top :0"></th>
+                    </tr>
+                </tbody>
+                <tbody class="items">
+                    <div>
+                        <tr ng-repeat="tag in tags">
+                            <td>
+                                <a href="/tatami/home/#/tags/{{ tag.name }}" title="{{ tag.name }}">#{{ tag.name }}</a>
+                            </td>
+                            <td class="follow" ng-show="!tag.followed">
+                                <a class="btn-title toggleTag pull-right label labelSizeNormal  " ng-click="follow(tag)">
+                                    <span class="glyphicon glyphicon-plus">
+                                        <span class="hidden-phone" translate="tatami.tags.follow"></span>
+                                    </span>
+                                </a>
+                            </td>
+                            <td class="follow" ng-show="tag.followed">
+                                <a class="btn-title toggleTag pull-right label labelSizeNormal label-info " ng-click="follow(tag)">
+                                    <span class="glyphicon glyphicon-minus">
+                                        <span class="hidden-phone" translate="tatami.tags.followed"></span>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

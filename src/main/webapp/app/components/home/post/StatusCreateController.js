@@ -24,6 +24,8 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
         statusPrivate: false     // Determines whether the status is private
     },
 
+    $scope.charCount = 750;
+    $scope.currentStatus,
     /**
      * In order to set reply to a status, we must be able to set current status
      * after an asynchronous get request.
