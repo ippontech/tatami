@@ -73,7 +73,7 @@ TatamiApp.config(function($translateProvider) {
                 'favorites': 'Favorites'
             },
             'status': {
-                'replyto': 'In reply to',
+                'replyTo': 'In reply to',
                 'private': 'Private Message',
                 'view': 'View',
                 'reply': 'Reply',
