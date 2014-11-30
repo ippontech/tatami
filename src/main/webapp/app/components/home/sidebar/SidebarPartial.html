@@ -86,7 +86,7 @@
                         <span class="little-padding toggleTag pointer pull-right label">
                             <span class="glyphicon glyphicon-plus"></span>
                         </span>
-                        <span class="glyphicon glyphicon-arrow-up"></span>
+                        <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
                         <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
                     </div>
                 </div>
