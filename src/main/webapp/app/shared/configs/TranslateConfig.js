@@ -2,108 +2,13 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
-            'users': {
-                'recommend': 'Recommended',
-                'myFriends': 'My friends'
-            },
-            'search': 'Search',
-            'account': {
-                'update': {
-                    'title': 'User profile',
-                    'legend': 'Update your profile'
-                },
-                'login': 'E-mail',
-                'tags': {
-                    'myTags': 'My tags'
-                }
-            },
-            'group': {
-                'add': 'Create a new group',
-                'title': 'Name of the group',
-                'description': 'Description',
-                'access': 'Access',
-                'public': 'Public',
-                'private': 'Private',
-                'warnPublic': 'Warning! If this group is public, everybody can access it',
-                'name': 'Group',
-                'counter': 'Members',
-                'manage': 'Manage'
-            },
-            'password': 'Password',
-            'user': {
-                'password': {
-                    'legend': 'Update your password',
-                    'old': 'Old password',
-                    'new': 'New password',
-                    'confirm': 'New password confirmation'
-                },
-                'firstName': 'First name',
-                'lastName': 'Last name',
-                'jobTitle': 'Job title',
-                'phoneNumber': 'Phone number',
-                'confirmDelete': 'You are about to delete your account. Are you sure?',
-                'delete': 'Delete the current user account',
-                'follow': 'Follow',
-                'followed': 'Followed'
-            },
-            'preferences': {
-                'notification': {
-                    'email': {
-                        'mention': 'Get notified by e-mail when you are mentioned',
-                        'dailyDigest': 'Get a daily digest e-mail',
-                        'weeklyDigest': 'Get a weekly digest e-mail'
-                    },
-                    'rss': {
-                        'timeline': 'Allow RSS feed publication of your timeline',
-                        'link': 'Link to your timeline RSS stream'
-                    }
-                },
-                'notifications': 'Notifications'
-            },
-            'timeline': 'Timeline',
-            
-            'home': {    
-                'mentions': 'Mentions',
-                'favorites': 'Favorites'
-            },
-            'tatam': {
-                'mandatory': 'Comment is mandatory',
-                'content': {
-                    'mandatory': 'Please fill out this field.'
-                }
-            },
 
-            'status': {
-                'replyto': 'In reply to',
-                'private': 'Private Message',
-                'view': 'View',
-                'reply': 'Reply',
-                'delete': 'Delete',
-                'share': 'Share',
-                'favorite': 'Favorite',
-                'update': 'Update your status',
-                'drop': {
-                    'file': 'Drop your files here'
-                },
-                'geoLocalization': 'Geolocalization',
-                'options': 'Options',
-                'statusReply': 'Reply to this status',
-                'characters': {
-                    'left': 'Characters left:'
-                },
-                'preview': 'Preview',
-                'editor': 'Edit',
-                'markdown': 'Markdown Supported'
-            },
-
+            //Top Menu Text
             'menu': {
-                'groups': 'Group',
-                'preferences': 'Preferences',
                 'logo': 'Ippon Technologies Logo',
                 'title': 'Tatami',
                 'about': {
-                    'about': 'About',
-                    'presentation': 'Presentation',
+                    'title': 'About',
                     'tos': 'Terms of Service',
                     'language': {
                         'language': 'Language',
@@ -124,28 +29,138 @@ TatamiApp.config(function($translateProvider) {
                 'search': 'Search',
                 'help': 'Help',
                 'account': {
-                    'account': 'Account',
-                    'profile': 'Profile',
-                    'preferences': 'Preferences',
-                    'password': 'Password',
-                    'files': 'Files',
-                    'users': 'Users',
-                    'groups': 'Groups',
-                    'tags': 'Tags',
-                    'sotd': 'Statuses of the Day',
-                    'companywall': 'Company Wall',
+                    'title': 'Account',
+                    'companyWall': 'Company Wall',
                     'logout': 'Logout'
-                },
-                'post': 'Post',
-                'files': 'Files'
+                }
             },
+            'post': {
+                'mandatory': 'Comment is mandatory',
+                'content': {
+                    'mandatory': 'Please fill out this field.'
+                },
+                'update': 'Update your status',
+                'preview': 'Preview',
+                'edit': 'Edit',
+                'characters': {
+                    'left': 'Characters left:'
+                },
+                'geoLocalization': 'Geolocalization',
+                'options': 'Options',
+                'reply': 'Reply to this status',
+                'drop': {
+                    'file': 'Drop your files here'
+                },
+                'markdown': 'Markdown Supported',
+                'button': 'Post'
+            },
+            'home': {
+                'timeline': 'Timeline',
+                'mentions': 'Mentions',
+                'favorites': 'Favorites'
+            },
+            'status': {
+                'replyto': 'In reply to',
+                'private': 'Private Message',
+                'view': 'View',
+                'reply': 'Reply',
+                'share': 'Share',
+                'favorite': 'Favorite',
+                'delete': 'Delete'
+            },
+
+            'presentation': {
+                'title': 'Presentation'
+            },
+
+            //Account Text
+            'profile': {
+                'title': 'Profile',
+                'dropPhoto': 'Drop your photo here to update it',
+                'update': 'Update your profile',
+                'email': 'Email',
+                'firstName': 'First Name',
+                'lastName': 'Last Name',
+                'jobTitle': 'Job Title',
+                'phoneNumber': 'Phone Number',
+                'delete': 'Delete the current user account',
+                'confirmDelete': 'You are about to delete your account. Are you sure?'
+            },
+            'preferences': {
+                'title': 'Preferences',
+                'notifications': 'Notifications',
+                'notification': {
+                    'email': {
+                        'mention': 'Get notified by e-mail when you are mentioned',
+                        'dailyDigest': 'Get a daily digest e-mail',
+                        'weeklyDigest': 'Get a weekly digest e-mail'
+                    },
+                    'rss': {
+                        'timeline': 'Allow RSS feed publication of your timeline'
+                    }
+                }
+            },
+            'password': {
+                'title': 'Password',
+                'update': 'Update your password',
+                'old': 'Old Password',
+                'new': 'New Password',
+                'confirm': 'Confirm New Password'
+            },
+            'files': {
+                'title': 'Files',
+                'filename': 'Filename',
+                'size': 'Size',
+                'date': 'Date',
+                'delete': 'Delete'
+            },
+            'users': {
+                'title': 'Users',
+                'myFriends': 'My Friends',
+                'recommend': 'Recommended',
+                'search': 'Search'
+            },
+            'groups': {
+                'title': 'Groups',
+                'create': 'Create a new group',
+                'name': 'Name',
+                'description': 'Description',
+                'public': 'Public',
+                'private': 'Private',
+                'publicWarning': 'Warning! If this group is public, everybody can access it',
+                'myGroups': 'My Groups',
+                'recommended': 'Recommended',
+                'search': 'Search',
+                'group': 'Group',
+                'access': 'Access',
+                'members': 'Members',
+                'manage': 'Manage',
+                'updateDetails': 'Update group details',
+                'archive': 'Do you want to archive this group?',
+                'yes': 'Yes, this group should be archived',
+                'no': 'No, this group is still in use',
+                'archivedInfo': 'Archived groups are read-only',
+                'addMember': 'Add a member',
+                'username': 'Username',
+                'role': 'Role'
+            },
+            'tags': {
+                'title': 'Tags',
+                'myTags': 'My Tags',
+                'trends': 'Trends',
+                'search': 'Search',
+                'tag': 'Tag',
+                'follow': 'Follow',
+                'followed': 'Followed'
+            },
+            'sotd': {
+                'title': 'Status of the Day'
+            },
+
+
             'form': {
                 'cancel': 'Cancel',
-                'post': 'Post',
                 'save': 'Save'
-            },
-            'trends': {
-                'title': 'Trends'
             }
         }
     });
