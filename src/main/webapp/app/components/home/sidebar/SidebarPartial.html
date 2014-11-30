@@ -24,7 +24,7 @@
             <div class="well well-small">
                 <h4 id="groups-list-title">
                     <span class="glyphicon glyphicon-list-alt"></span>
-                    &nbsp;My Groups
+                    <span translate="tatami.sidebar.home.myGroups"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="group in groups">
@@ -39,7 +39,7 @@
             <div class="well well-small">
                 <h4 id="follow-suggest-title">
                     <span class="glyphicon glyphicon-random"></span>
-                    &nbsp;Who To Follow
+                    <span translate="tatami.sidebar.home.whoToFollow"></span>
                 </h4>
                 <div ng-repeat="suggestion in suggestions">
                     <div class="items">
@@ -79,12 +79,12 @@
             <div class="well well-small">
                 <h4 id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    &nbsp;Trends
+                    <span translate="tatami.sidebar.home.trends"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
                         <span class="little-padding toggleTag pointer pull-right label">
-                        <span class="glyphicon glyphicon-plus"></span>
+                            <span class="glyphicon glyphicon-plus"></span>
                         </span>
                         <span class="glyphicon glyphicon-arrow-up"></span>
                         <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>

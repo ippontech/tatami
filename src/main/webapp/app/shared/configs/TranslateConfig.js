@@ -54,6 +54,18 @@ TatamiApp.config(function($translateProvider) {
                 'button': 'Post'
             },
 
+            //Sidebar View Text
+            'sidebar': {
+                'home': {
+                    'myGroups': 'My Groups',
+                    'whoToFollow': 'Who To Follow',
+                    'trends': 'Trends'
+                },
+                'profile': {
+                    
+                }
+            },
+
             //Home View Text
             'home': {
                 'timeline': 'Timeline',
