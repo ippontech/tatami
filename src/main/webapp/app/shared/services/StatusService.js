@@ -1,7 +1,7 @@
 TatamiApp.factory('StatusService', ['$resource', function($resource) {
-    return resource = $resource(
+    return $resource(
         '/tatami/rest/statuses/:statusId',
         { },
-        { 'update': { method:'PATCH', params: { statusId: '@statusId' } }
+        { 'favorite': { method:'PATCH', params: { statusId: '@statusId' } }
     });
 }]);

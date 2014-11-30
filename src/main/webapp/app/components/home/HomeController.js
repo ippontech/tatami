@@ -5,7 +5,7 @@ HomeModule.controller('HomeController', ['$scope', 'TimelineService', 'ProfileSe
         $scope.profile = ProfileService.get();
 
         $scope.favoriteStatus = function(status) {
-            StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
+            StatusService.favorite({ statusId: status.statusId }, { favorite: !status.favorite }, 
                 function(response) { 
                     var index = $scope.statuses.indexOf(status);
                     $scope.statuses[index] = response;
