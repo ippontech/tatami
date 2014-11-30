@@ -5,10 +5,10 @@
 
 <!DOCTYPE html>
 <!-- To see the account page, put ng-app here -->
-<html lang="en" ng-app="TatamiApp">
+<html lang="en">
 
 
-<jsp:include page="/app/components/account/users/UsersView.html"/>
+<jsp:include page="/app/components/account/tags/TagView.html"/>
 
 <jsp:include page="includes/header.jsp"/>
 
