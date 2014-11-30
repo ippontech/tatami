@@ -83,8 +83,9 @@
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span class="little-padding toggleTag pointer pull-right label">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info' : tag.followed }">
+                            <span ng-show="!tag.followed" class="glyphicon glyphicon-plus"></span>
+                            <span ng-show="tag.followed" class="glyphicon glyphicon-minus"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
                         <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
