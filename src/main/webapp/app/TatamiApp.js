@@ -19,8 +19,8 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
     function($routeProvider, $resourceProvider, $locationProvider) {
     
     $routeProvider
-        .when('/about', {
-            templateUrl: 'app/components/about/AboutView.html'
+        .when('/presentation', {
+            templateUrl: 'app/components/about/PresentationView.html'
         })
         .when('/tos', {
             templateUrl: 'app/components/about/TermsView.html'
