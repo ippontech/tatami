@@ -24,12 +24,8 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
         statusPrivate: false     // Determines whether the status is private
     },
 
-<<<<<<< HEAD:src/main/webapp/app/components/home/status/StatusCreateController.js
     $scope.charCount = 750;
     $scope.currentStatus,
-
-=======
->>>>>>> upstream/havoc:src/main/webapp/app/components/home/post/StatusCreateController.js
     /**
      * In order to set reply to a status, we must be able to set current status
      * after an asynchronous get request.

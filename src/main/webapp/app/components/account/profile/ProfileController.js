@@ -17,6 +17,8 @@ ProfileModule.controller('ProfileController', ['$scope', 'ProfileService', '$res
         });
     };
 
+    $scope.init();
+
     $scope.updateUser = function (){
         $resource('/tatami/rest/account/profile', null,
             {

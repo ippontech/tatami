@@ -1,9 +1,9 @@
-var AccountModule = angular.module('AccountModule', ['ngResource', 'ngRoute']);
+var AccountModule = angular.module('AccountModule', ['ngResource', 'ngRoute', 'ProfileModule', 'PreferenceModule', 'PasswordModule', 'GroupsModule', 'FileModule', 'TagModule', 'UsersModule']);
 
 AccountModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/account/profile', {
-            templateUrl: 'app/components/account/profile/AccountView.html',
+        .when('/account/:accountPage', {
+            templateUrl: 'app/components/account/AccountView.html',
             controller: 'AccountController'
-        });
+        })
 }]);
