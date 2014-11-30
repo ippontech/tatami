@@ -1,5 +1,6 @@
 var TatamiApp = angular.module('TatamiApp', [ 
     'HomeModule',
+    'AccountModule',
     'ngRoute',
     'ngResource',
     'pascalprecht.translate'
@@ -19,11 +20,7 @@ TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider',
     function($routeProvider, $resourceProvider, $locationProvider) {
     
     $routeProvider
-        .when('/tatami/account/profile', {
-            templateUrl: '/app/components/account/profile/ProfileView.html',
-            controller: 'ProfileController'
-        }).
-        otherwise({
+        .otherwise({
             redirectTo: '/home/timeline' 
         });
 
