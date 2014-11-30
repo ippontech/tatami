@@ -1,0 +1,184 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tatami</title>
+    <meta name="author" content="Ippon Technologies">
+    <link rel="shortcut icon" type="image/png" href="/assets/img/company-logo.ico">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0">-->
+    <!--<meta name="description" content="">-->
+
+    <!--<link href="/css/vendor/css/bootstrap.css" rel="stylesheet">-->
+    <link href="/assets/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/tatami.css" rel="stylesheet">
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="/assets/css/ie-only.css" />
+    <![endif]-->
+    <!--<link href="/css/vendor/css/jQueryjGrowl.css" rel="stylesheet">-->
+
+    <!-- Needed if using HTML5 History API and relative links (Angular routing) -->
+    <base href="/">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 7]>
+    <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css">
+    <![endif]-->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="/js/vendor/respond.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Touch Icons -->
+    <!--
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="/img/startup.png">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    -->
+
+    <!--
+    <c:if test="${googleAnalyticsKey ne ''}">
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '${googleAnalyticsKey}']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </c:if>
+    -->
+
+    <!--
+    <sec:authorize ifAnyGranted="ROLE_USER">
+        <c:if test="${not empty user.rssUid}">
+            <link rel="alternate" type="application/rss+xml" title="RSS"
+                  href="/tatami/syndic/${user.rssUid}" />
+        </c:if>
+    </sec:authorize>
+    -->
+
+</head>
+
+<body ng-app="TatamiApp">
+    <ng-view></ng-view>
+
+    <!-- Begin Footer -->
+    <!--<c:if test="${wro4jEnabled eq false}">-->
+        <!-- Angular & Other Libraries -->
+        <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
+        <script src="/assets/bower_components/angular/angular.js"></script>
+        <script src="/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
+
+        <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+        <script src="/assets/bower_components/angular-route/angular-route.js"></script>
+
+        <script src="/assets/bower_components/moment/moment.js"></script>
+        <script src="/assets/bower_components/moment/locale/fr.js"></script>
+        <script src="/assets/bower_components/angular-moment/angular-moment.js"></script>
+        <script src="/assets/bower_components/angular-translate/angular-translate.js"></script>
+
+        <script src="/assets/bower_components/marked/lib/marked.js"></script>
+        <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+        <!-- App and Highest Level Modules -->
+        <script src="/app/TatamiApp.js"></script>
+        <script src="/app/components/home/HomeModule.js"></script>
+        <script src="/app/components/account/AccountModule.js"></script>
+
+        <!-- Home Module -->
+        <script src="/app/components/home/HomeController.js"></script>
+
+        <!-- Sidebar View -->
+        <script src="/app/components/home/sidebar/SidebarModule.js"></script>
+        <script src="/app/components/home/sidebar/ProfileController.js"></script>
+        <script src="/app/components/home/sidebar/GroupsController.js"></script>
+        <script src="/app/components/home/sidebar/SuggestionService.js"></script>
+        <script src="/app/components/home/sidebar/SuggestionController.js"></script>
+        <script src="/app/components/home/sidebar/TrendsController.js"></script>
+
+        <!-- Timeline View -->
+        <script src="/app/components/home/timeline/TimelineModule.js"></script>
+        <script src="/app/components/home/timeline/TimelineService.js"></script>
+        <script src="/app/components/home/timeline/MomentConfig.js"></script>
+
+        <!-- Account Module -->
+
+        <!-- Profile View -->
+        <script src="/app/components/account/profile/ProfileModule.js"></script>
+
+        <!-- Preferences View -->
+        <script src="/app/components/account/preferences/PreferenceModule.js"></script>
+        
+        <!-- Password View -->
+        <script src="/app/components/account/password/PasswordModule.js"></script>
+
+        <!-- Files View -->
+        <script src="/app/components/account/files/FileModule.js"></script>
+
+        <!-- Users View -->
+        <script src="/app/components/account/users/UsersModule.js"></script>
+        
+        <!-- Groups View -->
+        <script src="/app/components/account/groups/GroupsModule.js"></script>
+
+        <!-- Tags View -->
+        <script src="/app/components/account/tags/TagModule.js"></script>
+
+        <!-- Statuses of the Day View -->   
+        
+
+        <!-- Post New Status Modal -->
+        <script src="/app/components/home/status/StatusModule.js"></script>
+        <script src="/app/components/home/status/StatusManagerController.js"></script>
+        <script src="/app/components/home/status/StatusCreateController.js"></script>
+
+        <!-- Shared Configs -->
+        <script src="/app/shared/configs/TranslateConfig.js"></script>
+        <script src="/app/shared/configs/MarkedConfig.js"></script>
+
+        <!-- Shared Filters -->        
+        <script src="/app/shared/filters/MarkdownFilter.js"></script>
+
+        <!-- Shared Services -->
+        <script src="/app/shared/services/StatusService.js"></script>
+        <script src="/app/shared/services/GeolocService.js"></script>
+        <script src="/app/shared/services/ProfileService.js"></script>
+        <script src="/app/shared/services/GroupService.js"></script>
+        <script src="/app/shared/services/GroupMemberService.js"></script>
+        <script src="/app/shared/services/TagService.js"></script>
+
+        <!-- Old Libraries -->
+        <!--
+        <script src="/js/vendor/jquery.js"></script>
+        <script src="/js/vendor/bootstrap.js"></script>
+        <script src="/js/vendor/bootstrap-tour.js"></script>
+        <script src="/js/vendor/underscore.js"></script>
+        <script src="/js/vendor/underscore-polyfill.js"></script>
+        <script src="/js/vendor/backbone.js"></script>
+        <script src="/js/vendor/marked.js"></script>
+        <script src="/js/vendor/backbone.marionette.js"></script>
+        <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/vendor/jquery.ui.widget.js"></script>
+        <script src="/js/vendor/jquery.iframe-transport.js"></script>
+        <script src="/js/vendor/jquery.fileupload.js"></script>
+        <script src="/js/vendor/jquery.atmosphere.js"></script>
+        <script src="/js/vendor/jquery-timeago.js"></script>
+        <script src="/js/vendor/jquery.placeholder.js"></script>
+        <script src="/js/app/plugins/tatami.atmosphere.js"></script>
+        <script src="/js/app/plugins/bootstrap-filestyle.min.js"></script>
+        <script src="/js/vendor/jquery.jgrowl.js"></script>
+        -->
+    <!--</c:if>-->
+    <!--
+    <c:if test="${wro4jEnabled eq true}">
+        <script src="/tatami/static-wro4j/${version}/tatami-vendor.js"></script>
+    </c:if>
+    -->
+    <!-- End Footer -->
+</body>
+</html>

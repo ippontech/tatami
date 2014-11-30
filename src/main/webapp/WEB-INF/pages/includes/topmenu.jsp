@@ -189,7 +189,6 @@
                         </li>
                     </ul>
                 </li>
-                <!--data-toggle="modal" data-target="#editTatam"-->
                 <li class="hidden-phone">
                     <button id="editTatam" class="editTatam btn btn-primary navbar-form">
                         <i class="glyphicon glyphicon-pencil"></i>
@@ -199,9 +198,6 @@
                     </button>
                 </li>
             </ul>
-            <!-- Start of modal -->
-
-            <!-- End of modal -->
             <ul class="nav pull-right">
                 <li>
                     <a href="#" id="help-tour">

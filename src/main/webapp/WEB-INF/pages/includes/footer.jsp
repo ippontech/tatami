@@ -10,6 +10,7 @@
 
     <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/assets/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/assets/bower_components/angular-route/angular-route.js"></script>
 
     <script src="/assets/bower_components/moment/moment.js"></script>
     <script src="/assets/bower_components/moment/locale/fr.js"></script>
@@ -28,7 +29,7 @@
     <script src="/app/components/account/password/PasswordModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/account/files/FileModule.js"></script>
-    <script src="/app/components/account/groups/GroupModule.js"></script>
+    <script src="/app/components/account/groups/GroupsModule.js"></script>
     <script src="/app/components/account/profile/ProfileModule.js"></script>
     <script src="/app/components/account/preferences/PreferenceModule.js"></script>
     <script src="/app/components/account/tags/TagModule.js"></script>
@@ -49,26 +50,7 @@
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupMemberService.js"></script>
 
-    <!-- Move these to another file? Perhaps into home.jsp, ultimately we will remove jsps though -->
-
-    <!-- Status based includes -->
-    <script src="/app/components/home/status/StatusModule.js"></script>
-    <script src="/app/components/home/status/StatusCreateController.js"></script>
-    <script src="/app/components/home/status/StatusManagerController.js"></script>
-
-    <!-- Sidebar based includes -->
-    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
-    <script src="/app/components/home/sidebar/UserController.js"></script>
-    <script src="/app/components/home/sidebar/GroupsController.js"></script>
-    <script src="/app/components/home/sidebar/TrendsController.js"></script>
-
-    <!-- Timeline based includes -->
-    <script src="/app/components/home/timeline/TimelineModule.js"></script>
-    <script src="/app/components/home/timeline/TimelineController.js"></script>
-    <script src="/app/components/home/timeline/TimelineService.js"></script>
-    <script src="/app/components/home/timeline/MomentConfig.js"></script>
-
-    <!-- Other libraries -->
+    <!-- Old Libraries -->
     <script src="/js/vendor/jquery.js"></script>
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/bootstrap-tour.js"></script>
