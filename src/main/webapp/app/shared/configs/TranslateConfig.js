@@ -15,7 +15,6 @@ TatamiApp.config(function($translateProvider) {
                         'en': 'English',
                         'fr': 'Français'
                     },
-                    'license': 'Source Code License',
                     'github': {
                         'issues': 'Submit a Bug Report',
                         'fork': 'Fork Tatami on Github'
@@ -54,6 +53,8 @@ TatamiApp.config(function($translateProvider) {
                 'markdown': 'Markdown Supported',
                 'button': 'Post'
             },
+
+            //Home View Text
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
@@ -69,11 +70,7 @@ TatamiApp.config(function($translateProvider) {
                 'delete': 'Delete'
             },
 
-            'presentation': {
-                'title': 'Presentation'
-            },
-
-            //Account Text
+            //Account View Text
             'profile': {
                 'title': 'Profile',
                 'dropPhoto': 'Drop your photo here to update it',
@@ -157,6 +154,56 @@ TatamiApp.config(function($translateProvider) {
                 'title': 'Status of the Day'
             },
 
+
+            'license': {
+                'title': 'Source Code License',
+                'copyright': 'Copyright 2012'
+            },
+
+            'presentation': {
+                'title': 'Presentation',
+                'devices': 'Devices',
+                'openSource': 'Open Source',
+                'row1': {
+                    'title': 'A private, enterprise social network',
+                    'line1': 'Update your status to inform your co-workers',
+                    'line2': "Subscribe to other employees' time lines",
+                    'line3': 'Share important information to your followers',
+                    'line4': 'Discuss and reply to your colleagues',
+                    'line5': 'Put important information into favorites',
+                    'line6': 'Search useful information with our integrated search engine',
+                    'line7': 'Use hashtags to find related information',
+                    'line8': "Go to your co-workers' profiles to see what they are working on",
+                    'line9': 'English and French versions available, adding other languages is easy'
+                },
+                'row2': {
+                    'title': 'Works on all devices!',
+                    'line1': 'Dynamic web application (HTML5): nothing to install, except a modern browser!',
+                    'line2': "Works on mobile devices, tablets, or standard computers: the application adapts itself automatically to your device's screen",
+                    'line3': 'Stay connected with your enterprise wherever you are'
+                },
+                'row3': {
+                    'title': "Easy installation and integration with your company's IT infrastructure",
+                    'line1': 'Standard Java application',
+                    'line2': 'Your data belongs to you, not to your SaaS vendor!',
+                    'line3': 'Integrates with your LDAP directory',
+                    'line4': 'Integrates with Google Apps',
+                    'line5': 'Fully Open Source, with a business-friendly Apache 2.0 license',
+                    'line6': 'Easy to extend or modify according to your needs',
+                    'line7': 'High performance (based on Apache Cassandra), even on small hardware',
+                    'line8': 'Join the project and submit patches on our Github page:'
+                },
+                'row4': {
+                    'title': "Also available in SaaS mode, fully managed by Ippon Technologies",
+                    'line1': "If you do not want to install Tatami in your company, it's easy to use directly",
+                    'line2': 'Secured multi-enterprise mode: every company has its own private space',
+                    'line3': '256 bits SSL encryption: all data transfers are fully secured'
+                },
+                'row5': {
+                    'title': 'Need more information on our product?',
+                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or e-mail us at'
+                },
+            },
 
             'form': {
                 'cancel': 'Cancel',
