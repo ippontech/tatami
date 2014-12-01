@@ -1,1 +1,0 @@
-var StatusModule = angular.module('StatusModule', ['ngResource', 'ui.bootstrap', 'angularFileUpload']);

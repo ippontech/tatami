@@ -1,0 +1,1 @@
+var PasswordModule = angular.module('PasswordModule', ['ngResource']);

@@ -4,25 +4,13 @@
     request.setAttribute("currentPage", "home");
 %>
 
+
 <!DOCTYPE html>
-<!--
--    If the app isn't here, the post modal does not work, this location can be changed once the modal view is
--    separated from the topmenu jsp
--->
-<html lang="en" ng-app="TatamiApp">
+<html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
 
 <body>
-
-<div class="row">
-    <jsp:include page="/app/shared/topmenu/TopMenuView.html"/>
- 
-    <jsp:include page="/app/components/profile/sidebar/ProfileSidebarView.html"/>
-    
-   
-</div>
-<br>
 
 <jsp:include page="includes/topmenu.jsp"/>
 
@@ -49,19 +37,6 @@
 <jsp:include page="includes/footer.jsp"/>
 
 <c:if test="${wro4jEnabled eq false}">
-    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
-    <script src="/app/components/home/sidebar/UserController.js"></script>
-    <script src="/app/components/home/sidebar/GroupsController.js"></script>
-	<script src="/app/components/home/sidebar/SuggestionService.js"></script>
-	<script src="/app/components/home/sidebar/SuggestionController.js"></script>
-    <script src="/app/components/home/sidebar/TrendsController.js"></script>
-    
-	
-    <script src="/app/components/home/timeline/TimelineModule.js"></script>
-    <script src="/app/components/home/timeline/TimelineController.js"></script>
-    <script src="/app/components/home/timeline/TimelineService.js"></script>
-    <script src="/app/components/home/timeline/MomentConfig.js"></script>
-
     <script src="/js/vendor/favico-0.3.0.min.js"></script>
     <script src="/js/vendor/OpenLayers.js"></script>
     <script src="/js/app/app.js"></script>

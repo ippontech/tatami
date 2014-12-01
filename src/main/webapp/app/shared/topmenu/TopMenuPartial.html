@@ -1,0 +1,211 @@
+<!--<c:if test="${ios == null || !ios}">-->
+    <div id="navbar" class="navbar noRadius">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+            <img title="{{ 'tatami.menu.logo' | translate }}" src="/assets/img/company-logo.png">
+            <span translate="tatami.menu.title"></span>
+        </a>
+    <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
+        <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
+            <i class="close glyphicon glyphicon-pencil"></i>
+        </button>
+    <!--</c:if>-->
+        <div class="nav-collapse navbar-responsive-collapse collapse">
+            <ul class="nav">
+                <li>
+                    <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
+                        <a href="#/home/timeline">
+                    <!--</c:if>-->
+                    <!--<c:if test="${currentPage == null || currentPage != 'home'}">
+                        <a href="/">
+                    </c:if>-->
+                    <span>
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        <span translate="tatami.home.timeline" class="hidden-tablet"></span>
+                    </span>
+                    </a>
+                </li>
+                <li class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span translate="tatami.menu.about.title" class="hidden-tablet"></span>
+                        <b class="caret"></b>
+                    </span>
+                    </a>
+                    <ul class="dropdown-menu closed">
+                        <li>
+                            <a href="#/presentation">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span translate="tatami.presentation.title"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/tos">
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <span translate="tatami.menu.about.tos"></span>
+                            </a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a>
+                                <span class="glyphicon glyphicon-flag"></span>
+                                <span translate="tatami.menu.about.language"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a translate="tatami.menu.about.language.en" href="?language=en"></a>
+                                </li>
+                                <li>
+                                    <a translate="tatami.menu.about.language.fr" href="?language=fr"></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#/license">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <span translate="tatami.license.title"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami/issues" target="_blank">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                                <span translate="tatami.menu.about.github.issues"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami" target="_blank">
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <span translate="tatami.menu.about.github.fork"></span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="http://www.ippon.fr" target="_blank">
+                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                <span translate="tatami.menu.about.ippon.website"><span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.ippon.fr" target="_blank">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span translate="tatami.menu.about.ippon.blog"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/ippontech" target="_blank">
+                                <span class="glyphicon glyphicon-bullhorn"></span>
+                                <span translate="tatami.menu.about.ippon.twitter"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
+            <!--<sec:authorize ifAnyGranted="ROLE_USER">-->
+
+            <div ng-show="showSearchAccountPost">
+                <ul class="nav pull-right">
+                    <li class="dropdown pointer">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+
+                        <span>
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span translate="tatami.menu.account.title" class="hidden-tablet"></span>
+                            <b class="caret"></b>
+                        </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#/account/profile">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span translate="tatami.profile.title"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#/account/preferences">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                    <span translate="tatami.preferences.title"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#/account/password">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                    <span translate="tatami.password.title"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#/account/files">
+                                    <span class="glyphicon glyphicon-file"></span>
+                                    <span translate="tatami.files.title"></span>
+                                </a>
+                                <a href="#/account/users">
+                                    <span class="glyphicon glyphicon-globe"></span>
+                                    <span translate="tatami.users.title"></span>
+                                </a>
+                                <a href="#/account/groups">
+                                    <span class="glyphicon glyphicon-th-large"></span>
+                                    <span translate="tatami.groups.title"></span>
+                                </a>
+                                <a href="#/account/tags">
+                                    <span class="glyphicon glyphicon-tags"></span>
+                                    <span translate="tatami.tags.title"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#/account/sotd">
+                                    <span class="glyphicon glyphicon-signal"></span>
+                                    <span translate="tatami.sotd.title"></span>
+                                </a>
+                                <a href="#/home/company">
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                    <span translate="tatami.menu.account.companyWall"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/tatami/logout">
+                                    <span class="glyphicon glyphicon-off"></span>
+                                    <span translate="tatami.menu.account.logout"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hidden-phone" ng-controller="StatusManagerController">
+                        <button class="btn btn-primary navbar-form" ng-click="showModal()">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                            <span translate="tatami.post.button" class="visible-desktop"></span>
+                        </button>
+                    </li>
+                </ul>
+                <ul class="nav pull-right">
+                    <li>
+                        <a href="#" id="help-tour">
+                            <span>
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                                <span translate="tatami.menu.help" class="hidden-tablet"></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <form id="searchform" class="navbar-form pull-right col-span-4" action="">
+                    <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.menu.search' | translate }}">
+                    
+                    <!-- Clear search field when clicking the x icon ? -->
+                    <!-- Probably should just remove it -->
+                    <span class="deleteicon" style="display: none;">
+                        <i class="glyphicon glyphicon-remove-sign"></i>
+                    </span>
+                </form>
+            <div>
+            <!--</sec:authorize>-->
+            <!--</c:if>-->
+        </div>
+    </div>
+<!--</c:if>-->

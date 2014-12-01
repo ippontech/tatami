@@ -1,0 +1,1 @@
+var PostModule = angular.module('PostModule', ['ngResource', 'ui.bootstrap', 'angularFileUpload']);
