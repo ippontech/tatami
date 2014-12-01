@@ -12,7 +12,14 @@ var AccountModule = angular.module('AccountModule', [
 
 AccountModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/account/:accountPage', {
+        .when('/recommended', {
+            templateUrl: 'app/components/account/AccountView.html',
+            controller: 'AccountController',
+            resolve: {
+                tabs: function() { return {groupTab: true, trendGroup: false, searchTab: true}; }
+            }
+        }).
+        when('/account/:accountPage', {
             templateUrl: 'app/components/account/AccountView.html',
             controller: 'AccountController'
         });
