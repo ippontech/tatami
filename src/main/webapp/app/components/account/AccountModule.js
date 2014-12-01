@@ -12,7 +12,7 @@ var AccountModule = angular.module('AccountModule', [
 
 AccountModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/recommended', {
+        .when('/account/groups/#recommended', {
             templateUrl: 'app/components/account/AccountView.html',
             controller: 'AccountController',
             resolve: {

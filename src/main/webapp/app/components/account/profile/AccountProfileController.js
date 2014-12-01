@@ -3,16 +3,13 @@
  * the extra logic will be factored into ProfileService.
  */
 
-ProfileModule.controller('AccountProfileController', ['$scope', 'ProfileService', '$resource', function($scope, ProfileService, $resource) {
+ProfileModule.controller('AccountProfileController', ['$scope', 'ProfileService', '$resource', 'UserService', function($scope, ProfileService, $resource, UserService) {
 
     $scope.init = function() {
-        // Get the user profile (which doesn't contain the login)
-        var promise = ProfileService.get();
-        promise.$promise.then(function(result) {
+        ProfileService.get(function(result) {
             $scope.userProfile = result;
-            // Use the result of promise (the user profile) to find the login name for the user
-            $resource('/tatami/rest/users/:userId').get({ userId: result.username }, function(user) {
-                $scope.userLogin = user.login;
+            UserService.get({username: result.username}, function(user){
+            $scope.userLogin = user.login;
             });
         });
     };
