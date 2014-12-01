@@ -17,8 +17,10 @@
 
 <div class="row">
     <jsp:include page="/app/shared/topmenu/TopMenuView.html"/>
-    <jsp:include page="/app/components/home/sidebar/SidebarView.html"/>
-    <jsp:include page="/app/components/home/timeline/TimelineView.html"/>
+ 
+    <jsp:include page="/app/components/profile/sidebar/ProfileSidebarView.html"/>
+    
+   
 </div>
 <br>
 
@@ -50,8 +52,11 @@
     <script src="/app/components/home/sidebar/SidebarModule.js"></script>
     <script src="/app/components/home/sidebar/UserController.js"></script>
     <script src="/app/components/home/sidebar/GroupsController.js"></script>
+	<script src="/app/components/home/sidebar/SuggestionService.js"></script>
+	<script src="/app/components/home/sidebar/SuggestionController.js"></script>
     <script src="/app/components/home/sidebar/TrendsController.js"></script>
-
+    
+	
     <script src="/app/components/home/timeline/TimelineModule.js"></script>
     <script src="/app/components/home/timeline/TimelineController.js"></script>
     <script src="/app/components/home/timeline/TimelineService.js"></script>

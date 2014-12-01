@@ -36,18 +36,44 @@
                 </div>
             </div>
         </section>
-        <section ng-cloak class="hidden-phone who-to-follow">
-            <div>
-                <div class="well well-small">
-                    <h4 id="follow-suggest-title">
-                        <span class="glyphicon glyphicon-random"></span>
-                        &nbsp;Who To Follow
-                    </h4>
-                    <div class="items">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section ng-controller="SuggestionController" class="hidden-phone who-to-follow">
+			<div>
+				<div class="well well-small">
+					<h4 id="follow-suggest-title">
+						<span class="glyphicon glyphicon-random"></span>
+						&nbsp;Who To Follow
+					</h4>
+					<div ng-repeat= "suggestion in suggestions">
+						<div class="items">
+							<div class="useritemmini">
+								<!-- This is avatar thing is in here but for some reason it doesn't show up on apps.tatamisoft.com ? -->
+								<!-- Maybe this should be removed? -->
+								<!-- Try getting it to display and see how it looks -->
+								<div class="pull-left background-image-fffix">
+									<div class="img img-rounded img-small" style="background-image: url(/tatami/avatar/e30263b0-5d7c-11e4-b72f-fe54008898dc/photo.jpg);"></div>
+								</div>
+								<h6>
+									<span class="toggleFriend pointer pull-right label">
+									<span class="glyphicon glyphicon-plus"></span>
+									</span>
+									<a href="#users/{{suggest.username}}">
+									<strong>
+									{{ suggestion.firstName + ' ' + suggestion.lastName }}
+									</strong>
+									</a>
+									<br>
+									<a href="#users/{{suggest.username}}">
+									<small>
+									@{{ suggestion.username }}
+									</small>
+									</a>
+								</h6>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
         <section ng-controller="TrendsController" class="hidden-phone tag-trends">
             <div>
                 <div class="well well-small">
