@@ -1,11 +1,11 @@
-HomeModule.controller('HomeController', ['$scope', 'TimelineService', 'ProfileService', 'StatusService', 
-    function($scope, TimelineService, ProfileService, StatusService) {
+HomeModule.controller('HomeController', ['$scope', 'ProfileService', 'StatusService', 
+    function($scope, ProfileService, StatusService) {
         
-        $scope.statuses = TimelineService.query();
+        $scope.statuses = StatusService.getTimeline();
         $scope.profile = ProfileService.get();
 
         $scope.favoriteStatus = function(status) {
-            StatusService.favorite({ statusId: status.statusId }, { favorite: !status.favorite }, 
+            StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
                 function(response) { 
                     var index = $scope.statuses.indexOf(status);
                     $scope.statuses[index] = response;
@@ -15,7 +15,13 @@ HomeModule.controller('HomeController', ['$scope', 'TimelineService', 'ProfileSe
         },
 
         $scope.shareStatus = function(status) {
-            
+            StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
+                function(response) { 
+                    var index = $scope.statuses.indexOf(status);
+                    $scope.statuses[index]['shareByMe'] = true;
+                    // for some reason the shareByMe property is still false in the server
+                    // response, possible backend bug?
+            });
         },
 
         $scope.deleteStatus = function(status) {

@@ -101,7 +101,7 @@
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.status.reply"></span>
                                         </button>
-                                        <button ng-if="status.username != profile.username && !status.shareByMe" class="btn-link status-action status-action-share button-ios">
+                                        <button ng-click="shareStatus(status)"  ng-if="status.username != profile.username && !status.shareByMe" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
                                             <span translate="tatami.status.share"></span>
                                         </button>
@@ -109,7 +109,7 @@
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="tatami.status.favorite"></span>
                                         </button>
-                                        <button ng-if="status.username == profile.username" ng-click="deleteStatus(status)" class="btn-link status-action status-action-delete button-ios">
+                                        <button ng-click="deleteStatus(status)" ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
                                             <span translate="tatami.status.delete"></span>
                                         </button>
