@@ -16,7 +16,7 @@ HomeModule.controller('HomeController', ['$scope', 'TimelineService', 'ProfileSe
 
         $scope.shareStatus = function(status) {
             
-        }
+        },
 
         $scope.deleteStatus = function(status) {
             StatusService.delete({ statusId: status.statusId }, { },
