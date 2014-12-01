@@ -4,7 +4,7 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
+GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', '$routeParams', function($scope, GroupService, GroupMemberService, $routeParams, tabs) {
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -32,11 +32,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      *
      * This is used to help coordinating switching of tabs
      */
-    $scope.tab = {
-        groupTab: true,
-        trendTab: false,
-        searchTab: false
-    };
+    $scope.tab = tabs;
 
     /**
      * When the page is started, we will fetch the groups the user is part of.
@@ -100,6 +96,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
         $scope.tab.groupTab = groupTab;
         $scope.tab.trendTab = trendTab;
         $scope.tab.searchTab = searchTab;
+        console.log($routeParams);
     };
 
     $scope.showGroup = function() {
