@@ -5,5 +5,5 @@ AccountModule.config(['$routeProvider', function($routeProvider) {
         .when('/account/:accountPage', {
             templateUrl: 'app/components/account/AccountView.html',
             controller: 'AccountController'
-        })
+        });
 }]);

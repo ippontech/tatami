@@ -20,11 +20,7 @@ ProfileModule.controller('AccountProfileController', ['$scope', 'ProfileService'
     $scope.init();
 
     $scope.updateUser = function (){
-        $resource('/tatami/rest/account/profile', null,
-            {
-                'update': {method: 'PUT'}
-            }).update($scope.userProfile);
-        // Display success message
+        ProfileService.update($scope.userProfile);
     };
 
     $scope.deleteUser = function (confirmMessage){

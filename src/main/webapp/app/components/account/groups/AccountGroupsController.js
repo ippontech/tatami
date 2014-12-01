@@ -4,7 +4,7 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', function($scope, GroupService, GroupMemberService) {
+GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', '$routeParams', function($scope, GroupService, GroupMemberService, $routeParams) {
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -43,7 +43,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      *
      * It is likely that this can be done via routing rather than ng-init
      */
-    $scope.getGroups = function(){
+    $scope.getGroups = function() {
         GroupService.query(function (result){
             $scope.userGroups = result;
         })
@@ -56,7 +56,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      *
      * Currently this isn't working, it causes angular to die
      */
-    $scope.getMembers = function(currentGroupId){
+    $scope.getMembers = function(currentGroupId) {
         var memberCount = 1;
         GroupMemberService.query({groupId: currentGroupId}, function(result){
             memberCount = result.length;
@@ -75,7 +75,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
     /**
      * Allows the user to cancel group creation
      */
-    $scope.cancelGroupCreate = function(){
+    $scope.cancelGroupCreate = function() {
         $scope.reset();
     };
 
@@ -100,6 +100,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
         $scope.tab.groupTab = groupTab;
         $scope.tab.trendTab = trendTab;
         $scope.tab.searchTab = searchTab;
+        console.log($routeParams);
     };
 
     $scope.showGroup = function (){
