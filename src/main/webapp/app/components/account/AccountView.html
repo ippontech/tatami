@@ -5,9 +5,9 @@
             <div>
                 <div class="nomargin well row avatar-float-left-container">
                     <div class="col-span-5 text-center">
-                        <a href="/tatami/home/users/{{user.username}}/">
-                            <!-- Setting src="{{avatarUrl}}" causes a MIME type message, not sure why -->
-                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{avatarUrl}}" alt="">
+                        <a href="/tatami/home/users/{{ user.username }}/">
+                            <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
+                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{ avatarURL }}" alt="">
                             <h3 class="user-profile" ng-cloak>{{ user.firstName + ' ' + user.lastName }}</h3>
                             <p>@{{ user.username }}</p>
                         </a>
@@ -58,8 +58,8 @@
                                     <i class="glyphicon glyphicon-tags"></i> {{ 'tatami.tags.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'status_of_the_day'}">
-                                    <a href="#/account/status_of_the_day">
+                                <li ng-class="{'active' : currentPage == 'sotd'}">
+                                    <a href="#/account/sotd">
                                     <i class="glyphicon glyphicon-signal"></i> {{ 'tatami.sotd.title' | translate }}
                                     </a>
                                 </li>

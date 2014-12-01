@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-<!-- To see the account page, put ng-app here -->
+
 <html lang="en">
 
 <jsp:include page="includes/header.jsp"/>
@@ -84,37 +84,6 @@
 
 <c:if test="${wro4jEnabled eq false}">
 
-    <!-- Highest Level Modules -->
-    <script src="/app/components/home/HomeModule.js"></script>
-    <script src="/app/components/home/post/PostModule.js"></script>
-    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
-    <script src="/app/components/home/timeline/TimelineModule.js"></script>
-
-    <!-- Preference based includes -->
-    <script src="/app/components/account/preferences/PreferenceController.js"></script>
-    <script src="/app/components/account/preferences/PreferenceService.js"></script>
-
-    <!-- Password based includes -->
-    <script src="/app/components/account/password/PasswordService.js"></script>
-    <script src="/app/components/account/password/PasswordController.js"></script>
-
-    <!-- File based includes -->
-    <script src="/app/components/account/files/FileController.js"></script>
-    <script src="/app/components/account/files/FileService.js"></script>
-
-    <!-- Group based includes -->
-    <script src="/app/components/account/groups/GroupsController.js"></script>
-
-    <!-- Profile based includes -->
-    <script src="/app/components/account/profile/ProfileController.js"></script>
-    <script src="/app/components/account/profile/ProfileService.js"></script>
-
-    <!-- Tag based includes -->
-    <script src="/app/components/account/tags/TagController.js"></script>
-
-    <!-- Users based includes -->
-    <script src="/app/components/account/users/UsersController.js"></script>
-
     <script src="/js/vendor/raphael-min.js"></script>
     <script src="/js/vendor/jquery.jgrowl.js"></script>
     <script src="/js/app/plugins/jquery-raphael-tatami-pie.js"></script>
@@ -186,14 +155,6 @@
     <script src="/js/app/factories/fSearch.js"></script>
     <script src="/js/app/factories/fGroups.js"></script>
     <script src="/js/app/factories/fAdmin.js"></script>
-
-    <!-- Preference based includes -->
-    <script src="/app/components/account/preferences/PreferenceModule.js"></script>
-    <script src="/app/components/account/preferences/PreferenceController.js"></script>
-    <script src="/app/components/account/preferences/PreferenceService.js"></script>
-
-    <script src="/app/components/account/AccountController.js"></script>
-    <script src="/app/components/account/AccountModule.js"></script>
 
 </c:if>
 <c:if test="${wro4jEnabled eq true}">

@@ -42,7 +42,7 @@ TatamiApp.config(function($translateProvider) {
                 'preview': 'Preview',
                 'edit': 'Edit',
                 'characters': {
-                    'left': 'Characters left:'
+                    'left': 'Characters Left:'
                 },
                 'geoLocalization': 'Geolocalization',
                 'options': 'Options',

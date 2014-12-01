@@ -1,1 +1,0 @@
-var PreferenceModule = angular.module('PreferenceModule', ['ngResource']);

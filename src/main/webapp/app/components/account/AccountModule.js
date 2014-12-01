@@ -1,4 +1,14 @@
-var AccountModule = angular.module('AccountModule', ['ngResource', 'ngRoute', 'ProfileModule', 'PreferenceModule', 'PasswordModule', 'GroupsModule', 'FileModule', 'TagModule', 'UsersModule']);
+var AccountModule = angular.module('AccountModule', [
+    'ProfileModule', 
+    'PreferencesModule', 
+    'PasswordModule', 
+    'FilesModule', 
+    'UsersModule', 
+    'GroupsModule', 
+    'TagsModule', 
+    'ngResource', 
+    'ngRoute'
+]);
 
 AccountModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider
