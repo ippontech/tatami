@@ -2,6 +2,7 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
     return $resource(
         '/tatami/rest/statuses/:statusId',
         null,
-        { 'favorite': { method:'PATCH', params: { statusId: '@statusId' } }
+        {   'getTimeline': { method: 'GET', isArray: true, url: '/tatami/rest/statuses/home_timeline' },
+            'update': { method: 'PATCH', params: { statusId: '@statusId' } }
     });
 }]);
