@@ -1,4 +1,4 @@
-PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceService', function($scope, PreferenceService) {
+PreferencesModule.controller('PreferencesController', ['$scope', 'PreferencesService', function($scope, PreferencesService) {
 
     $scope.prefs = {                // Sets the users current preferences
         mentionEmail: false,         // Determine if the user wants to be notified of mentions via email
@@ -8,7 +8,7 @@ PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceServic
         rssUid: null                // The uid for the RSS feed
     };
 
-    var prefs = PreferenceService.get(function(result) {
+    var prefs = PreferencesService.get(function(result) {
         $scope.prefs = result;
     });
 
@@ -17,6 +17,6 @@ PreferenceModule.controller('PreferenceController', ['$scope', 'PreferenceServic
      * and whether an RSS feed can be used
      */
     $scope.savePrefs = function() {
-        PreferenceService.save($scope.prefs);
+        PreferencesService.save($scope.prefs);
     };
 }]);

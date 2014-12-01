@@ -1,6 +1,6 @@
-AccountModule.controller('AccountController', ['$scope', 'ProfileService', '$routeParams', function($scope, ProfileService, $routeParams) {
-    $scope.init = function (){
-        ProfileService.get(function (result){
+AccountModule.controller('AccountController', ['$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, ProfileService) {
+    $scope.init = function() {
+        ProfileService.get(function(result) {
             $scope.user = result;
             temp = result.avatar=='' ? '/img/default_image_profile.png' : '/tatami/avatar/' + result.avatar + '/photo.jpg';
             $scope.setAvatar(temp);
@@ -9,8 +9,8 @@ AccountModule.controller('AccountController', ['$scope', 'ProfileService', '$rou
 
     $scope.init();
 
-    $scope.setAvatar = function(avatarUrl) {
-        $scope.avatarUrl = avatarUrl;
+    $scope.setAvatar = function(avatarURL) {
+        $scope.avatarURL = avatarURL;
     };
 
     $scope.selected = function(currentSelection) {
@@ -19,13 +19,13 @@ AccountModule.controller('AccountController', ['$scope', 'ProfileService', '$rou
 
     $scope.setPath = function() {
         if($routeParams.accountPage == 'profile') { return 'ProfileView' }
-        else if($routeParams.accountPage == 'preferences') { return 'PreferenceView' }
+        else if($routeParams.accountPage == 'preferences') { return 'PreferencesView' }
         else if($routeParams.accountPage == 'password') { return 'PasswordView' }
-        else if($routeParams.accountPage == 'files') { return 'FileView' }
+        else if($routeParams.accountPage == 'files') { return 'FilesView' }
         else if($routeParams.accountPage == 'users') { return 'UsersView' }
         else if($routeParams.accountPage == 'groups') { return 'GroupsView' }
-        else if($routeParams.accountPage == 'tags') { return 'TagView' }
-        else if($routeParams.accountPage == 'status_of_the_day') { return 'DailyStatusView'}
+        else if($routeParams.accountPage == 'tags') { return 'TagsView' }
+        else if($routeParams.accountPage == 'sotd') { return 'DailyStatusView'}
         else return '';
     };
     $scope.currentPage = $routeParams.accountPage;

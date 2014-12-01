@@ -6,16 +6,6 @@ var TatamiApp = angular.module('TatamiApp', [
     'pascalprecht.translate'
 ]);
 
-/*
-    'StatusModule', 
-    'PreferenceModule',
-    'AccountModule', 
-    'PasswordModule', 
-    'GroupsModule',
-    'ProfileModule', 
-    'TagModule'
-*/
-
 TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider', 
     function($routeProvider, $resourceProvider, $locationProvider) {
     

@@ -43,8 +43,8 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      *
      * It is likely that this can be done via routing rather than ng-init
      */
-    $scope.getGroups = function(){
-        GroupService.query(function (result){
+    $scope.getGroups = function() {
+        GroupService.query(function(result) {
             $scope.userGroups = result;
         })
     };
@@ -56,9 +56,9 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      *
      * Currently this isn't working, it causes angular to die
      */
-    $scope.getMembers = function(currentGroupId){
+    $scope.getMembers = function(currentGroupId) {
         var memberCount = 1;
-        GroupMemberService.query({groupId: currentGroupId}, function(result){
+        GroupMemberService.query({ groupId: currentGroupId }, function(result) {
             memberCount = result.length;
             console.log(result);
         });
@@ -75,16 +75,16 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
     /**
      * Allows the user to cancel group creation
      */
-    $scope.cancelGroupCreate = function(){
+    $scope.cancelGroupCreate = function() {
         $scope.reset();
     };
 
     /**
      * Creates a new group on the server
      */
-    $scope.createNewGroup = function(){
+    $scope.createNewGroup = function() {
         console.log($scope.groups);
-        GroupService.save($scope.groups, function (){
+        GroupService.save($scope.groups, function() {
             $scope.reset();
             // Alert user of new group creation
         });
@@ -96,13 +96,13 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
      * @param trendTab
      * @param searchTab
      */
-    $scope.switchTabs = function (groupTab, trendTab, searchTab){
+    $scope.switchTabs = function(groupTab, trendTab, searchTab) {
         $scope.tab.groupTab = groupTab;
         $scope.tab.trendTab = trendTab;
         $scope.tab.searchTab = searchTab;
     };
 
-    $scope.showGroup = function (){
+    $scope.showGroup = function() {
         $scope.tab.groupTab = true;
         $scope.tab.trendTab = false;
         $scope.tab.searchTab = false;
@@ -111,7 +111,7 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
     /**
      * Resets the group creation view
      */
-    $scope.reset = function(){
+    $scope.reset = function() {
         $scope.groups = {};
         $scope.current.createGroup = false;
     };
