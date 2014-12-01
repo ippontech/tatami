@@ -1,11 +1,11 @@
-TagModule.controller('TagController', ['$scope', 'TagService', '$resource', function ($scope, TagService, $resource){
+TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', function($scope, $resource, TagService) {
     /**
      * Initialization function. Gets the tags immediately, this may be something can be resolved in routing
      * @returns {*}
      */
-    $scope.getTags = function (){
+    $scope.getTags = function() {
         // Factor into a service
-        var promise = $resource('/tatami/rest/tags/popular').query(function(result){
+        var promise = $resource('/tatami/rest/tags/popular').query(function(result) {
             $scope.tags = result;
         });
         return promise;
@@ -15,7 +15,7 @@ TagModule.controller('TagController', ['$scope', 'TagService', '$resource', func
      * Follows an unfollowed tags, or unfollows a followed tab, depending on the current state
      * @param tag
      */
-    $scope.follow = function(tag){
+    $scope.follow = function(tag) {
         tag.followed = !tag.followed;
         var promise = $resource('/tatami/rest/tags/' + tag.name, null,
             {

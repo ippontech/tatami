@@ -1,6 +1,7 @@
-ProfileModule.factory('ProfileService', function($resource){
-    return $resource('/tatami/rest/account/profile/', null,
-    {
-        'update': {method: 'PUT'}
+ProfileModule.factory('ProfileService', function($resource) {
+    return $resource(
+        '/tatami/rest/account/profile', 
+        { },
+        { 'update': { method: 'PUT' }
     });
 });
