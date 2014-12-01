@@ -97,7 +97,7 @@
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                             <span translate="tatami.status.view"></span>
                                         </a>
-                                        <button class="btn-link status-action status-action-reply button-ios" ng-controller="StatusManagerController" ng-click="showModal(status.statusId)">
+                                        <button ng-controller="StatusManagerController" ng-click="showModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.status.reply"></span>
                                         </button>
@@ -105,11 +105,11 @@
                                             <i class="glyphicon glyphicon-retweet"></i>
                                             <span translate="tatami.status.share"></span>
                                         </button>
-                                        <button class="btn-link status-action status-action-favorite button-ios" ng-click="favoriteStatus(status)">
+                                        <button ng-click="favoriteStatus(status)" class="btn-link status-action status-action-favorite button-ios">
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="tatami.status.favorite"></span>
                                         </button>
-                                        <button ng-if="status.username == profile.username" class="btn-link status-action status-action-delete button-ios" ng-click="deleteStatus(status)">
+                                        <button ng-if="status.username == profile.username" ng-click="deleteStatus(status)" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
                                             <span translate="tatami.status.delete"></span>
                                         </button>
