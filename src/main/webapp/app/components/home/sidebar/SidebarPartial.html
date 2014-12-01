@@ -24,7 +24,7 @@
             <div class="well well-small">
                 <h4 id="groups-list-title">
                     <span class="glyphicon glyphicon-list-alt"></span>
-                    <span translate="tatami.sidebar.home.myGroups"></span>
+                    &nbsp;<span translate="tatami.sidebar.home.myGroups"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="group in groups">
@@ -39,7 +39,7 @@
             <div class="well well-small">
                 <h4 id="follow-suggest-title">
                     <span class="glyphicon glyphicon-random"></span>
-                    <span translate="tatami.sidebar.home.whoToFollow"></span>
+                    &nbsp;<span translate="tatami.sidebar.home.whoToFollow"></span>
                 </h4>
                 <div ng-repeat="suggestion in suggestions">
                     <div class="items">
@@ -53,8 +53,8 @@
                             </div>
                             -->
                             <h6>
-                                <span class="toggleFriend pointer pull-right label">
-                                <span class="glyphicon glyphicon-plus"></span>
+                                <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info' : suggestion.followingUser }">
+                                <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                                 </span>
                                 <a href="#users/{{ suggestion.username }}">
                                 <strong>
@@ -79,13 +79,12 @@
             <div class="well well-small">
                 <h4 id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    <span translate="tatami.sidebar.home.trends"></span>
+                    &nbsp;<span translate="tatami.sidebar.home.trends"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
                         <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info' : tag.followed }">
-                            <span ng-show="!tag.followed" class="glyphicon glyphicon-plus"></span>
-                            <span ng-show="tag.followed" class="glyphicon glyphicon-minus"></span>
+                            <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
                         <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
