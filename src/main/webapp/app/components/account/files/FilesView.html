@@ -1,45 +1,45 @@
 <div class="col-span-8">
-    <div class="alert alert-status">
-        <div>
-            <h2>Files</h2>
+    <div class="alert alert-status" ng-controller="FilesController">
+        <div >
+            <h2 translate="tatami.files.title"></h2>
             <span class="file-infos"></span>
         </div>
         <div>
-
             <div class="progress">
-
-                <div class="progress-bar progress-bar-success" style="width: 0%;">
-
-                    <span class="quota">0%</span>
+                <div class="progress-bar progress-bar-success" style="width: {{quota}}%;">
+                    <span class="quota">{{ quota }}%</span>
                 </div>
             </div>
         </div>
         <div>
             <table class="table noCollapse">
-                <tbody><tr>
-                    <th style="border-top :0">  </th>
-                    <th style="border-top :0"><b>Filename</b></th>
-                    <th style="border-top :0"><b>Size</b></th>
-                    <th style="border-top :0"><b>Date</b></th>
-                    <th style="border-top :0">  </th>
-                </tr>
-                </tbody><tbody class="items">
-            <tr>
-                <td>
-                    <a href="/tatami/file/41ba7960-6aa7-11e4-b3ec-fe54008898dc/van-c.p12" target="_blank"><img src="/img/document_icon.png"></a>
-
-                </td>
-                <td><a href="/tatami/file/41ba7960-6aa7-11e4-b3ec-fe54008898dc/van-c.p12" target="_blank">van-c.p12</a></td>
-                <td>1.882 kb</td>
-                <td>12 Nov 2014 </td>
-                <td>
-        <span class="btn btn-primary btn-block">
-            Delete
-        </span>
-                </td>
-            </tr></tbody>
+                <tbody>
+                    <tr>
+                        <th style="border-top :0">  </th>
+                        <th style="border-top :0"><b translate="tatami.files.filename"></b></th>
+                        <th style="border-top :0"><b translate="tatami.files.size"></b></th>
+                        <th style="border-top :0"><b translate="tatami.files.date"></b></th>
+                        <th style="border-top :0">  </th>
+                    </tr>
+                </tbody>
+                <tbody class="items">
+                    <tr ng-repeat="file in fileList">
+                        <td>
+                            <a ng-href="/tatami/file/{{ file.attachmentId }}/{{ file.filename }}" target="_blank">
+                                <img ng-src="{{ getImgPath(file.hasThumbnail, file.attachmentId, file.filename) }}">
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-href="/tatami/file/{{ file.attachmentId }}/{{ file.filename }}" target="_blank">{{ file.filename }}</a>
+                        </td>
+                        <td>{{ file.size / 1000 }} kb</td>
+                        <td>{{ file.prettyPrintCreationDate }}</td>
+                        <td>
+                            <span class="btn btn-primary btn-block" translate="tatami.files.delete" ng-click="delete(file.attachmentId, $index)"></span>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-
         </div>
     </div>
 </div>
