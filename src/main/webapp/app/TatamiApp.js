@@ -1,14 +1,13 @@
 var TatamiApp = angular.module('TatamiApp', [ 
     'HomeModule',
     'AccountModule',
-    'ngRoute',
     'ngResource',
     'pascalprecht.translate',
     'ui.router'
 ]);
 
-TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider', '$stateProvider', '$urlRouterProvider',
-    function($routeProvider, $resourceProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
+TatamiApp.config(['$resourceProvider', '$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function($resourceProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/home/timeline");
 

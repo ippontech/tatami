@@ -1,6 +1,6 @@
 var HomeModule = angular.module('HomeModule', ['PostModule', 'SidebarModule', 'TimelineModule', 'ngRoute', 'ui.router']);
 
-HomeModule.config(['$routeProvider', '$stateProvider', '$urlRouterProvider', function($routeProvider, $stateProvider, $urlRouterProvider) {
+HomeModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     $stateProvider
         .state('timeline', {

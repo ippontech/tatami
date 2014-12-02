@@ -6,11 +6,10 @@ var AccountModule = angular.module('AccountModule', [
     'UsersModule', 
     'GroupsModule', 
     'TagsModule', 
-    'ngResource', 
-    'ngRoute'
+    'ngResource'
 ]);
 
-AccountModule.config(['$routeProvider', '$stateProvider', '$urlRouterProvider', function($routeProvider, $stateProvider, $urlRouterProvider) {
+AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('account',{
             url: '/account',
