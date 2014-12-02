@@ -23,42 +23,42 @@
                     <div class="col-span-4">
                         <div class="tabbable alert alert-status">
                             <ul class="adminMenu nav nav-pills nav-stacked nomargin">
-                                <li ng-class="{'active' : currentPage == 'profile'}">
+                                <li ng-class="{'active' : isActive('/account/profile') }">
                                     <a href="#/account/profile">
                                     <i class="glyphicon glyphicon-user"></i> {{ 'tatami.profile.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'preferences'}">
+                                <li ng-class="{'active' : isActive('/account/preferences') }">
                                     <a href="#/account/preferences">
                                     <i class="glyphicon glyphicon-picture"></i> {{ 'tatami.preferences.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'password'}">
+                                <li ng-class="{'active' : isActive('/account/password') }">
                                     <a href="#/account/password">
                                     <i class="glyphicon glyphicon-lock"></i> {{ 'tatami.password.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'files'}">
+                                <li ng-class="{'active' : isActive('/account/files') }">
                                     <a href="#/account/files">
                                     <i class="glyphicon glyphicon-file"></i> {{ 'tatami.files.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'users'}">
+                                <li ng-class="{'active' : isActive('/account/users') || isActive('/account/users/recommended') || isActive('/account/users/search') }">
                                     <a href="#/account/users">
                                     <i class="glyphicon glyphicon-globe"></i> {{ 'tatami.users.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'groups'}">
+                                <li ng-class="{'active' : isActive('/account/groups') || isActive('/account/groups/recommended') || isActive('/account/groups/search') }">
                                     <a href="#/account/groups">
                                     <i class="glyphicon glyphicon-th-large"></i> {{ 'tatami.groups.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'tags'}">
+                                <li ng-class="{'active' : isActive('/account/tags') || isActive('/account/tags/recommended') || isActive('/account/tags/search') }">
                                     <a href="#/account/tags">
                                     <i class="glyphicon glyphicon-tags"></i> {{ 'tatami.tags.title' | translate }}
                                     </a>
                                 </li>
-                                <li ng-class="{'active' : currentPage == 'sotd'}">
+                                <li ng-class="{'active' : isActive('/account/sotd') }">
                                     <a href="#/account/sotd">
                                     <i class="glyphicon glyphicon-signal"></i> {{ 'tatami.sotd.title' | translate }}
                                     </a>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <aside ng-include src="accountPath"></aside>
+            <div ui-view></div>
         </div>
     </div>
 </div>

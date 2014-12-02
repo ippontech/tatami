@@ -1,26 +1,28 @@
 var TatamiApp = angular.module('TatamiApp', [ 
     'HomeModule',
     'AccountModule',
-    'ngRoute',
     'ngResource',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ui.router'
 ]);
 
-TatamiApp.config(['$routeProvider', '$resourceProvider', '$locationProvider', 
-    function($routeProvider, $resourceProvider, $locationProvider) {
-    
-    $routeProvider
-        .when('/presentation', {
+TatamiApp.config(['$resourceProvider', '$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function($resourceProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
+
+    $urlRouterProvider.otherwise("/home/timeline");
+
+    $stateProvider
+        .state('presentation', {
+            url: '/presentation',
             templateUrl: 'app/components/about/PresentationView.html'
         })
-        .when('/tos', {
+        .state('tos', {
+            url: '/tos',
             templateUrl: 'app/components/about/TermsView.html'
         })
-        .when('/license', {
+        .state('license', {
+            url: '/license',
             templateUrl: 'app/components/about/LicenseView.html'
-        })
-        .otherwise({
-            redirectTo: '/home/timeline' 
         });
 
     // Don't strip trailing slashes from REST URLs
