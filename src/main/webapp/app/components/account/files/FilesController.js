@@ -26,16 +26,12 @@ FilesModule.controller('FilesController', ['$scope', 'FilesService', function($s
      * Allows us to delete the supplied attachment
      * @param attachment
      */
-    $scope.delete = function(attachment) {
+    $scope.delete = function(attachment, removalIndex) {
         FilesService.delete({attachmentId: attachment}, { },
             function() {
-                $scope.remove(attachment);
+                $scope.fileList.splice(removalIndex, 1);
                 $scope.getQuota();
             });
-    };
-
-    $scope.remove = function (file, removalIndex){
-        $scope.fileList.splice(removalIndex, 1);
     };
 
     $scope.getImgPath = function(thumbnail, attachmentId, filename) {
