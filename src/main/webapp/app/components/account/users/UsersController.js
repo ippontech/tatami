@@ -1,4 +1,15 @@
-UsersModule.controller('UsersController', ['$scope', '$resource', 'ProfileService', function($scope, $resource, ProfileService) {
+UsersModule.controller('UsersController', ['$scope', '$resource', 'ProfileService', 'usersData', '$location', function($scope, $resource, ProfileService, usersData, $location) {
+    $scope.getUsers = function() {
+        $resource('/tatami/rest/users/:userId/friends').query({ userId: usersData.username }, function (result){
+            $scope.usersGroup = result;
+        })
+    };
+    $scope.getUsers();
+
+    $scope.isActive = function(path) {
+        return path === $location.path();
+    };
+    /*
     $scope.getUsers = function() {
         // Get the user profile (which doesn't contain the login)
         var promise = ProfileService.get();
@@ -8,5 +19,5 @@ UsersModule.controller('UsersController', ['$scope', '$resource', 'ProfileServic
                 $scope.usersGroup = listOfUsers
             });
         });
-    };
+    };*/
 }]);

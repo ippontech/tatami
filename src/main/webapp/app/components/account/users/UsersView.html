@@ -1,15 +1,15 @@
 <div class="col-span-8">
     <div class="alert alert-status">
-        <div ng-controller="UsersController" ng-init="getUsers()">
+        <div>
             <div class="tabMenu">
                 <ul class="nav nav-tabs">
-                    <li class="active">
+                    <li ng-class="{ 'active': isActive('/account/users') }">
                         <a href="#account/users" translate="tatami.users.myFriends"></a>
                     </li>
-                    <li>
+                    <li ng-class="{ 'active': isActive('/account/users/recommended') }">
                         <a href="#account/users/recommended" translate="tatami.users.recommend"></a>
                     </li>
-                    <li>
+                    <li ng-class="{ 'active': isActive('/account/users/search') }">
                         <a href="#account/users/search" translate="tatami.users.search"></a>
                     </li>
                 </ul>

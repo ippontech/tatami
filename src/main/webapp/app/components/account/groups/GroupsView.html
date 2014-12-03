@@ -1,6 +1,6 @@
 <div class="col-span-8">
     <div class="alert alert-status">
-        <div ng-controller="AccountGroupsController" ng-init="getGroups()">
+        <div>
             <form class="form-horizontal row-fluid">
                 <h2 translate="tatami.groups.title"></h2>
 
@@ -50,15 +50,15 @@
 
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
-                        <li class="active">
+                        <li ng-class="{ 'active': isActive('/account/groups') }">
                             <a href="#/account/groups" translate="tatami.groups.myGroups">
                             </a>
                         </li>
-                        <li>
-                            <a href="#/account/groups/recommended" translate="tatami.tags.trends">
+                        <li ng-class="{ 'active': isActive('/account/groups/recommended') }">
+                            <a href="#/account/groups/recommended" translate="tatami.tags.trends" ng-click="display()">
                             </a>
                         </li>
-                        <li>
+                        <li ng-class="{ 'active': isActive('/account/groups/search') }">
                             <a href="#/account/groups/search" translate="tatami.groups.search">
                             </a>
                         </li>
@@ -67,7 +67,7 @@
 
                 <div>
                     <form class="row-fluid littleMargeBot">
-                        <input ng-show="tab.searchTab" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
+                        <input ng-show="isActive('/account/groups/search')" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
                     </form>
                     <table class="table noCollapse">
                         <tbody>
