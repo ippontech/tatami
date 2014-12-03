@@ -61,20 +61,6 @@ GroupsModule.controller('AccountGroupsController', [
         $scope.isActive = function(path) {
             return path === $location.path();
         };
-        /**
-         * This is designed to get the number of members in a given group
-         * @param currentGroupId We want to find the number of members in the group with this id
-         *
-         * Currently this isn't working, it causes angular to die
-         */
-        $scope.getMembers = function(currentGroup) {
-            var memberCount = 1;
-            GroupMemberService.query({ groupId: currentGroup.groupId }, function(result) {
-                memberCount = result.length;
-                console.log(result);
-            });
-            $scope.members = memberCount;
-        };
 
         /**
          * Allows the user to toggle the group creation view
