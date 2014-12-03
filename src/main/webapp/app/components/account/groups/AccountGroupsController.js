@@ -4,7 +4,8 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'GroupMemberService', '$routeParams', function($scope, GroupService, GroupMemberService, $routeParams, tabs) {
+GroupsModule.controller('AccountGroupsController', ['$scope', '$state', '$resource', 'GroupService', 'GroupMemberService', '$routeParams', '$location', function($scope, $state, $resource, GroupService, GroupMemberService, $routeParams, $location) {
+
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -16,6 +17,13 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
         archivedGroup: false
     };
 
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
+        $resource(toState.data.dataUrl).query(function(result) {
+            $scope.userGroups = result;
+        })
+    });
+
+
     /**
      * Determines the current look of the group page
      * When createGroup is true, we display the group creation view
@@ -24,27 +32,29 @@ GroupsModule.controller('AccountGroupsController', ['$scope', 'GroupService', 'G
         createGroup: false
     };
 
-    // This is the set of groups the user belongs to
-    $scope.userGroups = {};
-
     /**
      * Needs to be initialilzed differently
      *
      * This is used to help coordinating switching of tabs
      */
-    $scope.tab = tabs;
 
     /**
      * When the page is started, we will fetch the groups the user is part of.
      *
      * It is likely that this can be done via routing rather than ng-init
      */
+    /*
     $scope.getGroups = function() {
         GroupService.query(function(result) {
             $scope.userGroups = result;
         })
     };
+    */
 
+
+    $scope.isActive = function(path) {
+        return path === $location.path();
+    }
     /**
      * This is designed to get the number of members in a given group
      * @param currentGroupId We want to find the number of members in the group with this id

@@ -39,6 +39,13 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.users', {
             url: '/users',
             templateUrl: 'app/components/account/users/UsersView.html',
+            resolve:{
+                ProfileService: 'ProfileService',
+
+                usersData: function (ProfileService){
+                    return ProfileService.get();
+                }
+            },
             controller: 'UsersController'
         })
         .state('account.users.recommended', {
@@ -54,26 +61,38 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.groups', {
             url: '/groups',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            controller: 'GroupsController'
+            data: {
+                dataUrl: '/tatami/rest/groups/'
+            } ,
+            controller: 'AccountGroupsController'
         })
         .state('account.groups.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            controller: 'GroupsController'
+            data: {
+                dataUrl: '/tatami/rest/groupmemberships/suggestions'
+            },
+            controller: 'AccountGroupsController'
         })
         .state('account.groups.search', {
             url: '/search',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            controller: 'GroupsController'
+            controller: 'AccountGroupsController'
         })
         .state('account.tags', {
             url: '/tags',
             templateUrl: 'app/components/account/tags/TagsView.html',
+            data: {
+                dataUrl: '/tatami/rest/tags'
+            },
             controller: 'TagsController'
         })
         .state('account.tags.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/tags/TagsView.html',
+            data: {
+                dataUrl: '/tatami/rest/tags/popular'
+            },
             controller: 'TagsController'
         })
         .state('account.tags.search', {
