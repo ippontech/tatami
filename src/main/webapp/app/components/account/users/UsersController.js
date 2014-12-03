@@ -1,12 +1,57 @@
-UsersModule.controller('UsersController', ['$scope', '$resource', 'ProfileService', function($scope, $resource, ProfileService) {
+UsersModule.controller('UsersController', [
+    '$scope',
+    '$resource',
+    '$location',
+    '$state',
+    'UserService',
+    'ProfileService',
+    'SearchService', function($scope, $resource, $location, $state, UserService, ProfileService, SearchService) {
+    $scope.$state = $state;
+    /**
+     * Ideally this would be done during routing
+     */
     $scope.getUsers = function() {
-        // Get the user profile (which doesn't contain the login)
-        var promise = ProfileService.get();
-        promise.$promise.then(function(result) {
-            // Use the result of promise (the user profile) to find the login name for the user
-            $resource('/tatami/rest/users/:userId/friends').query({ userId: result.username }, function(listOfUsers) {
-                $scope.usersGroup = listOfUsers
+        ProfileService.get().$promise.then(function(result) {
+            UserService.getFriends({ userId: result.username }, function (friendList){
+                $scope.usersGroup = friendList;
             });
-        });
+        })
     };
+
+    $scope.current = {
+        searchString: ''
+    }
+
+    /**
+     * If toState.data.dataUrl is undefined, it means we are get the user friends, and so we call $scope.getUsers(),
+     * If however, a valid url is passed in, we will query that path.
+     */
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
+        if($scope.current.searchString){
+            SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
+                $scope.tags = result;
+            });
+        }
+        if(toState.data.dataUrl == "search"){
+            $scope.userGroups = {};
+        }
+        else if(toState.data.dataUrl) {
+            $resource(toState.data.dataUrl).query(function(result) {
+                $scope.userGroups = result;
+            });
+        }
+        else {
+            $scope.getUsers();
+        }
+    });
+
+    $scope.isActive = function(path) {
+        return path === $location.path();
+    };
+
+    $scope.search = function() {
+        console.log($scope.current.searchString);
+        // Update the route
+        $state.go('account.users.search', { q: $scope.current.searchString });
+    }
 }]);
