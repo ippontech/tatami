@@ -62,7 +62,17 @@ TatamiApp.config(function($translateProvider) {
                     'trends': 'Trends'
                 },
                 'profile': {
-                    
+                    'information': 'Information',
+                    'statistics': 'Statistics',
+                    'trends': 'Trends',
+                    'firstName': 'First Name',
+                    'lastName': 'lastName',
+                    'email': 'Email',
+                    'jobTitle': 'Job Title',
+                    'phoneNumber': 'Phone Number',
+                    'statuses': 'Statuses',
+                    'following': 'Following',
+                    'followers': 'Followers'
                 }
             },
 
@@ -81,6 +91,24 @@ TatamiApp.config(function($translateProvider) {
                 'favorite': 'Favorite',
                 'delete': 'Delete'
             },
+            'user': {
+                'statuses': 'Statuses',
+                'following': 'Following',
+                'followers': 'Followers',
+                'yourProfile': 'Your Profile',
+                'follow': 'Follow'
+            },
+            'group': {
+                'title': 'Group',
+                'manage': 'Manage',
+                'statuses': 'Statuses',
+                'memberList': 'Member List'
+            },
+            'tag': {
+                'title': 'Tag',
+                'follow': 'Follow',
+                'following': 'Following'
+            },
 
             //Account View Text
             'profile': {
@@ -92,7 +120,7 @@ TatamiApp.config(function($translateProvider) {
                 'lastName': 'Last Name',
                 'jobTitle': 'Job Title',
                 'phoneNumber': 'Phone Number',
-                'delete': 'Delete the current user account',
+                'delete': 'Delete (Currently Disabled)',
                 'confirmDelete': 'You are about to delete your account. Are you sure?'
             },
             'preferences': {
@@ -161,7 +189,7 @@ TatamiApp.config(function($translateProvider) {
                 'search': 'Search',
                 'tag': 'Tag',
                 'follow': 'Follow',
-                'followed': 'Followed'
+                'following': 'Following'
             },
             'sotd': {
                 'title': 'Status of the Day'
