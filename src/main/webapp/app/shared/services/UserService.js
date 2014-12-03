@@ -16,6 +16,7 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
 
                     return suggestions;
                 }
-           }
+           },
+          'getFriends': { method: 'GET', isArray: true, url: '/tatami/rest/users/:userId/friends', params: {userId: '@userId' } }
     });
 }]);

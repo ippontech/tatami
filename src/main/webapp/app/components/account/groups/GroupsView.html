@@ -51,15 +51,15 @@
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
                         <li ng-class="{ 'active': isActive('/account/groups') }">
-                            <a href="#/account/groups" translate="tatami.groups.myGroups">
+                            <a ui-sref="account.groups" translate="tatami.groups.myGroups">
                             </a>
                         </li>
                         <li ng-class="{ 'active': isActive('/account/groups/recommended') }">
-                            <a href="#/account/groups/recommended" translate="tatami.tags.trends" ng-click="display()">
+                            <a ui-sref="account.groups.recommended" translate="tatami.tags.trends" ng-click="display()">
                             </a>
                         </li>
-                        <li ng-class="{ 'active': isActive('/account/groups/search') }">
-                            <a href="#/account/groups/search" translate="tatami.groups.search">
+                        <li ng-class="{ 'active': $scope.current.name === 'account.groups.search' }">
+                            <a ui-sref="account.groups.search" translate="tatami.groups.search">
                             </a>
                         </li>
                     </ul>
@@ -67,7 +67,7 @@
 
                 <div>
                     <form class="row-fluid littleMargeBot">
-                        <input ng-show="isActive('/account/groups/search')" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
+                        <input ng-show="$state.current.name === 'account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
                     </form>
                     <table class="table noCollapse">
                         <tbody>

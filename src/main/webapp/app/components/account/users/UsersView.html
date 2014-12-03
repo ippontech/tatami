@@ -4,13 +4,13 @@
             <div class="tabMenu">
                 <ul class="nav nav-tabs">
                     <li ng-class="{ 'active': isActive('/account/users') }">
-                        <a href="#account/users" translate="tatami.users.myFriends"></a>
+                        <a ui-sref="account.users" translate="tatami.users.myFriends"></a>
                     </li>
                     <li ng-class="{ 'active': isActive('/account/users/recommended') }">
-                        <a href="#account/users/recommended" translate="tatami.users.recommend"></a>
+                        <a ui-sref="account.users.recommended" translate="tatami.users.recommend"></a>
                     </li>
                     <li ng-class="{ 'active': isActive('/account/users/search') }">
-                        <a href="#account/users/search" translate="tatami.users.search"></a>
+                        <a ui-sref="account.users.search" translate="tatami.users.search"></a>
                     </li>
                 </ul>
             </div>
