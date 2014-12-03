@@ -61,7 +61,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             controller: 'UsersController'
         })
         .state('account.users.search', {
-            url: '/search',
+            url: '/search/:q',
             templateUrl: 'app/components/account/users/UsersView.html',
             data: {
                 dataUrl: 'search'

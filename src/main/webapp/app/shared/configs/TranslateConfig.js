@@ -105,7 +105,8 @@ TatamiApp.config(function($translateProvider) {
                         'weeklyDigest': 'Get a weekly digest e-mail'
                     },
                     'rss': {
-                        'timeline': 'Allow RSS feed publication of your timeline'
+                        'timeline': 'Allow RSS feed publication of your timeline',
+                        'link': 'Link to your timeline RSS stream'
                     }
                 }
             },
