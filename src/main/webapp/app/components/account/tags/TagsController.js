@@ -1,4 +1,11 @@
-TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$location', '$resource', '$state', 'SearchService', function($scope, $resource, TagService, $location, $resource, $state, SearchService) {
+TagsModule.controller('TagsController', [
+    '$scope',
+    '$resource',
+    '$location',
+    '$resource',
+    '$state',
+    'TagService',
+    'SearchService', function($scope, $resource, $location, $resource, $state, TagService, SearchService) {
     $scope.$state = $state;
     $scope.current = {
         searchString: ''
@@ -21,7 +28,12 @@ TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$
      * through toState.data.dataUrl. Now we can perform a query on this url.
      */
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-        if(toState.data.dataUrl) {
+        if($scope.current.searchString != ''){
+            SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
+                $scope.tags = result;
+            });
+        }
+        else if(toState.data.dataUrl) {
             $resource(toState.data.dataUrl).query(function(result) {
                 $scope.tags = result;
             });
@@ -54,12 +66,5 @@ TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$
     $scope.search = function() {
         // Update the route
         $state.go('account.tags.search', { q: $scope.current.searchString });
-
-        // Now update the user groups
-        if($scope.current.searchString != ''){
-            SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
-                $scope.tags = result;
-            });
-        }
     }
 }]);

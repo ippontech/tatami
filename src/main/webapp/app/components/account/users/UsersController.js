@@ -1,4 +1,12 @@
-UsersModule.controller('UsersController', ['$scope', '$resource', 'UserService', 'ProfileService', '$location', function($scope, $resource, UserService, ProfileService, $location) {
+UsersModule.controller('UsersController', [
+    '$scope',
+    '$resource',
+    '$location',
+    '$state',
+    'UserService',
+    'ProfileService',
+    'SearchService', function($scope, $resource, $location, $state, UserService, ProfileService, SearchService) {
+    $scope.$state = $state;
     /**
      * Ideally this would be done during routing
      */
@@ -10,11 +18,20 @@ UsersModule.controller('UsersController', ['$scope', '$resource', 'UserService',
         })
     };
 
+    $scope.current = {
+        searchString: ''
+    }
+
     /**
      * If toState.data.dataUrl is undefined, it means we are get the user friends, and so we call $scope.getUsers(),
      * If however, a valid url is passed in, we will query that path.
      */
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
+        if($scope.current.searchString){
+            SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
+                $scope.tags = result;
+            });
+        }
         if(toState.data.dataUrl == "search"){
             $scope.userGroups = {};
         }
@@ -31,4 +48,10 @@ UsersModule.controller('UsersController', ['$scope', '$resource', 'UserService',
     $scope.isActive = function(path) {
         return path === $location.path();
     };
+
+    $scope.search = function() {
+        console.log($scope.current.searchString);
+        // Update the route
+        $state.go('account.users.search', { q: $scope.current.searchString });
+    }
 }]);

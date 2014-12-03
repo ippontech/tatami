@@ -50,15 +50,15 @@
 
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
-                        <li ng-class="{ 'active': isActive('/account/groups') }">
+                        <li ng-class="{ 'active': $state.current.name === 'account.groups' }">
                             <a ui-sref="account.groups" translate="tatami.groups.myGroups">
                             </a>
                         </li>
-                        <li ng-class="{ 'active': isActive('/account/groups/recommended') }">
+                        <li ng-class="{ 'active': $state.current.name === 'account.groups.recommended' }">
                             <a ui-sref="account.groups.recommended" translate="tatami.tags.trends" ng-click="display()">
                             </a>
                         </li>
-                        <li ng-class="{ 'active': $scope.current.name === 'account.groups.search' }">
+                        <li ng-class="{ 'active': $state.current.name === 'account.groups.search' }">
                             <a ui-sref="account.groups.search" translate="tatami.groups.search">
                             </a>
                         </li>
@@ -89,7 +89,7 @@
                                         <span ng-show="!group.publicGroup" class="label labelSizeNormal label-info" translate="tatami.groups.private"></span>
                                     </td>
                                     <td>
-                                       <!-- {{ getMembers('a680b880-62d4-11e4-b975-f8165431c969') }} -->
+                                       {{ group.counter }}
                                     </td>
                                     <td>
                                         <a href="/tatami/account/#/groups/{{group.groupId}}" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">

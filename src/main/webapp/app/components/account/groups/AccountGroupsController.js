@@ -31,16 +31,23 @@ GroupsModule.controller('AccountGroupsController', [
          * When we change to this state, load the data from the url specified by toState.data.dataUrl
          */
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if(toState.data.dataUrl){
+            if($scope.current.searchString != '') {
+                // We are searching
+                SearchService.query({term: 'groups', q: $scope.current.searchString }, function(result) {
+                    // Now update the user groups
+                    $scope.userGroups = result;
+                });
+            }
+            else if(toState.data.dataUrl) {
+                // State switched. Use provided dataUrl to fetch new data
                 $resource(toState.data.dataUrl).query(function(result) {
                     $scope.userGroups = result;
                 })
             }
-            else{
+            else {
                 $scope.userGroups = {};
             }
         });
-
 
         /**
          * Determines the current look of the group page
@@ -53,21 +60,6 @@ GroupsModule.controller('AccountGroupsController', [
 
         $scope.isActive = function(path) {
             return path === $location.path();
-        };
-        /**
-         * This is designed to get the number of members in a given group
-         * @param currentGroupId We want to find the number of members in the group with this id
-         * @returns {number} The number of members in the group
-         *
-         * Currently this isn't working, it causes angular to die
-         */
-        $scope.getMembers = function(currentGroupId) {
-            var memberCount = 1;
-            GroupMemberService.query({ groupId: currentGroupId }, function(result) {
-                memberCount = result.length;
-                console.log(result);
-            });
-            return memberCount;
         };
 
         /**
@@ -104,15 +96,7 @@ GroupsModule.controller('AccountGroupsController', [
         };
 
         $scope.search = function() {
-            console.log('HI');
             // Update the route
             $state.go('account.groups.search', { q: $scope.current.searchString });
-
-            // Now update the user groups
-            if($scope.current.searchString != ''){
-                SearchService.query({term: 'groups', q: $scope.current.searchString }, function(result) {
-                    $scope.groups = result;
-                });
-            }
         }
 }]);

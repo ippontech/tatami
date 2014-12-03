@@ -3,13 +3,13 @@
         <div>
             <div class="tabMenu">
                 <ul class="nav nav-tabs">
-                    <li ng-class="{ 'active': isActive('/account/tags') }">
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags' }">
                         <a ui-sref="account.tags" translate="tatami.tags.myTags"></a>
                     </li>
-                    <li ng-class="{ 'active': isActive('/account/tags/recommended') }">
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags.recommended' }">
                         <a ui-sref="account.tags.recommended" translate="tatami.tags.trends"></a>
                     </li>
-                    <li ng-class="{ 'active': isActive('/account/tags/search') }">
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
                         <a ui-sref="account.tags.search" translate="tatami.tags.search"></a>
                     </li>
                 </ul>
