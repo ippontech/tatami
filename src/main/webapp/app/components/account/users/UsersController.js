@@ -1,23 +1,34 @@
-UsersModule.controller('UsersController', ['$scope', '$resource', 'ProfileService', 'usersData', '$location', function($scope, $resource, ProfileService, usersData, $location) {
+UsersModule.controller('UsersController', ['$scope', '$resource', 'UserService', 'ProfileService', '$location', function($scope, $resource, UserService, ProfileService, $location) {
+    /**
+     * Ideally this would be done during routing
+     */
     $scope.getUsers = function() {
-        $resource('/tatami/rest/users/:userId/friends').query({ userId: usersData.username }, function (result){
-            $scope.usersGroup = result;
+        ProfileService.get().$promise.then(function(result) {
+            UserService.getFriends({ userId: result.username }, function (friendList){
+                $scope.usersGroup = friendList;
+            });
         })
     };
-    $scope.getUsers();
+
+    /**
+     * If toState.data.dataUrl is undefined, it means we are get the user friends, and so we call $scope.getUsers(),
+     * If however, a valid url is passed in, we will query that path.
+     */
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
+        if(toState.data.dataUrl == "search"){
+            $scope.userGroups = {};
+        }
+        else if(toState.data.dataUrl) {
+            $resource(toState.data.dataUrl).query(function(result) {
+                $scope.userGroups = result;
+            });
+        }
+        else {
+            $scope.getUsers();
+        }
+    });
 
     $scope.isActive = function(path) {
         return path === $location.path();
     };
-    /*
-    $scope.getUsers = function() {
-        // Get the user profile (which doesn't contain the login)
-        var promise = ProfileService.get();
-        promise.$promise.then(function(result) {
-            // Use the result of promise (the user profile) to find the login name for the user
-            $resource('/tatami/rest/users/:userId/friends').query({ userId: result.username }, function(listOfUsers) {
-                $scope.usersGroup = listOfUsers
-            });
-        });
-    };*/
 }]);

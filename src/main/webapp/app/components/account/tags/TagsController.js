@@ -1,4 +1,8 @@
-TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$location', '$resource', '$state', function($scope, $resource, TagService, $location, $resource, $state) {
+TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$location', '$resource', '$state', 'SearchService', function($scope, $resource, TagService, $location, $resource, $state, SearchService) {
+    $scope.$state = $state;
+    $scope.current = {
+        searchString: ''
+    };
     /**
      * Initialization function. Gets the tags immediately, this may be something can be resolved in routing
      * @returns {*}
@@ -17,9 +21,14 @@ TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$
      * through toState.data.dataUrl. Now we can perform a query on this url.
      */
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-        $resource(toState.data.dataUrl).query(function(result) {
-            $scope.tags = result;
-        });
+        if(toState.data.dataUrl) {
+            $resource(toState.data.dataUrl).query(function(result) {
+                $scope.tags = result;
+            });
+        }
+        else{
+            $scope.tags = {};
+        }
     });
 
     $scope.isActive = function (path){
@@ -37,4 +46,20 @@ TagsModule.controller('TagsController', ['$scope', '$resource', 'TagService', '$
                 'update': {method: 'PUT'}
             }).update(tag);
     };
+
+    $scope.contains = function(path) {
+        return $location.path().contains(path);
+    };
+
+    $scope.search = function() {
+        // Update the route
+        $state.go('account.tags.search', { q: $scope.current.searchString });
+
+        // Now update the user groups
+        if($scope.current.searchString != ''){
+            SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
+                $scope.tags = result;
+            });
+        }
+    }
 }]);
