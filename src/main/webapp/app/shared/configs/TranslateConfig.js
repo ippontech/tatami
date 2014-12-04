@@ -66,7 +66,7 @@ TatamiApp.config(function($translateProvider) {
                     'information': 'Information',
                     'statistics': 'Statistics',
                     'firstName': 'First Name',
-                    'lastName': 'lastName',
+                    'lastName': 'Last Name',
                     'email': 'Email',
                     'jobTitle': 'Job Title',
                     'phoneNumber': 'Phone Number',
