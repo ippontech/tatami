@@ -3,14 +3,14 @@
         <div>
             <div class="page-header">
                 <h4 class="profile-card background-image-fffix">
-                    <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + avatarURL + ')' }"></div>
-                    <a ng-cloak href="#users/{{ profile.username }}">
+                    <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+                    <a ng-cloak href="#/home/profile/{{ profile.username }}">
                     <strong ng-cloak>
                     {{ profile.firstName + ' ' + profile.lastName }}
                     </strong>
                     </a>
                     <br>
-                    <a ng-cloak href="#users/{{ profile.username }}">
+                    <a ng-cloak href="#/home/profile/{{ profile.username }}">
                     <small ng-cloak>
                     @{{ profile.username }}
                     </small>
@@ -53,16 +53,16 @@
                             </div>
                             -->
                             <h6>
-                                <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info' : suggestion.followingUser }">
+                                <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
                                 <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                                 </span>
-                                <a href="#users/{{ suggestion.username }}">
+                                <a href="#/home/profile/{{ suggestion.username }}">
                                 <strong>
                                 {{ suggestion.firstName + ' ' + suggestion.lastName }}
                                 </strong>
                                 </a>
                                 <br>
-                                <a href="#users/{{ suggestion.username }}">
+                                <a href="#/home/profile/{{ suggestion.username }}">
                                 <small>
                                 @{{ suggestion.username }}
                                 </small>
@@ -79,11 +79,11 @@
             <div class="well well-small">
                 <h4 id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    &nbsp;<span translate="tatami.sidebar.home.trends"></span>
+                    &nbsp;<span translate="tatami.sidebar.trends"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info' : tag.followed }">
+                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
