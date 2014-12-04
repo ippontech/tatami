@@ -92,6 +92,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'AccountGroupsController'
         })
+        .state('account.groups.manage', {
+            url:'/:groupId',
+            templateUrl: 'app/components/account/groups/GroupsManageView.html',
+            controller:'GroupsManageController',
+            parent: 'account'
+        })
         .state('account.tags', {
             url: '/tags',
             templateUrl: 'app/components/account/tags/TagsView.html',

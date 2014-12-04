@@ -92,7 +92,7 @@
                                        {{ group.counter }}
                                     </td>
                                     <td>
-                                        <a href="/tatami/account/#/groups/{{group.groupId}}" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
+                                        <a ui-sref="account.groups.manage({groupId: group.groupId})" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
                                             <span class="glyphicon glyphicon-th-large"> <span translate="tatami.groups.manage"></span></span>
                                         </a>
                                     </td>
