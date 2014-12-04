@@ -18,23 +18,23 @@
                 <form class="row-fluid littleMargeBot">
                     <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
                 </form>
-                <div class="useritem" ng-repeat="users in usersGroup">
+                <div class="useritem" ng-repeat="user in usersGroup">
                     <div class="pull-left background-image-fffix">
-                        <div class="img img-rounded img-medium" style="background-image: url(/tatami/avatar/{{ users.avatar }}/photo.jpg);"></div>
+                        <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                     </div>
                     <h4>
                         <span class="toggleFriend pointer pull-right label label-info">
                             <span class="glyphicon glyphicon-minus"></span>
                         </span>
-                        <a href="/tatami/home/#/users/{{ users.username }}">
+                        <a href="#/home/profile/{{ user.username }}">
                             <strong>
-                                {{ users.firstName }} + ' ' + {{ users.lastName }}
+                                {{ user.firstName + ' ' + user.lastName }}
                             </strong>
                         </a>
                         <br>
-                        <a href="/tatami/home/#/users/{{ users.username }}">
+                        <a href="#/home/profile/{{ user.username }}">
                             <small>
-                                @{{ users.username }}
+                                @{{ user.username }}
                             </small>
                         </a>
                     </h4>
