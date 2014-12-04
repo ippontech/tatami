@@ -3,6 +3,8 @@ TatamiApp.config(function($translateProvider) {
     $translateProvider.translations('en', {
         'tatami': {
 
+            //This file needs to be restructured again
+
             //Top Menu Text
             'menu': {
                 'logo': 'Ippon Technologies Logo',
@@ -59,12 +61,10 @@ TatamiApp.config(function($translateProvider) {
                 'home': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who To Follow',
-                    'trends': 'Trends'
                 },
                 'profile': {
                     'information': 'Information',
                     'statistics': 'Statistics',
-                    'trends': 'Trends',
                     'firstName': 'First Name',
                     'lastName': 'lastName',
                     'email': 'Email',
@@ -73,7 +73,8 @@ TatamiApp.config(function($translateProvider) {
                     'statuses': 'Statuses',
                     'following': 'Following',
                     'followers': 'Followers'
-                }
+                },
+                'trends': 'Trends'
             },
 
             //Home View Text

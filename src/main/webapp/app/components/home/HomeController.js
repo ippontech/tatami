@@ -1,8 +1,7 @@
-HomeModule.controller('HomeController', ['$scope', 'ProfileService', 'StatusService', 
-    function($scope, ProfileService, StatusService) {
+HomeModule.controller('HomeController', ['$scope', 'StatusService', 
+    function($scope, StatusService) {
         
         $scope.statuses = StatusService.getTimeline();
-        $scope.profile = ProfileService.get();
 
         $scope.favoriteStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
