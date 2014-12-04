@@ -90,7 +90,8 @@ TatamiApp.config(function($translateProvider) {
                 'reply': 'Reply',
                 'share': 'Share',
                 'favorite': 'Favorite',
-                'delete': 'Delete'
+                'delete': 'Delete',
+                'confirmDelete': 'Are you sure you want to delete this status?'
             },
             'user': {
                 'statuses': 'Statuses',
