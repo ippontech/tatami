@@ -10,6 +10,7 @@ var AccountModule = angular.module('AccountModule', [
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.when('/groups', '/groups/');
     $stateProvider
         .state('account',{
             url: '/account',
@@ -70,6 +71,11 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('account.groups', {
             url: '/groups',
+            templateUrl: 'app/components/account/FormView.html',
+            controller: 'FormController'
+        })
+        .state('account.groups.list', {
+            url: '/',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             data: {
                 dataUrl: '/tatami/rest/groups/'
@@ -91,6 +97,11 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                 dataUrl: ''
             },
             controller: 'AccountGroupsController'
+        })
+        .state('account.groups.manage', {
+            url:'/:groupId',
+            templateUrl: 'app/components/account/groups/GroupsManageView.html',
+            controller:'GroupsManageController'
         })
         .state('account.tags', {
             url: '/tags',
