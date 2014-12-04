@@ -8,12 +8,10 @@ GroupsModule.controller('AccountGroupsController', [
     '$scope',
     '$state',
     '$resource',
-    'GroupService',
-    'GroupMemberService',
-    '$routeParams',
     '$location',
+    'GroupService',
     'SearchService',
-    function($scope, $state, $resource, GroupService, GroupMemberService, $routeParams, $location, SearchService) {
+    function($scope, $state, $resource, $location, GroupService, SearchService) {
 
         $scope.$state = $state;
         /**

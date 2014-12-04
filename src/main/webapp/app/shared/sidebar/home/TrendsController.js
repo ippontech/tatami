@@ -1,4 +1,4 @@
-SidebarModule.controller('TrendsController', ['$scope', 'TagService', function($scope, TagService) {
+HomeSidebarModule.controller('TrendsController', ['$scope', 'TagService', function($scope, TagService) {
 	$scope.tags = TagService.query({ popular: true });
 
     $scope.followTag = function(tag) {

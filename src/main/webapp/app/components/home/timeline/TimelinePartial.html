@@ -36,7 +36,7 @@
                             <!--<div id="before"></div>-->
                             <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe }">
                                 <div class="pull-left background-image-fffix statusitem-img">
-                                    <div class="img img-rounded img-medium" ng-style="{ 'background-image': status.avatar=='' ? 'url(/img/default_image_profile.png)' : 'url(/tatami/avatar/' + status.avatar + '/photo.jpg)' }"></div>
+                                    <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                                 </div>
                                 <div id="status-content-container">
                                     <div class="pull-right text-right" ng-cloak>
@@ -45,8 +45,8 @@
                                     </div>
 
                                     <h5 class="statusitem-name" ng-cloak>
-                                        <strong><a href="#users/{{ status.username }}">{{status.firstName + ' ' + status.lastName}}</a></strong>
-                                        <small><a href="#users/{{ status.username }}">@{{ status.username }}</a></small>
+                                        <strong><a href="#/home/profile/{{ status.username }}">{{ status.firstName + ' ' + status.lastName }}</a></strong>
+                                        <small><a href="#/home/profile/{{ status.username }}">@{{ status.username }}</a></small>
                                     </h5>
                                     
                                     <div class="markdown" ng-bind-html="status.content | markdown"></div>

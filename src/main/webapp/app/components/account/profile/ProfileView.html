@@ -13,7 +13,9 @@
 
                         <div class="controls">
                             <div id="updateAvatar" class="dropzone well">
-                                <img class="nomargin avatar" src="/img/default_image_profile.png" alt="">
+                            
+                                <img class="nomargin avatar" ng-src="{{ profile.avatarURL }}">
+
                                 <p class="little-padding-top">Drop your photo here to update it</p>
                                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
                             </div>

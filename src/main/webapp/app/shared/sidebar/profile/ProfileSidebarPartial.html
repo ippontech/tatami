@@ -1,0 +1,103 @@
+<div>
+    <!-- <section class="actions"></section> What is this for ? -->
+    <div ng-controller="ProfileSidebarController">
+        <section class="hidden-phone profile">
+            <div>
+                <h4 class="profile-card background-image-fffix">
+                    <div class="img img-rounded img-big" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+                </h4>
+                <div class="well well-small">
+                    <h4>
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span translate="tatami.sidebar.profile.information"></span>
+                    </h4>
+                    <p>
+                        <strong>
+                        <span translate="tatami.sidebar.profile.firstName"></span>:
+                        </strong>
+                        {{ profile.firstName }}
+                    </p>
+                    <p>
+                        <strong>
+                        <span translate="tatami.sidebar.profile.lastName"></span>:
+                        </strong>
+                        {{ profile.lastName }}
+                    </p>
+                    <p>
+                        <strong>
+                        <span translate="tatami.sidebar.profile.email"></span>:
+                        </strong>
+                        {{ profile.login }}
+                    </p>
+                    <p>
+                        <strong>
+                        <span translate="tatami.sidebar.profile.jobTitle"></span>:
+                        </strong>
+                        {{ profile.jobTitle }}
+                    </p>
+                    <p>
+                        <strong>
+                        <span translate="tatami.sidebar.profile.phoneNumber"></span>:
+                        </strong>
+                        {{ profile.phoneNumber }}
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="hidden-phone stats">
+            <div>
+                <div class="well well-small">
+                    <h4>
+                        <span class="glyphicon glyphicon-signal"></span>
+                        <span translate="tatami.sidebar.profile.statistics"></span>
+                    </h4>
+                    <div>
+                        <p>
+                            <strong>
+                            <span translate="tatami.sidebar.profile.statuses"></span>:
+                            </strong>
+                            <a href="#/home/profile/{{ profile.username }}">
+                            <span class="badge">{{ profile.statusCount }}</span>
+                            </a>
+                        </p>
+                        <p>
+                            <strong>
+                            <span translate="tatami.sidebar.profile.following"></span>:
+                            </strong>
+                            <a href="#/home/profile/{{ profile.username }}/friends">
+                            <span class="badge">{{ profile.friendsCount }}</span>
+                            </a>
+                        </p>
+                        <p>
+                            <strong>
+                            <span translate="tatami.sidebar.profile.followers"></span>:
+                            </strong>
+                            <a href="#/home/profile/{{ profile.username }}/followers">
+                            <span class="badge">{{ profile.followersCount }}</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <section ng-controller="ProfileTrendsController" class="hidden-phone tag-trends">
+        <div>
+            <div class="well well-small">
+                <h4 id="profile-trends-title">
+                    <span class="glyphicon glyphicon-fire"></span>
+                    &nbsp;<span translate="tatami.sidebar.trends"></span>
+                </h4>
+                <div class="items">
+                    <div ng-repeat="tag in tags">
+                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
+                            <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                        </span>
+                        <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
+                        <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
