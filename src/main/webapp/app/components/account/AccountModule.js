@@ -1,12 +1,12 @@
 var AccountModule = angular.module('AccountModule', [
+    'ngResource',
     'ProfileModule', 
     'PreferencesModule', 
     'PasswordModule', 
     'FilesModule', 
     'UsersModule', 
     'GroupsModule', 
-    'TagsModule', 
-    'ngResource'
+    'TagsModule'
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

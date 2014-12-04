@@ -1,20 +1,8 @@
-AccountModule.controller('AccountController', ['$scope', '$routeParams', 'ProfileService', '$location', function($scope, $routeParams, ProfileService, $location) {
-    $scope.init = function() {
-        ProfileService.get(function(result) {
-            $scope.user = result;
-            temp = result.avatar=='' ? '/img/default_image_profile.png' : '/tatami/avatar/' + result.avatar + '/photo.jpg';
-            $scope.setAvatar(temp);
-        })
-    };
+AccountModule.controller('AccountController', ['$scope', '$location', 'ProfileService', function($scope, $location, ProfileService) {
+    $scope.profile = ProfileService.get();
 
-    $scope.isActive = function (path) {
+    $scope.isActive = function(path) {
         return path === $location.path();
-    };
-
-    $scope.init();
-
-    $scope.setAvatar = function(avatarURL) {
-        $scope.avatarURL = avatarURL;
     };
 
     $scope.selected = function(currentSelection) {

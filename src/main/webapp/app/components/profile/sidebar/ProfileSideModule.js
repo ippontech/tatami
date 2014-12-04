@@ -1,1 +1,0 @@
-var ProfileSideModule = angular.module('ProfileSideModule', ['ngResource']);

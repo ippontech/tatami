@@ -1,4 +1,4 @@
-SidebarModule.controller('SuggestionController', ['$scope', 'UserService', function($scope, UserService) {
+HomeSidebarModule.controller('SuggestionController', ['$scope', 'UserService', function($scope, UserService) {
     $scope.suggestions = UserService.getSuggestions();
 
     $scope.followUser = function(suggestion, index) {

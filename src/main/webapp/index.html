@@ -59,9 +59,7 @@
         </c:if>
     </sec:authorize>
     -->
-
 </head>
-
 <body ng-init="showSearchAccountPost = false" ng-app="TatamiApp">
     <div ui-view></div>
 
@@ -92,19 +90,32 @@
     <script src="/app/components/home/HomeModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
 
+    <!------------------------------------------------------------------------->
     <!-- Home Module -->
     <script src="/app/components/home/HomeController.js"></script>
 
-    <!-- Sidebar View -->
-    <script src="/app/components/home/sidebar/SidebarModule.js"></script>
-    <script src="/app/components/home/sidebar/ProfileController.js"></script>
-    <script src="/app/components/home/sidebar/GroupsController.js"></script>
-    <script src="/app/components/home/sidebar/SuggestionController.js"></script>
-    <script src="/app/components/home/sidebar/TrendsController.js"></script>
+    <!-- Post New Status Modal -->
+    <script src="/app/components/home/post/PostModule.js"></script>
+    <script src="/app/components/home/post/StatusManagerController.js"></script>
+    <script src="/app/components/home/post/StatusCreateController.js"></script>
 
     <!-- Timeline View -->
     <script src="/app/components/home/timeline/TimelineModule.js"></script>
 
+    <!-- Home Sidebar Partial -->
+    <script src="/app/shared/sidebar/home/HomeSidebarModule.js"></script>
+    <script src="/app/shared/sidebar/home/ProfileController.js"></script>
+    <script src="/app/shared/sidebar/home/GroupsController.js"></script>
+    <script src="/app/shared/sidebar/home/SuggestionController.js"></script>
+    <script src="/app/shared/sidebar/home/TrendsController.js"></script>
+
+    <!-- Profile Sidebar Partial -->
+    <script src="/app/shared/sidebar/profile/ProfileSidebarModule.js"></script>
+    <script src="/app/shared/sidebar/profile/ProfileSidebarController.js"></script>
+    <script src="/app/shared/sidebar/profile/ProfileTrendsController.js"></script>
+    <!------------------------------------------------------------------------->
+
+    <!------------------------------------------------------------------------->
     <!-- Account Module -->
     <script src="/app/components/account/AccountController.js"></script>
 
@@ -143,10 +154,7 @@
     <!-- Statuses of the Day View -->
 
 
-    <!-- Post New Status Modal -->
-    <script src="/app/components/home/post/PostModule.js"></script>
-    <script src="/app/components/home/post/StatusManagerController.js"></script>
-    <script src="/app/components/home/post/StatusCreateController.js"></script>
+    <!------------------------------------------------------------------------->
 
     <!-- Shared Configs -->
     <script src="/app/shared/configs/MarkedConfig.js"></script>
@@ -157,7 +165,6 @@
     <script src="/app/shared/filters/MarkdownFilter.js"></script>
 
     <!-- Shared Services -->
-    
     <script src="/app/shared/services/GeolocService.js"></script>
     <script src="/app/shared/services/GroupService.js"></script>
     <script src="/app/shared/services/ProfileService.js"></script>
@@ -166,36 +173,6 @@
     <script src="/app/shared/services/UserService.js"></script>
     <script src="/app/shared/services/SearchService.js"></script>
 
-    <script src="/app/shared/services/GroupMemberService.js"></script>
-
-    <!-- Old Libraries -->
-    <!--<c:if test="${wro4jEnabled eq false}">-->
-    <!--
-    <script src="/js/vendor/jquery.js"></script>
-    <script src="/js/vendor/bootstrap.js"></script>
-    <script src="/js/vendor/bootstrap-tour.js"></script>
-    <script src="/js/vendor/underscore.js"></script>
-    <script src="/js/vendor/underscore-polyfill.js"></script>
-    <script src="/js/vendor/backbone.js"></script>
-    <script src="/js/vendor/marked.js"></script>
-    <script src="/js/vendor/backbone.marionette.js"></script>
-    <script src="/js/vendor/modernizr.js"></script>
-    <script src="/js/vendor/jquery.ui.widget.js"></script>
-    <script src="/js/vendor/jquery.iframe-transport.js"></script>
-    <script src="/js/vendor/jquery.fileupload.js"></script>
-    <script src="/js/vendor/jquery.atmosphere.js"></script>
-    <script src="/js/vendor/jquery-timeago.js"></script>
-    <script src="/js/vendor/jquery.placeholder.js"></script>
-    <script src="/js/app/plugins/tatami.atmosphere.js"></script>
-    <script src="/js/app/plugins/bootstrap-filestyle.min.js"></script>
-    <script src="/js/vendor/jquery.jgrowl.js"></script>
-    -->
-    <!--</c:if>-->
-    <!--
-    <c:if test="${wro4jEnabled eq true}">
-        <script src="/tatami/static-wro4j/${version}/tatami-vendor.js"></script>
-    </c:if>
-    -->
     <!-- End Footer -->
 </body>
 </html>
