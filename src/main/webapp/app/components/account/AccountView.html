@@ -48,7 +48,7 @@
                                     <i class="glyphicon glyphicon-globe"></i> {{ 'tatami.users.title' | translate }}
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <li ng-class="{ 'active': $state.current.name === 'account.groups' || $state.current.name === 'account.groups.manage' }">
                                     <a ui-sref="account.groups">
                                     <i class="glyphicon glyphicon-th-large"></i> {{ 'tatami.groups.title' | translate }}
                                     </a>

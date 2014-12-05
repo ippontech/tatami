@@ -69,17 +69,19 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'UsersCoontroller'
         })
+        /*
         .state('account.groups', {
             url: '/groups',
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.groups.list', {
-            url: '/',
+        */
+        .state('account.groups', {
+            url: '/groups',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             data: {
                 dataUrl: '/tatami/rest/groups/'
-            } ,
+            },
             controller: 'AccountGroupsController'
         })
         .state('account.groups.recommended', {
@@ -101,7 +103,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.groups.manage', {
             url:'/:groupId',
             templateUrl: 'app/components/account/groups/GroupsManageView.html',
-            controller:'GroupsManageController'
+            controller:'GroupsManageController',
+            parent: 'account'
         })
         .state('account.tags', {
             url: '/tags',

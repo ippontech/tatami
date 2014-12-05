@@ -12,7 +12,6 @@ GroupsModule.controller('AccountGroupsController', [
     'GroupService',
     'SearchService',
     function($scope, $state, $resource, $location, GroupService, SearchService) {
-
         $scope.$state = $state;
         /**
          * When creating a group, the POST requires this payload
@@ -78,7 +77,6 @@ GroupsModule.controller('AccountGroupsController', [
          * Creates a new group on the server
          */
         $scope.createNewGroup = function() {
-            console.log($scope.groups);
             GroupService.save($scope.groups, function() {
                 $scope.reset();
                 // Alert user of new group creation
