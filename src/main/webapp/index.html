@@ -4,20 +4,22 @@
     <title>Tatami</title>
     <meta name="author" content="Ippon Technologies">
     <link rel="shortcut icon" type="image/png" href="/assets/img/company-logo.ico">
+    <link href="/assets/bower_components/bootstrap/dist/css/bootstrap-custom.css" rel="stylesheet">
+    <link href="/assets/css/tatami.css" rel="stylesheet">
+
+    <!-- Needed if using HTML5 History API and relative links (Angular routing) -->
+    <base href="/">
+
     <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
     <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0">-->
     <!--<meta name="description" content="">-->
 
     <!--<link href="/css/vendor/css/bootstrap.css" rel="stylesheet">-->
-    <link href="/assets/bower_components/bootstrap/dist/css/bootstrap-custom.css" rel="stylesheet">
-    <link href="/assets/css/tatami.css" rel="stylesheet">
+
     <!--[if IE]>
         <link rel="stylesheet" type="text/css" href="/assets/css/ie-only.css" />
     <![endif]-->
     <!--<link href="/css/vendor/css/jQueryjGrowl.css" rel="stylesheet">-->
-
-    <!-- Needed if using HTML5 History API and relative links (Angular routing) -->
-    <base href="/">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 7]>
@@ -84,6 +86,8 @@
     <script src="/assets/bower_components/marked/lib/marked-custom.js"></script>
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+    <script src="/assets/bower_components/openlayers/lib/OpenLayers.js"></script>
 
     <!-- App and Highest Level Modules -->
     <script src="/app/TatamiApp.js"></script>
@@ -155,9 +159,9 @@
 
     <!-- Statuses of the Day View -->
 
-
     <!------------------------------------------------------------------------->
 
+    <!------------------------------------------------------------------------->
     <!-- Shared Configs -->
     <script src="/app/shared/configs/MarkedConfig.js"></script>
     <script src="/app/shared/configs/MomentConfig.js"></script>
@@ -174,10 +178,8 @@
     <script src="/app/shared/services/TagService.js"></script>
     <script src="/app/shared/services/UserService.js"></script>
     <script src="/app/shared/services/SearchService.js"></script>
-
-    <!-- Install with bower -->
-    <script src="/js/vendor/OpenLayers.js"></script>
-
+    <!------------------------------------------------------------------------->
+    
     <!-- End Footer -->
 </body>
 </html>

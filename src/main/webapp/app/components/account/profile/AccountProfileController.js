@@ -3,28 +3,31 @@
  * the extra logic will be factored into ProfileService.
  */
 
-ProfileModule.controller('AccountProfileController', ['$scope', 'ProfileService', '$resource', 'UserService', function($scope, ProfileService, $resource, UserService) {
+ProfileModule.controller('AccountProfileController', ['$scope', '$resource', 'ProfileService', 'UserService', 
+    function($scope, $resource, ProfileService, UserService) {
 
-    $scope.init = function() {
-        ProfileService.get(function(result) {
-            $scope.userProfile = result;
-            UserService.get({username: result.username}, function(user){
-            $scope.userLogin = user.login;
+        $scope.init = function() {
+            ProfileService.get(function(result) {
+                $scope.userProfile = result;
+                UserService.get({username: result.username}, function(user) {
+                $scope.userLogin = user.login;
+                });
             });
-        });
-    };
+        };
 
-    $scope.init();
+        $scope.init();
 
-    $scope.updateUser = function (){
-        ProfileService.update($scope.userProfile);
-    };
+        $scope.updateUser = function() {
+            ProfileService.update($scope.userProfile);
+        };
 
-    $scope.deleteUser = function(confirmMessage) {
-        if(confirm(confirmMessage)) {
-            // Backend doesn't handle this correctly atm
-            //ProfileService.delete();
-            // Display success/failure message
+        // This is currently disabled until the back end is fixed to handle this correctly
+        $scope.deleteUser = function(confirmMessage) {
+            // Switch to a confirmation modal later
+            if(confirm(confirmMessage)) {
+                // ProfileService.delete();
+                // Display success/failure message
+            }
         }
     }
-}]);
+]);

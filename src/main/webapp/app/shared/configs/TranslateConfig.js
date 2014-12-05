@@ -46,7 +46,7 @@ TatamiApp.config(function($translateProvider) {
                 'characters': {
                     'left': 'Characters Left:'
                 },
-                'geoLocalization': 'Geolocalization',
+                'shareLocation': 'Share Location',
                 'options': 'Options',
                 'reply': 'Reply to this status',
                 'drop': {
@@ -90,7 +90,8 @@ TatamiApp.config(function($translateProvider) {
                 'reply': 'Reply',
                 'share': 'Share',
                 'favorite': 'Favorite',
-                'delete': 'Delete'
+                'delete': 'Delete',
+                'confirmDelete': 'Are you sure you want to delete this status?'
             },
             'user': {
                 'statuses': 'Statuses',
