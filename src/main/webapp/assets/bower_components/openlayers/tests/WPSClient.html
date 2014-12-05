@@ -1,0 +1,112 @@
+<html>
+<head>
+  <script src="OLLoader.js"></script>
+  <script type="text/javascript">
+  
+  var client;
+  
+  function test_initialize(t) {
+      t.plan(3);
+      
+      client = new OpenLayers.WPSClient({
+          servers: {
+              local: "/geoserver/wps"
+          }
+      });
+      
+      t.ok(client instanceof OpenLayers.WPSClient, 'creates an instance');
+      t.ok(client.events, 'has an events instance');
+      t.eq(client.servers.local.url, '/geoserver/wps', 'servers stored on instance');
+  }
+  
+  function test_getProcess(t) {
+      t.plan(4);
+
+      client = new OpenLayers.WPSClient({
+          servers: {
+              local: "/geoserver/wps"
+          },
+          lazy: true
+      });
+
+      var process = client.getProcess('local', 'gs:splitPolygon');
+      t.ok(process instanceof OpenLayers.WPSProcess, 'creates a process');
+      t.ok(process.client === client, 'process knows about client');
+      t.eq(process.server, 'local', 'process created with correct server');
+      t.eq(process.identifier, 'gs:splitPolygon', 'process created with correct identifier');
+      
+  }
+  
+  function test_describeProcess(t) {
+      t.plan(8);
+      var log = {request: [], event: [], callbacks: []};
+      var originalGET = OpenLayers.Request.GET;
+      OpenLayers.Request.GET = function(cfg) {
+          log.request.push(cfg);
+      }      
+      function describe(evt) {
+          log.event.push(evt);
+      }
+      client.events.register('describeprocess', this, describe);
+      client.lazy = false;
+      process = client.getProcess('local', 'gs:splitPolygon', {callback: function(evt) {
+        log.callbacks.push(evt);
+        client.lazy = true;
+      }});
+      t.eq(client.servers.local.processDescription['gs:splitPolyon'], null, 'describeProcess pending'); 
+      process.describe();
+      t.eq(log.request.length, 1, 'describeProcess request only sent once');
+      log.request[0].success.call(client, {
+          responseText: '<?xml version="1.0" encoding="UTF-8"?><wps:ProcessDescriptions xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en" service="WPS" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd"><ProcessDescription wps:processVersion="1.0.0" statusSupported="true" storeSupported="true"><ows:Identifier>gs:splitPolygon</ows:Identifier><ows:Title>Split Polygon</ows:Title><ows:Abstract>Splits a polygon by a linestring</ows:Abstract><DataInputs><Input maxOccurs="1" minOccurs="1"><ows:Identifier>polygon</ows:Identifier><ows:Title>polygon</ows:Title><ows:Abstract>Polygon to split</ows:Abstract><ComplexData><Default><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format></Default><Supported><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format><Format><MimeType>text/xml; subtype=gml/2.1.2</MimeType></Format><Format><MimeType>application/wkt</MimeType></Format><Format><MimeType>application/gml-3.1.1</MimeType></Format><Format><MimeType>application/gml-2.1.2</MimeType></Format></Supported></ComplexData></Input><Input maxOccurs="1" minOccurs="1"><ows:Identifier>line</ows:Identifier><ows:Title>line</ows:Title><ows:Abstract>Linestring to split by</ows:Abstract><ComplexData><Default><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format></Default><Supported><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format><Format><MimeType>text/xml; subtype=gml/2.1.2</MimeType></Format><Format><MimeType>application/wkt</MimeType></Format><Format><MimeType>application/gml-3.1.1</MimeType></Format><Format><MimeType>application/gml-2.1.2</MimeType></Format></Supported></ComplexData></Input></DataInputs><ProcessOutputs><Output><ows:Identifier>result</ows:Identifier><ows:Title>result</ows:Title><ComplexOutput><Default><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format></Default><Supported><Format><MimeType>text/xml; subtype=gml/3.1.1</MimeType></Format><Format><MimeType>text/xml; subtype=gml/2.1.2</MimeType></Format><Format><MimeType>application/wkt</MimeType></Format><Format><MimeType>application/gml-3.1.1</MimeType></Format><Format><MimeType>application/gml-2.1.2</MimeType></Format></Supported></ComplexOutput></Output></ProcessOutputs></ProcessDescription></wps:ProcessDescriptions>'
+      });
+      t.eq(log.event[0].type, 'describeprocess', 'describeprocess event triggered');
+      t.ok(client.servers.local.processDescription['gs:splitPolygon'], 'We have a process description!');
+      process.describe();
+      t.eq(log.request.length, 1, 'describeProcess request only sent once');
+      t.eq(log.event.length, 1, 'describeprocess event only triggered once');
+      t.eq(log.callbacks.length, 1, 'describeProcess callback called once');
+      t.eq(log.callbacks[0].title, 'Split Polygon', 'Correct callback argument');
+      OpenLayers.Request.GET = originalGET;
+      client.events.unregister('describeprocess', this, describe);
+  }
+  
+  function test_execute(t) {
+      t.plan(1);
+
+      client = new OpenLayers.WPSClient({
+          servers: {
+              local: "/geoserver/wps"
+          },
+          lazy: true
+      });
+      var log = [];
+      client.getProcess = function() {
+          return {
+              execute: function(options) {
+                  log.push(options);
+              }
+          }
+      }
+      
+      client.execute({inputs: 'a', success: 'b', scope: 'c'});
+      t.eq(log[0], {inputs: 'a', success: 'b', scope: 'c'}, "process executed with correct options");   
+  }
+  
+  function test_destroy(t) {
+      t.plan(2);
+      client = new OpenLayers.WPSClient({
+          servers: {
+              local: "/geoserver/wps"
+          },
+          lazy: true
+      });
+      client.destroy();
+      t.eq(client.events, null, "Events nullified");
+      t.eq(client.servers, null, "Servers nullified");
+  }
+
+  </script>
+</head>
+<body>
+</body>
+</html>
