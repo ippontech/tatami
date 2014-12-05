@@ -9,8 +9,8 @@ ProfileModule.controller('AccountProfileController', ['$scope', '$resource', 'Pr
         $scope.init = function() {
             ProfileService.get(function(result) {
                 $scope.userProfile = result;
-                UserService.get({username: result.username}, function(user) {
-                $scope.userLogin = user.login;
+                UserService.get({ username: result.username }, function(user) {
+                    $scope.userLogin = user.login;
                 });
             });
         };

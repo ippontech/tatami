@@ -132,7 +132,7 @@ TatamiApp.config(function($translateProvider) {
                 'lastName': 'Last Name',
                 'jobTitle': 'Job Title',
                 'phoneNumber': 'Phone Number',
-                'delete': 'Delete (Currently Disabled)',
+                'delete': 'Delete your account',
                 'confirmDelete': 'You are about to delete your account. Are you sure?'
             },
             'preferences': {
