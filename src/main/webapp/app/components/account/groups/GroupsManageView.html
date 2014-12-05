@@ -2,68 +2,51 @@
     <div class="alert alert-status">
         <div>
             <form class="form-horizontal row-fluid">
-                <h2>
-                    Group
-                </h2>
+                <h2 translate="tatami.group.title"></h2>
                 <fieldset>
-                    <legend>
-                        Update group details
-                    </legend>
+                    <legend translate="tatami.group.update"></legend>
                     <div class="control-group">
-                        <label class="control-label" for="name">
-                            Name of the group
-                        </label>
+                        <label class="control-label" for="name" translate="tatami.group.name"></label>
                         <div class="controls">
                             <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-span-12" value="Apple">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="description">
-                            Description
-                        </label>
-
+                        <label class="control-label" for="description" translate="tatami.group.description"></label>
                         <div class="controls">
                             <textarea name="description" class="input-xlarge col-span-12">oranges</textarea>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="archivedGroup">
-                            Do you want to archive this group?
-                        </label>
+                        <label class="control-label" for="archivedGroup" translate="tatami.group.archive"></label>
                         <div class="controls">
                             <label class="radio">
                                 <input type="radio" name="archivedGroup" value="true" required="">
-                                Yes, this group should be archived
+                                {{ 'tatami.group.allowArchive' | translate }}
                             </label>
                             <label class="radio">
                                 <input type="radio" name="archivedGroup" value="false" checked="" required="">
-                                No, this group is still in use
+                                {{ 'tatami.group.denyArchive' | translate }}
                             </label>
                         </div>
                     </div>
                     <div class="alert">
                         <i class="icon-warning-sign"></i>
-                        Archived groups are read-only
+                        {{ 'tatami.group.archiveWarning' | translate }}
                     </div>
                     <br>
                     <div class="return"></div>
                     <br>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-success col-span-12">
-                            Save
-                        </button>
+                        <button type="submit" class="btn btn-success col-span-12" translate="tatami.form.save"></button>
                     </div>
                 </fieldset>
             </form>
             <form class="form-horizontal row-fluid">
                 <fieldset>
-                    <legend>
-                        Add a member
-                    </legend>
+                    <legend translate="tatami.group.add"></legend>
                     <div class="control-group">
-                        <label class="control-label" for="username">
-                            User name
-                        </label>
+                        <label class="control-label" for="username" translate="tatami.group.user"></label>
                         <div class="controls">
                             <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12">
                         </div>
@@ -72,47 +55,174 @@
                     <div class="return"></div>
                     <br>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-success col-span-12">
-                            Save
-                        </button>
+                        <button type="submit" class="btn btn-success col-span-12" translate="tatami.form.save"></button>
                     </div>
                 </fieldset>
             </form>
             <div class="useritem">
                 <table class="table noCollapse">
                     <tbody><tr>
-                        <th style="border-top :0">User name</th>
-                        <th style="border-top :0">Role</th>
+                        <th style="border-top :0" translate="tatami.group.user"></th>
+                        <th style="border-top :0" translate="tatami.group.userRole"></th>
                         <th style="border-top :0"></th>
                     </tr>
                     </tbody><tbody class="items">
-                <tr>
-                    <td style="text-align: left">
-                        <div class="pull-left background-image-fffix little-marge-right">
+                <div class="useritem">
+                    <table class="table noCollapse">
+                        <tbody><tr>
+                            <th style="border-top :0">User name</th>
+                            <th style="border-top :0">Role</th>
+                            <th style="border-top :0"></th>
+                        </tr>
+                        </tbody><tbody class="items">
+                    <tr>
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
 
-                            <img class="img-rounded img-medium" style="background-image: url(/img/default_image_profile.png);">
-                        </div>
-                        <h4>
+                                <img class="img-rounded img-medium" style="background-image: url(/tatami/avatar/e30263b0-5d7c-11e4-b72f-fe54008898dc/photo.jpg);">
+                            </div>
+                            <h4>
 
-                            <a href="/tatami/home/#/users/hegelandka">
-                                <strong>
-                                    Kenneth Hegeland
-                                </strong>
-                            </a>
-                            <br>
-                            <a href="/tatami/home/#/users/hegelandka">
-                                <small>
-                                    @hegelandka
-                                </small>
-                            </a>
-                        </h4>
-                    </td>
-                    <td>
-                        Administrator
-                    </td>
-                    <td>
-                    </td>
-                </tr></tbody>
+                                <a href="/tatami/home/#/users/cooperrl2">
+                                    <strong>
+                                        Racheal Lindsey Cooper
+                                    </strong>
+                                </a>
+                                <br>
+                                <a href="/tatami/home/#/users/cooperrl2">
+                                    <small>
+                                        @cooperrl2
+                                    </small>
+                                </a>
+                            </h4>
+
+                        </td>
+
+                        <td>
+
+                            Member
+
+                        </td>
+                        <td>
+
+
+                            <button type="button" class="btn btn-success input-block-level delete">
+                                Remove
+                            </button>
+
+
+                        </td>
+                    </tr><tr>
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
+
+                                <img class="img-rounded img-medium" style="background-image: url(/tatami/avatar/4360daf0-7990-11e4-b3ec-fe54008898dc/photo.jpg);">
+                            </div>
+                            <h4>
+
+                                <a href="/tatami/home/#/users/hegelandka">
+                                    <strong>
+                                        Kenneth Hegeland
+                                    </strong>
+                                </a>
+                                <br>
+                                <a href="/tatami/home/#/users/hegelandka">
+                                    <small>
+                                        @hegelandka
+                                    </small>
+                                </a>
+                            </h4>
+
+                        </td>
+
+                        <td>
+
+                            Administrator
+
+                        </td>
+                        <td>
+
+
+
+                        </td>
+                    </tr><tr>
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
+
+                                <img class="img-rounded img-medium" style="background-image: url(/img/default_image_profile.png);">
+                            </div>
+                            <h4>
+
+                                <a href="/tatami/home/#/users/narronjr">
+                                    <strong>
+                                        Jeremy Narron
+                                    </strong>
+                                </a>
+                                <br>
+                                <a href="/tatami/home/#/users/narronjr">
+                                    <small>
+                                        @narronjr
+                                    </small>
+                                </a>
+                            </h4>
+
+                        </td>
+
+                        <td>
+
+                            Member
+
+                        </td>
+                        <td>
+
+
+                            <button type="button" class="btn btn-success input-block-level delete">
+                                Remove
+                            </button>
+
+
+                        </td>
+                    </tr><tr>
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
+
+                                <img class="img-rounded img-medium" style="background-image: url(/img/default_image_profile.png);">
+                            </div>
+                            <h4>
+
+                                <a href="/tatami/home/#/users/spruillkj">
+                                    <strong>
+                                        Kameron Spruill
+                                    </strong>
+                                </a>
+                                <br>
+                                <a href="/tatami/home/#/users/spruillkj">
+                                    <small>
+                                        @spruillkj
+                                    </small>
+                                </a>
+                            </h4>
+
+                        </td>
+
+                        <td>
+
+                            Member
+
+                        </td>
+                        <td>
+
+
+                            <button type="button" class="btn btn-success input-block-level delete">
+                                Remove
+                            </button>
+
+
+                        </td>
+                    </tr></tbody>
+                    </table>
+
+                </div>
                 </table>
             </div>
         </div>

@@ -103,7 +103,17 @@ TatamiApp.config(function($translateProvider) {
                 'title': 'Group',
                 'manage': 'Manage',
                 'statuses': 'Statuses',
-                'memberList': 'Member List'
+                'memberList': 'Member List',
+                'update': 'Update group details',
+                'name': 'Name of the group',
+                'description': 'Description',
+                'archive': 'Do you want to archive this group?',
+                'allowArchive': 'Yes, this group should be archived',
+                'denyArchive': 'No, this group is still in use',
+                'archiveWarning': 'Archived groups are read-only',
+                'add': 'Add a member',
+                'user': 'User name',
+                'userRole': 'Role'
             },
             'tag': {
                 'title': 'Tag',
