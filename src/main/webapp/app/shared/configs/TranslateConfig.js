@@ -46,7 +46,7 @@ TatamiApp.config(function($translateProvider) {
                 'characters': {
                     'left': 'Characters Left:'
                 },
-                'geoLocalization': 'Geolocalization',
+                'shareLocation': 'Share Location',
                 'options': 'Options',
                 'reply': 'Reply to this status',
                 'drop': {
