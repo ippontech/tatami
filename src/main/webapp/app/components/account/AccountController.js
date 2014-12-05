@@ -1,4 +1,5 @@
-AccountModule.controller('AccountController', ['$scope', '$location', 'ProfileService', function($scope, $location, ProfileService) {
+AccountModule.controller('AccountController', ['$scope', '$location', 'ProfileService', '$state', function($scope, $location, ProfileService, $state) {
+    $scope.$state = $state;
     $scope.profile = ProfileService.get();
 
     $scope.isActive = function(path) {
