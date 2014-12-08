@@ -51,20 +51,20 @@
                                     
                                     <div class="markdown" ng-bind-html="status.content | markdown"></div>
 
-                                    <small ng-show="status.groupId">
+                                    <small ng-if="status.groupId">
                                         <a class="label" ng-class="status.publicGroup ? 'label-info' : 'label-warning'" ng-href="#groups/{{ status.groupId }}">
                                         {{ status.groupName }}
                                         </a>
                                         <br>
                                     </small>
 
-                                    <small ng-show="status.statusPrivate">
+                                    <small ng-if="status.statusPrivate">
                                         <span class="glyphicon glyphicon-lock"></span>
                                         <span translate="tatami.status.private"></span>
                                         <br>
                                     </small>
 
-                                    <small ng-show="status.replyTo">
+                                    <small ng-if="status.replyTo">
                                         <span class="glyphicon glyphicon-share-alt"></span>
                                         <span translate="tatami.status.replyTo"></span>
                                         <a ng-href="#status/{{ status.replyTo }}">@{{ status.replyToUsername }}</a>
@@ -101,7 +101,7 @@
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.status.reply"></span>
                                         </button>
-                                        <button ng-if="status.username != profile.username && !status.shareByMe" ng-click="shareStatus(status)" class="btn-link status-action status-action-share button-ios">
+                                        <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
                                             <span translate="tatami.status.share"></span>
                                         </button>
