@@ -2,21 +2,21 @@
     <div class="alert alert-status">
         <div>
             <form class="form-horizontal row-fluid">
-                <h2 translate="tatami.groups.title"></h2>
+                <h2 translate="tatami.account.groups.title"></h2>
 
-                <button class="show btn btn-xlarge btn-block btn-primary" type="button" translate="tatami.groups.create" ng-click="newGroup()"></button>
+                <button class="show btn btn-xlarge btn-block btn-primary" type="button" translate="tatami.account.groups.create" ng-click="newGroup()"></button>
 
                 <fieldset class="hide" style="display: block;" ng-show="current.createGroup">
-                    <legend translate="tatami.groups.create"></legend>
+                    <legend translate="tatami.account.groups.create"></legend>
                     <div class="control-group">
-                        <label class="control-label" for="name" translate="tatami.groups.name"></label>
+                        <label class="control-label" for="name" translate="tatami.account.groups.name"></label>
                         <div class="controls">
                             <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-span-12" value="" ng-model="groups.name">
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label" for="description" translate="tatami.groups.description"></label>
+                        <label class="control-label" for="description" translate="tatami.account.groups.description"></label>
                         <div class="controls">
                             <textarea name="description" class="input-xlarge col-span-12" ng-model="groups.description"></textarea>
                         </div>
@@ -24,20 +24,20 @@
 
 
                     <div class="control-group">
-                        <label class="control-label" for="publicGroup" translate="tatami.groups.access"></label>
+                        <label class="control-label" for="publicGroup" translate="tatami.account.groups.access"></label>
 
                         <div class="controls">
                             <label class="radio">
-                                <input type="radio" name="publicGroup" value="true" ng-checked="true" required="" ng-model="groups.publicGroup"> {{ 'tatami.groups.public' | translate }}
+                                <input type="radio" name="publicGroup" value="true" ng-checked="true" required="" ng-model="groups.publicGroup"> {{ 'tatami.account.groups.public' | translate }}
                             </label>
                             <label class="radio">
-                                <input type="radio" name="publicGroup" value="false" required="" ng-model="groups.publicGroup"> {{ 'tatami.groups.private' | translate }}
+                                <input type="radio" name="publicGroup" value="false" required="" ng-model="groups.publicGroup"> {{ 'tatami.account.groups.private' | translate }}
                             </label>
                         </div>
                     </div>
 
                     <div class="alertColor">
-                        <i class="glyphicon glyphicon-warning-sign"></i> {{ 'tatami.groups.publicWarning' | translate }}
+                        <i class="glyphicon glyphicon-warning-sign"></i> {{ 'tatami.account.groups.publicWarning' | translate }}
                     </div>
                     <br>
                     <div class="return"></div>
@@ -51,15 +51,15 @@
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
                         <li ng-class="{ 'active': $state.current.name === 'account.groups' }">
-                            <a ui-sref="account.groups" translate="tatami.groups.myGroups">
+                            <a ui-sref="account.groups" translate="tatami.account.groups.myGroups">
                             </a>
                         </li>
                         <li ng-class="{ 'active': $state.current.name === 'account.groups.recommended' }">
-                            <a ui-sref="account.groups.recommended" translate="tatami.tags.trends" ng-click="display()">
+                            <a ui-sref="account.groups.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
                             </a>
                         </li>
                         <li ng-class="{ 'active': $state.current.name === 'account.groups.search' }">
-                            <a ui-sref="account.groups.search" translate="tatami.groups.search">
+                            <a ui-sref="account.groups.search" translate="tatami.account.groups.search">
                             </a>
                         </li>
                     </ul>
@@ -67,14 +67,14 @@
 
                 <div>
                     <form class="row-fluid littleMargeBot">
-                        <input ng-show="$state.current.name === 'account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
+                        <input ng-show="$state.current.name === 'account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
                     </form>
                     <table class="table noCollapse">
                         <tbody>
                             <tr>
-                                <th style="border-top :0" translate="tatami.groups.name"></th>
-                                <th style="border-top :0" translate="tatami.groups.access"></th>
-                                <th style="border-top :0" translate="tatami.groups.members"></th>
+                                <th style="border-top :0" translate="tatami.account.groups.name"></th>
+                                <th style="border-top :0" translate="tatami.account.groups.access"></th>
+                                <th style="border-top :0" translate="tatami.account.groups.members"></th>
                                 <th style="border-top :0"></th>
                             </tr>
                         </tbody>
@@ -85,15 +85,15 @@
                                         <a href="/tatami/home/groups/{{ group.groupId }}">{{ group.name }}</a>
                                     </td>
                                     <td>
-                                        <span ng-show="group.publicGroup" class="label labelSizeNormal label-warning" translate="tatami.groups.public"></span>
-                                        <span ng-show="!group.publicGroup" class="label labelSizeNormal label-info" translate="tatami.groups.private"></span>
+                                        <span ng-show="group.publicGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
+                                        <span ng-show="!group.publicGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
                                     </td>
                                     <td>
                                        {{ group.counter }}
                                     </td>
                                     <td>
                                         <a ui-sref="account.groups.manage({groupId: group.groupId})" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
-                                            <span class="glyphicon glyphicon-th-large"> <span translate="tatami.groups.manage"></span></span>
+                                            <span class="glyphicon glyphicon-th-large"> <span translate="tatami.account.groups.manage"></span></span>
                                         </a>
                                     </td>
                                 </tr>

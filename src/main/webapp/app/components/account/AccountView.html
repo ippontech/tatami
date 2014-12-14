@@ -1,66 +1,69 @@
 <div ng-cloak>
     <ng-include src="'/app/shared/topmenu/TopMenuPartial.html'"></ng-include>
     <div id="mainPanel" class="container">
-        <div id="avatar">
-            <div>
-                <div class="nomargin well row avatar-float-left-container">
-                    <div class="col-span-5 text-center">
-                        <a href="/tatami/home/users/{{ profile.username }}/">
-                            <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
-                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{ profile.avatarURL }}">
-                            <h3 class="user-profile" ng-cloak>{{ profile.firstName + ' ' + profile.lastName }}</h3>
-                            <p>@{{ profile.username }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <br>
         <div class="row">
             <!-- The nagivation sidebar -->
             <div id="navigation">
                 <div>
-                    <div class="col-span-4">
+                    <div class="col-span-4 alert">
+                        <div id="avatar">
+                            <div>
+                                <div class="nomargin well row avatar-float-left-container">
+                                    <div class="text-center">
+                                        <a href="#/home/profile/{{ profile.username }}">
+                                            <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
+                                            <!-- This error might not occur anymore because of ng-src tag, needs testing -->
+                                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{ profile.avatarURL }}">
+                                            <br>
+                                            <h3 class="user-profile" ng-cloak>{{ profile.firstName + ' ' + profile.lastName }}</h3>
+                                            <p>@{{ profile.username }}</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                         <div class="tabbable alert alert-status">
                             <ul class="adminMenu nav nav-pills nav-stacked nomargin">
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.profile">
-                                    <i class="glyphicon glyphicon-user"></i> {{ 'tatami.profile.title' | translate }}
+                                    <i class="glyphicon glyphicon-user"></i> {{ 'tatami.account.profile.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.preferences">
-                                    <i class="glyphicon glyphicon-picture"></i> {{ 'tatami.preferences.title' | translate }}
+                                    <i class="glyphicon glyphicon-picture"></i> {{ 'tatami.account.preferences.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.password">
-                                    <i class="glyphicon glyphicon-lock"></i> {{ 'tatami.password.title' | translate }}
+                                    <i class="glyphicon glyphicon-lock"></i> {{ 'tatami.account.password.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.files">
-                                    <i class="glyphicon glyphicon-file"></i> {{ 'tatami.files.title' | translate }}
+                                    <i class="glyphicon glyphicon-file"></i> {{ 'tatami.account.files.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.users">
-                                    <i class="glyphicon glyphicon-globe"></i> {{ 'tatami.users.title' | translate }}
+                                    <i class="glyphicon glyphicon-globe"></i> {{ 'tatami.account.users.title' | translate }}
                                     </a>
                                 </li>
                                 <li ng-class="{ 'active': $state.current.name === 'account.groups' || $state.current.name === 'account.groups.manage' }">
                                     <a ui-sref="account.groups">
-                                    <i class="glyphicon glyphicon-th-large"></i> {{ 'tatami.groups.title' | translate }}
+                                    <i class="glyphicon glyphicon-th-large"></i> {{ 'tatami.account.groups.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.tags">
-                                    <i class="glyphicon glyphicon-tags"></i> {{ 'tatami.tags.title' | translate }}
+                                    <i class="glyphicon glyphicon-tags"></i> {{ 'tatami.account.tags.title' | translate }}
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.sotd">
-                                    <i class="glyphicon glyphicon-signal"></i> {{ 'tatami.sotd.title' | translate }}
+                                    <i class="glyphicon glyphicon-signal"></i> {{ 'tatami.account.sotd.title' | translate }}
                                     </a>
                                 </li>
                             </ul>

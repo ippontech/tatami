@@ -4,24 +4,24 @@
             <div class="tabMenu">
                 <ul class="nav nav-tabs">
                     <li ng-class="{ 'active': $state.current.name === 'account.tags' }">
-                        <a ui-sref="account.tags" translate="tatami.tags.myTags"></a>
+                        <a ui-sref="account.tags" translate="tatami.account.tags.myTags"></a>
                     </li>
                     <li ng-class="{ 'active': $state.current.name === 'account.tags.recommended' }">
-                        <a ui-sref="account.tags.recommended" translate="tatami.tags.trends"></a>
+                        <a ui-sref="account.tags.recommended" translate="tatami.account.tags.trends"></a>
                     </li>
                     <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
-                        <a ui-sref="account.tags.search" translate="tatami.tags.search"></a>
+                        <a ui-sref="account.tags.search" translate="tatami.account.tags.search"></a>
                     </li>
                 </ul>
             </div>
             <div>
                 <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="Enter your search">
+                    <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.tags.search' | translate }}">
                 </form>
                 <table class="table noCollapse">
                     <tbody>
                         <tr>
-                            <th style="border-top :0" translate="tatami.tags.tag"></th>
+                            <th style="border-top :0" translate="tatami.account.tags.tag"></th>
                             <th style="border-top :0"></th>
                         </tr>
                     </tbody>
@@ -34,14 +34,14 @@
                                 <td class="follow" ng-show="!tag.followed">
                                     <a class="btn-title toggleTag pull-right label labelSizeNormal  " ng-click="follow(tag)">
                                         <span class="glyphicon glyphicon-plus">
-                                            <span class="hidden-phone" translate="tatami.tags.follow"></span>
+                                            <span class="hidden-phone" translate="tatami.account.tags.follow"></span>
                                         </span>
                                     </a>
                                 </td>
                                 <td class="follow" ng-show="tag.followed">
                                     <a class="btn-title toggleTag pull-right label labelSizeNormal label-info " ng-click="follow(tag)">
                                         <span class="glyphicon glyphicon-minus">
-                                            <span class="hidden-phone" translate="tatami.tags.following"></span>
+                                            <span class="hidden-phone" translate="tatami.account.tags.following"></span>
                                         </span>
                                     </a>
                                 </td>

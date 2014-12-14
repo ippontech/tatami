@@ -6,8 +6,8 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="/">
-            <img title="{{ 'tatami.menu.logo' | translate }}" src="/assets/img/company-logo.png">
-            <span translate="tatami.menu.title"></span>
+            <img title="{{ 'tatami.home.menu.logo' | translate }}" src="/assets/img/company-logo.png">
+            <span translate="tatami.home.menu.title"></span>
         </a>
     <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
         <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
@@ -33,7 +33,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown">
                     <span>
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        <span translate="tatami.menu.about.title" class="hidden-tablet"></span>
+                        <span translate="tatami.home.menu.about.title" class="hidden-tablet"></span>
                         <b class="caret"></b>
                     </span>
                     </a>
@@ -47,20 +47,20 @@
                         <li>
                             <a href="#/tos">
                                 <span class="glyphicon glyphicon-briefcase"></span>
-                                <span translate="tatami.menu.about.tos"></span>
+                                <span translate="tatami.home.menu.about.tos"></span>
                             </a>
                         </li>
                         <li class="dropdown-submenu">
                             <a>
                                 <span class="glyphicon glyphicon-flag"></span>
-                                <span translate="tatami.menu.about.language"></span>
+                                <span translate="tatami.home.menu.about.language"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a translate="tatami.menu.about.language.en" href="?language=en"></a>
+                                    <a translate="tatami.home.menu.about.language.en" href="?language=en"></a>
                                 </li>
                                 <li>
-                                    <a translate="tatami.menu.about.language.fr" href="?language=fr"></a>
+                                    <a translate="tatami.home.menu.about.language.fr" href="?language=fr"></a>
                                 </li>
                             </ul>
                         </li>
@@ -74,32 +74,32 @@
                         <li>
                             <a href="https://github.com/ippontech/tatami/issues" target="_blank">
                                 <span class="glyphicon glyphicon-inbox"></span>
-                                <span translate="tatami.menu.about.github.issues"></span>
+                                <span translate="tatami.home.menu.about.github.issues"></span>
                             </a>
                         </li>
                         <li>
                             <a href="https://github.com/ippontech/tatami" target="_blank">
                                 <span class="glyphicon glyphicon-wrench"></span>
-                                <span translate="tatami.menu.about.github.fork"></span>
+                                <span translate="tatami.home.menu.about.github.fork"></span>
                             </a>
                         </li>
                         <li class="divider"></li>
                         <li>
                             <a href="http://www.ippon.fr" target="_blank">
                                 <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                <span translate="tatami.menu.about.ippon.website"><span>
+                                <span translate="tatami.home.menu.about.ippon.website"><span>
                             </a>
                         </li>
                         <li>
                             <a href="http://blog.ippon.fr" target="_blank">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span translate="tatami.menu.about.ippon.blog"></span>
+                                <span translate="tatami.home.menu.about.ippon.blog"></span>
                             </a>
                         </li>
                         <li>
                             <a href="https://twitter.com/ippontech" target="_blank">
                                 <span class="glyphicon glyphicon-bullhorn"></span>
-                                <span translate="tatami.menu.about.ippon.twitter"></span>
+                                <span translate="tatami.home.menu.about.ippon.twitter"></span>
                             </a>
                         </li>
                     </ul>
@@ -115,7 +115,7 @@
 
                         <span>
                             <span class="glyphicon glyphicon-user"></span>
-                            <span translate="tatami.menu.account.title" class="hidden-tablet"></span>
+                            <span translate="tatami.home.menu.account.title" class="hidden-tablet"></span>
                             <b class="caret"></b>
                         </span>
                         </a>
@@ -123,56 +123,56 @@
                             <li>
                                 <a ui-sref="account.profile">
                                     <span class="glyphicon glyphicon-user"></span>
-                                    <span translate="tatami.profile.title"></span>
+                                    <span translate="tatami.account.profile.title"></span>
                                 </a>
                             </li>
                             <li>
                                 <a ui-sref="account.preferences">
                                     <span class="glyphicon glyphicon-picture"></span>
-                                    <span translate="tatami.preferences.title"></span>
+                                    <span translate="tatami.account.preferences.title"></span>
                                 </a>
                             </li>
                             <li>
                                 <a ui-sref="account.password">
                                     <span class="glyphicon glyphicon-lock"></span>
-                                    <span translate="tatami.password.title"></span>
+                                    <span translate="tatami.account.password.title"></span>
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li>
                                 <a ui-sref="account.files"
                                     <span class="glyphicon glyphicon-file"></span>
-                                    <span translate="tatami.files.title"></span>
+                                    <span translate="tatami.account.files.title"></span>
                                 </a>
                                 <a ui-sref="account.users">
                                     <span class="glyphicon glyphicon-globe"></span>
-                                    <span translate="tatami.users.title"></span>
+                                    <span translate="tatami.account.users.title"></span>
                                 </a>
                                 <a ui-sref="account.groups">
                                     <span class="glyphicon glyphicon-th-large"></span>
-                                    <span translate="tatami.groups.title"></span>
+                                    <span translate="tatami.account.groups.title"></span>
                                 </a>
                                 <a ui-sref="account.tags">
                                     <span class="glyphicon glyphicon-tags"></span>
-                                    <span translate="tatami.tags.title"></span>
+                                    <span translate="tatami.account.tags.title"></span>
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li>
                                 <a ui-sref="account.sotd">
                                     <span class="glyphicon glyphicon-signal"></span>
-                                    <span translate="tatami.sotd.title"></span>
+                                    <span translate="tatami.account.sotd.title"></span>
                                 </a>
                                 <a href="#/home/company">
                                     <span class="glyphicon glyphicon-briefcase"></span>
-                                    <span translate="tatami.menu.account.companyWall"></span>
+                                    <span translate="tatami.home.menu.account.companyWall"></span>
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="/tatami/logout">
                                     <span class="glyphicon glyphicon-off"></span>
-                                    <span translate="tatami.menu.account.logout"></span>
+                                    <span translate="tatami.home.menu.account.logout"></span>
                                 </a>
                             </li>
                         </ul>
@@ -180,7 +180,7 @@
                     <li class="hidden-phone" ng-controller="StatusManagerController">
                         <button class="btn btn-primary navbar-form" ng-click="showModal()">
                             <i class="glyphicon glyphicon-pencil"></i>
-                            <span translate="tatami.post.button" class="visible-desktop"></span>
+                            <span translate="tatami.home.post.button" class="visible-desktop"></span>
                         </button>
                     </li>
                 </ul>
@@ -189,13 +189,13 @@
                         <a href="#" id="help-tour">
                             <span>
                                 <span class="glyphicon glyphicon-question-sign"></span>
-                                <span translate="tatami.menu.help" class="hidden-tablet"></span>
+                                <span translate="tatami.home.menu.help" class="hidden-tablet"></span>
                             </span>
                         </a>
                     </li>
                 </ul>
                 <form id="searchform" class="navbar-form pull-right col-span-4" action="">
-                    <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.menu.search' | translate }}">
+                    <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
                     
                     <!-- Clear search field when clicking the x icon ? -->
                     <!-- Probably should just remove it -->

@@ -2,7 +2,7 @@
     <div class="alert alert-status">
         <div>
             <form>
-                <h2 translate="tatami.profile.title"></h2>
+                <h2 translate="tatami.account.profile.title"></h2>
                 <br>
                 <fieldset class="form-horizontal row-fluid">
                     <div class="control-group dashed">
@@ -21,34 +21,34 @@
                     </div>
                 </fieldset>
                 <fieldset class="form-horizontal row-fluid">
-                    <legend translate="tatami.profile.update"></legend>
+                    <legend translate="tatami.account.profile.update"></legend>
                     <div class="control-group">
-                        <label class="control-label" for="login" translate="tatami.profile.email"></label>
+                        <label class="control-label" for="login" translate="tatami.account.profile.email"></label>
                         <div class="controls">
                             <input name="login" type="text" disabled="true" class="col-span-12" ng-model="userLogin">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="firstName" translate="tatami.profile.firstName">
+                        <label class="control-label" for="firstName" translate="tatami.account.profile.firstName">
                         </label>
                         <div class="controls">
                             <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-span-12" ng-model="userProfile.firstName">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="lastName" translate="tatami.profile.lastName"></label>
+                        <label class="control-label" for="lastName" translate="tatami.account.profile.lastName"></label>
                         <div class="controls">
                             <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-span-12" ng-model="userProfile.lastName">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="jobTitle" translate="tatami.profile.jobTitle"></label>
+                        <label class="control-label" for="jobTitle" translate="tatami.account.profile.jobTitle"></label>
                         <div class="controls">
                             <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-span-12" ng-model="userProfile.jobTitle">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="phoneNumber" translate="tatami.profile.phoneNumber"></label>
+                        <label class="control-label" for="phoneNumber" translate="tatami.account.profile.phoneNumber"></label>
                         <div class="controls">
                             <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-span-12" ng-model="userProfile.phoneNumber">
                         </div>
@@ -62,10 +62,10 @@
             <!-- Disabled for now until backend handles deleting accounts properly
             <form>
                 <fieldset class="form-horizontal row-fluid">
-                    <legend translate="tatami.profile.delete"></legend>
+                    <legend translate="tatami.account.profile.delete"></legend>
                     <div class="return"></div>
                     <div class="form-actions">
-                        <button type="submit" class="input-xlarge btn btn-danger btn-block" ng-click="deleteUser(('tatami.profile.confirmDelete' | translate))" translate="tatami.profile.delete">
+                        <button type="submit" class="input-xlarge btn btn-danger btn-block" ng-click="deleteUser(('tatami.account.profile.confirmDelete' | translate))" translate="tatami.account.profile.delete">
                         </button>
                     </div>
                 </fieldset>

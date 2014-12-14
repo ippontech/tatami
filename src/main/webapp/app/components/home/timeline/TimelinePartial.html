@@ -60,13 +60,13 @@
 
                                     <small ng-if="status.statusPrivate">
                                         <span class="glyphicon glyphicon-lock"></span>
-                                        <span translate="tatami.status.private"></span>
+                                        <span translate="tatami.home.status.private"></span>
                                         <br>
                                     </small>
 
                                     <small ng-if="status.replyTo">
                                         <span class="glyphicon glyphicon-share-alt"></span>
-                                        <span translate="tatami.status.replyTo"></span>
+                                        <span translate="tatami.home.status.replyTo"></span>
                                         <a ng-href="#status/{{ status.replyTo }}">@{{ status.replyToUsername }}</a>
                                         <br>
                                     </small>
@@ -95,23 +95,23 @@
                                         <small class="statusitem-footer"> 
                                         <a href="#status/{{ status.statusId }}" class="btn-link status-action button-ios">
                                             <i class="glyphicon glyphicon-eye-open"></i>
-                                            <span translate="tatami.status.view"></span>
+                                            <span translate="tatami.home.status.view"></span>
                                         </a>
                                         <button ng-controller="StatusManagerController" ng-click="showModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span translate="tatami.status.reply"></span>
+                                            <span translate="tatami.home.status.reply"></span>
                                         </button>
                                         <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
-                                            <span translate="tatami.status.share"></span>
+                                            <span translate="tatami.home.status.share"></span>
                                         </button>
                                         <button ng-click="favoriteStatus(status)" class="btn-link status-action status-action-favorite button-ios">
                                             <i class="glyphicon glyphicon-star"></i>
-                                            <span translate="tatami.status.favorite"></span>
+                                            <span translate="tatami.home.status.favorite"></span>
                                         </button>
                                         <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
-                                            <span translate="tatami.status.delete"></span>
+                                            <span translate="tatami.home.status.delete"></span>
                                         </button>
                                         </small> 
                                     </div>

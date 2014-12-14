@@ -3,216 +3,237 @@ TatamiApp.config(function($translateProvider) {
     $translateProvider.translations('en', {
         'tatami': {
 
-            //This file needs to be restructured again
-
-            //Top Menu Text
-            'menu': {
-                'logo': 'Ippon Technologies Logo',
-                'title': 'Tatami',
-                'about': {
-                    'title': 'About',
-                    'tos': 'Terms of Service',
-                    'language': {
-                        'language': 'Language',
-                        'en': 'English',
-                        'fr': 'Français'
-                    },
-                    'github': {
-                        'issues': 'Submit a Bug Report',
-                        'fork': 'Fork Tatami on Github'
-                    },
-                    'ippon': {
-                        'website': 'Ippon Technologies Website',
-                        'blog': 'Ippon Technologies Blog',
-                        'twitter': 'Follow @ippontech on Twitter'
-                    }
-                },
-                'search': 'Search',
-                'help': 'Help',
-                'account': {
-                    'title': 'Account',
-                    'companyWall': 'Company Wall',
-                    'logout': 'Logout'
-                }
-            },
-            'post': {
-                'mandatory': 'Comment is mandatory',
-                'content': {
-                    'mandatory': 'Please fill out this field.'
-                },
-                'update': 'Update your status',
-                'preview': 'Preview',
-                'edit': 'Edit',
-                'characters': {
-                    'left': 'Characters Left:'
-                },
-                'shareLocation': 'Share Location',
-                'options': 'Options',
-                'reply': 'Reply to this status',
-                'drop': {
-                    'file': 'Drop your files here'
-                },
-                'markdown': 'Markdown Supported',
-                'button': 'Post'
-            },
-
-            //Sidebar View Text
-            'sidebar': {
-                'home': {
-                    'myGroups': 'My Groups',
-                    'whoToFollow': 'Who To Follow',
-                },
-                'profile': {
-                    'information': 'Information',
-                    'statistics': 'Statistics',
-                    'firstName': 'First Name',
-                    'lastName': 'Last Name',
-                    'email': 'Email',
-                    'jobTitle': 'Job Title',
-                    'phoneNumber': 'Phone Number',
-                    'statuses': 'Statuses',
-                    'following': 'Following',
-                    'followers': 'Followers'
-                },
-                'trends': 'Trends'
-            },
-
-            //Home View Text
+            // Home View
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
-                'favorites': 'Favorites'
-            },
-            'status': {
-                'replyTo': 'In reply to',
-                'private': 'Private Message',
-                'view': 'View',
-                'reply': 'Reply',
-                'share': 'Share',
-                'favorite': 'Favorite',
-                'delete': 'Delete',
-                'confirmDelete': 'Are you sure you want to delete this status?'
-            },
-            'user': {
-                'statuses': 'Statuses',
-                'following': 'Following',
-                'followers': 'Followers',
-                'yourProfile': 'Your Profile',
-                'follow': 'Follow'
-            },
-            'group': {
-                'title': 'Group',
-                'manage': 'Manage',
-                'statuses': 'Statuses',
-                'memberList': 'Member List',
-                'update': 'Update group details',
-                'name': 'Name of the group',
-                'description': 'Description',
-                'archive': 'Do you want to archive this group?',
-                'allowArchive': 'Yes, this group should be archived',
-                'denyArchive': 'No, this group is still in use',
-                'archiveWarning': 'Archived groups are read-only',
-                'add': 'Add a member',
-                'user': 'User name',
-                'userRole': 'Role'
-            },
-            'tag': {
-                'title': 'Tag',
-                'follow': 'Follow',
-                'following': 'Following'
-            },
+                'favorites': 'Favorites',
 
-            //Account View Text
-            'profile': {
-                'title': 'Profile',
-                'dropPhoto': 'Drop your photo here to update it',
-                'update': 'Update your profile',
-                'email': 'Email',
-                'firstName': 'First Name',
-                'lastName': 'Last Name',
-                'jobTitle': 'Job Title',
-                'phoneNumber': 'Phone Number',
-                'delete': 'Delete your account',
-                'confirmDelete': 'You are about to delete your account. Are you sure?'
-            },
-            'preferences': {
-                'title': 'Preferences',
-                'notifications': 'Notifications',
-                'notification': {
-                    'email': {
-                        'mention': 'Get notified by e-mail when you are mentioned',
-                        'dailyDigest': 'Get a daily digest e-mail',
-                        'weeklyDigest': 'Get a weekly digest e-mail'
+                //Top Menu
+                'menu': {
+                    'logo': 'Ippon Technologies Logo',
+                    'title': 'Tatami',
+                    'about': {
+                        'title': 'About',
+                        'tos': 'Terms of Service',
+                        'language': {
+                            'language': 'Language',
+                            'en': 'English',
+                            'fr': 'Français'
+                        },
+                        'github': {
+                            'issues': 'Submit a Bug Report',
+                            'fork': 'Fork Tatami on Github'
+                        },
+                        'ippon': {
+                            'website': 'Ippon Technologies Website',
+                            'blog': 'Ippon Technologies Blog',
+                            'twitter': 'Follow @ippontech on Twitter'
+                        }
                     },
-                    'rss': {
-                        'timeline': 'Allow RSS feed publication of your timeline',
-                        'link': 'Link to your timeline RSS stream'
+                    'search': 'Search',
+                    'help': 'Help',
+                    'account': {
+                        'title': 'Account',
+                        'companyWall': 'Company Wall',
+                        'logout': 'Logout'
                     }
+                },
+
+                // Post Modal
+                'post': {
+                    'mandatory': 'Comment is mandatory',
+                    'content': {
+                        'mandatory': 'Please fill out this field.'
+                    },
+                    'update': 'Update your status',
+                    'preview': 'Preview',
+                    'edit': 'Edit',
+                    'characters': {
+                        'left': 'Characters Left:'
+                    },
+                    'options': 'Options',
+                    'shareLocation': 'Share Location',
+                    'group': 'Group',
+                    'reply': 'Reply to this status',
+                    'files': 'Files',
+                    'drop': {
+                        'file': 'Drop your files here'
+                    },
+                    'markdown': 'Markdown Supported',
+                    'button': 'Post'
+                },
+
+                // Home Sidebar View
+                'sidebar': {
+                    'myGroups': 'My Groups',
+                    'whoToFollow': 'Who To Follow',
+                    'trends': 'Trends'
+                },
+
+                // Individual Status
+                'status': {
+                    'replyTo': 'In reply to',
+                    'private': 'Private Message',
+                    'view': 'View',
+                    'reply': 'Reply',
+                    'share': 'Share',
+                    'favorite': 'Favorite',
+                    'delete': 'Delete',
+                    'confirmDelete': 'Are you sure you want to delete this status?'
+                },
+
+                // Profile View
+                'profile': {
+                    'statuses': 'Statuses',
+                    'following': 'Following',
+                    'followers': 'Followers',
+                    'yourProfile': 'Your Profile',
+                    'follow': 'Follow',
+
+                    // Profile Sidebar View
+                    'sidebar': {
+                        'information': 'Information',
+                        'statistics': 'Statistics',
+                        'firstName': 'First Name',
+                        'lastName': 'Last Name',
+                        'email': 'Email',
+                        'jobTitle': 'Job Title',
+                        'phoneNumber': 'Phone Number',
+                        'statuses': 'Statuses',
+                        'following': 'Following',
+                        'followers': 'Followers',
+                        'trends': 'Trends'
+                    }
+                },
+
+                // Group View
+                'group': {
+                    'title': 'Group',
+                    'manage': 'Manage',
+                    'statuses': 'Statuses',
+                    'memberList': 'Member List',
+                    
+                },
+
+                // Tag View
+                'tag': {
+                    'title': 'Tag',
+                    'follow': 'Follow',
+                    'following': 'Following'
                 }
             },
-            'password': {
-                'title': 'Password',
-                'update': 'Update your password',
-                'old': 'Old Password',
-                'new': 'New Password',
-                'confirm': 'Confirm New Password'
-            },
-            'files': {
-                'title': 'Files',
-                'filename': 'Filename',
-                'size': 'Size',
-                'date': 'Date',
-                'delete': 'Delete'
-            },
-            'users': {
-                'title': 'Users',
-                'myFriends': 'My Friends',
-                'recommend': 'Recommended',
-                'search': 'Search'
-            },
-            'groups': {
-                'title': 'Groups',
-                'create': 'Create a new group',
-                'name': 'Name',
-                'description': 'Description',
-                'public': 'Public',
-                'private': 'Private',
-                'publicWarning': 'Warning! If this group is public, everybody can access it',
-                'myGroups': 'My Groups',
-                'recommended': 'Recommended',
-                'search': 'Search',
-                'group': 'Group',
-                'access': 'Access',
-                'members': 'Members',
-                'manage': 'Manage',
-                'updateDetails': 'Update group details',
-                'archive': 'Do you want to archive this group?',
-                'yes': 'Yes, this group should be archived',
-                'no': 'No, this group is still in use',
-                'archivedInfo': 'Archived groups are read-only',
-                'addMember': 'Add a member',
-                'username': 'Username',
-                'role': 'Role'
-            },
-            'tags': {
-                'title': 'Tags',
-                'myTags': 'My Tags',
-                'trends': 'Trends',
-                'search': 'Search',
-                'tag': 'Tag',
-                'follow': 'Follow',
-                'following': 'Following'
-            },
-            'sotd': {
-                'title': 'Status of the Day'
+            
+            //Account View
+            'account': {
+
+                // Profile Tab
+                'profile': {
+                    'title': 'Profile',
+                    'dropPhoto': 'Drop your photo here to update it',
+                    'update': 'Update your profile',
+                    'email': 'Email',
+                    'firstName': 'First Name',
+                    'lastName': 'Last Name',
+                    'jobTitle': 'Job Title',
+                    'phoneNumber': 'Phone Number',
+                    'delete': 'Delete your account',
+                    'confirmDelete': 'You are about to delete your account. Are you sure?'
+                },
+
+                // Preferences Tab
+                'preferences': {
+                    'title': 'Preferences',
+                    'notifications': 'Notifications',
+                    'notification': {
+                        'email': {
+                            'mention': 'Get notified by e-mail when you are mentioned',
+                            'dailyDigest': 'Get a daily digest e-mail',
+                            'weeklyDigest': 'Get a weekly digest e-mail'
+                        },
+                        'rss': {
+                            'timeline': 'Allow RSS feed publication of your timeline',
+                            'link': 'Link to your timeline RSS stream'
+                        }
+                    }
+                },
+
+                // Password Tab
+                'password': {
+                    'title': 'Password',
+                    'update': 'Update your password',
+                    'old': 'Old Password',
+                    'new': 'New Password',
+                    'confirm': 'Confirm New Password'
+                },
+
+                // Files Tab
+                'files': {
+                    'title': 'Files',
+                    'filename': 'Filename',
+                    'size': 'Size',
+                    'date': 'Date',
+                    'delete': 'Delete'
+                },
+
+                // Users Tab
+                'users': {
+                    'title': 'Users',
+                    'myFriends': 'My Friends',
+                    'recommend': 'Recommended',
+                    'search': 'Search'
+                },
+
+                // Groups Tab
+                'groups': {
+                    'title': 'Groups',
+                    'create': 'Create a new group',
+                    'name': 'Name',
+                    'description': 'Description',
+                    'public': 'Public',
+                    'private': 'Private',
+                    'publicWarning': 'Warning: If this group is public, everybody can access it',
+                    'myGroups': 'My Groups',
+                    'recommended': 'Recommended',
+                    'search': 'Search',
+                    'group': 'Group',
+                    'access': 'Access',
+                    'members': 'Members',
+                    'manage': 'Manage',
+                    'update': 'Update group details',
+                    'archive': 'Do you want to archive this group?',
+                    'allowArchive': 'Yes, this group should be archived',
+                    'denyArchive': 'No, this group is still in use',
+                    'archiveWarning': 'Warning: Archived groups are read-only',
+                    'addMember': 'Add a member',
+                    'username': 'Username',
+                    'role': 'Role',
+                },
+
+                // Tags Tab
+                'tags': {
+                    'title': 'Tags',
+                    'myTags': 'My Tags',
+                    'trends': 'Trends',
+                    'search': 'Search',
+                    'tag': 'Tag',
+                    'follow': 'Follow',
+                    'following': 'Following'
+                },
+
+                // Statuses of the Day Tab
+                'sotd': {
+                    'title': 'Statuses of the Day'
+                }
             },
 
-
+            // License Page
             'license': {
                 'title': 'Source Code License',
                 'copyright': 'Copyright 2012'
             },
 
+            // Presentation Page
             'presentation': {
                 'title': 'Presentation',
                 'devices': 'Devices',
