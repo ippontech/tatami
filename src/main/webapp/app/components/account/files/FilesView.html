@@ -1,7 +1,7 @@
 <div class="col-span-8">
     <div class="alert alert-status">
         <div >
-            <h2 translate="tatami.files.title"></h2>
+            <h2 translate="tatami.account.files.title"></h2>
             <span class="file-infos"></span>
         </div>
         <div>
@@ -16,9 +16,9 @@
                 <tbody>
                     <tr>
                         <th style="border-top :0">  </th>
-                        <th style="border-top :0"><b translate="tatami.files.filename"></b></th>
-                        <th style="border-top :0"><b translate="tatami.files.size"></b></th>
-                        <th style="border-top :0"><b translate="tatami.files.date"></b></th>
+                        <th style="border-top :0"><b translate="tatami.account.files.filename"></b></th>
+                        <th style="border-top :0"><b translate="tatami.account.files.size"></b></th>
+                        <th style="border-top :0"><b translate="tatami.account.files.date"></b></th>
                         <th style="border-top :0">  </th>
                     </tr>
                 </tbody>
@@ -35,7 +35,7 @@
                         <td>{{ file.size / 1000 }} kb</td>
                         <td>{{ file.prettyPrintCreationDate }}</td>
                         <td>
-                            <span class="btn btn-primary btn-block" translate="tatami.files.delete" ng-click="delete(file.attachmentId, $index)"></span>
+                            <span class="btn btn-primary btn-block" translate="tatami.account.files.delete" ng-click="delete(file.attachmentId, $index)"></span>
                         </td>
                     </tr>
                 </tbody>

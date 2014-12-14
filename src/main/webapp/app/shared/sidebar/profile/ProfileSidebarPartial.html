@@ -9,35 +9,35 @@
                 <div class="well well-small">
                     <h4>
                         <span class="glyphicon glyphicon-user"></span>
-                        <span translate="tatami.sidebar.profile.information"></span>
+                        <span translate="tatami.home.profile.sidebar.information"></span>
                     </h4>
                     <p>
                         <strong>
-                        <span translate="tatami.sidebar.profile.firstName"></span>:
+                        <span translate="tatami.home.profile.sidebar.firstName"></span>:
                         </strong>
                         {{ profile.firstName }}
                     </p>
                     <p>
                         <strong>
-                        <span translate="tatami.sidebar.profile.lastName"></span>:
+                        <span translate="tatami.home.profile.sidebar.lastName"></span>:
                         </strong>
                         {{ profile.lastName }}
                     </p>
                     <p>
                         <strong>
-                        <span translate="tatami.sidebar.profile.email"></span>:
+                        <span translate="tatami.home.profile.sidebar.email"></span>:
                         </strong>
                         {{ profile.login }}
                     </p>
                     <p>
                         <strong>
-                        <span translate="tatami.sidebar.profile.jobTitle"></span>:
+                        <span translate="tatami.home.profile.sidebar.jobTitle"></span>:
                         </strong>
                         {{ profile.jobTitle }}
                     </p>
                     <p>
                         <strong>
-                        <span translate="tatami.sidebar.profile.phoneNumber"></span>:
+                        <span translate="tatami.home.profile.sidebar.phoneNumber"></span>:
                         </strong>
                         {{ profile.phoneNumber }}
                     </p>
@@ -49,12 +49,12 @@
                 <div class="well well-small">
                     <h4>
                         <span class="glyphicon glyphicon-signal"></span>
-                        <span translate="tatami.sidebar.profile.statistics"></span>
+                        <span translate="tatami.home.profile.sidebar.statistics"></span>
                     </h4>
                     <div>
                         <p>
                             <strong>
-                            <span translate="tatami.sidebar.profile.statuses"></span>:
+                            <span translate="tatami.home.profile.sidebar.statuses"></span>:
                             </strong>
                             <a href="#/home/profile/{{ profile.username }}">
                             <span class="badge">{{ profile.statusCount }}</span>
@@ -62,7 +62,7 @@
                         </p>
                         <p>
                             <strong>
-                            <span translate="tatami.sidebar.profile.following"></span>:
+                            <span translate="tatami.home.profile.sidebar.following"></span>:
                             </strong>
                             <a href="#/home/profile/{{ profile.username }}/friends">
                             <span class="badge">{{ profile.friendsCount }}</span>
@@ -70,7 +70,7 @@
                         </p>
                         <p>
                             <strong>
-                            <span translate="tatami.sidebar.profile.followers"></span>:
+                            <span translate="tatami.home.profile.sidebar.followers"></span>:
                             </strong>
                             <a href="#/home/profile/{{ profile.username }}/followers">
                             <span class="badge">{{ profile.followersCount }}</span>
@@ -86,7 +86,7 @@
             <div class="well well-small">
                 <h4 id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    &nbsp;<span translate="tatami.sidebar.trends"></span>
+                    &nbsp;<span translate="tatami.home.profile.sidebar.trends"></span>
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
