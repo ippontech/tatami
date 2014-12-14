@@ -7,7 +7,7 @@ HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileServ
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
                 function(response) { 
                     var index = $scope.statuses.indexOf(status);
-                    $scope.statuses[index].favorite = response.favorite;
+                    $scope.statuses[index]['favorite'] = response.favorite;
             });
         },
 
@@ -15,9 +15,7 @@ HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileServ
             StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
                 function(response) { 
                     var index = $scope.statuses.indexOf(status);
-                    $scope.statuses[index]['shareByMe'] = true;
-                    // for some reason the shareByMe property is still false in the server
-                    // response, possible backend bug?
+                    $scope.statuses[index]['shareByMe'] = response.shareByMe;
             });
         },
 

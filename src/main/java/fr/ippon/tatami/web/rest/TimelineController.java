@@ -145,6 +145,7 @@ public class TimelineController {
             }
             if (action.isShared() != null && action.isShared()) {
                 timelineService.shareStatus(statusId);
+                status.setShareByMe(action.isShared());
             }
             if (action.isAnnounced() != null && action.isAnnounced()) {
                 timelineService.announceStatus(statusId);
