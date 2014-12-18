@@ -5,7 +5,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="#/">
+        <!-- Change href to ui-sref that goes to 'home' which redirects to either login or /home/timeline -->
             <img title="{{ 'tatami.home.menu.logo' | translate }}" src="/assets/img/company-logo.png">
             <span translate="tatami.home.menu.title"></span>
         </a>
@@ -18,10 +19,10 @@
             <ul class="nav">
                 <li>
                     <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
-                        <a href="#/home/timeline">
+                        <a ui-sref="home.timeline">
                     <!--</c:if>-->
                     <!--<c:if test="${currentPage == null || currentPage != 'home'}">
-                        <a href="/">
+                        <a href="#/">
                     </c:if>-->
                     <span>
                         <span class="glyphicon glyphicon-th-list"></span>
@@ -39,13 +40,13 @@
                     </a>
                     <ul class="dropdown-menu closed">
                         <li>
-                            <a href="#/presentation">
+                            <a ui-sref="about.presentation">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span translate="tatami.presentation.title"></span>
                             </a>
                         </li>
                         <li>
-                            <a href="#/tos">
+                            <a ui-sref="about.tos">
                                 <span class="glyphicon glyphicon-briefcase"></span>
                                 <span translate="tatami.home.menu.about.tos"></span>
                             </a>
@@ -66,7 +67,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#/license">
+                            <a ui-sref="about.license">
                                 <span class="glyphicon glyphicon-info-sign"></span>
                                 <span translate="tatami.license.title"></span>
                             </a>
@@ -163,7 +164,7 @@
                                     <span class="glyphicon glyphicon-signal"></span>
                                     <span translate="tatami.account.sotd.title"></span>
                                 </a>
-                                <a href="#/home/company">
+                                <a ui-sref="home.company">
                                     <span class="glyphicon glyphicon-briefcase"></span>
                                     <span translate="tatami.home.menu.account.companyWall"></span>
                                 </a>

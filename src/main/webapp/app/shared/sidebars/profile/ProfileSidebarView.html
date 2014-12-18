@@ -1,6 +1,6 @@
 <div>
     <!-- <section class="actions"></section> What is this for ? -->
-    <div ng-controller="ProfileSidebarController">
+    <div>
         <section class="hidden-phone profile">
             <div>
                 <h4 class="profile-card background-image-fffix">
@@ -56,7 +56,7 @@
                             <strong>
                             <span translate="tatami.home.profile.sidebar.statuses"></span>:
                             </strong>
-                            <a href="#/home/profile/{{ profile.username }}">
+                            <a ui-sref="home.profile({ username: profile.username })">
                             <span class="badge">{{ profile.statusCount }}</span>
                             </a>
                         </p>
@@ -64,7 +64,7 @@
                             <strong>
                             <span translate="tatami.home.profile.sidebar.following"></span>:
                             </strong>
-                            <a href="#/home/profile/{{ profile.username }}/friends">
+                            <a ui-sref="home.profile.following({ username: profile.username })">
                             <span class="badge">{{ profile.friendsCount }}</span>
                             </a>
                         </p>
@@ -72,7 +72,7 @@
                             <strong>
                             <span translate="tatami.home.profile.sidebar.followers"></span>:
                             </strong>
-                            <a href="#/home/profile/{{ profile.username }}/followers">
+                            <a ui-sref="home.profile.followers({ username: profile.username })">
                             <span class="badge">{{ profile.followersCount }}</span>
                             </a>
                         </p>
@@ -81,7 +81,7 @@
             </div>
         </section>
     </div>
-    <section ng-controller="ProfileTrendsController" class="hidden-phone tag-trends">
+    <section class="hidden-phone tag-trends">
         <div>
             <div class="well well-small">
                 <h4 id="profile-trends-title">
@@ -90,11 +90,11 @@
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
+                        <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
+                        <a ng-cloak ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                     </div>
                 </div>
             </div>

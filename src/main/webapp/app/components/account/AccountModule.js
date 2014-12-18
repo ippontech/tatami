@@ -21,7 +21,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.profile', {
             url: '/profile',
             templateUrl: 'app/components/account/profile/ProfileView.html',
-            controller: 'AccountProfileController'
+            controller: 'ProfileController'
         })
         .state('account.preferences', {
             url: '/preferences',
@@ -39,7 +39,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             resolve: {
                 FilesService: 'FilesService',
 
-                attachmentQuota: function (FilesService){
+                attachmentQuota: function(FilesService) {
                     FilesService.getQuota().$promise;
                 }
             },
@@ -67,7 +67,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             data: {
                 dataUrl: 'search'
             },
-            controller: 'UsersCoontroller'
+            controller: 'UsersController'
         })
         /*
         .state('account.groups', {
@@ -82,7 +82,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             data: {
                 dataUrl: '/tatami/rest/groups/'
             },
-            controller: 'AccountGroupsController'
+            controller: 'GroupsController'
         })
         .state('account.groups.recommended', {
             url: '/recommended',
@@ -90,7 +90,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             data: {
                 dataUrl: '/tatami/rest/groupmemberships/suggestions'
             },
-            controller: 'AccountGroupsController'
+            controller: 'GroupsController'
         })
         .state('account.groups.search', {
             url: '/search/:q',
@@ -98,7 +98,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             data: {
                 dataUrl: ''
             },
-            controller: 'AccountGroupsController'
+            controller: 'GroupsController'
         })
         .state('account.groups.manage', {
             url:'/:groupId',

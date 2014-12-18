@@ -36,13 +36,13 @@
                             <!-- Make status abbr month and day display after 24h have passed? -->
                         </div>
                         <h5 class="statusitem-name">
-                            <strong><a href="#users/{{ currentStatus.username }}">{{currentStatus.firstName + ' ' + currentStatus.lastName}}</a></strong>
-                            <small><a href="#users/{{ currentStatus.username }}">@{{ currentStatus.username }}</a></small>
+                            <strong><a ui-sref="home.profile({ username: currentStatus.username })">{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</a></strong>
+                            <small><a ui-sref="home.profile({ username: currentStatus.username })">@{{ currentStatus.username }}</a></small>
                         </h5>
                         <div class="markdown" ng-bind-html="currentStatus.content | markdown"></div>
 
                         <small ng-show="currentStatus.groupId">
-                            <a class="label" ng-class="currentStatus.publicGroup ? 'label-info' : 'label-warning'" ng-href="#groups/{{ currentStatus.groupId }}">
+                            <a class="label" ng-class="currentStatus.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.group({ group: currentStatus.groupId })">
                                 {{ currentStatus.groupName }}
                             </a>
                             <br>
@@ -57,7 +57,7 @@
                         <small ng-show="currentStatus.replyTo">
                             <span class="glyphicon glyphicon-share-alt"></span>
                             <span translate="tatami.home.status.replyTo"></span>
-                            <a ng-href="#status/{{ currentStatus.replyTo }}">@{{ currentStatus.replyToUsername }}</a>
+                            <a ui-sref="home.status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername }}</a>
                             <br>
                         </small>
 
@@ -84,7 +84,7 @@
                     <div ng-style="{ visibility : showButtonRow ? 'visible' : 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
                         <div>
                             <small class="statusitem-footer">
-                                <a href="#status/{{ currentStatus.statusId }}" class="btn-link status-action button-ios">
+                                <a ui-sref="home.status({ status: currentStatus.statusId })" class="btn-link status-action button-ios">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                     <span translate="tatami.home.status.view"></span>
                                 </a>
