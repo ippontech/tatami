@@ -41,6 +41,7 @@
     <script src="/js/vendor/OpenLayers.js"></script>
     <script src="/js/app/app.js"></script>
     <script src="/js/app/plugins/tatami.search.js"></script>
+    <script src="/js/app/plugins/tatami.smileys.js"></script>
     <script src="/js/app/plugins/suggester.js"></script>
     <script src="/js/app/models/mUser.js"></script>
     <script src="/js/app/models/mFile.js"></script>

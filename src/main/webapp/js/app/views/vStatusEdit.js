@@ -231,7 +231,7 @@
 
         togglePreview: function () {
             try {
-                this.$preview.html(marked(this.$edit.val()));
+                this.$preview.html(marked(Tatami.Smileys(this.$edit.val())));
             }
             catch (e) {
             }

@@ -35,6 +35,7 @@
         <js>/js/app/plugins/suggester.js</js>
         <js>/js/app/plugins/tatami.atmosphere.js</js>
         <js>/js/app/plugins/tatami.search.js</js>
+        <js>/js/app/plugins/tatami.smileys.js</js>
     </group>
 
     <group name='tatami-account'>
