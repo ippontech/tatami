@@ -1,16 +1,16 @@
 <div>
-    <section ng-controller="ProfileController" class="hidden-phone card-profile">
+    <section class="hidden-phone card-profile">
         <div>
             <div class="page-header">
                 <h4 class="profile-card background-image-fffix">
                     <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
-                    <a ng-cloak href="#/home/profile/{{ profile.username }}">
+                    <a ng-cloak ui-sref="home.profile({ username: profile.username })">
                     <strong ng-cloak>
                     {{ profile.firstName + ' ' + profile.lastName }}
                     </strong>
                     </a>
                     <br>
-                    <a ng-cloak href="#/home/profile/{{ profile.username }}">
+                    <a ng-cloak ui-sref="home.profile({ username: profile.username })">
                     <small ng-cloak>
                     @{{ profile.username }}
                     </small>
@@ -19,7 +19,7 @@
             </div>
         </div>
     </section>
-    <section ng-controller="GroupsController" class="hidden-phone groups">
+    <section class="hidden-phone groups">
         <div>
             <div class="well well-small">
                 <h4 id="groups-list-title">
@@ -28,13 +28,13 @@
                 </h4>
                 <div class="items">
                     <div ng-repeat="group in groups">
-                        <a ng-cloak href="#groups/{{ group.groupId }}">{{ group.name }}</a>
+                        <a ng-cloak ui-sref="home.group({ group: group.groupId })">{{ group.name }}</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section ng-controller="SuggestionController" class="hidden-phone who-to-follow">
+    <section class="hidden-phone who-to-follow">
         <div>
             <div class="well well-small">
                 <h4 id="follow-suggest-title">
@@ -56,13 +56,13 @@
                                 <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
                                 <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                                 </span>
-                                <a href="#/home/profile/{{ suggestion.username }}">
+                                <a ui-sref="home.profile({ username: suggestion.username })">
                                 <strong>
                                 {{ suggestion.firstName + ' ' + suggestion.lastName }}
                                 </strong>
                                 </a>
                                 <br>
-                                <a href="#/home/profile/{{ suggestion.username }}">
+                                <a ui-sref="home.profile({ username: suggestion.username })">
                                 <small>
                                 @{{ suggestion.username }}
                                 </small>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </section>
-    <section ng-controller="TrendsController" class="hidden-phone tag-trends">
+    <section class="hidden-phone tag-trends">
         <div>
             <div class="well well-small">
                 <h4 id="profile-trends-title">
@@ -83,11 +83,11 @@
                 </h4>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
+                        <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ng-cloak href="#tags/{{ tag.name }}">#{{ tag.name }}</a>
+                        <a ng-cloak ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                     </div>
                 </div>
             </div>

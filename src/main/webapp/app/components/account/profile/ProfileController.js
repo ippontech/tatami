@@ -3,7 +3,7 @@
  * the extra logic will be factored into ProfileService.
  */
 
-ProfileModule.controller('AccountProfileController', ['$scope', '$resource', 'ProfileService', 'UserService', 
+ProfileModule.controller('ProfileController', ['$scope', '$resource', 'ProfileService', 'UserService', 
     function($scope, $resource, ProfileService, UserService) {
 
         $scope.init = function() {

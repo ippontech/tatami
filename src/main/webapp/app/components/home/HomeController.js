@@ -5,24 +5,24 @@ HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileServ
 
         $scope.favoriteStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
-                function(response) { 
+                function(response) {
                     var index = $scope.statuses.indexOf(status);
-                    $scope.statuses[index]['favorite'] = response.favorite;
+                    $scope.statuses[index].favorite = response.favorite;
             });
         },
 
         $scope.shareStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
-                function(response) { 
+                function(response) {
                     var index = $scope.statuses.indexOf(status);
-                    $scope.statuses[index]['shareByMe'] = response.shareByMe;
+                    $scope.statuses[index].shareByMe = response.shareByMe;
             });
         },
 
         $scope.deleteStatus = function(status, confirmMessage) {
             // Put a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, { },
-                function() { 
+                function() {
                     var index = $scope.statuses.indexOf(status);
                     $scope.statuses.splice(index, 1);
             });

@@ -1,0 +1,12 @@
+<ng-include src="'/app/shared/topmenu/TopMenuView.html'"></ng-include>
+
+<!--
+<div class="row">
+    <div id="tatamiHeader" class="col-span-12"></div>
+</div>
+-->
+
+<div ng-init="showSearchAccountPost = true" class="row">
+    <aside ui-view="homeSide" id="tatamiSide" class="col-span-3"></aside>
+    <section ui-view="homeBody" id="tatamiBody" class="col-span-7"></section>
+</div>

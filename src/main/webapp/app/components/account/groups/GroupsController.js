@@ -4,7 +4,7 @@
  * This controller might be doing to much and may be refactored into two separate controllers
  */
 
-GroupsModule.controller('AccountGroupsController', [
+GroupsModule.controller('GroupsController', [
     '$scope',
     '$state',
     '$resource',
