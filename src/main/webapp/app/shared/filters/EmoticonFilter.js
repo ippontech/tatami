@@ -23,6 +23,7 @@ TatamiApp.filter('emoticon', function() {
 
             ':x': '/assets/img/emoticons/lips_sealed.png',
             ':X': '/assets/img/emoticons/lips_sealed.png',
+            ':#': '/assets/img/emoticons/lips_sealed.png',
 
             '>:D': '/assets/img/emoticons/malicious.png',
 
