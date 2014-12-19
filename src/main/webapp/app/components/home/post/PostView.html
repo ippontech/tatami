@@ -18,7 +18,7 @@
             </div>
         </fieldset>
         <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
-            <div class="well well-small markdown" ng-bind-html="status.content | markdown"></div>
+            <div class="well well-small markdown" ng-bind-html="status.content | emoticon | markdown"></div>
         </fieldset>
         <fieldset ng-show="current.reply" class="reply row-fluid">
             <legend translate="tatami.home.post.reply">
@@ -39,7 +39,7 @@
                             <strong><a ui-sref="home.profile({ username: currentStatus.username })">{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</a></strong>
                             <small><a ui-sref="home.profile({ username: currentStatus.username })">@{{ currentStatus.username }}</a></small>
                         </h5>
-                        <div class="markdown" ng-bind-html="currentStatus.content | markdown"></div>
+                        <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-show="currentStatus.groupId">
                             <a class="label" ng-class="currentStatus.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.group({ group: currentStatus.groupId })">

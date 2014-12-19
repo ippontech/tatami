@@ -49,7 +49,7 @@
                                         <small><a ui-sref="home.profile({ username: status.username })">@{{ status.username }}</a></small>
                                     </h5>
                                     
-                                    <div class="markdown" ng-bind-html="status.content | markdown"></div>
+                                    <div class="markdown" ng-bind-html="status.content | emoticon | markdown"></div>
 
                                     <small ng-if="status.groupId">
                                         <a class="label" ng-class="status.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.group({ group: status.groupId })">
