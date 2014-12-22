@@ -1,4 +1,4 @@
-var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule', 'ProfileSidebarModule', 'TimelineModule', 'ui.router']);
+var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule', 'ProfileSidebarModule', 'ngSanitize', 'angularMoment', 'ui.router']);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
@@ -15,8 +15,41 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBody': {
-                    templateUrl: 'app/components/home/timeline/TimelineView.html'
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
+                }
+            }
+        })
+        .state('home.mentions', {
+            url: '/mentions',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
+                }
+            }
+        })
+        .state('home.favorites', {
+            url: '/favorites',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
                 }
             }
         })
@@ -27,9 +60,13 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
                     controller: 'ProfileSidebarController'
                 },
-                'homeBody': {
-                    templateUrl: 'app/components/home/profile/ProfileView.html'
+                'homeBodyHeader': {
+                    templateUrl: ''
+                },
+                'homeBodyContent': {
+                    templateUrl: ''
                 }
             }
         });
-}]);
+    }
+]);

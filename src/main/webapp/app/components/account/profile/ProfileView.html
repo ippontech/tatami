@@ -6,12 +6,10 @@
                 <br>
                 <fieldset class="form-horizontal row-fluid">
                     <div class="control-group dashed">
-                        <label class="control-label">
-                        </label>
+                        <label class="control-label"></label>
                         <div class="controls">
                             <div id="updateAvatar" class="dropzone well">
-                                <img class="nomargin avatar" ng-src="{{ profile.avatarURL }}">
-                                <p class="little-padding-top">Drop your photo here to update it</p>
+                                {{ 'tatami.account.profile.dropPhoto' | translate }}
                                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
                             </div>
                             <div class="attachmentBar progress progress-striped active" style="display: none;">

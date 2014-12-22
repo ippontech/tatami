@@ -1,4 +1,4 @@
-<div ng-cloak>
+<div>
     <ng-include src="'/app/shared/topmenu/TopMenuView.html'"></ng-include>
     <div id="mainPanel" class="container">
         <br>
@@ -8,22 +8,21 @@
                 <div>
                     <div class="col-span-4 alert">
                         <div id="avatar">
-                            <div>
-                                <div class="nomargin well row avatar-float-left-container">
-                                    <div class="text-center">
-                                        <a href="#/home/profile/{{ profile.username }}">
-                                            <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
-                                            <!-- This error might not occur anymore because of ng-src tag, needs testing -->
-                                            <img class="pull-left nomargin avatar avatar-float-left" ng-src="{{ profile.avatarURL }}">
-                                            <br>
-                                            <h3 class="user-profile" ng-cloak>{{ profile.firstName + ' ' + profile.lastName }}</h3>
-                                            <p>@{{ profile.username }}</p>
-                                        </a>
-                                    </div>
+                            <div class="row text-center nomargin avatar-float-center-container">
+                                <div>
+                                    <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
+                                    <!-- This error might not occur anymore because of ng-src tag, needs testing -->
+                                    <img class="nomargin avatar img-rounded" ng-src="{{ profile.avatarURL }}">
+                                </div>
+                                <br>
+                                <div>
+                                    <a href="#/home/profile/{{ profile.username }}">
+                                        <h3 class="user-profile">{{ profile.firstName + ' ' + profile.lastName }}</h3>
+                                        <p>@{{ profile.username }}</p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <br>
                         <div class="tabbable alert alert-status">
                             <ul class="adminMenu nav nav-pills nav-stacked nomargin">
                                 <li ui-sref-active="active">

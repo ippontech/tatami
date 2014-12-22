@@ -1,5 +1,7 @@
-HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', 
-    function($scope, StatusService, ProfileService) {
+HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', '$state',
+    function($scope, StatusService, ProfileService, $state) {
+        $scope.$state = $state
+
         $scope.statuses = StatusService.getTimeline();
         $scope.profile = ProfileService.get();
 
