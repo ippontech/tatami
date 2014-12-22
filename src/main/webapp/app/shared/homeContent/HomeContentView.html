@@ -8,18 +8,22 @@
                     </div>
                     <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
                         <div class="pull-left background-image-fffix statusitem-img">
-                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
+                            <a ui-sref="home.profile({ username: status.username })">
+                                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
+                            </a>
                         </div>
                         <div id="status-content-container">
-                            <div class="pull-right text-right">
-                                <abbr title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></abbr>
-                                <!-- Make status abbr month and day display after 24h have passed? -->
-                                <!-- Move next to @username ? -->
-                            </div>
-
                             <h5 class="statusitem-name">
-                                <strong><a ui-sref="home.profile({ username: status.username })">{{ status.firstName + ' ' + status.lastName }}</a></strong>
-                                <small><a ui-sref="home.profile({ username: status.username })">@{{ status.username }}</a></small>
+                                <a ui-sref="home.profile({ username: status.username })">
+                                    <strong>{{ status.firstName + ' ' + status.lastName }}</strong>
+                                    <small>@{{ status.username }}</small>
+                                </a>
+                                <small> · </small>
+                                <a ui-sref="home.status({ status: status.statusId })">
+                                    <small ng-if="!isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></small>
+                                    <small ng-if="isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ status.statusDate | amDateFormat:'MMM D'}}</small>
+                                </a>
+                                <!-- Replace hover title with hover bubble -->
                             </h5>
                             
                             <div class="markdown" ng-bind-html="status.content | emoticon | markdown"></div>
@@ -59,11 +63,13 @@
 
                         <div ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
                             <div>
-                                <small class="statusitem-footer"> 
+                                <small class="statusitem-footer">
+                                <!--
                                 <a ui-sref="home.status({ status: status.statusId })" class="btn-link status-action button-ios">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                     <span translate="tatami.home.status.view"></span>
                                 </a>
+                                -->
                                 <button ng-controller="StatusManagerController" ng-click="showModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                     <i class="glyphicon glyphicon-comment"></i>
                                     <span translate="tatami.home.status.reply"></span>

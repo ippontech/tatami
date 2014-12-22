@@ -5,6 +5,10 @@ HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileServ
         $scope.statuses = StatusService.getTimeline();
         $scope.profile = ProfileService.get();
 
+        $scope.isOneDayOrMore = function(date) {
+            return moment().diff(moment(date), 'days', true) >= 1;
+        },
+
         $scope.favoriteStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
                 function(response) {
