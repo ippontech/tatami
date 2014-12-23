@@ -5,8 +5,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
         .state('home',{
             url: '/home',
             abstract: true,
-            templateUrl: 'app/components/home/HomeView.html',
-            controller: 'HomeController'
+            templateUrl: 'app/components/home/HomeView.html'
         })
         .state('home.timeline', {
             url: '/timeline',
@@ -19,7 +18,14 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getTimeline().$promise;
                 }
             }
         })
@@ -34,7 +40,14 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getMentions().$promise;
                 }
             }
         })
@@ -49,7 +62,14 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html'
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getFavorites().$promise;
                 }
             }
         })

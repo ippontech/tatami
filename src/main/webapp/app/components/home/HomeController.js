@@ -1,8 +1,6 @@
-HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', '$state',
-    function($scope, StatusService, ProfileService, $state) {
-        $scope.$state = $state;
-
-        $scope.statuses = StatusService.getTimeline();
+HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', 'statuses',
+    function($scope, StatusService, ProfileService, statuses) {
+        $scope.statuses = statuses;
         $scope.profile = ProfileService.get();
 
         $scope.isOneDayOrMore = function(date) {
