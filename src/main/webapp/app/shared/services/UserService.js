@@ -6,9 +6,9 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
             'get': { 
                 method: 'GET', params: { username: '@username' },
                 transformResponse: function(user, headersGetter) {
-                        user = angular.fromJson(user);
-                        user['avatarURL'] = user.avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
-                        return user;
+                    user = angular.fromJson(user);
+                    user['avatarURL'] = user.avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+                    return user;
                 } },
             'query': { 
                 method: 'GET', isArray: true, url: '/tatami/rest/users',
@@ -25,13 +25,13 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
             'getFriends': { 
                 method: 'GET', isArray: true, url: '/tatami/rest/users/:userId/friends', params: { userId: '@userId' },
                 transformResponse: function(friends, headersGetter) {
-                        friends = angular.fromJson(friends);
+                    friends = angular.fromJson(friends);
 
-                        for(var i = 0; i < friends.length; i++) {
-                            friends[i]['avatarURL'] = friends[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + friends[i].avatar + '/photo.jpg';
-                        }
+                    for(var i = 0; i < friends.length; i++) {
+                        friends[i]['avatarURL'] = friends[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + friends[i].avatar + '/photo.jpg';
+                    }
 
-                        return friends;
+                    return friends;
                 } },
             'getSuggestions': { 
                 method: 'GET', isArray: true, url: '/tatami/rest/users/suggestions', 
