@@ -68,7 +68,7 @@ TatamiApp.config(function($translateProvider) {
                 'sidebar': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who To Follow',
-                    'trends': 'Trends'
+                    'trending': 'Trending'
                 },
 
                 // Individual Status
@@ -80,7 +80,9 @@ TatamiApp.config(function($translateProvider) {
                     'share': 'Share',
                     'favorite': 'Favorite',
                     'delete': 'Delete',
-                    'confirmDelete': 'Are you sure you want to delete this status?'
+                    'confirmDelete': 'Are you sure you want to delete this status?',
+                    'shared': 'shared your status',
+                    'followed': 'followed you'
                 },
 
                 // Profile View
@@ -103,7 +105,7 @@ TatamiApp.config(function($translateProvider) {
                         'statuses': 'Statuses',
                         'following': 'Following',
                         'followers': 'Followers',
-                        'trends': 'Trends'
+                        'trending': 'Trending'
                     }
                 },
 
@@ -214,7 +216,7 @@ TatamiApp.config(function($translateProvider) {
                 'tags': {
                     'title': 'Tags',
                     'myTags': 'My Tags',
-                    'trends': 'Trends',
+                    'trending': 'Trending',
                     'search': 'Search',
                     'tag': 'Tag',
                     'follow': 'Follow',

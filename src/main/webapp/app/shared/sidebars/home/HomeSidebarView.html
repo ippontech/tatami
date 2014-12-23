@@ -20,10 +20,10 @@
     <section class="hidden-phone groups">
         <div>
             <div class="well well-small">
-                <h4 id="groups-list-title">
-                    <span class="glyphicon glyphicon-list-alt"></span>
-                    &nbsp;<span translate="tatami.home.sidebar.myGroups"></span>
-                </h4>
+                <div id="groups-list-title">
+                    <span class="glyphicon glyphicon-th-large"></span>
+                    <b translate="tatami.home.sidebar.myGroups"></b>
+                </div>
                 <div class="items">
                     <div ng-repeat="group in groups">
                         <a ui-sref="home.group({ group: group.groupId })">{{ group.name }}</a>
@@ -35,10 +35,10 @@
     <section class="hidden-phone who-to-follow">
         <div>
             <div class="well well-small">
-                <h4 id="follow-suggest-title">
-                    <span class="glyphicon glyphicon-random"></span>
-                    &nbsp;<span translate="tatami.home.sidebar.whoToFollow"></span>
-                </h4>
+                <div id="follow-suggest-title">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <b translate="tatami.home.sidebar.whoToFollow"></b>
+                </div>
                 <div ng-repeat="suggestion in suggestions">
                     <div class="items">
                         <div class="useritemmini">
@@ -75,10 +75,10 @@
     <section class="hidden-phone tag-trends">
         <div>
             <div class="well well-small">
-                <h4 id="profile-trends-title">
+                <div id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    &nbsp;<span translate="tatami.home.sidebar.trends"></span>
-                </h4>
+                    <b translate="tatami.home.sidebar.trending"></b>
+                </div>
                 <div class="items">
                     <div ng-repeat="tag in tags">
                         <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">

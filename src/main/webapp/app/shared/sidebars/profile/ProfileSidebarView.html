@@ -6,10 +6,10 @@
                 <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
             </h4>
             <div class="well well-small">
-                <h4>
+                <div>
                     <span class="glyphicon glyphicon-user"></span>
-                    <span translate="tatami.home.profile.sidebar.information"></span>
-                </h4>
+                    <b translate="tatami.home.profile.sidebar.information"></b>
+                </div>
                 <p>
                     <strong>
                     <span translate="tatami.home.profile.sidebar.firstName"></span>:
@@ -45,10 +45,10 @@
         <section class="hidden-phone stats">
             <div>
                 <div class="well well-small">
-                    <h4>
+                    <div>
                         <span class="glyphicon glyphicon-signal"></span>
-                        <span translate="tatami.home.profile.sidebar.statistics"></span>
-                    </h4>
+                        <b translate="tatami.home.profile.sidebar.statistics"></b>
+                    </div>
                     <div>
                         <p>
                             <strong>
@@ -82,10 +82,10 @@
     <section class="hidden-phone tag-trends">
         <div>
             <div class="well well-small">
-                <h4 id="profile-trends-title">
+                <div id="profile-trends-title">
                     <span class="glyphicon glyphicon-fire"></span>
-                    &nbsp;<span translate="tatami.home.profile.sidebar.trends"></span>
-                </h4>
+                    <b translate="tatami.home.profile.sidebar.trending"></b>
+                </div>
                 <div class="items">
                     <div ng-repeat="tag in tags">
                         <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">

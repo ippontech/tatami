@@ -241,7 +241,7 @@ public class TimelineService {
                     } else if (abstractStatus.getType().equals(StatusType.MENTION_FRIEND)) {
                         MentionFriend mentionFriend = (MentionFriend) abstractStatus;
                         statusDTO.setTimelineId(mentionFriend.getStatusId());
-                        statusDTO.setSharedByUsername(mentionFriend.getUsername());
+                        //statusDTO.setSharedByUsername(mentionFriend.getUsername());
                         statusUser = userService.getUserByLogin(mentionFriend.getFollowerLogin());
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
