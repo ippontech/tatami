@@ -2,46 +2,44 @@
     <!-- <section class="actions"></section> What is this for ? -->
     <div>
         <section class="hidden-phone profile">
-            <div>
-                <h4 class="profile-card background-image-fffix">
-                    <div class="img img-rounded img-big" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+            <h4 class="profile-card background-image-fffix">
+                <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+            </h4>
+            <div class="well well-small">
+                <h4>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span translate="tatami.home.profile.sidebar.information"></span>
                 </h4>
-                <div class="well well-small">
-                    <h4>
-                        <span class="glyphicon glyphicon-user"></span>
-                        <span translate="tatami.home.profile.sidebar.information"></span>
-                    </h4>
-                    <p>
-                        <strong>
-                        <span translate="tatami.home.profile.sidebar.firstName"></span>:
-                        </strong>
-                        {{ profile.firstName }}
-                    </p>
-                    <p>
-                        <strong>
-                        <span translate="tatami.home.profile.sidebar.lastName"></span>:
-                        </strong>
-                        {{ profile.lastName }}
-                    </p>
-                    <p>
-                        <strong>
-                        <span translate="tatami.home.profile.sidebar.email"></span>:
-                        </strong>
-                        {{ profile.login }}
-                    </p>
-                    <p>
-                        <strong>
-                        <span translate="tatami.home.profile.sidebar.jobTitle"></span>:
-                        </strong>
-                        {{ profile.jobTitle }}
-                    </p>
-                    <p>
-                        <strong>
-                        <span translate="tatami.home.profile.sidebar.phoneNumber"></span>:
-                        </strong>
-                        {{ profile.phoneNumber }}
-                    </p>
-                </div>
+                <p>
+                    <strong>
+                    <span translate="tatami.home.profile.sidebar.firstName"></span>:
+                    </strong>
+                    {{ profile.firstName }}
+                </p>
+                <p>
+                    <strong>
+                    <span translate="tatami.home.profile.sidebar.lastName"></span>:
+                    </strong>
+                    {{ profile.lastName }}
+                </p>
+                <p>
+                    <strong>
+                    <span translate="tatami.home.profile.sidebar.email"></span>:
+                    </strong>
+                    {{ profile.login }}
+                </p>
+                <p>
+                    <strong>
+                    <span translate="tatami.home.profile.sidebar.jobTitle"></span>:
+                    </strong>
+                    {{ profile.jobTitle }}
+                </p>
+                <p>
+                    <strong>
+                    <span translate="tatami.home.profile.sidebar.phoneNumber"></span>:
+                    </strong>
+                    {{ profile.phoneNumber }}
+                </p>
             </div>
         </section>
         <section class="hidden-phone stats">
@@ -94,7 +92,7 @@
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ng-cloak ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
+                        <a ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                     </div>
                 </div>
             </div>

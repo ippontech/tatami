@@ -2,12 +2,10 @@ UsersModule.controller('UsersController', [
     '$scope',
     '$resource',
     '$location',
-    '$state',
     'UserService',
     'ProfileService',
     'SearchService', 
-    function($scope, $resource, $location, $state, UserService, ProfileService, SearchService) {
-        $scope.$state = $state;
+    function($scope, $resource, $location, UserService, ProfileService, SearchService) {
         /**
          * Ideally this would be done during routing
          */

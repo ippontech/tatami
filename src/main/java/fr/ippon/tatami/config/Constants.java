@@ -24,7 +24,7 @@ public class Constants {
 
     public static final String TATAMIBOT_NAME = "tatamibot";
 
-    public static final int AVATAR_SIZE = 100;
+    public static final int AVATAR_SIZE = 200;
 
     /**
      * Cassandra : number of columns to return when not doing a name-based template

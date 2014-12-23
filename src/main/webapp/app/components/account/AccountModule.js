@@ -38,9 +38,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/files/FilesView.html',
             resolve: {
                 FilesService: 'FilesService',
-
                 attachmentQuota: function(FilesService) {
-                    FilesService.getQuota().$promise;
+                    return FilesService.getQuota().$promise;
                 }
             },
             controller: 'FilesController'

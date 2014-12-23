@@ -1,5 +1,9 @@
 TatamiApp.filter('emoticon', function() {
     return function(content) {
+        if(content == null) {
+            return content;
+        }
+
         var emoticons = {
             '>:(': '/assets/img/emoticons/angry.png',
 

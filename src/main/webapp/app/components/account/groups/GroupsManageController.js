@@ -1,3 +1,2 @@
-GroupsModule.controller('GroupsManageController', ['$scope', '$state', function($scope, $state) {
-    $scope.$state = $state;
+GroupsModule.controller('GroupsManageController', ['$scope', function($scope) {
 }]);

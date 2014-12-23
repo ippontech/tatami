@@ -1,12 +1,11 @@
-var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule', 'ProfileSidebarModule', 'TimelineModule', 'ui.router']);
+var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule', 'ProfileSidebarModule', 'ngSanitize', 'angularMoment', 'ui.router']);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
         .state('home',{
             url: '/home',
             abstract: true,
-            templateUrl: 'app/components/home/HomeView.html',
-            controller: 'HomeController'
+            templateUrl: 'app/components/home/HomeView.html'
         })
         .state('home.timeline', {
             url: '/timeline',
@@ -15,8 +14,62 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBody': {
-                    templateUrl: 'app/components/home/timeline/TimelineView.html'
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getTimeline().$promise;
+                }
+            }
+        })
+        .state('home.mentions', {
+            url: '/mentions',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getMentions().$promise;
+                }
+            }
+        })
+        .state('home.favorites', {
+            url: '/favorites',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getFavorites().$promise;
                 }
             }
         })
@@ -27,9 +80,13 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
                     controller: 'ProfileSidebarController'
                 },
-                'homeBody': {
-                    templateUrl: 'app/components/home/profile/ProfileView.html'
+                'homeBodyHeader': {
+                    templateUrl: ''
+                },
+                'homeBodyContent': {
+                    templateUrl: ''
                 }
             }
         });
-}]);
+    }
+]);

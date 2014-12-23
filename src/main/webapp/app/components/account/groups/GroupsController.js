@@ -6,13 +6,11 @@
 
 GroupsModule.controller('GroupsController', [
     '$scope',
-    '$state',
     '$resource',
     '$location',
     'GroupService',
     'SearchService',
-    function($scope, $state, $resource, $location, GroupService, SearchService) {
-        $scope.$state = $state;
+    function($scope, $resource, $location, GroupService, SearchService) {
         /**
          * When creating a group, the POST requires this payload
          * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -95,4 +93,5 @@ GroupsModule.controller('GroupsController', [
             // Update the route
             $state.go('account.groups.search', { q: $scope.current.searchString });
         }
-}]);
+    }
+]);

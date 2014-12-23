@@ -7,13 +7,17 @@ var TatamiApp = angular.module('TatamiApp', [
     'ui.router'
 ]);
 
+TatamiApp.run(function($rootScope, $state) {
+    $rootScope.$state = $state;
+});
+
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home/timeline');
+        $urlRouterProvider.otherwise('/home/timeline');
 
-    // Don't strip trailing slashes from REST URLs
-    $resourceProvider.defaults.stripTrailingSlashes = false;
+        // Don't strip trailing slashes from REST URLs
+        $resourceProvider.defaults.stripTrailingSlashes = false;
 
-    //$locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
 }]);

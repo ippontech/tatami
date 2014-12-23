@@ -1,7 +1,11 @@
-HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', 
-    function($scope, StatusService, ProfileService) {
-        $scope.statuses = StatusService.getTimeline();
+HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', 'statuses',
+    function($scope, StatusService, ProfileService, statuses) {
+        $scope.statuses = statuses;
         $scope.profile = ProfileService.get();
+
+        $scope.isOneDayOrMore = function(date) {
+            return moment().diff(moment(date), 'days', true) >= 1;
+        },
 
         $scope.favoriteStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 

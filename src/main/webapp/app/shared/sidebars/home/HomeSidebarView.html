@@ -1,24 +1,22 @@
 <div>
     <section class="hidden-phone card-profile">
-        <div>
-            <div class="page-header">
-                <h4 class="profile-card background-image-fffix">
-                    <div class="img img-rounded img-medium pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
-                    <a ng-cloak ui-sref="home.profile({ username: profile.username })">
-                    <strong ng-cloak>
-                    {{ profile.firstName + ' ' + profile.lastName }}
-                    </strong>
-                    </a>
-                    <br>
-                    <a ng-cloak ui-sref="home.profile({ username: profile.username })">
-                    <small ng-cloak>
+        <div class="page-header">
+            <h4 class="profile-card background-image-fffix">
+                <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+            </h4>
+            <div>
+                <a class="h3" ui-sref="home.profile({ username: profile.username })">
+                    <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
+                </a>
+            </div>
+            <div>                
+                <a class="h5 text-muted" ui-sref="home.profile({ username: profile.username })">
                     @{{ profile.username }}
-                    </small>
-                    </a>
-                </h4>
+                </a>
             </div>
         </div>
     </section>
+    <br>
     <section class="hidden-phone groups">
         <div>
             <div class="well well-small">
@@ -28,7 +26,7 @@
                 </h4>
                 <div class="items">
                     <div ng-repeat="group in groups">
-                        <a ng-cloak ui-sref="home.group({ group: group.groupId })">{{ group.name }}</a>
+                        <a ui-sref="home.group({ group: group.groupId })">{{ group.name }}</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +85,7 @@
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ng-cloak ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
+                        <a ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                     </div>
                 </div>
             </div>
