@@ -6,10 +6,10 @@
                 <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
                     <div id="before">
                     </div>
-                    <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.type != 'MENTION_FRIEND' && status.shareByMe, 'both': status.favorite && status.shareByMe }">
+                    <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
                     <!-- Make shareByMe=false for MENTION_FRIEND type statuses -->
                         <div class="pull-left background-image-fffix statusitem-img">
-                            <a ng-if="status.type == 'STATUS'"  ui-sref="home.profile({ username: status.username })">
+                            <a ui-sref="home.profile({ username: status.username })">
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
