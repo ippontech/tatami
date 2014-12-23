@@ -15,8 +15,8 @@
                         </div>
                         <div id="status-content-container">
                             <h5 class="statusitem-name">
-                                <span ng-if="status.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet"></span>
-                                <span ng-if="status.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user"></span>
+                                <span ng-if="status.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet">&nbsp;</span>
+                                <span ng-if="status.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user">&nbsp;</span>
                                 <a ui-sref="home.profile({ username: status.username })">
                                     <strong>{{ status.firstName + ' ' + status.lastName }}</strong>
                                     <small>@{{ status.username }}</small>
