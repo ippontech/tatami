@@ -24,11 +24,12 @@
                                 <span ng-if="status.type == 'MENTION_SHARE'" translate="tatami.home.status.shared"></span>
                                 <span ng-if="status.type == 'MENTION_FRIEND'" translate="tatami.home.status.followed"></span>
                                 <small> · </small>
+                                <!-- Replace hover title with hover bubble -->
                                 <a ui-sref="home.status({ status: status.statusId })">
                                     <small ng-if="!isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></small>
                                     <small ng-if="isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ status.statusDate | amDateFormat:'MMM D'}}</small>
                                 </a>
-                                <!-- Replace hover title with hover bubble -->
+                                <a ng-if="status.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ status.locationURL }}" target="_blank"></a>
                             </h5>
                             
                             <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>
