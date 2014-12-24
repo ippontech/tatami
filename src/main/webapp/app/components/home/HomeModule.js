@@ -73,6 +73,28 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         })
+        .state('home.company', {
+            url: '/company',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TimelineService: 'TimelineService',
+                statuses: function(TimelineService) {
+                    return TimelineService.getCompanyWall().$promise;
+                }
+            }
+        })
         .state('home.profile', {
             url: '/profile/:username',
             views: {

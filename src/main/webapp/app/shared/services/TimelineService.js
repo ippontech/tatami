@@ -28,6 +28,9 @@ TatamiApp.factory('TimelineService', ['$resource', function($resource) {
             transformResponse: responseTransform },
             'getFavorites': { 
             method: 'GET', isArray: true, url: '/tatami/rest/favorites',
+            transformResponse: responseTransform },
+            'getCompanyWall': { 
+            method: 'GET', isArray: true, url: '/tatami/rest/company',
             transformResponse: responseTransform }
          });
 }]);
