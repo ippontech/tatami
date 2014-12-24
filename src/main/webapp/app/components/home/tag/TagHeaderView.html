@@ -1,0 +1,24 @@
+<div>
+    <ul class="homebody-nav nav nav-justified">
+        <li ui-sref-active="active">
+            <a ui-sref="home.tag">
+            <i class="glyphicon glyphicon-tag"></i>
+            <span translate="tatami.home.tag.title"></span>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-content tatams-margin">
+        <div class="tatams-content-title">
+            <h3>
+                <strong ng-if="$state.current.name == 'home.tag'">#{{ $stateParams.tag }}</strong>
+                <a ng-click="followTag(tag)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title toggleTag pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                    <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
+                        <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.home.tag.follow"></span>
+                        <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.home.tag.following"></span>
+                        <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.home.tag.unfollow"></span>
+                    </span>
+                </a>
+            </h3>
+        </div>
+    </section>
+</div>

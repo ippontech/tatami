@@ -8,6 +8,7 @@ TatamiApp.config(function($translateProvider) {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
                 'favorites': 'Favorites',
+                'companyWall': 'Company Wall',
 
                 //Top Menu
                 'menu': {
@@ -81,8 +82,9 @@ TatamiApp.config(function($translateProvider) {
                     'favorite': 'Favorite',
                     'delete': 'Delete',
                     'confirmDelete': 'Are you sure you want to delete this status?',
-                    'shared': 'shared your status',
-                    'followed': 'followed you'
+                    'sharedYour': 'shared your status',
+                    'followed': 'followed you',
+                    'shared': 'shared'
                 },
 
                 // Profile View
@@ -92,6 +94,7 @@ TatamiApp.config(function($translateProvider) {
                     'followers': 'Followers',
                     'yourProfile': 'Your Profile',
                     'follow': 'Follow',
+                    'unfollow': 'Unfollow',
 
                     // Profile Sidebar View
                     'sidebar': {
@@ -122,7 +125,8 @@ TatamiApp.config(function($translateProvider) {
                 'tag': {
                     'title': 'Tag',
                     'follow': 'Follow',
-                    'following': 'Following'
+                    'following': 'Following',
+                    'unfollow': 'Unfollow'
                 }
             },
             
@@ -149,9 +153,9 @@ TatamiApp.config(function($translateProvider) {
                     'notifications': 'Notifications',
                     'notification': {
                         'email': {
-                            'mention': 'Get notified by e-mail when you are mentioned',
-                            'dailyDigest': 'Get a daily digest e-mail',
-                            'weeklyDigest': 'Get a weekly digest e-mail'
+                            'mention': 'Get notified by email when you are mentioned',
+                            'dailyDigest': 'Get a daily digest email',
+                            'weeklyDigest': 'Get a weekly digest email'
                         },
                         'rss': {
                             'timeline': 'Allow RSS feed publication of your timeline',
@@ -220,7 +224,8 @@ TatamiApp.config(function($translateProvider) {
                     'search': 'Search',
                     'tag': 'Tag',
                     'follow': 'Follow',
-                    'following': 'Following'
+                    'following': 'Following',
+                    'unfollow': 'Unfollow'
                 },
 
                 // Statuses of the Day Tab
@@ -277,7 +282,7 @@ TatamiApp.config(function($translateProvider) {
                 },
                 'row5': {
                     'title': 'Need more information on our product?',
-                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or e-mail us at'
+                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or email us at'
                 },
             },
 
