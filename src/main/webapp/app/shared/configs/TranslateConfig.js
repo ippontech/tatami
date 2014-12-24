@@ -8,6 +8,7 @@ TatamiApp.config(function($translateProvider) {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
                 'favorites': 'Favorites',
+                'companyWall': 'Company Wall',
 
                 //Top Menu
                 'menu': {
