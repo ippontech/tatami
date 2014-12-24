@@ -81,8 +81,9 @@ TatamiApp.config(function($translateProvider) {
                     'favorite': 'Favorite',
                     'delete': 'Delete',
                     'confirmDelete': 'Are you sure you want to delete this status?',
-                    'shared': 'shared your status',
-                    'followed': 'followed you'
+                    'sharedYour': 'shared your status',
+                    'followed': 'followed you',
+                    'shared': 'shared'
                 },
 
                 // Profile View

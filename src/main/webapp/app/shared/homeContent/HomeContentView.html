@@ -7,7 +7,6 @@
                     <div id="before">
                     </div>
                     <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
-                    <!-- Make shareByMe=false for MENTION_FRIEND type statuses -->
                         <div class="pull-left background-image-fffix statusitem-img">
                             <a ui-sref="home.profile({ username: status.username })">
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
@@ -15,13 +14,21 @@
                         </div>
                         <div id="status-content-container">
                             <h5 class="statusitem-name">
+                                <small ng-if="status.type == 'SHARE' && status.sharedByUsername != profile.username">
+                                    <span class="glyphicon glyphicon-retweet">&nbsp;</span>
+                                    <a ui-sref="home.profile({ username: status.username })">
+                                        <span class="text-muted">@{{ status.sharedByUsername }}</span>
+                                    </a>
+                                    <span translate="tatami.home.status.shared"></span>
+                                    <br>
+                                </small>
                                 <span ng-if="status.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet">&nbsp;</span>
                                 <span ng-if="status.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user">&nbsp;</span>
                                 <a ui-sref="home.profile({ username: status.username })">
                                     <strong>{{ status.firstName + ' ' + status.lastName }}</strong>
                                     <small>@{{ status.username }}</small>
                                 </a>
-                                <span ng-if="status.type == 'MENTION_SHARE'" translate="tatami.home.status.shared"></span>
+                                <span ng-if="status.type == 'MENTION_SHARE'" translate="tatami.home.status.sharedYour"></span>
                                 <span ng-if="status.type == 'MENTION_FRIEND'" translate="tatami.home.status.followed"></span>
                                 <small> · </small>
                                 <!-- Replace hover title with hover bubble -->
