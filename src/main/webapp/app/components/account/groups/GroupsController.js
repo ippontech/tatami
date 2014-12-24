@@ -91,7 +91,7 @@ GroupsModule.controller('GroupsController', [
 
         $scope.search = function() {
             // Update the route
-            $state.go('account.groups.search', { q: $scope.current.searchString });
+            $scope.$state.go('account.groups.search', { q: $scope.current.searchString });
         }
     }
 ]);

@@ -3,8 +3,14 @@
  * creation window.
  */
 
-PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'GeolocalisationService', 'GroupService', '$modalInstance',
-        function($scope, StatusService, GeolocalisationService, GroupService, $modalInstance) {
+PostModule.controller('StatusCreateController', [
+    '$scope',
+    '$modalInstance',
+    '$upload',
+    'StatusService',
+    'GeolocalisationService',
+    'GroupService',
+    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, GroupService) {
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
@@ -13,7 +19,9 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
         uploadDone: true,                   // If the file upload is done, we should not show the progess bar
         uploadProgress: 0,                  // The progress of the file currently being uploaded
         upload:[],
-        contentEmpty: true
+        contentEmpty: true,
+        files:[],
+        attachments:[]
     },
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status
@@ -26,6 +34,41 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
 
     $scope.charCount = 750;
     $scope.currentStatus,
+
+    $scope.uploadStatus = {
+        isUploading: false,
+        progress: 0
+    }
+
+    $scope.$watch('current.files', function() {
+        for(var i = 0; i < $scope.current.files.length; ++i){
+            var file = $scope.current.files[i];
+            $scope.current.attachments.push(file);
+            $scope.uploadStatus.isUploading = true;
+            $scope.upload = $upload.upload({
+                url: '/tatami/rest/fileupload',
+                file: file,
+                fileFormDataName: 'uploadFile'
+            }).progress(function(evt) {
+                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
+                $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function(data, status, headers, config) {
+                $scope.uploadStatus.isUploading = false;
+                console.log("Success");
+            }).error(function(data, status, headers, config) {
+                console.log("No space left for uploading");
+            })
+        }
+    }),
+
+    $scope.fileSize = function(file) {
+        if(file.size / 1000 < 1000){
+            return parseInt(file.size / 1000) + "K";
+        }
+        else{
+            return parseInt(file.size / 1000000) + "M";
+        }
+    },
     /**
      * In order to set reply to a status, we must be able to set current status
      * after an asynchronous get request.
@@ -69,6 +112,23 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
         $scope.status.statusPrivate = false;
     },
 
+
+    /**
+     * Create a new status based on the current data in the controller.
+     * Uses the StatusService for this purpose, and we do nothing if no
+     * content has been provided by the user.
+     */
+    $scope.newStatus = function() {
+        if($scope.status.content){
+            StatusService.save($scope.status, function(){
+                $scope.reset();
+                $modalInstance.dismiss();
+            })
+        }
+    },
+
+    /** Geolocalization based functions **/
+
     /**
      * Determine whether the user means to use location data on the current status
      */
@@ -88,22 +148,6 @@ PostModule.controller('StatusCreateController', ['$scope', 'StatusService', 'Geo
     $scope.getLocationString = function(position) {
         $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
         $scope.initMap();
-    },
-
-    /**
-     * Create a new status based on the current data in the controller.
-     * Uses the StatusService for this purpose, and we do nothing if no
-     * content has been provided by the user.
-     */
-    $scope.newStatus = function() {
-        /*
-        StatusService.newStatus($scope);*/
-        if($scope.status.content){
-            StatusService.save($scope.status, function(){
-                $scope.reset();
-                $modalInstance.dismiss();
-            })
-        }
     },
 
     /**
