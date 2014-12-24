@@ -1,9 +1,9 @@
-HomeSidebarModule.controller('HomeSidebarController', ['$scope', 'ProfileService', 'GroupService', 'UserService', 'TagService', 
-    function($scope, ProfileService, GroupService, UserService, TagService) {
-        $scope.profile = ProfileService.get();
-        $scope.groups = GroupService.query();
+HomeSidebarModule.controller('HomeSidebarController', ['$scope', 'UserService', 'TagService', 'profile', 'groups', 'suggestions', 'tags',
+    function($scope, UserService, TagService, profile, groups, suggestions, tags) {
+        $scope.profile = profile;
+        $scope.groups = groups;
 
-        $scope.suggestions = UserService.getSuggestions();
+        $scope.suggestions = suggestions;
 
         $scope.followUser = function(suggestion, index) {
             UserService.follow({ username: suggestion.username }, { friend: !suggestion.followingUser, friendShip: true }, 
@@ -12,7 +12,7 @@ HomeSidebarModule.controller('HomeSidebarController', ['$scope', 'ProfileService
             });
         },
 
-        $scope.tags = TagService.query({ popular: true });
+        $scope.tags = tags;
 
         $scope.followTag = function(tag, index) {
             TagService.follow({ tag: tag.name }, { name: tag.name, followed: !tag.followed, trendingUp: tag.trendingUp }, 
