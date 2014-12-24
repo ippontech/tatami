@@ -109,6 +109,32 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: ''
                 }
             }
+        })
+        .state('home.tag', {
+            url: '/tag/:tag',
+            views: {
+                'homeSide': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader': {
+                    templateUrl: 'app/components/home/tag/TagHeaderView.html',
+                    controller: 'TagHeaderController'
+                },
+                'homeBodyContent': {
+                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
+                    controller: 'HomeController'
+                }
+            },
+            resolve: {
+                TagService: 'TagService',
+                tag: function(TagService, $stateParams) {
+                    return TagService.get({ tag: $stateParams.tag }).$promise;
+                },
+                statuses: function(TagService, $stateParams) {
+                    return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
+                }
+            }
         });
     }
 ]);
