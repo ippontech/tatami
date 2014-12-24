@@ -26,7 +26,6 @@
             <!-- Start of reply section -->
             <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
-                <!-- Make shareByMe=false for MENTION_FRIEND type statuses -->
                     <div class="pull-left background-image-fffix statusitem-img">
                         <a ui-sref="home.profile({ username: currentStatus.username })">
                             <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
@@ -34,14 +33,10 @@
                     </div>
                     <div id="status-content-container">
                         <h5 class="statusitem-name">
-                            <span ng-if="currentStatus.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet">&nbsp;</span>
-                            <span ng-if="currentStatus.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user">&nbsp;</span>
                             <a ui-sref="home.profile({ username: currentStatus.username })">
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
                                 <small>@{{ currentStatus.username }}</small>
                             </a>
-                            <span ng-if="currentStatus.type == 'MENTION_SHARE'" translate="tatami.home.status.sharedYour"></span>
-                            <span ng-if="currentStatus.type == 'MENTION_FRIEND'" translate="tatami.home.status.followed"></span>
                             <small> · </small>
                             <!-- Replace hover title with hover bubble -->
                             <a ui-sref="home.status({ status: currentStatus.statusId })">
@@ -51,7 +46,7 @@
                             <a ng-if="currentStatus.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ currentStatus.locationURL }}" target="_blank"></a>
                         </h5>
                         
-                        <div class="markdown" ng-class="{ 'mention-share': currentStatus.type == 'MENTION_SHARE' }" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
+                        <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-if="currentStatus.groupId">
                             <a class="label" ng-class="currentStatus.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.group({ group: currentStatus.groupId })">

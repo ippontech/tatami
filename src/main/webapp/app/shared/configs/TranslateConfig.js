@@ -150,9 +150,9 @@ TatamiApp.config(function($translateProvider) {
                     'notifications': 'Notifications',
                     'notification': {
                         'email': {
-                            'mention': 'Get notified by e-mail when you are mentioned',
-                            'dailyDigest': 'Get a daily digest e-mail',
-                            'weeklyDigest': 'Get a weekly digest e-mail'
+                            'mention': 'Get notified by email when you are mentioned',
+                            'dailyDigest': 'Get a daily digest email',
+                            'weeklyDigest': 'Get a weekly digest email'
                         },
                         'rss': {
                             'timeline': 'Allow RSS feed publication of your timeline',
@@ -278,7 +278,7 @@ TatamiApp.config(function($translateProvider) {
                 },
                 'row5': {
                     'title': 'Need more information on our product?',
-                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or e-mail us at'
+                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or email us at'
                 },
             },
 
