@@ -1,7 +1,8 @@
 TatamiApp.factory('StatusService', ['$resource', function($resource) {
     return $resource(
         '/tatami/rest/statuses/:statusId', null,
-        {   'get': { 
+        {   
+            'get': { 
             method: 'GET',
             transformResponse: function(status, headersGetter) {
                 status = angular.fromJson(status);

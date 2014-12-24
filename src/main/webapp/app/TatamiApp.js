@@ -7,8 +7,9 @@ var TatamiApp = angular.module('TatamiApp', [
     'ui.router'
 ]);
 
-TatamiApp.run(function($rootScope, $state) {
+TatamiApp.run(function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
 });
 
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider',
