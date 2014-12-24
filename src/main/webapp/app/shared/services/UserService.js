@@ -45,5 +45,5 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
                     return suggestions;
                 }
             }
-    });
+        });
 }]);

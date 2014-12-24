@@ -20,7 +20,8 @@ TatamiApp.factory('TimelineService', ['$resource', function($resource) {
     return $resource(
         null,
         null,
-        {   'getTimeline': { 
+        {   
+            'getTimeline': { 
             method: 'GET', isArray: true, url: '/tatami/rest/statuses/home_timeline',
             transformResponse: responseTransform },
             'getMentions': { 
