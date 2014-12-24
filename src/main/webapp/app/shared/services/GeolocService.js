@@ -28,7 +28,7 @@ TatamiApp.factory('GeolocalisationService', function() {
         getGeolocUrl: function(position) {
             var latitude = position.split(',')[0].trim();
             var longitude = position.split(',')[1].trim();
-            return "https://www.openstreetmap.org/?lon="+longitude+"&lat="+latitude+"&mlon="+longitude+"&mlat="+latitude+"&zoom=12";
+            return 'https://www.openstreetmap.org/?mlon=' + longitude + '&mlat=' + latitude;
         }
     }
 });
