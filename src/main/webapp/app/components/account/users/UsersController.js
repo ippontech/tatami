@@ -49,9 +49,8 @@ UsersModule.controller('UsersController', [
         };
 
         $scope.search = function() {
-            console.log($scope.current.searchString);
             // Update the route
-            $state.go('account.users.search', { q: $scope.current.searchString });
+            $scope.$state.go('account.users.search', { q: $scope.current.searchString });
         }
     }
 ]);

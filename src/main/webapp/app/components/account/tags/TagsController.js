@@ -64,7 +64,7 @@ TagsModule.controller('TagsController', [
 
         $scope.search = function() {
             // Update the route
-            $state.go('account.tags.search', { q: $scope.current.searchString });
+            $scope.$state.go('account.tags.search', { q: $scope.current.searchString });
         }
     }
 ]);
