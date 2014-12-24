@@ -94,6 +94,7 @@ TatamiApp.config(function($translateProvider) {
                     'followers': 'Followers',
                     'yourProfile': 'Your Profile',
                     'follow': 'Follow',
+                    'unfollow': 'Unfollow',
 
                     // Profile Sidebar View
                     'sidebar': {
@@ -124,7 +125,8 @@ TatamiApp.config(function($translateProvider) {
                 'tag': {
                     'title': 'Tag',
                     'follow': 'Follow',
-                    'following': 'Following'
+                    'following': 'Following',
+                    'unfollow': 'Unfollow'
                 }
             },
             
@@ -222,7 +224,8 @@ TatamiApp.config(function($translateProvider) {
                     'search': 'Search',
                     'tag': 'Tag',
                     'follow': 'Follow',
-                    'following': 'Following'
+                    'following': 'Following',
+                    'unfollow': 'Unfollow'
                 },
 
                 // Statuses of the Day Tab
