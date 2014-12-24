@@ -14,7 +14,8 @@
                         </div>
                         <div id="status-content-container">
                             <h5 class="statusitem-name">
-                                <small ng-if="status.type == 'SHARE' && status.sharedByUsername != profile.username">
+                                <!-- Possible backend bug where SHARE type statuses have shareByMe=true and sharedByUsername == profile.username -->
+                                <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
                                     <a ui-sref="home.profile({ username: status.username })">
                                         <span class="text-muted">@{{ status.sharedByUsername }}</span>
