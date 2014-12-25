@@ -131,7 +131,7 @@
                 <label translate="tatami.home.post.files">
 
                 </label>
-                <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active" style="display: none;">
+                <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
                     <div class="bar progress-bar progress-bar-info" style="width: {{uploadStatus.progress}}%;"></div>
                 </div>
                 <div class="dropzone well" file-dropzone translate="tatami.home.post.drop.file">
@@ -139,9 +139,9 @@
                 </div>
 
                 <div ng-show="current.attachments.length != 0" ng-repeat="attachment in current.attachments">
-                    <div>
+                    <p>
                         {{ attachment.name }} ({{ fileSize(attachment) }})
-                    </div>
+                    </p>
                 </div>
                 <!--
                 <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>

@@ -40,23 +40,27 @@ PostModule.controller('StatusCreateController', [
         progress: 0
     }
 
+    /**
+     * Watches the current.files ng-model and handles uploads
+     */
     $scope.$watch('current.files', function() {
         for(var i = 0; i < $scope.current.files.length; ++i){
             var file = $scope.current.files[i];
-            $scope.current.attachments.push(file);
             $scope.uploadStatus.isUploading = true;
             $scope.upload = $upload.upload({
                 url: '/tatami/rest/fileupload',
                 file: file,
                 fileFormDataName: 'uploadFile'
             }).progress(function(evt) {
-                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
                 $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
             }).success(function(data, status, headers, config) {
+                $scope.current.attachments.push(file);
                 $scope.uploadStatus.isUploading = false;
-                console.log("Success");
+                $scope.uploadStatus.progress = 0;
+                $scope.status.attachmentIds.push($scope.upload.$$state.value.data[i-1].attachmentId);
             }).error(function(data, status, headers, config) {
-                console.log("No space left for uploading");
+                $scope.uploadStatus.isUploading = false;
+                $scope.uploadStatus.progress = 0;
             })
         }
     }),
