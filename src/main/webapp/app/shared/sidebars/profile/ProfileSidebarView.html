@@ -3,45 +3,37 @@
     <div>
         <section class="hidden-phone profile">
             <h4 class="profile-card background-image-fffix">
-                <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+                <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </h4>
+            <br>
             <div class="well well-small">
                 <div>
                     <span class="glyphicon glyphicon-user"></span>
                     <b translate="tatami.home.profile.sidebar.information"></b>
                 </div>
                 <p>
-                    <strong>
-                    <span translate="tatami.home.profile.sidebar.firstName"></span>:
-                    </strong>
-                    {{ profile.firstName }}
+                    <strong translate="tatami.home.profile.sidebar.firstName"></strong>:
+                    {{ user.firstName }}
                 </p>
                 <p>
-                    <strong>
-                    <span translate="tatami.home.profile.sidebar.lastName"></span>:
-                    </strong>
-                    {{ profile.lastName }}
+                    <strong translate="tatami.home.profile.sidebar.lastName"></strong>:
+                    {{ user.lastName }}
                 </p>
                 <p>
-                    <strong>
-                    <span translate="tatami.home.profile.sidebar.email"></span>:
-                    </strong>
-                    {{ profile.login }}
+                    <strong translate="tatami.home.profile.sidebar.jobTitle"></strong>:
+                    {{ user.jobTitle }}
                 </p>
                 <p>
-                    <strong>
-                    <span translate="tatami.home.profile.sidebar.jobTitle"></span>:
-                    </strong>
-                    {{ profile.jobTitle }}
+                    <strong translate="tatami.home.profile.sidebar.email"></strong>:
+                    {{ user.login }}
                 </p>
                 <p>
-                    <strong>
-                    <span translate="tatami.home.profile.sidebar.phoneNumber"></span>:
-                    </strong>
-                    {{ profile.phoneNumber }}
+                    <strong translate="tatami.home.profile.sidebar.phoneNumber"></strong>:
+                    {{ user.phoneNumber }}
                 </p>
             </div>
         </section>
+        <!--
         <section class="hidden-phone stats">
             <div>
                 <div class="well well-small">
@@ -52,32 +44,33 @@
                     <div>
                         <p>
                             <strong>
-                            <span translate="tatami.home.profile.sidebar.statuses"></span>:
+                                <span translate="tatami.home.profile.sidebar.statuses"></span>:
                             </strong>
-                            <a ui-sref="home.profile({ username: profile.username })">
-                            <span class="badge">{{ profile.statusCount }}</span>
+                            <a ui-sref="home.profile.statuses({ username: user.username })">
+                                <span class="badge">{{ user.statusCount }}</span>
                             </a>
                         </p>
                         <p>
                             <strong>
-                            <span translate="tatami.home.profile.sidebar.following"></span>:
+                                <span translate="tatami.home.profile.sidebar.following"></span>:
                             </strong>
-                            <a ui-sref="home.profile.following({ username: profile.username })">
-                            <span class="badge">{{ profile.friendsCount }}</span>
+                            <a ui-sref="home.profile.following({ username: user.username })">
+                                <span class="badge">{{ user.friendsCount }}</span>
                             </a>
                         </p>
                         <p>
                             <strong>
-                            <span translate="tatami.home.profile.sidebar.followers"></span>:
+                                <span translate="tatami.home.profile.sidebar.followers"></span>:
                             </strong>
-                            <a ui-sref="home.profile.followers({ username: profile.username })">
-                            <span class="badge">{{ profile.followersCount }}</span>
+                            <a ui-sref="home.profile.followers({ username: user.username })">
+                                <span class="badge">{{ user.followersCount }}</span>
                             </a>
                         </p>
                     </div>
                 </div>
             </div>
         </section>
+        -->
     </div>
     <section class="hidden-phone tag-trends">
         <div>
@@ -88,7 +81,7 @@
                 </div>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
+                        <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>

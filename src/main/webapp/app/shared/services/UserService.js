@@ -1,7 +1,17 @@
 TatamiApp.factory('UserService', ['$resource', function($resource) {
+    var responseTransform = function(users, headersGetter) {
+        users = angular.fromJson(users);
+
+        for(var i = 0; i < users.length; i++) {
+            users[i]['avatarURL'] = users[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+        }
+
+        return users;
+    };
+
     return $resource(
         '/tatami/rest/users/:username',
-        { },
+        null,
         { 
             'get': { 
                 method: 'GET', params: { username: '@username' },
@@ -9,30 +19,20 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
                     user = angular.fromJson(user);
                     user['avatarURL'] = user.avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
                     return user;
-                } },
+                }
+            },
             'query': { 
                 method: 'GET', isArray: true, url: '/tatami/rest/users',
-                transformResponse: function(users, headersGetter) {
-                    users = angular.fromJson(users);
-
-                    for(var i = 0; i < users.length; i++) {
-                        users[i]['avatarURL'] = users[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
-                    }
-
-                    return users;
-                } },
-            'follow': { method: 'PATCH', params: { username: '@username' } },
-            'getFriends': { 
-                method: 'GET', isArray: true, url: '/tatami/rest/users/:userId/friends', params: { userId: '@userId' },
-                transformResponse: function(friends, headersGetter) {
-                    friends = angular.fromJson(friends);
-
-                    for(var i = 0; i < friends.length; i++) {
-                        friends[i]['avatarURL'] = friends[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + friends[i].avatar + '/photo.jpg';
-                    }
-
-                    return friends;
-                } },
+                transformResponse: responseTransform
+            },
+            'getFollowing': { 
+                method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/users/:username/friends',
+                transformResponse: responseTransform
+            },
+            'getFollowers': { 
+                method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/users/:username/followers',
+                transformResponse: responseTransform
+            },
             'getSuggestions': { 
                 method: 'GET', isArray: true, url: '/tatami/rest/users/suggestions', 
                 transformResponse: function(suggestions, headersGetter) {
@@ -44,6 +44,7 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
 
                     return suggestions;
                 }
-            }
+            },
+            'follow': { method: 'PATCH', params: { username: '@username' } }
         });
 }]);

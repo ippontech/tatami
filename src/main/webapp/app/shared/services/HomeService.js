@@ -1,4 +1,4 @@
-TatamiApp.factory('TimelineService', ['$resource', function($resource) {
+TatamiApp.factory('HomeService', ['$resource', function($resource) {
     var responseTransform = function(statuses, headersGetter) {
         statuses = angular.fromJson(statuses);
 
@@ -15,23 +15,24 @@ TatamiApp.factory('TimelineService', ['$resource', function($resource) {
         }
 
         return statuses;
-    }
+    };
 
     return $resource(
         null,
         null,
-        {   
-            'getTimeline': { 
-            method: 'GET', isArray: true, url: '/tatami/rest/statuses/home_timeline',
-            transformResponse: responseTransform },
+        {
             'getMentions': { 
-            method: 'GET', isArray: true, url: '/tatami/rest/mentions',
-            transformResponse: responseTransform },
+                method: 'GET', isArray: true, url: '/tatami/rest/mentions',
+                transformResponse: responseTransform
+            },
             'getFavorites': { 
-            method: 'GET', isArray: true, url: '/tatami/rest/favorites',
-            transformResponse: responseTransform },
-            'getCompanyWall': { 
-            method: 'GET', isArray: true, url: '/tatami/rest/company',
-            transformResponse: responseTransform }
+                method: 'GET', isArray: true, url: '/tatami/rest/favorites',
+                transformResponse: responseTransform
+            },
+            'getCompanyTimeline': { 
+                method: 'GET', isArray: true, url: '/tatami/rest/company',
+                transformResponse: responseTransform
+            }
          });
-}]);
+    }
+]);

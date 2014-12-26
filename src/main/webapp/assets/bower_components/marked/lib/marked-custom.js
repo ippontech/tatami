@@ -697,8 +697,8 @@ InlineLexer.prototype.output = function(src) {
     // mention
     if (cap = inline.mention.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<a ui-sref="home.profile({ username: \'' + cap[1] + '\' })"'
-      out += ' href="#/home/profile/' + cap[1] + '">'
+      out += '<a ui-sref="home.profile.statuses({ username: \'' + cap[1] + '\' })"'
+      out += ' href="#/home/profile/' + cap[1] + '/statuses">'
         + cap[0]
         + '</a>';
       continue;
@@ -707,7 +707,7 @@ InlineLexer.prototype.output = function(src) {
     // tags
     if (cap = inline.tags.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<a ui-sref="home.tag({ tag: \'' + cap[1] + '\' })"'
+      out += '<a ui-sref="home.home.tag({ tag: \'' + cap[1] + '\' })"'
       out += ' href="#/home/tag/' + cap[1] + '">'
         + cap[0]
         + '</a>';
