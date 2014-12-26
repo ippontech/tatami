@@ -5,12 +5,12 @@
                 <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
             </h4>
             <div>
-                <a class="h3" ui-sref="home.profile({ username: profile.username })">
+                <a class="h3" ui-sref="home.profile.statuses({ username: profile.username })">
                     <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
                 </a>
             </div>
             <div>                
-                <a class="h5 text-muted" ui-sref="home.profile({ username: profile.username })">
+                <a class="h5 text-muted" ui-sref="home.profile.statuses({ username: profile.username })">
                     @{{ profile.username }}
                 </a>
             </div>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="items">
                     <div ng-repeat="group in groups">
-                        <a ui-sref="home.group({ group: group.groupId })">{{ group.name }}</a>
+                        <a ui-sref="home.home.group({ group: group.groupId })">{{ group.name }}</a>
                     </div>
                 </div>
             </div>
@@ -54,13 +54,13 @@
                                 <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
                                 <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                                 </span>
-                                <a ui-sref="home.profile({ username: suggestion.username })">
+                                <a ui-sref="home.profile.statuses({ username: suggestion.username })">
                                 <strong>
                                 {{ suggestion.firstName + ' ' + suggestion.lastName }}
                                 </strong>
                                 </a>
                                 <br>
-                                <a ui-sref="home.profile({ username: suggestion.username })">
+                                <a ui-sref="home.profile.statuses({ username: suggestion.username })">
                                 <small>
                                 @{{ suggestion.username }}
                                 </small>
@@ -81,11 +81,11 @@
                 </div>
                 <div class="items">
                     <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag, $index)" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-info': tag.followed }">
+                        <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
                             <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                         </span>
                         <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
+                        <a ui-sref="home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                     </div>
                 </div>
             </div>

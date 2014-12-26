@@ -8,7 +8,7 @@ TatamiApp.config(function($translateProvider) {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
                 'favorites': 'Favorites',
-                'companyWall': 'Company Wall',
+                'companyTimeline': 'Company Timeline',
 
                 //Top Menu
                 'menu': {
@@ -36,7 +36,7 @@ TatamiApp.config(function($translateProvider) {
                     'help': 'Help',
                     'account': {
                         'title': 'Account',
-                        'companyWall': 'Company Wall',
+                        'companyTimeline': 'Company Timeline',
                         'logout': 'Logout'
                     }
                 },
@@ -92,9 +92,22 @@ TatamiApp.config(function($translateProvider) {
                     'statuses': 'Statuses',
                     'following': 'Following',
                     'followers': 'Followers',
-                    'yourProfile': 'Your Profile',
                     'follow': 'Follow',
                     'unfollow': 'Unfollow',
+
+                    'youStatusesSingular': 'Your 1 status',
+                    'youStatusesPlural': 'Your {{ amount }} statuses',
+                    'youFollowingSingular': 'You follow 1 person',
+                    'youFollowingPlural': 'You follow {{ amount }} people',
+                    'youFollowersSingular': 'Your 1 follower',
+                    'youFollowersPlural': 'Your {{ amount }} followers',
+
+                    'userStatusesSingular': '@{{ username }} posted 1 status',
+                    'userStatusesPlural': '@{{ username }} posted {{ amount }} statuses',
+                    'userFollowingSingular': '@{{ username }} follows 1 person',
+                    'userFollowingPlural': '@{{ username }} follows {{ amount }} people',
+                    'userFollowersSingular': '@{{ username }} has 1 follower',
+                    'userFollowersPlural': '@{{ username }} has {{ amount }} followers',
 
                     // Profile Sidebar View
                     'sidebar': {

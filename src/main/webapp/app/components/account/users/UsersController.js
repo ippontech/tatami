@@ -11,7 +11,7 @@ UsersModule.controller('UsersController', [
          */
         $scope.getUsers = function() {
             ProfileService.get().$promise.then(function(result) {
-                UserService.getFriends({ userId: result.username }, function(friendList) {
+                UserService.getFollowing({ username: result.username }, function(friendList) {
                     $scope.usersGroup = friendList;
                 });
             })

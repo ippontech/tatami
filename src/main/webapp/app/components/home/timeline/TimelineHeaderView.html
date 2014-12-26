@@ -1,19 +1,19 @@
 <div>
     <ul class="homebody-nav nav nav-justified">
         <li ui-sref-active="active">
-            <a ui-sref="home.timeline">
+            <a ui-sref="home.home.timeline">
             <i class="glyphicon glyphicon-th-list"></i>
             <span translate="tatami.home.timeline"></span>
             </a>
         </li>
         <li ui-sref-active="active">
-            <a ui-sref="home.mentions">
+            <a ui-sref="home.home.mentions">
             <i class="glyphicon glyphicon-user"></i>
             <span translate="tatami.home.mentions"></span>
             </a>
         </li>
         <li ui-sref-active="active">
-            <a ui-sref="home.favorites">
+            <a ui-sref="home.home.favorites">
             <i class="glyphicon glyphicon-star"></i>
             <span translate="tatami.home.favorites"></span>
             </a>
@@ -22,10 +22,10 @@
     <section class="tatams-content tatams-margin">
         <div class="tatams-content-title">
             <h3>
-                <strong ng-if="$state.current.name == 'home.timeline'" translate="tatami.home.timeline"></strong>
-                <strong ng-if="$state.current.name == 'home.mentions'" translate="tatami.home.mentions"></strong>
-                <strong ng-if="$state.current.name == 'home.favorites'" translate="tatami.home.favorites"></strong>
-                <strong ng-if="$state.current.name == 'home.company'" translate="tatami.home.companyWall"></strong>
+                <strong ng-if="$state.current.name == 'home.home.timeline'" translate="tatami.home.timeline"></strong>
+                <strong ng-if="$state.current.name == 'home.home.mentions'" translate="tatami.home.mentions"></strong>
+                <strong ng-if="$state.current.name == 'home.home.favorites'" translate="tatami.home.favorites"></strong>
+                <strong ng-if="$state.current.name == 'home.home.company'" translate="tatami.home.companyTimeline"></strong>
             </h3>
         </div>
     </section>

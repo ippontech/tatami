@@ -1,7 +1,7 @@
-HomeModule.controller('HomeController', ['$scope', 'StatusService', 'ProfileService', 'statuses',
-    function($scope, StatusService, ProfileService, statuses) {
+HomeModule.controller('StatusListController', ['$scope', 'StatusService', 'profile', 'statuses',
+    function($scope, StatusService, profile, statuses) {
+        $scope.profile = profile;
         $scope.statuses = statuses;
-        $scope.profile = ProfileService.get();
 
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;

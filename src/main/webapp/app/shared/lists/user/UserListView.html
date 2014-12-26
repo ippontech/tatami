@@ -1,0 +1,29 @@
+<section class="tatams-container">
+    <section class="timeline">
+        <div class="useritem" ng-repeat="user in users">
+            <div class='pull-left background-image-fffix'>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+                </a>
+            </div>
+            <h4>
+                <span ng-if="user.username != profile.username" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="toggleFriend pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                    <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                </span>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <strong>
+                        {{ user.firstName + ' ' + user.lastName }}
+                    </strong>
+                </a>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <small>
+                        @{{ user.username }}
+                    </small>
+                </a>
+                <div class="text-muted">
+                    {{ user.jobTitle }}
+                </div>
+            </h4>
+        </div>
+    </section>
+</section>

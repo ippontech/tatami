@@ -1,7 +1,6 @@
-ProfileSidebarModule.controller('ProfileSidebarController', ['$scope', 'TagService', 'profile', 'tags',
-    function($scope, TagService, profile, tags) {
-        $scope.profile = profile;
-
+ProfileSidebarModule.controller('ProfileSidebarController', ['$scope', 'TagService', 'user', 'tags',
+    function($scope, TagService, user, tags) {
+        $scope.user = user;
         $scope.tags = tags;
 
         $scope.followTag = function(tag, index) {

@@ -2,181 +2,156 @@ var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule'
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
-        .state('home',{
+        .state('home', {
             url: '/home',
             abstract: true,
-            templateUrl: 'app/components/home/HomeView.html'
+            templateUrl: 'app/components/home/HomeView.html',
+            resolve: {
+                ProfileService: 'ProfileService',
+                profile: function(ProfileService) {
+                    return ProfileService.get().$promise;
+                }
+            }
         })
-        .state('home.timeline', {
+        .state('home.home', {
+            url: '^/home',
+            abstract: true,
+            resolve: {
+                GroupService: 'GroupService',
+                UserService: 'UserService',
+                TagService: 'TagService',
+                groups: function(GroupService) {
+                    return GroupService.query().$promise;
+                },
+                suggestions: function(UserService) {
+                    return UserService.getSuggestions().$promise;
+                },
+                tags: function(TagService) {
+                    return TagService.query({ popular: true }).$promise;
+                }
+            }
+        })
+        .state('home.home.timeline', {
             url: '/timeline',
             views: {
-                'homeSide': {
+                'homeSide@home': {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBodyHeader': {
+                'homeBodyHeader@home': {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
-                'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
-                    controller: 'HomeController'
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
-                ProfileService: 'ProfileService',
-                GroupService: 'GroupService',
-                UserService: 'UserService',
-                TagService: 'TagService',
-                TimelineService: 'TimelineService',
-                profile: function(ProfileService) {
-                    return ProfileService.get().$promise;
-                },
-                groups: function(GroupService) {
-                    return GroupService.query().$promise;
-                },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
-                tags: function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
-                },
-                statuses: function(TimelineService) {
-                    return TimelineService.getTimeline().$promise;
+                StatusService: 'StatusService',
+                statuses: function(StatusService) {
+                    return StatusService.getHomeTimeline().$promise;
                 }
             }
         })
-        .state('home.mentions', {
+        .state('home.home.mentions', {
             url: '/mentions',
             views: {
-                'homeSide': {
+                'homeSide@home': {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBodyHeader': {
+                'homeBodyHeader@home': {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
-                'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
-                    controller: 'HomeController'
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
-                ProfileService: 'ProfileService',
-                GroupService: 'GroupService',
-                UserService: 'UserService',
-                TagService: 'TagService',
-                TimelineService: 'TimelineService',
-                profile: function(ProfileService) {
-                    return ProfileService.get().$promise;
-                },
-                groups: function(GroupService) {
-                    return GroupService.query().$promise;
-                },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
-                tags: function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
-                },
-                statuses: function(TimelineService) {
-                    return TimelineService.getMentions().$promise;
+                HomeService: 'HomeService',
+                statuses: function(HomeService) {
+                    return HomeService.getMentions().$promise;
                 }
             }
         })
-        .state('home.favorites', {
+        .state('home.home.favorites', {
             url: '/favorites',
             views: {
-                'homeSide': {
+                'homeSide@home': {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBodyHeader': {
+                'homeBodyHeader@home': {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
-                'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
-                    controller: 'HomeController'
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
-                ProfileService: 'ProfileService',
-                GroupService: 'GroupService',
-                UserService: 'UserService',
-                TagService: 'TagService',
-                TimelineService: 'TimelineService',
-                profile: function(ProfileService) {
-                    return ProfileService.get().$promise;
-                },
-                groups: function(GroupService) {
-                    return GroupService.query().$promise;
-                },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
-                tags: function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
-                },
-                statuses: function(TimelineService) {
-                    return TimelineService.getFavorites().$promise;
+                HomeService: 'HomeService',
+                statuses: function(HomeService) {
+                    return HomeService.getFavorites().$promise;
                 }
             }
         })
-        .state('home.company', {
+        .state('home.home.company', {
             url: '/company',
             views: {
-                'homeSide': {
+                'homeSide@home': {
                     templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
                     controller: 'HomeSidebarController'
                 },
-                'homeBodyHeader': {
+                'homeBodyHeader@home': {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
-                'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
-                    controller: 'HomeController'
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
-                ProfileService: 'ProfileService',
-                GroupService: 'GroupService',
-                UserService: 'UserService',
+                HomeService: 'HomeService',
+                statuses: function(HomeService) {
+                    return HomeService.getCompanyTimeline().$promise;
+                }
+            }
+        })
+        .state('home.home.tag', {
+            url: '/tag/:tag',
+            views: {
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/tag/TagHeaderView.html',
+                    controller: 'TagHeaderController'
+                },
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
+                }
+            },
+            resolve: {
                 TagService: 'TagService',
-                TimelineService: 'TimelineService',
-                profile: function(ProfileService) {
-                    return ProfileService.get().$promise;
+                tag: function(TagService, $stateParams) {
+                    return TagService.get({ tag: $stateParams.tag }).$promise;
                 },
-                groups: function(GroupService) {
-                    return GroupService.query().$promise;
-                },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
-                tags: function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
-                },
-                statuses: function(TimelineService) {
-                    return TimelineService.getCompanyWall().$promise;
+                statuses: function(TagService, $stateParams) {
+                    return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
                 }
             }
         })
         .state('home.profile', {
             url: '/profile/:username',
-            views: {
-                'homeSide': {
-                    templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
-                    controller: 'ProfileSidebarController'
-                },
-                'homeBodyHeader': {
-                    templateUrl: ''
-                },
-                'homeBodyContent': {
-                    templateUrl: ''
-                }
-            },
+            abstract: true,
             resolve: {
                 UserService: 'UserService',
                 TagService: 'TagService',
-                profile: function(UserService, $stateParams) {
+                user: function(UserService, $stateParams) {
                     return UserService.get({ username: $stateParams.username }).$promise;
                 },
                 tags: function(TagService, $stateParams) {
@@ -184,44 +159,72 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         })
-        .state('home.tag', {
-            url: '/tag/:tag',
+        .state('home.profile.statuses', {
+            url: '/statuses',
             views: {
-                'homeSide': {
-                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
-                    controller: 'HomeSidebarController'
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
+                    controller: 'ProfileSidebarController'
                 },
-                'homeBodyHeader': {
-                    templateUrl: 'app/components/home/tag/TagHeaderView.html',
-                    controller: 'TagHeaderController'
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/profile/ProfileHeaderView.html',
+                    controller: 'ProfileHeaderController'
                 },
-                'homeBodyContent': {
-                    templateUrl: 'app/shared/homeContent/HomeContentView.html',
-                    controller: 'HomeController'
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
-                ProfileService: 'ProfileService',
-                GroupService: 'GroupService',
+                StatusService: 'StatusService',
+                statuses: function(StatusService, $stateParams) {
+                    return StatusService.getUserTimeline({ username: $stateParams.username }).$promise;
+                }
+            }
+        })
+        .state('home.profile.following', {
+            url: '/following',
+            views: {
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
+                    controller: 'ProfileSidebarController'
+                },
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/profile/ProfileHeaderView.html',
+                    controller: 'ProfileHeaderController'
+                },
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/user/UserListView.html',
+                    controller: 'UserListController'
+                }
+            },
+            resolve: {
                 UserService: 'UserService',
-                TagService: 'TagService',
-                profile: function(ProfileService) {
-                    return ProfileService.get().$promise;
+                users: function(UserService, $stateParams) {
+                    return UserService.getFollowing({ username: $stateParams.username }).$promise;
+                }
+            }
+        })
+        .state('home.profile.followers', {
+            url: '/followers',
+            views: {
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/profile/ProfileSidebarView.html',
+                    controller: 'ProfileSidebarController'
                 },
-                groups: function(GroupService) {
-                    return GroupService.query().$promise;
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/profile/ProfileHeaderView.html',
+                    controller: 'ProfileHeaderController'
                 },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
-                tags: function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
-                },
-                tag: function(TagService, $stateParams) {
-                    return TagService.get({ tag: $stateParams.tag }).$promise;
-                },
-                statuses: function(TagService, $stateParams) {
-                    return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/user/UserListView.html',
+                    controller: 'UserListController'
+                }
+            },
+            resolve: {
+                UserService: 'UserService',
+                users: function(UserService, $stateParams) {
+                    return UserService.getFollowers({ username: $stateParams.username }).$promise;
                 }
             }
         });
