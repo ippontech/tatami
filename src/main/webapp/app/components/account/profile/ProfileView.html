@@ -9,7 +9,8 @@
                         <label class="control-label"></label>
                         <div class="controls">
                             <div class="dropzone well">
-                                {{ 'tatami.account.profile.dropPhoto' | translate }}
+                                <img class="nomargin avatar img-rounded" ng-src="{{ userProfile.avatarURL }}" alt="">
+                                <p class="little-padding-top" translate="tatami.account.profile.dropPhoto"></p>
                                 <!--
                                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
                                 -->
