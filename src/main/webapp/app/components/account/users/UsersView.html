@@ -23,16 +23,16 @@
                         <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                     </div>
                     <h4>
-                        <span class="toggleFriend pointer pull-right label label-info">
+                        <span class="pointer pull-right label label-info">
                             <span class="glyphicon glyphicon-minus"></span>
                         </span>
-                        <a href="#/home/profile/{{ user.username }}">
+                        <a ui-sref="home.profile.statuses({ username: user.username })">
                             <strong>
                                 {{ user.firstName + ' ' + user.lastName }}
                             </strong>
                         </a>
                         <br>
-                        <a href="#/home/profile/{{ user.username }}">
+                        <a ui-sref="home.profile.statuses({ username: user.username })">
                             <small>
                                 @{{ user.username }}
                             </small>

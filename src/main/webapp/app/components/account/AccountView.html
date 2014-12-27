@@ -10,14 +10,14 @@
                         <div id="avatar">
                             <div class="row text-center nomargin avatar-float-center-container">
                                 <div>
-                                    <!-- Setting src="{{ avatarURL }}" causes a MIME type message, not sure why -->
-                                    <!-- This error might not occur anymore because of ng-src tag, needs testing -->
                                     <img class="nomargin avatar img-rounded" ng-src="{{ profile.avatarURL }}">
                                 </div>
                                 <br>
                                 <div>
-                                    <a href="#/home/profile/{{ profile.username }}">
+                                    <a ui-sref="home.profile.statuses({ username: profile.username })">
                                         <h3 class="user-profile">{{ profile.firstName + ' ' + profile.lastName }}</h3>
+                                    </a>
+                                    <a ui-sref="home.profile.statuses({ username: profile.username })">
                                         <p>@{{ profile.username }}</p>
                                     </a>
                                 </div>

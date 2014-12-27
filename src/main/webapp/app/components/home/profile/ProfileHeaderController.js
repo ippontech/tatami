@@ -1,10 +1,11 @@
-HomeModule.controller('ProfileHeaderController', ['$scope', 'UserService', 'profile', 'user',
-    function($scope, UserService, profile, user) {
-        $scope.profile = profile;
+HomeModule.controller('ProfileHeaderController', ['$scope', 'UserService', 'user',
+    function($scope, UserService, user) {
         $scope.user = user;
 
-        $scope.followUser = function() {
-            UserService.follow({ username: user.username }, { friend: !user.friend, friendShip: true }, 
+        $scope.followUnfollowUser = function() {
+            UserService.follow(
+                { username: $scope.user.username },
+                { friend: !$scope.user.friend, friendShip: true },
                 function(response) {
                     $scope.user.friend = response.friend;
             });

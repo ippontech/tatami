@@ -82,18 +82,18 @@
                             <div>
                                 <tr ng-repeat="group in userGroups">
                                     <td>
-                                        <a href="/tatami/home/groups/{{ group.groupId }}">{{ group.name }}</a>
+                                        <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                                     </td>
                                     <td>
-                                        <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
-                                        <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
+                                        <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.public"></span>
+                                        <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.private"></span>
                                         <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.archived"></span>
                                     </td>
                                     <td>
                                        {{ group.counter }}
                                     </td>
                                     <td>
-                                        <a ui-sref="account.groups.manage({groupId: group.groupId})" class="btn-title toggleTag pull-right label labelSizeNormal label-info hidden-phone">
+                                        <a ui-sref="account.groups.manage({groupId: group.groupId})" class="btn-title pull-right label labelSizeNormal label-info hidden-phone">
                                             <span class="glyphicon glyphicon-th-large"> <span translate="tatami.account.groups.manage"></span></span>
                                         </a>
                                     </td>

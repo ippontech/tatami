@@ -1,5 +1,6 @@
 TatamiApp.factory('ProfileService', ['$resource', function($resource) {
-    return $resource('/tatami/rest/account/profile', null, {
+    return $resource('/tatami/rest/account/profile', null,
+    {
         'get': { 
             method: 'GET',
             transformResponse: function(profile, headersGetter) {

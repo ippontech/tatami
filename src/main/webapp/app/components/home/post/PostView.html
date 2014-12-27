@@ -27,13 +27,13 @@
             <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
-                        <a ui-sref="home.profile({ username: currentStatus.username })">
+                        <a ui-sref="home.profile.statuses({ username: currentStatus.username })">
                             <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
                         </a>
                     </div>
                     <div id="status-content-container">
                         <h5 class="statusitem-name">
-                            <a ui-sref="home.profile({ username: currentStatus.username })">
+                            <a ui-sref="home.profile.statuses({ username: currentStatus.username })">
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
                                 <small>@{{ currentStatus.username }}</small>
                             </a>
@@ -49,7 +49,7 @@
                         <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-if="currentStatus.groupId">
-                            <a class="label" ng-class="currentStatus.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.group({ group: currentStatus.groupId })">
+                            <a class="label" ng-class="{ 'label-info': status.publicGroup }" ui-sref="home.home.group.statuses({ groupId: currentStatus.groupId })">
                             {{ currentStatus.groupName }}
                             </a>
                             <br>

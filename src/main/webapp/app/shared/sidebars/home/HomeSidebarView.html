@@ -4,6 +4,8 @@
             <h4 class="profile-card background-image-fffix">
                 <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
             </h4>
+        </div>
+        <div class="well well-sm little-padding">
             <div>
                 <a class="h3" ui-sref="home.profile.statuses({ username: profile.username })">
                     <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
@@ -16,78 +18,60 @@
             </div>
         </div>
     </section>
-    <br>
     <section class="hidden-phone groups">
-        <div>
-            <div class="well well-small">
-                <div id="groups-list-title">
-                    <span class="glyphicon glyphicon-th-large"></span>
-                    <b translate="tatami.home.sidebar.myGroups"></b>
-                </div>
-                <div class="items">
-                    <div ng-repeat="group in groups">
-                        <a ui-sref="home.home.group({ group: group.groupId })">{{ group.name }}</a>
-                    </div>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
-        </div>
-    </section>
-    <section class="hidden-phone who-to-follow">
-        <div>
-            <div class="well well-small">
-                <div id="follow-suggest-title">
-                    <span class="glyphicon glyphicon-user"></span>
-                    <b translate="tatami.home.sidebar.whoToFollow"></b>
-                </div>
-                <div ng-repeat="suggestion in suggestions">
-                    <div class="items">
-                        <div class="useritemmini">
-                            <!-- This avatar thing is in here but for some reason it doesn't show up on apps.tatamisoft.com ? -->
-                            <!-- Maybe this should be removed? -->
-                            <!-- Try getting it to display and see how it looks -->
-                            <!--
-                            <div class="pull-left background-image-fffix">
-                                <div class="img img-rounded img-small" style="background-image: url(/img/default_image_profile.png);"></div>
-                            </div>
-                            -->
-                            <h6>
-                                <span ng-click="followUser(suggestion, $index)" class="toggleFriend pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
-                                <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                                </span>
-                                <a ui-sref="home.profile.statuses({ username: suggestion.username })">
-                                <strong>
-                                {{ suggestion.firstName + ' ' + suggestion.lastName }}
-                                </strong>
-                                </a>
-                                <br>
-                                <a ui-sref="home.profile.statuses({ username: suggestion.username })">
-                                <small>
-                                @{{ suggestion.username }}
-                                </small>
-                                </a>
-                            </h6>
-                        </div>
-                    </div>
+            <div class="panel-body items">
+                <div ng-repeat="group in groups">
+                    <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                 </div>
             </div>
         </div>
     </section>
     <section class="hidden-phone tag-trends">
-        <div>
-            <div class="well well-small">
-                <div id="profile-trends-title">
-                    <span class="glyphicon glyphicon-fire"></span>
-                    <b translate="tatami.home.sidebar.trending"></b>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-fire"></span>
+                <span translate="tatami.home.sidebar.trending"></span>
+            </div>
+            <div class="panel-body items">
+                <div ng-repeat="tag in tags">
+                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                        <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
+                    <a ui-sref="home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                 </div>
-                <div class="items">
-                    <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
-                            <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+            </div>
+        </div>
+    </section>
+    <section class="hidden-phone who-to-follow">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-user"></span>
+                <span translate="tatami.home.sidebar.whoToFollow"></span>
+            </div>
+            <div class="panel-body items useritemmini" ng-repeat="suggestion in suggestions">
+                <h6>
+                    <span ng-click="followUser(suggestion, $index)" class="pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
+                        <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                        <span class='pull-left background-image-fffix'>
+                            <div class="img img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }"></div>
                         </span>
-                        <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ui-sref="home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
-                    </div>
-                </div>
+                    </a>&nbsp;
+                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                        <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
+                    </a>
+                    <br>&nbsp;
+                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                        <small>@{{ suggestion.username }}</small>
+                    </a>
+                </h6>
             </div>
         </div>
     </section>
