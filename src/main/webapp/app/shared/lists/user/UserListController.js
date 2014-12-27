@@ -6,6 +6,7 @@ HomeModule.controller('UserListController', ['$scope', 'UserService', 'users',
             UserService.follow({ username: user.username }, { friend: !user.friend, friendShip: true }, 
                 function(response) {
                     $scope.users[index].friend = response.friend;
+                    $scope.$state.reload();
             });
         }
     }
