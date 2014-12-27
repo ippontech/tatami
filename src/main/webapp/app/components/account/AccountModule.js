@@ -40,6 +40,10 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                 FilesService: 'FilesService',
                 attachmentQuota: function(FilesService) {
                     return FilesService.getQuota().$promise;
+                },
+
+                fileList: function(FilesService) {
+                    return FilesService.query().$promise;
                 }
             },
             controller: 'FilesController'

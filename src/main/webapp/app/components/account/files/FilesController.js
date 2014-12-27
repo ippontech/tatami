@@ -1,26 +1,8 @@
-FilesModule.controller('FilesController', ['$scope', 'FilesService', function($scope, FilesService) {
-
-    /**
-     * Gets the total % of the files currently uploaded to the server.
-     */
-    $scope.getQuota = function() {
-        FilesService.getQuota(function(result) {
-            $scope.quota = result[0];
-        });
-    };
-
-    /**
-     * Get the array of files from the server using FilesService
-     */
-    $scope.getFiles = function (){
-        FilesService.query(function(result) {
-            $scope.fileList = result;
-        })
-    };
+FilesModule.controller('FilesController', ['$scope', 'FilesService', 'attachmentQuota', 'fileList', function($scope, FilesService, attachmentQuota, fileList) {
 
     // Initialize stuff
-    $scope.getQuota();
-    $scope.getFiles();
+    $scope.quota = attachmentQuota[0];
+    $scope.fileList = fileList;
 
     /**
      * Allows us to delete the supplied attachment
