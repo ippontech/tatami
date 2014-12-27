@@ -7,22 +7,27 @@
                 </a>
             </div>
             <h4>
-                <span ng-if="user.username != profile.username" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="toggleFriend pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
                     <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                 </span>
+                
                 <a ui-sref="home.profile.statuses({ username: user.username })">
                     <strong>
                         {{ user.firstName + ' ' + user.lastName }}
                     </strong>
                 </a>
+
                 <a ui-sref="home.profile.statuses({ username: user.username })">
                     <small>
                         @{{ user.username }}
                     </small>
                 </a>
+
                 <div class="text-muted">
                     {{ user.jobTitle }}
                 </div>
+
+                <div ng-if="user.role == 'ADMIN'" class="text-muted" translate="tatami.home.status.admin"></div>
             </h4>
         </div>
     </section>

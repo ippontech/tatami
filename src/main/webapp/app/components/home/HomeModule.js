@@ -1,4 +1,11 @@
-var HomeModule = angular.module('HomeModule', ['PostModule', 'HomeSidebarModule', 'ProfileSidebarModule', 'ngSanitize', 'angularMoment', 'ui.router']);
+var HomeModule = angular.module('HomeModule', [
+    'PostModule',
+    'HomeSidebarModule',
+    'ProfileSidebarModule',
+    'ngSanitize',
+    'angularMoment',
+    'ui.router'
+]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
@@ -13,6 +20,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         })
+        //state for all views that use home sidebar
         .state('home.home', {
             url: '^/home',
             abstract: true,
@@ -23,11 +31,11 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 groups: function(GroupService) {
                     return GroupService.query().$promise;
                 },
-                suggestions: function(UserService) {
-                    return UserService.getSuggestions().$promise;
-                },
                 tags: function(TagService) {
                     return TagService.query({ popular: true }).$promise;
+                },
+                suggestions: function(UserService) {
+                    return UserService.getSuggestions().$promise;
                 }
             }
         })
@@ -145,6 +153,61 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         })
+        .state('home.home.group', {
+            url: '/group/:groupId',
+            abstract: true,
+            resolve: {
+                GroupService: 'GroupService',
+                group: function(GroupService, $stateParams) {
+                    return GroupService.get({ groupId: $stateParams.groupId }).$promise;
+                }
+            }
+        })
+        .state('home.home.group.statuses', {
+            url: '/statuses',
+            views: {
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/group/GroupHeaderView.html',
+                    controller: 'GroupHeaderController'
+                },
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    controller: 'StatusListController'
+                }
+            },
+            resolve: {
+                statuses: function(GroupService, $stateParams) {
+                    return GroupService.getStatuses({ groupId: $stateParams.groupId }).$promise;
+                }
+            }
+        })
+        .state('home.home.group.members', {
+            url: '/members',
+            views: {
+                'homeSide@home': {
+                    templateUrl: 'app/shared/sidebars/home/HomeSidebarView.html',
+                    controller: 'HomeSidebarController'
+                },
+                'homeBodyHeader@home': {
+                    templateUrl: 'app/components/home/group/GroupHeaderView.html',
+                    controller: 'GroupHeaderController'
+                },
+                'homeBodyContent@home': {
+                    templateUrl: 'app/shared/lists/user/UserListView.html',
+                    controller: 'UserListController'
+                }
+            },
+            resolve: {
+                users: function(GroupService, $stateParams) {
+                    return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
+                }
+            }
+        })
+        //state for all views that use profile sidebar
         .state('home.profile', {
             url: '/profile/:username',
             abstract: true,
