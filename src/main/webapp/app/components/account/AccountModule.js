@@ -16,6 +16,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/account',
             abstract: true,
             templateUrl: 'app/components/account/AccountView.html',
+            resolve: {
+                ProfileService: 'ProfileService',
+                profileInfo: function(ProfileService) {
+                    return ProfileService.get().$promise;
+                }
+            },
             controller: 'AccountController'
         })
         .state('account.profile', {

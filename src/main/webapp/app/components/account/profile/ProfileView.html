@@ -8,15 +8,14 @@
                     <div class="control-group dashed">
                         <label class="control-label"></label>
                         <div class="controls">
-                            <div class="dropzone well">
-                                <img class="nomargin avatar img-rounded" ng-src="{{ userProfile.avatarURL }}" alt="">
+                            <div class="dropzone well" ng-file-drop ng-model="current.avatar">
                                 <p class="little-padding-top" translate="tatami.account.profile.dropPhoto"></p>
                                 <!--
                                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
                                 -->
                             </div>
-                            <div class="attachmentBar progress progress-striped active" style="display: none;">
-                                <div class="bar progress-bar progress-bar-info" style="width: 0%;"></div>
+                            <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
+                                <div class="bar progress-bar progress-bar-info" style="width: {{ uploadStatus.progress }}%;"></div>
                             </div>
                         </div>
                     </div>

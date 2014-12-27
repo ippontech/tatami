@@ -38,7 +38,7 @@ PostModule.controller('StatusCreateController', [
     $scope.uploadStatus = {
         isUploading: false,
         progress: 0
-    }
+    };
 
     /**
      * Watches the current.files ng-model and handles uploads
