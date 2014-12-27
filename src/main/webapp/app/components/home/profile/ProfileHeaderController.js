@@ -8,6 +8,7 @@ HomeModule.controller('ProfileHeaderController', ['$scope', 'UserService', 'user
                 { friend: !$scope.user.friend, friendShip: true },
                 function(response) {
                     $scope.user.friend = response.friend;
+                    $scope.$state.reload();
             });
         }
     }
