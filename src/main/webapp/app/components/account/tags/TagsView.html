@@ -32,11 +32,11 @@
                                     <a href="/tatami/home/#/tags/{{ tag.name }}" title="{{ tag.name }}">#{{ tag.name }}</a>
                                 </td>
                                 <td class="follow">
-                                    <a ng-click="follow(tag)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title toggleTag pull-right label labelSizeNormal">
+                                    <a ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title toggleTag pull-right label labelSizeNormal" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
                                         <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
-                                            <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.account.tags.follow"></span>
-                                            <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.account.tags.following"></span>
-                                            <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.account.tags.unfollow"></span>
+                                            <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.home.tag.follow"></span>
+                                            <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.home.tag.following"></span>
+                                            <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.home.tag.unfollow"></span>
                                         </span>
                                     </a>
                                 </td>

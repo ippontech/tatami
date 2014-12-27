@@ -27,8 +27,8 @@ TagsModule.controller('TagsController', [
          * through toState.data.dataUrl. Now we can perform a query on this url.
          */
         $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if($scope.current.searchString != ''){
-                SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
+            if($scope.current.searchString != '') {
+                SearchService.query({ term: 'tags', q: $scope.current.searchString }, function(result) {
                     $scope.tags = result;
                 });
             }
@@ -37,12 +37,12 @@ TagsModule.controller('TagsController', [
                     $scope.tags = result;
                 });
             }
-            else{
+            else {
                 $scope.tags = {};
             }
         });
 
-        $scope.isActive = function (path){
+        $scope.isActive = function (path) {
             return path === $location.path();
         };
 
@@ -50,12 +50,12 @@ TagsModule.controller('TagsController', [
          * Follows an unfollowed tag, or unfollows a followed tag, depending on the current state
          * @param tag
          */
-        $scope.follow = function(tag) {
-            tag.followed = !tag.followed;
-            var promise = $resource('/tatami/rest/tags/' + tag.name, null,
-                {
-                    'update': {method: 'PUT'}
-                }).update(tag);
+
+        $scope.followTag = function(tag, index) {
+            TagService.follow({ tag: tag.name }, { name: tag.name, followed: !tag.followed, trendingUp: tag.trendingUp }, 
+                function(response) { 
+                    $scope.tags[index].followed = response.followed;
+            });
         };
 
         $scope.contains = function(path) {
