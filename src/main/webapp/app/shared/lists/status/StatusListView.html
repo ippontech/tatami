@@ -42,7 +42,7 @@
                         <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>
 
                         <small ng-if="status.groupId">
-                            <a class="label" ng-class="status.publicGroup ? 'label-info' : 'label-warning'" ui-sref="home.home.group({ group: status.groupId })">
+                            <a class="label" ng-class="{ 'label-info': status.publicGroup }" ui-sref="home.home.group.statuses({ groupId: status.groupId })">
                             {{ status.groupName }}
                             </a>
                             <br>
@@ -87,15 +87,15 @@
                                     <i class="glyphicon glyphicon-comment"></i>
                                     <span translate="tatami.home.status.reply"></span>
                                 </button>
-                                <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status)" class="btn-link status-action status-action-share button-ios">
+                                <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index)" class="btn-link status-action status-action-share button-ios">
                                     <i class="glyphicon glyphicon-retweet"></i>
                                     <span translate="tatami.home.status.share"></span>
                                 </button>
-                                <button ng-click="favoriteStatus(status)" class="btn-link status-action status-action-favorite button-ios">
+                                <button ng-click="favoriteStatus(status, $index)" class="btn-link status-action status-action-favorite button-ios">
                                     <i class="glyphicon glyphicon-star"></i>
                                     <span translate="tatami.home.status.favorite"></span>
                                 </button>
-                                <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
+                                <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
                                     <i class="glyphicon glyphicon-trash"></i>
                                     <span translate="tatami.home.status.delete"></span>
                                 </button>

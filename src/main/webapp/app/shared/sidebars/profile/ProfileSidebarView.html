@@ -1,16 +1,28 @@
 <div>
-    <!-- <section class="actions"></section> What is this for ? -->
-    <div>
-        <section class="hidden-phone profile">
+    <section class="hidden-phone profile">
+        <div class="page-header">
             <h4 class="profile-card background-image-fffix">
                 <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </h4>
-            <br>
-            <div class="well well-small">
-                <div>
-                    <span class="glyphicon glyphicon-user"></span>
-                    <b translate="tatami.home.profile.sidebar.information"></b>
-                </div>
+        </div>
+        <div class="well well-sm little-padding">
+            <div>
+                <a class="h3" ui-sref="home.profile.statuses({ username: user.username })">
+                    <strong>{{ user.firstName + ' ' + user.lastName }}</strong>
+                </a>
+            </div>
+            <div>                
+                <a class="h5 text-muted" ui-sref="home.profile.statuses({ username: user.username })">
+                    @{{ user.username }}
+                </a>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-user"></span>
+                <span translate="tatami.home.profile.sidebar.information"></span>
+            </div>
+            <div class="panel-body">
                 <p>
                     <strong translate="tatami.home.profile.sidebar.firstName"></strong>:
                     {{ user.firstName }}
@@ -32,61 +44,21 @@
                     {{ user.phoneNumber }}
                 </p>
             </div>
-        </section>
-        <!--
-        <section class="hidden-phone stats">
-            <div>
-                <div class="well well-small">
-                    <div>
-                        <span class="glyphicon glyphicon-signal"></span>
-                        <b translate="tatami.home.profile.sidebar.statistics"></b>
-                    </div>
-                    <div>
-                        <p>
-                            <strong>
-                                <span translate="tatami.home.profile.sidebar.statuses"></span>:
-                            </strong>
-                            <a ui-sref="home.profile.statuses({ username: user.username })">
-                                <span class="badge">{{ user.statusCount }}</span>
-                            </a>
-                        </p>
-                        <p>
-                            <strong>
-                                <span translate="tatami.home.profile.sidebar.following"></span>:
-                            </strong>
-                            <a ui-sref="home.profile.following({ username: user.username })">
-                                <span class="badge">{{ user.friendsCount }}</span>
-                            </a>
-                        </p>
-                        <p>
-                            <strong>
-                                <span translate="tatami.home.profile.sidebar.followers"></span>:
-                            </strong>
-                            <a ui-sref="home.profile.followers({ username: user.username })">
-                                <span class="badge">{{ user.followersCount }}</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        -->
-    </div>
+        </div>
+    </section>
     <section class="hidden-phone tag-trends">
-        <div>
-            <div class="well well-small">
-                <div id="profile-trends-title">
-                    <span class="glyphicon glyphicon-fire"></span>
-                    <b translate="tatami.home.profile.sidebar.trending"></b>
-                </div>
-                <div class="items">
-                    <div ng-repeat="tag in tags">
-                        <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding toggleTag pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
-                            <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                        </span>
-                        <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                        <a ui-sref="home.tag({ tag: tag.name })">#{{ tag.name }}</a>
-                    </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-fire"></span>
+                <span translate="tatami.home.profile.sidebar.trending"></span>
+            </div>
+            <div class="panel-body items">
+                <div ng-repeat="tag in tags">
+                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                        <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
+                    <a ui-sref="home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                 </div>
             </div>
         </div>

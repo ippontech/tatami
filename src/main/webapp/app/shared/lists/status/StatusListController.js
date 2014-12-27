@@ -7,27 +7,24 @@ HomeModule.controller('StatusListController', ['$scope', 'StatusService', 'profi
             return moment().diff(moment(date), 'days', true) >= 1;
         },
 
-        $scope.favoriteStatus = function(status) {
+        $scope.favoriteStatus = function(status, index) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
                 function(response) {
-                    var index = $scope.statuses.indexOf(status);
                     $scope.statuses[index].favorite = response.favorite;
             });
         },
 
-        $scope.shareStatus = function(status) {
+        $scope.shareStatus = function(status, index) {
             StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
                 function(response) {
-                    var index = $scope.statuses.indexOf(status);
                     $scope.statuses[index].shareByMe = response.shareByMe;
             });
         },
 
-        $scope.deleteStatus = function(status, confirmMessage) {
-            // Put a confirmation modal here
-            StatusService.delete({ statusId: status.statusId }, { },
+        $scope.deleteStatus = function(status, index, confirmMessage) {
+            // Need a confirmation modal here
+            StatusService.delete({ statusId: status.statusId }, null,
                 function() {
-                    var index = $scope.statuses.indexOf(status);
                     $scope.statuses.splice(index, 1);
             });
         }

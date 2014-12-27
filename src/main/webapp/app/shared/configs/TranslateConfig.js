@@ -84,7 +84,28 @@ TatamiApp.config(function($translateProvider) {
                     'confirmDelete': 'Are you sure you want to delete this status?',
                     'sharedYour': 'shared your status',
                     'followed': 'followed you',
-                    'shared': 'shared'
+                    'shared': 'shared',
+                    'admin': 'Group Administrator'
+                },
+
+                // Tag View
+                'tag': {
+                    'title': 'Tag',
+                    'follow': 'Follow',
+                    'following': 'Following',
+                    'unfollow': 'Unfollow'
+                },
+
+                // Group View
+                'group': {
+                    'join': 'Join',
+                    'joined': 'Joined',
+                    'leave': 'Leave',
+                    'manage': 'Manage',
+                    'statuses': 'Statuses',
+                    'members': 'Members',
+                    'membersSingular': '1 Member',
+                    'membersPlural': '{{ amount }} Members'
                 },
 
                 // Profile View
@@ -94,6 +115,7 @@ TatamiApp.config(function($translateProvider) {
                     'followers': 'Followers',
                     'follow': 'Follow',
                     'unfollow': 'Unfollow',
+                    'followsYou': 'Follows You',
 
                     'youStatusesSingular': 'Your 1 status',
                     'youStatusesPlural': 'Your {{ amount }} statuses',
@@ -123,23 +145,6 @@ TatamiApp.config(function($translateProvider) {
                         'followers': 'Followers',
                         'trending': 'Trending'
                     }
-                },
-
-                // Group View
-                'group': {
-                    'title': 'Group',
-                    'manage': 'Manage',
-                    'statuses': 'Statuses',
-                    'memberList': 'Member List',
-                    
-                },
-
-                // Tag View
-                'tag': {
-                    'title': 'Tag',
-                    'follow': 'Follow',
-                    'following': 'Following',
-                    'unfollow': 'Unfollow'
                 }
             },
             

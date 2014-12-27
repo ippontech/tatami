@@ -1,7 +1,5 @@
-HomeModule.controller('UserListController', ['$scope', 'UserService', 'profile', 'user', 'users',
-    function($scope, UserService, profile, user, users) {
-        $scope.profile = profile;
-        $scope.user = user;
+HomeModule.controller('UserListController', ['$scope', 'UserService', 'users',
+    function($scope, UserService, users) {
         $scope.users = users;
 
         $scope.followUser = function(user, index) {

@@ -17,22 +17,19 @@ TatamiApp.factory('HomeService', ['$resource', function($resource) {
         return statuses;
     };
 
-    return $resource(
-        null,
-        null,
-        {
-            'getMentions': { 
-                method: 'GET', isArray: true, url: '/tatami/rest/mentions',
-                transformResponse: responseTransform
-            },
-            'getFavorites': { 
-                method: 'GET', isArray: true, url: '/tatami/rest/favorites',
-                transformResponse: responseTransform
-            },
-            'getCompanyTimeline': { 
-                method: 'GET', isArray: true, url: '/tatami/rest/company',
-                transformResponse: responseTransform
-            }
-         });
-    }
-]);
+    return $resource(null, null,
+    {
+        'getMentions': { 
+            method: 'GET', isArray: true, url: '/tatami/rest/mentions',
+            transformResponse: responseTransform
+        },
+        'getFavorites': { 
+            method: 'GET', isArray: true, url: '/tatami/rest/favorites',
+            transformResponse: responseTransform
+        },
+        'getCompanyTimeline': { 
+            method: 'GET', isArray: true, url: '/tatami/rest/company',
+            transformResponse: responseTransform
+        }
+     });
+}]);
