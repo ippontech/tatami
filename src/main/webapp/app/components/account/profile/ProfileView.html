@@ -14,7 +14,7 @@
                                 <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
                                 -->
                             </div>
-                            <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
+                            <div ng-style="{ visibility: uploadStatus.isUploading ? 'visible': 'hidden' }" class="attachmentBar progress progress-striped active">
                                 <div class="bar progress-bar progress-bar-info" style="width: {{ uploadStatus.progress }}%;"></div>
                             </div>
                         </div>
