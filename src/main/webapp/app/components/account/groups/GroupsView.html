@@ -85,8 +85,9 @@
                                         <a href="/tatami/home/groups/{{ group.groupId }}">{{ group.name }}</a>
                                     </td>
                                     <td>
-                                        <span ng-show="group.publicGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
-                                        <span ng-show="!group.publicGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
+                                        <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
+                                        <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
+                                        <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.archived"></span>
                                     </td>
                                     <td>
                                        {{ group.counter }}
