@@ -3,6 +3,93 @@ TatamiApp.config(function($translateProvider) {
     $translateProvider.translations('en', {
         'tatami': {
 
+            // Login View
+            'login': {
+                'title': 'Login',
+                'mainTitle': 'Welcome to Tatami',
+                'subtitle': 'An open source enterprise social network',
+                'moreInfo': 'More Info',
+                'email': 'Email',
+                'password': 'Password',
+                'remember': 'Remember me',
+                'forgotPassword': 'Forgot your password?',
+                'resetPassword': 'Reset password',
+                'tos': 'Terms of Service',
+                'register': {
+                    'title': 'Register',
+                    'line1': 'A confirmation email will be sent to the address you provide.',
+                    'line2': "Your email's domain will determine the company space you join. For example, users with an email@ippon.fr address will join Ippon's private space.",
+                    'line3': "If you are the first employee of your company to join Tatami, your company's private space will be automatically created."
+                },
+                'googleApps': {
+                    'title': 'Google Apps Login',
+                    'line1': 'This feature is for Google Apps for Work users, who have their work domain name managed by Google Apps.',
+                    'link': 'For more information on Google Apps for Work click here.',
+                    'line2': 'Whether or not you already have a Tatami account, you can sign in with your Google Apps account.',
+                    'line3': "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
+                    'login': 'Login using Google Apps'
+                }
+            },
+
+            'about': {
+
+                // Presentation Page
+                'presentation': {
+                    'title': 'What is Tatami?',
+                    'devices': 'Devices',
+                    'openSource': 'Open Source',
+                    'row1': {
+                        'title': 'A private, enterprise social network',
+                        'line1': 'Update your status to inform your co-workers',
+                        'line2': "Subscribe to other employees' time lines",
+                        'line3': 'Share important information to your followers',
+                        'line4': 'Discuss and reply to your colleagues',
+                        'line5': 'Put important information into favorites',
+                        'line6': 'Search useful information with our integrated search engine',
+                        'line7': 'Use hashtags to find related information',
+                        'line8': "Go to your co-workers' profiles to see what they are working on",
+                        'line9': 'English and French versions available, adding other languages is easy'
+                    },
+                    'row2': {
+                        'title': 'Works on all devices!',
+                        'line1': 'Dynamic web application (HTML5): nothing to install, except a modern browser!',
+                        'line2': "Works on mobile devices, tablets, or standard computers: the application adapts itself automatically to your device's screen",
+                        'line3': 'Stay connected with your enterprise wherever you are'
+                    },
+                    'row3': {
+                        'title': "Easy installation and integration with your company's IT infrastructure",
+                        'line1': 'Standard Java application',
+                        'line2': 'Your data belongs to you, not to your SaaS vendor!',
+                        'line3': 'Integrates with your LDAP directory',
+                        'line4': 'Integrates with Google Apps',
+                        'line5': 'Fully Open Source, with a business-friendly Apache 2.0 license',
+                        'line6': 'Easy to extend or modify according to your needs',
+                        'line7': 'High performance (based on Apache Cassandra), even on small hardware',
+                        'line8': 'Join the project and submit patches on our Github page:'
+                    },
+                    'row4': {
+                        'title': "Also available in SaaS mode, fully managed by Ippon Technologies",
+                        'line1': "If you do not want to install Tatami in your company, it's easy to use directly",
+                        'line2': 'Secured multi-enterprise mode: every company has its own private space',
+                        'line3': '256 bits SSL encryption: all data transfers are fully secured'
+                    },
+                    'row5': {
+                        'title': 'Need more information on our product?',
+                        'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or email us at'
+                    }
+                },
+
+                'tos': {
+                    'title': 'Terms of Service'
+                },
+
+                // License Page
+                'license': {
+                    'title': 'Source Code License',
+                    'copyright': 'Copyright 2012'
+                }
+            },
+
             // Home View
             'home': {
                 'timeline': 'Timeline',
@@ -16,12 +103,14 @@ TatamiApp.config(function($translateProvider) {
                     'title': 'Tatami',
                     'about': {
                         'title': 'About',
+                        'presentation': 'Presentation',
                         'tos': 'Terms of Service',
                         'language': {
                             'language': 'Language',
                             'en': 'English',
                             'fr': 'Français'
                         },
+                        'license': 'Source Code License',
                         'github': {
                             'issues': 'Submit a Bug Report',
                             'fork': 'Fork Tatami on Github'
@@ -251,58 +340,6 @@ TatamiApp.config(function($translateProvider) {
                 'sotd': {
                     'title': 'Statuses of the Day'
                 }
-            },
-
-            // License Page
-            'license': {
-                'title': 'Source Code License',
-                'copyright': 'Copyright 2012'
-            },
-
-            // Presentation Page
-            'presentation': {
-                'title': 'What is Tatami?',
-                'devices': 'Devices',
-                'openSource': 'Open Source',
-                'row1': {
-                    'title': 'A private, enterprise social network',
-                    'line1': 'Update your status to inform your co-workers',
-                    'line2': "Subscribe to other employees' time lines",
-                    'line3': 'Share important information to your followers',
-                    'line4': 'Discuss and reply to your colleagues',
-                    'line5': 'Put important information into favorites',
-                    'line6': 'Search useful information with our integrated search engine',
-                    'line7': 'Use hashtags to find related information',
-                    'line8': "Go to your co-workers' profiles to see what they are working on",
-                    'line9': 'English and French versions available, adding other languages is easy'
-                },
-                'row2': {
-                    'title': 'Works on all devices!',
-                    'line1': 'Dynamic web application (HTML5): nothing to install, except a modern browser!',
-                    'line2': "Works on mobile devices, tablets, or standard computers: the application adapts itself automatically to your device's screen",
-                    'line3': 'Stay connected with your enterprise wherever you are'
-                },
-                'row3': {
-                    'title': "Easy installation and integration with your company's IT infrastructure",
-                    'line1': 'Standard Java application',
-                    'line2': 'Your data belongs to you, not to your SaaS vendor!',
-                    'line3': 'Integrates with your LDAP directory',
-                    'line4': 'Integrates with Google Apps',
-                    'line5': 'Fully Open Source, with a business-friendly Apache 2.0 license',
-                    'line6': 'Easy to extend or modify according to your needs',
-                    'line7': 'High performance (based on Apache Cassandra), even on small hardware',
-                    'line8': 'Join the project and submit patches on our Github page:'
-                },
-                'row4': {
-                    'title': "Also available in SaaS mode, fully managed by Ippon Technologies",
-                    'line1': "If you do not want to install Tatami in your company, it's easy to use directly",
-                    'line2': 'Secured multi-enterprise mode: every company has its own private space',
-                    'line3': '256 bits SSL encryption: all data transfers are fully secured'
-                },
-                'row5': {
-                    'title': 'Need more information on our product?',
-                    'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or email us at'
-                },
             },
 
             'form': {
