@@ -7,11 +7,10 @@
 GroupsModule.controller('GroupsController', [
     '$scope',
     '$resource',
-    '$location',
     'GroupService',
     'SearchService',
     'userGroups',
-    function($scope, $resource, $location, GroupService, SearchService, userGroups) {
+    function($scope, $resource, GroupService, SearchService, userGroups) {
         /**
          * When creating a group, the POST requires this payload
          * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
