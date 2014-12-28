@@ -11,6 +11,7 @@ HomeModule.controller('GroupHeaderController', ['$scope', 'GroupService', 'profi
                     function(response) {
                         if(response.isMember) {
                             $scope.group.member = response.isMember;
+                            $scope.$state.reload();
                         }
                     }
                 );
@@ -23,6 +24,7 @@ HomeModule.controller('GroupHeaderController', ['$scope', 'GroupService', 'profi
                     function(response) {
                         if(response) {
                             $scope.group.member = !response;
+                            $scope.$state.reload();
                         }
                     }
                 );

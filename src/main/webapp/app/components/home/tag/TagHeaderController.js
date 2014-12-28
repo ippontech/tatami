@@ -8,6 +8,7 @@ HomeModule.controller('TagHeaderController', ['$scope', 'TagService', 'tag',
                 { name: $scope.tag.name, followed: !$scope.tag.followed, trendingUp: $scope.tag.trendingUp },
                 function(response) {
                     $scope.tag.followed = response.followed;
+                    $scope.$state.reload();
                 }
             );
         }

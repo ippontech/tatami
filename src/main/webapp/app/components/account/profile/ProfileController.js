@@ -43,7 +43,7 @@ ProfileModule.controller('ProfileController', ['$scope', '$resource', '$upload',
                 }).success(function(data, status, headers, config) {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
-                    $scope.$state.transitionTo($scope.$state.current, $scope.$stateParams, { reload: true });
+                    $scope.$state.reload();
                 }).error(function(data, status, headers, config) {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
