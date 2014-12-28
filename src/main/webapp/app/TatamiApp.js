@@ -1,4 +1,5 @@
-var TatamiApp = angular.module('TatamiApp', [ 
+var TatamiApp = angular.module('TatamiApp', [
+    'LoginModule',
     'HomeModule',
     'AccountModule',
     'AboutModule',
@@ -15,7 +16,8 @@ TatamiApp.run(function($rootScope, $state, $stateParams) {
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise('/home/timeline');
+        $urlRouterProvider.otherwise('/login');
+        //$urlRouterProvider.otherwise('/home/timeline');
 
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
