@@ -109,100 +109,110 @@
             <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
             <!--<sec:authorize ifAnyGranted="ROLE_USER">-->
 
-            <!--Hide Account drop down menu on login page-->
-            <ul class="nav pull-right">
-                <li class="dropdown pointer">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                    <span>
-                        <span class="glyphicon glyphicon-user"></span>
-                        <span translate="tatami.home.menu.account.title" class="hidden-tablet"></span>
-                        <b class="caret"></b>
-                    </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a ui-sref="account.profile">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <span translate="tatami.account.profile.title"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a ui-sref="account.preferences">
-                                <span class="glyphicon glyphicon-picture"></span>
-                                <span translate="tatami.account.preferences.title"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a ui-sref="account.password">
-                                <span class="glyphicon glyphicon-lock"></span>
-                                <span translate="tatami.account.password.title"></span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a ui-sref="account.files"
-                                <span class="glyphicon glyphicon-file"></span>
-                                <span translate="tatami.account.files.title"></span>
-                            </a>
-                            <a ui-sref="account.users">
-                                <span class="glyphicon glyphicon-globe"></span>
-                                <span translate="tatami.account.users.title"></span>
-                            </a>
-                            <a ui-sref="account.groups">
-                                <span class="glyphicon glyphicon-th-large"></span>
-                                <span translate="tatami.account.groups.title"></span>
-                            </a>
-                            <a ui-sref="account.tags">
-                                <span class="glyphicon glyphicon-tags"></span>
-                                <span translate="tatami.account.tags.title"></span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a ui-sref="account.sotd">
-                                <span class="glyphicon glyphicon-signal"></span>
-                                <span translate="tatami.account.sotd.title"></span>
-                            </a>
-                            <a ui-sref="home.home.company">
-                                <span class="glyphicon glyphicon-briefcase"></span>
-                                <span translate="tatami.home.menu.account.companyTimeline"></span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/tatami/logout">
-                                <span class="glyphicon glyphicon-off"></span>
-                                <span translate="tatami.home.menu.account.logout"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li ng-show="showSearchAccountPost" class="hidden-phone" ng-controller="StatusManagerController">
-                    <button class="btn btn-primary navbar-form" ng-click="showModal()">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                        <span translate="tatami.home.post.button" class="visible-desktop"></span>
-                    </button>
-                </li>
-            </ul>
-            <ul ng-show="showSearchAccountPost" class="nav pull-right">
+            <ul ng-if="$state.includes('account')" class="nav pull-right">
                 <li>
-                    <a href="#" id="help-tour">
-                        <span>
-                            <span class="glyphicon glyphicon-question-sign"></span>
-                            <span translate="tatami.home.menu.help" class="hidden-tablet"></span>
-                        </span>
+                    <a href="/tatami/logout">
+                        <span class="glyphicon glyphicon-off"></span>
+                        <span translate="tatami.home.menu.account.logout"></span>
                     </a>
                 </li>
             </ul>
-            <form ng-show="showSearchAccountPost" id="searchform" class="navbar-form pull-right col-span-4" action="">
-                <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
-                
-                <!-- Clear search field when clicking the x icon ? -->
-                <!-- Probably should just remove it -->
-                <span class="deleteicon" style="display: none;">
-                    <i class="glyphicon glyphicon-remove-sign"></i>
-                </span>
-            </form>
+
+            <div ng-if="showSearchAccountPost">
+                <ul class="nav pull-right">
+                    <li class="dropdown pointer">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span>
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span translate="tatami.home.menu.account.title" class="hidden-tablet"></span>
+                            <b class="caret"></b>
+                        </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ui-sref="account.profile">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span translate="tatami.account.profile.title"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-sref="account.preferences">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                    <span translate="tatami.account.preferences.title"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-sref="account.password">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                    <span translate="tatami.account.password.title"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a ui-sref="account.files"
+                                    <span class="glyphicon glyphicon-file"></span>
+                                    <span translate="tatami.account.files.title"></span>
+                                </a>
+                                <a ui-sref="account.users">
+                                    <span class="glyphicon glyphicon-globe"></span>
+                                    <span translate="tatami.account.users.title"></span>
+                                </a>
+                                <a ui-sref="account.groups">
+                                    <span class="glyphicon glyphicon-th-large"></span>
+                                    <span translate="tatami.account.groups.title"></span>
+                                </a>
+                                <a ui-sref="account.tags">
+                                    <span class="glyphicon glyphicon-tags"></span>
+                                    <span translate="tatami.account.tags.title"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a ui-sref="account.sotd">
+                                    <span class="glyphicon glyphicon-signal"></span>
+                                    <span translate="tatami.account.sotd.title"></span>
+                                </a>
+                                <a ui-sref="home.home.company">
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                    <span translate="tatami.home.menu.account.companyTimeline"></span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/tatami/logout">
+                                    <span class="glyphicon glyphicon-off"></span>
+                                    <span translate="tatami.home.menu.account.logout"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hidden-phone" ng-controller="StatusManagerController">
+                        <button class="btn btn-primary navbar-form" ng-click="showModal()">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                            <span translate="tatami.home.post.button" class="visible-desktop"></span>
+                        </button>
+                    </li>
+                </ul>
+                <ul class="nav pull-right">
+                    <li>
+                        <a href="#" id="help-tour">
+                            <span>
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                                <span translate="tatami.home.menu.help" class="hidden-tablet"></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <form id="searchform" class="navbar-form pull-right col-span-4" action="">
+                    <input name="search" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
+                    
+                    <!-- Clear search field when clicking the x icon ? -->
+                    <!-- Probably should just remove it -->
+                    <span class="deleteicon" style="display: none;">
+                        <i class="glyphicon glyphicon-remove-sign"></i>
+                    </span>
+                </form>
+            </div>
         <!--</sec:authorize>-->
         <!--</c:if>-->
         </div>
