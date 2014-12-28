@@ -35,7 +35,7 @@
 }
 
 .noBorder {
-    border-top : 0;
+    border-top: 0;
 }
 
 .noRadius {
@@ -98,9 +98,11 @@ h4 {
 .navbar {
     background-color: black;
 }
+
 .controle-group {
     padding-bottom: 10px;
 }
+
 .quota {
     color: #333333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -400,7 +402,7 @@ div.jGrowl-notification {
 }
 
 .tatams {
-    /*margin-bottom: 15px;*/
+    /*margin-bottom: 5px;*/
 }
 
 .tatam > div:first-child, .useritem > div:first-child {
@@ -437,10 +439,12 @@ div.jGrowl-notification {
     margin-top: 5px;
 }
 
-/*.tatams-discussion {
+/*
+.tatams-discussion {
     margin-top: 0px;
     margin-left: -60px;
-}*/
+}
+*/
 
 .tatams-discussion > .tatam > header {
     margin-top: 0;
