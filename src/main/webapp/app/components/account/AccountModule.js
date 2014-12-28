@@ -78,42 +78,46 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'UsersController'
         })
-        /*
         .state('account.groups', {
             url: '/groups',
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        */
-        .state('account.groups', {
-            url: '/groups',
+        .state('account.groups.list', {
+            url: '',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            data: {
-                dataUrl: '/tatami/rest/groups/'
+            resolve: {
+                GroupService: 'GroupService',
+                userGroups: function(GroupService) {
+                    return GroupService.query().$promise;
+                }
             },
             controller: 'GroupsController'
         })
         .state('account.groups.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            data: {
-                dataUrl: '/tatami/rest/groupmemberships/suggestions'
+            resolve: {
+                userGroups: ['$resource', function($resource) {
+                    return $resource('/tatami/rest/groupmemberships/suggestions').query().$promise;
+                }]
             },
             controller: 'GroupsController'
         })
         .state('account.groups.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            data: {
-                dataUrl: ''
+            resolve: {
+                userGroups: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                    return SearchService.query({ term: 'groups', q: $stateParams.q }).$promise;
+                }]
             },
             controller: 'GroupsController'
         })
         .state('account.groups.manage', {
             url:'/:groupId',
             templateUrl: 'app/components/account/groups/GroupsManageView.html',
-            controller:'GroupsManageController',
-            parent: 'account'
+            controller:'GroupsManageController'
         })
         .state('account.tags', {
             url: '/tags',
