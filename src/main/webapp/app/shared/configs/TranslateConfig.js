@@ -261,7 +261,7 @@ TatamiApp.config(function($translateProvider) {
 
             // Presentation Page
             'presentation': {
-                'title': 'Presentation',
+                'title': 'What is Tatami?',
                 'devices': 'Devices',
                 'openSource': 'Open Source',
                 'row1': {

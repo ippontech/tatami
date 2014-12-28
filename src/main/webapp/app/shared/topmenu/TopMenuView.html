@@ -11,7 +11,7 @@
             <span translate="tatami.home.menu.title"></span>
         </a>
     <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
-        <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
+        <button ng-if="$state.includes('home')" type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
             <i class="close glyphicon glyphicon-pencil"></i>
         </button>
     <!--</c:if>-->
