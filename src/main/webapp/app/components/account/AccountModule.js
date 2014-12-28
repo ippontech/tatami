@@ -56,17 +56,26 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('account.users', {
             url: '/users',
+            templateUrl: 'app/components/account/FormView.html',
+            controller: 'FormController'
+        })
+        .state('account.users.list', {
+            url: '',
             templateUrl: 'app/components/account/users/UsersView.html',
-            data: {
-                dataUrl: ''
+            resolve: {
+                usersGroup: ['UsersService', function(UsersService) {
+                    return UsersService.query().$promise;
+                }]
             },
             controller: 'UsersController'
         })
         .state('account.users.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/users/UsersView.html',
-            data: {
-                dataUrl: '/tatami/rest/users/suggestions'
+            resolve: {
+                usersGroup: ['$resource', function($resource) {
+                    return $resource('/tatami/rest/users/suggestions').query().$promise;
+                }]
             },
             controller: 'UsersController'
         })
@@ -120,8 +129,18 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             controller:'GroupsManageController'
         })
         .state('account.tags', {
+            url:'/tags',
+            templateUrl: 'app/components/account/FormView.html',
+            controller: 'FormController'
+        })
+        .state('account.tags.list', {
             url: '/tags',
             templateUrl: 'app/components/account/tags/TagsView.html',
+            resolve: {
+                tagList: ['TagService', function(TagService) {
+                    return TagService.query().$promise;
+                }]
+            },
             data: {
                 dataUrl: '/tatami/rest/tags'
             },
@@ -130,16 +149,26 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.tags.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/tags/TagsView.html',
-            data: {
-                dataUrl: '/tatami/rest/tags/popular'
+            resolve: {
+                tagList: ['$resource', function($resource) {
+                    return $resource('/tatami/rest/tags/popular').query().$promise;
+                }]
             },
             controller: 'TagsController'
         })
         .state('account.tags.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/tags/TagsView.html',
-            data: {
-                dataUrl: ''
+            resolve: {
+                tagList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                    console.log($stateParams.q.length);
+                    if($stateParams.q.length == 0) {
+                        return {};
+                    }
+                    else{
+                        return SearchService.query({ term: 'tags', q: $stateParams.q }).$promise;
+                    }
+                }]
             },
             controller: 'TagsController'
         })

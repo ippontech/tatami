@@ -4,8 +4,9 @@ UsersModule.controller('UsersController', [
     '$location',
     'UserService',
     'ProfileService',
-    'SearchService', 
-    function($scope, $resource, $location, UserService, ProfileService, SearchService) {
+    'SearchService',
+    'usersGroup',
+    function($scope, $resource, $location, UserService, ProfileService, SearchService, usersGroup) {
         /**
          * Ideally this would be done during routing
          */
@@ -19,30 +20,9 @@ UsersModule.controller('UsersController', [
 
         $scope.current = {
             searchString: ''
-        }
+        };
 
-        /**
-         * If toState.data.dataUrl is undefined, it means we are get the user friends, and so we call $scope.getUsers(),
-         * If however, a valid url is passed in, we will query that path.
-         */
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if($scope.current.searchString){
-                SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
-                    $scope.tags = result;
-                });
-            }
-            if(toState.data.dataUrl == "search"){
-                $scope.userGroups = {};
-            }
-            else if(toState.data.dataUrl) {
-                $resource(toState.data.dataUrl).query(function(result) {
-                    $scope.userGroups = result;
-                });
-            }
-            else {
-                $scope.getUsers();
-            }
-        });
+        $scope.usersGroup = usersGroup;
 
         $scope.isActive = function(path) {
             return path === $location.path();
@@ -50,7 +30,15 @@ UsersModule.controller('UsersController', [
 
         $scope.search = function() {
             // Update the route
-            $scope.$state.go('account.users.search', { q: $scope.current.searchString });
+            $scope.$state.transitionTo('account.users.search',
+                { q: $scope.current.searchString },
+                { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
+
+            // Update the group data
+            SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
+                // Now update the user groups
+                $scope.userGroups = result;
+            });
         }
     }
 ]);

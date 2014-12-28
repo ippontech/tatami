@@ -4,8 +4,9 @@ TagsModule.controller('TagsController', [
     '$location',
     '$resource',
     'TagService',
-    'SearchService', 
-    function($scope, $resource, $location, $resource, TagService, SearchService) {
+    'SearchService',
+    'tagList',
+    function($scope, $resource, $location, $resource, TagService, SearchService, tagList) {
         $scope.current = {
             searchString: ''
         };
@@ -21,26 +22,7 @@ TagsModule.controller('TagsController', [
             return promise;
         };
 
-        /**
-         * Perhaps this isn't the best way, but when we switch tabs, the view stays the same, except the model data
-         * changes. The routing is set up in such a way that the url for the new data is made available to the controller
-         * through toState.data.dataUrl. Now we can perform a query on this url.
-         */
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if($scope.current.searchString != '') {
-                SearchService.query({ term: 'tags', q: $scope.current.searchString }, function(result) {
-                    $scope.tags = result;
-                });
-            }
-            else if(toState.data.dataUrl) {
-                $resource(toState.data.dataUrl).query(function(result) {
-                    $scope.tags = result;
-                });
-            }
-            else {
-                $scope.tags = {};
-            }
-        });
+        $scope.tags = tagList;
 
         $scope.isActive = function (path) {
             return path === $location.path();
@@ -65,8 +47,22 @@ TagsModule.controller('TagsController', [
         };
 
         $scope.search = function() {
+            console.log($scope.$state.current.name);
             // Update the route
-            $scope.$state.go('account.tags.search', { q: $scope.current.searchString });
+            $scope.$state.transitionTo('account.tags.search',
+                { q: $scope.current.searchString },
+                { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
+
+            // Update the tag data data
+            if($scope.current.searchString.length == 0) {
+                $scope.tags = {};
+            }
+            else{
+                SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
+                    // Now update the tags
+                    $scope.tags = result;
+                });
+            }
         }
     }
 ]);

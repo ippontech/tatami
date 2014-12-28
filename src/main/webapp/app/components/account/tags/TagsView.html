@@ -1,50 +1,46 @@
-<div class="col-span-8">
-    <div class="alert alert-status">
-        <div>
-            <div class="tabMenu">
-                <ul class="nav nav-tabs">
-                    <li ng-class="{ 'active': $state.current.name === 'account.tags' }">
-                        <a ui-sref="account.tags" translate="tatami.account.tags.myTags"></a>
-                    </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.tags.recommended' }">
-                        <a ui-sref="account.tags.recommended" translate="tatami.account.tags.trending"></a>
-                    </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
-                        <a ui-sref="account.tags.search" translate="tatami.account.tags.search"></a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.tags.search' | translate }}">
-                </form>
-                <table class="table noCollapse">
-                    <tbody>
-                        <tr>
-                            <th style="border-top :0" translate="tatami.account.tags.tag"></th>
-                            <th style="border-top :0"></th>
-                        </tr>
-                    </tbody>
-                    <tbody class="items">
-                        <div>
-                            <tr ng-repeat="tag in tags">
-                                <td>
-                                    <a ui-sref="home.home.tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
-                                </td>
-                                <td class="follow">
-                                    <a ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title pull-right label labelSizeNormal" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
-                                        <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
-                                            <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.home.tag.follow"></span>
-                                            <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.home.tag.following"></span>
-                                            <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.home.tag.unfollow"></span>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </div>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div>
+    <div class="tabMenu">
+        <ul class="nav nav-tabs">
+            <li ng-class="{ 'active': $state.current.name === 'account.tags.list' }">
+                <a ui-sref="account.tags.list" translate="tatami.account.tags.myTags"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'account.tags.recommended' }">
+                <a ui-sref="account.tags.recommended" translate="tatami.account.tags.trending"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
+                <a ui-sref="account.tags.search" translate="tatami.account.tags.search"></a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form class="row-fluid littleMargeBot">
+            <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.tags.search' | translate }}">
+        </form>
+        <table class="table noCollapse">
+            <tbody>
+                <tr>
+                    <th style="border-top :0" translate="tatami.account.tags.tag"></th>
+                    <th style="border-top :0"></th>
+                </tr>
+            </tbody>
+            <tbody class="items">
+                <div>
+                    <tr ng-repeat="tag in tags">
+                        <td>
+                            <a ui-sref="home.home.tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
+                        </td>
+                        <td class="follow">
+                            <a ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title pull-right label labelSizeNormal" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                                <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
+                                    <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.home.tag.follow"></span>
+                                    <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.home.tag.following"></span>
+                                    <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.home.tag.unfollow"></span>
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+            </tbody>
+        </table>
     </div>
 </div>

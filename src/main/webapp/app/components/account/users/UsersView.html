@@ -1,45 +1,41 @@
-<div class="col-span-8">
-    <div class="alert alert-status">
-        <div>
-            <div class="tabMenu">
-                <ul class="nav nav-tabs">
-                    <li ng-class="{ 'active': $state.current.name === 'account.users' }">
-                        <a ui-sref="account.users" translate="tatami.account.users.myFriends"></a>
-                    </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.users.recommended' }">
-                        <a ui-sref="account.users.recommended" translate="tatami.account.users.recommend"></a>
-                    </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.users.search' }">
-                        <a ui-sref="account.users.search" translate="tatami.account.users.search"></a>
-                    </li>
-                </ul>
+<div>
+    <div class="tabMenu">
+        <ul class="nav nav-tabs">
+            <li ng-class="{ 'active': $state.current.name === 'account.users' }">
+                <a ui-sref="account.users" translate="tatami.account.users.myFriends"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'account.users.recommended' }">
+                <a ui-sref="account.users.recommended" translate="tatami.account.users.recommend"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'account.users.search' }">
+                <a ui-sref="account.users.search" translate="tatami.account.users.search"></a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form class="row-fluid littleMargeBot">
+            <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.users.search' | translate }}">
+        </form>
+        <div class="useritem" ng-repeat="user in usersGroup">
+            <div class="pull-left background-image-fffix">
+                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </div>
-            <div>
-                <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.users.search' | translate }}">
-                </form>
-                <div class="useritem" ng-repeat="user in usersGroup">
-                    <div class="pull-left background-image-fffix">
-                        <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
-                    </div>
-                    <h4>
-                        <span class="pointer pull-right label label-info">
-                            <span class="glyphicon glyphicon-minus"></span>
-                        </span>
-                        <a ui-sref="home.profile.statuses({ username: user.username })">
-                            <strong>
-                                {{ user.firstName + ' ' + user.lastName }}
-                            </strong>
-                        </a>
-                        <br>
-                        <a ui-sref="home.profile.statuses({ username: user.username })">
-                            <small>
-                                @{{ user.username }}
-                            </small>
-                        </a>
-                    </h4>
-                </div>
-            </div>
+            <h4>
+                <span class="pointer pull-right label label-info">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </span>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <strong>
+                        {{ user.firstName + ' ' + user.lastName }}
+                    </strong>
+                </a>
+                <br>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <small>
+                        @{{ user.username }}
+                    </small>
+                </a>
+            </h4>
         </div>
     </div>
 </div>
