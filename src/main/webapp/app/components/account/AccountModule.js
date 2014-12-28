@@ -56,26 +56,17 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('account.users', {
             url: '/users',
-            templateUrl: 'app/components/account/FormView.html',
-            controller: 'FormController'
-        })
-        .state('account.users.list', {
-            url: '',
             templateUrl: 'app/components/account/users/UsersView.html',
-            resolve: {
-                usersGroup: ['UsersService', function(UsersService) {
-                    return UsersService.query().$promise;
-                }]
+            data: {
+                dataUrl: ''
             },
             controller: 'UsersController'
         })
         .state('account.users.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/users/UsersView.html',
-            resolve: {
-                usersGroup: ['$resource', function($resource) {
-                    return $resource('/tatami/rest/users/suggestions').query().$promise;
-                }]
+            data: {
+                dataUrl: '/tatami/rest/users/suggestions'
             },
             controller: 'UsersController'
         })
