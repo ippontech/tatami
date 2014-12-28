@@ -10,7 +10,8 @@ GroupsModule.controller('GroupsController', [
     '$location',
     'GroupService',
     'SearchService',
-    function($scope, $resource, $location, GroupService, SearchService) {
+    'userGroups',
+    function($scope, $resource, $location, GroupService, SearchService, userGroups) {
         /**
          * When creating a group, the POST requires this payload
          * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -22,27 +23,7 @@ GroupsModule.controller('GroupsController', [
             archivedGroup: false
         };
 
-        /**
-         * When we change to this state, load the data from the url specified by toState.data.dataUrl
-         */
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if($scope.current.searchString != '') {
-                // We are searching
-                SearchService.query({term: 'groups', q: $scope.current.searchString }, function(result) {
-                    // Now update the user groups
-                    $scope.userGroups = result;
-                });
-            }
-            else if(toState.data.dataUrl) {
-                // State switched. Use provided dataUrl to fetch new data
-                $resource(toState.data.dataUrl).query(function(result) {
-                    $scope.userGroups = result;
-                })
-            }
-            else {
-                $scope.userGroups = {};
-            }
-        });
+        $scope.userGroups = userGroups;
 
         /**
          * Determines the current look of the group page
@@ -50,7 +31,7 @@ GroupsModule.controller('GroupsController', [
          */
         $scope.current = {
             createGroup: false,
-            searchString: ''
+            searchString: $scope.$stateParams.q
         };
 
         $scope.isActive = function(path) {
@@ -91,7 +72,15 @@ GroupsModule.controller('GroupsController', [
 
         $scope.search = function() {
             // Update the route
-            $scope.$state.go('account.groups.search', { q: $scope.current.searchString });
+            $scope.$state.transitionTo('account.groups.search',
+                { q: $scope.current.searchString },
+                { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
+
+            // Update the group data
+            SearchService.query({term: 'groups', q: $scope.current.searchString }, function(result) {
+                // Now update the user groups
+                $scope.userGroups = result;
+            });
         }
     }
 ]);

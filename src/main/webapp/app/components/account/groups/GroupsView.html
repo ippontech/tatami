@@ -50,8 +50,8 @@
 
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
-                        <li ng-class="{ 'active': $state.current.name === 'account.groups' }">
-                            <a ui-sref="account.groups" translate="tatami.account.groups.myGroups">
+                        <li ng-class="{ 'active': $state.current.name === 'account.groups.list' }">
+                            <a ui-sref="account.groups.list" translate="tatami.account.groups.myGroups">
                             </a>
                         </li>
                         <li ng-class="{ 'active': $state.current.name === 'account.groups.recommended' }">
@@ -85,8 +85,8 @@
                                         <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                                     </td>
                                     <td>
-                                        <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.public"></span>
-                                        <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.private"></span>
+                                        <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
+                                        <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
                                         <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.archived"></span>
                                     </td>
                                     <td>
