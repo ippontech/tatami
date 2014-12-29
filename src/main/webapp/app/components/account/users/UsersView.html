@@ -16,7 +16,7 @@
         <form class="row-fluid littleMargeBot">
             <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.users.search' | translate }}">
         </form>
-        <div class="useritem" ng-repeat="user in usersGroup">
+        <div class="useritem" ng-repeat="user in usersList">
             <div class="pull-left background-image-fffix">
                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </div>

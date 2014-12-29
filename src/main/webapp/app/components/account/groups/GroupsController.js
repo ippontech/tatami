@@ -1,9 +1,3 @@
-/**
- * Handles group management
- *
- * This controller might be doing to much and may be refactored into two separate controllers
- */
-
 GroupsModule.controller('GroupsController', [
     '$scope',
     '$resource',

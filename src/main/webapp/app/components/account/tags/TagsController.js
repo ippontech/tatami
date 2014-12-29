@@ -1,32 +1,15 @@
 TagsModule.controller('TagsController', [
     '$scope',
-    '$resource',
-    '$location',
-    '$resource',
     'TagService',
     'SearchService',
     'tagList',
-    function($scope, $resource, $location, $resource, TagService, SearchService, tagList) {
+    function($scope, TagService, SearchService, tagList) {
         $scope.current = {
             searchString: ''
-        };
-        /**
-         * Initialization function. Gets the tags immediately, this may be something can be resolved in routing
-         * @returns {*}
-         */
-        $scope.getTags = function() {
-            // Factor into a service
-            var promise = $resource('/tatami/rest/tags/popular').query(function(result) {
-                $scope.tags = result;
-            });
-            return promise;
         };
 
         $scope.tags = tagList;
 
-        $scope.isActive = function (path) {
-            return path === $location.path();
-        };
 
         /**
          * Follows an unfollowed tag, or unfollows a followed tag, depending on the current state
@@ -42,12 +25,7 @@ TagsModule.controller('TagsController', [
             });
         };
 
-        $scope.contains = function(path) {
-            return $location.path().contains(path);
-        };
-
         $scope.search = function() {
-            console.log($scope.$state.current.name);
             // Update the route
             $scope.$state.transitionTo('account.tags.search',
                 { q: $scope.current.searchString },

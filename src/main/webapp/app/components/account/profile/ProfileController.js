@@ -1,35 +1,29 @@
-/**
- * There is a lot of logic in this controller. Running into some issues with the ProfileService. In the future,
- * the extra logic will be factored into ProfileService.
- */
+ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileService', 'profileInfo', 'userLogin',
+    function($scope, $upload, ProfileService, profileInfo, userLogin) {
 
-ProfileModule.controller('ProfileController', ['$scope', '$resource', '$upload', 'ProfileService', 'UserService',
-    function($scope, $resource, $upload, ProfileService, UserService) {
-
-        $scope.init = function() {
-            ProfileService.get(function(result) {
-                $scope.userProfile = result;
-                UserService.get({ username: result.username }, function(user) {
-                    $scope.userLogin = user.login;
-                });
-            });
-        };
-
+        // Current state of the view
         $scope.current = {
             avatar: []
         };
 
+        // Status of the current upload
         $scope.uploadStatus = {
             isUploading: false,
             progress: 0
-        }
+        };
 
-        $scope.init();
+        // Resolve the user data, profileInfo is inherited from account state
+        // Since profileInfo is a resolve from the parent state, updating the model will cause
+        // the first and last name in the side bar and text area to sync. Is this undesired?
+        $scope.userProfile = profileInfo;
+        $scope.userLogin = userLogin.login;
 
+        // Update the user information
         $scope.updateUser = function() {
             ProfileService.update($scope.userProfile);
         };
 
+        // Handle user avatar changes based on drag and drop
         $scope.$watch('current.avatar', function() {
             for(var i = 0; i < $scope.current.avatar.length; ++i){
                 var file = $scope.current.avatar[i];
@@ -50,14 +44,5 @@ ProfileModule.controller('ProfileController', ['$scope', '$resource', '$upload',
                 })
             }
         });
-
-        // This is currently disabled until the back end is fixed to handle this correctly
-        $scope.deleteUser = function(confirmMessage) {
-            // Switch to a confirmation modal later
-            if(confirm(confirmMessage)) {
-                // ProfileService.delete();
-                // Display success/failure message
-            }
-        }
     }
 ]);
