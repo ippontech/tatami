@@ -14,7 +14,7 @@
             <textarea ng-if="current.reply" ng-trim="false" popover="{{ 'tatami.home.post.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
             <div>
                 {{ 'tatami.home.post.characters.left' | translate }} <span class="countstatus badge">{{ charCount-status.content.length }}</span>
-                <a id="markdownBasics" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
+                <a class="pull-right" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
             </div>
         </fieldset>
         <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
