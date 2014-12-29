@@ -138,6 +138,15 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('account.groups.manage', {
             url:'/:groupId',
             templateUrl: 'app/components/account/groups/GroupsManageView.html',
+            resolve: {
+                group: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
+                    return GroupService.get({ groupId: $stateParams.groupId }).$promise;
+                }],
+
+                members: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
+                    return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
+                }]
+            },
             controller:'GroupsManageController'
         })
         .state('account.tags', {

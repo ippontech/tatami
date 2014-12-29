@@ -4,7 +4,8 @@ GroupsModule.controller('GroupsController', [
     'GroupService',
     'SearchService',
     'userGroups',
-    function($scope, $resource, GroupService, SearchService, userGroups) {
+    'profileInfo',
+    function($scope, $resource, GroupService, SearchService, userGroups, profileInfo) {
         /**
          * When creating a group, the POST requires this payload
          * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -71,6 +72,34 @@ GroupsModule.controller('GroupsController', [
                 // Now update the user groups
                 $scope.userGroups = result;
             });
+        };
+
+        $scope.joinLeaveGroup = function(group) {
+            if(!group.member) {
+                GroupService.join(
+                    { groupId: group.groupId, username: profileInfo.username },
+                    null,
+                    function(response) {
+                        if(response.isMember) {
+                            group.member = response.isMember;
+                            $scope.$state.reload();
+                        }
+                    }
+                );
+            }
+
+            else {
+                GroupService.leave(
+                    { groupId: group.groupId, username: profileInfo.username },
+                    null,
+                    function(response) {
+                        if(response) {
+                            group.member = !response;
+                            $scope.$state.reload();
+                        }
+                    }
+                );
+            }
         }
     }
 ]);
