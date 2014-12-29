@@ -5,10 +5,4 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
     $scope.updateGroup = function() {
         GroupService.update( { groupId: $scope.group.groupId }, $scope.group);
     }
-
-    $scope.getUserRole = function(member) {
-        if(member.role === 'ADMIN') {
-            return ''
-        }
-    }
 }]);
