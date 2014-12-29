@@ -18,10 +18,10 @@ PostModule.controller('StatusCreateController', [
         reply: false,                       // Determine if this status is a reply to another user
         uploadDone: true,                   // If the file upload is done, we should not show the progess bar
         uploadProgress: 0,                  // The progress of the file currently being uploaded
-        upload:[],
+        upload: [],
         contentEmpty: true,
-        files:[],
-        attachments:[]
+        files: [],
+        attachments: []
     },
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status
@@ -44,7 +44,7 @@ PostModule.controller('StatusCreateController', [
      * Watches the current.files ng-model and handles uploads
      */
     $scope.$watch('current.files', function() {
-        for(var i = 0; i < $scope.current.files.length; ++i){
+        for(var i = 0; i < $scope.current.files.length; ++i) {
             var file = $scope.current.files[i];
             $scope.uploadStatus.isUploading = true;
             $scope.upload = $upload.upload({
@@ -66,7 +66,7 @@ PostModule.controller('StatusCreateController', [
     }),
 
     $scope.fileSize = function(file) {
-        if(file.size / 1000 < 1000){
+        if(file.size / 1000 < 1000) {
             return parseInt(file.size / 1000) + "K";
         }
         else{
@@ -123,10 +123,10 @@ PostModule.controller('StatusCreateController', [
      * content has been provided by the user.
      */
     $scope.newStatus = function() {
-        if($scope.status.content){
-            StatusService.save($scope.status, function(){
-                $scope.reset();
+        if($scope.status.content) {
+            StatusService.save($scope.status, function() {
                 $modalInstance.dismiss();
+                $scope.reset();
             })
         }
     },
