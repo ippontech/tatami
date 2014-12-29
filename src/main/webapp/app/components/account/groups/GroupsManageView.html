@@ -46,7 +46,17 @@
             <div class="control-group">
                 <label class="control-label" for="username" translate="tatami.account.groups.username"></label>
                 <div class="controls">
-                    <input name="username" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12">
+                    <input name="username" ng-model="current.searchString" ng-trim="false" ng-change="search()" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12">
+                    <!--
+                    <ul class="typeahead dropdown-menu" style="top: 34px; left: 180px;">
+                        <li data-value="2" class="active">
+                            <a href="#">
+                                <img class="avatar img-rounded img-small" src="/img/default_image_profile.png">
+                                    @<strong>2</strong> - Bob loblaw
+                            </a>
+                        </li>
+                    </ul>
+                    -->
                 </div>
             </div>
             <br>

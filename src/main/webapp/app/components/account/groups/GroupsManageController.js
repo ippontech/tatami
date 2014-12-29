@@ -1,6 +1,9 @@
-GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'members', function($scope, group, GroupService, members) {
+GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'UserService', 'members', function($scope, group, GroupService, UserService, members) {
     $scope.group = group;
     $scope.members = members;
+    $scope.searchedMembers = {};
+
+    $scope.current = { searchString: '' };
 
     $scope.updateGroup = function() {
         GroupService.update( { groupId: $scope.group.groupId }, $scope.group);
@@ -15,4 +18,10 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
             }
         );
     };
+
+    $scope.search = function() {
+        UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
+            $scope.searchedMembers = result;
+        })
+    }
 }]);

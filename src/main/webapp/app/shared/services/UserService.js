@@ -44,6 +44,7 @@ TatamiApp.factory('UserService', ['$resource', function($resource) {
                 return suggestions;
             }
         },
-        'follow': { method: 'PATCH', params: { username: '@username' } }
+        'follow': { method: 'PATCH', params: { username: '@username' } },
+        'searchUsers': { method: 'GET', isArray: true, url: '/tatami/rest/users/:term' }
     });
 }]);
