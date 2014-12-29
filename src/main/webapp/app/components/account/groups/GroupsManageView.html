@@ -90,7 +90,7 @@
                         {{ 'tatami.account.groups.' + member.role | translate }}
                     </td>
                     <td ng-show="member.role === 'MEMBER'">
-                        <button type="button" class="btn btn-success input-block-level delete" translate="tatami.account.groups.remove"></button>
+                        <button ng-click="removeUser(member)" type="button" class="btn btn-success input-block-level delete" translate="tatami.account.groups.remove"></button>
                     </td>
                 </tr>
             </tbody>
