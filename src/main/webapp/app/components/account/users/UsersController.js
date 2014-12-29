@@ -1,56 +1,30 @@
-UsersModule.controller('UsersController', [
-    '$scope',
-    '$resource',
-    '$location',
-    'UserService',
-    'ProfileService',
-    'SearchService', 
-    function($scope, $resource, $location, UserService, ProfileService, SearchService) {
-        /**
-         * Ideally this would be done during routing
-         */
-        $scope.getUsers = function() {
-            ProfileService.get().$promise.then(function(result) {
-                UserService.getFollowing({ username: result.username }, function(friendList) {
-                    $scope.usersGroup = friendList;
-                });
-            })
-        };
+UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService', function($scope, usersList, SearchService) {
 
+        /**
+         * Information about the current state of the view
+         * @type {{searchString: string}}
+         */
         $scope.current = {
-            searchString: ''
-        }
-
-        /**
-         * If toState.data.dataUrl is undefined, it means we are get the user friends, and so we call $scope.getUsers(),
-         * If however, a valid url is passed in, we will query that path.
-         */
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
-            if($scope.current.searchString){
-                SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
-                    $scope.tags = result;
-                });
-            }
-            if(toState.data.dataUrl == "search"){
-                $scope.userGroups = {};
-            }
-            else if(toState.data.dataUrl) {
-                $resource(toState.data.dataUrl).query(function(result) {
-                    $scope.userGroups = result;
-                });
-            }
-            else {
-                $scope.getUsers();
-            }
-        });
-
-        $scope.isActive = function(path) {
-            return path === $location.path();
+            searchString: $scope.$stateParams.q
         };
 
+        // usersList is resolved during routing
+        $scope.usersList = usersList;
+
+        /**
+         * Change the state (so the url contains the search parameter), and updates
+         * the user data based on the search term.
+         */
         $scope.search = function() {
             // Update the route
-            $scope.$state.go('account.users.search', { q: $scope.current.searchString });
+            $scope.$state.transitionTo('account.users.search',
+                { q: $scope.current.searchString },
+                { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
+
+            // Now update the users based on the search term
+            SearchService.query({term: 'users', q: $scope.current.searchString }, function(result) {
+                $scope.usersList = result;
+            });
         }
     }
 ]);

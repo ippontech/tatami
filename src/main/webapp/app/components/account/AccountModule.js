@@ -17,21 +17,30 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             abstract: true,
             templateUrl: 'app/components/account/AccountView.html',
             resolve: {
-                ProfileService: 'ProfileService',
-                profileInfo: function(ProfileService) {
+                profileInfo: ['ProfileService', function(ProfileService) {
                     return ProfileService.get().$promise;
-                }
+                }]
             },
             controller: 'AccountController'
         })
         .state('account.profile', {
             url: '/profile',
             templateUrl: 'app/components/account/profile/ProfileView.html',
+            resolve: {
+                userLogin: ['UserService', 'profileInfo', function(UserService, profileInfo) {
+                    return UserService.get({ username: profileInfo.username }).$promise;
+                }]
+            },
             controller: 'ProfileController'
         })
         .state('account.preferences', {
             url: '/preferences',
             templateUrl: 'app/components/account/preferences/PreferencesView.html',
+            resolve: {
+                prefs: ['PreferencesService', function(PreferencesService) {
+                    return PreferencesService.get().$promise;
+                }]
+            },
             controller: 'PreferencesController'
         })
         .state('account.password', {
@@ -56,25 +65,38 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('account.users', {
             url: '/users',
+            templateUrl: 'app/components/account/FormView.html',
+            controller: 'FormController'
+        })
+        .state('account.users.list', {
+            url: '',
             templateUrl: 'app/components/account/users/UsersView.html',
-            data: {
-                dataUrl: ''
+            resolve: {
+                usersList: ['ProfileService', 'UserService', function(ProfileService, UserService) {
+                    ProfileService.get().$promise.then(function(result) {
+                        return UserService.getFollowing({ username: result.username }).$promise;
+                    })
+                }]
             },
             controller: 'UsersController'
         })
         .state('account.users.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/users/UsersView.html',
-            data: {
-                dataUrl: '/tatami/rest/users/suggestions'
+            resolve: {
+                usersList: ['UserService', function(UserService) {
+                    UserService.getSuggestions().$promise;
+                }]
             },
             controller: 'UsersController'
         })
         .state('account.users.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/users/UsersView.html',
-            data: {
-                dataUrl: 'search'
+            resolve: {
+                usersList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                    return SearchService.query({ term: 'users', q: $stateParams.q }).$promise;
+                }]
             },
             controller: 'UsersController'
         })
@@ -87,10 +109,9 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             resolve: {
-                GroupService: 'GroupService',
-                userGroups: function(GroupService) {
+                userGroups: ['GroupService', function(GroupService) {
                     return GroupService.query().$promise;
-                }
+                }]
             },
             controller: 'GroupsController'
         })
@@ -98,8 +119,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/recommended',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             resolve: {
-                userGroups: ['$resource', function($resource) {
-                    return $resource('/tatami/rest/groupmemberships/suggestions').query().$promise;
+                userGroups: ['GroupService', function(GroupService) {
+                    return GroupService.getRecommendations().$promise;
                 }]
             },
             controller: 'GroupsController'
@@ -120,26 +141,42 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             controller:'GroupsManageController'
         })
         .state('account.tags', {
+            url:'/tags',
+            templateUrl: 'app/components/account/FormView.html',
+            controller: 'FormController'
+        })
+        .state('account.tags.list', {
             url: '/tags',
             templateUrl: 'app/components/account/tags/TagsView.html',
-            data: {
-                dataUrl: '/tatami/rest/tags'
+            resolve: {
+                tagList: ['TagService', function(TagService) {
+                    return TagService.query().$promise;
+                }]
             },
             controller: 'TagsController'
         })
         .state('account.tags.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/tags/TagsView.html',
-            data: {
-                dataUrl: '/tatami/rest/tags/popular'
+            resolve: {
+                tagList: ['TagService', function(TagService) {
+                    return TagService.getPopular().$promise;
+                }]
             },
             controller: 'TagsController'
         })
         .state('account.tags.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/tags/TagsView.html',
-            data: {
-                dataUrl: ''
+            resolve: {
+                tagList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                    if($stateParams.q.length == 0) {
+                        return {};
+                    }
+                    else{
+                        return SearchService.query({ term: 'tags', q: $stateParams.q }).$promise;
+                    }
+                }]
             },
             controller: 'TagsController'
         })

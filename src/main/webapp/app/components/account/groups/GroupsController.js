@@ -1,9 +1,3 @@
-/**
- * Handles group management
- *
- * This controller might be doing to much and may be refactored into two separate controllers
- */
-
 GroupsModule.controller('GroupsController', [
     '$scope',
     '$resource',
@@ -33,10 +27,6 @@ GroupsModule.controller('GroupsController', [
             searchString: $scope.$stateParams.q
         };
 
-        $scope.isActive = function(path) {
-            return path === $location.path();
-        };
-
         /**
          * Allows the user to toggle the group creation view
          */
@@ -57,6 +47,7 @@ GroupsModule.controller('GroupsController', [
         $scope.createNewGroup = function() {
             GroupService.save($scope.groups, function() {
                 $scope.reset();
+                $scope.$state.reload();
                 // Alert user of new group creation
             });
         };

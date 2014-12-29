@@ -22,6 +22,7 @@ TatamiApp.factory('TagService', ['$resource', function($resource) {
                 return statuses;
             }
         },
-        'follow': { method:'PUT', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' }
+        'follow': { method:'PUT', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },
+        'getPopular': { method: 'GET', isArray: true, url: '/tatami/rest/tags/popular' }
     });
 }]);

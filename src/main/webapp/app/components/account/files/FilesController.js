@@ -12,7 +12,7 @@ FilesModule.controller('FilesController', ['$scope', 'FilesService', 'attachment
         FilesService.delete({attachmentId: attachment}, { },
             function() {
                 $scope.fileList.splice(removalIndex, 1);
-                $scope.getQuota();
+                $scope.$state.reload();
             });
     };
 
@@ -24,4 +24,16 @@ FilesModule.controller('FilesController', ['$scope', 'FilesService', 'attachment
             return '/img/document_icon.png';
         }
     };
+
+    $scope.setColor = function() {
+        if($scope.quota <= 100 && $scope.quota >= 80) {
+            return "progress-bar progress-bar-danger";
+        }
+        else if($scope.quota < 80 && $scope.quota > 50) {
+            return "progress-bar progress-bar-warning";
+        }
+        else {
+             return "progress-bar progress-bar-success"
+        }
+    }
 }]);
