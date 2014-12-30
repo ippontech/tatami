@@ -20,8 +20,17 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
     };
 
     $scope.search = function() {
-        UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
-            $scope.searchedMembers = result;
-        })
+        if($scope.current.searchString) {
+            UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
+                $scope.searchedMembers = result;
+            })
+        }
+        else {
+            $scope.searchedMembers = {};
+        }
+    };
+
+    $scope.addUser = function() {
+
     }
 }]);

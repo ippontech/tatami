@@ -57,6 +57,33 @@
                         </li>
                     </ul>
                     -->
+                    <table class="table">
+                        <tbody>
+                            <tr ng-repeat="member in searchedMembers">
+                                <td style="text-align: left">
+                                    <div class="pull-left background-image-fffix little-marge-right">
+                                        <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
+                                    </div>
+                                    <h4>
+                                        <a ui-sref="home.profile.statuses({ username: member.username })">
+                                            <strong>
+                                                {{ member.firstName + ' ' + member.lastName }}
+                                            </strong>
+                                        </a>
+                                        <br>
+                                        <a ui-sref="home.profile.statuses({ username: member.username })">
+                                            <small>
+                                                @{{ member.username }}
+                                            </small>
+                                        </a>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <button ng-click="addUser(member)" type="button" class="btn btn-success input-block-level delete" translate="tatami.account.groups.remove"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <br>
