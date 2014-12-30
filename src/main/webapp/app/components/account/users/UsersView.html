@@ -18,11 +18,11 @@
         </form>
         <div class="useritem" ng-repeat="user in usersList">
             <div class="pull-left background-image-fffix">
-                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + getAvatar(user) + ')' }"></div>
             </div>
             <h4>
-                <span class="pointer pull-right label label-info">
-                    <span class="glyphicon glyphicon-minus"></span>
+                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                    <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                 </span>
                 <a ui-sref="home.profile.statuses({ username: user.username })">
                     <strong>
