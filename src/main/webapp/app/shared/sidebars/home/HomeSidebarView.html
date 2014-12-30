@@ -25,8 +25,12 @@
                 <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
             <div class="panel-body items">
-                <div ng-repeat="group in groups">
+                <div class="little-padding-bottom" ng-repeat="group in groups">
                     <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                    <span ng-if="group.publicGroup" class="label label-warning">PUB</span>
+                    <span ng-if="!group.publicGroup" class="label label-info">PVT</span>
+                    <span ng-if="group.archivedGroup" class="label label-default">ARC</span>
+                    <span ng-if="group.administrator" class="badge progress-bar-danger">A</span>
                 </div>
             </div>
         </div>
