@@ -263,23 +263,23 @@ public class GroupService {
             }
             else if(group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());
-                group.setAdministrator(false);
+                group.setAdministrator(false); // If we made it here, the user is not an admin
                 if (result != null) {
-                    group.setMember(true);
+                    group.setMember(true); // We found a group, so the user is a member
                 }
                 else {
-                    group.setMember(false);
+                    group.setMember(false); // Since no group was found, the user is not a member
                 }
             }
             else {
                 Group result = getGroupFromUser(user, group.getGroupId());
+                group.setAdministrator(false); // If we make it here, the user is not an admin
                 if (result == null) {
                     log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
-                    group.setMember(false);
-                    group.setAdministrator(false);
+                    group.setMember(false); // No group found, therefore the user is not a member
                     return null;
                 } else {
-                    group.setMember(true);
+                    group.setMember(true); // Since a group was found, we know the user is a member
                 }
             }
             long counter = 0;
