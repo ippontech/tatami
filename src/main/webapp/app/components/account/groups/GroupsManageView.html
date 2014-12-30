@@ -40,60 +40,6 @@
             </div>
         </fieldset>
     </form>
-    <form class="form-horizontal row-fluid">
-        <fieldset>
-            <legend translate="tatami.account.groups.addMember"></legend>
-            <div class="control-group">
-                <label class="control-label" for="username" translate="tatami.account.groups.username"></label>
-                <div class="controls">
-                    <input name="username" ng-model="current.searchString" ng-trim="false" ng-change="search()" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12">
-                    <!--
-                    <ul class="typeahead dropdown-menu" style="top: 34px; left: 180px;">
-                        <li data-value="2" class="active">
-                            <a href="#">
-                                <img class="avatar img-rounded img-small" src="/img/default_image_profile.png">
-                                    @<strong>2</strong> - Bob loblaw
-                            </a>
-                        </li>
-                    </ul>
-                    -->
-                    <table class="table">
-                        <tbody>
-                            <tr ng-repeat="member in searchedMembers">
-                                <td style="text-align: left">
-                                    <div class="pull-left background-image-fffix little-marge-right">
-                                        <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
-                                    </div>
-                                    <h4>
-                                        <a ui-sref="home.profile.statuses({ username: member.username })">
-                                            <strong>
-                                                {{ member.firstName + ' ' + member.lastName }}
-                                            </strong>
-                                        </a>
-                                        <br>
-                                        <a ui-sref="home.profile.statuses({ username: member.username })">
-                                            <small>
-                                                @{{ member.username }}
-                                            </small>
-                                        </a>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <button ng-click="addUser(member)" type="button" class="btn btn-success input-block-level delete" translate="tatami.account.groups.remove"></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <br>
-            <div class="return"></div>
-            <br>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-success col-span-12" translate="tatami.form.save"></button>
-            </div>
-        </fieldset>
-    </form>
     <div class="useritem">
         <table class="table noCollapse">
             <tbody>
@@ -127,10 +73,68 @@
                         {{ 'tatami.account.groups.' + member.role | translate }}
                     </td>
                     <td ng-show="member.role === 'MEMBER'">
-                        <button ng-click="removeUser(member)" type="button" class="btn btn-success input-block-level delete" translate="tatami.account.groups.remove"></button>
+                        <a ng-click="removeUser(member)" class="glyphicon glyphicon-th-large btn-title pull-right label labelSizeNormal label-danger glyphicon-minus hidden-phone" translate="tatami.account.groups.remove"></a>
+                        <!-- <button ng-click="removeUser(member)" type="button" class="btn btn-danger input-block-level glyphicon-minus delete" translate=""></button> -->
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <form class="form-horizontal row-fluid">
+        <fieldset>
+            <legend translate="tatami.account.groups.addMember"></legend>
+            <div class="control-group">
+                <label class="control-label" for="username" translate="tatami.account.groups.username"></label>
+                <div class="controls">
+                    <input name="username" ng-model="current.searchString" ng-trim="false" ng-change="search()" type="text" autocomplete="off" required="required" class="input-xlarge col-span-12">
+                    <!--
+                    <ul class="typeahead dropdown-menu" style="top: 34px; left: 180px;">
+                        <li data-value="2" class="active">
+                            <a href="#">
+                                <img class="avatar img-rounded img-small" src="/img/default_image_profile.png">
+                                    @<strong>2</strong> - Bob loblaw
+                            </a>
+                        </li>
+                    </ul>
+                    -->
+                    <table class="table">
+                        <tbody>
+                        <tr ng-repeat="member in searchedMembers">
+                            <td style="text-align: left">
+                                <div class="pull-left background-image-fffix little-marge-right">
+                                    <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
+                                </div>
+                                <h4>
+                                    <a ui-sref="home.profile.statuses({ username: member.username })">
+                                        <strong>
+                                            {{ member.firstName + ' ' + member.lastName }}
+                                        </strong>
+                                    </a>
+                                    <br>
+                                    <a ui-sref="home.profile.statuses({ username: member.username })">
+                                        <small>
+                                            @{{ member.username }}
+                                        </small>
+                                    </a>
+                                </h4>
+                            </td>
+                            <td>
+                                <a ng-click="addUser(member)" class="glyphicon glyphicon-th-large btn-title pull-right label labelSizeNormal label-info glyphicon-plus hidden-phone" translate="tatami.account.groups.add"></a>
+                                <!-- <button ng-click="addUser(member)" type="button" class="btn btn-success input-block-level glyphicon-plus delete" translate="tatami.account.groups.add"></button> -->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="return"></div>
+            <!--
+            <br>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success col-span-12" translate="tatami.form.save"></button>
+            </div>
+            -->
+        </fieldset>
+    </form>
 </div>

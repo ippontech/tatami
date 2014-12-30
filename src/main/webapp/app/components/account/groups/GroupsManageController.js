@@ -30,7 +30,13 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
         }
     };
 
-    $scope.addUser = function() {
-
+    $scope.addUser = function(member) {
+        GroupService.join(
+            { groupId: $scope.group.groupId, username: member.username },
+            null,
+            function() {
+                $scope.$state.reload();
+            }
+        )
     }
 }]);

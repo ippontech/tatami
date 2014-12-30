@@ -13,7 +13,7 @@
 
 <script type="text/template" id="search-category-item">
 <@ if(item.category == 'tags') {@>
-    <li class="item tags" data-value="<@= item.label @>">
+    <li class="" data-value="<@= item.label @>">
         <a href="#"><@= item.label @></a>
     </li>
 <@} else if(item.category == 'users') { @>
