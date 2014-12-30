@@ -152,8 +152,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.tags.list', {
-            url: '/tags',
+        .state('account.tags.following', {
+            url: '/following',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {

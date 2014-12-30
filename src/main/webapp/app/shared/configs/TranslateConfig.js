@@ -334,7 +334,6 @@ TatamiApp.config(function($translateProvider) {
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
-                    'myTags': 'My Tags',
                     'trends': 'Trends',
                     'search': 'Search',
                     'tag': 'Tag',
