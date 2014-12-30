@@ -69,7 +69,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             controller: 'FormController'
         })
         .state('account.users.following', {
-            url: '',
+            url: '/following',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
                 usersList: ['profileInfo', 'UserService', function(profileInfo, UserService) {
@@ -162,8 +162,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('account.tags.recommended', {
-            url: '/recommended',
+        .state('account.tags.trends', {
+            url: '/trends',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
