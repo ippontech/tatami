@@ -24,11 +24,10 @@
                 </span>
 
                 <span ng-if="group.administrator">
-                    <a class="btn-title pull-right label label-info hidden-phone" ui-sref="account.groups.manage({ groupId: group.groupId })">
-                        <span class="glyphicon glyphicon-th-large">
-                            <span translate="tatami.home.group.manage"></span> 
-                        </span>
-                    </a>
+                    <button ui-sref="account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone" type="button">
+                        <span class="glyphicon glyphicon-th-large"></span>
+                        <span translate="tatami.home.group.manage"></span>
+                    </button>
                 </span>
 
                 <span ng-if="!group.administrator">

@@ -1,11 +1,12 @@
 <div>
+    <h2 translate="tatami.account.tags.title"></h2>
     <div class="tabMenu">
         <ul class="nav nav-tabs">
             <li ng-class="{ 'active': $state.current.name === 'account.tags.list' }">
                 <a ui-sref="account.tags.list" translate="tatami.account.tags.myTags"></a>
             </li>
             <li ng-class="{ 'active': $state.current.name === 'account.tags.recommended' }">
-                <a ui-sref="account.tags.recommended" translate="tatami.account.tags.trending"></a>
+                <a ui-sref="account.tags.recommended" translate="tatami.account.tags.trends"></a>
             </li>
             <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
                 <a ui-sref="account.tags.search" translate="tatami.account.tags.search"></a>

@@ -1,4 +1,5 @@
 <div>
+    <h2 translate="tatami.account.users.title"></h2>
     <div class="tabMenu">
         <ul class="nav nav-tabs">
             <li ng-class="{ 'active': $state.current.name === 'account.users.list' }">
@@ -18,7 +19,7 @@
         </form>
         <div class="useritem" ng-repeat="user in usersList">
             <div class="pull-left background-image-fffix">
-                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + getAvatar(user) + ')' }"></div>
+                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </div>
             <h4>
                 <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">

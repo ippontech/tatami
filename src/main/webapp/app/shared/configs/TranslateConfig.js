@@ -157,8 +157,8 @@ TatamiApp.config(function($translateProvider) {
                 // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'My Groups',
-                    'whoToFollow': 'Who To Follow',
-                    'trending': 'Trending'
+                    'whoToFollow': 'Who to follow',
+                    'trends': 'Trends'
                 },
 
                 // Individual Status
@@ -232,7 +232,7 @@ TatamiApp.config(function($translateProvider) {
                         'statuses': 'Statuses',
                         'following': 'Following',
                         'followers': 'Followers',
-                        'trending': 'Trending'
+                        'trends': 'Trends'
                     }
                 }
             },
@@ -321,18 +321,21 @@ TatamiApp.config(function($translateProvider) {
                     'addMember': 'Add a member',
                     'username': 'Username',
                     'role': 'Role',
+                    'admin': 'Administrator',
+                    'member': 'Member',
+                    'join': 'Join',
+                    'joined': 'Joined',
+                    'leave': 'Leave',
                     'archived': 'Archived',
-                    'remove': ' Remove',
-                    'ADMIN': 'Administrator',
-                    'MEMBER': 'Member',
-                    'add': 'Add'
+                    'add': 'Add',
+                    'remove': 'Remove'
                 },
 
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
                     'myTags': 'My Tags',
-                    'trending': 'Trending',
+                    'trends': 'Trends',
                     'search': 'Search',
                     'tag': 'Tag',
                     'follow': 'Follow',
