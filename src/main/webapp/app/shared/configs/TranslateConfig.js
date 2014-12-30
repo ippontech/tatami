@@ -158,7 +158,11 @@ TatamiApp.config(function($translateProvider) {
                 'sidebar': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who to follow',
-                    'trends': 'Trends'
+                    'trends': 'Trends',
+                    'public': 'PUB',
+                    'private': 'PVT',
+                    'archived': 'ARC',
+                    'administrator': 'A'
                 },
 
                 // Status List item or User List item
