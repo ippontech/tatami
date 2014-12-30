@@ -147,7 +147,6 @@ public class SearchController {
         Collection<Group> groups;
         if (query != null && !query.equals("")) {
             this.log.debug("REST request to find groups starting with : {}", prefix);
-            this.log.debug("USER name : {}", currentLogin);
             groups = searchService.searchGroupByPrefix(domain, prefix, 5);
         } else {
             groups = new ArrayList<Group>();
