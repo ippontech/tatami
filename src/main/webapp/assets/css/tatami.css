@@ -1,7 +1,3 @@
-#markdownBasics {
-    float: right;
-}
-
 @media screen and (max-width: 767px) {
     .navbar .nav, .navbar .navbar-form {
         float: none;
@@ -99,7 +95,7 @@ h4 {
     background-color: black;
 }
 
-.controle-group {
+.control-group {
     padding-bottom: 10px;
 }
 

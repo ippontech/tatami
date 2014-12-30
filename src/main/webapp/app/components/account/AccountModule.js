@@ -72,10 +72,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
-                usersList: ['ProfileService', 'UserService', function(ProfileService, UserService) {
-                    ProfileService.get().$promise.then(function(result) {
-                        return UserService.getFollowing({ username: result.username }).$promise;
-                    })
+                usersList: ['profileInfo', 'UserService', function(profileInfo, UserService) {
+                    return UserService.getFollowing({ username: profileInfo.username }).$promise;
                 }]
             },
             controller: 'UsersController'
