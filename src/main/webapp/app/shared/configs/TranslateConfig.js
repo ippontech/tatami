@@ -322,9 +322,10 @@ TatamiApp.config(function($translateProvider) {
                     'username': 'Username',
                     'role': 'Role',
                     'archived': 'Archived',
-                    'remove': 'Remove',
+                    'remove': ' Remove',
                     'ADMIN': 'Administrator',
-                    'MEMBER': 'Member'
+                    'MEMBER': 'Member',
+                    'add': 'Add'
                 },
 
                 // Tags Tab
