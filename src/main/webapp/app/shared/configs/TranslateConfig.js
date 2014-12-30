@@ -321,11 +321,14 @@ TatamiApp.config(function($translateProvider) {
                     'addMember': 'Add a member',
                     'username': 'Username',
                     'role': 'Role',
+                    'admin': 'Administrator',
+                    'member': 'Member',
+                    'join': 'Join',
+                    'joined': 'Joined',
+                    'leave': 'Leave',
                     'archived': 'Archived',
-                    'remove': ' Remove',
-                    'ADMIN': 'Administrator',
-                    'MEMBER': 'Member',
-                    'add': 'Add'
+                    'add': 'Add',
+                    'remove': 'Remove'
                 },
 
                 // Tags Tab
