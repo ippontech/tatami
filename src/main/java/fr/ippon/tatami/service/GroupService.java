@@ -263,14 +263,20 @@ public class GroupService {
             }
             else if(group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());
+                group.setAdministrator(false);
                 if (result != null) {
                     group.setMember(true);
+                }
+                else {
+                    group.setMember(false);
                 }
             }
             else {
                 Group result = getGroupFromUser(user, group.getGroupId());
                 if (result == null) {
                     log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
+                    group.setMember(false);
+                    group.setAdministrator(false);
                     return null;
                 } else {
                     group.setMember(true);

@@ -74,14 +74,16 @@ GroupsModule.controller('GroupsController', [
             });
         };
 
-        $scope.joinLeaveGroup = function(group) {
+        $scope.joinLeaveGroup = function(group, index) {
+            if($scope.$state === 'account.groups.search') {
+
+            }
             if(!group.member) {
                 GroupService.join(
                     { groupId: group.groupId, username: profileInfo.username },
                     null,
                     function(response) {
                         if(response.isMember) {
-                            group.member = response.isMember;
                             $scope.$state.reload();
                         }
                     }
@@ -94,7 +96,7 @@ GroupsModule.controller('GroupsController', [
                     null,
                     function(response) {
                         if(response) {
-                            group.member = !response;
+                            // group.member = !response;
                             $scope.$state.reload();
                         }
                     }

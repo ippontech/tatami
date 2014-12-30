@@ -7,12 +7,7 @@ PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusSer
         var modalInstance = $modal.open({
             templateUrl: '/app/components/home/post/PostView.html',
             controller: 'StatusCreateController',
-            keyboard: false,
-            resolve: {
-                currentStatus: function() {
-
-                }
-            }
+            keyboard: false
         });
 
         modalInstance.opened.then(function() {
