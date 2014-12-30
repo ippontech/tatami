@@ -6,26 +6,28 @@
         <a ui-sref="about.presentation"><h4 translate="tatami.login.moreInfo"></h4></a>
     </div>
     <div class="col-span-12">
+        
         <div class="col-span-4">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.register.title"></h4>
+                    <h4 class="panel-title" translate="tatami.login.googleApps.title"></h4>
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <p translate="tatami.login.register.line1"></p>
-                            <p translate="tatami.login.register.line2"></p>
-                            <p translate="tatami.login.register.line3"></p>
+                            <p translate="tatami.login.googleApps.line1"></p>
+                            <a href="https://www.google.com/work/apps/business/">
+                                <p translate="tatami.login.googleApps.link"></p>
+                            </a>
+                            <p translate="tatami.login.googleApps.line2"></p>
+                            <p translate="tatami.login.googleApps.line3"></p>
                         </li>
                     </ul>
-                    <form action="/tatami/register" method="post" accept-charset="utf-8" id="registrationForm">
+                    <form action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
                         <fieldset>
-                            <div class="control-group">
-                                <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
-                            </div>
+                            <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id">
                             <div class="text-center control-group">
-                                <button translate="tatami.login.register.title" type="submit" class="btn btn-primary btn-block" id="registrationButton"></button>
+                                <button translate="tatami.login.googleApps.login" type="submit" id="proceed_google" class="btn btn-primary btn-block"></button>
                             </div>
                         </fieldset>
                     </form>
@@ -82,24 +84,23 @@
         <div class="col-span-4">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.googleApps.title"></h4>
+                    <h4 class="panel-title" translate="tatami.login.register.title"></h4>
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <p translate="tatami.login.googleApps.line1"></p>
-                            <a href="https://www.google.com/work/apps/business/">
-                                <p translate="tatami.login.googleApps.link"></p>
-                            </a>
-                            <p translate="tatami.login.googleApps.line2"></p>
-                            <p translate="tatami.login.googleApps.line3"></p>
+                            <p translate="tatami.login.register.line1"></p>
+                            <p translate="tatami.login.register.line2"></p>
+                            <p translate="tatami.login.register.line3"></p>
                         </li>
                     </ul>
-                    <form action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
+                    <form action="/tatami/register" method="post" accept-charset="utf-8" id="registrationForm">
                         <fieldset>
-                            <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id">
+                            <div class="control-group">
+                                <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
+                            </div>
                             <div class="text-center control-group">
-                                <button translate="tatami.login.googleApps.login" type="submit" id="proceed_google" class="btn btn-primary btn-block"></button>
+                                <button translate="tatami.login.register.title" type="submit" class="btn btn-primary btn-block" id="registrationButton"></button>
                             </div>
                         </fieldset>
                     </form>
@@ -107,5 +108,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
