@@ -292,7 +292,7 @@ TatamiApp.config(function($translateProvider) {
                 'users': {
                     'title': 'Users',
                     'following': 'Following',
-                    'recommend': 'Recommended',
+                    'recommended': 'Recommended',
                     'search': 'Search'
                 },
 
