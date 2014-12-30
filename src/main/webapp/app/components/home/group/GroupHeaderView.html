@@ -17,7 +17,10 @@
         <div class="tatams-content-title">
             <h3>
                 <strong>{{ group.name }}: </strong>
-                <strong ng-if="$state.current.name == 'home.home.group.statuses'" translate="tatami.home.group.statuses"></strong>
+                <span ng-if="$state.current.name == 'home.home.group.statuses'">
+                    <strong ng-if="group.description">{{ group.description }}</strong>
+                    <strong ng-if="!group.description" translate="tatami.home.group.statuses"></strong>
+                </span>
                 <span ng-if="$state.current.name == 'home.home.group.members'">
                     <strong ng-if="group.counter == 1" translate="tatami.home.group.membersSingular"></strong>
                     <strong ng-if="group.counter > 1" translate="tatami.home.group.membersPlural" translate-values="{ amount: group.counter }"></strong>
