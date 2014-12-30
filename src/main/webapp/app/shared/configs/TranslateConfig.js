@@ -300,12 +300,13 @@ TatamiApp.config(function($translateProvider) {
                 // Groups Tab
                 'groups': {
                     'title': 'Groups',
-                    'create': 'Create a new group',
+                    'createNewGroup': 'Create a new group',
                     'name': 'Name',
                     'description': 'Description',
                     'public': 'Public',
                     'private': 'Private',
                     'publicWarning': 'Warning: If this group is public, everybody can access it',
+                    'create': 'Create',
                     'myGroups': 'My Groups',
                     'recommended': 'Recommended',
                     'search': 'Search',
