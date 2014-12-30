@@ -68,7 +68,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.users.list', {
+        .state('account.users.following', {
             url: '',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
@@ -180,7 +180,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                     if($stateParams.q.length == 0) {
                         return {};
                     }
-                    else{
+                    else {
                         return SearchService.query({ term: 'tags', q: $stateParams.q }).$promise;
                     }
                 }]

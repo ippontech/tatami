@@ -291,7 +291,7 @@ TatamiApp.config(function($translateProvider) {
                 // Users Tab
                 'users': {
                     'title': 'Users',
-                    'myFriends': 'My Friends',
+                    'following': 'Following',
                     'recommend': 'Recommended',
                     'search': 'Search'
                 },
