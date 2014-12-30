@@ -75,9 +75,6 @@ GroupsModule.controller('GroupsController', [
         };
 
         $scope.joinLeaveGroup = function(group, index) {
-            if($scope.$state === 'account.groups.search') {
-
-            }
             if(!group.member) {
                 GroupService.join(
                     { groupId: group.groupId, username: profileInfo.username },
@@ -96,7 +93,6 @@ GroupsModule.controller('GroupsController', [
                     null,
                     function(response) {
                         if(response) {
-                            // group.member = !response;
                             $scope.$state.reload();
                         }
                     }

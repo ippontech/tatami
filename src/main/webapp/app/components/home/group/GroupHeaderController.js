@@ -10,7 +10,6 @@ HomeModule.controller('GroupHeaderController', ['$scope', 'GroupService', 'profi
                     null,
                     function(response) {
                         if(response.isMember) {
-                            console.log(response);
                             $scope.group.member = response.isMember;
                             $scope.$state.reload();
                         }
@@ -24,7 +23,6 @@ HomeModule.controller('GroupHeaderController', ['$scope', 'GroupService', 'profi
                     null,
                     function(response) {
                         if(response) {
-                            console.log(response);
                             $scope.group.member = !response;
                             $scope.$state.reload();
                         }
