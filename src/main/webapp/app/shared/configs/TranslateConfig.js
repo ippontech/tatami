@@ -161,11 +161,10 @@ TatamiApp.config(function($translateProvider) {
                     'trends': 'Trends'
                 },
 
-                // Individual Status
+                // Status List item or User List item
                 'status': {
                     'replyTo': 'In reply to',
                     'private': 'Private Message',
-                    'view': 'View',
                     'reply': 'Reply',
                     'share': 'Share',
                     'favorite': 'Favorite',
@@ -174,7 +173,7 @@ TatamiApp.config(function($translateProvider) {
                     'sharedYour': 'shared your status',
                     'followed': 'followed you',
                     'shared': 'shared',
-                    'admin': 'Group Administrator'
+                    'groupAdmin': 'Group Administrator'
                 },
 
                 // Tag View
