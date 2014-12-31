@@ -6,7 +6,6 @@
     .nav > li > .dropdown-menu {
         position: static;
         float: none;
-
     }
 
     .nav li.dropdown-submenu > ul.dropdown-menu {
@@ -14,7 +13,6 @@
         z-index: 0;
         float: none;
         margin: 0;
-
     }
 
     #tatamiBody {
@@ -149,7 +147,8 @@ div.jGrowl-notification {
     margin-bottom: 10px;
 }
 
-.little-padding-top {
+.little-padding-top,
+.little-padding-bottom {
     padding-top: 3px;
 }
 

@@ -39,7 +39,7 @@
                         <td>{{ file.size / 1000 }} kb</td>
                         <td>{{ file.prettyPrintCreationDate }}</td>
                         <td>
-                            <span class="btn btn-primary btn-block" translate="tatami.account.files.delete" ng-click="delete(file.attachmentId, $index)"></span>
+                            <button class="btn btn-danger btn-block" translate="tatami.account.files.delete" ng-click="delete(file.attachmentId, $index)" type="button"></button>
                         </td>
                     </tr>
                 </tbody>

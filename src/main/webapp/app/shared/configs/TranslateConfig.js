@@ -158,14 +158,17 @@ TatamiApp.config(function($translateProvider) {
                 'sidebar': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who to follow',
-                    'trends': 'Trends'
+                    'trends': 'Trends',
+                    'public': 'PUB',
+                    'private': 'PVT',
+                    'archived': 'ARC',
+                    'administrator': 'A'
                 },
 
-                // Individual Status
+                // Status List item or User List item
                 'status': {
                     'replyTo': 'In reply to',
                     'private': 'Private Message',
-                    'view': 'View',
                     'reply': 'Reply',
                     'share': 'Share',
                     'favorite': 'Favorite',
@@ -174,7 +177,7 @@ TatamiApp.config(function($translateProvider) {
                     'sharedYour': 'shared your status',
                     'followed': 'followed you',
                     'shared': 'shared',
-                    'admin': 'Group Administrator'
+                    'groupAdmin': 'Group Administrator'
                 },
 
                 // Tag View
@@ -292,20 +295,21 @@ TatamiApp.config(function($translateProvider) {
                 // Users Tab
                 'users': {
                     'title': 'Users',
-                    'myFriends': 'My Friends',
-                    'recommend': 'Recommended',
+                    'following': 'Following',
+                    'recommended': 'Recommended',
                     'search': 'Search'
                 },
 
                 // Groups Tab
                 'groups': {
                     'title': 'Groups',
-                    'create': 'Create a new group',
+                    'createNewGroup': 'Create a new group',
                     'name': 'Name',
                     'description': 'Description',
                     'public': 'Public',
                     'private': 'Private',
                     'publicWarning': 'Warning: If this group is public, everybody can access it',
+                    'create': 'Create',
                     'myGroups': 'My Groups',
                     'recommended': 'Recommended',
                     'search': 'Search',
@@ -334,7 +338,6 @@ TatamiApp.config(function($translateProvider) {
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
-                    'myTags': 'My Tags',
                     'trends': 'Trends',
                     'search': 'Search',
                     'tag': 'Tag',
