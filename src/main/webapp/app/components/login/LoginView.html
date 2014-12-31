@@ -1,6 +1,6 @@
 <ng-include src="'/app/shared/topmenu/TopMenuView.html'"></ng-include>
-<div id="mainPanel" class="well well-sm container">
-    <div class="jumbotron text-center">
+<div id="mainPanel" class="container well well-sm">
+    <div class="text-center well well-sm">
         <h1 translate="tatami.login.mainTitle"></h1>
         <h3 translate="tatami.login.subtitle"></h3>
         <a ui-sref="about.presentation"><h4 translate="tatami.login.moreInfo"></h4></a>
@@ -8,19 +8,21 @@
     <div class="col-span-12">
         <div class="col-span-4">
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.googleApps.title"></h4>
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center" translate="tatami.login.googleApps.title"></h4>
                 </div>
                 <div class="panel-body">
                     <form action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
                         <fieldset>
                             <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id">
-                            <div class="text-center control-group">
-                                <button translate="tatami.login.googleApps.login" type="submit" id="proceed_google" class="btn btn-primary btn-block"></button>
+                            <div class="control-group">
+                                <button type="submit" id="proceed_google" class="btn btn-primary btn-block" translate="tatami.login.googleApps.login"></button>
                             </div>
                         </fieldset>
                     </form>
-                    <div class="btn btn-info btn-block little-padding text-center" ui-sref="about.tos" translate="tatami.login.tos"></div>
+                    <div class="control-group">
+                        <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="about.tos" translate="tatami.login.tos"></button>
+                    </div>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <p translate="tatami.login.googleApps.line1"></p>
@@ -37,8 +39,8 @@
 
         <div class="col-span-4">
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.title"></h4>
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center" translate="tatami.login.title"></h4>
                 </div>
                 <div class="panel-body">
                     <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm">
@@ -53,17 +55,15 @@
                                 <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox">
                                 <span translate="tatami.login.remember"></span>
                             </div>
-                            <div class="text-center">
-                                <button translate="tatami.login.title" type="submit" id="loginButton" class="btn btn-primary btn-block"></button>
-                            </div>
+                            <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="tatami.login.title"></button>
                         </fieldset>
                     </form>
                 </div>
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.forgotPassword"></h4>
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center" translate="tatami.login.forgotPassword"></h4>
                 </div>
                 <div class="panel-body">
                     <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
@@ -71,9 +71,7 @@
                             <div class="control-group">
                                 <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
                             </div>
-                            <div class="text-center">
-                                <button translate="tatami.login.resetPassword" type="submit" class="btn btn-primary btn-block"></button>
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-block text-center" translate="tatami.login.resetPassword"></button>
                         </fieldset>
                     </form>
                 </div>
@@ -82,8 +80,8 @@
 
         <div class="col-span-4">
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    <h4 class="panel-title" translate="tatami.login.register.title"></h4>
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center" translate="tatami.login.register.title"></h4>
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
@@ -98,12 +96,12 @@
                             <div class="control-group">
                                 <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
                             </div>
-                            <div class="text-center control-group">
-                                <button translate="tatami.login.register.title" type="submit" class="btn btn-primary btn-block" id="registrationButton"></button>
+                            <div class="control-group">
+                                <button type="submit" id="registrationButton" class="btn btn-primary btn-block text-center" translate="tatami.login.register.title"></button>
                             </div>
                         </fieldset>
                     </form>
-                    <div class="btn btn-info btn-block little-padding text-center" ui-sref="about.tos" translate="tatami.login.tos"></div>
+                    <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="about.tos" translate="tatami.login.tos"></button>
                 </div>
             </div>
         </div>
