@@ -24,15 +24,19 @@
                 <span class="glyphicon glyphicon-th-large"></span>
                 <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
-            <div class="panel-body items">
-                <div class="little-padding-bottom" ng-repeat="group in groups">
-                    <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
-                    <span ng-if="group.publicGroup" class="label label-warning"><small translate="tatami.home.sidebar.public"></small></span>
-                    <span ng-if="!group.publicGroup" class="label label-info"><small translate="tatami.home.sidebar.private"></small></span>
-                    <span ng-if="group.archivedGroup" class="label label-default"><small translate="tatami.home.sidebar.archived"></small></span>
-                    <span ng-if="group.administrator" class="label label-danger"><small translate="tatami.home.sidebar.administrator"></small></span>
-                </div>
-            </div>
+            <table class="table table-condensed nomargin">
+                <tr data-ng-repeat="group in groups" data-ui-sref="home.home.group.statuses({ groupId: group.groupId })">
+                    <td>
+                        <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                    </td>
+                    <td nowrap>
+                        <span ng-if="group.publicGroup" class="label label-warning"><small translate="tatami.home.sidebar.public"></small></span>
+                        <span ng-if="!group.publicGroup" class="label label-info"><small translate="tatami.home.sidebar.private"></small></span>
+                        <span ng-if="group.archivedGroup" class="label label-default"><small translate="tatami.home.sidebar.archived"></small></span>
+                        <span ng-if="group.administrator" class="label label-danger"><small translate="tatami.home.sidebar.administrator"></small></span>
+                    </td>
+                </tr>
+            </table>
         </div>
     </section>
     <section class="hidden-phone tag-trends">
