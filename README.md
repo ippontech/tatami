@@ -158,7 +158,7 @@ Java and .NET applications. Take a look at YourKit's leading software products:
 License
 -------
 
-Copyright (c) 2012-2015 [Ippon Technologies](http://www.ippon.fr)
+Copyright © 2012-2015 [Ippon Technologies](http://www.ippon.fr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this application except in compliance with the License.
