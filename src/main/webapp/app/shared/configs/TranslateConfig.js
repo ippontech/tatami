@@ -86,7 +86,7 @@ TatamiApp.config(function($translateProvider) {
                 // License Page
                 'license': {
                     'title': 'Source Code License',
-                    'copyright': 'Copyright (c) 2012-2015'
+                    'copyright': 'Copyright'
                 }
             },
 
