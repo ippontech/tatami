@@ -29,7 +29,7 @@
                     <td>
                         <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                     </td>
-                    <td nowrap>
+                    <td class="text-right" nowrap>
                         <span ng-if="group.publicGroup" class="label label-warning"><small translate="tatami.home.sidebar.public"></small></span>
                         <span ng-if="!group.publicGroup" class="label label-info"><small translate="tatami.home.sidebar.private"></small></span>
                         <span ng-if="group.archivedGroup" class="label label-default"><small translate="tatami.home.sidebar.archived"></small></span>
