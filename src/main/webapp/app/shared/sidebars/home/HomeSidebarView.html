@@ -30,10 +30,10 @@
                         <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                     </td>
                     <td class="text-right" nowrap>
-                        <span ng-if="group.publicGroup" class="label label-warning"><small translate="tatami.home.sidebar.public"></small></span>
-                        <span ng-if="!group.publicGroup" class="label label-info"><small translate="tatami.home.sidebar.private"></small></span>
-                        <span ng-if="group.archivedGroup" class="label label-default"><small translate="tatami.home.sidebar.archived"></small></span>
-                        <span ng-if="group.administrator" class="label label-danger"><small translate="tatami.home.sidebar.administrator"></small></span>
+                        <span ng-if="group.publicGroup" class="label label-warning" title="{{ 'tatami.home.sidebar.publicToolTip' | translate }}"><small translate="tatami.home.sidebar.public"></small></span>
+                        <span ng-if="!group.publicGroup" class="label label-info" title="{{ 'tatami.home.sidebar.privateToolTip' | translate }}"><small translate="tatami.home.sidebar.private"></small></span>
+                        <span ng-if="group.archivedGroup" class="label label-default" title="{{ 'tatami.home.sidebar.archivedToolTip' | translate }}"><small translate="tatami.home.sidebar.archived"></small></span>
+                        <span ng-if="group.administrator" class="label label-danger" title="{{ 'tatami.home.sidebar.administratorToolTip' | translate }}"><small translate="tatami.home.sidebar.administrator"></small></span>
                     </td>
                 </tr>
             </table>
@@ -47,7 +47,7 @@
             </div>
             <div class="panel-body items">
                 <div ng-repeat="tag in tags">
-                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="little-padding pointer pull-right label" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
                         <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
                     <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>

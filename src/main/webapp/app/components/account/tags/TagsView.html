@@ -31,13 +31,13 @@
                             <a ui-sref="home.home.tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
                         </td>
                         <td class="follow">
-                            <a ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title pull-right label labelSizeNormal" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                            <button type="button" ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': tag.followed && hover, 'btn-info': tag.followed && !hover }">
                                 <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
                                     <span ng-if="!tag.followed" class="hidden-phone" translate="tatami.home.tag.follow"></span>
                                     <span ng-if="tag.followed && !hover" class="hidden-phone" translate="tatami.home.tag.following"></span>
                                     <span ng-if="tag.followed && hover" class="hidden-phone" translate="tatami.home.tag.unfollow"></span>
                                 </span>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </div>
