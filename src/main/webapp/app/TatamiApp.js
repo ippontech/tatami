@@ -1,4 +1,5 @@
 var TatamiApp = angular.module('TatamiApp', [
+    'TopMenuModule',
     'LoginModule',
     'HomeModule',
     'AccountModule',

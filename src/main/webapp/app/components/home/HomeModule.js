@@ -1,5 +1,4 @@
 var HomeModule = angular.module('HomeModule', [
-    'PostModule',
     'HomeSidebarModule',
     'ProfileSidebarModule',
     'ngSanitize',
