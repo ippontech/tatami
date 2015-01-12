@@ -86,7 +86,7 @@ TatamiApp.config(function($translateProvider) {
                 // License Page
                 'license': {
                     'title': 'Source Code License',
-                    'copyright': 'Copyright 2012'
+                    'copyright': 'Copyright'
                 }
             },
 
@@ -158,14 +158,21 @@ TatamiApp.config(function($translateProvider) {
                 'sidebar': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who To Follow',
-                    'trending': 'Trending'
+                    'trends': 'Trends',
+                    'public': 'PUB',
+                    'private': 'PVT',
+                    'archived': 'ARC',
+                    'administrator': 'A',
+                    'publicToolTip': 'Public Group',
+                    'privateToolTip': 'Private Group',
+                    'archivedToolTip': 'Archived Group',
+                    'administratorToolTip': 'You administer this group.'
                 },
 
-                // Individual Status
+                // Status List item or User List item
                 'status': {
                     'replyTo': 'In reply to',
                     'private': 'Private Message',
-                    'view': 'View',
                     'reply': 'Reply',
                     'share': 'Share',
                     'favorite': 'Favorite',
@@ -174,7 +181,7 @@ TatamiApp.config(function($translateProvider) {
                     'sharedYour': 'shared your status',
                     'followed': 'followed you',
                     'shared': 'shared',
-                    'admin': 'Group Administrator'
+                    'groupAdmin': 'Group Administrator'
                 },
 
                 // Tag View
@@ -232,7 +239,7 @@ TatamiApp.config(function($translateProvider) {
                         'statuses': 'Statuses',
                         'following': 'Following',
                         'followers': 'Followers',
-                        'trending': 'Trending'
+                        'trends': 'Trends'
                     }
                 }
             },
@@ -292,20 +299,21 @@ TatamiApp.config(function($translateProvider) {
                 // Users Tab
                 'users': {
                     'title': 'Users',
-                    'myFriends': 'My Friends',
-                    'recommend': 'Recommended',
+                    'following': 'Following',
+                    'recommended': 'Recommended',
                     'search': 'Search'
                 },
 
                 // Groups Tab
                 'groups': {
                     'title': 'Groups',
-                    'create': 'Create a new group',
+                    'createNewGroup': 'Create a new group',
                     'name': 'Name',
                     'description': 'Description',
                     'public': 'Public',
                     'private': 'Private',
                     'publicWarning': 'Warning: If this group is public, everybody can access it',
+                    'create': 'Create',
                     'myGroups': 'My Groups',
                     'recommended': 'Recommended',
                     'search': 'Search',
@@ -321,18 +329,20 @@ TatamiApp.config(function($translateProvider) {
                     'addMember': 'Add a member',
                     'username': 'Username',
                     'role': 'Role',
+                    'admin': 'Administrator',
+                    'member': 'Member',
+                    'join': 'Join',
+                    'joined': 'Joined',
+                    'leave': 'Leave',
                     'archived': 'Archived',
-                    'remove': ' Remove',
-                    'ADMIN': 'Administrator',
-                    'MEMBER': 'Member',
-                    'add': 'Add'
+                    'add': 'Add',
+                    'remove': 'Remove'
                 },
 
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
-                    'myTags': 'My Tags',
-                    'trending': 'Trending',
+                    'trends': 'Trends',
                     'search': 'Search',
                     'tag': 'Tag',
                     'follow': 'Follow',

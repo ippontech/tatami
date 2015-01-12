@@ -5,10 +5,10 @@ AccountModule.controller('FormController', ['$scope', function($scope) {
             $scope.$state.go('account.groups.list');
         }
         else if(toState.name === 'account.tags') {
-            $scope.$state.go('account.tags.list');
+            $scope.$state.go('account.tags.following');
         }
         else if(toState.name === 'account.users') {
-            $scope.$state.go('account.users.list');
+            $scope.$state.go('account.users.following');
         }
     });
 }]);

@@ -5,7 +5,7 @@
 PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusService', function($scope, $modal, StatusService) {
     $scope.showModal = function(statusId) {
         var modalInstance = $modal.open({
-            templateUrl: '/app/components/home/post/PostView.html',
+            templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'StatusCreateController',
             keyboard: false
         });

@@ -27,42 +27,50 @@
                             <ul class="adminMenu nav nav-pills nav-stacked nomargin">
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.profile">
-                                    <i class="glyphicon glyphicon-user"></i> {{ 'tatami.account.profile.title' | translate }}
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        <span translate="tatami.account.profile.title"></span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.preferences">
-                                    <i class="glyphicon glyphicon-picture"></i> {{ 'tatami.account.preferences.title' | translate }}
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                        <span translate="tatami.account.preferences.title"></span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.password">
-                                    <i class="glyphicon glyphicon-lock"></i> {{ 'tatami.account.password.title' | translate }}
+                                        <span class="glyphicon glyphicon-lock"></span>
+                                        <span translate="tatami.account.password.title"></span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.files">
-                                    <i class="glyphicon glyphicon-file"></i> {{ 'tatami.account.files.title' | translate }}
+                                        <span class="glyphicon glyphicon-file"></span>
+                                        <span translate="tatami.account.files.title"></span>
                                     </a>
                                 </li>
                                 <li ng-class="{ 'active': $state.current.name.indexOf('account.users') != -1 }">
                                     <a ui-sref="account.users">
-                                    <i class="glyphicon glyphicon-globe"></i> {{ 'tatami.account.users.title' | translate }}
+                                        <span class="glyphicon glyphicon-globe"></span>
+                                        <span translate="tatami.account.users.title"></span>
                                     </a>
                                 </li>
                                 <li ng-class="{ 'active': $state.current.name.indexOf('account.groups') != -1 }">
                                     <a ui-sref="account.groups">
-                                    <i class="glyphicon glyphicon-th-large"></i> {{ 'tatami.account.groups.title' | translate }}
+                                        <span class="glyphicon glyphicon-th-large"></span>
+                                        <span translate="tatami.account.groups.title"></span>
                                     </a>
                                 </li>
                                 <li ng-class="{ 'active': $state.current.name.indexOf('account.tags') != -1 }">
                                     <a ui-sref="account.tags">
-                                    <i class="glyphicon glyphicon-tags"></i> {{ 'tatami.account.tags.title' | translate }}
+                                        <span class="glyphicon glyphicon-tags"></span>
+                                        <span translate="tatami.account.tags.title"></span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="account.sotd">
-                                    <i class="glyphicon glyphicon-signal"></i> {{ 'tatami.account.sotd.title' | translate }}
+                                        <span class="glyphicon glyphicon-signal"></span>
+                                        <span translate="tatami.account.sotd.title"></span>
                                     </a>
                                 </li>
                             </ul>

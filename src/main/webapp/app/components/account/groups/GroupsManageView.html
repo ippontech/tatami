@@ -29,14 +29,14 @@
                 </div>
             </div>
             <div class="alert alertColor">
-                <i class="glyphicon glyphicon-warning-sign"></i>
-                {{ 'tatami.account.groups.archiveWarning' | translate }}
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <span translate="tatami.account.groups.archiveWarning"></span>
             </div>
             <br>
             <div class="return"></div>
             <br>
             <div class="form-actions">
-                <button ng-click="updateGroup()" type="submit" class="btn btn-info col-span-12" translate="tatami.form.save"></button>
+                <button ng-click="updateGroup()" type="submit" class="btn btn-primary col-span-12" translate="tatami.form.save"></button>
             </div>
         </fieldset>
     </form>
@@ -44,9 +44,9 @@
         <table class="table noCollapse">
             <tbody>
                 <tr>
-                    <th style="border-top :0" translate="tatami.account.groups.username"></th>
-                    <th style="border-top :0" translate="tatami.account.groups.role"></th>
-                    <th style="border-top :0"></th>
+                    <th style="border-top: 0" translate="tatami.account.groups.username"></th>
+                    <th style="border-top: 0" translate="tatami.account.groups.role"></th>
+                    <th style="border-top: 0"></th>
                 </tr>
             </tbody>
             <tbody class="items">
@@ -70,10 +70,12 @@
                         </h4>
                     </td>
                     <td>
-                        {{ 'tatami.account.groups.' + member.role | translate }}
+                        {{ 'tatami.account.groups.' + member.role | lowercase | translate }}
                     </td>
                     <td ng-show="member.role === 'MEMBER'">
-                        <a ng-click="removeUser(member)" class="glyphicon glyphicon-th-large btn-title pull-right label labelSizeNormal label-danger glyphicon-minus hidden-phone" translate="tatami.account.groups.remove"></a>
+                        <button ng-click="removeUser(member)" class="pull-right btn btn-danger hidden-phone" type="button">
+                            <span translate="tatami.account.groups.remove"></span>
+                        </button>
                         <!-- <button ng-click="removeUser(member)" type="button" class="btn btn-danger input-block-level glyphicon-minus delete" translate=""></button> -->
                     </td>
                 </tr>
@@ -119,7 +121,9 @@
                                 </h4>
                             </td>
                             <td>
-                                <a ng-click="addUser(member)" class="glyphicon glyphicon-th-large btn-title pull-right label labelSizeNormal label-info glyphicon-plus hidden-phone" translate="tatami.account.groups.add"></a>
+                                <button ng-click="addUser(member)" class="pull-right btn btn-primary hidden-phone" type="button">
+                                    <span translate="tatami.account.groups.add"></span>
+                                </button>
                                 <!-- <button ng-click="addUser(member)" type="button" class="btn btn-success input-block-level glyphicon-plus delete" translate="tatami.account.groups.add"></button> -->
                             </td>
                         </tr>

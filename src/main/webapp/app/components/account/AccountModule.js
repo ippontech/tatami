@@ -68,8 +68,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.users.list', {
-            url: '',
+        .state('account.users.following', {
+            url: '/following',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
                 usersList: ['profileInfo', 'UserService', function(profileInfo, UserService) {
@@ -152,8 +152,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.tags.list', {
-            url: '/tags',
+        .state('account.tags.following', {
+            url: '/following',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
@@ -162,8 +162,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('account.tags.recommended', {
-            url: '/recommended',
+        .state('account.tags.trends', {
+            url: '/trends',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
@@ -180,7 +180,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                     if($stateParams.q.length == 0) {
                         return {};
                     }
-                    else{
+                    else {
                         return SearchService.query({ term: 'tags', q: $stateParams.q }).$promise;
                     }
                 }]

@@ -27,7 +27,8 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             url: '/license',
             views: {
                 'aboutBody': {
-                    templateUrl: 'app/components/about/license/LicenseView.html'
+                    templateUrl: 'app/components/about/license/LicenseView.html',
+                    controller: 'LicenseController'
                 },
             }
         });

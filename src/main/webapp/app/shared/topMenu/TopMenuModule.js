@@ -1,0 +1,1 @@
+var TopMenuModule = angular.module('TopMenuModule', ['PostModule']);
