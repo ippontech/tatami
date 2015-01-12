@@ -1,5 +1,4 @@
 var HomeModule = angular.module('HomeModule', [
-    'PostModule',
     'HomeSidebarModule',
     'ProfileSidebarModule',
     'ngSanitize',
@@ -14,10 +13,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             abstract: true,
             templateUrl: 'app/components/home/HomeView.html',
             resolve: {
-                ProfileService: 'ProfileService',
-                profile: function(ProfileService) {
+                profile: ['ProfileService', function(ProfileService) {
                     return ProfileService.get().$promise;
-                }
+                }]
             }
         })
         //state for all views that use home sidebar
@@ -25,18 +23,15 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             url: '^/home',
             abstract: true,
             resolve: {
-                GroupService: 'GroupService',
-                UserService: 'UserService',
-                TagService: 'TagService',
-                groups: function(GroupService) {
+                groups: ['GroupService', function(GroupService) {
                     return GroupService.query().$promise;
-                },
-                tags: function(TagService) {
+                }],
+                tags: ['TagService', function(TagService) {
                     return TagService.query({ popular: true }).$promise;
-                },
-                suggestions: function(UserService) {
+                }],
+                suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
-                }
+                }]
             }
         })
         .state('home.home.timeline', {
@@ -55,10 +50,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                StatusService: 'StatusService',
-                statuses: function(StatusService) {
+                statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
-                }
+                }]
             }
         })
         .state('home.home.mentions', {
@@ -77,10 +71,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                HomeService: 'HomeService',
-                statuses: function(HomeService) {
+                statuses: ['HomeService', function(HomeService) {
                     return HomeService.getMentions().$promise;
-                }
+                }]
             }
         })
         .state('home.home.favorites', {
@@ -99,10 +92,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                HomeService: 'HomeService',
-                statuses: function(HomeService) {
+                statuses: ['HomeService', function(HomeService) {
                     return HomeService.getFavorites().$promise;
-                }
+                }]
             }
         })
         .state('home.home.company', {
@@ -121,10 +113,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                HomeService: 'HomeService',
-                statuses: function(HomeService) {
+                statuses: ['HomeService', function(HomeService) {
                     return HomeService.getCompanyTimeline().$promise;
-                }
+                }]
             }
         })
         .state('home.home.tag', {
@@ -144,23 +135,21 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                TagService: 'TagService',
-                tag: function(TagService, $stateParams) {
+                tag: ['TagService', '$stateParams', function(TagService, $stateParams) {
                     return TagService.get({ tag: $stateParams.tag }).$promise;
-                },
-                statuses: function(TagService, $stateParams) {
+                }],
+                statuses: ['TagService', '$stateParams', function(TagService, $stateParams) {
                     return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
-                }
+                }]
             }
         })
         .state('home.home.group', {
             url: '/group/:groupId',
             abstract: true,
             resolve: {
-                GroupService: 'GroupService',
-                group: function(GroupService, $stateParams) {
+                group: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.get({ groupId: $stateParams.groupId }).$promise;
-                }
+                }]
             }
         })
         .state('home.home.group.statuses', {
@@ -180,9 +169,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: function(GroupService, $stateParams) {
+                statuses: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.getStatuses({ groupId: $stateParams.groupId }).$promise;
-                }
+                }]
             }
         })
         .state('home.home.group.members', {
@@ -202,9 +191,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                users: function(GroupService, $stateParams) {
+                users: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
-                }
+                }]
             }
         })
         //state for all views that use profile sidebar
@@ -212,14 +201,12 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             url: '/profile/:username',
             abstract: true,
             resolve: {
-                UserService: 'UserService',
-                TagService: 'TagService',
-                user: function(UserService, $stateParams) {
+                user: ['UserService', '$stateParams', function(UserService, $stateParams) {
                     return UserService.get({ username: $stateParams.username }).$promise;
-                },
-                tags: function(TagService, $stateParams) {
+                }],
+                tags: ['TagService', '$stateParams', function(TagService, $stateParams) {
                     return TagService.query({ popular: true, user: $stateParams.username }).$promise;
-                }
+                }]
             }
         })
         .state('home.profile.statuses', {
@@ -239,10 +226,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                StatusService: 'StatusService',
-                statuses: function(StatusService, $stateParams) {
+                statuses: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
                     return StatusService.getUserTimeline({ username: $stateParams.username }).$promise;
-                }
+                }]
             }
         })
         .state('home.profile.following', {
@@ -262,10 +248,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                UserService: 'UserService',
-                users: function(UserService, $stateParams) {
+                users: ['UserService', '$stateParams', function(UserService, $stateParams) {
                     return UserService.getFollowing({ username: $stateParams.username }).$promise;
-                }
+                }]
             }
         })
         .state('home.profile.followers', {
@@ -285,10 +270,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                UserService: 'UserService',
-                users: function(UserService, $stateParams) {
+                users: ['UserService', '$stateParams', function(UserService, $stateParams) {
                     return UserService.getFollowers({ username: $stateParams.username }).$promise;
-                }
+                }]
             }
         });
     }

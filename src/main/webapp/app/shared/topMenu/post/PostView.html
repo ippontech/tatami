@@ -84,9 +84,7 @@
             </div>
         </fieldset>
         <fieldset class="row-fluid">
-            <legend translate="tatami.home.post.options">
-
-            </legend>
+            <legend translate="tatami.home.post.options"></legend>
             <div ng-show="!current.reply">
                 <label>
                     <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
@@ -101,8 +99,7 @@
             </div>
             <div ng-show="!current.reply">
                 <label class="control-label" translate="tatami.home.post.group"></label>
-                <!-- filter out archived groups -->
-                <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups">
+                <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups | filter: { archivedGroup: false }">
                     <option></option>
                 </select>
             </div>

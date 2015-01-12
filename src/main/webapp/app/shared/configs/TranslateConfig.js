@@ -157,12 +157,16 @@ TatamiApp.config(function($translateProvider) {
                 // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'My Groups',
-                    'whoToFollow': 'Who to follow',
+                    'whoToFollow': 'Who To Follow',
                     'trends': 'Trends',
                     'public': 'PUB',
                     'private': 'PVT',
                     'archived': 'ARC',
-                    'administrator': 'A'
+                    'administrator': 'A',
+                    'publicToolTip': 'Public Group',
+                    'privateToolTip': 'Private Group',
+                    'archivedToolTip': 'Archived Group',
+                    'administratorToolTip': 'You administer this group.'
                 },
 
                 // Status List item or User List item

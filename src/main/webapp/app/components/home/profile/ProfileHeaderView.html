@@ -65,13 +65,13 @@
                 </span>
 
                 <span ng-if="!user.you">
-                    <a ng-click="followUnfollowUser()" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn-title pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                    <button type="button" ng-click="followUnfollowUser()" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': user.friend && hover, 'btn-info': user.friend && !hover }">
                         <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'">
                             <span ng-if="!user.friend" class="hidden-phone" translate="tatami.home.profile.follow"></span>
                             <span ng-if="user.friend && !hover" class="hidden-phone" translate="tatami.home.profile.following"></span>
                             <span ng-if="user.friend && hover" class="hidden-phone" translate="tatami.home.profile.unfollow"></span>
                         </span>
-                    </a>
+                    </button>
                 </span>
             </h3>
         </div>
