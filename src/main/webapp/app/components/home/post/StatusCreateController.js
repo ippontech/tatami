@@ -11,6 +11,17 @@ PostModule.controller('StatusCreateController', [
     'GeolocalisationService',
     'GroupService',
     function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, GroupService) {
+
+    $scope.notArchived = function(groups) {
+        var filteredGroups = [];
+        for(var group in groups) {
+            if(!group.archivedGroup) {
+                filteredGroups.push(group);
+            }
+        }
+        return filteredGroups;
+    };
+
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
@@ -22,7 +33,7 @@ PostModule.controller('StatusCreateController', [
         contentEmpty: true,
         files: [],
         attachments: []
-    },
+    };
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status
         groupId: "",             // The groupId that this status is being broadcast to
@@ -30,10 +41,10 @@ PostModule.controller('StatusCreateController', [
         attachmentIds: [],       // An array of all the attachments contained in the status
         geoLocalization: "",     // The geographical location of the user when posting the status
         statusPrivate: false     // Determines whether the status is private
-    },
+    };
 
     $scope.charCount = 750;
-    $scope.currentStatus,
+    $scope.currentStatus;
 
     $scope.uploadStatus = {
         isUploading: false,
@@ -63,7 +74,7 @@ PostModule.controller('StatusCreateController', [
                 $scope.uploadStatus.progress = 0;
             })
         }
-    }),
+    });
 
     $scope.fileSize = function(file) {
         if(file.size / 1000 < 1000) {
@@ -72,7 +83,7 @@ PostModule.controller('StatusCreateController', [
         else{
             return parseInt(file.size / 1000000) + "M";
         }
-    },
+    };
     /**
      * In order to set reply to a status, we must be able to set current status
      * after an asynchronous get request.
@@ -82,12 +93,12 @@ PostModule.controller('StatusCreateController', [
         $scope.status.content = '@' + $scope.currentStatus.username + ' ';
         $scope.current.reply = true;
         $scope.status.replyTo = status.statusId;
-    },
+    };
 
     $scope.closeModal = function() {
         $modalInstance.dismiss();
         $scope.reset();
-    },
+    };
 
     /**
      *
@@ -97,7 +108,7 @@ PostModule.controller('StatusCreateController', [
      */
     $scope.statusChange = function(param) {
         $scope.status.content = param;
-    },
+    };
 
     /**
      * Resets any previously set status data
@@ -114,7 +125,7 @@ PostModule.controller('StatusCreateController', [
         $scope.status.geoLocalization = "";
         $scope.status.replyTo = "";
         $scope.status.statusPrivate = false;
-    },
+    };
 
 
     /**
@@ -129,7 +140,7 @@ PostModule.controller('StatusCreateController', [
                 $scope.reset();
             })
         }
-    },
+    };
 
     /** Geolocalization based functions **/
 
@@ -142,8 +153,7 @@ PostModule.controller('StatusCreateController', [
         } else {
             $scope.status.geoLocalization = "";
         }
-
-    },
+    };
 
     /**
      * Callback function used in getGeolocalisation. This function sets the status geolocation,
@@ -152,7 +162,7 @@ PostModule.controller('StatusCreateController', [
     $scope.getLocationString = function(position) {
         $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
         $scope.initMap();
-    },
+    };
 
     /**
      * Create a map displaying the users current location in the status

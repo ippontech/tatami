@@ -103,7 +103,7 @@
                 <label class="control-label" translate="tatami.home.post.group"></label>
                 <!-- filter out archived groups -->
                 <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups">
-                    <option></option>
+                    <option ng-disabled="group.archivedGroup"></option>
                 </select>
             </div>
             <!--
