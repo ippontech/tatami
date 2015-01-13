@@ -1,5 +1,5 @@
-ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileService', 'profileInfo', 'userLogin',
-    function($scope, $upload, ProfileService, profileInfo, userLogin) {
+ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileService', 'profileInfo', 'userLogin', 'ngToast',
+    function($scope, $upload, ProfileService, profileInfo, userLogin, ngToast) {
 
         // Current state of the view
         $scope.current = {
@@ -20,7 +20,9 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileServ
 
         // Update the user information
         $scope.updateUser = function() {
-            ProfileService.update($scope.userProfile);
+            ProfileService.update($scope.userProfile, function() {
+                ngToast.create('The form has been successfully saved');
+            });
         };
 
         // Handle user avatar changes based on drag and drop

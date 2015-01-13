@@ -6,6 +6,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/company-logo.ico">
     <link href="/assets/bower_components/bootstrap/dist/css/bootstrap-custom.css" rel="stylesheet">
     <link href="/assets/css/tatami.css" rel="stylesheet">
+    <link href="/assets/bower_components/ngtoast/dist/ngToast.css" rel="stylesheet">
 
     <!-- Needed if using HTML5 History API and relative links (Angular routing) -->
     <base href="/">
@@ -61,6 +62,7 @@
     -->
 </head>
 <body ng-init="showSearchAccountPost = false" ng-app="TatamiApp">
+    <toast></toast>
     <div ui-view></div>
 
     <!-- Begin Footer -->
@@ -89,6 +91,10 @@
     <script src="/assets/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 
     <script src="/assets/bower_components/openlayers/lib/OpenLayers.js"></script>
+
+    <script src="/assets/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/assets/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/assets/bower_components/ngtoast/dist/ngToast.js"></script>
 
     <!--- ------------------------------------------------------------------ -->
 
