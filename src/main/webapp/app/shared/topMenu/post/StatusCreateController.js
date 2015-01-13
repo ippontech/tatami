@@ -55,6 +55,7 @@ PostModule.controller('StatusCreateController', [
      * Watches the current.files ng-model and handles uploads
      */
     $scope.$watch('current.files', function() {
+        console.log($scope.current.files);
         for(var i = 0; i < $scope.current.files.length; ++i) {
             var file = $scope.current.files[i];
             $scope.uploadStatus.isUploading = true;
@@ -68,7 +69,8 @@ PostModule.controller('StatusCreateController', [
                 $scope.current.attachments.push(file);
                 $scope.uploadStatus.isUploading = false;
                 $scope.uploadStatus.progress = 0;
-                $scope.status.attachmentIds.push($scope.upload.$$state.value.data[i-1].attachmentId);
+                console.log($scope.upload.$$state.value);
+                $scope.status.attachmentIds.push($scope.upload.$$state.value.data[0].attachmentId);
             }).error(function(data, status, headers, config) {
                 $scope.uploadStatus.isUploading = false;
                 $scope.uploadStatus.progress = 0;
