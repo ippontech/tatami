@@ -99,6 +99,7 @@
             </div>
             <div ng-show="!current.reply">
                 <label class="control-label" translate="tatami.home.post.group"></label>
+
                 <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups | filter: { archivedGroup: false }">
                     <option></option>
                 </select>
@@ -125,7 +126,7 @@
                     </option>
                 </select>
             </div>-->
-            <div class="controls status-files" ng-file-drop ng-model="current.files">
+            <div class="controls status-files" ng-file-drop ng-file-select ng-model="current.files" ng-multiple="true" allow-dir="true">
                 <label translate="tatami.home.post.files">
 
                 </label>
