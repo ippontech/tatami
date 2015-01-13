@@ -20,8 +20,11 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileServ
 
         // Update the user information
         $scope.updateUser = function() {
+            // Toast strings should be translatable
             ProfileService.update($scope.userProfile, function() {
                 ngToast.create('The form has been successfully saved');
+            }, function() {
+                ngToast.create('Failed to save form');
             });
         };
 
