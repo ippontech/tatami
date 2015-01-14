@@ -107,7 +107,12 @@ public class AttachmentService {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
                 userAttachmentRepository.removeAttachmentId(currentUser.getLogin(), attachment.getAttachmentId());
                 attachmentRepository.deleteAttachment(attachment);
+                // Refresh user data, to reduce the risk of errors
+                currentUser = authenticationService.getCurrentUser();
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();
+                if(newAttachmentsSize < 0) {
+                    newAttachmentsSize = 0;
+                }
                 currentUser.setAttachmentsSize(newAttachmentsSize);
                 userRepository.updateUser(currentUser);
                 break;
