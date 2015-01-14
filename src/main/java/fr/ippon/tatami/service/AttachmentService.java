@@ -110,9 +110,6 @@ public class AttachmentService {
                 // Refresh user data, to reduce the risk of errors
                 currentUser = authenticationService.getCurrentUser();
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();
-                if(newAttachmentsSize < 0) {
-                    newAttachmentsSize = 0;
-                }
                 currentUser.setAttachmentsSize(newAttachmentsSize);
                 userRepository.updateUser(currentUser);
                 break;

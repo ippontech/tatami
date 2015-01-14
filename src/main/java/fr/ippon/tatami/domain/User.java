@@ -194,7 +194,7 @@ public class User implements Serializable {
     }
 
     public void setAttachmentsSize(long attachmentsSize) {
-        this.attachmentsSize = attachmentsSize;
+        this.attachmentsSize = attachmentsSize < 0 ? 0 : attachmentsSize;
     }
 
     public String getRssUid() {
