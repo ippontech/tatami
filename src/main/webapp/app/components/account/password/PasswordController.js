@@ -1,4 +1,4 @@
-PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', function($scope, PasswordService) {
+PasswordModule.controller('PasswordController', ['$scope', '$translate', 'PasswordService', 'ngToast', function($scope, $translate, PasswordService, ngToast) {
     $scope.password = {
         oldPassword: '',
         newPassword: '',
@@ -35,6 +35,13 @@ PasswordModule.controller('PasswordController', ['$scope', 'PasswordService', fu
                 $scope.reset();
                 // Alert user that the password has been changed
                 //$scope.status.confirmChange = true;
+                ngToast.create($translate.instant('tatami.form.success'));
+
+            }, function() {
+                ngToast.create({
+                    content: $translate.instant('tatami.form.fail'),
+                    class: 'danger'
+                })
             });
         }
     };

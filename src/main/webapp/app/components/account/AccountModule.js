@@ -6,7 +6,7 @@ var AccountModule = angular.module('AccountModule', [
     'FilesModule', 
     'UsersModule', 
     'GroupsModule', 
-    'TagsModule'
+    'TagsModule',
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
