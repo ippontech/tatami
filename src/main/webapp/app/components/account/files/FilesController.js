@@ -1,4 +1,11 @@
-FilesModule.controller('FilesController', ['$scope', 'FilesService', 'attachmentQuota', 'fileList', function($scope, FilesService, attachmentQuota, fileList) {
+FilesModule.controller('FilesController', [
+    '$scope',
+    '$translate',
+    'FilesService',
+    'attachmentQuota',
+    'fileList',
+    'ngToast',
+    function($scope, $translate, FilesService, attachmentQuota, fileList, ngToast) {
 
     // Initialize stuff
     $scope.quota = attachmentQuota[0];
@@ -13,6 +20,7 @@ FilesModule.controller('FilesController', ['$scope', 'FilesService', 'attachment
             function() {
                 $scope.fileList.splice(removalIndex, 1);
                 $scope.$state.reload();
+                ngToast.create($translate.instant('tatami.form.deleted'));
             });
     };
 

@@ -1,12 +1,13 @@
 GroupsModule.controller('GroupsController', [
     '$scope',
     '$resource',
+    '$translate',
     'GroupService',
     'SearchService',
     'userGroups',
     'profileInfo',
     'ngToast',
-    function($scope, $resource, GroupService, SearchService, userGroups, profileInfo, ngToast) {
+    function($scope, $resource, $translate, GroupService, SearchService, userGroups, profileInfo, ngToast) {
         /**
          * When creating a group, the POST requires this payload
          * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
@@ -51,7 +52,14 @@ GroupsModule.controller('GroupsController', [
                 $scope.reset();
                 $scope.$state.reload();
                 // Alert user of new group creation
-                ngToast.create('The form has been successfully saved');
+                ngToast.create({
+                    content: $translate.instant('tatami.form.success')
+                });
+            }, function() {
+                ngToas.create({
+                    content: $translate.instant('tatami.form.fail'),
+                    class: 'danger'
+                })
             });
         };
 

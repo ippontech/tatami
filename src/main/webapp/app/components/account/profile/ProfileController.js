@@ -1,5 +1,5 @@
-ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileService', 'profileInfo', 'userLogin', 'ngToast',
-    function($scope, $upload, ProfileService, profileInfo, userLogin, ngToast) {
+ProfileModule.controller('ProfileController', ['$scope', '$upload', '$translate', 'ProfileService', 'profileInfo', 'userLogin', 'ngToast',
+    function($scope, $upload, $translate, ProfileService, profileInfo, userLogin, ngToast) {
 
         // Current state of the view
         $scope.current = {
@@ -22,9 +22,14 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', 'ProfileServ
         $scope.updateUser = function() {
             // Toast strings should be translatable
             ProfileService.update($scope.userProfile, function() {
-                ngToast.create('The form has been successfully saved');
+                ngToast.create({
+                    content: $translate.instant('tatami.form.success')
+                });
             }, function() {
-                ngToast.create('Failed to save form');
+                ngToast.create({
+                    content: $translate.instant('tatami.form.fail'),
+                    class: 'danger'
+                });
             });
         };
 

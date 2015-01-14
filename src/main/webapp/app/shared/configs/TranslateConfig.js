@@ -358,7 +358,10 @@ TatamiApp.config(function($translateProvider) {
 
             'form': {
                 'cancel': 'Cancel',
-                'save': 'Save'
+                'save': 'Save',
+                'success': 'The form has been successfully saved.',
+                'fail': 'Failed to save form.',
+                'deleted': 'Your file has been deleted.'
             }
         }
     });
