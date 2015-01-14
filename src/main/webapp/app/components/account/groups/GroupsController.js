@@ -51,10 +51,9 @@ GroupsModule.controller('GroupsController', [
             GroupService.save($scope.groups, function() {
                 $scope.reset();
                 $scope.$state.reload();
-                var result = $translate.instant('tatami.form.success');
                 // Alert user of new group creation
                 ngToast.create({
-                    content: result
+                    content: $translate.instant('tatami.form.success')
                 });
             }, function() {
                 ngToas.create({
