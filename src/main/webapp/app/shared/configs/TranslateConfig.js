@@ -352,7 +352,9 @@ TatamiApp.config(function($translateProvider) {
 
                 // Statuses of the Day Tab
                 'sotd': {
-                    'title': 'Statuses of the Day'
+                    'title': 'Popular Users',
+                    'username': 'Username',
+                    'count': 'Status Count'
                 }
             },
 

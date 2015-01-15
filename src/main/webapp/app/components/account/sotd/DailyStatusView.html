@@ -2,6 +2,30 @@
     <div class="alert alert-status">
         <div>
             <!-- In the future this may be a pie chart -->
+            <h2 translate="tatami.account.sotd.title"></h2>
+            <table class="table noCollapse">
+                <tbody>
+                    <tr>
+                        <th style="border-top: 0" translate="tatami.account.sotd.username"></th>
+                        <th style="border-top: 0" translate="tatami.account.sotd.count"></th>
+                        <th style="border-top: 0"></th>
+                    </tr>
+                </tbody>
+                <tbody class="items">
+                    <div>
+                        <tr ng-repeat="user in popularUsers">
+                            <td>
+                                <a ui-sref="home.profile.statuses({ username: user.username })">
+                                    @{{ user.username }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ user.statusCount }}
+                            </td>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
