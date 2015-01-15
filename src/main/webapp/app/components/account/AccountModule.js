@@ -7,6 +7,7 @@ var AccountModule = angular.module('AccountModule', [
     'UsersModule', 
     'GroupsModule', 
     'TagsModule',
+    'DailyStatusModule',
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
@@ -189,6 +190,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('account.sotd', {
             url: '/sotd',
-            templateUrl: 'app/components/account/sotd/DailyStatusView.html'
+            templateUrl: 'app/components/account/sotd/DailyStatusView.html',
+            resolve: {
+                dailyStats: ['DailyStatusService', function(DailyStatusService) {
+                    return DailyStatusService.query().$promise;
+                }]
+            },
+            controller: 'DailyStatusController'
         });
 }]);
