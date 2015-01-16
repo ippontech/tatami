@@ -3,29 +3,44 @@
         <div>
             <!-- In the future this may be a pie chart -->
             <h2 translate="tatami.account.sotd.title"></h2>
-            <table class="table noCollapse">
-                <tbody>
+
+            <div class="useritem">
+                <table class="table noCollapse">
+                    <tbody>
                     <tr>
                         <th style="border-top: 0" translate="tatami.account.sotd.username"></th>
                         <th style="border-top: 0" translate="tatami.account.sotd.count"></th>
                         <th style="border-top: 0"></th>
                     </tr>
-                </tbody>
-                <tbody class="items">
-                    <div>
-                        <tr ng-repeat="user in popularUsers">
-                            <td>
-                                <a ui-sref="home.profile.statuses({ username: user.username })">
-                                    @{{ user.username }}
+                    </tbody>
+                    <tbody class="items">
+                    <tr ng-repeat="user in popularUsers">
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
+                                <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user[0].avatarURL + ')' }">
+                            </div>
+                            <h4>
+                                <a ui-sref="home.profile.statuses({ username: user[0].username })">
+                                    <strong>
+                                        {{ user[0].firstName + ' ' + user[0].lastName }}
+                                    </strong>
                                 </a>
-                            </td>
-                            <td>
-                                {{ user.statusCount }}
-                            </td>
-                        </tr>
-                    </div>
-                </tbody>
-            </table>
+                                <br>
+                                <a ui-sref="home.profile.statuses({ username: user[0].username })">
+                                    <small>
+                                        @{{ user[0].username }}
+                                    </small>
+                                </a>
+                            </h4>
+                        </td>
+                        <td>
+                            {{ user[1] }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
