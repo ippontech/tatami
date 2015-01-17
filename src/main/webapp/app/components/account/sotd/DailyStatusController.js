@@ -1,19 +1,17 @@
-DailyStatusModule.controller('DailyStatusController', ['$scope', 'dailyStats', 'UserService', function($scope, dailyStats, UserService) {
+DailyStatusModule.controller('DailyStatusController', ['$scope', 'dailyStats', 'DailyStatusData', function($scope, dailyStats, DailyStatusData) {
     $scope.popularUsers = [];
-
-    $scope.getUser = function(i, count) {
-        UserService.get({ username: dailyStats[i].username }, function(result) {
-            $scope.popularUsers.push([result, count]);
-        })
-    };
-
-    for(var i = 0; i < dailyStats.length; ++i) {
-        $scope.getUser(i, dailyStats[i].statusCount);
-    }
-
-    $scope.sortedUsers = function(list) {
-        list.sort(function(a, b) {
-            return a[1] < b[1] ? -1 : 1;
+    dailyStats.$promise.then(function(result) {
+        return DailyStatusData(result);
+    }).then(function(popularUsers) {
+        popularUsers.sort(function(a, b) {
+            return a.dailyCount < b.dailyCount ? 1 : -1;
         });
-    }
+        /* Not ideal. Even though popularUsers[i].dailyCount exists, inserting
+        * {{ user.dailyCount }} in the html does not display the count. The work around
+        * is to create a 2 dimensional array
+         */
+        for(var i = 0; i < popularUsers.length; ++i) {
+            $scope.popularUsers.push([popularUsers[i], popularUsers[i].dailyCount]);
+        }
+    });
 }]);

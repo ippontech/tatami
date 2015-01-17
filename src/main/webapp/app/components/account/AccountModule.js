@@ -192,21 +192,9 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/sotd',
             templateUrl: 'app/components/account/sotd/DailyStatusView.html',
             resolve: {
-                dailyStats: ['DailyStatusService', function(DailyStatusService) {
+                dailyStats: ['DailyStatusData', 'DailyStatusService', function(DailyStatusData, DailyStatusService) {
                     return DailyStatusService.query().$promise;
                 }]
-
-                /*
-                dailyStats: ['DailyStatusService', 'UserService', '$q', function(DailyStatusService, UserService, $q) {
-                    var users = [];
-
-                    DailyStatusService.query(function(result) {
-                        for(var i = 0; i < result.length; i++) {
-                            users.push([UserService.get({ username: result[i].username }).$promise, result[i]]);
-                        }
-                    });
-                    return users;
-                }]*/
             },
             controller: 'DailyStatusController'
         });
