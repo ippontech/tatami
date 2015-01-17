@@ -1,0 +1,192 @@
+<ng-include src="'/app/shared/topMenu/TopMenuView.html'"></ng-include>
+<div id="mainPanel" class="container">
+    <div class="row">
+        <div class="col-span-12">
+            <h1 translate="tatami.admin.title"></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-span-12">
+            <div class="row-fluid">
+                <div class="tab-content col-span-12">
+                    <h2 translate="tatami.admin.registered"></h2>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th translate="tatami.admin.domain"></th>
+                            <th translate="tatami.admin.count"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                mymail.vcu.edu
+                            </td>
+                            <td>
+                                1
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                yahoo.com
+                            </td>
+                            <td>
+                                5
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-span-12">
+            <div class="row-fluid">
+                <div class="tab-content col-span-12">
+                    <h2 translate="tatami.admin.environment"></h2>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th translate="tatami.admin.property"></th>
+                            <th translate="tatami.admin.value"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                tatami.version
+                            </td>
+                            <td>
+                                3.1.1
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                tatami.wro4j.enabled
+                            </td>
+                            <td>
+                                false
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                tatami.google.analytics.key
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                tatami.message.reloading.enabled
+                            </td>
+                            <td>
+                                true
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                smtp.host
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                cassandra.host
+                            </td>
+                            <td>
+                                127.0.0.1:9160
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                search.engine
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                lucene.path
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                elasticsearch.indexNamePrefix
+                            </td>
+                            <td>
+                                tatami
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                elasticsearch.cluster.name
+                            </td>
+                            <td>
+                                tatamiCluster
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                elasticsearch.cluster.nodes
+                            </td>
+                            <td>
+                                127.0.0.1:9300
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                elasticsearch.cluster.default.communication.port
+                            </td>
+                            <td>
+                                9300
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-span-12">
+            <h2 translate="tatami.admin.reindex"></h2>
+
+            <form class="form-horizontal" action="/tatami/admin/reindex" method="post">
+                <fieldset>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-danger" ng-click="reindex()" translate="tatami.admin.reindex"></button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

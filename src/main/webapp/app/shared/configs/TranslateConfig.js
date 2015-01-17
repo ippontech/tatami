@@ -364,6 +364,19 @@ TatamiApp.config(function($translateProvider) {
                 'success': 'The form has been successfully saved.',
                 'fail': 'Failed to save form.',
                 'deleted': 'Your file has been deleted.'
+            },
+
+            'admin': {
+                'title': 'Administration Dashboard',
+                'registered': 'Registered Enterprises',
+                'domain': 'Domain',
+                'count': '# of users',
+                'environment': 'Environnement Variables (from tatami.properties)',
+                'propery': 'Property',
+                'value': 'Value',
+                'reindex': 'Re-index Search Engine',
+                'confirm': 'Are you sure you want to re-index Search Engine?',
+                'success': 'Search engine re-indexation has succeeded.'
             }
         }
     });

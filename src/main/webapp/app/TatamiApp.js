@@ -4,6 +4,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'HomeModule',
     'AccountModule',
     'AboutModule',
+    'AdminModule',
     'ngResource',
     'pascalprecht.translate',
     'ui.router',
