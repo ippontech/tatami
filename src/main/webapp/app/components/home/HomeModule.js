@@ -3,6 +3,7 @@ var HomeModule = angular.module('HomeModule', [
     'ProfileSidebarModule',
     'ngSanitize',
     'angularMoment',
+    'infinite-scroll',
     'ui.router'
 ]);
 
