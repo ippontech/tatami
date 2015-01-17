@@ -5,6 +5,11 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('admin',{
             url: '/admin',
             templateUrl: '/app/components/admin/AdminView.html',
+            resolve: {
+                adminData: ['AdminService', function(AdminService) {
+                    return AdminService.get().$promise;
+                }]
+            },
             controller: 'AdminController'
         })
 }]);
