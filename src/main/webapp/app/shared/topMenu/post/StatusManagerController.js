@@ -7,17 +7,16 @@ PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusSer
         var modalInstance = $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'StatusCreateController',
-            keyboard: false
-        });
-
-        modalInstance.opened.then(function() {
-            if(statusId) {
-                var promise = StatusService.get({ statusId: statusId }, function(result) {
-                    modalInstance.setCurrentStatus(result);
-                });
-            }
-            else {
-                return {}
+            keyboard: false,
+            resolve: {
+                curStatus: ['StatusService', function(StatusService) {
+                    if(statusId) {
+                        return StatusService.get({ statusId: statusId }).$promise;
+                    }
+                    else {
+                        return undefined;
+                    }
+                }]
             }
         });
     };

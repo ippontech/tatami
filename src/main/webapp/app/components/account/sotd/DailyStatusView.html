@@ -17,6 +17,7 @@
                     <tr ng-repeat="user in popularUsers">
                         <td style="text-align: left">
                             <div class="pull-left background-image-fffix little-marge-right">
+                                <!-- Causes MIME type issue -->
                                 <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user[0].avatarURL + ')' }">
                             </div>
                             <h4>
