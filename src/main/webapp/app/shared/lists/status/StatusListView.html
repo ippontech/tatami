@@ -1,5 +1,5 @@
 <section class="tatams-container">
-    <section class="timeline">
+    <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">
         <div class="tatams" ng-repeat="status in statuses">
             <!-- Put discussion class if discussion ? -->
             <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
