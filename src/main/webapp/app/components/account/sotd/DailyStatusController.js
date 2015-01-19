@@ -1,7 +1,12 @@
-DailyStatusModule.controller('DailyStatusController', ['$scope', 'dailyStats', 'DailyStatusData', function($scope, dailyStats, DailyStatusData) {
+DailyStatusModule.controller('DailyStatusController', ['$scope', 'dailyStats', 'UserService', function($scope, dailyStats, UserService) {
     $scope.popularUsers = [];
     dailyStats.$promise.then(function(result) {
-        return DailyStatusData(result);
+        var data = [];
+        for(var i = 0; i < result.length; ++i) {
+            data.push(UserService.get({ username: result[i].username }));
+            data[i].dailyCount = result[i].statusCount;
+        }
+        return data;
     }).then(function(popularUsers) {
         popularUsers.sort(function(a, b) {
             return a.dailyCount < b.dailyCount ? 1 : -1;

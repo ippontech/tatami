@@ -28,7 +28,8 @@
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
                         <a ui-sref="home.profile.statuses({ username: currentStatus.username })">
-                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
+                            <!-- Causes MIME type issue -->
+                            <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }">
                         </a>
                     </div>
                     <div id="status-content-container">

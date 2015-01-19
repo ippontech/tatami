@@ -10,7 +10,9 @@ PostModule.controller('StatusCreateController', [
     'StatusService',
     'GeolocalisationService',
     'GroupService',
-    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, GroupService) {
+    'curStatus',
+    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, GroupService, curStatus) {
+
 
     $scope.notArchived = function(groups) {
         var filteredGroups = [];
@@ -44,7 +46,6 @@ PostModule.controller('StatusCreateController', [
     };
 
     $scope.charCount = 750;
-    $scope.currentStatus;
 
     $scope.uploadStatus = {
         isUploading: false,
@@ -94,6 +95,16 @@ PostModule.controller('StatusCreateController', [
         $scope.current.reply = true;
         $scope.status.replyTo = status.statusId;
     };
+
+    if(curStatus) {
+        $modalInstance.setCurrentStatus(curStatus);
+    }
+    else{
+        $scope.current.reply = false;
+        $scope.currentStatus = {};
+        $scope.currentStatus.avatarURL = '/assets/img/default_image_profile.png'
+    }
+
 
     $scope.closeModal = function() {
         $modalInstance.dismiss();
