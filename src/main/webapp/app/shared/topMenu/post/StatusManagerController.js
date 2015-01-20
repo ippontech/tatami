@@ -13,9 +13,10 @@ PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusSer
                     if(statusId) {
                         return StatusService.get({ statusId: statusId }).$promise;
                     }
-                    else {
-                        return undefined;
-                    }
+                }],
+
+                groups: ['GroupService', function(GroupService) {
+                    return GroupService.query().$promise;
                 }]
             }
         });

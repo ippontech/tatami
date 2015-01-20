@@ -9,9 +9,9 @@ PostModule.controller('StatusCreateController', [
     '$upload',
     'StatusService',
     'GeolocalisationService',
-    'GroupService',
+    'groups',
     'curStatus',
-    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, GroupService, curStatus) {
+    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus) {
 
 
     $scope.notArchived = function(groups) {
@@ -27,7 +27,7 @@ PostModule.controller('StatusCreateController', [
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-        groups: GroupService.query(),       // The groups the user belongs to
+        groups: groups,       // The groups the user belongs to
         reply: false,                       // Determine if this status is a reply to another user
         uploadDone: true,                   // If the file upload is done, we should not show the progess bar
         uploadProgress: 0,                  // The progress of the file currently being uploaded
@@ -36,6 +36,7 @@ PostModule.controller('StatusCreateController', [
         files: [],
         attachments: []
     };
+
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status
         groupId: "",             // The groupId that this status is being broadcast to
@@ -90,12 +91,20 @@ PostModule.controller('StatusCreateController', [
      * after an asynchronous get request.
      */
     $modalInstance.setCurrentStatus = function(status) {
-        $scope.currentStatus = status;
-        $scope.status.content = '@' + $scope.currentStatus.username + ' ';
-        $scope.current.reply = true;
-        $scope.status.replyTo = status.statusId;
+        var defined = angular.isDefined(status);
+        $scope.current.reply = defined;
+        $scope.currentStatus = defined ? status : {};
+        if(defined) {
+            $scope.status.content = '@' + $scope.currentStatus.username + ' ';
+            $scope.status.replyTo = status.statusId;
+        }
+        else {
+            $scope.currentStatus.avatarURL = '/assets/img/default_image_profile.png';
+        }
     };
 
+    $modalInstance.setCurrentStatus(curStatus)
+/*
     if(curStatus) {
         $modalInstance.setCurrentStatus(curStatus);
     }
@@ -104,8 +113,7 @@ PostModule.controller('StatusCreateController', [
         $scope.currentStatus = {};
         $scope.currentStatus.avatarURL = '/assets/img/default_image_profile.png'
     }
-
-
+*/
     $scope.closeModal = function() {
         $modalInstance.dismiss();
         $scope.reset();
@@ -147,7 +155,10 @@ PostModule.controller('StatusCreateController', [
     $scope.newStatus = function() {
         if($scope.status.content) {
             StatusService.save($scope.status, function() {
-                $modalInstance.dismiss();
+                $modalInstance.close();
+                $modalInstance.result.then(function() {
+                    $scope.$state.reload();
+                });
                 $scope.reset();
             })
         }
