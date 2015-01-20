@@ -11,7 +11,7 @@
             <span translate="tatami.home.menu.title"></span>
         </a>
     <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
-        <button ng-if="$state.includes('home')" type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
+        <button ng-if="$state.includes('tatami.home')" type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
             <i class="close glyphicon glyphicon-pencil"></i>
         </button>
     <!--</c:if>-->
@@ -19,7 +19,7 @@
             <ul class="nav">
                 <li>
                     <!--<c:if test="${currentPage != null && currentPage == 'home'}">-->
-                        <a ui-sref="home.home.timeline">
+                        <a ui-sref="tatami.home.home.timeline">
                     <!--</c:if>-->
                     <!--<c:if test="${currentPage == null || currentPage != 'home'}">
                         <a href="#/">
@@ -40,13 +40,13 @@
                     </a>
                     <ul class="dropdown-menu closed">
                         <li>
-                            <a ui-sref="about.presentation">
+                            <a ui-sref="tatami.about.presentation">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span translate="tatami.home.menu.about.presentation"></span>
                             </a>
                         </li>
                         <li>
-                            <a ui-sref="about.tos">
+                            <a ui-sref="tatami.about.tos">
                                 <span class="glyphicon glyphicon-briefcase"></span>
                                 <span translate="tatami.home.menu.about.tos"></span>
                             </a>
@@ -67,7 +67,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a ui-sref="about.license">
+                            <a ui-sref="tatami.about.license">
                                 <span class="glyphicon glyphicon-info-sign"></span>
                                 <span translate="tatami.home.menu.about.license"></span>
                             </a>

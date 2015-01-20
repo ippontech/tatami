@@ -7,12 +7,12 @@
         </div>
         <div class="well well-sm little-padding">
             <div>
-                <a class="h3" ui-sref="home.profile.statuses({ username: profile.username })">
+                <a class="h3" ui-sref="tatami.home.profile.statuses({ username: profile.username })">
                     <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
                 </a>
             </div>
             <div>                
-                <a class="h5 text-muted" ui-sref="home.profile.statuses({ username: profile.username })">
+                <a class="h5 text-muted" ui-sref="tatami.home.profile.statuses({ username: profile.username })">
                     @{{ profile.username }}
                 </a>
             </div>
@@ -25,9 +25,9 @@
                 <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
             <table class="table table-condensed nomargin">
-                <tr data-ng-repeat="group in groups" data-ui-sref="home.home.group.statuses({ groupId: group.groupId })">
+                <tr data-ng-repeat="group in groups" data-ui-sref="tatami.home.home.group.statuses({ groupId: group.groupId })">
                     <td>
-                        <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                        <a ui-sref="tatami.home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                     </td>
                     <td class="text-right" nowrap>
                         <span ng-if="group.publicGroup" class="label label-warning" title="{{ 'tatami.home.sidebar.publicToolTip' | translate }}"><small translate="tatami.home.sidebar.public"></small></span>
@@ -51,7 +51,7 @@
                         <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
                     <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
-                    <a ui-sref="home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
+                    <a ui-sref="tatami.home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
                 </div>
             </div>
         </div>
@@ -67,16 +67,16 @@
                     <span ng-click="followUser(suggestion, $index)" class="pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
                         <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
                         <span class='pull-left background-image-fffix'>
                             <img class="img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }">
                         </span>
                     </a>&nbsp;
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
                         <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
                     </a>
                     <br>&nbsp;
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
                         <small>@{{ suggestion.username }}</small>
                     </a>
                 </h6>
