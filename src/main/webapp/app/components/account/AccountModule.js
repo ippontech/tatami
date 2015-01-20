@@ -193,6 +193,32 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             resolve: {
                 dailyStats: ['DailyStatusData', 'DailyStatusService', function(DailyStatusData, DailyStatusService) {
                     return DailyStatusService.query().$promise;
+                }],
+
+                users: ['dailyStats', 'UserService', '$q', function(dailyStats, UserService, $q) {
+                    var temp = [];
+                    for(var i = 0; i < dailyStats.length; ++i) {
+                        temp.push(UserService.get({ username: dailyStats[i].username }).$promise);
+                        temp[i].dailyCount = dailyStats[i].statusCount;
+                    }
+                    return $q.all(temp);
+                }],
+
+                userData: ['dailyStats', 'users', function(dailyStats, users) {
+                    var statusCounts = new Map();
+                    for(var i = 0; i < dailyStats.length; ++i) {
+                        statusCounts.set(dailyStats.statusCount, dailyStats.username);
+                    }
+                    var temp = [];
+                    for(var i = 0; i < users.length; ++i) {
+                        if(dailyStats[i].username === users[i].username) {
+                            var curUser = {}
+                            curUser.info = users[i];
+                            curUser.dailyCount = dailyStats[i].statusCount;
+                            temp.push(curUser);
+                        }
+                    }
+                    return temp;
                 }]
             },
             controller: 'DailyStatusController'
