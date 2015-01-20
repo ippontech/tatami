@@ -16,7 +16,7 @@ UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService
      */
     $scope.search = function() {
         // Update the route
-        $scope.$state.transitionTo('account.users.search',
+        $scope.$state.transitionTo('tatami.account.users.search',
             { q: $scope.current.searchString },
             { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
 

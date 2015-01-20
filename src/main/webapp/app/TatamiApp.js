@@ -16,14 +16,21 @@ TatamiApp.run(function($rootScope, $state, $stateParams) {
     $rootScope.$stateParams = $stateParams;
 });
 
-TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider',
-    function($resourceProvider, $locationProvider, $urlRouterProvider) {
+TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
+    function($resourceProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
 
         $urlRouterProvider.otherwise('/login');
         //$urlRouterProvider.otherwise('/home/timeline');
 
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
+
+        $stateProvider
+            .state('tatami', {
+                url: '',
+                abstract: true,
+                templateUrl: 'index.html'
+            })
 
         //$locationProvider.html5Mode(true);
 }]);
