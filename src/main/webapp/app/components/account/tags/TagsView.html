@@ -2,20 +2,20 @@
     <h2 translate="tatami.account.tags.title"></h2>
     <div class="tabMenu">
         <ul class="nav nav-tabs">
-            <li ng-class="{ 'active': $state.current.name === 'account.tags.following' }">
-                <a ui-sref="account.tags.following" translate="tatami.account.tags.following"></a>
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.tags.following' }">
+                <a ui-sref="tatami.account.tags.following" translate="tatami.account.tags.following"></a>
             </li>
-            <li ng-class="{ 'active': $state.current.name === 'account.tags.trends' }">
-                <a ui-sref="account.tags.trends" translate="tatami.account.tags.trends"></a>
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.tags.trends' }">
+                <a ui-sref="tatami.account.tags.trends" translate="tatami.account.tags.trends"></a>
             </li>
-            <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
-                <a ui-sref="account.tags.search" translate="tatami.account.tags.search"></a>
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.tags.search' }">
+                <a ui-sref="tatami.account.tags.search" translate="tatami.account.tags.search"></a>
             </li>
         </ul>
     </div>
     <div>
         <form class="row-fluid littleMargeBot">
-            <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.tags.search' | translate }}">
+            <input ng-show="$state.current.name === 'tatami.account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.tags.search' | translate }}">
         </form>
         <table class="table noCollapse">
             <tbody>

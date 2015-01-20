@@ -11,9 +11,8 @@ var AccountModule = angular.module('AccountModule', [
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.when('/groups', '/groups/');
     $stateProvider
-        .state('account',{
+        .state('tatami.account',{
             url: '/account',
             abstract: true,
             templateUrl: 'app/components/account/AccountView.html',
@@ -24,7 +23,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'AccountController'
         })
-        .state('account.profile', {
+        .state('tatami.account.profile', {
             url: '/profile',
             templateUrl: 'app/components/account/profile/ProfileView.html',
             resolve: {
@@ -34,7 +33,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'ProfileController'
         })
-        .state('account.preferences', {
+        .state('tatami.account.preferences', {
             url: '/preferences',
             templateUrl: 'app/components/account/preferences/PreferencesView.html',
             resolve: {
@@ -44,12 +43,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'PreferencesController'
         })
-        .state('account.password', {
+        .state('tatami.account.password', {
             url: '/password',
             templateUrl: 'app/components/account/password/PasswordView.html',
             controller: 'PasswordController'
         })
-        .state('account.files', {
+        .state('tatami.account.files', {
             url: '/files',
             templateUrl: 'app/components/account/files/FilesView.html',
             resolve: {
@@ -64,12 +63,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'FilesController'
         })
-        .state('account.users', {
+        .state('tatami.account.users', {
             url: '/users',
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.users.following', {
+        .state('tatami.account.users.following', {
             url: '/following',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
@@ -79,7 +78,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'UsersController'
         })
-        .state('account.users.recommended', {
+        .state('tatami.account.users.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
@@ -89,7 +88,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'UsersController'
         })
-        .state('account.users.search', {
+        .state('tatami.account.users.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/users/UsersView.html',
             resolve: {
@@ -99,12 +98,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'UsersController'
         })
-        .state('account.groups', {
+        .state('tatami.account.groups', {
             url: '/groups',
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.groups.list', {
+        .state('tatami.account.groups.list', {
             url: '',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             resolve: {
@@ -114,7 +113,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'GroupsController'
         })
-        .state('account.groups.recommended', {
+        .state('tatami.account.groups.recommended', {
             url: '/recommended',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             resolve: {
@@ -124,7 +123,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'GroupsController'
         })
-        .state('account.groups.search', {
+        .state('tatami.account.groups.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/groups/GroupsView.html',
             resolve: {
@@ -134,7 +133,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'GroupsController'
         })
-        .state('account.groups.manage', {
+        .state('tatami.account.groups.manage', {
             url:'/:groupId',
             templateUrl: 'app/components/account/groups/GroupsManageView.html',
             resolve: {
@@ -148,12 +147,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller:'GroupsManageController'
         })
-        .state('account.tags', {
+        .state('tatami.account.tags', {
             url:'/tags',
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('account.tags.following', {
+        .state('tatami.account.tags.following', {
             url: '/following',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
@@ -163,7 +162,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('account.tags.trends', {
+        .state('tatami.account.tags.trends', {
             url: '/trends',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
@@ -173,7 +172,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('account.tags.search', {
+        .state('tatami.account.tags.search', {
             url: '/search/:q',
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
@@ -188,7 +187,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('account.sotd', {
+        .state('tatami.account.sotd', {
             url: '/sotd',
             templateUrl: 'app/components/account/sotd/DailyStatusView.html',
             resolve: {

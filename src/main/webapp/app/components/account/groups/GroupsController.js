@@ -73,7 +73,7 @@ GroupsModule.controller('GroupsController', [
 
         $scope.search = function() {
             // Update the route
-            $scope.$state.transitionTo('account.groups.search',
+            $scope.$state.transitionTo('tatami.account.groups.search',
                 { q: $scope.current.searchString },
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
 

@@ -27,7 +27,7 @@ TagsModule.controller('TagsController', [
 
         $scope.search = function() {
             // Update the route
-            $scope.$state.transitionTo('account.tags.search',
+            $scope.$state.transitionTo('tatami.account.tags.search',
                 { q: $scope.current.searchString },
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
 

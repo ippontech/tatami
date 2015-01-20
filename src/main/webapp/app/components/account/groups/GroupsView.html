@@ -49,16 +49,16 @@
 
         <div class="tabMenu">
             <ul class="nav nav-tabs">
-                <li ng-class="{ 'active': $state.current.name === 'account.groups.list' }">
-                    <a ui-sref="account.groups.list" translate="tatami.account.groups.myGroups">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.list' }">
+                    <a ui-sref="tatami.account.groups.list" translate="tatami.account.groups.myGroups">
                     </a>
                 </li>
-                <li ng-class="{ 'active': $state.current.name === 'account.groups.recommended' }">
-                    <a ui-sref="account.groups.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.recommended' }">
+                    <a ui-sref="tatami.account.groups.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
                     </a>
                 </li>
-                <li ng-class="{ 'active': $state.current.name === 'account.groups.search' }">
-                    <a ui-sref="account.groups.search" translate="tatami.account.groups.search">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.search' }">
+                    <a ui-sref="tatami.account.groups.search" translate="tatami.account.groups.search">
                     </a>
                 </li>
             </ul>
@@ -66,7 +66,7 @@
 
         <div>
             <form class="row-fluid littleMargeBot">
-                <input ng-show="$state.current.name === 'account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
+                <input ng-show="$state.current.name === 'tatami.account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
             </form>
             <table class="table noCollapse">
                 <tbody>
@@ -93,7 +93,7 @@
                             </td>
                             <td>
                                 <span ng-if="group.administrator">
-                                    <button type="button" ui-sref="account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone">
+                                    <button type="button" ui-sref="tatami.account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone">
                                         <span class="glyphicon glyphicon-th-large"></span>
                                         <span translate="tatami.account.groups.manage"></span>
                                     </button>
