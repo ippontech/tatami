@@ -36,7 +36,7 @@ PostModule.controller('StatusCreateController', [
         files: [],
         attachments: []
     };
-    
+
     $scope.status = {            // This is the current user status information
         content: "",             // The content contained in this status
         groupId: "",             // The groupId that this status is being broadcast to
