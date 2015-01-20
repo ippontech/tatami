@@ -30,7 +30,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 url: '',
                 abstract: true,
                 templateUrl: 'index.html'
-            })
+            });
 
         //$locationProvider.html5Mode(true);
 }]);

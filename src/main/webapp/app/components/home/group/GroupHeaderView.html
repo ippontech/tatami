@@ -1,13 +1,13 @@
 <div>
     <ul class="homebody-nav nav nav-justified">
         <li ui-sref-active="active">
-            <a ui-sref="home.home.group.statuses">
+            <a ui-sref="tatami.home.home.group.statuses">
             <i class="glyphicon glyphicon-th-list"></i>
             <span translate="tatami.home.group.statuses"></span>
             </a>
         </li>
         <li ui-sref-active="active">
-            <a ui-sref="home.home.group.members">
+            <a ui-sref="tatami.home.home.group.members">
             <i class="glyphicon glyphicon-user"></i>
             <span translate="tatami.home.group.members"></span>
             </a>
@@ -17,17 +17,17 @@
         <div class="tatams-content-title">
             <h3>
                 <strong>{{ group.name }}: </strong>
-                <span ng-if="$state.current.name == 'home.home.group.statuses'">
+                <span ng-if="$state.current.name == 'tatami.home.home.group.statuses'">
                     <strong ng-if="group.description">{{ group.description }}</strong>
                     <strong ng-if="!group.description" translate="tatami.home.group.statuses"></strong>
                 </span>
-                <span ng-if="$state.current.name == 'home.home.group.members'">
+                <span ng-if="$state.current.name == 'tatami.home.home.group.members'">
                     <strong ng-if="group.counter == 1" translate="tatami.home.group.membersSingular"></strong>
                     <strong ng-if="group.counter > 1" translate="tatami.home.group.membersPlural" translate-values="{ amount: group.counter }"></strong>
                 </span>
 
                 <span ng-if="group.administrator">
-                    <button ui-sref="account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-sm btn-primary hidden-phone" type="button">
+                    <button ui-sref="tatami.account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-sm btn-primary hidden-phone" type="button">
                         <span class="glyphicon glyphicon-th-large"></span>
                         <span translate="tatami.home.group.manage"></span>
                     </button>

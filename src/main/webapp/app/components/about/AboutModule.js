@@ -2,12 +2,12 @@ var AboutModule = angular.module('AboutModule', ['ui.router']);
 
 AboutModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
-        .state('about',{
+        .state('tatami.about',{
             url: '/about',
             abstract: true,
             templateUrl: 'app/components/about/AboutView.html'
         })
-        .state('about.presentation', {
+        .state('tatami.about.presentation', {
             url: '/presentation',
             views: {
                 'aboutBody': {
@@ -15,7 +15,7 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
                 },
             }
         })
-        .state('about.tos', {
+        .state('tatami.about.tos', {
             url: '/tos',
             views: {
                 'aboutBody': {
@@ -23,7 +23,7 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
                 },
             }
         })
-        .state('about.license', {
+        .state('tatami.about.license', {
             url: '/license',
             views: {
                 'aboutBody': {
