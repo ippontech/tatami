@@ -191,32 +191,38 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/sotd',
             templateUrl: 'app/components/account/sotd/DailyStatusView.html',
             resolve: {
-                dailyStats: ['DailyStatusData', 'DailyStatusService', function(DailyStatusData, DailyStatusService) {
+                dailyStats: ['DailyStatusService', function(DailyStatusService) {
+                    // Get the {username, count} pairs for all the popular users
                     return DailyStatusService.query().$promise;
                 }],
 
                 users: ['dailyStats', 'UserService', '$q', function(dailyStats, UserService, $q) {
+                    // For all the {user, count} pairs, find the user data
                     var temp = [];
                     for(var i = 0; i < dailyStats.length; ++i) {
+                        // Store the result as a promise
                         temp.push(UserService.get({ username: dailyStats[i].username }).$promise);
                         temp[i].dailyCount = dailyStats[i].statusCount;
                     }
+                    // return all promises
                     return $q.all(temp);
                 }],
 
                 userData: ['dailyStats', 'users', function(dailyStats, users) {
-                    var statusCounts = new Map();
+                    var statusCounts = [];
+                    // We want to associate the {username, count} pairs from the original to the user data, index based
+                    // on username.
                     for(var i = 0; i < dailyStats.length; ++i) {
-                        statusCounts.set(dailyStats.statusCount, dailyStats.username);
+                        statusCounts[dailyStats[i].username] = dailyStats[i].statusCount;
                     }
+
                     var temp = [];
                     for(var i = 0; i < users.length; ++i) {
-                        if(dailyStats[i].username === users[i].username) {
-                            var curUser = {}
-                            curUser.info = users[i];
-                            curUser.dailyCount = dailyStats[i].statusCount;
-                            temp.push(curUser);
-                        }
+                        // Create the current user to contain the user data, and how many posts they've made today
+                        var curUser = {};
+                        curUser.info = users[i];
+                        curUser.dailyCount = statusCounts[users[i].username];
+                        temp.push(curUser);
                     }
                     return temp;
                 }]
