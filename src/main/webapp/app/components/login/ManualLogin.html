@@ -1,0 +1,40 @@
+<div class="col-span-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title text-center" translate="tatami.login.title"></h4>
+        </div>
+        <div class="panel-body">
+            <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm">
+                <fieldset>
+                    <div class="control-group">
+                        <input id="j_username" name="j_username" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}" autofocus>
+                    </div>
+                    <div class="control-group">
+                        <input id="j_password" name="j_password" type="password" required="required" placeholder="{{ 'tatami.login.password' | translate }}">
+                    </div>
+                    <div class="control-group">
+                        <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox">
+                        <span translate="tatami.login.remember"></span>
+                    </div>
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="tatami.login.title"></button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title text-center" translate="tatami.login.forgotPassword"></h4>
+        </div>
+        <div class="panel-body">
+            <form action="/tatami/lostpassword" method="post" accept-charset="utf-8">
+                <fieldset>
+                    <div class="control-group">
+                        <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block text-center" translate="tatami.login.resetPassword"></button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
