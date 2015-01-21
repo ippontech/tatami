@@ -2,8 +2,23 @@ var LoginModule = angular.module('LoginModule', ['ui.router']);
 
 LoginModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
-        .state('login',{
-            url: '/login',
+        .state('tatami.login', {
+            url: '',
+            abstract: true,
             templateUrl: 'app/components/login/LoginView.html'
+        })
+        .state('tatami.login.manual',{
+            url: '/login',
+            views: {
+                'manualLogin': {
+                    templateUrl: '/app/components/login/ManualLogin.html'
+                },
+                'googleLogin': {
+                    templateUrl: '/app/components/login/googlelogin/GoogleLogin.html'
+                },
+                'register': {
+                    templateUrl: '/app/components/login/register/Register.html'
+                }
+            }
         });
 }]);
