@@ -15,6 +15,7 @@ TatamiApp.config(function($translateProvider) {
                 'forgotPassword': 'Forgot your password?',
                 'resetPassword': 'Reset password',
                 'tos': 'Terms of Service',
+                'fail': 'Your authentication has failed! Are you sure you used the correct password?',
                 'register': {
                     'title': 'Register',
                     'line1': 'A confirmation email will be sent to the address you provide.',

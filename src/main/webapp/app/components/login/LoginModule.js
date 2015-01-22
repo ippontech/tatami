@@ -5,13 +5,17 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
         .state('tatami.login', {
             url: '',
             abstract: true,
+            data: {
+                loginState: false
+            },
             templateUrl: 'app/components/login/LoginView.html'
         })
-        .state('tatami.login.manual',{
+        .state('tatami.login.main',{
             url: '/login',
             views: {
                 'manualLogin': {
-                    templateUrl: '/app/components/login/ManualLoginView.html'
+                    templateUrl: '/app/components/login/ManualLoginView.html',
+                    controller: 'ManualLoginController'
                 },
                 'googleLogin': {
                     templateUrl: '/app/components/login/googlelogin/GoogleLoginView.html'
