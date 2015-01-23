@@ -1,4 +1,4 @@
-LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', function($scope, $rootScope, $http, AuthenticationService) {
+LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, AuthenticationService, UserSession) {
     $scope.user = {};
     $scope.login = function() {
         $http({
@@ -19,17 +19,13 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
                     $scope.$state.reload();
                 }
                 else {
-                    AuthenticationService.authenticate().then(function() {
-                        if(AuthenticationService.isAuthenticated()) {
-                            if(angular.isDefined($rootScope.returnToState) && angular.isDefined($rootScope.returnToStateParams)) {
-                                // redirect to previous state
-                                $scope.$state.go($rootScope.returnToState, $rootScope.returnToParams);
-                            }
-                            else {
-                                $scope.$state.go('tatami.home.home.timeline');
-                            }
-                        }
-                    });
+                    if(angular.isDefined($rootScope.returnToState) || angular.isDefined($rootScope.returnToStateParams)) {
+                        // redirect to previous state
+                        $scope.$state.go($rootScope.returnToState, $rootScope.returnToParams);
+                    }
+                    else {
+                        $scope.$state.go('tatami.home.home.timeline');
+                    }
                     /*
                     // Login is successful
                     if(angular.isDefined($rootScope.returnToState) && angular.isDefined($rootScope.returnToStateParams)) {

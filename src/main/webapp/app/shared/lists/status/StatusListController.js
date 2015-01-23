@@ -40,11 +40,11 @@ HomeModule.controller('StatusListController', [
 
             $scope.busy = true;
 
-            if($scope.$state.current.name == 'home.home.timeline') {
+            if($scope.$state.current.name == 'tatami.home.home.timeline') {
                 StatusService.getHomeTimeline({ finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'home.home.mentions') {
+            if($scope.$state.current.name == 'tatami.home.home.mentions') {
                 HomeService.getMentions({ finish: $scope.finish }, loadMoreSuccess);
             }
 
@@ -63,19 +63,19 @@ HomeModule.controller('StatusListController', [
             }
             */
 
-            if($scope.$state.current.name == 'home.home.company') {
+            if($scope.$state.current.name == 'tatami.home.home.company') {
                 HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'home.home.tag') {
+            if($scope.$state.current.name == 'tatami.home.home.tag') {
                 TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'home.home.group.statuses') {
+            if($scope.$state.current.name == 'tatami.home.home.group.statuses') {
                 GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'home.profile.statuses') {
+            if($scope.$state.current.name == 'tatami.home.profile.statuses') {
                 StatusService.getUserTimeline({ username: $scope.$stateParams.username, finish: $scope.finish }, loadMoreSuccess);
             }
         };
