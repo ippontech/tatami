@@ -11,12 +11,13 @@ var TatamiApp = angular.module('TatamiApp', [
     'ngToast' // This may be better suited in the account module, not sure if home has any need for ngToast
 ]);
 
-TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'UserSession', function($rootScope, $state, $stateParams, UserSession) {
+TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', function($rootScope, $state, $stateParams, AuthenticationService) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.firstPass = true;
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+        /*
         if(!UserSession.isAuthenticated() && $rootScope.firstPass) {
             // Stash where the user wants to go
             $rootScope.returnToState = toState.name === 'tatami.login.main' ? undefined : toState;
@@ -25,7 +26,25 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'UserSession', function(
 
             event.preventDefault();
             $state.go('tatami.login.main');
+        }*/
+        console.log(AuthenticationService.isUserResolved())
+        if(AuthenticationService.isUserResolved()) {
+            return;
         }
+
+        if(toState.name === 'tatami.login.main') {
+            return;
+        }
+        else {
+            $rootScope.returnToState = toState;
+            $rootScope.returnToStateParams = toStateParams;
+            console.log('going to login');
+
+            event.preventDefault();
+            $state.go('tatami.login.main');
+        }
+
+
     })
 }]);
 

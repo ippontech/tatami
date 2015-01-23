@@ -1,4 +1,4 @@
-LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'UserSession', function($scope, $rootScope, $http, UserSession) {
+LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', function($scope, $rootScope, $http, AuthenticationService) {
     $scope.user = {};
     $scope.login = function() {
         $http({
@@ -15,21 +15,31 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
         })
             .success(function(data) {
                 if(data.action === 'loginFailure') {
-                    console.log('To login page');
                     $scope.$state.current.data.loginState = true;
                     $scope.$state.reload();
                 }
                 else {
-                    UserSession.setAuthStatus(true, $scope.user.email);
+                    AuthenticationService.authenticate().then(function() {
+                        if(AuthenticationService.isAuthenticated()) {
+                            if(angular.isDefined($rootScope.returnToState) && angular.isDefined($rootScope.returnToStateParams)) {
+                                // redirect to previous state
+                                $scope.$state.go($rootScope.returnToState, $rootScope.returnToParams);
+                            }
+                            else {
+                                $scope.$state.go('tatami.home.home.timeline');
+                            }
+                        }
+                    });
+                    /*
                     // Login is successful
                     if(angular.isDefined($rootScope.returnToState) && angular.isDefined($rootScope.returnToStateParams)) {
                         // redirect the user to previous state
                         $scope.$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
                     }
                     else {
-
                         $scope.$state.go('tatami.home.home.timeline');
                     }
+                    */
                 }
 
             })
