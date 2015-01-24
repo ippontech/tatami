@@ -351,9 +351,9 @@ TatamiApp.config(function($translateProvider) {
                     'unfollow': 'Unfollow'
                 },
 
-                // Statuses of the Day Tab
-                'sotd': {
-                    'title': 'Popular Users',
+                // Top Posters Tab
+                'topPosters': {
+                    'title': 'Top Posters',
                     'username': 'Username',
                     'count': 'Status Count'
                 }
