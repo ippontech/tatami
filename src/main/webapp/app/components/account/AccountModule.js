@@ -7,7 +7,7 @@ var AccountModule = angular.module('AccountModule', [
     'UsersModule', 
     'GroupsModule', 
     'TagsModule',
-    'DailyStatusModule',
+    'TopPostersModule',
 ]);
 
 AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
@@ -187,33 +187,33 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TagsController'
         })
-        .state('tatami.account.sotd', {
-            url: '/sotd',
-            templateUrl: 'app/components/account/sotd/DailyStatusView.html',
+        .state('tatami.account.topPosters', {
+            url: '/top',
+            templateUrl: 'app/components/account/topPosters/TopPostersView.html',
             resolve: {
-                dailyStats: ['DailyStatusService', function(DailyStatusService) {
-                    // Get the {username, count} pairs for all the popular users
-                    return DailyStatusService.query().$promise;
+                topPosters: ['TopPostersService', function(TopPostersService) {
+                    // Get the {username, count} pairs for all the top posters
+                    return TopPostersService.query().$promise;
                 }],
 
-                users: ['dailyStats', 'UserService', '$q', function(dailyStats, UserService, $q) {
+                users: ['topPosters', 'UserService', '$q', function(topPosters, UserService, $q) {
                     // For all the {user, count} pairs, find the user data
                     var temp = [];
-                    for(var i = 0; i < dailyStats.length; ++i) {
+                    for(var i = 0; i < topPosters.length; ++i) {
                         // Store the result as a promise
-                        temp.push(UserService.get({ username: dailyStats[i].username }).$promise);
-                        temp[i].dailyCount = dailyStats[i].statusCount;
+                        temp.push(UserService.get({ username: topPosters[i].username }).$promise);
+                        temp[i].statusCount = topPosters[i].statusCount;
                     }
                     // return all promises
                     return $q.all(temp);
                 }],
 
-                userData: ['dailyStats', 'users', function(dailyStats, users) {
+                userData: ['topPosters', 'users', function(topPosters, users) {
                     var statusCounts = [];
                     // We want to associate the {username, count} pairs from the original to the user data, index based
                     // on username.
-                    for(var i = 0; i < dailyStats.length; ++i) {
-                        statusCounts[dailyStats[i].username] = dailyStats[i].statusCount;
+                    for(var i = 0; i < topPosters.length; ++i) {
+                        statusCounts[topPosters[i].username] = topPosters[i].statusCount;
                     }
 
                     var temp = [];
@@ -221,12 +221,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                         // Create the current user to contain the user data, and how many posts they've made today
                         var curUser = {};
                         curUser.info = users[i];
-                        curUser.dailyCount = statusCounts[users[i].username];
+                        curUser.statusCount = statusCounts[users[i].username];
                         temp.push(curUser);
                     }
                     return temp;
                 }]
             },
-            controller: 'DailyStatusController'
+            controller: 'TopPostersController'
         });
 }]);
