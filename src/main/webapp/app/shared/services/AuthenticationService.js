@@ -1,42 +1,9 @@
-TatamiApp.factory('AuthenticationService', ['$q', 'ProfileService', function($q, ProfileService) {
-    var user;
-    var authenticated;
-
+TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', '$window', 'UserSession', function($rootScope, $state, $window, UserSession) {
     return {
-        isAuthenticated: function() {
-            return authenticated;
-        },
-
-        isUserResolved: function() {
-            return angular.isDefined(user);
-        },
-
-        authenticate: function(force) {
-            var deferred = $q.defer();
-
-            if(force) {
-                user = undefined;
-            }
-
-            if(angular.isDefined(user)) {
-                deferred.resolve(user);
-
-                return deferred.promise;
-            }
-
-            ProfileService.get(function(data) {
-                // Success
-                user = data;
-                authenticated = true;
-                deferred.resolve(user);
-            }, function(data) {
-                // Error
-                user = null;
-                authenticated = false;
-                deferred.resolve(user);
+        authenticate: function() {
+            return UserSession.authenticate().then(function(result) {
+                $window.sessionStorage["userInfo"] = JSON.stringify(result);
             });
-
-            return deferred.promise;
         }
     }
-}]);
+}])

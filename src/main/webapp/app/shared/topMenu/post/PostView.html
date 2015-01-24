@@ -27,20 +27,20 @@
             <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
-                        <a ui-sref="home.profile.statuses({ username: currentStatus.username })">
+                        <a ui-sref="tatami.home.profile.statuses({ username: currentStatus.username })">
                             <!-- Causes MIME type issue -->
                             <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }">
                         </a>
                     </div>
                     <div id="status-content-container">
                         <h5 class="statusitem-name">
-                            <a ui-sref="home.profile.statuses({ username: currentStatus.username })">
+                            <a ui-sref="tatami.home.profile.statuses({ username: currentStatus.username })">
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
                                 <small>@{{ currentStatus.username }}</small>
                             </a>
                             <small> · </small>
                             <!-- Replace hover title with hover bubble -->
-                            <a ui-sref="home.status({ status: currentStatus.statusId })">
+                            <a ui-sref="tatami.home.status({ status: currentStatus.statusId })">
                                 <small ng-if="!isOneDayOrMore(currentStatus.statusDate)" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="currentStatus.statusDate"></small>
                                 <small ng-if="isOneDayOrMore(currentStatus.statusDate)" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ currentStatus.statusDate | amDateFormat:'MMM D'}}</small>
                             </a>
@@ -50,7 +50,7 @@
                         <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-if="currentStatus.groupId">
-                            <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="home.home.group.statuses({ groupId: currentStatus.groupId })">
+                            <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="tatami.home.home.group.statuses({ groupId: currentStatus.groupId })">
                             {{ currentStatus.groupName }}
                             </a>
                             <br>
@@ -65,7 +65,7 @@
                         <small ng-if="currentStatus.replyTo">
                             <span class="glyphicon glyphicon-share-alt"></span>
                             <span translate="tatami.home.status.replyTo"></span>
-                            <a ui-sref="home.status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername }}</a>
+                            <a ui-sref="tatami.home.status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername }}</a>
                             <br>
                         </small>
 
