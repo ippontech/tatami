@@ -13,31 +13,31 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
             data: { j_username: $scope.user.email, j_password: $scope.user.password },
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
         })
-            .success(function(data) {
-                if(data.action === 'loginFailure') {
-                    $scope.$state.current.data.loginState = true;
-                    $scope.$state.reload();
+        .success(function(data) {
+            if(data.action === 'loginFailure') {
+                $scope.$state.current.data.loginState = true;
+                $scope.$state.reload();
+            }
+            else {
+                // The user has logged in, authenticate them
+                UserSession.setLoginState(true);
+
+                // Redirect the user to the state they tried to access now that they are logged in
+                if(angular.isDefined($rootScope.returnToState) || angular.isDefined($rootScope.returnToStateParams)) {
+                    // redirect to previous state
+                    $scope.$state.go($rootScope.returnToState.name, $rootScope.returnToParams);
                 }
+
+                // If they were not trying to access a specific state, send them to the home state
                 else {
-                    // The user has logged in, authenticate them
-                    UserSession.setLoginState(true);
-
-                    // Redirect the user to the state they tried to access now that they are logged in
-                    if(angular.isDefined($rootScope.returnToState) || angular.isDefined($rootScope.returnToStateParams)) {
-                        // redirect to previous state
-                        $scope.$state.go($rootScope.returnToState.name, $rootScope.returnToParams);
-                    }
-
-                    // If they were not trying to access a specific state, send them to the home state
-                    else {
-                        $scope.$state.go('tatami.home.home.timeline');
-                    }
+                    $scope.$state.go('tatami.home.home.timeline');
                 }
 
-            })
-            .error(function(data, status, headers, config) {
-                console.log('Error');
-                console.log(data);
-            });
+            }
+        })
+        .error(function(data, status, headers, config) {
+            console.log('Error');
+            console.log(data);
+        });
     }
 }]);

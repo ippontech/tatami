@@ -58,7 +58,7 @@ HomeModule.controller('StatusListController', [
                 REST url.
             */
             /*
-            if($scope.$state.current.name == 'home.home.favorites') {
+            if($scope.$state.current.name == 'tatami.home.home.favorites') {
                 HomeService.getFavorites({ finish: $scope.finish }, loadMoreSuccess);
             }
             */

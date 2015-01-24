@@ -1,0 +1,1 @@
+var TopPostersModule = angular.module('TopPostersModule', ['ngResource']);
