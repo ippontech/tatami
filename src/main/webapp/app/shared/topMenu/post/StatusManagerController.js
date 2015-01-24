@@ -7,7 +7,7 @@ PostModule.controller('StatusManagerController', ['$scope', '$modal', 'StatusSer
         var modalInstance = $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'StatusCreateController',
-            keyboard: false,
+            keyboard: true,
             resolve: {
                 curStatus: ['StatusService', function(StatusService) {
                     if(statusId) {
