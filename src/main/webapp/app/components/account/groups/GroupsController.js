@@ -6,19 +6,7 @@ GroupsModule.controller('GroupsController', [
     'SearchService',
     'userGroups',
     'profileInfo',
-    'ngToast',
-    function($scope, $resource, $translate, GroupService, SearchService, userGroups, profileInfo, ngToast) {
-        /**
-         * When creating a group, the POST requires this payload
-         * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
-         */
-        $scope.groups = {
-            name: "",
-            description: "",
-            publicGroup: true,
-            archivedGroup: false
-        };
-
+    function($scope, $resource, $translate, GroupService, SearchService, userGroups, profileInfo) {
         $scope.userGroups = userGroups;
 
         /**
@@ -26,54 +14,12 @@ GroupsModule.controller('GroupsController', [
          * When createGroup is true, we display the group creation view
          */
         $scope.current = {
-            createGroup: false,
             searchString: $scope.$stateParams.q
-        };
-
-        /**
-         * Allows the user to toggle the group creation view
-         */
-        $scope.newGroup = function() {
-            $scope.current.createGroup = !$scope.current.createGroup;
-        };
-
-        /**
-         * Allows the user to cancel group creation
-         */
-        $scope.cancelGroupCreate = function() {
-            $scope.reset();
-        };
-
-        /**
-         * Creates a new group on the server
-         */
-        $scope.createNewGroup = function() {
-            GroupService.save($scope.groups, function() {
-                $scope.reset();
-                $scope.$state.reload();
-                // Alert user of new group creation
-                ngToast.create({
-                    content: $translate.instant('tatami.form.success')
-                });
-            }, function() {
-                ngToas.create({
-                    content: $translate.instant('tatami.form.fail'),
-                    class: 'danger'
-                })
-            });
-        };
-
-        /**
-         * Resets the group creation view
-         */
-        $scope.reset = function() {
-            $scope.groups = {};
-            $scope.current.createGroup = false;
         };
 
         $scope.search = function() {
             // Update the route
-            $scope.$state.transitionTo('tatami.account.groups.search',
+            $scope.$state.transitionTo('tatami.account.groups.main.top.search',
                 { q: $scope.current.searchString },
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
 

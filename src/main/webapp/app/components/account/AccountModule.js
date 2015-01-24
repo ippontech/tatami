@@ -103,39 +103,65 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/FormView.html',
             controller: 'FormController'
         })
-        .state('tatami.account.groups.list', {
+        .state('tatami.account.groups.main', {
             url: '',
             templateUrl: 'app/components/account/groups/GroupsView.html',
-            resolve: {
-                userGroups: ['GroupService', function(GroupService) {
-                    return GroupService.query().$promise;
-                }]
-            },
-            controller: 'GroupsController'
+            controller: 'GroupController'
         })
-        .state('tatami.account.groups.recommended', {
+        .state('tatami.account.groups.main.top', {
+            url: '',
+            views: {
+                'create@tatami.account.groups.main': {
+                    templateUrl: 'app/components/account/groups/creation/GroupsCreateView.html',
+                    controller: 'GroupsCreateController'
+                }
+            }
+        })
+        .state('tatami.account.groups.main.top.list', {
+            url: '',
+            views: {
+                'list@tatami.account.groups.main': {
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    resolve: {
+                        userGroups: ['GroupService', function(GroupService) {
+                            return GroupService.query().$promise;
+                        }]
+                    },
+                    controller: 'GroupsController'
+                }
+            }
+        })
+        .state('tatami.account.groups.main.top.recommended', {
             url: '/recommended',
-            templateUrl: 'app/components/account/groups/GroupsView.html',
-            resolve: {
-                userGroups: ['GroupService', function(GroupService) {
-                    return GroupService.getRecommendations().$promise;
-                }]
-            },
-            controller: 'GroupsController'
+            views: {
+                'list@tatami.account.groups.main': {
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    resolve: {
+                        userGroups: ['GroupService', function(GroupService) {
+                            return GroupService.getRecommendations().$promise;
+                        }]
+                    },
+                    controller: 'GroupsController'
+                }
+            }
         })
-        .state('tatami.account.groups.search', {
+        .state('tatami.account.groups.main.top.search', {
             url: '/search/:q',
-            templateUrl: 'app/components/account/groups/GroupsView.html',
-            resolve: {
-                userGroups: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
-                    return SearchService.query({ term: 'groups', q: $stateParams.q }).$promise;
-                }]
-            },
-            controller: 'GroupsController'
+            views: {
+                'list@tatami.account.groups.main': {
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    resolve: {
+                        userGroups: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                            return SearchService.query({ term: 'groups', q: $stateParams.q }).$promise;
+                        }]
+                    },
+                    controller: 'GroupsController'
+                }
+            }
         })
         .state('tatami.account.groups.manage', {
             url:'/:groupId',
-            templateUrl: 'app/components/account/groups/GroupsManageView.html',
+            templateUrl: 'app/components/account/groups/manage/GroupsManageView.html',
             resolve: {
                 group: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.get({ groupId: $stateParams.groupId }).$promise;

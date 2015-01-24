@@ -2,115 +2,25 @@
     <form class="form-horizontal row-fluid">
         <h2 translate="tatami.account.groups.title"></h2>
 
-        <button class="show btn btn-xlarge btn-block btn-primary" type="button" translate="tatami.account.groups.createNewGroup" ng-click="newGroup()"></button>
-
-        <fieldset class="hide" style="display: block;" ng-show="current.createGroup">
-            <legend translate="tatami.account.groups.create"></legend>
-            <div class="control-group">
-                <label class="control-label" for="name" translate="tatami.account.groups.name"></label>
-                <div class="controls">
-                    <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-span-12" value="" ng-model="groups.name">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="description" translate="tatami.account.groups.description"></label>
-                <div class="controls">
-                    <textarea name="description" class="input-xlarge col-span-12" ng-model="groups.description"></textarea>
-                </div>
-            </div>
-
-
-            <div class="control-group">
-                <label class="control-label" for="publicGroup" translate="tatami.account.groups.access"></label>
-
-                <div class="controls">
-                    <label class="radio">
-                        <input type="radio" name="publicGroup" value="true" ng-checked="true" required="" ng-model="groups.publicGroup"> {{ 'tatami.account.groups.public' | translate }}
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="publicGroup" value="false" required="" ng-model="groups.publicGroup"> {{ 'tatami.account.groups.private' | translate }}
-                    </label>
-                </div>
-            </div>
-
-            <div class="alertColor">
-                <span class="glyphicon glyphicon-warning-sign"></span>
-                <span translate="tatami.account.groups.publicWarning"></span>
-            </div>
-            <br>
-            <div class="return"></div>
-            <br>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary col-span-7 little-marge-right" translate="tatami.account.groups.create" ng-click="createNewGroup()"></button>
-                <button type="reset" class="btn btn-default col-span-4" translate="tatami.form.cancel" ng-click="cancelGroupCreate()"></button>
-            </div>
-        </fieldset>
+        <div ui-view="create"></div>
 
         <div class="tabMenu">
             <ul class="nav nav-tabs">
-                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.list' }">
-                    <a ui-sref="tatami.account.groups.list" translate="tatami.account.groups.myGroups">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.list' }">
+                    <a ui-sref="tatami.account.groups.main.top.list" translate="tatami.account.groups.myGroups">
                     </a>
                 </li>
-                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.recommended' }">
-                    <a ui-sref="tatami.account.groups.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.recommended' }">
+                    <a ui-sref="tatami.account.groups.main.top.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
                     </a>
                 </li>
-                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.search' }">
-                    <a ui-sref="tatami.account.groups.search" translate="tatami.account.groups.search">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.search' }">
+                    <a ui-sref="tatami.account.groups.main.top.search" translate="tatami.account.groups.search">
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div>
-            <form class="row-fluid littleMargeBot">
-                <input ng-show="$state.current.name === 'tatami.account.groups.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
-            </form>
-            <table class="table noCollapse">
-                <tbody>
-                    <tr>
-                        <th style="border-top: 0" translate="tatami.account.groups.name"></th>
-                        <th style="border-top: 0" translate="tatami.account.groups.access"></th>
-                        <th style="border-top: 0" translate="tatami.account.groups.members"></th>
-                        <th style="border-top: 0"></th>
-                    </tr>
-                </tbody>
-                <tbody class="items">
-                    <div>
-                        <tr ng-repeat="group in userGroups">
-                            <td>
-                                <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
-                            </td>
-                            <td>
-                                <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="tatami.account.groups.public"></span>
-                                <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="tatami.account.groups.private"></span>
-                                <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="tatami.account.groups.archived"></span>
-                            </td>
-                            <td>
-                               {{ group.counter }}
-                            </td>
-                            <td>
-                                <span ng-if="group.administrator">
-                                    <button type="button" ui-sref="tatami.account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone">
-                                        <span class="glyphicon glyphicon-th-large"></span>
-                                        <span translate="tatami.account.groups.manage"></span>
-                                    </button>
-                                </span>
-
-                                <button type="button" ng-if="!group.administrator" ng-click="joinLeaveGroup(group)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': group.member && hover, 'btn-info': group.member && !hover }">
-                                    <span class="glyphicon" ng-class="group.member ? 'glyphicon-minus' : 'glyphicon-plus'">
-                                        <span ng-if="!group.member" class="hidden-phone" translate="tatami.account.groups.join"></span>
-                                        <span ng-if="group.member && !hover" class="hidden-phone" translate="tatami.account.groups.joined"></span>
-                                        <span ng-if="group.member && hover" class="hidden-phone" translate="tatami.account.groups.leave"></span>
-                                    </span>
-                                </button>
-                            </td>
-                        </tr>
-                    </div>
-                </tbody>
-            </table>
-        </div>
+        <div ui-view="list"></div>
     </form>
 </div>

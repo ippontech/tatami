@@ -14,11 +14,11 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
             url: '/login',
             views: {
                 'manualLogin': {
-                    templateUrl: '/app/components/login/ManualLoginView.html',
+                    templateUrl: '/app/components/login/manual/ManualLoginView.html',
                     controller: 'ManualLoginController'
                 },
                 'googleLogin': {
-                    templateUrl: '/app/components/login/googlelogin/GoogleLoginView.html'
+                    templateUrl: '/app/components/login/google/GoogleLoginView.html'
                 },
                 'register': {
                     templateUrl: '/app/components/login/register/RegisterView.html'
