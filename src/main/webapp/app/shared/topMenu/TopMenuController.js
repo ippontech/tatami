@@ -1,8 +1,9 @@
-TopMenuModule.controller('TopMenuController', ['$scope', '$window', '$http', function($scope, $window, $http) {
+TopMenuModule.controller('TopMenuController', ['$scope', '$window', '$http', 'UserSession', function($scope, $window, $http, UserSession) {
     $scope.logout = function() {
         $http.get('/tatami/logout')
             .success(function() {
-                $window.sessionStorage["userInfo"] = null;
+                $window.sessionStorage["authorized"] = false;
+                UserSession.setLoginState(false);
                 $scope.$state.go('tatami.login.main');
             });
     }

@@ -1,14 +1,22 @@
 TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', function($q, $window, ProfileService) {
-    var user = JSON.parse($window.sessionStorage["userInfo"]);
+    var user;
     var authenticated;
 
     return {
         isAuthenticated: function() {
-            return authenticated;
+            return $window.sessionStorage["authorized"] === "true";
         },
 
         isUserResolved: function() {
-            return angular.isDefined(user);
+            return user != null;
+        },
+
+        setLoginState: function(loggedIn) {
+            $window.sessionStorage["authorized"] = loggedIn;
+        },
+
+        getUser: function() {
+            return user;
         },
 
         authenticate: function(force) {

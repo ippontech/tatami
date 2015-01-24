@@ -1,4 +1,4 @@
-LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, AuthenticationService, UserSession) {
+LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', '$window', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, $window, AuthenticationService, UserSession) {
     $scope.user = {};
     $scope.login = function() {
         $http({
@@ -19,23 +19,19 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
                     $scope.$state.reload();
                 }
                 else {
+                    // The user has logged in, authenticate them
+                    UserSession.setLoginState(true);
+
+                    // Redirect the user to the state they tried to access now that they are logged in
                     if(angular.isDefined($rootScope.returnToState) || angular.isDefined($rootScope.returnToStateParams)) {
                         // redirect to previous state
-                        $scope.$state.go($rootScope.returnToState, $rootScope.returnToParams);
+                        $scope.$state.go($rootScope.returnToState.name, $rootScope.returnToParams);
                     }
+
+                    // If they were not trying to access a specific state, send them to the home state
                     else {
                         $scope.$state.go('tatami.home.home.timeline');
                     }
-                    /*
-                    // Login is successful
-                    if(angular.isDefined($rootScope.returnToState) && angular.isDefined($rootScope.returnToStateParams)) {
-                        // redirect the user to previous state
-                        $scope.$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
-                    }
-                    else {
-                        $scope.$state.go('tatami.home.home.timeline');
-                    }
-                    */
                 }
 
             })

@@ -27,15 +27,26 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             event.preventDefault();
             $state.go('tatami.login.main');
         }*/
-        if(UserSession.isUserResolved()) {
+
+        // If the user is logged in, we allow them to go where they intend to
+        if(UserSession.isAuthenticated()) {
             return;
         }
 
+        // All users can accss the login page
         if(toState.name === 'tatami.login.main') {
-            console.log('here, returning');
             return;
         }
-        AuthenticationService.authenticate();
+
+
+        // The user is not logged in, and trying to access a state that requires them to be logged in
+        // Stash the state they tried to access
+        $rootScope.returnToState = toState;
+        $rootScope.returnToParams = toStateParams;
+
+        // Go to login page
+        event.preventDefault();
+        $state.go('tatami.login.main');
     })
 }]);
 
