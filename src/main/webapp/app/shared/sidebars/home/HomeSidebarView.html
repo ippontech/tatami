@@ -25,7 +25,7 @@
                 <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
             <table class="table table-condensed nomargin">
-                <tr data-ng-repeat="group in groups" data-ui-sref="tatami.home.home.group.statuses({ groupId: group.groupId })">
+                <tr ng-repeat="group in groups">
                     <td>
                         <a ui-sref="tatami.home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
                     </td>
