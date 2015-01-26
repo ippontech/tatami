@@ -8,7 +8,8 @@ var TatamiApp = angular.module('TatamiApp', [
     'ngResource',
     'pascalprecht.translate',
     'ui.router',
-    'ngToast' // This may be better suited in the account module, not sure if home has any need for ngToast
+    'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
+    'LocalStorageModule'
 ]);
 
 TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', function($rootScope, $state, $stateParams, AuthenticationService, UserSession) {
@@ -27,7 +28,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             event.preventDefault();
             $state.go('tatami.login.main');
         }*/
-
+        // console.log(UserSession.isAuthenticated());
         // If the user is logged in, we allow them to go where they intend to
         if(UserSession.isAuthenticated()) {
             return;
