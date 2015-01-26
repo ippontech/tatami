@@ -1,4 +1,4 @@
-TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', function($q, $window, ProfileService) {
+TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStorageService', function($q, $window, ProfileService, localStorageService) {
     var user;
     var authenticated;
 
@@ -13,6 +13,8 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', function($q
 
         setLoginState: function(loggedIn) {
             $window.sessionStorage["authorized"] = loggedIn;
+            localStorageService.set('token', loggedIn);
+            // console.log(localStorageService.get('token'));
         },
 
         getUser: function() {
