@@ -11,7 +11,7 @@ AdminModule.controller('AdminController', [
         $scope.reindex = function() {
             if(confirm($translate.instant('tatami.admin.confirm'))) {
                 AdminService.save({ options: 'reindex' });
-                $scope.$state.go('admin');
+                $scope.$state.go('admin', { message: 'reindex' });
                 $scope.showReindexMessage = true;
             }
         }
