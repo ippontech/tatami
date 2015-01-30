@@ -16,6 +16,8 @@ TatamiApp.config(function($translateProvider) {
                 'resetPassword': 'Reset password',
                 'tos': 'Terms of Service',
                 'fail': 'Your authentication has failed! Are you sure you used the correct password?',
+                'passwordEmailSent': 'An e-mail has been sent to you, with instructions to generate a new password.',
+                'unregisteredEmail': 'This e-mail address is not registered in Tatami.',
                 'register': {
                     'title': 'Register',
                     'line1': 'A confirmation email will be sent to the address you provide.',
@@ -29,8 +31,15 @@ TatamiApp.config(function($translateProvider) {
                     'line2': 'Whether or not you already have a Tatami account, you can sign in with your Google Apps account.',
                     'line3': "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
                     'login': 'Login using Google Apps'
-                }
+                },
+
+                'validation': 'E-mail validation',
+                'passwordSuccess': 'Your e-mail has been validated. Your password will be e-mailed to you.',
+                'returnHome': 'Go to the home page',
+                'registrationEmail': 'Thank you! A registration e-mail has been sent to you.'
             },
+
+
 
             'about': {
 

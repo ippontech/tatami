@@ -10,13 +10,12 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
-            data: { j_username: $scope.user.email, j_password: $scope.user.password },
+            data: { j_username: $scope.user.email, j_password: $scope.user.password, _spring_security_remember_me: $scope.user.remember },
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
             if(data.action === 'loginFailure') {
-                $scope.$state.current.data.loginState = true;
-                $scope.$state.reload();
+                $scope.$state.go('tatami.login.main', { action: data.action });
             }
             else {
                 // The user has logged in, authenticate them

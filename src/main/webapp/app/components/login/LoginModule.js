@@ -10,19 +10,29 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
             },
             templateUrl: 'app/components/login/LoginView.html'
         })
-        .state('tatami.login.main',{
-            url: '/login',
+        .state('tatami.login.main', {
+            url: '/login?action',
             views: {
                 'manualLogin': {
                     templateUrl: '/app/components/login/manual/ManualLoginView.html',
                     controller: 'ManualLoginController'
                 },
+                'recoverPassword': {
+                    templateUrl: '/app/components/login/recoverPassword/RecoverPasswordView.html',
+                    controller: 'RecoverPasswordController'
+                },
                 'googleLogin': {
-                    templateUrl: '/app/components/login/google/GoogleLoginView.html'
+                    templateUrl: '/app/components/login/google/GoogleLoginView.html',
+                    controller: 'GoogleLoginController'
                 },
                 'register': {
-                    templateUrl: '/app/components/login/register/RegisterView.html'
+                    templateUrl: '/app/components/login/register/RegisterView.html',
+                    controller: 'RegisterController'
                 }
             }
+        })
+        .state('tatami.registration', {
+            url: '/tatami/register?key',
+            templateUrl: '/app/components/login/EmailRegistration.html'
         });
 }]);
