@@ -38,7 +38,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             return;
         }
         */
-        if(toState.data.public === true) {
+        if(toState.data.public) {
             return;
         }
 
