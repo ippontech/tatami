@@ -32,9 +32,13 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
         if(UserSession.isAuthenticated()) {
             return;
         }
-
+/*
         // All users can access the login page
         if(toState.name === 'tatami.login.main') {
+            return;
+        }
+        */
+        if(toState.data.public === true) {
             return;
         }
 
@@ -66,6 +70,9 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                     authorize: ['AuthenticationService', function(AuthenticationService) {
                         AuthenticationService.authenticate();
                     }]
+                },
+                data: {
+                    public: false
                 }
             });
 

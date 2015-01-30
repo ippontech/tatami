@@ -29,6 +29,9 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: '/app/components/login/register/RegisterView.html',
                     controller: 'RegisterController'
                 }
+            },
+            data: {
+                public: true
             }
         })
         .state('tatami.registration', {
