@@ -15,12 +15,10 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
         })
         .success(function(data) {
             if(data.action === 'loginFailure') {
-                $scope.$state.current.data.loginState = true;
-                $scope.$state.reload();
+                $scope.$state.go('tatami.login.main', { action: data.action });
             }
             else {
                 // The user has logged in, authenticate them
-                $scope.$state.current.data.loginState = false;
                 UserSession.setLoginState(true);
 
                 // Redirect the user to the state they tried to access now that they are logged in

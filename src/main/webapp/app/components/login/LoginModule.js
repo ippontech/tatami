@@ -10,8 +10,8 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
             },
             templateUrl: 'app/components/login/LoginView.html'
         })
-        .state('tatami.login.main',{
-            url: '/login',
+        .state('tatami.login.main', {
+            url: '/login?action',
             views: {
                 'manualLogin': {
                     templateUrl: '/app/components/login/manual/ManualLoginView.html',
@@ -30,5 +30,9 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'RegisterController'
                 }
             }
+        })
+        .state('tatami.registration', {
+            url: '/tatami/register?key',
+            templateUrl: '/app/components/login/EmailRegistration.html'
         });
 }]);

@@ -11,10 +11,10 @@
                     <p translate="tatami.login.register.line3"></p>
                 </li>
             </ul>
-            <form action="/tatami/register" method="post" accept-charset="utf-8" id="registrationForm">
+            <form ng-submit="registerUser()" accept-charset="utf-8" id="registrationForm">
                 <fieldset>
                     <div class="control-group">
-                        <input name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
+                        <input ng-model="user.email" name="email" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}">
                     </div>
                     <div class="control-group">
                         <button type="submit" id="registrationButton" class="btn btn-primary btn-block text-center" translate="tatami.login.register.title"></button>
