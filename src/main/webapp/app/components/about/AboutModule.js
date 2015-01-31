@@ -12,7 +12,10 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             views: {
                 'aboutBody': {
                     templateUrl: 'app/components/about/presentation/PresentationView.html'
-                },
+                }
+            },
+            data: {
+                public: true
             }
         })
         .state('tatami.about.tos', {
@@ -20,7 +23,10 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             views: {
                 'aboutBody': {
                     templateUrl: 'app/components/about/tos/ToSView.html'
-                },
+                }
+            },
+            data: {
+                public: true
             }
         })
         .state('tatami.about.license', {
@@ -29,7 +35,10 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
                 'aboutBody': {
                     templateUrl: 'app/components/about/license/LicenseView.html',
                     controller: 'LicenseController'
-                },
+                }
+            },
+            data: {
+                public: true
             }
         });
 }]);

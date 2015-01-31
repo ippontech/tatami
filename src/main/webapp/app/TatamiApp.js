@@ -17,7 +17,6 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     if(UserSession.isAuthenticated()) {
         $state.go('tatami.home.home.timeline');
     }
-    // Otherwise have them login
     else {
         $state.go('tatami.login.main');
     }
@@ -33,8 +32,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             return;
         }
 
-        // All users can access the login page
-        if(toState.name === 'tatami.login.main') {
+        if(toState.data.public) {
             return;
         }
 
@@ -53,6 +51,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
 
         //$urlRouterProvider.otherwise('/home/timeline');
         //$urlRouterProvider.otherwise('/home/timeline');
+        //$locationProvider.html5Mode(true);
 
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -66,6 +65,9 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                     authorize: ['AuthenticationService', function(AuthenticationService) {
                         AuthenticationService.authenticate();
                     }]
+                },
+                data: {
+                    public: false
                 }
             });
 
