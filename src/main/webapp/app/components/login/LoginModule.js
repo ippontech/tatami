@@ -5,9 +5,6 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
         .state('tatami.login', {
             url: '',
             abstract: true,
-            data: {
-                loginState: false
-            },
             templateUrl: 'app/components/login/LoginView.html'
         })
         .state('tatami.login.main', {
@@ -35,7 +32,16 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
             }
         })
         .state('tatami.registration', {
-            url: '/tatami/register?key',
-            templateUrl: '/app/components/login/EmailRegistration.html'
+            url: '/register?key',
+            templateUrl: '/app/components/login/email/EmailRegistration.html',
+            controller: 'EmailRegistrationController',
+            resolve: {
+                update: ['RegistrationService', '$stateParams', function(RegistrationService, $stateParams) {
+                    return RegistrationService.getUpdate({ register: 'register', key: $stateParams.key }).$promise;
+                }]
+            },
+            data: {
+                public: true
+            }
         });
 }]);
