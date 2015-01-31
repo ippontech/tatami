@@ -37,7 +37,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             return;
         }
 
-        if(toState.data.public) {
+        if(toState.data && toState.data.public) {
             return;
         }
 
@@ -73,6 +73,13 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 },
                 data: {
                     public: false
+                }
+            })
+            .state('tatami.accessdenied', {
+                url: '/accessdenied',
+                templateUrl: 'app/shared/error/500View.html',
+                data: {
+                    public: true
                 }
             });
 

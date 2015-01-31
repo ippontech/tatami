@@ -2,7 +2,7 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
-
+            'error': 'An error has occurred.',
             // Login View
             'login': {
                 'title': 'Login',
