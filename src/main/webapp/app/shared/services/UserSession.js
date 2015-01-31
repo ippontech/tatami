@@ -1,6 +1,7 @@
 TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStorageService', function($q, $window, ProfileService, localStorageService) {
     var user;
     var authenticated = false;
+    localStorageService.set('token', false);
 
     return {
         isAuthenticated: function() {
