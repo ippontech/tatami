@@ -2,7 +2,7 @@ TopMenuModule.controller('TopMenuController', ['$scope', '$window', '$http', 'Us
     $scope.logout = function() {
         $http.get('/tatami/logout')
             .success(function() {
-                UserSession.setLoginState(false);
+                UserSession.clearSession();
                 $scope.$state.go('tatami.login.main');
             });
     }

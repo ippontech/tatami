@@ -16,6 +16,10 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
             // console.log(localStorageService.get('token'));
         },
 
+        clearSession: function() {
+            localStorageService.clearAll();
+        },
+
         getUser: function() {
             return user;
         },
