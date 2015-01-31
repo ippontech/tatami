@@ -55,7 +55,6 @@ public class AccountController {
     public User getProfile() {
         this.log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
-        this.log.debug("Current User {}", currentUser);
         return userService.getUserByLogin(currentUser.getLogin());
     }
 
