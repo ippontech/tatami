@@ -19,6 +19,11 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             resolve: {
                 profileInfo: ['ProfileService', function(ProfileService) {
                     return ProfileService.get().$promise;
+                }],
+                userRoles: ['$http', function($http) {
+                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {
+                        return result.data;
+                    });
                 }]
             },
             controller: 'AccountController'

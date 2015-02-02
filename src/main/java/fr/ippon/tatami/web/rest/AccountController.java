@@ -56,14 +56,14 @@ public class AccountController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public boolean isAdmin() {
+    public String isAdmin() {
         this.log.debug("REST request to determine if user is an admin");
         User currentUser = authenticationService.getCurrentUser();
         if(userDetailsService == null) {
             userDetailsService = new TatamiUserDetailsService();
             userDetailsService.init();
         }
-        return userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().contains("ROLE_ADMIN");
+        return "{ \"roles\": \"" + userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().toString() + "\" }";
     }
 
     /**

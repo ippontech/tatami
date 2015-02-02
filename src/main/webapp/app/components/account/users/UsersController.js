@@ -1,4 +1,5 @@
-UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService', 'UserService', function($scope, usersList, SearchService, UserService) {
+UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService', 'UserService', 'userRoles', function($scope, usersList, SearchService, UserService, userRoles) {
+    $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
     /**
      * Information about the current state of the view
      * @type {{searchString: string}}

@@ -16,6 +16,10 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 profile: ['ProfileService', function(ProfileService) {
                     return ProfileService.get().$promise;
+                }],
+
+                roles: ['$http', function($http) {
+                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' });
                 }]
             }
         })

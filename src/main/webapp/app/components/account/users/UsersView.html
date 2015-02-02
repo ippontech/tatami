@@ -36,6 +36,11 @@
                         @{{ user.username }}
                     </small>
                 </a>
+                <span ng-show="isAdmin" class="desactivateUser pointer pull-right label label-danger">
+                    <span class="glyphicon glyphicon-minus">
+                        Deactivate
+                    </span>
+                </span>
             </h4>
         </div>
     </div>
