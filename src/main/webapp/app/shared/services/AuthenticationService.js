@@ -7,7 +7,6 @@ TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
-                return;
             });
         }
     }
