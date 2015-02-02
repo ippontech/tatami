@@ -30,6 +30,11 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
+    $rootScope.$on('$stateChangeError', function(event) {
+        event.preventDefault();
+        $state.transitionTo('tatami.pageNotFound', null, { location: false })
+    });
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
 
         // If the user is logged in, we allow them to go where they intend to
@@ -76,8 +81,13 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 }
             })
             .state('tatami.accessdenied', {
-                url: '/accessdenied',
                 templateUrl: 'app/shared/error/500View.html',
+                data: {
+                    public: true
+                }
+            })
+            .state('tatami.pageNotFound', {
+                templateUrl: 'app/shared/error/404View.html',
                 data: {
                     public: true
                 }
