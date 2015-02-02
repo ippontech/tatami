@@ -4,8 +4,7 @@ TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession
             return UserSession.authenticate().then(function(result) {
                 if(result.action === null && $state.current.data && !$state.current.data.public) {
                     // User isn't login in. Change the session token, and redirect to login
-                    //console.log('going to login page');
-                    UserSession.setLoginState(false);
+                    UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
                 return;

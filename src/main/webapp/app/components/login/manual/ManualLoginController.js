@@ -1,4 +1,4 @@
-LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', '$window', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, $window, AuthenticationService, UserSession) {
+LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, AuthenticationService, UserSession) {
     $scope.user = {};
     $scope.login = function() {
         $http({

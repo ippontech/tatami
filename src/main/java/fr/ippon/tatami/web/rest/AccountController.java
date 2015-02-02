@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Preferences;
@@ -42,7 +43,28 @@ public class AccountController {
     private AuthenticationService authenticationService;
 
     @Inject
+    private TatamiUserDetailsService userDetailsService;
+
+    @Inject
     Environment env;
+
+    /**
+     * GET /account/admin -> Determines if the current account is an admin
+     */
+    @RequestMapping(value = "/rest/account/admin",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    public boolean isAdmin() {
+        this.log.debug("REST request to determine if user is an admin");
+        User currentUser = authenticationService.getCurrentUser();
+        if(userDetailsService == null) {
+            userDetailsService = new TatamiUserDetailsService();
+            userDetailsService.init();
+        }
+        return userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().contains("ROLE_ADMIN");
+    }
 
     /**
      * GET  /account/profile -> get account's profile

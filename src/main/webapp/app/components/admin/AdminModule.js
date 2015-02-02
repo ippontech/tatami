@@ -11,7 +11,7 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                         return success;
                     }, function(err) {
                         if(err.status === 500) {
-                            $state.go('tatami.accessdenied');
+                            $state.transitionTo('tatami.accessdenied', null, { location: false });
                         }
                     });
                 }]

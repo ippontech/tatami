@@ -3,6 +3,7 @@ TatamiApp.config(function($translateProvider) {
     $translateProvider.translations('en', {
         'tatami': {
             'error': 'An error has occurred.',
+            'pageNotFound': 'Page not found.',
             // Login View
             'login': {
                 'title': 'Login',
