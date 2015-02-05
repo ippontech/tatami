@@ -1,0 +1,1 @@
+UsersModule.factory('UserAccountController', ['$scope', ])

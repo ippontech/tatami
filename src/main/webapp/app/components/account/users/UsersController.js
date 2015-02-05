@@ -11,6 +11,12 @@ UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService
     // usersList is resolved during routing
     $scope.usersList = usersList;
 
+    $scope.deactivate = function(user) {
+        UserService.deactivate({ username: user.username }, { activate: true }, function(response) {
+            $scope.$state.reload();
+        })
+    };
+
     /**
      * Change the state (so the url contains the search parameter), and updates
      * the user data based on the search term.
@@ -27,9 +33,9 @@ UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService
         });
     };
 
-    $scope.followUser = function(user, index) {
+    $scope.followUser = function(user) {
         UserService.follow({ username: user.username }, { friend: !user.friend, friendShip: true },
-            function(response) {
+            function() {
                 $scope.$state.reload();
             }
         );

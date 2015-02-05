@@ -17,31 +17,39 @@
         <form class="row-fluid littleMargeBot">
             <input ng-show="$state.current.name === 'tatami.account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.users.search' | translate }}">
         </form>
-        <div class="useritem" ng-repeat="user in usersList">
-            <div class="pull-left background-image-fffix">
-                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
-            </div>
-            <h4>
-                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
-                    <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                </span>
-                <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
-                    <strong>
-                        {{ user.firstName + ' ' + user.lastName }}
-                    </strong>
-                </a>
-                <br>
-                <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
-                    <small>
-                        @{{ user.username }}
-                    </small>
-                </a>
-                <span ng-show="isAdmin" class="desactivateUser pointer pull-right label label-danger">
-                    <span class="glyphicon glyphicon-minus">
-                        Deactivate
+        <div ng-repeat="user in usersList">
+            <div class="useritem">
+                <div class="pull-left background-image-fffix">
+                    <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+                </div>
+                <h4>
+                    <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                        <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                </span>
-            </h4>
+                    <span ng-show="!user.activated">
+                        <span class="glyphicon glyphicon-off">
+                            {{ 'tatami.account.users.deactivated' | translate }}
+                        </span>
+                    </span>
+                    <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
+                        <strong>
+                            {{ user.firstName + ' ' + user.lastName }}
+                        </strong>
+                    </a>
+                    <br>
+                    <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
+                        <small>
+                            @{{ user.username }}
+                        </small>
+                    </a>
+                    <span ng-click="deactivate(user)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
+                        <span class="glyphicon glyphicon-minus" translate="tatami.admin.deactivate"></span>
+                    </span>
+                    <span ng-click="deactivate(user)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
+                        <span class="glyphicon glyphicon-plus" translate="tatami.admin.activate"></span>
+                    </span>
+                </h4>
+            </div>
         </div>
     </div>
 </div>

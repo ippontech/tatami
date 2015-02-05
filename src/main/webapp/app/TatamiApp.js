@@ -77,7 +77,8 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                     }]
                 },
                 data: {
-                    public: false
+                    public: false,
+                    roles: ["ROLE_USER"]
                 }
             })
             .state('tatami.accessdenied', {
