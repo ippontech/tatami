@@ -192,7 +192,9 @@ TatamiApp.config(function($translateProvider) {
                     'sharedYour': 'shared your status',
                     'followed': 'followed you',
                     'shared': 'shared',
-                    'groupAdmin': 'Group Administrator'
+                    'groupAdmin': 'Group Administrator',
+                    'announce': 'Announce',
+                    'isAnnounced': 'Announced by'
                 },
 
                 // Tag View
@@ -312,7 +314,8 @@ TatamiApp.config(function($translateProvider) {
                     'title': 'Users',
                     'following': 'Following',
                     'recommended': 'Recommended',
-                    'search': 'Search'
+                    'search': 'Search',
+                    'deactivated': 'This user is deactivated'
                 },
 
                 // Groups Tab
@@ -387,7 +390,9 @@ TatamiApp.config(function($translateProvider) {
                 'value': 'Value',
                 'reindex': 'Re-index Search Engine',
                 'confirm': 'Are you sure you want to re-index Search Engine?',
-                'success': 'Search engine re-indexation has succeeded.'
+                'success': 'Search engine re-indexation has succeeded.',
+                'deactivate': 'Deactivate',
+                'activate': 'Activate'
             }
         }
     });

@@ -6,9 +6,11 @@ HomeModule.controller('StatusListController', [
     'GroupService',
     'profile',
     'statuses',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses) {
+    'userRoles',
+    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles) {
         $scope.profile = profile;
         $scope.statuses = statuses;
+        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.busy = false;
 
@@ -96,6 +98,10 @@ HomeModule.controller('StatusListController', [
                 function(response) {
                     $scope.statuses[index].shareByMe = response.shareByMe;
             });
+        };
+
+        $scope.announceStatus = function(status) {
+            StatusService.update({ statusId: status.statusId }, { announced: true });
         };
 
         $scope.deleteStatus = function(status, index, confirmMessage) {
