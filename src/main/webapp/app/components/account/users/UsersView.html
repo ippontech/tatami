@@ -27,7 +27,7 @@
                         <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
                     <span ng-show="!user.activated">
-                        <span class="glyphicon glyphicon-off">
+                        <span ng-class="!user.activated ? 'badge hidden-phone progress-bar-danger' : ''" class="glyphicon glyphicon-off">
                             {{ 'tatami.account.users.deactivated' | translate }}
                         </span>
                     </span>

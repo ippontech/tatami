@@ -69,8 +69,10 @@
                         </small>
 
                         <small ng-if="!status.activated && status.type !== 'ANNOUNCEMENT'">
-                            <span class="glyphicon glyphicon-off"></span>
-                            <span translate="tatami.account.users.deactivated"></span>
+                            <div class="badge hidden-phone progress-bar-danger">
+                                <span class="glyphicon glyphicon-off"></span>
+                                <span translate="tatami.account.users.deactivated"></span>
+                            </div>
                         </small>
 
                         <small>
