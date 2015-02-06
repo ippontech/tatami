@@ -36,6 +36,11 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }],
                 suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
+                }],
+                userRoles: ['$http', function($http) {
+                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {
+                        return result.data;
+                    });
                 }]
             }
         })

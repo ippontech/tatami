@@ -5,7 +5,7 @@ UsersModule.directive('tatamiAccountUser', function() {
         scope: {
             user: '=',
             isAdmin: '='
-        }
+        },
         templateUrl: '/app/components/account/users/directives/UserAccountView.html'
     }
 

@@ -1,1 +1,3 @@
-UsersModule.factory('UserAccountController', ['$scope', ])
+UsersModule.factory('UserAccountController', ['$scope', function($scope) {
+
+}]);

@@ -54,7 +54,12 @@
                             <br>
                         </small>
 
-                        <small ng-if="status.replyTo">
+                        <small ng-if="status.type === 'ANNOUNCEMENT'">
+                            <span class="glyphicon glyphicon-bullhorn" translate="tatami.home.status.isAnnounced"></span>
+                            <a ui-sref="tatami.home.status({ status: status.sharedByUsername }}">@{{ status.sharedByUsername }}</a>
+                        </small>
+
+                        <small ng-if="status.replyTo && status.type !== 'ANNOUNCEMENT'">
                             <span class="glyphicon glyphicon-share-alt"></span>
                             <span translate="tatami.home.status.replyTo"></span>
                             <a ui-sref="tatami.home.status({ status: status.replyTo })">@{{ status.replyToUsername }}</a>
@@ -74,7 +79,7 @@
                         </small>
                     </div>
 
-                    <div ng-if="status.type == 'STATUS' || status.type == 'SHARE'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
+                    <div ng-if="status.type == 'STATUS' || status.type == 'SHARE' || status.type == 'ANNOUNCEMENT'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" id="buttons" class="mediumHeight little-marge-top">
                         <div>
                             <small class="statusitem-footer">
                                 <!--
@@ -83,6 +88,7 @@
                                     <span translate="tatami.home.status.view"></span>
                                 </a>
                                 -->
+                                <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
                                 <button ng-controller="StatusManagerController" ng-click="showModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                     <i class="glyphicon glyphicon-comment"></i>
                                     <span translate="tatami.home.status.reply"></span>
@@ -94,6 +100,10 @@
                                 <button ng-click="favoriteStatus(status, $index)" class="btn-link status-action status-action-favorite button-ios">
                                     <i class="glyphicon glyphicon-star"></i>
                                     <span translate="tatami.home.status.favorite"></span>
+                                </button>
+                                <button ng-click="announceStatus(status)" ng-show="isAdmin && status.groupId === null" class="btn-link status-action status-action-announce button-ios">
+                                    <i class="glyphicon glyphicon-bullhorn"></i>
+                                    <span translate="tatami.home.status.announce"></span>
                                 </button>
                                 <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
                                     <i class="glyphicon glyphicon-trash"></i>

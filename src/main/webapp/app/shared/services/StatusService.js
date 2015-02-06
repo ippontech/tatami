@@ -45,6 +45,7 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
             method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
             transformResponse: responseTransform
         },
-        'update': { method: 'PATCH', params: { statusId: '@statusId' } }
+        'update': { method: 'PATCH', params: { statusId: '@statusId' } },
+        'announce': { method: 'PATCH', params: { params: '@statusId' } }
     });
 }]);
