@@ -55,7 +55,9 @@
                         </small>
 
                         <small ng-if="status.type === 'ANNOUNCEMENT'">
-                            <span class="glyphicon glyphicon-bullhorn" translate="tatami.home.status.isAnnounced"></span>
+                            <span class="glyphicon glyphicon-bullhorn">
+                                {{ 'tatami.home.status.isAnnounced' | translate }}
+                            </span>
                             <a ui-sref="tatami.home.status({ status: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
                         </small>
 
@@ -64,6 +66,11 @@
                             <span translate="tatami.home.status.replyTo"></span>
                             <a ui-sref="tatami.home.status({ status: status.replyTo })">@{{ status.replyToUsername }}</a>
                             <br>
+                        </small>
+
+                        <small ng-if="!status.activated && status.type !== 'ANNOUNCEMENT'">
+                            <span class="glyphicon glyphicon-off"></span>
+                            <span translate="tatami.account.users.deactivated"></span>
                         </small>
 
                         <small>

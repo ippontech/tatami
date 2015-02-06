@@ -34,6 +34,9 @@
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
                     </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
+                    </span>
                 </span>
 
                 <span ng-if="$state.current.name == 'tatami.home.profile.following'">
@@ -48,6 +51,9 @@
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
                     </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
+                    </span>
                 </span>
 
                 <span ng-if="$state.current.name == 'tatami.home.profile.followers'">
@@ -61,6 +67,9 @@
                     </span>
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
+                    </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
                     </span>
                 </span>
 
