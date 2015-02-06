@@ -42,10 +42,10 @@
                             @{{ user.username }}
                         </small>
                     </a>
-                    <span ng-click="deactivate(user)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
+                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
                         <span class="glyphicon glyphicon-minus" translate="tatami.admin.deactivate"></span>
                     </span>
-                    <span ng-click="deactivate(user)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
+                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
                         <span class="glyphicon glyphicon-plus" translate="tatami.admin.activate"></span>
                     </span>
                 </h4>

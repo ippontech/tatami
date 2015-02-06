@@ -11,9 +11,9 @@ UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService
     // usersList is resolved during routing
     $scope.usersList = usersList;
 
-    $scope.deactivate = function(user) {
+    $scope.deactivate = function(user, index) {
         UserService.deactivate({ username: user.username }, { activate: true }, function(response) {
-            $scope.$state.reload();
+            $scope.usersList[index].activated = response.activated;
         })
     };
 
