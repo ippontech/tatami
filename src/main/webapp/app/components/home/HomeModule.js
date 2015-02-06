@@ -18,9 +18,12 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     return ProfileService.get().$promise;
                 }],
 
-                roles: ['$http', function($http) {
-                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' });
+                userRoles: ['$http', function($http) {
+                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {
+                        return result.data;
+                    });
                 }]
+
             }
         })
         //state for all views that use home sidebar
@@ -37,11 +40,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
                 }],
-                userRoles: ['$http', function($http) {
-                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {
-                        return result.data;
-                    });
-                }]
             }
         })
         .state('tatami.home.home.timeline', {

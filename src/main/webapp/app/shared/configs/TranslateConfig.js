@@ -240,6 +240,8 @@ TatamiApp.config(function($translateProvider) {
                     'userFollowersSingular': '@{{ username }} has 1 follower',
                     'userFollowersPlural': '@{{ username }} has {{ amount }} followers',
 
+                    'deactivatedUser': 'Deactivated User',
+
                     // Profile Sidebar View
                     'sidebar': {
                         'information': 'Information',
