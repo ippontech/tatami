@@ -4,7 +4,7 @@
             <h4 class="panel-title text-center" translate="tatami.login.googleApps.title"></h4>
         </div>
         <div class="panel-body">
-            <form ng-submit="login()" accept-charset="utf-8">
+            <form form="submit" action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
                 <fieldset>
                     <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id">
                     <div class="control-group">
@@ -28,3 +28,59 @@
         </div>
     </div>
 </div>
+<!--
+<div class="col-span-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title text-center" translate="tatami.login.googleApps.title"></h4>
+        </div>
+        <div class="panel-body">
+            <form class="well" action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
+                <fieldset>
+                    <div class="controle-group">
+                        <input class="col-span-12" name="openid_identifier" size="50"
+                               maxlength="100" type="hidden"
+                               value="https://www.google.com/accounts/o8/id"/>
+                    </div>
+                    <div class="control-group">
+                        <button type="submit" id="proceed_google" class="btn btn-primary btn-block" translate="tatami.login.googleApps.login"></button>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="control-group">
+                <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tatami.about.tos" translate="tatami.login.tos"></button>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p translate="tatami.login.googleApps.line1"></p>
+                    <a href="https://www.google.com/work/apps/business/">
+                        <p translate="tatami.login.googleApps.link"></p>
+                    </a>
+                    <p translate="tatami.login.googleApps.line2"></p>
+                    <p translate="tatami.login.googleApps.line3"></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+-->
+<!--
+<form class="well" action="/tatami/j_spring_openid_security_check" method="post" accept-charset="utf-8">
+    <fieldset class="row-fluid">
+        <div class="controle-group">
+            <input class="col-span-12" name="openid_identifier" size="50"
+                   maxlength="100" type="hidden"
+                   value="https://www.google.com/accounts/o8/id"/>
+        </div>
+        <div class="controle-group">
+            <button id="proceed_google" type="submit" class="col-span-12 btn btn-success">
+                <fmt:message key="tatami.authentication.google.submit"/>
+            </button>
+        </div>
+        <div class="controle-group">
+            <div class="text-center">(<a href="/tatami/tos"><fmt:message key="tatami.authentication.cgv"/></a>)
+            </div>
+        </div>
+    </fieldset>
+</form>
+-->

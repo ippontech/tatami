@@ -1,4 +1,4 @@
-TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession', function($rootScope, $state, UserSession) {
+TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession', 'localStorageService', function($rootScope, $state, UserSession) {
     return {
         authenticate: function() {
             return UserSession.authenticate().then(function(result) {
@@ -6,6 +6,9 @@ TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession
                     // User isn't login in. Change the session token, and redirect to login
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
+                }
+                if(result.username !== null && !UserSession.isAuthenticated()) {
+                    UserSession.setLoginState(true);
                 }
             });
         }
