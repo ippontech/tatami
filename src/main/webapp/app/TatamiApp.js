@@ -13,22 +13,35 @@ var TatamiApp = angular.module('TatamiApp', [
 ]);
 
 TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
-    // When the app is started, determine if the user is authenticated, if so, send them to home timeline
-    UserSession.authenticate().then(function(result) {
-        if(result.action === null) {
-            UserSession.clearSession();
-        }
-    });
-    if(UserSession.isAuthenticated()) {
-        $state.go('tatami.home.home.timeline');
-    }
-    else {
-        $state.go('tatami.login.main');
-    }
-
     // Make state information available to $rootScope, and thus $scope in our controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+
+    // When the app is started, determine if the user is authenticated, if so, send them to home timeline
+    UserSession.authenticate().then(function(result) {
+        // We aren't logged in, clear the old session, and send the user to the login page
+        if(result.action === null) {
+            UserSession.clearSession();
+            $state.go('tatami.login.main');
+        }
+        // We are logged in, but the session hasn't been set, so we set it
+        if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
+            UserSession.setLoginState(true);
+        }
+        // User is logged in
+        if(UserSession.isAuthenticated()) {
+            // State being accesses was not the timeline
+            if(angular.isDefined($rootScope.returnToState)) {
+                $state.go($rootScope.returnToState, $rootScope.returnToParams);
+            }
+            else if(angular.isDefined($rootScope.destinationState)) {
+                $state.go($rootScope.destinationState, $rootScope.destinationParams);
+            }
+            else {
+                $state.go('tatami.home.home.timeline');
+            }
+        }
+    });
 
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
@@ -36,6 +49,8 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+        $rootScope.destinationState = toState;
+        $rootScope.destinationParams = toStateParams;
 
         // If the user is logged in, we allow them to go where they intend to
         if(UserSession.isAuthenticated()) {
@@ -50,10 +65,12 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
         // Stash the state they tried to access
         $rootScope.returnToState = toState;
         $rootScope.returnToParams = toStateParams;
+
         // Go to login page
         event.preventDefault();
+
         $state.go('tatami.login.main');
-    })
+    });
 }]);
 
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',

@@ -7,9 +7,6 @@ TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
-                if(result.username !== null && !UserSession.isAuthenticated()) {
-                    UserSession.setLoginState(true);
-                }
             });
         }
     }
