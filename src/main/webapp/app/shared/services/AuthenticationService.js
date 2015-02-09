@@ -1,4 +1,4 @@
-TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession', 'localStorageService', function($rootScope, $state, UserSession) {
+TatamiApp.factory('AuthenticationService', ['$rootScope', '$state', 'UserSession', function($rootScope, $state, UserSession) {
     return {
         authenticate: function() {
             return UserSession.authenticate().then(function(result) {
