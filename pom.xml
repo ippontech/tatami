@@ -58,11 +58,12 @@
                 <spring.profiles.active>apple-push</spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
                 <logback.loglevel>DEBUG</logback.loglevel>
-                <logback.appender>PAPERTRAIL</logback.appender>
-                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
-                <logback.syslogHost.port>38143</logback.syslogHost.port>
+                <logback.appender>CONSOLE</logback.appender>
+                <logback.syslogHost>localhost</logback.syslogHost>
                 <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
+                <tatami.cassandra.host>localhost</tatami.cassandra.host>
                 <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
@@ -103,6 +104,67 @@
             </build>
         </profile>
         <profile>
+            <id>docker</id>
+            <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
+                <spring.profiles.active></spring.profiles.active>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <logback.loglevel>DEBUG</logback.loglevel>
+                <logback.appender>CONSOLE</logback.appender>
+                <logback.syslogHost>localhost</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
+                <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
+                <tatami.url>http://localhost:8080</tatami.url>
+                <tatami.cassandra.host>cassandra</tatami.cassandra.host>
+                <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.google.analytics.key></tatami.google.analytics.key>
+                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+                <tatami.connection.security>any</tatami.connection.security>
+                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
+                <tatami.automatic.registration>false</tatami.automatic.registration>
+                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>ro.isdc.wro4j</groupId>
+                        <artifactId>wro4j-maven-plugin</artifactId>
+                        <version>${maven.wro4j.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetGroups>tatami-vendor,tatami-app,tatami-account,tatami-app-account</targetGroups>
+                            <minimize>false</minimize>
+                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
+                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
+                            <ignoreMissingResources>false</ignoreMissingResources>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>ro.isdc.wro4j</groupId>
+                                <artifactId>wro4j-extensions</artifactId>
+                                <version>${maven.wro4j.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
@@ -115,6 +177,7 @@
                 <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
                 <tatami.url>https://app.tatamisoft.com</tatami.url>
+                <tatami.cassandra.host>localhost</tatami.cassandra.host>
                 <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
                 <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
@@ -380,6 +443,7 @@
         <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
         <tatami.version>${project.version}</tatami.version>
         <tatami.url>http://localhost:8080</tatami.url>
+        <tatami.cassandra.host>localhost</tatami.cassandra.host>
         <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
         <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
         <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
