@@ -1,0 +1,10 @@
+cassandra:
+    image: "spotify/cassandra:latest"
+    expose:
+        - "9160"
+tatami:
+    image: "pouicr/tatami"
+    ports: 
+        - "8080:8080"
+    links:
+        - cassandra:cassandra
