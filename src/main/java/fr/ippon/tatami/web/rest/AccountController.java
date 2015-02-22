@@ -3,7 +3,6 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.Preferences;
@@ -43,9 +42,6 @@ public class AccountController {
     private AuthenticationService authenticationService;
 
     @Inject
-    private TatamiUserDetailsService userDetailsService;
-
-    @Inject
     Environment env;
 
     /**
@@ -58,12 +54,12 @@ public class AccountController {
     @Timed
     public String isAdmin() {
         this.log.debug("REST request to determine if user is an admin");
-        User currentUser = authenticationService.getCurrentUser();
-        if(userDetailsService == null) {
-            userDetailsService = new TatamiUserDetailsService();
-            userDetailsService.init();
-        }
-        return "{ \"roles\": \"" + userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().toString() + "\" }";
+        org.springframework.security.core.userdetails.User securityUser =
+                (org.springframework.security.core.userdetails.User)
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return "{ \"roles\": \"" + securityUser.getAuthorities().toString() + "\" }";
+        //return "{ \"roles\": \"" + userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().toString() + "\" }";
     }
 
     /**
@@ -159,6 +155,7 @@ public class AccountController {
             org.springframework.security.core.userdetails.User securityUser =
                     (org.springframework.security.core.userdetails.User)
                             SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            log.debug("User roles : {}", securityUser);
 
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(securityUser,
