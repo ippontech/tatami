@@ -14,6 +14,7 @@ var TatamiApp = angular.module('TatamiApp', [
 
 TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
     // Make state information available to $rootScope, and thus $scope in our controllers
+    console.log('here');
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
