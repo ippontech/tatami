@@ -70,12 +70,12 @@
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="client key"/>
-        <beans:property name="secret" value="client secret" />
+        <beans:property name="key" value="key"/>
+        <beans:property name="secret" value="secret" />
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
-        <beans:property name="callbackUrl" value="http://localhost:8080/tatami/"/>
+        <beans:property name="callbackUrl" value="http://localhost:8080"/>
         <beans:property name="clients">
             <beans:list>
                 <beans:ref bean="googleClient"/>
