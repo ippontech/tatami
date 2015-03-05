@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringSecurityFiltersConfiguredInspection -->
+<!--suppress SpringSecurityFiltersConfiguredInspection, SpringFacetInspection -->
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,14 +22,18 @@
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
-    <http auto-config="true" use-expressions="true" create-session="ifRequired">
+
+
+    <http auto-config="true" pattern="" use-expressions="true" create-session="ifRequired" entry-point-ref="googleEntryPoint">
         <remember-me key="tatamiRememberKey" token-validity-seconds="2592000"/>
+        <!--
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
         <intercept-url pattern="/tatami/tos" access="permitAll()"/>
         <intercept-url pattern="/tatami/license" access="permitAll()"/>
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/rest/users" method="POST" access="permitAll()"/>
+        -->
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
@@ -42,23 +46,56 @@
 
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
-
+<!--
         <openid-login authentication-failure-url="/tatami/login?action=loginFailure"
                       user-service-ref="openIdAutoRegisteringUserDetailsService"
                       authentication-success-handler-ref="tatamiAuthenticationSuccessHandler">
+                      -->
             <!-- Only Google Apps is supported -->
+        <!--
             <attribute-exchange identifier-match="https://www.google.com/.*">
                 <openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
                 <openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
                 <openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
             </attribute-exchange>
         </openid-login>
+    -->
     </http>
 
-    <authentication-manager>
+    <authentication-manager alias="authenticationManager">
         <authentication-provider ref="ldapAuthenticationProvider"/>
         <authentication-provider ref="daoAuthenticationProvider"/>
+        <authentication-provider ref="clientProvider"/>
     </authentication-manager>
+
+    <!-- Defining our client -->
+    <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
+        <beans:property name="key" value="<client key>" />
+        <beans:property name="secret" value="<client secret>" />
+    </beans:bean>
+
+    <beans:bean id="clients" class="org.pac4j.core.client.Clients">
+        <beans:property name="callbackUrl" value="http://localhost:8080/tatami/"/>
+        <beans:property name="clients">
+            <beans:list>
+                <beans:ref bean="googleClient"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+        <beans:constructor-arg value="/callback"/>
+        <beans:property name="clients" ref="clients" />
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+    </beans:bean>
+
+    <beans:bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+        <beans:property name="clients" ref="clients" />
+    </beans:bean>
+
+    <beans:bean id="googleEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <beans:property name="client" ref="googleClient"/>
+    </beans:bean>
 
     <beans:bean id="daoAuthenticationProvider"
                 class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
