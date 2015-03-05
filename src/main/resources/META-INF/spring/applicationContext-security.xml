@@ -70,8 +70,8 @@
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="<client key>" />
-        <beans:property name="secret" value="<client secret>" />
+        <beans:property name="key" value="client key"/>
+        <beans:property name="secret" value="client secret" />
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
