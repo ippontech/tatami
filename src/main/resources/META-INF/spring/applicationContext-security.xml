@@ -68,13 +68,13 @@
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="ldapAuthenticationProvider"/>
         <authentication-provider ref="daoAuthenticationProvider"/>
-        <authentication-provider ref="clientProvider"/>
+        <authentication-provider ref="googleAuthProvider"/>
     </authentication-manager>
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="googleKey"/>
-        <beans:property name="secret" value="googleSecret" />
+        <beans:property name="key" value="207283460447-0r5bqgi204s9qi1imuh6jcmp14fb8ip0.apps.googleusercontent.com"/>
+        <beans:property name="secret" value="pdkkXSSEw89qicLDOS3BG7Iw" />
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
@@ -92,6 +92,12 @@
         <beans:property name="clients" ref="clients" />
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
+
+    <beans:bean id="googleAuthProvider" class="fr.ippon.tatami.security.GoogleAuthenticationProvider">
+        <beans:property name="clients" ref="clients" />
+        <beans:property name="userDetailsService" ref="googleAutoRegisteringUserDetailsService"/>
+    </beans:bean>
+
 
     <beans:bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
         <beans:property name="clients" ref="clients" />
