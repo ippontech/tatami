@@ -21,8 +21,12 @@
     <http pattern="/tatami/syndic/**" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
+    
+    <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true" entry-point-ref="googleEntryPoint">
+        <intercept-url pattern="/tatami/j_spring_pac4j_security_check" access="isAuthenticated()"/>
+    </http>
 
-    <http pattern="/**" auto-config="true" use-expressions="true" create-session="ifRequired" entry-point-ref="googleEntryPoint">
+    <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="2592000"/>
 
