@@ -22,8 +22,8 @@
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
-    <http auto-config="true" use-expressions="true" create-session="ifRequired" entry-point-ref="googleEntryPoint">
-        <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter"/>
+    <http pattern="/**" auto-config="true" use-expressions="true" create-session="ifRequired" entry-point-ref="googleEntryPoint">
+        <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="2592000"/>
 
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
@@ -69,12 +69,13 @@
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="key"/>
-        <beans:property name="secret" value="secret" />
+        <beans:property name="key" value="googleKey"/>
+        <beans:property name="secret" value="googleSecret" />
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
-        <beans:property name="callbackUrl" value="http://localhost:8080"/>
+        <!-- The callback url registered with google must be value with ?client_name=Google2Client appended -->
+        <beans:property name="callbackUrl" value="http://localhost:8080/tatami/callback"/>
         <beans:property name="clients">
             <beans:list>
                 <beans:ref bean="googleClient"/>
@@ -83,7 +84,7 @@
     </beans:bean>
 
     <beans:bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
-        <beans:constructor-arg value="/callback"/>
+        <beans:constructor-arg value="/tatami/callback"/>
         <beans:property name="clients" ref="clients" />
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
