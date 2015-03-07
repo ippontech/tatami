@@ -25,9 +25,9 @@ public class GoogleAutoRegisteringUserDetailsService implements AuthenticationUs
     private final Logger log = LoggerFactory.getLogger(GoogleAutoRegisteringUserDetailsService.class);
 
     private static final String EMAIL_ATTRIBUTE = "email";
-    private static final String FIRSTNAME_ATTRIBUTE = "firstname";
-    private static final String LASTNAME_ATTRIBUTE = "lastname";
-    private static final String FULLNAME_ATTRIBUTE = "fullname";
+    private static final String FIRSTNAME_ATTRIBUTE = "given_name";
+    private static final String LASTNAME_ATTRIBUTE = "family_name";
+    private static final String FULLNAME_ATTRIBUTE = "name";
 
     @Inject
     private UserService userService;
@@ -81,11 +81,11 @@ public class GoogleAutoRegisteringUserDetailsService implements AuthenticationUs
         // Note : The email could change... and the OpenId not
         // moreover an OpenId account could potentially be associated with several email addresses
         // so we store it for future use case :
-        user.setOpenIdUrl(token.getName());
 
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        log.debug("User: {}", user);
         userService.createUser(user);
 
         return userDetailsService.getTatamiUserDetails(login, user.getPassword());

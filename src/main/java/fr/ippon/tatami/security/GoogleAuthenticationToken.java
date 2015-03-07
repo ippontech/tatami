@@ -10,9 +10,6 @@ import java.util.Collection;
  * our AuthenticationService expects a UsersDetails object for the principal. This
  * class handles this, it takes the ClientAuthenticationToken, and makes it fix what
  * we expect.
- *
- * As of right now, google api's are used only fo the first access. Once we have
- * authenticated, we aren't interested in the API token.
  */
 public class GoogleAuthenticationToken extends AbstractAuthenticationToken {
     private final Object principal;

@@ -1,6 +1,7 @@
 package fr.ippon.tatami.security;
 
 import com.google.inject.Inject;
+import fr.ippon.tatami.domain.User;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.WebContext;
@@ -53,20 +54,20 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider {
             Object authorities = new ArrayList();
             ClientAuthenticationToken result = null;
             logger.debug("userDetailsService: {}", this.userDetailsService);
-            if(this.userDetailsService != null) {
-                result = new ClientAuthenticationToken(credentials, clientName, userProfile, (Collection)null);
-                UserDetails userDetails = this.userDetailsService.loadUserDetails(result);
-                logger.debug("userDetails : {}", userDetails);
-                if(userDetails != null) {
-                    authorities = userDetails.getAuthorities();
-                    logger.debug("authorities : {}", authorities);
-                }
+            result = new ClientAuthenticationToken(credentials, clientName, userProfile, (Collection)null);
+            UserDetails userDetails = this.userDetailsService.loadUserDetails(result);
+            logger.debug("userDetails : {}", userDetails);
+            if(userDetails != null) {
+                authorities = userDetails.getAuthorities();
+                logger.debug("authorities : {}", authorities);
             }
-            logger.debug("Client name : {}", clientName);
-            logger.debug("Client Credentials: {}", credentials);
-            logger.debug("Client Profile: {}", userProfile);
-            GoogleAuthenticationToken res = new GoogleAuthenticationToken(userProfile, clientName, (Collection)authorities);
-            result.setDetails(authentication.getDetails());
+            GoogleAuthenticationToken res = new GoogleAuthenticationToken(userDetails, clientName, (Collection)authorities);
+
+
+            logger.debug("Client name : {}", clientName); // -> Google2Client
+            logger.debug("Client Credentials: {}", credentials); // -> OAuth Credentials
+            logger.debug("Client Profile: {}", userProfile); // -> GoogleProfile, i.e. data from google
+            res.setDetails(authentication.getDetails());
             logger.debug("result : {}", res);
             return res;
         }
