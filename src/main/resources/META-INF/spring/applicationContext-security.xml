@@ -73,8 +73,8 @@
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="207283460447-0r5bqgi204s9qi1imuh6jcmp14fb8ip0.apps.googleusercontent.com"/>
-        <beans:property name="secret" value="pdkkXSSEw89qicLDOS3BG7Iw" />
+        <beans:property name="key" value="googleKey"/>
+        <beans:property name="secret" value="googleSecret" />
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
