@@ -27,7 +27,7 @@ PostModule.controller('StatusCreateController', [
     $scope.current = {                      // This is the current instance of the status window
         preview: false,                     // Determines if the status is being previewed by the user
         geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-        groups: groups,       // The groups the user belongs to
+        groups: groups,                     // The groups the user belongs to
         reply: false,                       // Determine if this status is a reply to another user
         uploadDone: true,                   // If the file upload is done, we should not show the progess bar
         uploadProgress: 0,                  // The progress of the file currently being uploaded
@@ -70,7 +70,7 @@ PostModule.controller('StatusCreateController', [
                 $scope.current.attachments.push(data[0]);
                 $scope.uploadStatus.isUploading = false;
                 $scope.uploadStatus.progress = 0;
-                $scope.status.attachmentIds.push(data.attachmentId);
+                $scope.status.attachmentIds.push(data[0].attachmentId);
             }).error(function(data, status, headers, config) {
                 $scope.uploadStatus.isUploading = false;
                 $scope.uploadStatus.progress = 0;
