@@ -23,22 +23,12 @@ public class AuthenticationService {
 
     public User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        Object principal = securityContext.getAuthentication().getPrincipal();
-        String username = null;
-        System.out.println("TESTING " + principal);
-        if(principal instanceof UserProfile) {
-            username = (String)((UserProfile) principal).getAttribute("email");
-        }
-        else {
-            username = ((UserDetails) principal).getUsername();
-        }
-/*
-        System.out.println("TEST " + securityContext.getAuthentication());
+
         UserDetails springSecurityUser =
                 (UserDetails) securityContext
                         .getAuthentication().getPrincipal();
-*/
-        return userRepository.findUserByLogin(username);
+
+        return userRepository.findUserByLogin(springSecurityUser.getUsername());
     }
 
     public boolean hasAuthenticatedUser() {
