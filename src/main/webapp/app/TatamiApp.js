@@ -41,7 +41,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                 $state.go($rootScope.returnToState, $rootScope.returnToParams);
             }
             else if(angular.isDefined($rootScope.destinationState)) {
-                $state.go($rootScope.destinationState, $rootScope.destinationParams);
+                //$state.go($rootScope.destinationState, $rootScope.destinationParams);
             }
             else {
                 $state.go('tatami.home.home.timeline');

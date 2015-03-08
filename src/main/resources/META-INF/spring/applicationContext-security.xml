@@ -59,13 +59,14 @@
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
-        <beans:property name="key" value="googleKey"/>
-        <beans:property name="secret" value="googleSecret" />
+        <!-- tatami.google.clientId and tatami.google.clientSecret must be set in pom.xml -->
+        <beans:property name="key" value="${tatami.google.clientId}"/>
+        <beans:property name="secret" value="${tatami.google.clientSecret}"/>
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">
         <!-- The callback url registered with google must be value with ?client_name=Google2Client appended -->
-        <beans:property name="callbackUrl" value="http://localhost:8080/tatami/callback"/>
+        <beans:property name="callbackUrl" value="${tatami.url}/tatami/callback"/>
         <beans:property name="clients">
             <beans:list>
                 <beans:ref bean="googleClient"/>
@@ -75,12 +76,12 @@
 
     <beans:bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
         <beans:constructor-arg value="/tatami/callback"/>
-        <beans:property name="clients" ref="clients" />
+        <beans:property name="clients" ref="clients"/>
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
 
     <beans:bean id="googleAuthProvider" class="fr.ippon.tatami.security.GoogleAuthenticationProvider">
-        <beans:property name="clients" ref="clients" />
+        <beans:property name="clients" ref="clients"/>
         <beans:property name="userDetailsService" ref="googleAutoRegisteringUserDetailsService"/>
     </beans:bean>
 

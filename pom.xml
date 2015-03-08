@@ -401,6 +401,9 @@
         <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
         <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
 
+        <tatami.google.clientId></tatami.google.clientId>
+        <tatami.google.clientSecret></tatami.google.clientSecret>
+
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.6</java.version>
