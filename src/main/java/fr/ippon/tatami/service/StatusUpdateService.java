@@ -240,7 +240,6 @@ public class StatusUpdateService {
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
-                log.debug(attachmentIds.toString());
                 statusAttachmentRepository.addAttachmentId(status.getStatusId(),
                         attachmentId);
             }
