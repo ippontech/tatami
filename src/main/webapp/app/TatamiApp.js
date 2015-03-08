@@ -19,15 +19,21 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
 
     // When the app is started, determine if the user is authenticated, if so, send them to home timeline
     UserSession.authenticate().then(function(result) {
-        // We aren't logged in, clear the old session, and send the user to the login page
-        if(result.action === null) {
-            UserSession.clearSession();
+        if(result !== null) {
+            // We aren't logged in, clear the old session, and send the user to the login page
+            if(result.action === null) {
+                UserSession.clearSession();
+                $state.go('tatami.login.main');
+            }
+            // We are logged in, but the session hasn't been set, so we set it
+            if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
+                UserSession.setLoginState(true);
+            }
+        }
+        else {
             $state.go('tatami.login.main');
         }
-        // We are logged in, but the session hasn't been set, so we set it
-        if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
-            UserSession.setLoginState(true);
-        }
+
         // User is logged in
         if(UserSession.isAuthenticated()) {
             // State being accesses was not the timeline
@@ -35,18 +41,18 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                 $state.go($rootScope.returnToState, $rootScope.returnToParams);
             }
             else if(angular.isDefined($rootScope.destinationState)) {
-                $state.go($rootScope.destinationState, $rootScope.destinationParams);
+                //$state.go($rootScope.destinationState, $rootScope.destinationParams);
             }
             else {
                 $state.go('tatami.home.home.timeline');
             }
         }
     });
-
+/*
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
         $state.transitionTo('tatami.pageNotFound', null, { location: false })
-    });
+    });*/
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
         $rootScope.destinationState = toState;
