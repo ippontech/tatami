@@ -4,7 +4,8 @@ var HomeModule = angular.module('HomeModule', [
     'ngSanitize',
     'angularMoment',
     'infinite-scroll',
-    'ui.router'
+    'ui.router',
+    'ui.bootstrap'
 ]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
@@ -40,6 +41,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
                 }],
+                showModal: function() {
+                    return false;
+                }
             }
         })
         .state('tatami.home.home.timeline', {
@@ -50,7 +54,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'HomeSidebarController'
                 },
                 'homeBodyHeader@tatami.home': {
-                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html',
+                    controller: 'TimelineHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
                     templateUrl: 'app/shared/lists/status/StatusListView.html',
@@ -60,8 +65,21 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
+                }],
+
+                showModal: ['statuses', function(statuses) {
+                    return statuses.length === 0;
                 }]
             }
+        })
+        .state('tatami.home.home.timeline.presentation', {
+            url: '',
+            onEnter: ['$stateParams', '$modal', function($stateParams, $modal) {
+                var $modalInstance = $modal.open({
+                    templateUrl: 'app/components/home/welcome/WelcomeView.html',
+                    controller: 'WelcomeController'
+                })
+            }]
         })
         .state('tatami.home.home.mentions', {
             url: '/mentions',

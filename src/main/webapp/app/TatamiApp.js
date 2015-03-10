@@ -93,7 +93,15 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
             .state('tatami', {
                 url: '',
                 abstract: true,
-                templateUrl: 'index.html',
+                views: {
+                    'topMenu@': {
+                        templateUrl: 'app/shared/topMenu/TopMenuView.html',
+                        controller: 'TopMenuController',
+                    },
+                    '': {
+                        templateUrl: 'index.html'
+                    }
+                },
                 resolve: {
                     authorize: ['AuthenticationService', function(AuthenticationService) {
                         AuthenticationService.authenticate();
@@ -101,7 +109,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 },
                 data: {
                     public: false,
-                    roles: ["ROLE_USER"]
+                    roles: ["ROLE_USER"],
                 }
             })
             .state('tatami.accessdenied', {

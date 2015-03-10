@@ -60,8 +60,9 @@
     </sec:authorize>
     -->
 </head>
-<body ng-init="showSearchAccountPost = false" ng-app="TatamiApp">
+<body ng-app="TatamiApp">
     <toast></toast>
+    <div ui-view="topMenu"></div>
     <div ui-view></div>
 
     <!-- Begin Footer -->
@@ -147,11 +148,15 @@
     <!-- List Views -->
     <script src="/app/shared/lists/status/StatusListController.js"></script>
     <script src="/app/shared/lists/user/UserListController.js"></script>
+    <script src="/app/components/home/timeline/TimelineHeaderController.js"></script>
 
     <!-- Post New Status Modal -->
     <script src="/app/shared/topMenu/post/PostModule.js"></script>
     <script src="/app/shared/topMenu/post/StatusManagerController.js"></script>
     <script src="/app/shared/topMenu/post/StatusCreateController.js"></script>
+
+    <!-- Presentation Modal -->
+    <script src="/app/components/home/welcome/WelcomeController.js"></script>
 
     <!--- ------------------------------------------------------------------ -->
 
