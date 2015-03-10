@@ -7,12 +7,15 @@ HomeModule.controller('StatusListController', [
     'profile',
     'statuses',
     'userRoles',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles) {
+    'showModal',
+    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal) {
         $scope.profile = profile;
         $scope.statuses = statuses;
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.busy = false;
+
+
 
         if($scope.statuses.length == 0) {
             $scope.end = true;

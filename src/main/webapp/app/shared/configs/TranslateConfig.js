@@ -2,6 +2,11 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'welcome': {
+                'title': 'Welcome to Tatami',
+                'message': 'Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.',
+                'presentation': 'Launch presentation'
+            },
             'error': 'An error has occurred.',
             'pageNotFound': 'Page not found.',
             // Login View
