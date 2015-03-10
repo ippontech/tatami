@@ -12,10 +12,12 @@ HomeModule.controller('StatusListController', [
         $scope.profile = profile;
         $scope.statuses = statuses;
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
+        console.log('test');
 
         $scope.busy = false;
-
-
+        if(showModal) {
+            $scope.$state.go('tatami.home.home.timeline.presentation');
+        }
 
         if($scope.statuses.length == 0) {
             $scope.end = true;

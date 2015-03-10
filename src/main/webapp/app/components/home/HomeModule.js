@@ -24,7 +24,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                         return result.data;
                     });
                 }]
-
             }
         })
         //state for all views that use home sidebar
@@ -41,7 +40,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
                 }],
-                showModal: function() {
+                showModal: function () {
                     return false;
                 }
             }
