@@ -8,6 +8,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'ngResource',
     'pascalprecht.translate',
     'ui.router',
+    'ui.bootstrap',
     'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
     'LocalStorageModule'
 ]);
