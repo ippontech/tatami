@@ -187,7 +187,7 @@
                         </ul>
                     </li>
                     <li class="hidden-phone" ng-controller="StatusManagerController">
-                        <button class="btn btn-primary navbar-form" ng-click="showModal()">
+                        <button popover-placement="left" popover="Post Button" popover-trigger="mouseenter" class="btn btn-primary navbar-form" ng-click="showModal()">
                             <i class="glyphicon glyphicon-pencil"></i>
                             <span translate="tatami.home.post.button" class="visible-desktop"></span>
                         </button>
@@ -195,7 +195,7 @@
                 </ul>
                 <ul class="nav pull-right">
                     <li>
-                        <a href="#" popover-placement="bottom" popover="On the Bottom!" id="help-tour">
+                        <a popover-placement="bottom" popover="On the Bottom!" id="help-tour">
                             <span>
                                 <span class="glyphicon glyphicon-question-sign"></span>
                                 <span translate="tatami.home.menu.help" class="hidden-tablet"></span>
