@@ -120,8 +120,8 @@
 
             <div ng-if="$state.includes('tatami.home')">
                 <ul class="nav pull-right">
-                    <li class="dropdown pointer">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
+                    <li class="dropdown pointer" dropdown>
+                        <a class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>
                         <span>
                             <span class="glyphicon glyphicon-user"></span>
                             <span translate="tatami.home.menu.account.title" class="hidden-tablet"></span>
@@ -187,7 +187,7 @@
                         </ul>
                     </li>
                     <li class="hidden-phone" ng-controller="StatusManagerController">
-                        <button popover-placement="left" popover="Post Button" popover-trigger="mouseenter" class="btn btn-primary navbar-form" ng-click="showModal()">
+                        <button popover-placement="bottom" popover="Post Button" popover-trigger="mouseenter" class="btn btn-primary navbar-form" ng-click="showModal()">
                             <i class="glyphicon glyphicon-pencil"></i>
                             <span translate="tatami.home.post.button" class="visible-desktop"></span>
                         </button>
