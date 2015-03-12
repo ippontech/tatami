@@ -12,5 +12,10 @@ HomeModule.controller('WelcomeController', ['$scope', '$modalInstance', function
             $rootScope.$state.go('^');
             // Now start the presentation
         })
-    }
+    };
+
+    // Handles closing the modal via escape and clicking outside the modal
+    $modalInstance.result.finally(function() {
+        $scope.$state.go('tatami.home.home.timeline');
+    })
 }]);
