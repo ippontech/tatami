@@ -42,7 +42,7 @@ GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'Grou
             $scope.$state.reload();
             // Alert user of new group creation
             ngToast.create({
-                content: $translate.instant('tatami.form.success')
+                content: $translate.instant('tatami.account.groups.save')
             });
         }, function() {
             ngToast.create({
