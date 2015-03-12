@@ -105,7 +105,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 },
                 resolve: {
                     authorize: ['AuthenticationService', function(AuthenticationService) {
-                        AuthenticationService.authenticate();
+                        return AuthenticationService.authenticate();
                     }]
                 },
                 data: {

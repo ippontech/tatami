@@ -8,7 +8,7 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
         },
 
         isUserResolved: function() {
-            return user != null;
+            return angular.isDefined(user);
         },
 
         setLoginState: function(loggedIn) {
@@ -31,9 +31,8 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
                 user = undefined;
             }
 
-            if(angular.isDefined(user)) {
+            if(angular.isDefined(user) && user.action !== null) {
                 deferred.resolve(user);
-
                 return deferred.promise;
             }
 
