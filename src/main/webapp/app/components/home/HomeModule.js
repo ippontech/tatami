@@ -60,6 +60,32 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
+                }],
+                context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
+                    var temp = [];
+                    for(var i = 0; i < statuses.length; ++i) {
+                        if(statuses[i].replyTo) {
+                            temp.push(
+                                StatusService.get({ statusId: statuses[i].replyTo })
+                                    .$promise.then(
+                                        function(response) {
+                                            if(response === null) {
+                                                return $q.resolve(null);
+                                            }
+                                            return response;
+                                        }).$promise);
+                        }
+                        else {
+                            temp.push(null);
+                        }
+                    }
+                    return $q.all(temp);
+                }],
+                statusesWithContext: ['statuses', 'context', function(statuses, context) {
+                    for(var i = 0; i < statuses.length; ++i) {
+                        statuses[i]['context'] = context[i];
+                    }
+                    return statuses;
                 }]
             }
         })

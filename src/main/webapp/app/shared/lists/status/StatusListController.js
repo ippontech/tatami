@@ -7,9 +7,9 @@ HomeModule.controller('StatusListController', [
     'profile',
     'statuses',
     'userRoles',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles) {
+    function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles) {
         $scope.profile = profile;
-        $scope.statuses = statuses;
+        $scope.statuses = statusesWithContext;
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.busy = false;
@@ -86,24 +86,42 @@ HomeModule.controller('StatusListController', [
             return moment().diff(moment(date), 'days', true) >= 1;
         };
 
-        $scope.favoriteStatus = function(status, index) {
-            StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
-                function(response) {
-                    $scope.statuses[index].favorite = response.favorite;
-            });
+        $scope.favoriteStatus = function(status, index, favoriteContext) {
+            if(favoriteContext) {
+                StatusService.update({ statusId: status.context.statusId }, { favorite: !status.context.favorite }, 
+                    function(response) {
+                        $scope.statuses[index].context.favorite = response.favorite;
+                });
+            }
+            else {
+                StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
+                    function(response) {
+                        $scope.statuses[index].favorite = response.favorite;
+                });
+            }
         };
 
-        $scope.shareStatus = function(status, index) {
-            StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
-                function(response) {
-                    $scope.statuses[index].shareByMe = response.shareByMe;
-            });
+        $scope.shareStatus = function(status, index, shareContext) {
+            if(shareContext) {
+                StatusService.update({ statusId: status.context.statusId }, { shared: !status.context.shareByMe }, 
+                    function(response) {
+                        $scope.statuses[index].context.shareByMe = response.shareByMe;
+                });
+            }
+            else {
+                StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
+                    function(response) {
+                        $scope.statuses[index].shareByMe = response.shareByMe;
+                });
+            }
         };
 
         $scope.announceStatus = function(status) {
+            // Update announcement in model?
             StatusService.update({ statusId: status.statusId }, { announced: true });
         };
 
+        // Might want extra delete logic when the same statuses show up in multiple places
         $scope.deleteStatus = function(status, index, confirmMessage) {
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
