@@ -1,0 +1,30 @@
+<!--
+<div>
+    <div id="WelcomeModal" class="modal fade in" aria-hidden="false" style="display: block;">
+        <div class="modal-dialog">
+        -->
+<div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button ng-click="close()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" translate="tatami.welcome.title"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col col-span6">
+                    <img src="/img/welcome.jpg" class="pull-left">
+                </div>
+                <div class="col col-span6">
+                    <br>
+                    <br>
+                    <h2 translate="tatami.welcome.title"></h2>
+                    <p translate="tatami.welcome.message"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="close()" type="button" class="btn btn-default hide-welcome" data-dismiss="modal" translate="tatami.form.cancel"></button>
+                <button ng-click="launchPresentation()" type="button" class="btn btn-primary launch-help" translate="tatami.welcome.presentation"></button>
+            </div>
+        </div>
+    </div>
+</div>

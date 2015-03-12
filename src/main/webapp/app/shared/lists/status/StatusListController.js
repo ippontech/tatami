@@ -7,12 +7,16 @@ HomeModule.controller('StatusListController', [
     'profile',
     'statuses',
     'userRoles',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles) {
+    'showModal',
+    function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles, showModal) {
         $scope.profile = profile;
         $scope.statuses = statusesWithContext;
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.busy = false;
+        if(showModal) {
+            $scope.$state.go('tatami.home.home.timeline.presentation');
+        }
 
         if($scope.statuses.length == 0) {
             $scope.end = true;

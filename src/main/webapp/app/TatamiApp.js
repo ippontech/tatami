@@ -8,6 +8,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'ngResource',
     'pascalprecht.translate',
     'ui.router',
+    'ui.bootstrap',
     'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
     'LocalStorageModule'
 ]);
@@ -19,15 +20,21 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
 
     // When the app is started, determine if the user is authenticated, if so, send them to home timeline
     UserSession.authenticate().then(function(result) {
-        // We aren't logged in, clear the old session, and send the user to the login page
-        if(result.action === null) {
-            UserSession.clearSession();
+        if(result !== null) {
+            // We aren't logged in, clear the old session, and send the user to the login page
+            if(result.action === null) {
+                UserSession.clearSession();
+                $state.go('tatami.login.main');
+            }
+            // We are logged in, but the session hasn't been set, so we set it
+            if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
+                UserSession.setLoginState(true);
+            }
+        }
+        else {
             $state.go('tatami.login.main');
         }
-        // We are logged in, but the session hasn't been set, so we set it
-        if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
-            UserSession.setLoginState(true);
-        }
+
         // User is logged in
         if(UserSession.isAuthenticated()) {
             // State being accesses was not the timeline
@@ -87,7 +94,15 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
             .state('tatami', {
                 url: '',
                 abstract: true,
-                templateUrl: 'index.html',
+                views: {
+                    'topMenu@': {
+                        templateUrl: 'app/shared/topMenu/TopMenuView.html',
+                        controller: 'TopMenuController',
+                    },
+                    '': {
+                        templateUrl: 'index.html'
+                    }
+                },
                 resolve: {
                     authorize: ['AuthenticationService', function(AuthenticationService) {
                         AuthenticationService.authenticate();
@@ -95,7 +110,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 },
                 data: {
                     public: false,
-                    roles: ["ROLE_USER"]
+                    roles: ["ROLE_USER"],
                 }
             })
             .state('tatami.accessdenied', {

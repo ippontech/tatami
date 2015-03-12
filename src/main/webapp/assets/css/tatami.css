@@ -2,7 +2,7 @@
     padding-left: 50px;
 }
 
-#logout {
+#logout, #help-tour {
     cursor: pointer;
 }
 
