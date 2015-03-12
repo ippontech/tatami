@@ -13,6 +13,9 @@ TatamiApp.factory('SearchService', ['$resource', function($resource) {
     {
         'query': { 
             method: 'GET', isArray: true, transformResponse: responseTransform
+        },
+        'get': {
+            method: 'GET', transformResponse: responseTransform
         }
     });
 }]);

@@ -23,7 +23,7 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', '$translate'
             // Toast strings should be translatable
             ProfileService.update($scope.userProfile, function() {
                 ngToast.create({
-                    content: $translate.instant('tatami.form.success')
+                    content: $translate.instant('tatami.account.profile.save')
                 });
             }, function() {
                 ngToast.create({
