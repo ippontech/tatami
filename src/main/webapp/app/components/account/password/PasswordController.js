@@ -35,7 +35,7 @@ PasswordModule.controller('PasswordController', ['$scope', '$translate', 'Passwo
                 $scope.reset();
                 // Alert user that the password has been changed
                 //$scope.status.confirmChange = true;
-                ngToast.create($translate.instant('tatami.form.success'));
+                ngToast.create($translate.instant('tatami.account.password.save'));
 
             }, function() {
                 ngToast.create({

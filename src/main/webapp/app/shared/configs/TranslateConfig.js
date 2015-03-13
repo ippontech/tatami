@@ -320,7 +320,8 @@ TatamiApp.config(function($translateProvider) {
                     'jobTitle': 'Job Title',
                     'phoneNumber': 'Phone Number',
                     'delete': 'Delete your account',
-                    'confirmDelete': 'You are about to delete your account. Are you sure?'
+                    'confirmDelete': 'You are about to delete your account. Are you sure?',
+                    'save': 'Your profile has been saved'
                 },
 
                 // Preferences Tab
@@ -337,7 +338,8 @@ TatamiApp.config(function($translateProvider) {
                             'timeline': 'Allow RSS feed publication of your timeline',
                             'link': 'Link to your timeline RSS stream'
                         }
-                    }
+                    },
+                    'save': 'Your preferences have been saved'
                 },
 
                 // Password Tab
@@ -346,7 +348,8 @@ TatamiApp.config(function($translateProvider) {
                     'update': 'Update your password',
                     'old': 'Old Password',
                     'new': 'New Password',
-                    'confirm': 'Confirm New Password'
+                    'confirm': 'Confirm New Password',
+                    'save': 'Your password has been changed'
                 },
 
                 // Files Tab
@@ -399,7 +402,8 @@ TatamiApp.config(function($translateProvider) {
                     'leave': 'Leave',
                     'archived': 'Archived',
                     'add': 'Add',
-                    'remove': 'Remove'
+                    'remove': 'Remove',
+                    'save': 'Your group has been created'
                 },
 
                 // Tags Tab

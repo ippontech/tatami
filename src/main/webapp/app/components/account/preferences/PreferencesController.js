@@ -10,9 +10,9 @@ PreferencesModule.controller('PreferencesController', [
 
     // Update user preferences
     $scope.savePrefs = function() {
-        //$scope.validatePrefs();
+        $scope.validatePrefs();
         PreferencesService.save($scope.prefs, function() {
-            ngToast.create($translate.instant('tatami.form.success'));
+            ngToast.create($translate.instant('tatami.account.preferences.save'));
         }, function() {
             ngToast.create({
                 content: $translate.instant('tatami.form.fail'),
@@ -27,9 +27,7 @@ PreferencesModule.controller('PreferencesController', [
                 if('rssUid' === $scope.prefs[pref]) {
                     continue;
                 }
-                console.log($scope.prefs[pref]);
                 $scope.prefs[pref] = false;
-                console.log(pref + " " + $scope.prefs[pref]);
             }
         }
     }
