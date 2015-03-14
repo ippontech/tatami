@@ -25,9 +25,9 @@ public class Preferences implements Serializable {
     }
 
     public Preferences(User user) {
-        this.mentionEmail = user.getPreferencesMentionEmail();
-        this.weeklyDigest = user.getWeeklyDigestSubscription();
-        this.dailyDigest = user.getDailyDigestSubscription();
+        this.mentionEmail = user.getPreferencesMentionEmail() || false;
+        this.weeklyDigest = user.getWeeklyDigestSubscription() || false;
+        this.dailyDigest = user.getDailyDigestSubscription() || false;
         if (!StringUtils.isEmpty(user.getRssUid())) {
             this.rssUidActive = true;
             this.rssUid = user.getRssUid();
