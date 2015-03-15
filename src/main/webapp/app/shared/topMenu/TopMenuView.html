@@ -30,8 +30,8 @@
                     </span>
                     </a>
                 </li>
-                <li class="dropdown pointer">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
+                <li class="dropdown pointer" dropdown>
+                    <a class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>
                     <span>
                         <span class="glyphicon glyphicon-info-sign"></span>
                         <span translate="tatami.home.menu.about.title" class="hidden-tablet"></span>
@@ -204,7 +204,7 @@
                     </li>
                 </ul>
                 <form id="searchform" class="navbar-form pull-right col-span-4" action="">
-                    <input name="search" ng-model="current.searchString" ng-change="search()" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
+                    <input name="search" ng-model="asyncSelected" typeahead="val.name for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/app/shared/topMenu/SearchView.html" type="text" class="col-span-12" id="searchinput" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
                     
                     <!-- Clear search field when clicking the x icon ? -->
                     <!-- Probably should just remove it -->

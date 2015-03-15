@@ -123,7 +123,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 statuses: ['HomeService', function(HomeService) {
                     return HomeService.getMentions().$promise;
-                }]
+                }],
+
             }
         })
         .state('tatami.home.home.favorites', {
@@ -278,7 +279,11 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 statuses: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
                     return StatusService.getUserTimeline({ username: $stateParams.username }).$promise;
-                }]
+                }],
+
+                showModal: function() {
+                    return false;
+                }
             }
         })
         .state('tatami.home.profile.following', {

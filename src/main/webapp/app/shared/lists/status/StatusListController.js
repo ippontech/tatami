@@ -14,7 +14,8 @@ HomeModule.controller('StatusListController', [
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.busy = false;
-        if(showModal) {
+        if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
+            console.log('hi');
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
 
