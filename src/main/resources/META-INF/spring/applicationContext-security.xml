@@ -21,10 +21,11 @@
     <http pattern="/tatami/syndic/**" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
-    
+
     <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true" entry-point-ref="googleEntryPoint">
         <intercept-url pattern="/tatami/j_spring_pac4j_security_check" access="isAuthenticated()"/>
     </http>
+
 
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
@@ -77,7 +78,7 @@
     <beans:bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
         <beans:constructor-arg value="/tatami/callback"/>
         <beans:property name="clients" ref="clients"/>
-        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
     </beans:bean>
 
     <beans:bean id="googleAuthProvider" class="fr.ippon.tatami.security.GoogleAuthenticationProvider">
