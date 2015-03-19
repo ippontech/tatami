@@ -14,17 +14,40 @@
     </div>
 </a>
 -->
-<div ng-if="match.model.firstGroup" class="category tags" class="icon-tags">Groups</div>
-<div ng-if="match.model.firstUser" class="icon-user">Users</div>
-<div ng-if="match.model.firstTag" class="icon-th-large">Tags</div>
+<div style="cursor: default;
+    height: auto;
+    background: #EDEDED;
+    padding: 6px 5px 5px 13px;
+    width:30px;
+    padding: 3px 10px;"  ng-if="match.model.firstGroup" class="category tags" class="icon-tags">
+    <span class="glyphicon glyphicon-tags"></span>
+</div>
+<div style="cursor: default;
+    height: auto;
+    background: #EDEDED;
+    padding: 6px 5px 5px 13px;
+    width:30px;
+    padding: 3px 10px;" ng-if="match.model.firstUser" class="icon-user">
+    <span class="glyphicon glyphicon-user"></span>
+</div>
+<div style="cursor: default;
+    height: auto;
+    background: #EDEDED;
+    padding: 6px 5px 5px 13px;
+    width:30px;
+    padding: 3px 10px;" ng-if="match.model.firstTag" class="icon-th-large">
+    <span class="glyphicon glyphicon-th-large"></span>
+</div>
 <a>
-    <div ng-if="match.model.groupId">
-        {{match.model.name}}
-    </div>
-    <div ng-if="match.model.login">
-        @{{match.model.username}}
-    </div>
-    <div ng-if="!match.model.groupId && match.model.name">
-        #{{match.model.name}}
+    <div>
+        <div ng-if="match.model.groupId">
+            {{match.model.name}}
+        </div>
+        <div ng-if="match.model.login">
+            @{{match.model.username}}
+        </div>
+        <div ng-if="!match.model.groupId && match.model.name">
+            #{{match.model.name}}
+        </div>
     </div>
 </a>
