@@ -1,7 +1,7 @@
 <div>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()"><span class="glyphicon glyphicon-remove"></span></button>
-        <h4 class="modal-title" translate="tatami.home.post.update"></h4>
+        <h4 class="modal-title">{{ determineTitle() | translate }}</h4>
     </div>
     <div class="modal-body">
         <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">

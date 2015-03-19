@@ -195,6 +195,7 @@ TatamiApp.config(function($translateProvider) {
                         'mandatory': 'Please fill out this field.'
                     },
                     'update': 'Update your status',
+                    'replyTo': 'Reply',
                     'preview': 'Preview',
                     'edit': 'Edit',
                     'characters': {
