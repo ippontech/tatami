@@ -77,7 +77,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                                 return $q.resolve(null);
                                             }
                                             return response;
-                                        }).$promise);
+                                        }));
                         }
                         else {
                             temp.push(null);

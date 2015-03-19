@@ -9,15 +9,15 @@ HomeModule.controller('StatusListController', [
     'userRoles',
     'showModal',
     function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles, showModal) {
-        $scope.profile = profile;
-        $scope.statuses = statusesWithContext;
-        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
-
-        $scope.busy = false;
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
-            console.log('hi');
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
+
+        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
+
+        $scope.profile = profile;
+        $scope.statuses = statusesWithContext;
+        $scope.busy = false;
 
         if($scope.statuses.length == 0) {
             $scope.end = true;
