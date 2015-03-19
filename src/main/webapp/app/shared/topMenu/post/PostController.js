@@ -13,6 +13,15 @@ PostModule.controller('PostController', [
     'curStatus',
     function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus) {
 
+        $scope.determineTitle = function() {
+            if(angular.isDefined(curStatus)) {
+                return 'tatami.home.post.replyTo'
+            }
+            else {
+                return 'tatami.home.post.update'
+            }
+        };
+
         $scope.notArchived = function(groups) {
             var filteredGroups = [];
             for(var group in groups) {
