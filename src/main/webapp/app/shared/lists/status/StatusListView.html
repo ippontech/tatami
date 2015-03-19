@@ -99,7 +99,7 @@
                                     </a>
                                     -->
                                     <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
-                                    <button ng-controller="StatusManagerController" ng-click="showModal(status.context.statusId)" class="btn-link status-action status-action-reply button-ios">
+                                    <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.context.statusId })" class="btn-link status-action status-action-reply button-ios">
                                         <i class="glyphicon glyphicon-comment"></i>
                                         <span translate="tatami.home.status.reply"></span>
                                     </button>
@@ -223,7 +223,7 @@
                                     </a>
                                     -->
                                     <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
-                                    <button ng-controller="StatusManagerController" ng-click="showModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
+                                    <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.statusId })" class="btn-link status-action status-action-reply button-ios">
                                         <i class="glyphicon glyphicon-comment"></i>
                                         <span translate="tatami.home.status.reply"></span>
                                     </button>
