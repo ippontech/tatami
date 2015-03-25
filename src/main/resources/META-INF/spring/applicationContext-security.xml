@@ -22,7 +22,9 @@
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
 
-    <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true" entry-point-ref="googleEntryPoint">
+    <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true">
+        <http-basic entry-point-ref="googleEntryPoint"/>
+
         <intercept-url pattern="/tatami/j_spring_pac4j_security_check" access="isAuthenticated()"/>
     </http>
 

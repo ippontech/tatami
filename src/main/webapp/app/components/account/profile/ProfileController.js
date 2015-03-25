@@ -20,6 +20,7 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', '$translate'
 
         // Update the user information
         $scope.updateUser = function() {
+            var re = /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/;
             // Toast strings should be translatable
             ProfileService.update($scope.userProfile, function() {
                 ngToast.create({

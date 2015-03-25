@@ -80,6 +80,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     });
 }]);
 
+
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
 
