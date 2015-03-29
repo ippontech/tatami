@@ -242,7 +242,8 @@ TatamiApp.config(function($translateProvider) {
                     'shared': 'shared',
                     'groupAdmin': 'Group Administrator',
                     'announce': 'Announce',
-                    'isAnnounced': 'Announced by'
+                    'isAnnounced': 'Announced by',
+                    'viewConversation': 'View Conversation'
                 },
 
                 // Tag View

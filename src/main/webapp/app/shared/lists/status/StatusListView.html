@@ -12,7 +12,7 @@
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.context.avatarURL + ')' }"></div>
                             </a>
                         </div>
-                        <div class="status-content-container">
+                        <div ui-sref="tatami.home.home.status({ statusId: status.context.statusId })" class="status-content-container">
                             <h5 class="statusitem-name">
                                 <!-- Possible backend bug where SHARE type statuses have shareByMe=true and sharedByUsername == profile.username -->
                                 <small ng-if="status.context.type == 'SHARE'">
@@ -33,7 +33,7 @@
                                 <span ng-if="status.context.type == 'MENTION_FRIEND'" translate="tatami.home.status.followed"></span>
                                 <small> · </small>
                                 <!-- Replace hover title with hover bubble -->
-                                <a ui-sref="tatami.home.status({ status: status.context.statusId })">
+                                <a ui-sref="tatami.home.home.status({ statusId: status.context.statusId })">
                                     <small ng-if="!isOneDayOrMore(status.context.statusDate)" title="{{ status.context.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.context.statusDate"></small>
                                     <small ng-if="isOneDayOrMore(status.context.statusDate)" title="{{ status.context.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ status.context.statusDate | amDateFormat:'MMM D'}}</small>
                                 </a>
@@ -92,40 +92,39 @@
                         <div ng-if="status.context.type == 'STATUS' || status.context.type == 'SHARE' || status.context.type == 'ANNOUNCEMENT'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
                             <div>
                                 <small class="statusitem-footer">
-                                    <!--
-                                    <a ui-sref="home.status({ status: status.context.statusId })" class="btn-link status-action button-ios">
-                                        <i class="glyphicon glyphicon-eye-open"></i>
-                                        <span translate="tatami.home.status.view"></span>
-                                    </a>
-                                    -->
-                                    <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
-                                    <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.context.statusId })" class="btn-link status-action status-action-reply button-ios">
-                                        <i class="glyphicon glyphicon-comment"></i>
-                                        <span translate="tatami.home.status.reply"></span>
-                                    </button>
-                                    <button ng-if="status.context.username != profile.username && !status.context.shareByMe && !status.context.statusPrivate" ng-click="shareStatus(status, $index, true)" class="btn-link status-action status-action-share button-ios">
-                                        <i class="glyphicon glyphicon-retweet"></i>
-                                        <span translate="tatami.home.status.share"></span>
-                                    </button>
-                                    <button ng-click="favoriteStatus(status, $index, true)" class="btn-link status-action status-action-favorite button-ios">
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <span translate="tatami.home.status.favorite"></span>
-                                    </button>
-                                    <button ng-click="announceStatus(status.context)" ng-show="isAdmin && status.context.groupId === null" class="btn-link status-action status-action-announce button-ios">
-                                        <i class="glyphicon glyphicon-bullhorn"></i>
-                                        <span translate="tatami.home.status.announce"></span>
-                                    </button>
-                                    <button ng-if="status.context.username == profile.username" ng-click="deleteStatus(status.context, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
-                                        <i class="glyphicon glyphicon-trash"></i>
-                                        <span translate="tatami.home.status.delete"></span>
-                                    </button>
+                                    <span>
+                                        <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
+                                        <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.context.statusId })" class="btn-link status-action status-action-reply button-ios">
+                                            <i class="glyphicon glyphicon-comment"></i>
+                                            <span translate="tatami.home.status.reply"></span>
+                                        </button>
+                                        <button ng-if="status.context.username != profile.username && !status.context.shareByMe && !status.context.statusPrivate" ng-click="shareStatus(status, $index, true)" class="btn-link status-action status-action-share button-ios">
+                                            <i class="glyphicon glyphicon-retweet"></i>
+                                            <span translate="tatami.home.status.share"></span>
+                                        </button>
+                                        <button ng-click="favoriteStatus(status, $index, true)" class="btn-link status-action status-action-favorite button-ios">
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <span translate="tatami.home.status.favorite"></span>
+                                        </button>
+                                        <button ng-click="announceStatus(status.context)" ng-show="isAdmin && status.context.groupId === null" class="btn-link status-action status-action-announce button-ios">
+                                            <i class="glyphicon glyphicon-bullhorn"></i>
+                                            <span translate="tatami.home.status.announce"></span>
+                                        </button>
+                                        <button ng-if="status.context.username == profile.username" ng-click="deleteStatus(status.context, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                            <span translate="tatami.home.status.delete"></span>
+                                        </button>
+                                    </span>
+                                    <span ng-if="status.context.replyTo" class="pull-right">
+                                        <a ui-sref="tatami.home.home.status({ statusId: status.context.statusId })" class="btn-link status-action button-ios">
+                                            <span translate="tatami.home.status.viewConversation"></span>
+                                        </a>
+                                    </span>
                                 </small>
                             </div>
                         </div>
 
                         <div id="share"></div>
-
-                        <div id="preview"></div>
 
                         <br>
                     </div>
@@ -136,7 +135,7 @@
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
-                        <div class="status-content-container">
+                        <div ui-sref="tatami.home.home.status({ statusId: status.statusId })" class="status-content-container">
                             <h5 class="statusitem-name">
                                 <!-- Possible backend bug where SHARE type statuses have shareByMe=true and sharedByUsername == profile.username -->
                                 <small ng-if="status.type == 'SHARE'">
@@ -157,7 +156,7 @@
                                 <span ng-if="status.type == 'MENTION_FRIEND'" translate="tatami.home.status.followed"></span>
                                 <small> · </small>
                                 <!-- Replace hover title with hover bubble -->
-                                <a ui-sref="tatami.home.status({ status: status.statusId })">
+                                <a ui-sref="tatami.home.home.status({ statusId: status.statusId })">
                                     <small ng-if="!isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></small>
                                     <small ng-if="isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ status.statusDate | amDateFormat:'MMM D'}}</small>
                                 </a>
@@ -216,40 +215,39 @@
                         <div ng-if="status.type == 'STATUS' || status.type == 'SHARE' || status.type == 'ANNOUNCEMENT'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
                             <div>
                                 <small class="statusitem-footer">
-                                    <!--
-                                    <a ui-sref="home.status({ status: status.statusId })" class="btn-link status-action button-ios">
-                                        <i class="glyphicon glyphicon-eye-open"></i>
-                                        <span translate="tatami.home.status.view"></span>
-                                    </a>
-                                    -->
-                                    <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
-                                    <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.statusId })" class="btn-link status-action status-action-reply button-ios">
-                                        <i class="glyphicon glyphicon-comment"></i>
-                                        <span translate="tatami.home.status.reply"></span>
-                                    </button>
-                                    <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index, false)" class="btn-link status-action status-action-share button-ios">
-                                        <i class="glyphicon glyphicon-retweet"></i>
-                                        <span translate="tatami.home.status.share"></span>
-                                    </button>
-                                    <button ng-click="favoriteStatus(status, $index, false)" class="btn-link status-action status-action-favorite button-ios">
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <span translate="tatami.home.status.favorite"></span>
-                                    </button>
-                                    <button ng-click="announceStatus(status)" ng-show="isAdmin && status.groupId === null" class="btn-link status-action status-action-announce button-ios">
-                                        <i class="glyphicon glyphicon-bullhorn"></i>
-                                        <span translate="tatami.home.status.announce"></span>
-                                    </button>
-                                    <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
-                                        <i class="glyphicon glyphicon-trash"></i>
-                                        <span translate="tatami.home.status.delete"></span>
-                                    </button>
+                                    <span>
+                                        <!-- Might be better to change these ng-if's to ng-show, that way we aren't removing the entire DOM element on each hover over -->
+                                        <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.statusId })" class="btn-link status-action status-action-reply button-ios">
+                                            <i class="glyphicon glyphicon-comment"></i>
+                                            <span translate="tatami.home.status.reply"></span>
+                                        </button>
+                                        <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index, false)" class="btn-link status-action status-action-share button-ios">
+                                            <i class="glyphicon glyphicon-retweet"></i>
+                                            <span translate="tatami.home.status.share"></span>
+                                        </button>
+                                        <button ng-click="favoriteStatus(status, $index, false)" class="btn-link status-action status-action-favorite button-ios">
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <span translate="tatami.home.status.favorite"></span>
+                                        </button>
+                                        <button ng-click="announceStatus(status)" ng-show="isAdmin && status.groupId === null" class="btn-link status-action status-action-announce button-ios">
+                                            <i class="glyphicon glyphicon-bullhorn"></i>
+                                            <span translate="tatami.home.status.announce"></span>
+                                        </button>
+                                        <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                            <span translate="tatami.home.status.delete"></span>
+                                        </button>
+                                    </span>
+                                    <span ng-if="status.replyTo" class="pull-right">
+                                        <a ui-sref="tatami.home.home.status({ statusId: status.statusId })" class="btn-link status-action button-ios">
+                                            <span translate="tatami.home.status.viewConversation"></span>
+                                        </a>
+                                    </span>
                                 </small>
                             </div>
                         </div>
 
                         <div id="share"></div>
-
-                        <div id="preview"></div>
                     </div>
                 </div>
                 <div id="after">

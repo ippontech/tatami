@@ -69,15 +69,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     var temp = [];
                     for(var i = 0; i < statuses.length; ++i) {
                         if(statuses[i].replyTo) {
-                            temp.push(
-                                StatusService.get({ statusId: statuses[i].replyTo })
-                                    .$promise.then(
-                                        function(response) {
-                                            if(response === null) {
-                                                return $q.resolve(null);
-                                            }
-                                            return response;
-                                        }));
+                            temp.push(StatusService.get({ statusId: statuses[i].replyTo }));
                         }
                         else {
                             temp.push(null);
@@ -244,6 +236,23 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 users: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
+                }]
+            }
+        })
+        .state('tatami.home.home.status', {
+            url: '/status/:statusId',
+            views: {
+                'homeBodyContent@tatami.home': {
+                    templateUrl: 'app/components/home/status/StatusView.html',
+                    controller: 'StatusController'
+                }
+            },
+            resolve: {
+                status: ['StatusService', '$stateParams', '$q', function(StatusService, $stateParams, $q) {
+                    return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                }],
+                context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                    return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
                 }]
             }
         })

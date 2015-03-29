@@ -123,7 +123,10 @@ HomeModule.controller('StatusListController', [
 
         $scope.announceStatus = function(status) {
             // Update announcement in model?
-            StatusService.update({ statusId: status.statusId }, { announced: true });
+            StatusService.update({ statusId: status.statusId }, { announced: true },
+                function() {
+                    $scope.$state.reload();
+            });
         };
 
         // Might want extra delete logic when the same statuses show up in multiple places
@@ -131,7 +134,9 @@ HomeModule.controller('StatusListController', [
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
-                    $scope.statuses.splice(index, 1);
+                    $scope.$state.reload();
+                    //$scope.$state.transitionTo('tatami.home.home.timeline', {}, { reload: true });
+                    //$scope.statuses.splice(index, 1);
             });
         };
     }
