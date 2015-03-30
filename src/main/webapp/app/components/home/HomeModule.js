@@ -26,6 +26,23 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }]
             }
         })
+        .state('tatami.home.status', {
+            url: '/status/:statusId',
+            views: {
+                'homeBodyContent@tatami.home': {
+                    templateUrl: 'app/components/home/status/StatusView.html',
+                    controller: 'StatusController'
+                }
+            },
+            resolve: {
+                status: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                    return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                }],
+                context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                    return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
+                }]
+            }
+        })
         //state for all views that use home sidebar
         .state('tatami.home.home', {
             url: '^/home',
@@ -236,23 +253,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 users: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
-                }]
-            }
-        })
-        .state('tatami.home.home.status', {
-            url: '/status/:statusId',
-            views: {
-                'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/components/home/status/StatusView.html',
-                    controller: 'StatusController'
-                }
-            },
-            resolve: {
-                status: ['StatusService', '$stateParams', '$q', function(StatusService, $stateParams, $q) {
-                    return StatusService.get({ statusId: $stateParams.statusId }).$promise;
-                }],
-                context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                    return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
                 }]
             }
         })

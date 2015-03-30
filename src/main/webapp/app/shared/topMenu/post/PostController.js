@@ -121,7 +121,7 @@ PostModule.controller('PostController', [
 
         // Handles closing the modal via escape and clicking outside the modal
         $modalInstance.result.finally(function() {
-            $scope.$state.go('tatami.home.home.timeline');
+            $scope.$state.go('^');
         });
 
 
