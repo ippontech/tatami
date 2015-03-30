@@ -2,7 +2,7 @@
     <section class="timeline">
         <div class="tatams" ng-repeat="status in statuses">
             <div ng-class="{ 'tatam-background': status.statusId != $stateParams.statusId, 'status-top-rounded': $index == 0, 'status-bottom-rounded': $index == statuses.length - 1 }" class="tatam pointer tatam-border-lr" style="display: block;">
-                <div ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false">
+                <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false">
                     <div ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
                         <div class="pull-left background-image-fffix statusitem-img">
                             <a ui-sref="tatami.home.profile.statuses({ username: status.username })">
