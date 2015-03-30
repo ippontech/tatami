@@ -309,7 +309,6 @@ TatamiApp.config(function($translateProvider) {
             
             //Account View
             'account': {
-
                 // Profile Tab
                 'profile': {
                     'title': 'Profile',
@@ -603,7 +602,7 @@ TatamiApp.config(function($translateProvider) {
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
-                'favorites': 'favoris',
+                'favorites': 'Favoris',
                 'companyTimeline': 'Timeline de votre entreprise',
 
                 //Top Menu
@@ -761,7 +760,6 @@ TatamiApp.config(function($translateProvider) {
 
             //Account View
             'account': {
-
                 // Profile Tab
                 'profile': {
                     'title': 'Profil',
