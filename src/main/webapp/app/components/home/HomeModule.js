@@ -26,6 +26,23 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }]
             }
         })
+        .state('tatami.home.status', {
+            url: '/status/:statusId',
+            views: {
+                'homeBodyContent@tatami.home': {
+                    templateUrl: 'app/components/home/status/StatusView.html',
+                    controller: 'StatusController'
+                }
+            },
+            resolve: {
+                status: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                    return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                }],
+                context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                    return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
+                }]
+            }
+        })
         //state for all views that use home sidebar
         .state('tatami.home.home', {
             url: '^/home',
@@ -65,7 +82,35 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-
+                // All of this logic should probably be moved to a controller if possible
+                // This logic will be redone too
+                context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
+                    var temp = [];
+                    for(var i = 0; i < statuses.length; ++i) {
+                        if(statuses[i].replyTo) {
+                            temp.push(StatusService.get({ statusId: statuses[i].replyTo })
+                                .$promise
+                                // The part below needs to be here otherwise resolving seems to not work properly?
+                                .then(
+                                    function(response) {
+                                        if(response === null) {
+                                            return $q.resolve(null);
+                                        }
+                                    return response;
+                            }));
+                        }
+                        else {
+                            temp.push(null);
+                        }
+                    }
+                    return $q.all(temp);
+                }],
+                statusesWithContext: ['statuses', 'context', function(statuses, context) {
+                    for(var i = 0; i < statuses.length; ++i) {
+                        statuses[i]['context'] = context[i];
+                    }
+                    return statuses;
+                }],
                 showModal: ['statuses', function(statuses) {
                     return statuses.length === 0;
                 }]

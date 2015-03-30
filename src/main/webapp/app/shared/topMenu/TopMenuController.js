@@ -2,9 +2,10 @@ TopMenuModule.controller('TopMenuController', [
     '$scope',
     '$window',
     '$http',
+    '$translate',
     'UserSession',
     'SearchService',
-    function($scope, $window, $http, UserSession, SearchService) {
+    function($scope, $window, $http, $translate, UserSession, SearchService) {
         $scope.current = {};
         $scope.current.searchString = '';
 
@@ -14,6 +15,10 @@ TopMenuModule.controller('TopMenuController', [
                     UserSession.clearSession();
                     $scope.$state.go('tatami.login.main');
                 });
+        };
+
+        $scope.changeLanguage = function(key) {
+            $translate.use(key);
         };
 
         $scope.getResults = function(searchString) {

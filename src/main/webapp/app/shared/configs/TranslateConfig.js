@@ -2,6 +2,9 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'pageNotFound': 'Page not found.',
+            'error': 'An error has occurred.',
+
             'welcome': {
                 'title': 'Welcome to Tatami',
                 'message': 'Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.',
@@ -49,8 +52,7 @@ TatamiApp.config(function($translateProvider) {
                 'previous': 'Prev',
                 'end': 'End'
             },
-            'error': 'An error has occurred.',
-            'pageNotFound': 'Page not found.',
+
             // Login View
             'login': {
                 'title': 'Login',
@@ -80,17 +82,13 @@ TatamiApp.config(function($translateProvider) {
                     'line3': "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
                     'login': 'Login using Google Apps'
                 },
-
                 'validation': 'E-mail validation',
                 'passwordSuccess': 'Your e-mail has been validated. Your password will be e-mailed to you.',
                 'returnHome': 'Go to the home page',
                 'registrationEmail': 'Thank you! A registration e-mail has been sent to you.'
             },
 
-
-
             'about': {
-
                 // Presentation Page
                 'presentation': {
                     'title': 'What is Tatami?',
@@ -137,6 +135,7 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
+                // Terms of Service Page
                 'tos': {
                     'title': 'Terms of Service'
                 },
@@ -242,7 +241,8 @@ TatamiApp.config(function($translateProvider) {
                     'shared': 'shared',
                     'groupAdmin': 'Group Administrator',
                     'announce': 'Announce',
-                    'isAnnounced': 'Announced by'
+                    'isAnnounced': 'Announced by',
+                    'viewConversation': 'View Conversation'
                 },
 
                 // Tag View
@@ -309,7 +309,6 @@ TatamiApp.config(function($translateProvider) {
             
             //Account View
             'account': {
-
                 // Profile Tab
                 'profile': {
                     'title': 'Profile',
@@ -453,6 +452,9 @@ TatamiApp.config(function($translateProvider) {
 
     $translateProvider.translations('fr', {
         'tatami': {
+            'error': 'Il y a une erreur',
+            'pageNotFound': 'Page non trouvée.',
+
             'welcome': {
                 'title': 'Bienvenue à Tatami',
                 'message': 'Votre timeline est vide! Avez-vous besoin d\'aide pour apprendre à utilizer Tatami? Veuillez clicker sur le bouton ci-dessous pour lancer une présentation.',
@@ -487,7 +489,7 @@ TatamiApp.config(function($translateProvider) {
                     'line3': 'Il y a aussi des groupes privés: pour eux vous ne pouvez pas vous inscrire: le propriétaire du groupe doit vous ajouter en tant que membre.'
                 },
                 'trends': {
-                    'title': 'Trends',
+                    'title': 'Tendances',
                     'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-le pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
                 },
                 'whoToFollow': {
@@ -500,8 +502,7 @@ TatamiApp.config(function($translateProvider) {
                 'previous': 'Précédent',
                 'end': 'Fin'
             },
-            'error': 'Il y a une erreur',
-            'pageNotFound': 'Page non trouvée.',
+
             // Login View
             'login': {
                 'title': 'Login',
@@ -539,7 +540,6 @@ TatamiApp.config(function($translateProvider) {
             },
 
             'about': {
-
                 // Presentation Page
                 'presentation': {
                     'title': 'Qu\'est-ce que c\'est Tatami?',
@@ -586,6 +586,7 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
+                // Terms of Service Page
                 'tos': {
                     'title': 'Conditions de service'
                 },
@@ -601,7 +602,7 @@ TatamiApp.config(function($translateProvider) {
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
-                'favorites': 'favoris',
+                'favorites': 'Favoris',
                 'companyTimeline': 'Timeline de votre entreprise',
 
                 //Top Menu
@@ -665,8 +666,8 @@ TatamiApp.config(function($translateProvider) {
                 // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'Mes Groupes',
-                    'whoToFollow': 'Qui suivre',
-                    'trends': 'Trends',
+                    'whoToFollow': 'Qui Suivre',
+                    'trends': 'Tendances',
                     'public': 'PUB',
                     'private': 'PVT',
                     'archived': 'ARC',
@@ -691,7 +692,8 @@ TatamiApp.config(function($translateProvider) {
                     'shared': 'partagé',
                     'groupAdmin': 'Administrateur du groupe',
                     'announce': 'Annoncer',
-                    'isAnnounced': 'Annoncé par'
+                    'isAnnounced': 'Annoncé par',
+                    'viewConversation': 'Voir La Conversation'
                 },
 
                 // Tag View
@@ -751,14 +753,13 @@ TatamiApp.config(function($translateProvider) {
                         'statuses': 'Status',
                         'following': 'Abonnement',
                         'followers': 'Abonné',
-                        'trends': 'Trends'
+                        'trends': 'Tendances'
                     }
                 }
             },
 
             //Account View
             'account': {
-
                 // Profile Tab
                 'profile': {
                     'title': 'Profil',
@@ -859,7 +860,7 @@ TatamiApp.config(function($translateProvider) {
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
-                    'trends': 'Trends',
+                    'trends': 'Tendances',
                     'search': 'Recherchez',
                     'tag': 'Tag',
                     'follow': 'Abonné',
@@ -900,5 +901,6 @@ TatamiApp.config(function($translateProvider) {
         }
     });
 
+    $translateProvider.useCookieStorage();
     $translateProvider.preferredLanguage('en');
 });
