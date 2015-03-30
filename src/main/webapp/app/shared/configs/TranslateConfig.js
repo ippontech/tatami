@@ -864,7 +864,7 @@ TatamiApp.config(function($translateProvider) {
                     'tag': 'Tag',
                     'follow': 'Abonné',
                     'following': 'Abonnement',
-                    'unfollow': 'Se désabonné
+                    'unfollow': 'Se désabonné'
                 },
 
                 // Top Posters Tab
