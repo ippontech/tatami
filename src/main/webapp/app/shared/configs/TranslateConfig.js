@@ -901,5 +901,6 @@ TatamiApp.config(function($translateProvider) {
         }
     });
 
+    $translateProvider.useCookieStorage();
     $translateProvider.preferredLanguage('en');
 });
