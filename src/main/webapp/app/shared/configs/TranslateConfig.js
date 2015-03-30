@@ -666,7 +666,7 @@ TatamiApp.config(function($translateProvider) {
                 // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'Mes Groupes',
-                    'whoToFollow': 'Qui suivre',
+                    'whoToFollow': 'Qui Suivre',
                     'trends': 'Trends',
                     'public': 'PUB',
                     'private': 'PVT',
@@ -693,7 +693,7 @@ TatamiApp.config(function($translateProvider) {
                     'groupAdmin': 'Administrateur du groupe',
                     'announce': 'Annoncer',
                     'isAnnounced': 'Annoncé par',
-                    'viewConversation': 'View Conversation'
+                    'viewConversation': 'Voir La Conversation'
                 },
 
                 // Tag View
