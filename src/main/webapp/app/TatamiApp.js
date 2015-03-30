@@ -83,10 +83,6 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
 
-        //$urlRouterProvider.otherwise('/home/timeline');
-        //$urlRouterProvider.otherwise('/home/timeline');
-        //$locationProvider.html5Mode(true);
-
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
@@ -113,14 +109,14 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                     roles: ["ROLE_USER"],
                 }
             })
-            .state('tatami.accessdenied', {
-                templateUrl: 'app/shared/error/500View.html',
+            .state('tatami.pageNotFound', {
+                templateUrl: 'app/shared/error/404View.html',
                 data: {
                     public: true
                 }
             })
-            .state('tatami.pageNotFound', {
-                templateUrl: 'app/shared/error/404View.html',
+            .state('tatami.accessdenied', {
+                templateUrl: 'app/shared/error/500View.html',
                 data: {
                     public: true
                 }

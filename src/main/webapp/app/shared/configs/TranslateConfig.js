@@ -2,6 +2,9 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'pageNotFound': 'Page not found.',
+            'error': 'An error has occurred.',
+
             'welcome': {
                 'title': 'Welcome to Tatami',
                 'message': 'Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.',
@@ -49,8 +52,7 @@ TatamiApp.config(function($translateProvider) {
                 'previous': 'Prev',
                 'end': 'End'
             },
-            'error': 'An error has occurred.',
-            'pageNotFound': 'Page not found.',
+
             // Login View
             'login': {
                 'title': 'Login',
@@ -80,14 +82,11 @@ TatamiApp.config(function($translateProvider) {
                     'line3': "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
                     'login': 'Login using Google Apps'
                 },
-
                 'validation': 'E-mail validation',
                 'passwordSuccess': 'Your e-mail has been validated. Your password will be e-mailed to you.',
                 'returnHome': 'Go to the home page',
                 'registrationEmail': 'Thank you! A registration e-mail has been sent to you.'
             },
-
-
 
             'about': {
 
@@ -137,6 +136,7 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
+                // Terms of Service Page
                 'tos': {
                     'title': 'Terms of Service'
                 },
@@ -450,10 +450,6 @@ TatamiApp.config(function($translateProvider) {
                 'activate': 'Activate'
             }
         }
-    });
-
-    $translateProvider.translations('fr', {
-
     });
 
     $translateProvider.preferredLanguage('en');
