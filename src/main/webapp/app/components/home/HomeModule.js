@@ -82,11 +82,22 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
+                // All of this logic should probably be moved to a controller if possible
+                // This logic will be redone too
                 context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
                     var temp = [];
                     for(var i = 0; i < statuses.length; ++i) {
                         if(statuses[i].replyTo) {
-                            temp.push(StatusService.get({ statusId: statuses[i].replyTo }));
+                            temp.push(StatusService.get({ statusId: statuses[i].replyTo })
+                                .$promise
+                                // The part below needs to be here otherwise resolving seems to not work properly?
+                                .then(
+                                    function(response) {
+                                        if(response === null) {
+                                            return $q.resolve(null);
+                                        }
+                                    return response;
+                            }));
                         }
                         else {
                             temp.push(null);
