@@ -489,7 +489,7 @@ TatamiApp.config(function($translateProvider) {
                     'line3': 'Il y a aussi des groupes privés: pour eux vous ne pouvez pas vous inscrire: le propriétaire du groupe doit vous ajouter en tant que membre.'
                 },
                 'trends': {
-                    'title': 'Trends',
+                    'title': 'Tendances',
                     'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-le pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
                 },
                 'whoToFollow': {
@@ -667,7 +667,7 @@ TatamiApp.config(function($translateProvider) {
                 'sidebar': {
                     'myGroups': 'Mes Groupes',
                     'whoToFollow': 'Qui Suivre',
-                    'trends': 'Trends',
+                    'trends': 'Tendances',
                     'public': 'PUB',
                     'private': 'PVT',
                     'archived': 'ARC',
@@ -753,7 +753,7 @@ TatamiApp.config(function($translateProvider) {
                         'statuses': 'Status',
                         'following': 'Abonnement',
                         'followers': 'Abonné',
-                        'trends': 'Trends'
+                        'trends': 'Tendances'
                     }
                 }
             },
@@ -860,7 +860,7 @@ TatamiApp.config(function($translateProvider) {
                 // Tags Tab
                 'tags': {
                     'title': 'Tags',
-                    'trends': 'Trends',
+                    'trends': 'Tendances',
                     'search': 'Recherchez',
                     'tag': 'Tag',
                     'follow': 'Abonné',
