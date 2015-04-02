@@ -2,6 +2,9 @@ TatamiApp.config(function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
+            'pageNotFound': 'Page not found.',
+            'error': 'An error has occurred.',
+
             'welcome': {
                 'title': 'Welcome to Tatami',
                 'message': 'Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.',
@@ -49,8 +52,7 @@ TatamiApp.config(function($translateProvider) {
                 'previous': 'Prev',
                 'end': 'End'
             },
-            'error': 'An error has occurred.',
-            'pageNotFound': 'Page not found.',
+
             // Login View
             'login': {
                 'title': 'Login',
@@ -80,17 +82,13 @@ TatamiApp.config(function($translateProvider) {
                     'line3': "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
                     'login': 'Login using Google Apps'
                 },
-
                 'validation': 'E-mail validation',
                 'passwordSuccess': 'Your e-mail has been validated. Your password will be e-mailed to you.',
                 'returnHome': 'Go to the home page',
                 'registrationEmail': 'Thank you! A registration e-mail has been sent to you.'
             },
 
-
-
             'about': {
-
                 // Presentation Page
                 'presentation': {
                     'title': 'What is Tatami?',
@@ -137,6 +135,7 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
+                // Terms of Service Page
                 'tos': {
                     'title': 'Terms of Service'
                 },
@@ -242,7 +241,8 @@ TatamiApp.config(function($translateProvider) {
                     'shared': 'shared',
                     'groupAdmin': 'Group Administrator',
                     'announce': 'Announce',
-                    'isAnnounced': 'Announced by'
+                    'isAnnounced': 'Announced by',
+                    'viewConversation': 'View Conversation'
                 },
 
                 // Tag View
@@ -309,7 +309,6 @@ TatamiApp.config(function($translateProvider) {
             
             //Account View
             'account': {
-
                 // Profile Tab
                 'profile': {
                     'title': 'Profile',
@@ -452,8 +451,456 @@ TatamiApp.config(function($translateProvider) {
     });
 
     $translateProvider.translations('fr', {
+        'tatami': {
+            'error': 'Il y a une erreur',
+            'pageNotFound': 'Page non trouvée.',
 
+            'welcome': {
+                'title': 'Bienvenue à Tatami',
+                'message': 'Votre timeline est vide! Avez-vous besoin d\'aide pour apprendre à utilizer Tatami? Veuillez clicker sur le bouton ci-dessous pour lancer une présentation.',
+                'presentation': 'Lancer la présentation',
+                'help': {
+                    'title': 'Aide',
+                    'line1': 'Bienvenue à l\'aide en ligne!',
+                    'line2':' Suivez les étapes suivantes pour une tournée des principales caractéristiques de Tatami .'
+                },
+                'timeline': {
+                    'title': 'Timeline',
+                    'line1': 'Ceci est votre timeline. Il affiche tous les messages',
+                    'bulletPoint1': 'vous mentionner ou envoyé en privé à vous',
+                    'bulletPoint2': 'envoyé par les utilisateurs que vous suivez',
+                    'bulletPoint3': 'envoyé par vous-même ',
+                    'bulletPoint4': 'envoyé à un groupe que vous êtes abonné',
+                    'afterBP1': 'Si elle est vide, ne vous inquiétez pas, elle sera mise à jour dès que vous commencez à suivre d\'autres utilisateurs!',
+                    'afterBP2': 'Lors de l\'affichage d\'un message, vous pouvez y répondre et la marquer comme favori pour le retrouver plus facilement.',
+                    'afterBP3': 'Si un message avait déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail: ce sera plus facile de suivre la conversation sur Tatami.'
+                },
+                'post': {
+                    'title': 'Envoyer un message',
+                    'line1': 'C\'est ici que vous écrivez vos messages que vous souhaitez partager',
+                    'bulletPoint1': 'tous les messages sont publiques par défaut. Ils seront livrés à tous les utilisateurs qui vous suivent',
+                    'bulletPoint2': 'pour écrire un message, vous devez utiliser #hashtags: cela signifie tout simplement l\'ajout d\'un «#» au début de mots importants qui peut être utilisé pour trouver votre message',
+                    'bulletPoint3': 'en mentionnant, ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom: ils seront informés que vous vous adressez à eux'
+                },
+                'groups': {
+                    'title': 'Groupes',
+                    'line1': 'Ceci est la liste des groupes que vous êtes un membre de.',
+                    'line2': 'Vous pouvez trouver et vous abonner à, groupe public dans la page Account/Groupes (menu en haut à droite).',
+                    'line3': 'Il y a aussi des groupes privés: pour eux vous ne pouvez pas vous inscrire: le propriétaire du groupe doit vous ajouter en tant que membre.'
+                },
+                'trends': {
+                    'title': 'Tendances',
+                    'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-le pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
+                },
+                'whoToFollow': {
+                    'title': 'Utilisateurs suggérées',
+                    'line1': 'Ceci est une liste d\'utilisateurs qui partagent des intérêts communs avec vous et que vous pourriez suivre.',
+                    'line2': 'Si vous êtes un nouvel utilisateur, cette liste est probablement vide: Tatami a besoin de temps pour apprendre qui vous êtes afin de vous proposer des utilisateurs',
+                    'line3': 'Et n\'oubliez pas d\'utiliser des #hashtags dans vos messages, il rend tout plus facile!'
+                },
+                'next': 'Suivant',
+                'previous': 'Précédent',
+                'end': 'Fin'
+            },
+
+            // Login View
+            'login': {
+                'title': 'Login',
+                'mainTitle': 'Bienvenue à Tatami',
+                'subtitle': 'Un réseau social d\'entreprise open source',
+                'moreInfo': 'Plus d\'info',
+                'email': 'Email',
+                'password': 'Mot de passe',
+                'remember': 'Souviens-moi',
+                'forgotPassword': 'Mot de passe oublié?',
+                'resetPassword': 'Nouveau mot de passe',
+                'tos': 'Conditions de service',
+                'fail': 'Votre authentification a échoué! Etes-vous sûr que vous avez utilisé un mot de passe correct?',
+                'passwordEmailSent': 'Un e-mail vous a été envoyé, avec des instructions pour générer un nouveau mot de passe.',
+                'unregisteredEmail': 'Cette adresse e-mail n\'est pas enregistré avec Tatami.',
+                'register': {
+                    'title': 'Enregistré',
+                    'line1': 'Un email de confirmation sera envoyé à l\'adresse que vous fournissez.',
+                    'line2': "Le domaine de votre email détermine l'espace de l'entreprise que vous allez rejoindre. Par exemple, les utilisateurs ayant une adresse email@ippon.fr vont joindre l'espace privées de Ippon.",
+                    'line3': "Si vous êtes le premier employé de votre entreprise à se joindre à Tatami, l'espace privé de votre entreprise sera automatiquement créé."
+                },
+                'googleApps': {
+                    'title': 'Google Apps Login',
+                    'line1': 'Cette fonction est pour les utilisateurs de Google Apps pour de travail, qui ont leur nom de domaine de travail géré par Google Apps.',
+                    'link': 'Pour plus d\'informations sur Google Apps pour le travail, cliquez ici.',
+                    'line2': 'Si oui ou non vous avez déjà un compte Tatami, vous pouvez vous connecter avec votre compte Google Apps.',
+                    'line3': "Votre e-mail sera fourni par Google et le nom du domaine de votre e-mail sera utilisé pour vous permettre de rejoindre l'espace privé de votre entreprise.",
+                    'login': 'Login avec Google Apps'
+                },
+
+                'validation': 'Validation e-mail',
+                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe sera envoyé par e-mail à vous.',
+                'returnHome': 'Allez à la page d\'accueil',
+                'registrationEmail': 'Merci! Une inscription e-mail a été envoyé vers vous.'
+            },
+
+            'about': {
+                // Presentation Page
+                'presentation': {
+                    'title': 'Qu\'est-ce que c\'est Tatami?',
+                    'devices': 'Appareils',
+                    'openSource': 'Open Source',
+                    'row1': {
+                        'title': 'Un réseau social d\'entreprise privée',
+                        'line1': 'Mettre à jour votre statut afin d\'informer vos collègues',
+                        'line2': "Abonnez-vous aux timeline des autres employés",
+                        'line3': 'Partager des informations importantes au personnes qui vous suivent',
+                        'line4': 'Discuter et répondre à vos collègues',
+                        'line5': 'Mettez des informations importantes à vos favoris',
+                        'line6': 'Rechercher des informations utiles avec notre moteur de recherche intégré',
+                        'line7': 'Utilisez hashtags trouver des informations associé',
+                        'line8': "Aller aux profils de vos collègues pour voir ce qu'ils travaillent sur",
+                        'line9': 'Des version Anglaise et Française sont disponible, c\'est aussi facile d\'ajouter d\'autre langue'
+                    },
+                    'row2': {
+                        'title': 'Fonctionne sur tous les appareils!',
+                        'line1': 'Application web dynamique (HTML5): rien à installer, à l\'exception d\'un navigateur moderne!',
+                        'line2': "Fonctionne sur les appareils mobiles, des tablets ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
+                        'line3': 'Restez connecté avec votre entreprise où que vous soyez'
+                    },
+                    'row3': {
+                        'title': "Installation et intégration facile avec l'infrastructure informatique de votre entreprise",
+                        'line1': 'Application standard Java',
+                        'line2': 'Vos données vous appartient, pas à votre fournisseur SaaS!',
+                        'line3': 'Intégration avec votre dossier LDAP',
+                        'line4': 'Intégration avec Google Apps',
+                        'line5': 'Entièrement Open Source, avec une licence Apache 2.0, qui est sympa pour les entreprises',
+                        'line6': 'Facile à étendre ou modifier selon vos besoins',
+                        'line7': 'Haute performance (basé sur Cassandra d\'Apache), même sur les petits hardware',
+                        'line8': 'Rejoignez le projet et proposer des patches sur notre page Github:'
+                    },
+                    'row4': {
+                        'title': "Egalement disponible en mode SaaS, entièrement géré par Ippon Technologies",
+                        'line1': "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l'utiliser directement",
+                        'line2': 'Mode multi-entreprise sécurisé: chaque entreprise dispose de son propre espace privé',
+                        'line3': 'Cryptage SSL 256 bits: tous les transferts de données sont entièrement sécurisé'
+                    },
+                    'row5': {
+                        'title': 'Besoin de plus d\'informations sur notre produit?',
+                        'line1': 'Notre équipe de vente est impatient de vous entendre! Appelez-nous au +33 01 46 12 48 48 ou par courriel à'
+                    }
+                },
+
+                // Terms of Service Page
+                'tos': {
+                    'title': 'Conditions de service'
+                },
+
+                // License Page
+                'license': {
+                    'title': 'Licence du source code',
+                    'copyright': 'Droit d\'auteur'
+                }
+            },
+
+            // Home View
+            'home': {
+                'timeline': 'Timeline',
+                'mentions': 'Mentions',
+                'favorites': 'Favoris',
+                'companyTimeline': 'Timeline de votre entreprise',
+
+                //Top Menu
+                'menu': {
+                    'logo': 'Ippon Technologies Logo',
+                    'title': 'Tatami',
+                    'about': {
+                        'title': 'Information',
+                        'presentation': 'Présentation',
+                        'tos': 'Conditions de service',
+                        'language': {
+                            'language': 'Language',
+                            'en': 'English',
+                            'fr': 'Français'
+                        },
+                        'license': 'License du source code',
+                        'github': {
+                            'issues': 'Envoyer un rapport de bug',
+                            'fork': 'Fork Tatami sur Github'
+                        },
+                        'ippon': {
+                            'website': 'Site d\'Ippon Technologies',
+                            'blog': 'Blog d\'Ippon Technologies Blog',
+                            'twitter': 'Suivez @ippontech sur Twitter'
+                        }
+                    },
+                    'search': 'Recherchez',
+                    'help': 'Aide',
+                    'account': {
+                        'title': 'Compte',
+                        'companyTimeline': 'Timeline de votre enterprise',
+                        'logout': 'Déconnexion'
+                    }
+                },
+
+                // Post Modal
+                'post': {
+                    'mandatory': 'Commentaire est obligatoire',
+                    'content': {
+                        'mandatory': 'S\'il vous plaît remplir ce champ..'
+                    },
+                    'update': 'Mettre à jour votre statut',
+                    'replyTo': 'Répondre',
+                    'preview': 'Prévisualisation',
+                    'edit': 'Editer',
+                    'characters': {
+                        'left': 'Caractères restants:'
+                    },
+                    'options': 'Options',
+                    'shareLocation': 'Partager votre localisation',
+                    'group': 'Groupe',
+                    'reply': 'Répondre à ce statut',
+                    'files': 'Fichiers',
+                    'drop': {
+                        'file': 'Déposez vos fichiers ici'
+                    },
+                    'markdown': 'Markdown Supported',
+                    'button': 'Post'
+                },
+
+                // Home Sidebar View
+                'sidebar': {
+                    'myGroups': 'Mes Groupes',
+                    'whoToFollow': 'Qui Suivre',
+                    'trends': 'Tendances',
+                    'public': 'PUB',
+                    'private': 'PVT',
+                    'archived': 'ARC',
+                    'administrator': 'A',
+                    'publicToolTip': 'Groupe public',
+                    'privateToolTip': 'Groupe privé',
+                    'archivedToolTip': 'Groupe archivé',
+                    'administratorToolTip': 'Vous administrez ce groupe.'
+                },
+
+                // Status List item or User List item
+                'status': {
+                    'replyTo': 'En réponse à',
+                    'private': 'Message privé',
+                    'reply': 'Répondre',
+                    'share': 'Partager',
+                    'favorite': 'Favoris',
+                    'delete': 'Suprimez',
+                    'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut?',
+                    'sharedYour': 'a partagé votre statut',
+                    'followed': 'vous suit',
+                    'shared': 'partagé',
+                    'groupAdmin': 'Administrateur du groupe',
+                    'announce': 'Annoncer',
+                    'isAnnounced': 'Annoncé par',
+                    'viewConversation': 'Voir La Conversation'
+                },
+
+                // Tag View
+                'tag': {
+                    'title': 'Tag',
+                    'follow': 'Abonnés',
+                    'following': 'Abonnements',
+                    'unfollow': 'Se désabonné'
+                },
+
+                // Group View
+                'group': {
+                    'join': 'Joindre',
+                    'joined': 'Joined',
+                    'leave': 'Quitter',
+                    'manage': 'Gérer',
+                    'statuses': 'Statuts',
+                    'members': 'Membres',
+                    'membersSingular': '1 Membre',
+                    'membersPlural': '{{ amount }} Membres'
+                },
+
+                // Profile View
+                'profile': {
+                    'statuses': 'Statuts',
+                    'following': 'Abonnement',
+                    'followers': 'Abonnés',
+                    'follow': 'Suivre',
+                    'unfollow': 'Se désabonner',
+                    'followsYou': 'Vous suivre',
+
+                    'youStatusesSingular': 'Votre 1 statut',
+                    'youStatusesPlural': 'Vos {{ amount }} statuts',
+                    'youFollowingSingular': 'Vous êtes abonné à 1 personne',
+                    'youFollowingPlural': 'Vous êtes abonné à {{ amount }} personnes',
+                    'youFollowersSingular': '1 personne vous suivre',
+                    'youFollowersPlural': '{{ amount }} personnes vous suivre',
+
+                    'userStatusesSingular': '@{{ username }} a partagé un statut',
+                    'userStatusesPlural': '@{{ username }} a partagé {{ amount }} statuts',
+                    'userFollowingSingular': '@{{ username }} suit 1 personne',
+                    'userFollowingPlural': '@{{ username }} suit {{ amount }} personnes',
+                    'userFollowersSingular': '@{{ username }} a 1 abonnement',
+                    'userFollowersPlural': '@{{ username }} a {{ amount }} abonnements',
+
+                    'deactivatedUser': 'Désactivé l\'utilisateur',
+
+                    // Profile Sidebar View
+                    'sidebar': {
+                        'information': 'Information',
+                        'statistics': 'Statistiques',
+                        'firstName': 'Prénom',
+                        'lastName': 'Nom',
+                        'email': 'Email',
+                        'jobTitle': 'Titre du travail',
+                        'phoneNumber': 'Numero de telephone',
+                        'statuses': 'Status',
+                        'following': 'Abonnement',
+                        'followers': 'Abonné',
+                        'trends': 'Tendances'
+                    }
+                }
+            },
+
+            //Account View
+            'account': {
+                // Profile Tab
+                'profile': {
+                    'title': 'Profil',
+                    'dropPhoto': 'Déposez votre photo ici pour la mettre à jour',
+                    'update': 'Mettez à jour votre profil',
+                    'email': 'Email',
+                    'firstName': 'Prénom',
+                    'lastName': 'Nom',
+                    'jobTitle': 'Titre de travail',
+                    'phoneNumber': 'Numero de telephone',
+                    'delete': 'Supprimez votre compte',
+                    'confirmDelete': 'Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?',
+                    'save': 'Votre profil a été sauvé'
+                },
+
+                // Preferences Tab
+                'preferences': {
+                    'title': 'Preferences',
+                    'notifications': 'Notifications',
+                    'notification': {
+                        'email': {
+                            'mention': 'Recevez une notification par email lorsque vous êtes mentionné',
+                            'dailyDigest': 'Obtenez un résumé quotidien email',
+                            'weeklyDigest': 'Obtenez un sommaire hebdomadaire email'
+                        },
+                        'rss': {
+                            'timeline': 'Autoriser RSS publication de votre fils d\'actualité',
+                            'link': 'Lien de votre RSS fils d\'actualité'
+                        }
+                    },
+                    'save': 'Vos préférences ont été sauvegardées'
+                },
+
+                // Password Tab
+                'password': {
+                    'title': 'Mot de passe',
+                    'update': 'Changez votre mot de passe',
+                    'old': 'Ancien mot de passe',
+                    'new': 'Nouveau mot de passe',
+                    'confirm': 'Confirmer votre nouveau mot de pass',
+                    'save': 'Votre mot de passe a été changé'
+                },
+
+                // Files Tab
+                'files': {
+                    'title': 'Fichier',
+                    'filename': 'Nom de fichier',
+                    'size': 'Taille',
+                    'date': 'Date',
+                    'delete': 'Supprimez'
+                },
+
+                // Users Tab
+                'users': {
+                    'title': 'Utilisateur',
+                    'following': 'Abonné',
+                    'recommended': 'Recommendé',
+                    'search': 'Recherchez',
+                    'deactivated': 'Cet utilisateur est désactivé'
+                },
+
+                // Groups Tab
+                'groups': {
+                    'title': 'Groupes',
+                    'createNewGroup': 'Créer un nouveau groupe',
+                    'name': 'Nom',
+                    'description': 'Description',
+                    'public': 'Public',
+                    'private': 'Privé',
+                    'publicWarning': 'Attention: Si ce groupe est public, tout le monde peut y accéder',
+                    'create': 'Créer',
+                    'myGroups': 'Mes Groupes',
+                    'recommended': 'Recommandé',
+                    'search': 'Rechercher',
+                    'group': 'Groupe',
+                    'access': 'Accès',
+                    'members': 'Membres',
+                    'manage': 'Gérer',
+                    'update': 'Mettre à jour let détails de votre groupe',
+                    'archive': 'Voulez-vous archiver ce groupe?',
+                    'allowArchive': 'Oui, ce groupe devrait être archivée',
+                    'denyArchive': 'Non, ce groupe est encore en usage',
+                    'archiveWarning': 'Attention: Groupe archivé sont en lecture seule',
+                    'addMember': 'Ajouter un member',
+                    'username': 'Username',
+                    'role': 'Rôle',
+                    'admin': 'Administrator',
+                    'member': 'Membre',
+                    'join': 'Joindre',
+                    'joined': 'Joignit',
+                    'leave': 'Quitter',
+                    'archived': 'Archivé',
+                    'add': 'Ajouter',
+                    'remove': 'Supprimer',
+                    'save': 'Votre groupe a été créé'
+                },
+
+                // Tags Tab
+                'tags': {
+                    'title': 'Tags',
+                    'trends': 'Tendances',
+                    'search': 'Recherchez',
+                    'tag': 'Tag',
+                    'follow': 'Abonné',
+                    'following': 'Abonnement',
+                    'unfollow': 'Se désabonné'
+                },
+
+                // Top Posters Tab
+                'topPosters': {
+                    'title': 'Top Posters',
+                    'username': 'Username',
+                    'count': 'Combien de Statuts'
+                }
+            },
+
+            'form': {
+                'cancel': 'Annuler',
+                'save': 'Sauvegarder',
+                'success': 'Le formulaire a été enregistré avec succès.',
+                'fail': 'Impossible de sauvegarder le formulaire.',
+                'deleted': 'Votre fichier a été supprimé.'
+            },
+
+            'admin': {
+                'title': 'Dashboard d\'administration',
+                'registered': 'Entreprises enregistrées',
+                'domain': 'Domaine',
+                'count': '# d\'utilisateur(s)',
+                'environment': 'Variables d\'environnement (de tatami.properties)',
+                'propery': 'Property',
+                'value': 'Valeur',
+                'reindex': 'Ré-indexation du moteur de recherche',
+                'confirm': 'Êtes-vous sûr que vous voulez ré-indexer les moteurs de recherche?',
+                'success': 'La ré-indexation du moteur de recherche a réussi.',
+                'deactivate': 'Désactiver',
+                'activate': 'Activer'
+            }
+        }
     });
 
+    $translateProvider.useCookieStorage();
     $translateProvider.preferredLanguage('en');
 });

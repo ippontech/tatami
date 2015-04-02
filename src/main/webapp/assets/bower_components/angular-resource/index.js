@@ -1,3 +1,2 @@
 require('./angular-resource');
-
-module.exports = angular-resource;
+module.exports = 'ngResource';
