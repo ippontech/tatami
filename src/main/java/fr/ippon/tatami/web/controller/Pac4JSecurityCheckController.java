@@ -9,7 +9,7 @@ public class Pac4JSecurityCheckController {
 	
     @RequestMapping(value = "/j_spring_pac4j_security_check")
     public String googleCheck() {
-        return "redirect:/tatami/";
+        return "redirect:/tatami";
     }
 
 }
