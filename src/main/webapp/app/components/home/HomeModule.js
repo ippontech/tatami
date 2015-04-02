@@ -35,8 +35,15 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                status: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                    return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                status: ['StatusService', '$stateParams', '$q', function(StatusService, $stateParams, $q) {
+                    return StatusService.get({ statusId: $stateParams.statusId })
+                        .$promise.then(
+                            function(response) {
+                                if(angular.equals({}, response.toJSON())) {
+                                    return $q.reject();
+                                }
+                            return response;
+                    });
                 }],
                 context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
                     return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
@@ -82,19 +89,17 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                // All of this logic should probably be moved to a controller if possible
+                // Is it possible to move this logic to a controller?
                 // This logic will be redone too
                 context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
                     var temp = [];
                     for(var i = 0; i < statuses.length; ++i) {
                         if(statuses[i].replyTo) {
                             temp.push(StatusService.get({ statusId: statuses[i].replyTo })
-                                .$promise
-                                // The part below needs to be here otherwise resolving seems to not work properly?
-                                .then(
+                                .$promise.then(
                                     function(response) {
-                                        if(response === null) {
-                                            return $q.resolve(null);
+                                        if(angular.equals({}, response.toJSON())) {
+                                            return $q.when(null);
                                         }
                                     return response;
                             }));
