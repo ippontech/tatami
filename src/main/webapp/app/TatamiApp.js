@@ -23,7 +23,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     UserSession.authenticate().then(function(result) {
         if(result !== null) {
             // We aren't logged in, clear the old session, and send the user to the login page
-            if(result.action === null) {
+            if(result.action === null && $state.data && !$state.data.public) {
                 UserSession.clearSession();
                 $state.go('tatami.login.main');
             }
