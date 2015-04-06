@@ -17,6 +17,16 @@ TopMenuModule.controller('TopMenuController', [
                 });
         };
 
+        $scope.goToBlog = function() {
+            var lang = $translate.use();
+            if (lang!='fr' && lang!='en')
+                lang=$translate.proposedLanguage();
+            if (lang=='fr')
+                window.open("http://blog.ippon.fr/");
+            else
+                window.open('http://www.ipponusa.com/blog/');
+        };
+
         $scope.changeLanguage = function(key) {
             $translate.use(key);
         };
