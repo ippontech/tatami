@@ -129,8 +129,12 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     statusesWithContext[j].replies.unshift(statuses[i]);
                                     break;
                                 }
+
+                                if(j == statusesWithContext.length - 1) {
+                                    individualStatuses.push(statuses[i]);
+                                    break;
+                                }
                             }
-                            individualStatuses.push(statuses[i]);
                         } else {
                             var addIt = true;
                             for(var j = 0; j < statusesWithContext.length; j++) {
@@ -412,8 +416,12 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     statusesWithContext[j].replies.unshift(statuses[i]);
                                     break;
                                 }
+
+                                if(j == statusesWithContext.length - 1) {
+                                    individualStatuses.push(statuses[i]);
+                                    break;
+                                }
                             }
-                            individualStatuses.push(statuses[i]);
                         } else {
                             var addIt = true;
                             for(var j = 0; j < statusesWithContext.length; j++) {
