@@ -109,10 +109,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     return $q.all(context);
                 }],
                 statusesWithContext: ['statuses', 'context', function(statuses, context) {
-                    
-                    // !!!!!
-                    // Test statuses that have replyTo to a status that doesn't exist
-                    // !!!!!
 
                     var statusesWithContext = [];
 
@@ -134,6 +130,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     break;
                                 }
                             }
+                            individualStatuses.push(statuses[i]);
                         } else {
                             var addIt = true;
                             for(var j = 0; j < statusesWithContext.length; j++) {
@@ -145,7 +142,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                 }
                             }
                             if(addIt) {
-                                individualStatuses.push(statuses[i]);   
+                                individualStatuses.push(statuses[i]);
                             }
                         }
                     }
@@ -395,10 +392,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     return $q.all(context);
                 }],
                 statusesWithContext: ['statuses', 'context', function(statuses, context) {
-                    
-                    // !!!!!
-                    // Test statuses that have replyTo to a status that doesn't exist
-                    // !!!!!
 
                     var statusesWithContext = [];
 
@@ -420,6 +413,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     break;
                                 }
                             }
+                            individualStatuses.push(statuses[i]);
                         } else {
                             var addIt = true;
                             for(var j = 0; j < statusesWithContext.length; j++) {
@@ -431,7 +425,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                 }
                             }
                             if(addIt) {
-                                individualStatuses.push(statuses[i]);   
+                                individualStatuses.push(statuses[i]);
                             }
                         }
                     }
