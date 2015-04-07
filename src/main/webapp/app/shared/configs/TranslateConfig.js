@@ -799,7 +799,7 @@ TatamiApp.config(function($translateProvider) {
                     'update': 'Changez votre mot de passe',
                     'old': 'Ancien mot de passe',
                     'new': 'Nouveau mot de passe',
-                    'confirm': 'Confirmer votre nouveau mot de pass',
+                    'confirm': 'Confirmer votre nouveau mot de passe',
                     'save': 'Votre mot de passe a été changé'
                 },
 

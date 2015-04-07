@@ -16,6 +16,22 @@ TopMenuModule.controller('TopMenuController', [
                     $scope.$state.go('tatami.login.main');
                 });
         };
+        //Method to redirect to blog based on language. 
+        $scope.goToBlog = function() {
+            var lang = $translate.use();
+            // if it fails to detect the one being used, it will look for the proposed one.
+            // Useful in asynchronous scenarios. Check StackOverflow for examples
+            if (lang!='fr' && lang!='en')
+                lang=$translate.proposedLanguage();
+           switch (lang) {
+               case 'fr':
+                   window.open("http://blog.ippon.fr/");
+                   break;
+               default:
+                   window.open('http://www.ipponusa.com/blog/');
+                   break;
+           }
+        };
 
         $scope.changeLanguage = function(key) {
             $translate.use(key);
