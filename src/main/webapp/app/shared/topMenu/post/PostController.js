@@ -133,6 +133,13 @@ PostModule.controller('PostController', [
          */
         $scope.statusChange = function(param) {
             $scope.status.content = param;
+            //$scope.textSearch();
+        };
+
+        $scope.textSearch = function() {
+            // Get current character
+            var current = $scope.status.content.charAt($scope.status.content.length-1);
+            console.log(current)
         };
 
         /**

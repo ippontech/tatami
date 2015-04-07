@@ -6,4 +6,4 @@ TatamiApp.directive('tatamiTypeahead', function() {
         templateUrl: '/app/shared/directives/typeahead/TypeaheadTemplate.html',
         controller: 'TypeaheadController'
     }
-})
+});
