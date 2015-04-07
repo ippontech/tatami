@@ -130,6 +130,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     break;
                                 }
 
+                                // If the context reply doesn't exist, then make the reply an individual status
                                 if(j == statusesWithContext.length - 1) {
                                     individualStatuses.push(statuses[i]);
                                     break;
@@ -417,6 +418,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     break;
                                 }
 
+                                // If the context reply doesn't exist, then make the reply an individual status
                                 if(j == statusesWithContext.length - 1) {
                                     individualStatuses.push(statuses[i]);
                                     break;
