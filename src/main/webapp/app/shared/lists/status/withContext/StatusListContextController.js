@@ -1,4 +1,4 @@
-HomeModule.controller('StatusListController', [
+HomeModule.controller('StatusListContextController', [
     '$scope',
     'StatusService',
     'HomeService',
@@ -109,6 +109,7 @@ HomeModule.controller('StatusListController', [
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
+                    //$scope.$state.transitionTo('tatami.home.home.timeline');
             });
         };
 

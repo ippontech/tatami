@@ -81,8 +81,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'TimelineHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
-                    controller: 'StatusListController'
+                    templateUrl: 'app/shared/lists/status/withContext/StatusListContextView.html',
+                    controller: 'StatusListContextController'
                 }
             },
             resolve: {
@@ -213,7 +213,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -235,7 +235,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -256,7 +256,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -278,7 +278,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'TagHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -312,7 +312,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'GroupHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -369,7 +369,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'ProfileHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
