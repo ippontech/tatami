@@ -89,13 +89,14 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                // Is it possible to move this logic to a controller?
-                // This logic will be redone too
                 context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
-                    var temp = [];
+                    var temp = new Set();
+                    var context = [];
+
                     for(var i = 0; i < statuses.length; ++i) {
-                        if(statuses[i].replyTo) {
-                            temp.push(StatusService.get({ statusId: statuses[i].replyTo })
+                        if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
+                            temp.add(statuses[i].replyTo);
+                            context.push(StatusService.get({ statusId: statuses[i].replyTo })
                                 .$promise.then(
                                     function(response) {
                                         if(angular.equals({}, response.toJSON())) {
@@ -104,17 +105,72 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     return response;
                             }));
                         }
-                        else {
-                            temp.push(null);
-                        }
                     }
-                    return $q.all(temp);
+                    return $q.all(context);
                 }],
                 statusesWithContext: ['statuses', 'context', function(statuses, context) {
-                    for(var i = 0; i < statuses.length; ++i) {
-                        statuses[i]['context'] = context[i];
+                    
+                    // !!!!!
+                    // Test statuses that have replyTo to a status that doesn't exist
+                    // !!!!!
+
+                    var statusesWithContext = [];
+
+                    // Fill array with context statuses
+                    for(var i = 0; i < context.length; i++) {
+                        if(context[i] != null) {
+                            statusesWithContext.push({ status: context[i], replies: [] });
+                        }
                     }
-                    return statuses;
+
+                    var individualStatuses = [];
+
+                    // Attach replies to corresponding context status
+                    for(var i = 0; i < statuses.length; i++) {
+                        if(statuses[i].replyTo) {
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                if(statuses[i].replyTo == statusesWithContext[j].status.statusId) {
+                                    statusesWithContext[j].replies.unshift(statuses[i]);
+                                    break;
+                                }
+                            }
+                        } else {
+                            var addIt = true;
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                // If the status isn't already in the timeline as a
+                                // context status, then add it to individualStatuses
+                                if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
+                                    addIt = false;
+                                    break;
+                                }
+                            }
+                            if(addIt) {
+                                individualStatuses.push(statuses[i]);   
+                            }
+                        }
+                    }
+
+                    // Put remaining individual statuses (ones that aren't replies) into the timeline
+                    for(var i = 0; i < individualStatuses.length; i++) {
+                        if(statusesWithContext.length == 0) {
+                            statusesWithContext.push({ status: statuses[i], replies: null });
+                            continue;
+                        }
+
+                        for(var j = 0; j < statusesWithContext.length; j++) {
+
+                            // !!!!!
+                            // Check if statement, see if works for individual statuses at end of timeline
+                            // !!!!!
+
+                            if(individualStatuses[i].statusDate < statusesWithContext[j].status.statusDate) {
+                                statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                break;
+                            }
+                        }
+                    }
+
+                    return statusesWithContext;
                 }],
                 showModal: ['statuses', function(statuses) {
                     return statuses.length === 0;

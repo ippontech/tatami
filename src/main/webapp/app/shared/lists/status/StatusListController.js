@@ -5,7 +5,7 @@ HomeModule.controller('StatusListController', [
     'TagService',
     'GroupService',
     'profile',
-    'statuses',
+    'statusesWithContext',
     'userRoles',
     'showModal',
     function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles, showModal) {
@@ -91,52 +91,32 @@ HomeModule.controller('StatusListController', [
             return moment().diff(moment(date), 'days', true) >= 1;
         };
 
-        $scope.favoriteStatus = function(status, index, favoriteContext) {
-            if(favoriteContext) {
-                StatusService.update({ statusId: status.context.statusId }, { favorite: !status.context.favorite }, 
-                    function(response) {
-                        $scope.statuses[index].context.favorite = response.favorite;
-                });
-            }
-            else {
-                StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
-                    function(response) {
-                        $scope.statuses[index].favorite = response.favorite;
-                });
-            }
+        $scope.favoriteStatus = function(status) {
+            StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
+                function(response) {
+                    $scope.$state.reload();
+            });
         };
 
-        $scope.shareStatus = function(status, index, shareContext) {
-            if(shareContext) {
-                StatusService.update({ statusId: status.context.statusId }, { shared: !status.context.shareByMe }, 
-                    function(response) {
-                        $scope.statuses[index].context.shareByMe = response.shareByMe;
-                });
-            }
-            else {
-                StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
-                    function(response) {
-                        $scope.statuses[index].shareByMe = response.shareByMe;
-                });
-            }
+        $scope.shareStatus = function(status) {
+            StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
+                function(response) {
+                    $scope.$state.reload();
+            });
         };
 
         $scope.announceStatus = function(status) {
-            // Update announcement in model?
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
             });
         };
 
-        // Might want extra delete logic when the same statuses show up in multiple places
-        $scope.deleteStatus = function(status, index, confirmMessage) {
+        $scope.deleteStatus = function(status, confirmMessage) {
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
                     $scope.$state.reload();
-                    //$scope.$state.transitionTo('tatami.home.home.timeline', {}, { reload: true });
-                    //$scope.statuses.splice(index, 1);
             });
         };
     }
