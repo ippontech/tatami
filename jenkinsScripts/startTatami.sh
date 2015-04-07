@@ -1,9 +1,11 @@
 #!/bin/bash
 
+#Arguments usage: googleKey googleSecret serverURL
+
 #Insert google auth variables into the build. 
-googleKey=$(cat ../../../googleKey.txt)
-googleSecret=$(cat ../../../googleSecret.txt)
-newServer="$(cat ../../../ServerName.txt)"
+googleKey=$1
+googleSecret=$2
+newServer="$3
 
 replaceKey='${tatami.google.clientId}'
 replaceSecret='${tatami.google.clientSecret}'
