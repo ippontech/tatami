@@ -81,21 +81,22 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'TimelineHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
-                    controller: 'StatusListController'
+                    templateUrl: 'app/shared/lists/status/withContext/StatusListContextView.html',
+                    controller: 'StatusListContextController'
                 }
             },
             resolve: {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                // Is it possible to move this logic to a controller?
-                // This logic will be redone too
                 context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
-                    var temp = [];
+                    var temp = new Set();
+                    var context = [];
+
                     for(var i = 0; i < statuses.length; ++i) {
-                        if(statuses[i].replyTo) {
-                            temp.push(StatusService.get({ statusId: statuses[i].replyTo })
+                        if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
+                            temp.add(statuses[i].replyTo);
+                            context.push(StatusService.get({ statusId: statuses[i].replyTo })
                                 .$promise.then(
                                     function(response) {
                                         if(angular.equals({}, response.toJSON())) {
@@ -104,17 +105,88 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                                     return response;
                             }));
                         }
-                        else {
-                            temp.push(null);
-                        }
                     }
-                    return $q.all(temp);
+                    return $q.all(context);
                 }],
                 statusesWithContext: ['statuses', 'context', function(statuses, context) {
-                    for(var i = 0; i < statuses.length; ++i) {
-                        statuses[i]['context'] = context[i];
+
+                    var statusesWithContext = [];
+
+                    // Fill array with context statuses
+                    for(var i = 0; i < context.length; i++) {
+                        if(context[i] != null) {
+                            statusesWithContext.push({ status: context[i], replies: [] });
+                        }
                     }
-                    return statuses;
+
+                    var individualStatuses = [];
+
+                    // Attach replies to corresponding context status
+                    for(var i = 0; i < statuses.length; i++) {
+                        if(statuses[i].replyTo) {
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                if(statuses[i].replyTo == statusesWithContext[j].status.statusId) {
+                                    statusesWithContext[j].replies.unshift(statuses[i]);
+                                    break;
+                                }
+
+                                // If the context reply doesn't exist, then make the reply an individual status
+                                if(j == statusesWithContext.length - 1) {
+                                    individualStatuses.push(statuses[i]);
+                                    break;
+                                }
+                            }
+                        } else {
+                            var addIt = true;
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                // If the status isn't already in the timeline as a
+                                // context status, then add it to individualStatuses
+                                if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
+                                    addIt = false;
+                                    break;
+                                }
+                            }
+                            if(addIt) {
+                                individualStatuses.push(statuses[i]);
+                            }
+                        }
+                    }
+
+                    // Put remaining individual statuses (ones that aren't replies) into the timeline
+                    for(var i = 0; i < individualStatuses.length; i++) {
+                        // If the timeline is empty, put in a status
+                        if(statusesWithContext.length == 0) {
+                            statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                            continue;
+                        }
+
+                        for(var j = 0; j <= statusesWithContext.length; j++) {
+                            try {
+                                // If the status block has replies, we need to check the 
+                                // last reply's post date/time, because that is the latest status in the block.
+                                // We order the timeline by the latest status in the block.
+                                if(statusesWithContext[j].replies != null && statusesWithContext[j].replies.length != 0) {
+                                    var index = statusesWithContext[j].replies.length - 1;
+                                    if(statusesWithContext[j].replies[index].statusDate < individualStatuses[i].statusDate) {
+                                        statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                        break;
+                                    }
+                                } else {
+                                    // Otherwise compare using the date of the individual status
+                                    if(statusesWithContext[j].status.statusDate < individualStatuses[i].statusDate) {
+                                        statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                        break;
+                                    }
+                                }
+                            } catch(err) {
+                                // For statuses that are at the end (bottom) of the timeline
+                                statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                                break;
+                            }
+                        }
+                    }
+
+                    return statusesWithContext;
                 }],
                 showModal: ['statuses', function(statuses) {
                     return statuses.length === 0;
@@ -141,7 +213,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -163,7 +235,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -184,7 +256,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -206,7 +278,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'TagHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -240,7 +312,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'GroupHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -297,7 +369,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'ProfileHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/StatusListView.html',
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
                     controller: 'StatusListController'
                 }
             },
@@ -305,7 +377,105 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
                     return StatusService.getUserTimeline({ username: $stateParams.username }).$promise;
                 }],
+                context: ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
+                    var temp = new Set();
+                    var context = [];
 
+                    for(var i = 0; i < statuses.length; ++i) {
+                        if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
+                            temp.add(statuses[i].replyTo);
+                            context.push(StatusService.get({ statusId: statuses[i].replyTo })
+                                .$promise.then(
+                                    function(response) {
+                                        if(angular.equals({}, response.toJSON())) {
+                                            return $q.when(null);
+                                        }
+                                    return response;
+                            }));
+                        }
+                    }
+                    return $q.all(context);
+                }],
+                statusesWithContext: ['statuses', 'context', function(statuses, context) {
+
+                    var statusesWithContext = [];
+
+                    // Fill array with context statuses
+                    for(var i = 0; i < context.length; i++) {
+                        if(context[i] != null) {
+                            statusesWithContext.push({ status: context[i], replies: [] });
+                        }
+                    }
+
+                    var individualStatuses = [];
+
+                    // Attach replies to corresponding context status
+                    for(var i = 0; i < statuses.length; i++) {
+                        if(statuses[i].replyTo) {
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                if(statuses[i].replyTo == statusesWithContext[j].status.statusId) {
+                                    statusesWithContext[j].replies.unshift(statuses[i]);
+                                    break;
+                                }
+
+                                // If the context reply doesn't exist, then make the reply an individual status
+                                if(j == statusesWithContext.length - 1) {
+                                    individualStatuses.push(statuses[i]);
+                                    break;
+                                }
+                            }
+                        } else {
+                            var addIt = true;
+                            for(var j = 0; j < statusesWithContext.length; j++) {
+                                // If the status isn't already in the timeline as a
+                                // context status, then add it to individualStatuses
+                                if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
+                                    addIt = false;
+                                    break;
+                                }
+                            }
+                            if(addIt) {
+                                individualStatuses.push(statuses[i]);
+                            }
+                        }
+                    }
+
+                    // Put remaining individual statuses (ones that aren't replies) into the timeline
+                    for(var i = 0; i < individualStatuses.length; i++) {
+                        // If the timeline is empty, put in a status
+                        if(statusesWithContext.length == 0) {
+                            statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                            continue;
+                        }
+
+                        for(var j = 0; j <= statusesWithContext.length; j++) {
+                            try {
+                                // If the status block has replies, we need to check the 
+                                // last reply's post date/time, because that is the latest status in the block.
+                                // We order the timeline by the latest status in the block.
+                                if(statusesWithContext[j].replies != null && statusesWithContext[j].replies.length != 0) {
+                                    var index = statusesWithContext[j].replies.length - 1;
+                                    if(statusesWithContext[j].replies[index].statusDate < individualStatuses[i].statusDate) {
+                                        statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                        break;
+                                    }
+                                } else {
+                                    // Otherwise compare using the date of the individual status
+                                    if(statusesWithContext[j].status.statusDate < individualStatuses[i].statusDate) {
+                                        statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                        break;
+                                    }
+                                }
+                            } catch(err) {
+                                // For statuses that are at the end (bottom) of the timeline
+                                statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                                break;
+                            }
+                        }
+                    }
+
+                    return statusesWithContext;
+                }],
                 showModal: function() {
                     return false;
                 }
