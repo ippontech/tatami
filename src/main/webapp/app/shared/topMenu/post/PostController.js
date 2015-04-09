@@ -7,11 +7,13 @@ PostModule.controller('PostController', [
     '$scope',
     '$modalInstance',
     '$upload',
+    '$q',
     'StatusService',
     'GeolocalisationService',
     'groups',
     'curStatus',
-    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus) {
+    'SearchService',
+    function($scope, $modalInstance, $upload, $q, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
 
         $scope.determineTitle = function() {
             if(angular.isDefined(curStatus)) {
@@ -42,7 +44,7 @@ PostModule.controller('PostController', [
             upload: [],
             contentEmpty: true,
             files: [],
-            attachments: []
+            attachments: [],
         };
 
         $scope.status = {            // This is the current user status information
@@ -133,14 +135,24 @@ PostModule.controller('PostController', [
          */
         $scope.statusChange = function(param) {
             $scope.status.content = param;
-            //$scope.textSearch();
         };
 
-        $scope.textSearch = function() {
-            // Get current character
-            var current = $scope.status.content.charAt($scope.status.content.length-1);
-            console.log(current)
+        $scope.fetchUsers = function(term) {
+            return SearchService.query({ 'term': 'users', q: term }, function(result) {
+                $scope.users = result;
+            })
         };
+
+        $scope.selectUser = function(item) {
+            return '@' + item.username;
+        }
+
+        $scope.print = function() {
+            console.log($scope.current.simpleData);
+            console.log($scope.typedTerm);
+            console.log($scope.simplePeople);
+        }
+
 
         /**
          * Resets any previously set status data

@@ -11,6 +11,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'ui.router',
     'ui.bootstrap',
     'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
+    'mentio',
     'LocalStorageModule'
 ]);
 
@@ -23,10 +24,16 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     UserSession.authenticate().then(function(result) {
         if(result !== null) {
             // We aren't logged in, clear the old session, and send the user to the login page
-            if(result.action === null && $state.data && !$state.data.public) {
-                UserSession.clearSession();
-                $state.go('tatami.login.main');
+            if(result.action === null) {
+                if(angular.isDefined($state.current.data) && !$state.current.data.public) {
+                    UserSession.clearSession();
+                    $state.go('tatami.login.main');
+                }
+                if(angular.isDefined($state.current) && $state.current.url === "^") {
+                    $state.go('tatami.login.main');
+                }
             }
+
             // We are logged in, but the session hasn't been set, so we set it
             if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
                 UserSession.setLoginState(true);
@@ -50,12 +57,12 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             }
         }
     });
-
+/*
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
         $state.transitionTo('tatami.pageNotFound', null, { location: false })
     });
-
+*/
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
         $rootScope.destinationState = toState;
         $rootScope.destinationParams = toStateParams;
@@ -95,7 +102,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 views: {
                     'topMenu@': {
                         templateUrl: 'app/shared/topMenu/TopMenuView.html',
-                        controller: 'TopMenuController',
+                        controller: 'TopMenuController'
                     },
                     '': {
                         templateUrl: 'index.html'
@@ -108,7 +115,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 },
                 data: {
                     public: false,
-                    roles: ["ROLE_USER"],
+                    roles: ["ROLE_USER"]
                 }
             })
             .state('tatami.pageNotFound', {
