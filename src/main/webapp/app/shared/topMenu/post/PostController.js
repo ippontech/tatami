@@ -145,13 +145,20 @@ PostModule.controller('PostController', [
 
         $scope.selectUser = function(item) {
             return '@' + item.username;
-        }
+        };
 
-        $scope.print = function() {
-            console.log($scope.current.simpleData);
-            console.log($scope.typedTerm);
-            console.log($scope.simplePeople);
-        }
+        $scope.fetchTags = function(term) {
+            if(term.length > 0) {
+                return SearchService.query({ 'term': 'tags', q: term }, function(result) {
+                    $scope.tags = result;
+                })
+            }
+
+        };
+
+        $scope.selectTag = function(item) {
+            return '#' + item.name;
+        };
 
 
         /**
