@@ -204,8 +204,10 @@
                     </li>
                 </ul>
                 <form id="searchform" class="navbar-form pull-right col-span-4" action="">
-                    <!--<input name="search" ng-model="searchBar" mentio mentio-items="results" mentio-search="getResults(term)" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
-                    -->
+                    <!--
+                    <input name="search" ng-model="searchBar" mentio mentio-items="results" mentio-search="getResults(term)" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
+-->
+
                     <input name="search" ng-model="asyncSelected" typeahead="val.name for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/app/shared/topMenu/SearchView.html" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
 
                     <!-- Clear search field when clicking the x icon ? -->

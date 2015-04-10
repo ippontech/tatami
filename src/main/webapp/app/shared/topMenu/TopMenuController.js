@@ -40,7 +40,6 @@ TopMenuModule.controller('TopMenuController', [
 
         $scope.getResults = function(searchString) {
             return SearchService.get({ term: 'all', q: searchString }).$promise.then(function(result) {
-                console.log(result);
                 if(angular.isDefined(result.groups[0])) {
                     result.groups[0].firstGroup = true;
                 }
