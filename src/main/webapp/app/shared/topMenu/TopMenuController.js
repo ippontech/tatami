@@ -40,7 +40,6 @@ TopMenuModule.controller('TopMenuController', [
 
         $scope.getResults = function(searchString) {
             return SearchService.get({ term: 'all', q: searchString }).$promise.then(function(result) {
-                console.log(result);
                 if(angular.isDefined(result.groups[0])) {
                     result.groups[0].firstGroup = true;
                 }
@@ -50,6 +49,7 @@ TopMenuModule.controller('TopMenuController', [
                 if(angular.isDefined(result.users[0])) {
                     result.users[0].firstUser = true;
                 }
+                //$scope.results = result.groups.concat(result.users.concat(result.tags));
                 return result.groups.concat(result.users.concat(result.tags));
             })
         };

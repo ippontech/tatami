@@ -10,8 +10,33 @@
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
             <!-- The popover doesn't quite work yet, ideally the popover will show when current.contentEmpty is true -->
-            <textarea ng-if="!current.reply" ng-trim="false" popover="{{ 'tatami.home.post.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" placeholder="{{ 'tatami.home.post.update' | translate}}" maxlength="750" rows="5" required="required"></textarea>
-            <textarea ng-if="current.reply" ng-trim="false" popover="{{ 'tatami.home.post.content.mandatory' | translate}}" popover-placement="bottom" popover-trigger="current.contentEmpty" ng-model="status.content" ng-change="statusChange(status.content)" maxlength="750" rows="5" required="required"></textarea>
+
+            <textarea mentio
+                      mentio-typed-text="result"
+                      mentio-id="'postContent'"
+                      mentio-items="users"
+                      mentio-search="fetchUsers(term)"
+                      mentio-select="selectUser(item)"
+                      mentio-template-url="/app/shared/topMenu/post/DropdownUserTemplate.html"
+                      ng-trim="false"
+                      popover="{{ 'tatami.home.post.content.mandatory' | translate}}"
+                      popover-placement="bottom"
+                      popover-trigger="current.contentEmpty"
+                      ng-model="status.content"
+                      ng-change="statusChange(status.content)"
+                      placeholder="{{ current.reply | placeholderFilter }}"
+                      maxlength="750"
+                      rows="5"
+                      required="required">
+            </textarea>
+
+            <mentio-menu mentio-for="'postContent'"
+                         mentio-trigger-char="'#'"
+                         mentio-template-url="/app/shared/topMenu/post/DropdownTagTemplate.html"
+                         mentio-search="fetchTags(term)"
+                         mentio-select="selectTag(item)"
+                         mentio-items="tags">
+            </mentio-menu>
             <div>
                 {{ 'tatami.home.post.characters.left' | translate }} <span class="countstatus badge">{{ charCount-status.content.length }}</span>
                 <a class="pull-right" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
