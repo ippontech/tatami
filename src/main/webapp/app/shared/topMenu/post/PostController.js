@@ -7,13 +7,12 @@ PostModule.controller('PostController', [
     '$scope',
     '$modalInstance',
     '$upload',
-    '$q',
     'StatusService',
     'GeolocalisationService',
     'groups',
     'curStatus',
     'SearchService',
-    function($scope, $modalInstance, $upload, $q, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
+    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
 
         $scope.determineTitle = function() {
             if(angular.isDefined(curStatus)) {
@@ -44,7 +43,7 @@ PostModule.controller('PostController', [
             upload: [],
             contentEmpty: true,
             files: [],
-            attachments: [],
+            attachments: []
         };
 
         $scope.status = {            // This is the current user status information
