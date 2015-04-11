@@ -208,7 +208,7 @@
                     <input name="search" ng-model="searchBar" mentio mentio-items="results" mentio-search="getResults(term)" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
 -->
 
-                    <input name="search" ng-model="asyncSelected" typeahead="val.name for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/app/shared/topMenu/SearchView.html" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
+                    <input ng-model="asyncSelected" typeahead-focus-first="false" typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/app/shared/topMenu/SearchView.html" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
 
                     <!-- Clear search field when clicking the x icon ? -->
                     <!-- Probably should just remove it -->
