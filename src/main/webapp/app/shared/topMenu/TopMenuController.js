@@ -54,13 +54,13 @@ TopMenuModule.controller('TopMenuController', [
             })
         };
 
-        $scope.search = function() {
-            console.log($scope.current.searchString);
-            if($scope.current.searchString.length > 0) {
-                SearchService.get({ term: 'all', q: $scope.current.searchString }, function(result) {
-                    console.log(result);
-                    // Now render the result in a dropdown box
-                })
+        $scope.changeInput = function(param) {
+            $scope.searchString = param;
+        };
+
+        $scope.searchStatuses = function(e) {
+            if(e.keyCode === 13) {
+                $scope.$state.go('tatami.home.search', { searchTerm: $scope.searchString });
             }
         };
 
