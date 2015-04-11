@@ -51,7 +51,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             }
         })
         .state('tatami.home.search', {
-            url: '/home/search/:searchTerm',
+            url: '/search/:searchTerm',
             views: {
                 'homeBodyHeader@tatami.home': {
                     templateUrl: 'app/components/home/search/SearchHeaderView.html',
