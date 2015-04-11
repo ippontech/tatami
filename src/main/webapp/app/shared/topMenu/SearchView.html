@@ -14,6 +14,7 @@
     </div>
 </a>
 -->
+<!--
 <div style="cursor: default;
     height: auto;
     background: #EDEDED;
@@ -40,9 +41,19 @@
 </div>
 <a>
     <div>
-        <div ng-if="match.model.groupId">
+        <span style="cursor: default;
+              height: auto;
+              background: #EDEDED;
+              padding: 6px 5px 5px 13px;
+              width:30px;
+              padding: 3px 10px;" ng-if="match.model.firstGroup" class="glyphicon glyphicon-tags">
+
+        </span>
+        <span ng-if="match.model.groupId">
             {{match.model.name}}
-        </div>
+        </span>
+    </div>
+    <div>
         <div ng-if="match.model.login">
             @{{match.model.username}}
         </div>
@@ -51,3 +62,40 @@
         </div>
     </div>
 </a>
+-->
+
+
+<div>
+<table class="">
+    <tr>
+
+        <td class="category tags" class="icon-user" ng-if="match.model.login">
+        </td>
+        <td style="cursor: default;
+              height: auto;
+              background: #EDEDED;
+              padding: 6px 5px 5px 13px;
+              width:30px;
+              padding: 3px 10px;" class="glyphicon glyphicon-th-large" ng-if="match.model.groupId">
+        </td>
+        <td style="cursor: default;
+              height: auto;
+              background: #EDEDED;
+              padding: 6px 5px 5px 13px;
+              width:30px;
+              padding: 3px 10px;" class="glyphicon glyphicon-tags" ng-if="!match.model.groupId && match.model.name">
+        </td>
+        <td>
+            <div ng-if="match.model.groupId">
+                <a>{{match.model.name | typeaheadHighlight}}</a>
+            </div>
+            <div ng-if="match.model.login">
+                <a>@{{match.model.username}}</a>
+            </div>
+            <div ng-if="!match.model.groupId && match.model.name">
+                <a>#{{match.model.name}}</a>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>

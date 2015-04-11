@@ -11,7 +11,8 @@ PostModule.controller('PostController', [
     'GeolocalisationService',
     'groups',
     'curStatus',
-    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus) {
+    'SearchService',
+    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
 
         $scope.determineTitle = function() {
             if(angular.isDefined(curStatus)) {
@@ -134,6 +135,30 @@ PostModule.controller('PostController', [
         $scope.statusChange = function(param) {
             $scope.status.content = param;
         };
+
+        $scope.fetchUsers = function(term) {
+            return SearchService.query({ 'term': 'users', q: term }, function(result) {
+                $scope.users = result;
+            })
+        };
+
+        $scope.selectUser = function(item) {
+            return '@' + item.username;
+        };
+
+        $scope.fetchTags = function(term) {
+            if(term.length > 0) {
+                return SearchService.query({ 'term': 'tags', q: term }, function(result) {
+                    $scope.tags = result;
+                })
+            }
+
+        };
+
+        $scope.selectTag = function(item) {
+            return '#' + item.name;
+        };
+
 
         /**
          * Resets any previously set status data

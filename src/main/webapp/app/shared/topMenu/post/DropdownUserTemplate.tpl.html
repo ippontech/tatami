@@ -1,0 +1,6 @@
+<ul class="list-group user-search">
+    <li mentio-menu-item="person" ng-repeat="person in items" class="list-group-item">
+        <span class="text-primary" ng-bind-html="person.username | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+    </li>
+</ul>
+
