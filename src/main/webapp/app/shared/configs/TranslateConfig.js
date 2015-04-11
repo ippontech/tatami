@@ -304,6 +304,12 @@ TatamiApp.config(function($translateProvider) {
                         'followers': 'Followers',
                         'trends': 'Trends'
                     }
+                },
+
+                // Search Page View
+                'searchPage': {
+                    'title': 'Search',
+                    'statusesWith': 'Statuses with:'
                 }
             },
             

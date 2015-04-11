@@ -36,7 +36,7 @@
                                 </a>
                                 <a ng-if="status.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ status.locationURL }}" target="_blank"></a>
                             </h5>
-                            
+
                             <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>
 
                             <small ng-if="status.groupId">

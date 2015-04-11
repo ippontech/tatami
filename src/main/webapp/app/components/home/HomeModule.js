@@ -50,6 +50,26 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }]
             }
         })
+        .state('tatami.home.search', {
+            url: '/home/search/:searchTerm',
+            views: {
+                'homeBodyHeader@tatami.home': {
+                    templateUrl: 'app/components/home/search/SearchHeaderView.html',
+                    controller: 'SearchHeaderController'
+                },
+                'homeBodyContent@tatami.home': {
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
+                    controller: 'StatusListController'
+                }
+            },
+            resolve: {
+                statuses: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                    return SearchService.query({ term: 'status', q: $stateParams.searchTerm }).$promise;
+                }],
+
+                showModal: function() { return  false; }
+            }
+        })
         //state for all views that use home sidebar
         .state('tatami.home.home', {
             url: '^/home',
@@ -220,7 +240,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             resolve: {
                 statuses: ['HomeService', function(HomeService) {
                     return HomeService.getMentions().$promise;
-                }],
+                }]
 
             }
         })
