@@ -129,7 +129,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     return $q.all(context);
                 }],
                 statusesWithContext: ['statuses', 'context', function(statuses, context) {
-
                     var statusesWithContext = [];
 
                     // Fill array with context statuses

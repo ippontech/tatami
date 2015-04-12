@@ -1,14 +1,16 @@
 HomeModule.controller('StatusListContextController', [
     '$scope',
+    '$q',
     'StatusService',
     'HomeService',
     'TagService',
     'GroupService',
     'profile',
+    'statuses',
     'statusesWithContext',
     'userRoles',
     'showModal',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statusesWithContext, userRoles, showModal) {
+    function($scope, $q, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -16,28 +18,137 @@ HomeModule.controller('StatusListContextController', [
         $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.profile = profile;
-        $scope.statuses = statusesWithContext;
+        $scope.statusesWithContext = statusesWithContext;
         $scope.busy = false;
 
-        if($scope.statuses.length == 0) {
+        if(statuses.length == 0) {
             $scope.end = true;
         } else {
             $scope.end = false;
-            $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
+            $scope.finish = statuses[statuses.length - 1].timelineId;
         }
 
-        var loadMoreSuccess = function(statuses) {
+        var organizeStatuses = function(statuses, context) {
+            var statusesWithContext = [];
+
+            // Fill array with context statuses
+            for(var i = 0; i < context.length; i++) {
+                if(context[i] != null) {
+                    statusesWithContext.push({ status: context[i], replies: [] });
+                }
+            }
+
+            var individualStatuses = [];
+
+            // Attach replies to corresponding context status
+            for(var i = 0; i < statuses.length; i++) {
+                if(statuses[i].replyTo) {
+                    for(var j = 0; j < statusesWithContext.length; j++) {
+                        if(statuses[i].replyTo == statusesWithContext[j].status.statusId) {
+                            statusesWithContext[j].replies.unshift(statuses[i]);
+                            break;
+                        }
+
+                        // If the context reply doesn't exist, then make the reply an individual status
+                        if(j == statusesWithContext.length - 1) {
+                            individualStatuses.push(statuses[i]);
+                            break;
+                        }
+                    }
+                } else {
+                    var addIt = true;
+                    // Check current timeline
+                    for(var j = 0; j < $scope.statusesWithContext.length; j++) {
+                        // If the status isn't already in the timeline as a
+                        // context status, then add it to individualStatuses
+                        if(statuses[i].statusId == $scope.statusesWithContext[j].status.statusId) {
+                            addIt = false;
+                            break;
+                        }
+                    }
+                    // Check new timeline chunk
+                    for(var j = 0; j < statusesWithContext.length; j++) {
+                        // If the status isn't already in the timeline as a
+                        // context status, then add it to individualStatuses
+                        if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
+                            addIt = false;
+                            break;
+                        }
+                    }
+                    if(addIt) {
+                        individualStatuses.push(statuses[i]);
+                    }
+                }
+            }
+
+            // Put remaining individual statuses (ones that aren't replies) into the timeline
+            for(var i = 0; i < individualStatuses.length; i++) {
+                // If the timeline is empty, put in a status
+                if(statusesWithContext.length == 0) {
+                    statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                    continue;
+                }
+
+                for(var j = 0; j <= statusesWithContext.length; j++) {
+                    try {
+                        // If the status block has replies, we need to check the 
+                        // last reply's post date/time, because that is the latest status in the block.
+                        // We order the timeline by the latest status in the block.
+                        if(statusesWithContext[j].replies != null && statusesWithContext[j].replies.length != 0) {
+                            var index = statusesWithContext[j].replies.length - 1;
+                            if(statusesWithContext[j].replies[index].statusDate < individualStatuses[i].statusDate) {
+                                statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                break;
+                            }
+                        } else {
+                            // Otherwise compare using the date of the individual status
+                            if(statusesWithContext[j].status.statusDate < individualStatuses[i].statusDate) {
+                                statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
+                                break;
+                            }
+                        }
+                    } catch(err) {
+                        // For statuses that are at the end (bottom) of the timeline
+                        statusesWithContext.push({ status: individualStatuses[i], replies: null });
+                        break;
+                    }
+                }
+            }
+
+            for(var i = 0; i < statusesWithContext.length; i++) {
+                $scope.statusesWithContext.push(statusesWithContext[i]);
+            }
+
+            $scope.finish = statuses[statuses.length - 1].timelineId;
+            $scope.busy = false;
+        };
+
+        var getContext = function(statuses) {
             if(statuses.length == 0) {
                 $scope.end = true; // reached end of list
                 return;
             }
 
-            for(var i = 0; i < statuses.length; i++) {
-                $scope.statuses.push(statuses[i]);
+            var temp = new Set();
+            var context = [];
+
+            for(var i = 0; i < statuses.length; ++i) {
+                if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
+                    temp.add(statuses[i].replyTo);
+                    context.push(StatusService.get({ statusId: statuses[i].replyTo })
+                        .$promise.then(
+                            function(response) {
+                                if(angular.equals({}, response.toJSON())) {
+                                    return $q.when(null);
+                                }
+                            return response;
+                    }));
+                }
             }
 
-            $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
-            $scope.busy = false;
+            $q.all(context).then(function(context) {
+                organizeStatuses(statuses, context);
+            });
         };
 
         $scope.loadMore = function() {
@@ -48,42 +159,7 @@ HomeModule.controller('StatusListContextController', [
             $scope.busy = true;
 
             if($scope.$state.current.name == 'tatami.home.home.timeline') {
-                StatusService.getHomeTimeline({ finish: $scope.finish }, loadMoreSuccess);
-            }
-
-            if($scope.$state.current.name == 'tatami.home.home.mentions') {
-                HomeService.getMentions({ finish: $scope.finish }, loadMoreSuccess);
-            }
-
-            /*
-                Favorites are limited to 50 total per user. All 50 are loaded
-                from the favorites REST endpoint at once. There is no way to use
-                &finish=timelineId for favorites as of now in the backend.
-
-                Keep this commented out until the backend is changed to allow
-                for more than 50 favorites and adding &finish=timelineId to the
-                REST url.
-            */
-            /*
-            if($scope.$state.current.name == 'tatami.home.home.favorites') {
-                HomeService.getFavorites({ finish: $scope.finish }, loadMoreSuccess);
-            }
-            */
-
-            if($scope.$state.current.name == 'tatami.home.home.company') {
-                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
-            }
-
-            if($scope.$state.current.name == 'tatami.home.home.tag') {
-                TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadMoreSuccess);
-            }
-
-            if($scope.$state.current.name == 'tatami.home.home.group.statuses') {
-                GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, finish: $scope.finish }, loadMoreSuccess);
-            }
-
-            if($scope.$state.current.name == 'tatami.home.profile.statuses') {
-                StatusService.getUserTimeline({ username: $scope.$stateParams.username, finish: $scope.finish }, loadMoreSuccess);
+                StatusService.getHomeTimeline({ finish: $scope.finish }, getContext);
             }
         };
 
