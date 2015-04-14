@@ -18,9 +18,9 @@
                       mentio-items="users"
                       mentio-search="fetchUsers(term)"
                       mentio-select="selectUser(item)"
-                      mentio-template-url="/app/shared/topMenu/post/DropdownUserTemplate.tpl.html"
+                      mentio-template-url="/app/shared/topMenu/post/DropdownUserTemplate.html"
                       ng-trim="false"
-                      popover="{{ 'tatami.home.post.content.mandatory' | translate}}"
+                      popover="{{ 'tatami.home.post.content.mandatory' | translate }}"
                       popover-placement="bottom"
                       popover-trigger="current.contentEmpty"
                       ng-model="status.content"
@@ -39,7 +39,7 @@
                          mentio-items="tags">
             </mentio-menu>
             <div>
-                {{ 'tatami.home.post.characters.left' | translate }} <span class="countstatus badge">{{ charCount-status.content.length }}</span>
+                {{ 'tatami.home.post.characters.left' | translate }}<span class="countstatus badge">{{ charCount - status.content.length }}</span>
                 <a class="pull-right" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
             </div>
         </fieldset>
