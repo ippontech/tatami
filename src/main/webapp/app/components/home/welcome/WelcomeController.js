@@ -11,6 +11,7 @@ HomeModule.controller('WelcomeController', ['$scope', '$modalInstance', function
         $modalInstance.result.then(function() {
             $rootScope.$state.go('^');
             // Now start the presentation
+
         })
     };
 
