@@ -30,9 +30,15 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
-                if(angular.isDefined($state.current) && $state.current.url === "^") {
+                // If we are trying to access a state that is public, allow user
+                if(angular.isDefined($rootScope.destinationState)) {
+                    $state.go($rootScope.destinationState, $rootScope.destinationParams);
+                }
+                else {
+                    // The destination state is undefined -- This is the first time accessing the site
                     $state.go('tatami.login.main');
                 }
+
             }
 
             // We are logged in, but the session hasn't been set, so we set it
@@ -49,9 +55,6 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             // State being accesses was not the timeline
             if(angular.isDefined($rootScope.returnToState)) {
                 $state.go($rootScope.returnToState, $rootScope.returnToParams);
-            }
-            else if(angular.isDefined($rootScope.destinationState)) {
-                //$state.go($rootScope.destinationState, $rootScope.destinationParams);
             }
             else {
                 $state.go('tatami.home.home.timeline');
