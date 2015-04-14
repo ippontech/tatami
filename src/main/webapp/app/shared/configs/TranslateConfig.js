@@ -760,7 +760,7 @@ TatamiApp.config(function($translateProvider) {
                         'followers': 'Abonné',
                         'trends': 'Tendances'
                     }
-                }
+                },
 
                 'searchPage': {
                     'title': 'Recherchez',

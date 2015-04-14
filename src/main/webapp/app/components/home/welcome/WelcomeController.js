@@ -7,10 +7,12 @@ HomeModule.controller('WelcomeController', ['$scope', '$modalInstance', function
     };
 
     $scope.launchPresentation = function() {
+        angular.element('#help-tour').trigger('click');
         $modalInstance.dismiss();
         $modalInstance.result.then(function() {
             $rootScope.$state.go('^');
             // Now start the presentation
+
 
         })
     };
