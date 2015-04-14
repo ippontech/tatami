@@ -20,18 +20,17 @@
     </section>
     <section class="hidden-phone groups">
         <div class="panel panel-default">
-            <div class="panel-heading" tour-step 
-            order="3" 
-            title="<b>{{ 'tatami.welcome.groups.title' | translate }}</b>" 
-            content="{{ 'tatami.welcome.groups.line1' | translate }}
-                    <br>
-                    <p>{{ 'tatami.welcome.groups.line2' | translate }}</p>
-                    <br> 
-                    <p>{{ 'tatami.welcome.groups.line3' | translate }}</p>
-                    <br>"
-            placement="right" 
-            skip="false" 
-            on-end="onTourEnd(tour)">
+            <div tour-step
+                 order="3"
+                 title="<b>{{ 'tatami.welcome.groups.title' | translate }}</b>"
+                 content="{{ 'tatami.welcome.groups.line1' | translate }}
+                         <p>{{ 'tatami.welcome.groups.line2' | translate }}</p>
+                         <p>{{ 'tatami.welcome.groups.line3' | translate }}</p>
+                         <br>"
+                 placement="right"
+                 skip="false"
+                 on-end="onTourEnd(tour)"
+                 class="panel-heading">
                 <span class="glyphicon glyphicon-th-large"></span>
                 <span translate="tatami.home.sidebar.myGroups"></span>
             </div>
@@ -52,13 +51,14 @@
     </section>
     <section class="hidden-phone tag-trends">
         <div class="panel panel-default">
-            <div class="panel-heading" tour-step 
-            order="4" 
-            title="<b>{{ 'tatami.welcome.trends.title' | translate }}</b>" 
-            content="{{ 'tatami.welcome.trends.line1' | translate }}" 
-            placement="right" 
-            skip="false" 
-            on-end="onTourEnd(tour)">
+            <div tour-step
+                 order="4"
+                 title="<b>{{ 'tatami.welcome.trends.title' | translate }}</b>"
+                 content="{{ 'tatami.welcome.trends.line1' | translate }}"
+                 placement="right"
+                 skip="false"
+                 on-end="onTourEnd(tour)"
+                class="panel-heading">
                 <span class="glyphicon glyphicon-fire"></span>
                 <span translate="tatami.home.sidebar.trends"></span>
             </div>
@@ -75,18 +75,17 @@
     </section>
     <section class="hidden-phone who-to-follow">
         <div class="panel panel-default">
-            <div class="panel-heading" tour-step 
-            order="5" 
-            title="<b>{{ 'tatami.welcome.whoToFollow.title' | translate }}</b>"
-            content="{{ 'tatami.welcome.whoToFollow.line1' | translate }}
-                    <br>
-                    <p>{{ 'tatami.welcome.whoToFollow.line2' | translate }}</p>
-                    <br> 
-                    <p>{{ 'tatami.welcome.whoToFollow.line3' | translate }}</p>
-                    <br>"
-            placement="right" 
-            skip="false" 
-            on-end="onTourEnd(tour)">
+            <div tour-step
+                 order="5"
+                 title="<b>{{ 'tatami.welcome.whoToFollow.title' | translate }}</b>"
+                 content="{{ 'tatami.welcome.whoToFollow.line1' | translate }}
+                         <p>{{ 'tatami.welcome.whoToFollow.line2' | translate }}</p>
+                         <p>{{ 'tatami.welcome.whoToFollow.line3' | translate }}</p>
+                         <br>"
+                placement="right"
+                skip="false"
+                on-end="onTourEnd(tour)"
+                class="panel-heading">
                 <span class="glyphicon glyphicon-user"></span>
                 <span translate="tatami.home.sidebar.whoToFollow"></span>
             </div>
