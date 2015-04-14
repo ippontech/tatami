@@ -179,14 +179,40 @@
                     </ul>
                 </li>
                 <li class="hidden-phone">
-                    <button tour-step order="2" title="Testing Post Button" content="This is the post button" placement="left" skip="false" on-end="onTourEnd(tour)" class="btn btn-primary navbar-form" ui-sref="tatami.home.home.timeline.post">
+                    <button tour-step
+                            order="2"
+                            title="<b>{{ 'tatami.welcome.post.title' | translate }}</b>"
+                            content="
+                            {{ 'tatami.welcome.post.line1' | translate }}
+                            <ul>
+                                <li>{{ 'tatami.welcome.post.bulletPoint1' | translate }}</li>
+                                <li>{{ 'tatami.welcome.post.bulletPoint2' | translate }}</li>
+                                <li>{{ 'tatami.welcome.post.bulletPoint3' | translate }}</li>
+                            </ul>
+                            <br>"
+                            placement="left"
+                            skip="false"
+                            on-end="onTourEnd(tour)"
+                            class="btn btn-primary navbar-form"
+                            ui-sref="tatami.home.home.timeline.post">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span translate="tatami.home.post.button" class="visible-desktop"></span>
                     </button>
                 </li>
             </ul>
             <ul class="nav pull-right">
-                <li tour-step order="0" title="test" content="testing content" placement="bottom" ng-click="tour.restart(true)" skip="false" on-end="onTourEnd(tour)">
+                <li tour-step
+                    order="0"
+                    title="<b>{{ 'tatami.welcome.help.title' | translate }}</b>"
+                    content="{{ 'tatami.welcome.help.line1' | translate }}
+                    <br>
+                    <p>{{ 'tatami.welcome.help.line2' | translate }}</p>
+                    <br>"
+                    navigation=""
+                    placement="bottom"
+                    ng-click="tour.restart(true)"
+                    skip="false"
+                    on-end="onTourEnd(tour)">
                     <a id="help-tour">
                         <span>
                             <span class="glyphicon glyphicon-question-sign"></span>

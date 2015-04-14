@@ -29,7 +29,7 @@ TatamiApp.config(function($translateProvider) {
                     'title': 'Sending Message',
                     'line1': 'Here is where you write messages you want to share',
                     'bulletPoint1': 'all messages are public by default. They will be delivered to all users who follow you',
-                    'bulletPoint2': 'when writing a message you should use #hashtags: this simply means adding a \'#\' at the beginning of important words that can be used to find your message',
+                    'bulletPoint2': 'when writing a message you should use <\i>#hashtags</i>: this simply means adding a \'#\' at the beginning of important words that can be used to find your message',
                     'bulletPoint3': 'when mentioning, or replying to, other users, you should add a @ at the beginning of their name : they will be notified that you are talking to them'
                 },
                 'groups': {
@@ -306,7 +306,7 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
-                // Search Page View
+                // Search Page View NEEDS TRANSLATING
                 'searchPage': {
                     'title': 'Search',
                     'statusesWith': 'Statuses with:'
