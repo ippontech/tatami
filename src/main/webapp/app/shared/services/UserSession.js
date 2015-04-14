@@ -13,7 +13,6 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
 
         setLoginState: function(loggedIn) {
             localStorageService.set('token', loggedIn);
-            // console.log(localStorageService.get('token'));
         },
 
         clearSession: function() {
@@ -31,7 +30,7 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
                 user = undefined;
             }
 
-            if(angular.isDefined(user) && user.action !== null) {
+            if(this.isUserResolved() && user.action !== null) {
                 deferred.resolve(user);
                 return deferred.promise;
             }

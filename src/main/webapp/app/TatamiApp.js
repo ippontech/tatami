@@ -36,6 +36,7 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                 }
                 else {
                     // The destination state is undefined -- This is the first time accessing the site
+                    UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
 
