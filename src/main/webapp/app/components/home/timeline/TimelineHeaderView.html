@@ -21,7 +21,23 @@
     </ul>
     <section class="tatams-content tatams-margin">
         <div class="tatams-content-title">
-            <h3 tour-step order="1" title="Testing Timeline" content="testing content" placement="left" skip="false" on-end="onTourEnd(tour)">
+            <h3 tour-step
+                order="1"
+                title="<b>{{ 'tatami.welcome.timeline.title' | translate }}</b>"
+                content="{{ 'tatami.welcome.timeline.line1' | translate }}
+                <ul>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint1' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint2' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint3' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint4' | translate }}</li>
+                </ul>
+                <p>{{ 'tatami.welcome.timeline.afterBP1' | translate }}</p>
+                <p>{{ 'tatami.welcome.timeline.afterBP2' | translate }}</p>
+                <p>{{ 'tatami.welcome.timeline.afterBP3' | translate }}</p>
+                <br>"
+                placement="left"
+                skip="false"
+                on-end="onTourEnd(tour)">
                 <strong ng-if="$state.includes('tatami.home.home.timeline')" translate="tatami.home.timeline"></strong>
                 <strong ng-if="$state.current.name == 'tatami.home.home.mentions'" translate="tatami.home.mentions"></strong>
                 <strong ng-if="$state.current.name == 'tatami.home.home.favorites'" translate="tatami.home.favorites"></strong>

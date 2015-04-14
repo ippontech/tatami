@@ -59,6 +59,7 @@ TopMenuModule.controller('TopMenuController', [
         };
 
         $scope.searchStatuses = function(e) {
+            // If the enter key is pressed
             if(e.keyCode === 13) {
                 $scope.$state.go('tatami.home.search', { searchTerm: $scope.searchString });
             }
