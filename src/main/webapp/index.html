@@ -8,6 +8,7 @@
     <link href="/assets/css/tatami.css" rel="stylesheet">
     <link href="/assets/bower_components/ngtoast/dist/ngToast.css" rel="stylesheet">
     <link href="/assets/bower_components/ment.io/ment.io/styles.css" rel="stylesheet">
+    <link href="/assets/bower_components/bootstrap-tour/build/css/bootstrap-tour.css" rel="stylesheet">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0">
@@ -61,7 +62,7 @@
     </sec:authorize>
     -->
 </head>
-<body ng-app="TatamiApp">
+<body ng-app="TatamiApp" tour>
     <toast></toast>
     <div ui-view="topMenu"></div>
     <div ui-view></div>
@@ -71,6 +72,7 @@
     <!--- ------------------------------------------------------------------ -->
     <!-- AngularJS & Other Libraries -->
     <!--- ------------------------------------------------------------------ -->
+
 
     <script src="/assets/bower_components/angular/angular.js"></script>
 
@@ -118,6 +120,12 @@
     <script src="/app/components/home/HomeModule.js"></script>
     <script src="/app/components/account/AccountModule.js"></script>
     <script src="/app/components/admin/AdminModule.js"></script>
+
+    <!-- Tour -->
+    <script src="/assets/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/assets/bower_components/bootstrap-tour/build/js/bootstrap-tour.js"></script>
+    <script src="/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js"></script>
 
     <!--- ------------------------------------------------------------------ -->
     <!-- About Section -->

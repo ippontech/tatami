@@ -186,8 +186,8 @@
                 </li>
             </ul>
             <ul class="nav pull-right">
-                <li>
-                    <a popover-placement="bottom" popover="On the Bottom!" id="help-tour">
+                <li tour-step order="0" title="test" content="testing content" placement="bottom" ng-click="tour.restart(true)" skip="false" on-end="onTourEnd(tour)">
+                    <a id="help-tour">
                         <span>
                             <span class="glyphicon glyphicon-question-sign"></span>
                             <span translate="tatami.home.menu.help" class="hidden-tablet"></span>
