@@ -306,7 +306,6 @@ TatamiApp.config(function($translateProvider) {
                     }
                 },
 
-                // Search Page View NEEDS TRANSLATING
                 'searchPage': {
                     'title': 'Search',
                     'statusesWith': 'Statuses with:'
@@ -756,11 +755,16 @@ TatamiApp.config(function($translateProvider) {
                         'email': 'Email',
                         'jobTitle': 'Titre du travail',
                         'phoneNumber': 'Numero de telephone',
-                        'statuses': 'Status',
+                        'statuses': 'Statuts',
                         'following': 'Abonnement',
                         'followers': 'Abonné',
                         'trends': 'Tendances'
                     }
+                }
+
+                'searchPage': {
+                    'title': 'Recherchez',
+                    'statusesWith': 'Statuts avec:'
                 }
             },
 
