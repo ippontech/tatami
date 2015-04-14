@@ -308,7 +308,7 @@ TatamiApp.config(function($translateProvider) {
 
                 'searchPage': {
                     'title': 'Search',
-                    'statusesWith': 'Statuses with:'
+                    'statusesWith': 'Statuses with'
                 }
             },
             
@@ -760,11 +760,11 @@ TatamiApp.config(function($translateProvider) {
                         'followers': 'Abonné',
                         'trends': 'Tendances'
                     }
-                }
+                },
 
                 'searchPage': {
                     'title': 'Recherchez',
-                    'statusesWith': 'Statuts avec:'
+                    'statusesWith': 'Statuts avec'
                 }
             },
 
