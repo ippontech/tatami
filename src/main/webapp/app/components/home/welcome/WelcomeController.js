@@ -1,20 +1,11 @@
-HomeModule.controller('WelcomeController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
+HomeModule.controller('WelcomeController', ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
     $scope.close = function() {
         $modalInstance.dismiss();
-        $modalInstance.result.then(function() {
-            $rootScope.$state.go('^');
-        })
     };
 
     $scope.launchPresentation = function() {
-        angular.element('#help-tour').trigger('click');
+        $rootScope.$broadcast('start-tour');
         $modalInstance.dismiss();
-        $modalInstance.result.then(function() {
-            $rootScope.$state.go('^');
-            // Now start the presentation
-
-
-        })
     };
 
     // Handles closing the modal via escape and clicking outside the modal
