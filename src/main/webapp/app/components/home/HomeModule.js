@@ -66,8 +66,9 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
                     return SearchService.query({ term: 'status', q: $stateParams.searchTerm }).$promise;
                 }],
-
-                showModal: function() { return  false; }
+                showModal: function() {
+                    return false;
+                }
             }
         })
         //state for all views that use home sidebar
@@ -84,7 +85,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 suggestions: ['UserService', function(UserService) {
                     return UserService.getSuggestions().$promise;
                 }],
-                showModal: function () {
+                showModal: function() {
                     return false;
                 }
             }
