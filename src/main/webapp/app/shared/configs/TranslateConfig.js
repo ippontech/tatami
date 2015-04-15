@@ -22,31 +22,31 @@ TatamiApp.config(function($translateProvider) {
                     'bulletPoint3': 'sent by yourself',
                     'bulletPoint4': 'sent to group you are subscribed to',
                     'afterBP1': 'If it\'s empty, don\'t worry, it will get updated as soon as you start following other users!',
-                    'afterBP2': 'When viewing a message, you can reply to it and mark it as favorite to find it easily later.',
-                    'afterBP3': 'If a message had already got some replies, you can see them all by clicking on details: this makes it easier to follow conversation on Tatami.'
+                    'afterBP2': 'When viewing a message, you can reply to it and mark it as a favorite to find it easily later.',
+                    'afterBP3': 'If a message already has some replies, you can see them all by clicking on the timestamp or clicking \'View Conversation\'.'
                 },
                 'post': {
-                    'title': 'Sending Message',
+                    'title': 'Posting Messages',
                     'line1': 'Here is where you write messages you want to share',
-                    'bulletPoint1': 'all messages are public by default. They will be delivered to all users who follow you',
-                    'bulletPoint2': 'when writing a message you should use <\i>#hashtags</i>: this simply means adding a \'#\' at the beginning of important words that can be used to find your message',
-                    'bulletPoint3': 'when mentioning, or replying to, other users, you should add a @ at the beginning of their name : they will be notified that you are talking to them'
+                    'bulletPoint1': 'All messages are public by default. They will be delivered to all users who follow you.',
+                    'bulletPoint2': 'When writing a message you should use <\i>#hashtags</i>. This simply means adding a # at the beginning of important words that can be used to find your message.',
+                    'bulletPoint3': 'When mentioning or replying to other users you should add a @ at the beginning of their name. They will be notified that you are talking to them.'
                 },
                 'groups': {
                     'title': 'Groups',
                     'line1': 'This is the list of groups you are a member of.',
-                    'line2': 'You can find, and subscribe to, public group in the Account/Groups page (top-right menu).',
-                    'line3': 'There are also private groups : for these you cannot subscribe : the owner of the group must add you as a member.'
+                    'line2': 'You can find and subscribe to public groups in the Account/Groups page (top-right menu).',
+                    'line3': 'There are also private groups. You cannot subscribe to these. The owner of the group must add you as a member.'
                 },
                 'trends': {
                     'title': 'Trends',
-                    'line1': 'This list represents the #hashtag that are currently the most often used on Tatami. Use this to discover what\'s going on and what are the hottest topics on Tatami!'
+                    'line1': 'This list represents the #hashtags that are currently the most often used on Tatami. Use this to discover what\'s going on and what are the hottest topics on Tatami!'
                 },
                 'whoToFollow': {
-                    'title': 'Suggested Users',
+                    'title': 'Who To Follow',
                     'line1': 'This is a list of users who share common interests with you and who you could follow.',
-                    'line2': 'If you are a new user, this list is probably empty: Tatami needs some time to learn who you are in order to suggest you relevant users.',
-                    'line3': 'And don\'t forget to use #hashtags in your messages, it makes everything easier!'
+                    'line2': 'If you are a new user, this list is probably empty. Tatami needs some time to learn who you are in order to suggest relevant users.',
+                    'line3': 'And don\'t forget to use #hashtags in your messages. It makes everything easier!'
                 },
                 'next': 'Next',
                 'previous': 'Prev',
