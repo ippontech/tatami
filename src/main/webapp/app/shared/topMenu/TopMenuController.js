@@ -17,6 +17,10 @@ TopMenuModule.controller('TopMenuController', [
                 });
         };
 
+        $scope.$on('start-tour', function() {
+            $scope.tour.restart(true);
+        });
+
         // Method to redirect to blog based on language. 
         $scope.goToBlog = function() {
             var lang = $translate.use();
