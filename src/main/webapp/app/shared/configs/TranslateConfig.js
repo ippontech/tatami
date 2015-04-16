@@ -706,7 +706,7 @@ TatamiApp.config(function($translateProvider) {
                     'announce': 'Annoncer',
                     'isAnnounced': 'Annoncé par',
                     'viewConversation': 'Voir La Conversation',
-                    'shares': 'Partagé par'
+                    'shares': 'Partages'
                 },
 
                 // Tag View
