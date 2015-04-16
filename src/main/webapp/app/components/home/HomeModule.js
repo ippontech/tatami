@@ -5,8 +5,13 @@ var HomeModule = angular.module('HomeModule', [
     'angularMoment',
     'infinite-scroll',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'emguo.poller'
 ]);
+
+HomeModule.config(function(pollerConfig) {
+    pollerConfig.resetOnStateChange = true;
+});
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider

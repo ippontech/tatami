@@ -11,7 +11,8 @@ HomeModule.controller('StatusListContextController', [
     'statusesWithContext',
     'userRoles',
     'showModal',
-    function($scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
+    'poller',
+    function($scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -22,8 +23,6 @@ HomeModule.controller('StatusListContextController', [
         $scope.statusesWithContext = statusesWithContext;
         $scope.busy = false;
 
-        $scope.newMessages = null;
-
         if(statuses.length == 0) {
             $scope.end = true;
         } else {
@@ -31,19 +30,26 @@ HomeModule.controller('StatusListContextController', [
             $scope.finish = statuses[statuses.length - 1].timelineId;
         }
 
-        var checkForNewStatuses = function() {
+        $scope.newMessages = null;
+
+        if($scope.$state.is('tatami.home.home.timeline')) {
+            var pollingDelay = 20000; // In milliseconds
+            
             $timeout(function() {
-                StatusService.getHomeTimeline({ start: statuses[0].timelineId },
-                    function(response) {
-                        if(response.length > 0) {
-                            $scope.newMessages = response.length;
-                        }
-                        checkForNewStatuses();
-                }, function(err) {
-                    checkForNewStatuses();
+                var statusPoller = poller.get(StatusService, {
+                    action: 'getHomeTimeline',
+                    delay: pollingDelay,
+                    smart: true,
+                    argumentsArray: [{ start: statuses[0].timelineId }]
                 });
-            }, 20000);
-        };  
+
+                statusPoller.promise.then(null, null, function(response) {
+                    if(response.length > 0) {
+                        $scope.newMessages = response.length;
+                    }
+                });
+            }, pollingDelay);
+        }
 
         var organizeStatuses = function(statuses, context) {
             var statusesWithContext = [];
@@ -226,7 +232,5 @@ HomeModule.controller('StatusListContextController', [
                 });
             }
         };
-
-        checkForNewStatuses();
     }
 ]);
