@@ -214,6 +214,19 @@ HomeModule.controller('StatusListContextController', [
             });
         };
 
+        $scope.getShares = function(status, firstIndex, secondIndex) {
+            if(status.shares == null) {
+                StatusService.getDetails({ statusId: status.statusId }, null,
+                    function(response) {
+                        if(secondIndex == null) {
+                            $scope.statusesWithContext[firstIndex].status.shares = response.sharedByLogins;
+                        } else {
+                            $scope.statusesWithContext[firstIndex]['replies'][secondIndex].shares = response.sharedByLogins;
+                        }
+                });
+            }
+        };
+
         checkForNewStatuses();
     }
 ]);
