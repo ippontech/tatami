@@ -38,8 +38,10 @@ HomeModule.controller('StatusListContextController', [
                         if(response.length > 0) {
                             $scope.newMessages = response.length;
                         }
+                        checkForNewStatuses();
+                }, function(err) {
+                    checkForNewStatuses();
                 });
-                checkForNewStatuses();
             }, 20000);
         };  
 
