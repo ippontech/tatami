@@ -146,7 +146,7 @@ public class MailService {
     public void sendUserPrivateMessageEmail(User mentionnedUser, Status status) {
         log.debug("Sending Private Message e-mail to User '{}' " +
                 "with locale : '{}'", mentionnedUser.getLogin(), locale);
-        String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
+        String url = tatamiUrl + "/#/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);
@@ -159,7 +159,7 @@ public class MailService {
     @Async
     public void sendUserMentionEmail(User mentionnedUser, Status status) {
         log.debug("Sending Mention e-mail to User '{}' with locale : '{}'", mentionnedUser.getLogin(), locale);
-        String url = tatamiUrl + "/tatami/home/status/" + status.getStatusId();
+        String url = tatamiUrl + "/#/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", mentionnedUser);
@@ -176,7 +176,7 @@ public class MailService {
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
-        model.put("tatamiUrl", tatamiUrl + "/tatami/");
+        model.put("tatamiUrl", tatamiUrl);
         model.put("statuses", statuses);
         model.put("nbStatus", nbStatus);
         model.put("suggestedUsers", suggestedUsers);
@@ -193,7 +193,7 @@ public class MailService {
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
-        model.put("tatamiUrl", tatamiUrl + "/tatami/");
+        model.put("tatamiUrl", tatamiUrl);
         model.put("statuses", statuses);
         model.put("nbStatus", nbStatus);
         model.put("suggestedUsers", suggestedUsers);
