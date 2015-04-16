@@ -217,6 +217,10 @@ PostModule.controller('PostController', [
             $scope.initMap();
         };
 
+        $scope.isOneDayOrMore = function(date) {
+            return moment().diff(moment(date), 'days', true) >= 1;
+        };
+
         /**
          * Create a map displaying the users current location in the status
          */
