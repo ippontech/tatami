@@ -44,8 +44,12 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
             }
 
             // We are logged in, but the session hasn't been set, so we set it
-            if(angular.isDefined(result.username) && !UserSession.isAuthenticated()) {
-                UserSession.setLoginState(true);
+            if(angular.isDefined(result.username)) {
+                if(!UserSession.isAuthenticated()) {
+                    UserSession.setLoginState(true);
+                }
+                // Send the user to the timeline, since they are logged in
+                $state.go('tatami.home.home.timeline');
             }
         }
         else {
