@@ -45,24 +45,28 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
             method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
             transformResponse: responseTransform
         },
-        'getContext': {
+        'getDetails': {
             method: 'GET', params: { statusId: '@statusId' }, url: '/tatami/rest/statuses/details/:statusId',
-            transformResponse: function(context, headersGetter) {
-                context = angular.fromJson(context);
+            transformResponse: function(details, headersGetter) {
+                details = angular.fromJson(details);
 
-                for(var i = 0; i < context.discussionStatuses.length; i++) {
-                    context.discussionStatuses[i]['avatarURL'] = context.discussionStatuses[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + context.discussionStatuses[i].avatar + '/photo.jpg';
+                for(var i = 0; i < details.discussionStatuses.length; i++) {
+                    details.discussionStatuses[i]['avatarURL'] = details.discussionStatuses[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
 
-                    if(context.discussionStatuses[i].geoLocalization) {
-                        var latitude = context.discussionStatuses[i].geoLocalization.split(',')[0].trim();
-                        var longitude = context.discussionStatuses[i].geoLocalization.split(',')[1].trim();
-                        context.discussionStatuses[i]['locationURL'] = 
+                    if(details.discussionStatuses[i].geoLocalization) {
+                        var latitude = details.discussionStatuses[i].geoLocalization.split(',')[0].trim();
+                        var longitude = details.discussionStatuses[i].geoLocalization.split(',')[1].trim();
+                        details.discussionStatuses[i]['locationURL'] = 
                             'https://www.openstreetmap.org/?mlon='
                             + longitude + '&mlat=' + latitude;
                     }
                 }
 
-                return context;
+                for(var i = 0; i < details.sharedByLogins.length; i++) {
+                    details.sharedByLogins[i]['avatarURL'] = details.sharedByLogins[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.sharedByLogins[i].avatar + '/photo.jpg';
+                }
+
+                return details;
             }
         },
         'update': { method: 'PATCH', params: { statusId: '@statusId' } },

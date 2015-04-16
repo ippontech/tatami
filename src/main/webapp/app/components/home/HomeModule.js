@@ -46,7 +46,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     });
                 }],
                 context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                    return StatusService.getContext({ statusId: $stateParams.statusId }).$promise;
+                    return StatusService.getDetails({ statusId: $stateParams.statusId }).$promise;
                 }]
             }
         })
