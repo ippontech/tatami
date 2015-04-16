@@ -1,6 +1,7 @@
 HomeModule.controller('StatusListContextController', [
     '$scope',
     '$q',
+    '$timeout',
     'StatusService',
     'HomeService',
     'TagService',
@@ -10,7 +11,7 @@ HomeModule.controller('StatusListContextController', [
     'statusesWithContext',
     'userRoles',
     'showModal',
-    function($scope, $q, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
+    function($scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -21,12 +22,26 @@ HomeModule.controller('StatusListContextController', [
         $scope.statusesWithContext = statusesWithContext;
         $scope.busy = false;
 
+        $scope.newMessages = null;
+
         if(statuses.length == 0) {
             $scope.end = true;
         } else {
             $scope.end = false;
             $scope.finish = statuses[statuses.length - 1].timelineId;
         }
+
+        var checkForNewStatuses = function() {
+            $timeout(function() {
+                StatusService.getHomeTimeline({ start: statuses[0].timelineId },
+                    function(response) {
+                        if(response.length > 0) {
+                            $scope.newMessages = response.length;
+                        }
+                });
+                checkForNewStatuses();
+            }, 20000);
+        };  
 
         var organizeStatuses = function(statuses, context) {
             var statusesWithContext = [];
@@ -196,5 +211,7 @@ HomeModule.controller('StatusListContextController', [
                     $scope.$state.reload();
             });
         };
+
+        checkForNewStatuses();
     }
 ]);
