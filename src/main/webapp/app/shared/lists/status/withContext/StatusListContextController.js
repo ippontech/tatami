@@ -38,8 +38,10 @@ HomeModule.controller('StatusListContextController', [
                         if(response.length > 0) {
                             $scope.newMessages = response.length;
                         }
+                        checkForNewStatuses();
+                }, function(err) {
+                    checkForNewStatuses();
                 });
-                checkForNewStatuses();
             }, 20000);
         };  
 
@@ -210,6 +212,19 @@ HomeModule.controller('StatusListContextController', [
                 function() {
                     $scope.$state.reload();
             });
+        };
+
+        $scope.getShares = function(status, firstIndex, secondIndex) {
+            if(status.type == 'STATUS' && status.shares == null) {
+                StatusService.getDetails({ statusId: status.statusId }, null,
+                    function(response) {
+                        if(secondIndex == null) {
+                            $scope.statusesWithContext[firstIndex].status.shares = response.sharedByLogins;
+                        } else {
+                            $scope.statusesWithContext[firstIndex]['replies'][secondIndex].shares = response.sharedByLogins;
+                        }
+                });
+            }
         };
 
         checkForNewStatuses();

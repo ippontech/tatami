@@ -116,5 +116,14 @@ HomeModule.controller('StatusListController', [
                     $scope.statuses.splice(index, 1);
             });
         };
+
+        $scope.getShares = function(status, index) {
+            if(status.type == 'STATUS' && status.shares == null) {
+                StatusService.getDetails({ statusId: status.statusId }, null,
+                    function(response) {
+                        $scope.statuses[index].shares = response.sharedByLogins;
+                });
+            }
+        };
     }
 ]);

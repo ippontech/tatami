@@ -9,9 +9,8 @@
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
-                        <div class="status-content-container">
+                        <div class="status-content-container" ng-init="expanded = false" ng-click="getShares(status, $index); expanded = !expanded">
                             <h5 class="statusitem-name">
-                                <!-- Possible backend bug where SHARE type statuses have shareByMe=true and sharedByUsername == profile.username -->
                                 <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
                                     <a ui-sref="tatami.home.profile.statuses({ username: status.username })">
@@ -83,6 +82,18 @@
                                         </span>
                                     </div>
                                 </div>
+
+                                <div ng-show="expanded && status.shares != null && status.shares.length != 0" id="share">
+                                    <span translate="tatami.home.status.shares"></span>
+                                    <span class="badge">{{ status.shares.length }}</span>
+                                    <div>
+                                        <span ng-repeat="user in status.shares">
+                                            <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
+                                                <div class="img img-rounded img-small share-img-fffix" ng-attr-title="@{{ user.username }}" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
                             </small>
                         </div>
 
@@ -119,8 +130,6 @@
                                 </small>
                             </div>
                         </div>
-
-                        <div id="share"></div>
                     </div>
                 </div>
             </div>

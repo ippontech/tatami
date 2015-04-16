@@ -38,7 +38,8 @@
                          mentio-items="tags">
             </mentio-menu>
             <div>
-                {{ 'tatami.home.post.characters.left' | translate }}<span class="countstatus badge">{{ charCount - status.content.length }}</span>
+                {{ 'tatami.home.post.characters.left' | translate }}
+                <span class="countstatus badge">{{ charCount - status.content.length }}</span>
                 <a class="pull-right" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
             </div>
         </fieldset>
@@ -53,8 +54,7 @@
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
                         <a ui-sref="tatami.home.profile.statuses({ username: currentStatus.username })">
-                            <!-- Causes MIME type issue -->
-                            <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }">
+                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
                         </a>
                     </div>
                     <div class="status-content-container">
