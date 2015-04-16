@@ -83,7 +83,7 @@ public class MailService {
     @Async
     public void sendRegistrationEmail(String registrationKey, User user) {
 
-        String registrationUrl = tatamiUrl + "/tatami/register?key=" + registrationKey;
+        String registrationUrl = tatamiUrl + "/#/register?key=" + registrationKey;
         log.debug("Sending registration e-mail to User '{}', Url='{}' " +
                 "with locale : '{}'", user.getLogin(), registrationUrl, locale);
 
@@ -108,7 +108,7 @@ public class MailService {
     @Async
     public void sendLostPasswordEmail(String registrationKey, User user) {
 
-        String url = tatamiUrl + "/tatami/register?key=" + registrationKey;
+        String url = tatamiUrl + "/#/register?key=" + registrationKey;
         log.debug("Sending lost password e-mail to User '{}', Url='{}' with locale : '{}'", user.getLogin(), url, locale);
 
         Map<String, Object> model = new HashMap<String, Object>();

@@ -2,7 +2,6 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.DigestType;
-import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
@@ -50,9 +49,6 @@ public class UserService {
 
     @Inject
     private FollowerRepository followerRepository;
-
-    @Inject
-    private GroupService groupService;
 
     @Inject
     private CounterRepository counterRepository;
@@ -231,31 +227,24 @@ public class UserService {
         }
         log.debug("Delete user step 2 : user " + user.getLogin() + " has no more friends.");
 
-        // Unjoin groups
-        Collection<Group> groups = groupService.getGroupsOfUser(user);
-        for (Group group : groups) {
-            groupService.removeMemberFromGroup(user, group);
-        }
-        log.debug("Delete user step 3 : user " + user.getLogin() + " has left all his groups");
-
         // Delete userline, tagLine...
         favoritelineRepository.deleteFavoriteline(user.getLogin());
         timelineRepository.deleteTimeline(user.getLogin());
         userlineRepository.deleteUserline(user.getLogin());
-        log.debug("Delete user step 4 : user " + user.getLogin() + " has no more lines.");
+        log.debug("Delete user step 3 : user " + user.getLogin() + " has no more lines.");
 
         // Remove from domain
         String domain = DomainUtil.getDomainFromLogin(user.getLogin());
         domainRepository.deleteUserInDomain(domain, user.getLogin());
-        log.debug("Delete user step 5 : user " + user.getLogin() + " has no domain.");
+        log.debug("Delete user step 4 : user " + user.getLogin() + " has no domain.");
 
         // Delete counters
         counterRepository.deleteCounters(user.getLogin());
-        log.debug("Delete user step 6 : user " + user.getLogin() + " has no counter.");
+        log.debug("Delete user step 5 : user " + user.getLogin() + " has no counter.");
 
         // Delete user
         userRepository.deleteUser(user);
-        log.debug("Delete user step 7 : user " + user.getLogin() + " is deleted.");
+        log.debug("Delete user step 6 : user " + user.getLogin() + " is deleted.");
 
         // Tweets are not deleted, but are not available to users anymore (unless the same user is created again)
 

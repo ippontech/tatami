@@ -1,0 +1,23 @@
+<div id="mainPanel" class="container well well-sm">
+    <div class="text-center well well-sm">
+        <h1 translate="tatami.login.mainTitle"></h1>
+        <h3 translate="tatami.login.subtitle"></h3>
+        <a ui-sref="tatami.about.presentation"><h4 translate="tatami.login.moreInfo"></h4></a>
+    </div>
+    <div ng-show="$stateParams.action === 'loginFailure'" class="alert alert-danger" translate="tatami.login.fail"></div>
+    <div ng-show="$stateParams.action === 'lostPassword'" class="alert alert-info" translate="tatami.login.passwordEmailSent"></div>
+    <div ng-show="$stateParams.action === 'lostPasswordFailure'" class="alert alert-danger" translate="tatami.login.unregisteredEmail"></div>
+    <div ng-show="$stateParams.action === 'register'" class="alert alert-info" translate="tatami.login.registrationEmail"></div>
+    <div class="col-span-12">
+
+
+        <div ui-view="googleLogin"></div>
+        <div class="col-span-4">
+            <div ui-view="manualLogin"></div>
+            <div ui-view="recoverPassword"></div>
+        </div>
+        <div ui-view="register"></div>
+
+        <div class="panel-body"></div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<ul class="list-group user-search">
+    <li mentio-menu-item="tag" ng-repeat="tag in items" class="list-group-item">
+        <span class="text-primary" ng-bind-html="tag.name | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+    </li>
+</ul>

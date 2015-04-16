@@ -10,7 +10,7 @@ A public installation of Tatami is provided by [Ippon Technologies](http://www.i
 
 Tatami is made with the following technologies :
 
-- HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+- HTML5, [AngularJS](https://angularjs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
 - [Apache Cassandra](http://cassandra.apache.org/)
 - [Elastic Search](http://www.elasticsearch.org/)
@@ -158,7 +158,7 @@ Java and .NET applications. Take a look at YourKit's leading software products:
 License
 -------
 
-Copyright 2012-2014 [Ippon Technologies](http://www.ippon.fr)
+Copyright © 2012-2015 [Ippon Technologies](http://www.ippon.fr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this application except in compliance with the License.

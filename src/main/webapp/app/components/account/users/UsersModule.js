@@ -1,0 +1,1 @@
+var UsersModule = angular.module('UsersModule', ['ngResource']);

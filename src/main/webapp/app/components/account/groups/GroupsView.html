@@ -1,0 +1,26 @@
+<div>
+    <form class="form-horizontal row-fluid">
+        <h2 translate="tatami.account.groups.title"></h2>
+
+        <div ui-view="create"></div>
+
+        <div class="tabMenu">
+            <ul class="nav nav-tabs">
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.list' }">
+                    <a ui-sref="tatami.account.groups.main.top.list" translate="tatami.account.groups.myGroups">
+                    </a>
+                </li>
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.recommended' }">
+                    <a ui-sref="tatami.account.groups.main.top.recommended" translate="tatami.account.groups.recommended" ng-click="display()">
+                    </a>
+                </li>
+                <li ng-class="{ 'active': $state.current.name === 'tatami.account.groups.main.top.search' }">
+                    <a ui-sref="tatami.account.groups.main.top.search" translate="tatami.account.groups.search">
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div ui-view="list"></div>
+    </form>
+</div>

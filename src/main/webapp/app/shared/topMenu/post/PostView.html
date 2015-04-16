@@ -1,0 +1,207 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()"><span class="glyphicon glyphicon-remove"></span></button>
+        <h4 class="modal-title">{{ determineTitle() | translate }}</h4>
+    </div>
+    <div class="modal-body">
+        <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">
+            <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{ 'tatami.home.post.edit' | translate }}"></i>
+            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{ 'tatami.home.post.preview' | translate }}"></i>
+        </a>
+        <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
+
+            <textarea mentio
+                      mentio-typed-text="result"
+                      mentio-require-leading-space="true"
+                      mentio-id="'postContent'"
+                      mentio-items="users"
+                      mentio-search="fetchUsers(term)"
+                      mentio-select="selectUser(item)"
+                      mentio-template-url="/app/shared/topMenu/post/DropdownUserTemplate.html"
+                      ng-trim="false"
+                      popover="{{ 'tatami.home.post.content.mandatory' | translate }}"
+                      popover-placement="bottom"
+                      popover-trigger="current.contentEmpty"
+                      ng-model="status.content"
+                      ng-change="statusChange(status.content)"
+                      placeholder="{{ current.reply | placeholderFilter }}"
+                      maxlength="750"
+                      rows="5"
+                      required="required">
+            </textarea>
+
+            <mentio-menu mentio-for="'postContent'"
+                         mentio-trigger-char="'#'"
+                         mentio-template-url="/app/shared/topMenu/post/DropdownTagTemplate.html"
+                         mentio-search="fetchTags(term)"
+                         mentio-select="selectTag(item)"
+                         mentio-items="tags">
+            </mentio-menu>
+            <div>
+                {{ 'tatami.home.post.characters.left' | translate }}
+                <span class="countstatus badge">{{ charCount - status.content.length }}</span>
+                <a class="pull-right" href="https://help.github.com/articles/markdown-basics/" translate="tatami.home.post.markdown"></a>
+            </div>
+        </fieldset>
+        <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
+            <div class="well well-small markdown" ng-bind-html="status.content | emoticon | markdown"></div>
+        </fieldset>
+        <fieldset ng-show="current.reply" class="reply row-fluid">
+            <legend translate="tatami.home.post.reply">
+            </legend>
+            <!-- Start of reply section -->
+            <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
+                <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
+                    <div class="pull-left background-image-fffix statusitem-img">
+                        <a ui-sref="tatami.home.profile.statuses({ username: currentStatus.username })">
+                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
+                        </a>
+                    </div>
+                    <div class="status-content-container">
+                        <h5 class="statusitem-name">
+                            <a ui-sref="tatami.home.profile.statuses({ username: currentStatus.username })">
+                                <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
+                                <small>@{{ currentStatus.username }}</small>
+                            </a>
+                            <small> · </small>
+                            <!-- Replace hover title with hover bubble -->
+                            <a ui-sref="tatami.home.status({ status: currentStatus.statusId })">
+                                <small ng-if="!isOneDayOrMore(currentStatus.statusDate)" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="currentStatus.statusDate"></small>
+                                <small ng-if="isOneDayOrMore(currentStatus.statusDate)" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ currentStatus.statusDate | amDateFormat:'MMM D'}}</small>
+                            </a>
+                            <a ng-if="currentStatus.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ currentStatus.locationURL }}" target="_blank"></a>
+                        </h5>
+                        
+                        <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
+
+                        <small ng-if="currentStatus.groupId">
+                            <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="tatami.home.home.group.statuses({ groupId: currentStatus.groupId })">
+                            {{ currentStatus.groupName }}
+                            </a>
+                            <br>
+                        </small>
+
+                        <small ng-if="currentStatus.statusPrivate">
+                            <span class="glyphicon glyphicon-lock"></span>
+                            <span translate="tatami.home.status.private"></span>
+                            <br>
+                        </small>
+
+                        <small ng-if="currentStatus.replyTo">
+                            <span class="glyphicon glyphicon-share-alt"></span>
+                            <span translate="tatami.home.status.replyTo"></span>
+                            <a ui-sref="tatami.home.status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername }}</a>
+                            <br>
+                        </small>
+
+                        <small>
+                            <div class="attachments">
+                                <div>
+                                    <span ng-repeat="attachment in currentStatus.attachments">
+                                    <a href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
+                                    <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
+                                    </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="row-fluid">
+            <legend translate="tatami.home.post.options"></legend>
+            <div ng-show="!current.reply">
+                <label>
+                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
+                    <span class="glyphicon glyphicon-map-marker" translate="tatami.home.post.shareLocation"></span>
+                </label>
+                <div ng-if="current.geoLoc">
+                    <!-- Was width:250px, changed it to 500 -->
+                    <div id="simpleMap" style="height:250px; width:500px"></div>
+                    <div class="geolocMap">
+                    </div>
+                </div>
+            </div>
+            <div ng-show="!current.reply && current.groups.length > 0">
+                <label class="control-label" translate="tatami.home.post.group"></label>
+
+                <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups | filter: { archivedGroup: false }">
+                    <option></option>
+                </select>
+            </div>
+            <!--
+            <div class="controls groups">
+                <div id="GeolocImpossible"></div> <p></p>
+                <div data-toggle="collapse" >
+                    <div class="controls geoLocalization" >
+                        <label class="checkbox">
+                            <input type="checkbox"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.post.geoLocalization"/>
+                        </label>
+                    </div>
+                    <div id="geolocalisationCheckbox" ng-if="current.geoLoc">
+                        <div id="basicMap" style="height:250px; width:250px"></div>
+                        <div class="geolocMap">
+                        </div>
+                    </div>
+                </div>
+                <label class="control-label"><fmt:message key="tatami.group.name"/></label>
+                <select name="groupId">
+                    <option value=""></option>
+                    <option value="<@= groups[index].groupId @>">
+                    </option>
+                </select>
+            </div>-->
+            <div class="controls status-files" ng-file-drop ng-file-select ng-model="current.files" ng-multiple="true">
+                <label translate="tatami.home.post.files">
+
+                </label>
+                <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
+                    <div class="bar progress-bar progress-bar-info" style="width: {{uploadStatus.progress}}%;"></div>
+                </div>
+                <div class="dropzone well" file-dropzone translate="tatami.home.post.drop.file">
+
+                </div>
+
+                <div ng-show="current.attachments.length != 0" ng-repeat="attachment in current.attachments">
+                    <p>
+                        {{ attachment.name }} ({{ fileSize(attachment) }})
+                    </p>
+                </div>
+                <!--
+                <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
+                -->
+                <!--
+                <div class="fileUploadResults wrap">
+
+                </div>
+                -->
+            </div>
+            <!--
+            <label class="control-label"></label>
+            <div class="controlsIE">
+                <span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
+                <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
+                <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
+                <span class="glyphicon glyphicon-search ok-ko"></span>
+                <div class="fileUploadResults wrap">
+                    <span class="upload-ko">
+                        <fmt:message key="tatami.user.upload.buttonIE-ko" />
+                    </span>
+                </div>
+                -->
+            <div ng-show="!current.reply" class="controls status-private">
+                <label class="checkbox">
+                    <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
+                    <span class="glyphicon glyphicon-lock" translate="tatami.home.status.private"></span>
+                </label>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a class="btn" aria-hidden="true" ng-click="closeModal()" translate="tatami.form.cancel"></a>
+        <span class="hidden-label submit-label" translate="tatami.home.post.button"></span>
+        <span class="hidden-label tatam-mandatory" translate="tatami.home.post.mandatory"></span>
+        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" value="{{ 'tatami.home.post.button' | translate }}">
+    </div>
+</div>

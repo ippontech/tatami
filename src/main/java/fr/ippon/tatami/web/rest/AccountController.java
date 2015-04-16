@@ -45,6 +45,24 @@ public class AccountController {
     Environment env;
 
     /**
+     * GET /account/admin -> Determines if the current account is an admin
+     */
+    @RequestMapping(value = "/rest/account/admin",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    public String isAdmin() {
+        this.log.debug("REST request to determine if user is an admin");
+        org.springframework.security.core.userdetails.User securityUser =
+                (org.springframework.security.core.userdetails.User)
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return "{ \"roles\": \"" + securityUser.getAuthorities().toString() + "\" }";
+        //return "{ \"roles\": \"" + userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().toString() + "\" }";
+    }
+
+    /**
      * GET  /account/profile -> get account's profile
      */
     @RequestMapping(value = "/rest/account/profile",
@@ -137,6 +155,7 @@ public class AccountController {
             org.springframework.security.core.userdetails.User securityUser =
                     (org.springframework.security.core.userdetails.User)
                             SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            log.debug("User roles : {}", securityUser);
 
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(securityUser,

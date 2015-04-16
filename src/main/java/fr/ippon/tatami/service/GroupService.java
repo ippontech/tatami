@@ -1,6 +1,5 @@
 package fr.ippon.tatami.service;
 
-import com.google.common.base.Preconditions;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
@@ -83,37 +82,34 @@ public class GroupService {
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
+            UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findUserByLogin(member.getKey());
-            if(user != null) { //User might be deleted
-                UserGroupDTO dto = new UserGroupDTO();
-                dto.setLogin(user.getLogin());
-                dto.setUsername(user.getUsername());
-                dto.setAvatar(user.getAvatar());
-                dto.setFirstName(user.getFirstName());
-                dto.setLastName(user.getLastName());
-                dto.setRole(member.getValue());
-                dto.setActivated(user.getActivated());
-                if (friendLogins.contains(user.getLogin())) {
-                    dto.setFriend(true);
-                }
-                if (login.equals(user.getLogin())) {
-                    dto.setYou(true);
-                }
-                userGroupDTOs.add(dto);
+            dto.setLogin(user.getLogin());
+            dto.setUsername(user.getUsername());
+            dto.setAvatar(user.getAvatar());
+            dto.setFirstName(user.getFirstName());
+            dto.setLastName(user.getLastName());
+            dto.setRole(member.getValue());
+            dto.setActivated(user.getActivated());
+            if (friendLogins.contains(user.getLogin())) {
+                dto.setFriend(true);
             }
+            if (login.equals(user.getLogin())) {
+                dto.setYou(true);
+            }
+            userGroupDTOs.add(dto);
         }
         return userGroupDTOs;
     }
 
 
-    public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
-        Preconditions.checkNotNull(userWanted);
-        Preconditions.checkNotNull(userWanted.getLogin());
 
+
+    public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findUserByLogin(member.getKey());
-            if (user != null && userWanted.getLogin().equals(user.getLogin())) {
+            if (user.getLogin() == userWanted.getLogin()) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
                 dto.setUsername(user.getUsername());
@@ -267,17 +263,23 @@ public class GroupService {
             }
             else if(group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());
+                group.setAdministrator(false); // If we made it here, the user is not an admin
                 if (result != null) {
-                    group.setMember(true);
+                    group.setMember(true); // We found a group, so the user is a member
+                }
+                else {
+                    group.setMember(false); // Since no group was found, the user is not a member
                 }
             }
             else {
                 Group result = getGroupFromUser(user, group.getGroupId());
+                group.setAdministrator(false); // If we make it here, the user is not an admin
                 if (result == null) {
                     log.info("Permission denied! User {} tried to access group ID = {} ", user.getLogin(), group.getGroupId());
+                    group.setMember(false); // No group found, therefore the user is not a member
                     return null;
                 } else {
-                    group.setMember(true);
+                    group.setMember(true); // Since a group was found, we know the user is a member
                 }
             }
             long counter = 0;
