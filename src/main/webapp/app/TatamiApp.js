@@ -13,7 +13,8 @@ var TatamiApp = angular.module('TatamiApp', [
     'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
     'mentio',
     'LocalStorageModule',
-    'bm.bsTour'
+    'bm.bsTour',
+    'ngTouch'
 ]);
 
 TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
