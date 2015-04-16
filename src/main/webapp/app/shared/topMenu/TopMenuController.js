@@ -14,6 +14,7 @@ TopMenuModule.controller('TopMenuController', [
                 .success(function() {
                     UserSession.clearSession();
                     $scope.$state.go('tatami.login.main');
+                    $scope.searchString = '';
                 });
         };
 
