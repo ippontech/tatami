@@ -245,7 +245,8 @@ TatamiApp.config(function($translateProvider) {
                     'groupAdmin': 'Group Administrator',
                     'announce': 'Announce',
                     'isAnnounced': 'Announced by',
-                    'viewConversation': 'View Conversation'
+                    'viewConversation': 'View Conversation',
+                    'shares': 'Shares'
                 },
 
                 // Tag View
@@ -704,7 +705,8 @@ TatamiApp.config(function($translateProvider) {
                     'groupAdmin': 'Administrateur du groupe',
                     'announce': 'Annoncer',
                     'isAnnounced': 'Annoncé par',
-                    'viewConversation': 'Voir La Conversation'
+                    'viewConversation': 'Voir La Conversation',
+                    'shares': 'Partagé par'
                 },
 
                 // Tag View
