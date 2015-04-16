@@ -215,7 +215,7 @@ HomeModule.controller('StatusListContextController', [
         };
 
         $scope.getShares = function(status, firstIndex, secondIndex) {
-            if(status.shares == null) {
+            if(status.type == 'STATUS' && status.shares == null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
                         if(secondIndex == null) {

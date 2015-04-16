@@ -118,7 +118,7 @@ HomeModule.controller('StatusListController', [
         };
 
         $scope.getShares = function(status, index) {
-            if(status.shares == null) {
+            if(status.type == 'STATUS' && status.shares == null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
                         $scope.statuses[index].shares = response.sharedByLogins;
