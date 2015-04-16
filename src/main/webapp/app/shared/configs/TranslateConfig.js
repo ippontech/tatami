@@ -154,6 +154,9 @@ TatamiApp.config(function($translateProvider) {
                 'favorites': 'Favorites',
                 'companyTimeline': 'Company Timeline',
 
+                'newMessage': 'New Message',
+                'newMessages': 'New Messages',
+
                 //Top Menu
                 'menu': {
                     'logo': 'Ippon Technologies Logo',
@@ -609,6 +612,9 @@ TatamiApp.config(function($translateProvider) {
                 'mentions': 'Mentions',
                 'favorites': 'Favoris',
                 'companyTimeline': 'Timeline de votre entreprise',
+
+                'newMessage': 'Nouveau Message',
+                'newMessages': 'Nouveau Messages',
 
                 //Top Menu
                 'menu': {
