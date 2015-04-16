@@ -51,24 +51,13 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
         else {
             $state.go('tatami.login.main');
         }
-
-        // User is logged in
-        if(UserSession.isAuthenticated()) {
-            // State being accesses was not the timeline
-            if(angular.isDefined($rootScope.returnToState)) {
-                $state.go($rootScope.returnToState, $rootScope.returnToParams);
-            }
-            else {
-                $state.go('tatami.home.home.timeline');
-            }
-        }
     });
-/*
+
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
         $state.transitionTo('tatami.pageNotFound', null, { location: false })
     });
-*/
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
         $rootScope.destinationState = toState;
         $rootScope.destinationParams = toStateParams;
