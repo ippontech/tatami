@@ -48,8 +48,10 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                 if(!UserSession.isAuthenticated()) {
                     UserSession.setLoginState(true);
                 }
-                // Send the user to the timeline, since they are logged in
-                $state.go('tatami.home.home.timeline');
+                // If there is no destination state, send user to timeline, since they are logged in
+                if(!angular.isDefined($rootScope.destinationState)) {
+                    $state.go('tatami.home.home.timeline');
+                }
             }
         }
         else {
