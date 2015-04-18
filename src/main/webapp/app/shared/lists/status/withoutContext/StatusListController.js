@@ -66,10 +66,6 @@ HomeModule.controller('StatusListController', [
             }
             */
 
-            if($scope.$state.current.name == 'tatami.home.home.company') {
-                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
-            }
-
             if($scope.$state.current.name == 'tatami.home.home.tag') {
                 TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadMoreSuccess);
             }
