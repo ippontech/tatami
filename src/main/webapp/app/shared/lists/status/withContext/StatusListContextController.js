@@ -184,6 +184,10 @@ HomeModule.controller('StatusListContextController', [
             if($scope.$state.current.name == 'tatami.home.home.timeline') {
                 StatusService.getHomeTimeline({ finish: $scope.finish }, getContext);
             }
+
+            if($scope.$state.current.name == 'tatami.home.home.company') {
+                HomeService.getCompanyTimeline({ finish: $scope.finish }, getContext);
+            }
         };
 
         $scope.isOneDayOrMore = function(date) {
