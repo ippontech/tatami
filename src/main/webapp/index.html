@@ -4,7 +4,7 @@
     <title>Tatami</title>
     <meta name="author" content="Ippon Technologies">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/company-logo.ico">
-    <link href="/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/vendor/css/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/assets/css/tatami.css" rel="stylesheet">
     <link href="/assets/bower_components/ngtoast/dist/ngToast.css" rel="stylesheet">
     <link href="/assets/bower_components/ment.io/ment.io/styles.css" rel="stylesheet">
@@ -14,27 +14,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0">
     <!--<meta name="description" content="">-->
 
+    <!-- Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="/assets/img/startup.png">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
     <!-- Needed if using HTML5 History API and relative links (Angular routing) -->
-    <base href="/">
+    <!--<base href="/">-->
 
     <!--[if IE]>
         <link rel="stylesheet" type="text/css" href="/assets/css/ie-only.css" />
     <![endif]-->
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 7]>
     <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css">
     <![endif]-->
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="/js/vendor/respond.js"></script>
+    <script src="/assets/vendor/js/respond/respond.js"></script>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Touch Icons -->
-    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-    <link rel="apple-touch-startup-image" href="/assets/img/startup.png">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!--
     <c:if test="${googleAnalyticsKey ne ''}">
@@ -83,7 +82,7 @@
     <script src="/assets/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 
-    <script src="/assets/vendor/marked/marked.js"></script>
+    <script src="/assets/vendor/js/marked/marked.js"></script>
 
     <script src="/assets/bower_components/moment/moment.js"></script>
     <script src="/assets/bower_components/moment/locale/fr.js"></script>
@@ -95,7 +94,7 @@
     <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="/assets/bower_components/ment.io/dist/mentio.js"></script>
 
-    <script src="/assets/vendor/angular-animate/angular-animate.js"></script>
+    <script src="/assets/bower_components/angular-animate/angular-animate.js"></script>
     <script src="/assets/bower_components/ngtoast/dist/ngToast.js"></script>
 
     <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.js"></script>

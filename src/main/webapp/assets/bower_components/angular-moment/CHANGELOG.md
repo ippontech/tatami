@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.10.0 - 2015-04-10
+- Breaking change: removed one-time binding for `am-time-ago` in favor of AngularJS 1.3's one time binding ([#122](https://github.com/urish/angular-moment/issues/122))
+- Remove support for AngularJS 1.0.x and 1.1.x.
+- Support moment.js v2.10.x
+- Support for displaying full dates in `am-time-ago` (see [#75](https://github.com/urish/angular-moment/issues/75)) 
+- Support Angular Core's style CommonJS standard ([#123](https://github.com/urish/angular-moment/pull/123), contributed by [seanhealy](https://github.com/seanhealy))
+- Added an optional timezone parameter to amDateFormat ([#90](https://github.com/urish/angular-moment/pull/90), contributed by [robertbrooker](https://github.com/robertbrooker))
+
+## 0.9.2 - 2015-03-17
+- Critical fix: npm install angular-moment fails ([#121](https://github.com/urish/angular-moment/issues/121))
+
+## 0.9.1 - 2015-03-17
+- Add support for locale strings customization ([#102](https://github.com/urish/angular-moment/pull/102), contributed by [vosi](https://github.com/vosi))
+- Add `amDifference` filter ([#120](https://github.com/urish/angular-moment/pull/120), contributed by [ajhodges](https://github.com/ajhodges))
+- Support for changing the timezone via `amMoment.changeTimezone()` ([#92](https://github.com/urish/angular-moment/issues/92))
+- Support for AngularJS 1.4.x
+- Remove explicit module name for RequireJS ([#112](https://github.com/urish/angular-moment/pull/112), contributed by [WilliamCarter](https://github.com/WilliamCarter))
+
+## 0.9.0 - 2015-01-11
+- Support moment.js v2.9.0. See [here](https://gist.github.com/ichernev/0c9a9b49951111a27ce7) for changelog.
+- Removed support for older moment.js versions. Only 2.8.0 and newer versions are now supported.
+- Removed deprecated method: `amMoment.changeLanguage()`. Use `amMoment.changeLocale()` instead.
+- Removed deprecated event: `amMoment:languageChange`. Listen for `amMoment:localeChange` instead.
+- Filters are now stateful by default (fixes [#97](https://github.com/urish/angular-moment/issues/97)).
+- The project is now available on [NuGet](https://www.nuget.org/packages/angular-moment/) ([#99](https://github.com/urish/angular-moment/pull/99), contributed by [markvp](https://github.com/markvp)).
+
 ## 0.8.3 - 2014-12-08
 - `amTimeAgo` filter ([#96](https://github.com/urish/angular-moment/pull/96), contributed by [maxklenk](https://github.com/maxklenk))
 - Show formatted time as element title ([#78](https://github.com/urish/angular-moment/pull/78), contributed by [ctesene](https://github.com/ctesene))
