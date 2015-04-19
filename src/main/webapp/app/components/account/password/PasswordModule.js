@@ -1,1 +1,1 @@
-var PasswordModule = angular.module('PasswordModule', ['ngResource']);
+var PasswordModule = angular.module('PasswordModule', []);

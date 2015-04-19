@@ -1,4 +1,4 @@
-var AdminModule = angular.module('AdminModule', ['ui.router']);
+var AdminModule = angular.module('AdminModule', []);
 
 AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider

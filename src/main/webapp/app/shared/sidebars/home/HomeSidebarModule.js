@@ -1,1 +1,1 @@
-var HomeSidebarModule = angular.module('HomeSidebarModule', ['ngResource']);
+var HomeSidebarModule = angular.module('HomeSidebarModule', []);

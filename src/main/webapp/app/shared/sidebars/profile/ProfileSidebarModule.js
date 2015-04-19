@@ -1,1 +1,1 @@
-var ProfileSidebarModule = angular.module('ProfileSidebarModule', ['ngResource']);
+var ProfileSidebarModule = angular.module('ProfileSidebarModule', []);

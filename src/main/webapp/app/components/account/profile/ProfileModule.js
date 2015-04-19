@@ -1,1 +1,1 @@
-var ProfileModule = angular.module('ProfileModule', ['ngResource']);
+var ProfileModule = angular.module('ProfileModule', []);

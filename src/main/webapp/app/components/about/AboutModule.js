@@ -1,4 +1,4 @@
-var AboutModule = angular.module('AboutModule', ['ui.router']);
+var AboutModule = angular.module('AboutModule', []);
 
 AboutModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider

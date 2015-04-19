@@ -1,1 +1,1 @@
-var TopPostersModule = angular.module('TopPostersModule', ['ngResource']);
+var TopPostersModule = angular.module('TopPostersModule', []);

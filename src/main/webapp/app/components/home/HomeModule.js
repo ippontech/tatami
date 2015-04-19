@@ -4,14 +4,12 @@ var HomeModule = angular.module('HomeModule', [
     'ngSanitize',
     'angularMoment',
     'infinite-scroll',
-    'ui.router',
-    'ui.bootstrap',
     'emguo.poller'
 ]);
 
-HomeModule.config(function(pollerConfig) {
+HomeModule.config(['pollerConfig', function(pollerConfig) {
     pollerConfig.resetOnStateChange = true;
-});
+}]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     var getContext = ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
@@ -113,7 +111,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
 
         return statusesWithContext;
     }];
-
 
     $stateProvider
         .state('tatami.home', {

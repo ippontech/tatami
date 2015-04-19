@@ -1,4 +1,4 @@
-var LoginModule = angular.module('LoginModule', ['ui.router']);
+var LoginModule = angular.module('LoginModule', []);
 
 LoginModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider
