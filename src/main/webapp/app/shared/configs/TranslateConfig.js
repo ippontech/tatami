@@ -920,5 +920,7 @@ TatamiApp.config(function($translateProvider) {
     });
 
     $translateProvider.useCookieStorage();
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.registerAvailableLanguageKeys(['en', 'fr']);
+    $translateProvider.fallbackLanguage('en');
+    $translateProvider.determinePreferredLanguage();
 });
