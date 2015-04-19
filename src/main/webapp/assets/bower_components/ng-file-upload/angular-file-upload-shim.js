@@ -1,8 +1,8 @@
 /**!
- * AngularJS file upload/drop directive with progress and abort
+ * AngularJS file upload/drop directive and service with progress and abort
  * FileAPI Flash shim for old browsers not supporting FormData 
  * @author  Danial  <danial.farid@gmail.com>
- * @version 2.1.2
+ * @version 3.3.3
  */
 
 (function() {
@@ -42,6 +42,7 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 				orig.apply(this, [m, url, b]);
 			} catch (e) {
 				if (e.message.indexOf('Access is denied') > -1) {
+					this.__origError = e;
 					orig.apply(this, [m, '_fix_for_ie_crossdomain__', b]);
 				}
 			}
@@ -131,7 +132,7 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 									xhr.getAllResponseHeaders = function(){};
 									_this.complete(null, {status: 204, statusText: 'No Content'});
 								}
-							}, 10000);
+							}, FileAPI.noContentTimeout || 10000);
 						}
 					},
 					headers: xhr.__requestHeaders
@@ -154,45 +155,76 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 					xhr.__fileApiXHR = FileAPI.upload(config);
 				}, 1);
 			} else {
+				if (this.__origError) {
+					throw this.__origError;
+				}
 				orig.apply(xhr, arguments);
 			}
 		}
 	});
 	window.XMLHttpRequest.__isFileAPIShim = true;
 
-	var addFlash = function(elem) {
+	function isInputTypeFile(elem) {
+		return elem[0].tagName.toLowerCase() === 'input' && elem.attr('type') && elem.attr('type').toLowerCase() === 'file';
+	}
+
+	FileAPI.ngfFixIE = function(elem, createFileElemFn, bindAttr, changeFn, resetModel) {
 		if (!hasFlash()) {
 			throw 'Adode Flash Player need to be installed. To check ahead use "FileAPI.hasFlash"';
 		}
-		var el = angular.element(elem);
-		if (!el.attr('disabled')) {
-			if (!el.hasClass('js-fileapi-wrapper') && (el.attr('ng-file-select') != null || el.attr('data-ng-file-select') != null ||
-					(el.attr('ng-file-generated-elem') && 
-							(el.parent().attr('ng-file-select') != null || el.parent().attr('data-ng-file-select') != null)))) {
-				if (FileAPI.wrapInsideDiv) {
-					var wrap = document.createElement('div');
-					wrap.innerHTML = '<div class="js-fileapi-wrapper" style="position:relative; overflow:hidden"></div>';
-					wrap = wrap.firstChild;
-					var parent = elem.parentNode;
-					parent.insertBefore(wrap, elem);
-					parent.removeChild(elem);
-					wrap.appendChild(elem);
-				} else {
-					el.addClass('js-fileapi-wrapper');
-					if (el.attr('ng-file-generated-elem')) {
-						if (el.parent().css('position') === '' || el.parent().css('position') === 'static') {
-							el.parent().css('position', 'relative');
-						}
-						el.css('top', 0).css('bottom', 0).css('left', 0).css('right', 0).css('width', '100%').css('height', '100%').
-							css('padding', 0).css('margin', 0);
-						el.parent().unbind('click', el.parent().__afu_fileClickDelegate__);
+		var makeFlashInput = function(evt) {
+			if (elem.attr('disabled')) {
+				elem.__ngf_elem__.removeClass('js-fileapi-wrapper');
+			} else {
+				var fileElem = elem.__ngf_elem__;
+				if (!fileElem) {
+					fileElem = elem.__ngf_elem__ = createFileElemFn();
+					fileElem.addClass('js-fileapi-wrapper');
+					if (!isInputTypeFile(elem)) {
+//						if (fileElem.parent().css('position') === '' || fileElem.parent().css('position') === 'static') {
+//							fileElem.parent().css('position', 'relative');
+//						}
+//						elem.parent()[0].insertBefore(fileElem[0], elem[0]);
+//						elem.css('overflow', 'hidden');
 					}
+					setTimeout(function() {
+						fileElem.bind('mouseenter', makeFlashInput);
+					}, 10);
+					fileElem.bind('change', function(evt) {
+				    	fileApiChangeFn.apply(this, [evt]);
+						changeFn.apply(this, [evt]);
+//						alert('change' +  evt);
+					});
+				} else {
+					bindAttr(elem.__ngf_elem__);
+				}
+				if (!isInputTypeFile(elem)) {
+					fileElem.css('position', 'absolute')
+							.css('top', getOffset(elem[0]).top + 'px').css('left', getOffset(elem[0]).left + 'px')
+							.css('width', elem[0].offsetWidth + 'px').css('height', elem[0].offsetHeight + 'px')
+							.css('filter', 'alpha(opacity=0)').css('display', elem.css('display'))
+							.css('overflow', 'hidden').css('z-index', '900000');
 				}
 			}
-		}
-	};
-	var changeFnWrapper = function(fn) {
-		return function(evt) {
+			function getOffset(obj) {
+			    var left, top;
+			    left = top = 0;
+			    if (obj.offsetParent) {
+			        do {
+			            left += obj.offsetLeft;
+			            top  += obj.offsetTop;
+			        } while (obj = obj.offsetParent);
+			    }
+			    return {
+			        left : left,
+			        top : top
+			    };
+			};
+		};
+
+		elem.bind('mouseenter', makeFlashInput);
+
+		var fileApiChangeFn = function(evt) {
 			var files = FileAPI.getFiles(evt);
 			//just a double check for #233
 			for (var i = 0; i < files.length; i++) {
@@ -210,46 +242,16 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 			}
 			(evt.__files_ || evt.target.files).item = function(i) {
 				return (evt.__files_ || evt.target.files)[i] || null;
-			}
-			if (fn) fn.apply(this, [evt]);
+			};
 		};
 	};
-	var isFileChange = function(elem, e) {
-		return (e.toLowerCase() === 'change' || e.toLowerCase() === 'onchange') && elem.getAttribute('type') == 'file';
-	}
-	if (HTMLInputElement.prototype.addEventListener) {
-		HTMLInputElement.prototype.addEventListener = (function(origAddEventListener) {
-			return function(e, fn, b, d) {
-				if (isFileChange(this, e)) {
-					addFlash(this);
-					origAddEventListener.apply(this, [e, changeFnWrapper(fn), b, d]);
-				} else {
-					origAddEventListener.apply(this, [e, fn, b, d]);
-				}
-			}
-		})(HTMLInputElement.prototype.addEventListener);
-	}
-	if (HTMLInputElement.prototype.attachEvent) {
-		HTMLInputElement.prototype.attachEvent = (function(origAttachEvent) {
-			return function(e, fn) {
-				if (isFileChange(this, e)) {
-					addFlash(this);
-					if (window.jQuery) {
-						// fix for #281 jQuery on IE8
-						angular.element(this).bind('change', changeFnWrapper(null));
-					} else {
-						origAttachEvent.apply(this, [e, changeFnWrapper(fn)]);
-					}
-				} else {
-					origAttachEvent.apply(this, [e, fn]);
-				}
-			}
-		})(HTMLInputElement.prototype.attachEvent);
-	}
 
 	window.FormData = FormData = function() {
 		return {
 			append: function(key, val, name) {
+				if (val.__isFileAPIBlobShim) {
+					val = val.data[0];
+				}
 				this.data.push({
 					key: key,
 					val: val,
@@ -258,6 +260,13 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 			},
 			data: [],
 			__isFileAPIShim: true
+		};
+	};
+
+	window.Blob = Blob = function(b) {
+		return {
+			data: b,
+			__isFileAPIBlobShim: true
 		};
 	};
 
@@ -332,7 +341,7 @@ if (!window.FileReader) {
 		var listener = function(evt) {
 			if (!loadStarted) {
 				loadStarted = true;
-				_this.onloadstart && this.onloadstart(constructEvent('loadstart', evt));
+				_this.onloadstart && _this.onloadstart(constructEvent('loadstart', evt));
 			}
 			if (evt.type === 'load') {
 				_this.onloadend && _this.onloadend(constructEvent('loadend', evt));

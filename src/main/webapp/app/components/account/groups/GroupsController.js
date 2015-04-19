@@ -1,12 +1,10 @@
 GroupsModule.controller('GroupsController', [
     '$scope',
-    '$resource',
-    '$translate',
     'GroupService',
     'SearchService',
     'userGroups',
     'profileInfo',
-    function($scope, $resource, $translate, GroupService, SearchService, userGroups, profileInfo) {
+    function($scope, GroupService, SearchService, userGroups, profileInfo) {
         $scope.userGroups = userGroups;
 
         /**

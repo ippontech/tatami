@@ -1,5 +1,5 @@
 /* License: MIT.
- * Copyright (C) 2013, 2014, Uri Shaked.
+ * Copyright (C) 2013, 2014, 2015, Uri Shaked.
  */
 
 /* global describe, inject, module, beforeEach, afterEach, it, expect, spyOn, jasmine */
@@ -26,7 +26,8 @@ describe('module angularMoment', function () {
 
 		// Ensure the locale of moment.js is set to en by default
 		(moment.locale || moment.lang)('en');
-		// Add a sample timezone for tests
+		// Add a sample timezones for tests
+		moment.tz.add('UTC|UTC|0|0|');
 		moment.tz.add('Pacific/Tahiti|LMT TAHT|9W.g a0|01|-2joe1.I');
 	}));
 
@@ -158,26 +159,6 @@ describe('module angularMoment', function () {
 				$rootScope.$digest();
 				expect(element.text()).toBe('a year ago');
 			});
-
-			it('should not update the span text as time passes when using one time binding', function (done) {
-				$rootScope.testDate = new Date(new Date().getTime() - 44000);
-				var element = angular.element('<div am-time-ago="::testDate"></div>');
-				element = $compile(element)($rootScope);
-				$rootScope.$digest();
-				expect(element.text()).toBe('a few seconds ago');
-
-				var waitsInterval = setInterval(function () {
-					// Wait until $rootScope.date is more than 45 seconds old
-					if (new Date().getTime() - $rootScope.testDate.getTime() < 45000) {
-						return;
-					}
-
-					clearInterval(waitsInterval);
-					$rootScope.$digest();
-					expect(element.text()).toBe('a few seconds ago');
-					done();
-				}, 50);
-			});
 		});
 
 		it('should handle undefined data', function () {
@@ -252,7 +233,7 @@ describe('module angularMoment', function () {
 			expect(element.attr('datetime')).toBe('2012-09-20T15:20:12.000Z');
 		});
 
-		describe('setting the element title', function() {
+		describe('setting the element title', function () {
 			it('should not set the title attribute of the element to the date by default', function () {
 				$rootScope.testDate = new Date().getTime() / 1000;
 				var element = angular.element('<span am-time-ago="testDate"></span>');
@@ -278,6 +259,58 @@ describe('module angularMoment', function () {
 				$rootScope.$digest();
 				var testDateWithCustomFormatting = moment($rootScope.testDate).format(amTimeAgoConfig.titleFormat);
 				expect(element.attr('title')).toBe(testDateWithCustomFormatting);
+			});
+
+			describe('full date support', function () {
+				it('should display relative time if the date is recent', function () {
+					amTimeAgoConfig.fullDateThreshold = 7;
+					$rootScope.testDate = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000);
+					var element = angular.element('<span am-time-ago="testDate"></span>');
+					element = $compile(element)($rootScope);
+					$rootScope.$digest();
+					expect(element.text()).toBe('2 days ago');
+				});
+
+				it('should display full time if the date is past the threshold', function () {
+					amTimeAgoConfig.fullDateThreshold = 7;
+					$rootScope.testDate = new Date(2012, 5, 5);
+					var element = angular.element('<span am-time-ago="testDate"></span>');
+					element = $compile(element)($rootScope);
+					$rootScope.$digest();
+					expect(element.text()).toMatch(/^2012-06-05T00:00:00\+\d\d:\d\d$/);
+				});
+
+				it('should display full time using the given format', function () {
+					amTimeAgoConfig.fullDateThreshold = 7;
+					amTimeAgoConfig.fullDateFormat = 'YYYY,DD,MM';
+					$rootScope.testDate = new Date(2010, 1, 8);
+					var element = angular.element('<span am-time-ago="testDate"></span>');
+					element = $compile(element)($rootScope);
+					$rootScope.$digest();
+					expect(element.text()).toBe('2010,08,02');
+				});
+
+				it('should support changing the full date threshold through attribute', function () {
+					$rootScope.threshold = 7;
+					$rootScope.testDate = new Date(new Date().getTime() - 12 * 24 * 60 * 60 * 1000);
+					var element = angular.element('<span am-time-ago="testDate" am-full-date-threshold="{{threshold}}"></span>');
+					element = $compile(element)($rootScope);
+					$rootScope.$digest();
+					expect(element.text()).toBe(moment($rootScope.testDate).format());
+
+					$rootScope.threshold = 20;
+					$rootScope.$digest();
+					expect(element.text()).toBe('12 days ago');
+				});
+
+				it('should support setting the full date format through attribute', function () {
+					amTimeAgoConfig.fullDateThreshold = 7;
+					$rootScope.testDate =  new Date(2013, 11, 15);
+					var element = angular.element('<span am-time-ago="testDate" am-full-date-format="YYYY-MM-DD"></span>');
+					element = $compile(element)($rootScope);
+					$rootScope.$digest();
+					expect(element.text()).toBe('2013-12-15');
+				});
 			});
 		});
 
@@ -413,13 +446,15 @@ describe('module angularMoment', function () {
 		});
 
 		it('should apply the "unix" preprocessor if angularMomentConfig.preprocess is set to "unix" and no preprocessor is given', function () {
+			var unixDate = new Date(1970, 0, 2, 10, 0, 0).getTime() / 1000;
 			angularMomentConfig.preprocess = 'unix';
-			expect(amCalendar(100000)).toBe('01/02/1970');
+			expect(amCalendar(unixDate)).toBe('01/02/1970');
 		});
 
 		it('should ignore the default preprocessor if we explicity give it null in the second argument', function () {
+			var unixDate = new Date(1970, 0, 1, 10, 0, 0).getTime();
 			angularMomentConfig.preprocess = 'unix';
-			expect(amCalendar(100000, null)).toBe('01/01/1970');
+			expect(amCalendar(unixDate, null)).toBe('01/01/1970');
 		});
 
 		it('should gracefully handle the case where timezone is given but moment-timezone is not loaded', function () {
@@ -427,14 +462,74 @@ describe('module angularMoment', function () {
 			var originalMomentTz = moment.fn.tz;
 			try {
 				delete moment.fn.tz;
-				expect(amCalendar(Date.UTC(2012, 0, 22, 4, 46, 54))).toBe('01/22/2012');
+				expect(amCalendar(new Date(2012, 0, 22, 4, 46, 54).getTime())).toBe('01/22/2012');
 			} finally {
+				moment.fn.tz = originalMomentTz;
 				moment.fn.tz = originalMomentTz;
 			}
 		});
 
 		it('should return an empty string for invalid input', function () {
 			expect(amCalendar('blah blah')).toBe('');
+		});
+	});
+
+	describe('amDifference filter', function () {
+		var amDifference;
+
+		beforeEach(function () {
+			amDifference = $filter('amDifference');
+		});
+
+		it('should take the difference of two dates in milliseconds', function () {
+			var today = new Date(2012, 0, 22, 0, 0, 0);
+			var testDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 33, 33);
+			expect(amDifference(testDate, today)).toBe(48813000);
+		});
+
+		it('should support passing "years", "months", "days", etc as a units parameter', function () {
+			var test = new Date(2012, 0, 22, 4, 46, 54);
+			var testDate1 = new Date(2013, 0, 22, 4, 46, 54);
+			expect(amDifference(testDate1, test, 'years')).toBe(1);
+			var testDate2 = new Date(2012, 1, 22, 4, 46, 54);
+			expect(amDifference(testDate2, test, 'months')).toBe(1);
+			var testDate3 = new Date(2012, 0, 23, 4, 46, 54);
+			expect(amDifference(testDate3, test, 'days')).toBe(1);
+		});
+
+		it('should allow rounding to be disabled via parameter', function () {
+			var test = new Date(2012, 0, 22, 4, 46, 54);
+			var testDate1 = new Date(test.getFullYear() + 1, test.getMonth() + 6, test.getDate());
+			expect(amDifference(testDate1, test, 'years')).toBe(1);
+			expect(amDifference(testDate1, test, 'years', true)).toBeCloseTo(1.5);
+		});
+
+		it('dates from the future should return negative values', function () {
+			var today = new Date(2012, 0, 22, 4, 46, 54);
+			var testDate = new Date(2013, 0, 22, 4, 46, 54);
+			expect(String(amDifference(today, testDate))).toContain('-');
+		});
+
+		it('should gracefully handle undefined values', function () {
+			expect(amDifference()).toBe('');
+		});
+
+		it('should accept a numeric unix timestamp (milliseconds since the epoch) as input', function () {
+			expect(amDifference(new Date(2012, 0, 22, 4, 46, 55).getTime(), new Date(2012, 0, 22, 4, 46, 54).getTime())).toBe(1000);
+		});
+
+		it('should apply the "utc" preprocessor when the string "utc" is given as a preprocessor argument', function () {
+			expect(amDifference([2012, 0, 22, 0, 0, 1], Date.UTC(2012, 0, 22, 0, 0, 0), null, null, 'utc')).toBe(1000);
+			expect(amDifference(Date.UTC(2012, 0, 22, 0, 0, 1), [2012, 0, 22, 0, 0, 0], null, null, null, 'utc')).toBe(1000);
+		});
+
+		it('should apply the "unix" preprocessor if angularMomentConfig.preprocess is set to "unix" and no preprocessor is given', function () {
+			angularMomentConfig.preprocess = 'unix';
+			expect(amDifference(100001, 100000)).toBe(1000);
+		});
+
+		it('should return an empty string for invalid input', function () {
+			expect(amDifference('blah blah')).toBe('');
 		});
 	});
 
@@ -469,6 +564,11 @@ describe('module angularMoment', function () {
 			angularMomentConfig.timezone = 'Pacific/Tahiti';
 			var timestamp = Date.UTC(2012, 0, 22, 12, 46, 54);
 			expect(amDateFormat(timestamp, '(HH,mm,ss);MM.DD.YYYY')).toBe('(02,46,54);01.22.2012');
+		});
+
+		it('should respect the timezone parameter', function () {
+			var timestamp = Date.UTC(2012, 0, 22, 12, 46, 54);
+			expect(amDateFormat(timestamp, '(HH,mm,ss);MM.DD.YYYY', 'utc', 'Pacific/Tahiti')).toBe('(02,46,54);01.22.2012');
 		});
 
 		it('should return an empty string for invalid input', function () {
@@ -534,6 +634,14 @@ describe('module angularMoment', function () {
 
 	describe('amMoment service', function () {
 		describe('#changeLocale', function () {
+			it('should convert today\'s date to custom calendar format', function () {
+				var today = new Date();
+				amMoment.changeLocale('en', {calendar: {sameDay: '[This Day]'}});
+				var amCalendar = $filter('amCalendar');
+				var testDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 33, 33);
+				expect(amCalendar(testDate)).toBe('This Day');
+			});
+
 			it('should return the current locale', function () {
 				expect(amMoment.changeLocale()).toBe('en');
 			});
@@ -557,12 +665,23 @@ describe('module angularMoment', function () {
 			});
 		});
 
-		describe('#changeLanguage', function () {
-			it('should issue a warning about changeLanguage() deprecation', inject(function ($log) {
-				spyOn($log, 'warn');
-				amMoment.changeLanguage('fr');
-				expect($log.warn).toHaveBeenCalledWith('angular-moment: Usage of amMoment.changeLanguage() is deprecated. Please use changeLocale()');
-			}));
+		describe('#changeTimezone', function () {
+			it('Should update the current timezone', function () {
+				amMoment.changeTimezone('UTC');
+				expect(amMoment.applyTimezone(moment()).utcOffset()).toBe(0);
+
+				amMoment.changeTimezone('Pacific/Tahiti');
+				expect(amMoment.applyTimezone(moment()).utcOffset()).toBe(-600);
+			});
+
+			it('should broadcast an angularMoment:timezoneChanged event on the root scope with the new timezone value', function () {
+				var eventBroadcasted = false;
+				$rootScope.$on('amMoment:timezoneChanged', function () {
+					eventBroadcasted = true;
+				});
+				amMoment.changeTimezone('UTC');
+				expect(eventBroadcasted).toBe(true);
+			});
 		});
 
 		describe('#preprocessDate', function () {

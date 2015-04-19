@@ -1,6 +1,6 @@
 /*!
- * ngToast v1.3.0 (http://tameraydin.github.io/ngToast)
- * Copyright 2014 Tamer Aydin
+ * ngToast v1.5.0 (http://tameraydin.github.io/ngToast)
+ * Copyright 2015 Tamer Aydin (http://tamerayd.in)
  * Licensed under MIT (http://tameraydin.mit-license.org/)
  */
 (function(window, angular, undefined) {
@@ -13,7 +13,9 @@
             messageStack = [];
 
         var defaults = {
-          'class': 'success',
+          animation: false,
+          className: 'success',
+          additionalClasses: null,
           dismissOnTimeout: true,
           timeout: 4000,
           dismissButton: false,
@@ -32,7 +34,9 @@
           }
 
           this.id = id;
-          this['class'] = defaults['class'];
+          this.animation = defaults.animation;
+          this.className = defaults.className;
+          this.additionalClasses = defaults.additionalClasses;
           this.dismissOnTimeout = defaults.dismissOnTimeout;
           this.timeout = defaults.timeout;
           this.dismissButton = defaults.dismissButton;
@@ -92,7 +96,7 @@
 
 })(window, window.angular);
 
-(function(window, angular, undefined) {
+(function(window, angular) {
   'use strict';
 
   angular.module('ngToast.directives', ['ngToast.provider'])
@@ -100,9 +104,9 @@
       function(ngToast, $templateCache, $log) {
         return {
           replace: true,
-          restrict: 'E',
+          restrict: 'EA',
           template:
-            '<div class="ng-toast ng-toast--{{hPos}} ng-toast--{{vPos}}">' +
+            '<div class="ng-toast ng-toast--{{hPos}} ng-toast--{{vPos}} {{animation ? \'ng-toast--animate-\' + animation : \'\'}}">' +
               '<ul class="ng-toast__list">' +
                 '<toast-message ng-repeat="message in messages" ' +
                   'message="message">' +
@@ -124,6 +128,7 @@
             return function(scope) {
               scope.hPos = ngToast.settings.horizontalPosition;
               scope.vPos = ngToast.settings.verticalPosition;
+              scope.animation = ngToast.settings.animation;
               scope.messages = ngToast.messages;
             };
           }
@@ -135,7 +140,7 @@
         return {
           replace: true,
           transclude: true,
-          restrict: 'E',
+          restrict: 'EA',
           scope: {
             message: '='
           },
@@ -145,9 +150,9 @@
             };
           }],
           template:
-            '<li class="ng-toast__message">' +
-              '<div class="alert alert-{{message.class}}" ' +
-                'ng-class="{\'alert-dismissable\': message.dismissButton}">' +
+            '<li class="ng-toast__message {{message.additionalClasses}}">' +
+              '<div class="alert alert-{{message.className}}" ' +
+                'ng-class="{\'alert-dismissible\': message.dismissButton}">' +
                 '<button type="button" class="close" ' +
                   'ng-if="message.dismissButton" ' +
                   'ng-bind-html="message.dismissButtonHtml" ' +
@@ -192,12 +197,11 @@
 
 })(window, window.angular);
 
-(function(window, angular, undefined) {
+(function(window, angular) {
   'use strict';
 
   angular
     .module('ngToast', [
-      'ngAnimate',
       'ngSanitize',
       'ngToast.directives',
       'ngToast.provider'
