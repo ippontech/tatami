@@ -1,1 +1,1 @@
-var FilesModule = angular.module('FilesModule', ['ngResource']);
+var FilesModule = angular.module('FilesModule', []);

@@ -1,4 +1,4 @@
-var PostModule = angular.module('PostModule', ['ngResource', 'ui.bootstrap', 'angularFileUpload', 'ui.router']);
+var PostModule = angular.module('PostModule', ['angularFileUpload', 'ui.router']);
 
 PostModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider

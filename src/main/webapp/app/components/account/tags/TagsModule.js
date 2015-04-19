@@ -1,1 +1,1 @@
-var TagsModule = angular.module('TagsModule', ['ngResource']);
+var TagsModule = angular.module('TagsModule', []);

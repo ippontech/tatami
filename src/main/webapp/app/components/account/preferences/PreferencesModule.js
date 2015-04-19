@@ -1,1 +1,1 @@
-var PreferencesModule = angular.module('PreferencesModule', ['ngResource']);
+var PreferencesModule = angular.module('PreferencesModule', []);

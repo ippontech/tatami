@@ -1,1 +1,1 @@
-var GroupsModule = angular.module('GroupsModule', ['ngResource']);
+var GroupsModule = angular.module('GroupsModule', []);

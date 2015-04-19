@@ -6,18 +6,25 @@ var TatamiApp = angular.module('TatamiApp', [
     'AboutModule',
     'AdminModule',
     'ngResource',
+    'ngTouch',
     'ngCookies',
     'pascalprecht.translate',
     'ui.router',
     'ui.bootstrap',
-    'ngToast', // This may be better suited in the account module, not sure if home has any need for ngToast
     'mentio',
     'LocalStorageModule',
     'bm.bsTour',
-    'ngTouch'
 ]);
 
-TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
+TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
+    $rootScope.$on('$stateChangeSuccess', function() {
+        if($state.includes('tatami.home')) {
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        }
+    });
+}]);
+
+TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
     // Make state information available to $rootScope, and thus $scope in our controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
@@ -40,7 +47,6 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
-
             }
 
             // We are logged in, but the session hasn't been set, so we set it
@@ -89,12 +95,13 @@ TatamiApp.run([ '$rootScope', '$state', '$stateParams', 'AuthenticationService',
     });
 }]);
 
-
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
 
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
+
+        //$locationProvider.html5Mode(true);
 
         $stateProvider
             .state('tatami', {
@@ -131,6 +138,4 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                     public: true
                 }
             });
-
-        //$locationProvider.html5Mode(true);
 }]);
