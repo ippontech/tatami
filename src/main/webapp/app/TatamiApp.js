@@ -17,8 +17,8 @@ var TatamiApp = angular.module('TatamiApp', [
 ]);
 
 TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
-    $rootScope.$on('$stateChangeSuccess', function() {
-        if($state.includes('tatami.home')) {
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        if($state.includes('tatami.home') && toState !== fromState) {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     });
