@@ -1,4 +1,5 @@
 HomeModule.controller('StatusListContextController', [
+    '$window',
     '$scope',
     '$q',
     '$timeout',
@@ -12,8 +13,7 @@ HomeModule.controller('StatusListContextController', [
     'userRoles',
     'showModal',
     'poller',
-    '$window',
-    function($scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller, $window) {
+    function($window, $scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -33,6 +33,7 @@ HomeModule.controller('StatusListContextController', [
 
         $scope.newMessages = null;
         $window.document.title ='Tatami';
+
         if($scope.$state.is('tatami.home.home.timeline')) {
             var pollingDelay = 20000; // In milliseconds
 
@@ -47,7 +48,7 @@ HomeModule.controller('StatusListContextController', [
                 statusPoller.promise.then(null, null, function(response) {
                     if(response.length > 0) {
                         $scope.newMessages = response.length;
-                        $window.document.title = 'Tatami ('+response.length+')';
+                        $window.document.title = 'Tatami (' + response.length + ')';
                     }
                 });
             }, pollingDelay);
