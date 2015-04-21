@@ -1,5 +1,7 @@
 HomeModule.controller('StatusListController', [
     '$scope',
+    '$timeout',
+    '$window',
     'StatusService',
     'HomeService',
     'TagService',
@@ -8,7 +10,8 @@ HomeModule.controller('StatusListController', [
     'statuses',
     'userRoles',
     'showModal',
-    function($scope, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal) {
+    'poller',
+    function($scope, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal, poller) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -25,6 +28,38 @@ HomeModule.controller('StatusListController', [
             $scope.end = false;
             $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
         }
+
+        $scope.newMessages = null;
+        $window.document.title = 'Tatami';
+
+        if($scope.$state.is('tatami.home.home.timeline')) {
+            var pollingDelay = 20000; // In milliseconds
+
+            $timeout(function() {
+                var statusPoller = poller.get(StatusService, {
+                    action: 'getHomeTimeline',
+                    delay: pollingDelay,
+                    smart: true,
+                    argumentsArray: [{ start: statuses[0].timelineId }]
+                });
+
+                statusPoller.promise.then(null, null, function(response) {
+                    if(response.length > 0) {
+                        $scope.newMessages = response;
+                        $window.document.title = 'Tatami (' + response.length + ')';
+                    }
+                });
+            }, pollingDelay);
+        }
+
+        $scope.loadNewStatuses = function() {
+            for(var i = $scope.newMessages.length - 1; i >= 0 ; i--) {
+                $scope.statuses.unshift($scope.newMessages[i]);
+            }
+            
+            $window.document.title = 'Tatami';
+            $scope.newMessages = null;
+        };
 
         var loadMoreSuccess = function(statuses) {
             if(statuses.length == 0) {

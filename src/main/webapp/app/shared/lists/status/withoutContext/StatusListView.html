@@ -1,4 +1,11 @@
 <section class="tatams-container">
+    <section ng-if="newMessages" ng-click="loadNewStatuses()" class="refresh-button pointer">
+        <div class="text-center refresh-button-style">
+            <span class="badge">{{ newMessages.length }}</span>
+            <span ng-if="newMessages.length == 1" translate="tatami.home.newMessage"></span>
+            <span ng-if="newMessages.length > 1" translate="tatami.home.newMessages"></span>
+        </div>
+    </section>
     <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">
         <div class="tatams" ng-repeat="status in statuses">
             <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
