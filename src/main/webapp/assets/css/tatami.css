@@ -207,6 +207,10 @@ div.jGrowl-notification {
     color: #CCCCCC;
 }
 
+.navbar .nav > li > a:focus {
+    color: #CCCCCC;
+}
+
 .navbar .nav > li > a:hover {
     color: white;
 }
