@@ -9,6 +9,10 @@ TopMenuModule.controller('TopMenuController', [
         $scope.current = {};
         $scope.current.searchString = '';
 
+        $scope.$on('start-tour', function() {
+            $scope.tour.restart(true);
+        });
+
         $scope.logout = function() {
             $http.get('/tatami/logout')
                 .success(function() {
@@ -17,10 +21,6 @@ TopMenuModule.controller('TopMenuController', [
                     $scope.searchString = '';
                 });
         };
-
-        $scope.$on('start-tour', function() {
-            $scope.tour.restart(true);
-        });
 
         // Method to redirect to blog based on language. 
         $scope.goToBlog = function() {
