@@ -1,8 +1,8 @@
 HomeModule.controller('StatusListContextController', [
-    '$window',
     '$scope',
     '$q',
     '$timeout',
+    '$window',
     'StatusService',
     'HomeService',
     'TagService',
@@ -13,7 +13,7 @@ HomeModule.controller('StatusListContextController', [
     'userRoles',
     'showModal',
     'poller',
-    function($window, $scope, $q, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
+    function($scope, $q, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -183,14 +183,6 @@ HomeModule.controller('StatusListContextController', [
             }
 
             $scope.busy = true;
-
-            if($scope.$state.current.name == 'tatami.home.home.timeline') {
-                StatusService.getHomeTimeline({ finish: $scope.finish }, getContext);
-            }
-
-            if($scope.$state.current.name == 'tatami.home.home.company') {
-                HomeService.getCompanyTimeline({ finish: $scope.finish }, getContext);
-            }
         };
 
         $scope.isOneDayOrMore = function(date) {

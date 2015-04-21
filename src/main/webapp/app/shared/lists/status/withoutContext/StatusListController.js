@@ -47,6 +47,14 @@ HomeModule.controller('StatusListController', [
 
             $scope.busy = true;
 
+            if($scope.$state.current.name == 'tatami.home.home.timeline') {
+                StatusService.getHomeTimeline({ finish: $scope.finish }, loadMoreSuccess);
+            }
+
+            if($scope.$state.current.name == 'tatami.home.home.company') {
+                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
+            }
+
             if($scope.$state.current.name == 'tatami.home.home.mentions') {
                 HomeService.getMentions({ finish: $scope.finish }, loadMoreSuccess);
             }
