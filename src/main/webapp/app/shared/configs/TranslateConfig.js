@@ -1,4 +1,4 @@
-TatamiApp.config(function($translateProvider) {
+TatamiApp.config(['$translateProvider', function($translateProvider) {
   
     $translateProvider.translations('en', {
         'tatami': {
@@ -923,4 +923,4 @@ TatamiApp.config(function($translateProvider) {
     $translateProvider.registerAvailableLanguageKeys(['en', 'fr']);
     $translateProvider.fallbackLanguage('en');
     $translateProvider.determinePreferredLanguage();
-});
+}]);

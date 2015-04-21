@@ -1,6 +1,6 @@
-TatamiApp.run(function(amMoment) {
+TatamiApp.run(['amMoment', function(amMoment) {
     amMoment.changeLocale('en');
-});
+}]);
 
 moment.locale('en', {
     relativeTime : {
@@ -20,6 +20,7 @@ moment.locale('en', {
     }
 });
 
+/*
 moment.locale('fr', {
     relativeTime : {
         future: "",
@@ -37,3 +38,4 @@ moment.locale('fr', {
         yy: "%da"
     }
 });
+*/

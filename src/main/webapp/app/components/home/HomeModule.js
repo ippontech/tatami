@@ -12,6 +12,7 @@ HomeModule.config(['pollerConfig', function(pollerConfig) {
 }]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
+    /*
     var getContext = ['statuses', 'StatusService', '$q', function(statuses, StatusService, $q) {
         var temp = new Set();
         var context = [];
@@ -111,6 +112,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
 
         return statusesWithContext;
     }];
+    */
 
     $stateProvider
         .state('tatami.home', {
@@ -205,16 +207,16 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'TimelineHeaderController'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/withContext/StatusListContextView.html',
-                    controller: 'StatusListContextController'
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                context: getContext,
-                statusesWithContext: organizeContext,
+                //context: getContext,
+                //statusesWithContext: organizeContext,
                 showModal: ['statuses', function(statuses) {
                     return statuses.length === 0;
                 }]
@@ -283,16 +285,16 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
-                    templateUrl: 'app/shared/lists/status/withContext/StatusListContextView.html',
-                    controller: 'StatusListContextController'
+                    templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
+                    controller: 'StatusListController'
                 }
             },
             resolve: {
                 statuses: ['HomeService', function(HomeService) {
                     return HomeService.getCompanyTimeline().$promise;
-                }],
-                context: getContext,
-                statusesWithContext: organizeContext
+                }]//,
+                //context: getContext,
+                //statusesWithContext: organizeContext
             }
         })
         .state('tatami.home.home.tag', {
