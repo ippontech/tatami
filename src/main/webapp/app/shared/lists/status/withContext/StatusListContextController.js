@@ -185,6 +185,10 @@ HomeModule.controller('StatusListContextController', [
             $scope.busy = true;
         };
 
+        $scope.openReplyModal = function(status) {
+            $scope.$state.go($scope.$state.current.name + '.post', { statusId: status.statusId });
+        };
+        
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;
         };

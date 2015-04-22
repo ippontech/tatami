@@ -84,8 +84,8 @@
                                 <div class="attachments">
                                     <div>
                                         <span ng-repeat="attachment in status.attachments">
-                                        <a href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
-                                        <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
+                                        <a ng-href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
+                                            <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
                                         </a>
                                         </span>
                                     </div>
@@ -109,7 +109,7 @@
                             <div>
                                 <small class="statusitem-footer">
                                     <span>
-                                        <button ui-sref="tatami.home.home.timeline.post({ 'statusId': status.statusId })" class="btn-link status-action status-action-reply button-ios">
+                                        <button ng-click="openReplyModal(status)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.home.status.reply"></span>
                                         </button>
