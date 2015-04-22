@@ -10,7 +10,7 @@ A public installation of Tatami is provided by [Ippon Technologies](http://www.i
 
 Tatami is made with the following technologies :
 
-- HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+- HTML5, [AngularJS](https://angularjs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
 - [Apache Cassandra](http://cassandra.apache.org/)
 - [Elastic Search](http://www.elasticsearch.org/)
