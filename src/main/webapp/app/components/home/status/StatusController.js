@@ -63,7 +63,11 @@ HomeModule.controller('StatusController', [
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
-                    $scope.$state.transitionTo('tatami.home.home.timeline');
+                    if($scope.$stateParams.statusId == status.statusId) {
+                        $scope.$state.transitionTo('tatami.home.home.timeline');
+                    } else {
+                        $scope.statuses.splice(index, 1);
+                    }
             });
         };
 
