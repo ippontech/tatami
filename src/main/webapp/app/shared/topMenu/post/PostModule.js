@@ -19,7 +19,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
         });
     }];
 
-    var onEnterArrayReply = ['$stateParams', '$modal', function($stateParams, $modal) {
+    var onEnterArrayStatusView = ['$stateParams', '$modal', function($stateParams, $modal) {
         var $modalInstance = $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'PostController',
@@ -43,7 +43,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             params: {
                 'statusIdReply': null
             },
-            onEnter: onEnterArrayReply
+            onEnter: onEnterArrayStatusView
         })
         .state('tatami.home.search.post', {
             url: '',
