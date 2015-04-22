@@ -261,6 +261,14 @@ div.jGrowl-notification {
     -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
 }
 
+.img-medium-big {
+    width: 150px;
+    height: 150px;
+    background-position: center center;
+    background-size: cover;
+    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
+}
+
 .img-big {
     width: 200px;
     height: 200px;
