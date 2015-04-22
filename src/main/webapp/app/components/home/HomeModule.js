@@ -203,8 +203,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                     controller: 'HomeSidebarController'
                 },
                 'homeBodyHeader@tatami.home': {
-                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html',
-                    controller: 'TimelineHeaderController'
+                    templateUrl: 'app/components/home/timeline/TimelineHeaderView.html'
                 },
                 'homeBodyContent@tatami.home': {
                     templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.html',
