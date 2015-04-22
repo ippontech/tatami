@@ -8,7 +8,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             keyboard: true,
             resolve: {
                 curStatus: ['StatusService', function(StatusService) {
-                    if($stateParams.statusId !== undefined && $stateParams.statusId !== null) {
+                    if($stateParams.statusId !== null) {
                         return StatusService.get({ statusId: $stateParams.statusId }).$promise;
                     }
                 }],
@@ -26,7 +26,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             keyboard: true,
             resolve: {
                 curStatus: ['StatusService', function(StatusService) {
-                    if($stateParams.statusIdReply !== undefined && $stateParams.statusIdReply !== null) {
+                    if($stateParams.statusIdReply !== null) {
                         return StatusService.get({ statusId: $stateParams.statusIdReply }).$promise;
                     }
                 }],
