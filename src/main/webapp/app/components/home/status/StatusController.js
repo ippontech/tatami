@@ -29,6 +29,10 @@ HomeModule.controller('StatusController', [
             }
         }
 
+        $scope.openReplyModal = function(status) {
+            $scope.$state.go($scope.$state.current.name + '.post', { statusIdReply: status.statusId });
+        };
+
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;
         };

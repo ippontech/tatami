@@ -101,7 +101,7 @@
                             <div>
                                 <small class="statusitem-footer">
                                     <span>
-                                        <button ui-sref="tatami.home.status.post({ statusIdReply: status.statusId })" class="btn-link status-action status-action-reply button-ios">
+                                        <button ng-click="openReplyModal(status)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
                                             <span translate="tatami.home.status.reply"></span>
                                         </button>

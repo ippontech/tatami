@@ -13,6 +13,14 @@ TopMenuModule.controller('TopMenuController', [
             $scope.tour.restart(true);
         });
 
+        $scope.changeLanguage = function(key) {
+            $translate.use(key);
+        };
+
+        $scope.openPostModal = function() {
+            $scope.$state.go($scope.$state.current.name + '.post');
+        };
+
         $scope.logout = function() {
             $http.get('/tatami/logout')
                 .success(function() {
@@ -37,10 +45,6 @@ TopMenuModule.controller('TopMenuController', [
                    window.open('http://www.ipponusa.com/blog/');
                    break;
            }
-        };
-
-        $scope.changeLanguage = function(key) {
-            $translate.use(key);
         };
 
         $scope.getResults = function(searchString) {
@@ -71,7 +75,6 @@ TopMenuModule.controller('TopMenuController', [
         };
 
         $scope.goToPage = function($item, $model, $label) {
-            console.log($item);
             if($item.groupId) {
                 $scope.$state.go('tatami.home.home.group.statuses', { groupId: $item.groupId });
             }
@@ -81,5 +84,5 @@ TopMenuModule.controller('TopMenuController', [
             else if(!$item.groupId) {
                 $scope.$state.go('tatami.home.home.tag', { tag: $item.name })
             }
-        }
+        };
 }]);

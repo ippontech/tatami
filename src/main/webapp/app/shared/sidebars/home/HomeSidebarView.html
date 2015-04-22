@@ -2,7 +2,7 @@
     <section class="hidden-phone card-profile">
         <div class="page-header">
             <h4 class="profile-card background-image-fffix">
-                <div class="img img-rounded img-big pull-left" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+                <div class="img img-rounded pull-left" ng-init="click = false" ng-click="click = !click" ng-class="click ? 'img-big' : 'img-medium-big'" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
             </h4>
         </div>
         <div class="well well-sm little-padding">
