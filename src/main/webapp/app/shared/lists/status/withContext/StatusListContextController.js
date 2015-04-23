@@ -38,11 +38,17 @@ HomeModule.controller('StatusListContextController', [
             var pollingDelay = 20000; // In milliseconds
 
             $timeout(function() {
+                var argument = {};
+
+                if($scope.statuses.length != 0) {
+                    argument = { start: statuses[0].timelineId };
+                }
+
                 var statusPoller = poller.get(StatusService, {
                     action: 'getHomeTimeline',
                     delay: pollingDelay,
                     smart: true,
-                    argumentsArray: [{ start: statuses[0].timelineId }]
+                    argumentsArray: [ argument ]
                 });
 
                 statusPoller.promise.then(null, null, function(response) {
