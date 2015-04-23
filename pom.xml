@@ -404,14 +404,19 @@
         <tatami.google.clientId></tatami.google.clientId>
         <tatami.google.clientSecret></tatami.google.clientSecret>
 
+        <!--Test configurations: Sonar, unit test, code coverage --> 
+
+        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
-        <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
-        <sonar.jacoco.reportPath>${project.build.directory}/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${project.build.directory}/jacoco-it.exec</sonar.jacoco.itReportPath>
-        
-        <sonar.javascript.lcov.reportPath>${project.build.directory}/coverage/total-coverage.dat</sonar.javascript.lcov.reportPath>
-        <sonar.javascript.jstestdriver.reportsPath>${project.build.directory}/jasmine/</sonar.javascript.jstestdriver.reportsPath>
+        <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
+        <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.testresult.directory}/coverage/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
+
+        <sonar.javascript.lcov.reportPath>${project.testresult.directory}/coverage/saga/total-coverage.dat</sonar.javascript.lcov.reportPath>
+        <sonar.javascript.jstestdriver.reportsPath>${project.testresult.directory}/jasmine/</sonar.javascript.jstestdriver.reportsPath>
+
+
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.6</java.version>
@@ -958,6 +963,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
+                    <reportsDirectory>${project.testresult.directory}/surefire-reports</reportsDirectory>
                     <argLine>-XX:MaxPermSize=128m -Xmx256m ${surefireArgLine}</argLine>
                     <skipTests>${skip.unit.tests}</skipTests>
                     <!-- Force alphabetical order to have a reproducible build -->
@@ -1077,8 +1083,8 @@
                     </executions>
                     <configuration>
                         <!-- configuration properties for jasmine goes here -->
-                        
-                        
+                        <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
+
                         <!--<jsSrcDir>src/main/webapp/js</jsSrcDir>
                         <jsTestSrcDir>src/main/test/js</jsTestSrcDir>
                      <sourceExcludes>
@@ -1101,7 +1107,7 @@
                 </executions>
                 <configuration>
                     <baseDir>http://localhost:${jasmine.serverPort}</baseDir>
-                    <outputDir>${project.build.directory}/coverage</outputDir>
+                    <outputDir>${project.testresult.directory}/coverage/saga</outputDir>
                     <skipTests>${skip.unit.tests}</skipTests>
                     <outputStrategy>BOTH</outputStrategy>
                 </configuration>
@@ -1118,7 +1124,7 @@
                         </goals>
                         <configuration>
                             <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                            <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
                             <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
                             <propertyName>surefireArgLine</propertyName>
                         </configuration>
@@ -1131,8 +1137,8 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                            <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
+                            <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
