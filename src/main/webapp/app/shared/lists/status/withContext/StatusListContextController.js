@@ -56,6 +56,7 @@ HomeModule.controller('StatusListContextController', [
                         $scope.newMessages = response.length;
                         $window.document.title = 'Tatami (' + response.length + ')';
                     } else {
+                        $scope.newMessages = null;
                         $window.document.title = 'Tatami';
                     }
                 });
