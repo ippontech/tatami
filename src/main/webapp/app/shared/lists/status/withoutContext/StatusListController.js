@@ -53,6 +53,8 @@ HomeModule.controller('StatusListController', [
                     if(response.length > 0) {
                         $scope.newMessages = response;
                         $window.document.title = 'Tatami (' + response.length + ')';
+                    } else {
+                        $window.document.title = 'Tatami';
                     }
                 });
             }, pollingDelay);
