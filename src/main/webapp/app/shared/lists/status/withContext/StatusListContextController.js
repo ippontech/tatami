@@ -1,8 +1,6 @@
 HomeModule.controller('StatusListContextController', [
     '$scope',
     '$q',
-    '$timeout',
-    '$window',
     'StatusService',
     'HomeService',
     'TagService',
@@ -12,8 +10,7 @@ HomeModule.controller('StatusListContextController', [
     'statusesWithContext',
     'userRoles',
     'showModal',
-    'poller',
-    function($scope, $q, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
+    function($scope, $q, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -29,35 +26,6 @@ HomeModule.controller('StatusListContextController', [
         } else {
             $scope.end = false;
             $scope.finish = statuses[statuses.length - 1].timelineId;
-        }
-
-        $scope.newMessages = null;
-        $window.document.title ='Tatami';
-
-        if($scope.$state.is('tatami.home.home.timeline')) {
-            var pollingDelay = 20000; // In milliseconds
-
-            $timeout(function() {
-                var argument = {};
-
-                if($scope.statuses.length != 0) {
-                    argument = { start: statuses[0].timelineId };
-                }
-
-                var statusPoller = poller.get(StatusService, {
-                    action: 'getHomeTimeline',
-                    delay: pollingDelay,
-                    smart: true,
-                    argumentsArray: [ argument ]
-                });
-
-                statusPoller.promise.then(null, null, function(response) {
-                    if(response.length > 0) {
-                        $scope.newMessages = response.length;
-                        $window.document.title = 'Tatami (' + response.length + ')';
-                    }
-                });
-            }, pollingDelay);
         }
 
         var organizeStatuses = function(statuses, context) {

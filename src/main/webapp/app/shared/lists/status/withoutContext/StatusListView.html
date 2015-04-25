@@ -1,9 +1,13 @@
 <section class="tatams-container">
-    <section ng-if="newMessages" ng-click="loadNewStatuses()" class="refresh-button pointer">
-        <div class="text-center refresh-button-style">
-            <span class="badge">{{ newMessages.length }}</span>
-            <span ng-if="newMessages.length == 1" translate="tatami.home.newMessage"></span>
-            <span ng-if="newMessages.length > 1" translate="tatami.home.newMessages"></span>
+    <section ng-click="checkForNewStatuses()" class="refresh-button pointer">
+        <div class="refresh-button-style text-center" ng-class="{ 'alert alert-success': !disableCheck }">
+            <span ng-show="newMessages == 0">
+                <span ng-show="!disableCheck" class="glyphicon glyphicon-refresh"></span>
+                <span ng-show="disableCheck" class="glyphicon glyphicon-ban-circle"></span>
+            </span>
+            <span class="badge" ng-hide="newMessages == 0">{{ newMessages.length }}</span>
+            <span ng-show="newMessages.length == 1" translate="tatami.home.newMessage"></span>
+            <span ng-show="newMessages.length > 1" translate="tatami.home.newMessages"></span>
         </div>
     </section>
     <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">

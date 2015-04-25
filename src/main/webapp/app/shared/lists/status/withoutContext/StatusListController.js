@@ -1,7 +1,6 @@
 HomeModule.controller('StatusListController', [
     '$scope',
     '$timeout',
-    '$window',
     'StatusService',
     'HomeService',
     'TagService',
@@ -10,8 +9,7 @@ HomeModule.controller('StatusListController', [
     'statuses',
     'userRoles',
     'showModal',
-    'poller',
-    function($scope, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal, poller) {
+    function($scope, $timeout, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -29,42 +27,80 @@ HomeModule.controller('StatusListController', [
             $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
         }
 
-        $scope.newMessages = null;
-        $window.document.title = 'Tatami';
+        $scope.newMessages = [];
+        $scope.disableCheck = false;
 
-        if($scope.$state.is('tatami.home.home.timeline')) {
-            var pollingDelay = 20000; // In milliseconds
-
-            $timeout(function() {
-                var argument = {};
-
-                if($scope.statuses.length != 0) {
-                    argument = { start: statuses[0].timelineId };
-                }
-
-                var statusPoller = poller.get(StatusService, {
-                    action: 'getHomeTimeline',
-                    delay: pollingDelay,
-                    smart: true,
-                    argumentsArray: [ argument ]
-                });
-
-                statusPoller.promise.then(null, null, function(response) {
-                    if(response.length > 0) {
-                        $scope.newMessages = response;
-                        $window.document.title = 'Tatami (' + response.length + ')';
-                    }
-                });
-            }, pollingDelay);
-        }
-
-        $scope.loadNewStatuses = function() {
+        var loadNewStatuses = function() {
             for(var i = $scope.newMessages.length - 1; i >= 0 ; i--) {
                 $scope.statuses.unshift($scope.newMessages[i]);
             }
-            
-            $window.document.title = 'Tatami';
-            $scope.newMessages = null;
+
+            $scope.newMessages = [];
+        };
+
+        $scope.checkForNewStatuses = function() {
+            if($scope.newMessages.length != 0) {
+                loadNewStatuses();
+                return;
+            }
+
+            if($scope.disableCheck) {
+                return;
+            }
+
+            if($scope.$state.is('tatami.home.home.timeline')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = StatusService.getHomeTimeline({ start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = StatusService.getHomeTimeline();
+                }
+            }
+
+            else if($scope.$state.is('tatami.home.home.mentions')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = HomeService.getMentions({ start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = HomeService.getMentions();
+                }
+            }
+
+            else if($scope.$state.is('tatami.home.home.company')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = HomeService.getCompanyTimeline({ start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = HomeService.getCompanyTimeline();
+                }
+            }
+
+            else if($scope.$state.is('tatami.home.home.tag')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = TagService.getTagTimeline({ tag: $scope.$stateParams.tag, start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = TagService.getTagTimeline({ tag: $scope.$stateParams.tag });
+                }
+            }
+
+            else if($scope.$state.is('tatami.home.home.group.statuses')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = GroupService.getStatuses({ groupId: $scope.$stateParams.groupId });
+                }
+            }
+
+            else if($scope.$state.is('tatami.home.profile.statuses')) {
+                if($scope.statuses.length != 0) {
+                    $scope.newMessages = StatusService.getUserTimeline({ username: $scope.$stateParams.username, start: statuses[0].timelineId });
+                } else {
+                    $scope.newMessages = StatusService.getUserTimeline({ username: $scope.$stateParams.username });
+                }
+            }
+
+            // Wait 5 seconds before being able to check for new statuses again
+            $scope.disableCheck = true;
+            $timeout(function() {
+                $scope.disableCheck = false;
+            }, 5000);
         };
 
         var loadMoreSuccess = function(statuses) {
@@ -88,16 +124,16 @@ HomeModule.controller('StatusListController', [
 
             $scope.busy = true;
 
-            if($scope.$state.current.name == 'tatami.home.home.timeline') {
+            if($scope.$state.is('tatami.home.home.timeline')) {
                 StatusService.getHomeTimeline({ finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'tatami.home.home.company') {
-                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
+            else if($scope.$state.is('tatami.home.home.mentions')) {
+                HomeService.getMentions({ finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'tatami.home.home.mentions') {
-                HomeService.getMentions({ finish: $scope.finish }, loadMoreSuccess);
+            else if($scope.$state.is('tatami.home.home.company')) {
+                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadMoreSuccess);
             }
 
             /*
@@ -110,20 +146,20 @@ HomeModule.controller('StatusListController', [
                 REST url.
             */
             /*
-            if($scope.$state.current.name == 'tatami.home.home.favorites') {
+            else if($scope.$state.current.name == 'tatami.home.home.favorites') {
                 HomeService.getFavorites({ finish: $scope.finish }, loadMoreSuccess);
             }
             */
 
-            if($scope.$state.current.name == 'tatami.home.home.tag') {
+            else if($scope.$state.is('tatami.home.home.tag')) {
                 TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'tatami.home.home.group.statuses') {
+            else if($scope.$state.is('tatami.home.home.group.statuses')) {
                 GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, finish: $scope.finish }, loadMoreSuccess);
             }
 
-            if($scope.$state.current.name == 'tatami.home.profile.statuses') {
+            else if($scope.$state.is('tatami.home.profile.statuses')) {
                 StatusService.getUserTimeline({ username: $scope.$stateParams.username, finish: $scope.finish }, loadMoreSuccess);
             }
         };
