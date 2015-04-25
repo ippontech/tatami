@@ -1,9 +1,17 @@
 <section class="tatams-container">
-    <section ng-if="newMessages" ng-click="loadNewStatuses()" class="refresh-button pointer">
-        <div class="text-center refresh-button-style">
+    <section ng-click="checkForNewStatuses()" class="refresh-button pointer">
+        <div class="refresh-button-style text-center">
+            <span class="pull-left label" ng-show="newMessages == 0" ng-class="disableCheck ? 'label-default' : 'label-success'">
+                <span ng-show="!disableCheck" class="glyphicon glyphicon-refresh"></span>
+                <span ng-show="disableCheck" class="glyphicon glyphicon-ban-circle"></span>
+            </span>
             <span class="badge">{{ newMessages.length }}</span>
-            <span ng-if="newMessages.length == 1" translate="tatami.home.newMessage"></span>
-            <span ng-if="newMessages.length > 1" translate="tatami.home.newMessages"></span>
+            <span ng-show="newMessages.length == 1" translate="tatami.home.newMessage"></span>
+            <span ng-show="newMessages == 0 || newMessages.length > 1" translate="tatami.home.newMessages"></span>
+            <span class="pull-right label" ng-show="newMessages == 0" ng-class="disableCheck ? 'label-default' : 'label-success'">
+                <span ng-show="!disableCheck" class="glyphicon glyphicon-refresh"></span>
+                <span ng-show="disableCheck" class="glyphicon glyphicon-ban-circle"></span>
+            </span>
         </div>
     </section>
     <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">

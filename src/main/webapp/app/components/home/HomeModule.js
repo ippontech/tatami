@@ -3,13 +3,8 @@ var HomeModule = angular.module('HomeModule', [
     'ProfileSidebarModule',
     'ngSanitize',
     'angularMoment',
-    'infinite-scroll',
-    'emguo.poller'
+    'infinite-scroll'
 ]);
-
-HomeModule.config(['pollerConfig', function(pollerConfig) {
-    pollerConfig.resetOnStateChange = true;
-}]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     /*
