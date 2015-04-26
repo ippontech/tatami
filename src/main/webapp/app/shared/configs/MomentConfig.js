@@ -29,16 +29,11 @@ moment.locale('fr', {
         mm: "%d min",
         h:  "1 h",
         hh: "%d h",
-        //s:  "1d",
-        //m:  "1m",
-        //mm: "%dm",
-        //h:  "1h",
-        //hh: "%dh",
-        d:  "1j",
-        dd: "%dj",
-        M:  "1m",
-        MM: "%dm",
-        y:  "1a",
-        yy: "%da"
+        d:  "1 j",
+        dd: "%d j",
+        M:  "1 m",
+        MM: "%d m",
+        y:  "1 a",
+        yy: "%d a"
     }
 });
