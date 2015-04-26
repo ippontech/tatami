@@ -6,7 +6,7 @@
             <span ng-if="newMessages.length > 1" translate="tatami.home.newMessages"></span>
         </div>
     </section>
-    <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">
+    <section class="timeline" infinite-scroll="requestOldStatuses()" infinite-scroll-disabled="busy">
         <div class="tatams" ng-repeat="status in statuses">
             <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false">

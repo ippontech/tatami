@@ -3,13 +3,8 @@ var HomeModule = angular.module('HomeModule', [
     'ProfileSidebarModule',
     'ngSanitize',
     'angularMoment',
-    'infinite-scroll',
-    'emguo.poller'
+    'infinite-scroll'
 ]);
-
-HomeModule.config(['pollerConfig', function(pollerConfig) {
-    pollerConfig.resetOnStateChange = true;
-}]);
 
 HomeModule.config(['$stateProvider', function($stateProvider) {
     /*
@@ -17,7 +12,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
         var temp = new Set();
         var context = [];
 
-        for(var i = 0; i < statuses.length; ++i) {
+        for(var i = 0; i < statuses.length; i++) {
             if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
                 temp.add(statuses[i].replyTo);
                 context.push(StatusService.get({ statusId: statuses[i].replyTo })

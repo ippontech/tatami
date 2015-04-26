@@ -12,9 +12,8 @@ HomeModule.controller('StatusListContextController', [
     'statusesWithContext',
     'userRoles',
     'showModal',
-    'poller',
-    function($scope, $q, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal, poller) {
-        if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
+    function($scope, $q, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, statusesWithContext, userRoles, showModal) {
+        if(showModal && $scope.$state.is('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
 
@@ -31,34 +30,55 @@ HomeModule.controller('StatusListContextController', [
             $scope.finish = statuses[statuses.length - 1].timelineId;
         }
 
+        /* Begin Polling Related Code */
+
         $scope.newMessages = null;
-        $window.document.title ='Tatami';
+        $window.document.title = 'Tatami';
 
-        if($scope.$state.is('tatami.home.home.timeline')) {
-            var pollingDelay = 20000; // In milliseconds
+        if($scope.$state.is('tatami.home.home.timeline') ||
+           $scope.$state.is('tatami.home.home.company')) {
+            var requestNewStatuses = function() {
+                var pollingDelay = 20000; // In milliseconds
 
-            $timeout(function() {
-                var argument = {};
+                $scope.poller = $timeout(function() {
+                    var arguments = {};
 
-                if($scope.statuses.length != 0) {
-                    argument = { start: statuses[0].timelineId };
-                }
-
-                var statusPoller = poller.get(StatusService, {
-                    action: 'getHomeTimeline',
-                    delay: pollingDelay,
-                    smart: true,
-                    argumentsArray: [ argument ]
-                });
-
-                statusPoller.promise.then(null, null, function(response) {
-                    if(response.length > 0) {
-                        $scope.newMessages = response.length;
-                        $window.document.title = 'Tatami (' + response.length + ')';
+                    if($scope.statuses.length != 0) {
+                        arguments = { start: statuses[0].timelineId };
                     }
-                });
-            }, pollingDelay);
+
+                    var success = function(response) {
+                        if(response.length > 0) {
+                            $scope.newMessages = response.length;
+                            $window.document.title = 'Tatami (' + $scope.newMessages + ')';
+                        }
+                        requestNewStatuses();
+                    };
+
+                    var error = function(err) {
+                        requestNewStatuses();
+                    };
+
+                    if($scope.$state.is('tatami.home.home.timeline')) {
+                        StatusService.getHomeTimeline(arguments, success, error);
+                    }
+
+                    else if($scope.$state.is('tatami.home.home.company')) {
+                        HomeService.getCompanyTimeline(arguments, success, error);
+                    }
+                }, pollingDelay);
+            };
+
+            requestNewStatuses();
+
+            $scope.$on('$destroy', function() {
+                $timeout.cancel($scope.poller);
+            });
         }
+        
+        /* End Polling Related Code */ 
+
+        /* Begin Infinite Scrolling Related Code */
 
         var organizeStatuses = function(statuses, context) {
             var statusesWithContext = [];
@@ -164,7 +184,7 @@ HomeModule.controller('StatusListContextController', [
             var temp = new Set();
             var context = [];
 
-            for(var i = 0; i < statuses.length; ++i) {
+            for(var i = 0; i < statuses.length; i++) {
                 if(statuses[i].replyTo && !temp.has(statuses[i].replyTo)) {
                     temp.add(statuses[i].replyTo);
                     context.push(StatusService.get({ statusId: statuses[i].replyTo })
@@ -183,13 +203,23 @@ HomeModule.controller('StatusListContextController', [
             });
         };
 
-        $scope.loadMore = function() {
+        $scope.requestOldStatuses = function() {
             if($scope.busy || $scope.end) {
                 return;
             }
 
             $scope.busy = true;
+
+            if($scope.$state.is('tatami.home.home.timeline')) {
+                StatusService.getHomeTimeline({ finish: $scope.finish }, getContext);
+            }
+
+            else if($scope.$state.is('tatami.home.home.company')) {
+                HomeService.getCompanyTimeline({ finish: $scope.finish }, getContext);
+            }
         };
+
+        /* End Infinite Scrolling Related Code */
 
         $scope.openReplyModal = function(status) {
             $scope.$state.go($scope.$state.current.name + '.post', { statusId: status.statusId });
