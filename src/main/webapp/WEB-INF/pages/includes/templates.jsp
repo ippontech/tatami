@@ -122,7 +122,7 @@
                 <@ } @>
             </h5>
             <div class="markdown <@ if (type == 'MENTION_SHARE') { @>mention-share<@ } @>">
-                <@= marked(content) @>
+                <@= marked(Tatami.Smileys(content)) @>
             </div>
             <small> 
                 <@ if (groupId) { @>
