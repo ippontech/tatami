@@ -1107,9 +1107,10 @@
                         </webDriverCapabilities>
                         <preloadSources>
                             <!-- angular preloading -->
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/bootstrap-tour/docs/assets/vendor/jquery.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.js</source>
-
+                            
                             <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/app/TatamiApp.js</source>
                             <source>${project.basedir}/src/main/webapp/app/components/about/AboutModule.js</source>
