@@ -34,14 +34,13 @@ PasswordModule.controller('PasswordController', ['$scope', '$translate', 'Passwo
                 // Clear the fields after we have changed the password
                 $scope.reset();
                 // Alert user that the password has been changed
-                //$scope.status.confirmChange = true;
                 ngToast.create($translate.instant('tatami.account.password.save'));
 
             }, function() {
                 ngToast.create({
                     content: $translate.instant('tatami.form.fail'),
                     class: 'danger'
-                })
+                });
             });
         }
     };
@@ -51,5 +50,5 @@ PasswordModule.controller('PasswordController', ['$scope', '$translate', 'Passwo
         $scope.status.oldEmpty = false;
         $scope.status.newEmpty = false;
         $scope.status.confirmWrong = false;
-    }
-}])
+    };
+}]);
