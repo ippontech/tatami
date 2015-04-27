@@ -13,7 +13,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'ui.bootstrap',
     'mentio',
     'LocalStorageModule',
-    'bm.bsTour',
+    'bm.bsTour'
 ]);
 
 TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
