@@ -94,7 +94,7 @@ public class Tatamibot extends RouteBuilder {
         if (userService.getUserByLogin(tatamiBotLogin) == null) {
             log.info("Tatami Bot user does not exist for domain " + domain.getName() + " - creating it");
             userService.createTatamibot(domain.getName());
-            if (domain.getName().equals("ippon.fr")) {
+            if ("ippon.fr".equals(domain.getName())){
                 log.info("Creating a default RSS robot for ippon.fr");
                 TatamibotConfiguration configuration = new TatamibotConfiguration();
                 configuration.setType(TatamibotConfiguration.TatamibotType.RSS);
