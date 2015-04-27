@@ -28,7 +28,7 @@ GroupsModule.controller('GroupsController', [
             });
         };
 
-        $scope.joinLeaveGroup = function(group, index) {
+        $scope.joinLeaveGroup = function(group) {
             if(!group.member) {
                 GroupService.join(
                     { groupId: group.groupId, username: profileInfo.username },
@@ -52,6 +52,6 @@ GroupsModule.controller('GroupsController', [
                     }
                 );
             }
-        }
+        };
     }
 ]);
