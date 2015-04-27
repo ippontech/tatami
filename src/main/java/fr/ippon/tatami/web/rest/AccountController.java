@@ -25,15 +25,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
-/**
+/*
  * REST controller for managing users.
- *
  * @author Arthur Weber
  */
 @Controller
 public class AccountController {
 
-    private final Logger log = LoggerFactory.getLogger(AccountController.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
     @Inject
     private UserService userService;
@@ -43,8 +42,7 @@ public class AccountController {
 
     @Inject
     Environment env;
-
-    /**
+    /*
      * GET /account/admin -> Determines if the current account is an admin
      */
     @RequestMapping(value = "/rest/account/admin",
@@ -53,14 +51,13 @@ public class AccountController {
     @ResponseBody
     @Timed
     public String isAdmin() {
-        this.log.debug("REST request to determine if user is an admin");
+        log.debug("REST request to determine if user is an admin");
         org.springframework.security.core.userdetails.User securityUser =
                 (org.springframework.security.core.userdetails.User)
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return "{ \"roles\": \"" + securityUser.getAuthorities().toString() + "\" }";
-        //return "{ \"roles\": \"" + userDetailsService.loadUserByUsername(currentUser.getLogin()).getAuthorities().toString() + "\" }";
-    }
+   }
 
     /**
      * GET  /account/profile -> get account's profile
@@ -71,7 +68,7 @@ public class AccountController {
     @ResponseBody
     @Timed
     public User getProfile() {
-        this.log.debug("REST request to get account's profile");
+        log.debug("REST request to get account's profile");
         User currentUser = authenticationService.getCurrentUser();
         return userService.getUserByLogin(currentUser.getLogin());
     }
@@ -118,12 +115,11 @@ public class AccountController {
     @ResponseBody
     @Timed
     public Preferences getPreferences() {
-        this.log.debug("REST request to get account's preferences");
+        log.debug("REST request to get account's preferences");
         User currentUser = authenticationService.getCurrentUser();
         User user = userService.getUserByLogin(currentUser.getLogin());
 
-        Preferences preferences = new Preferences(user);
-        return preferences;
+       return new Preferences(user);
     }
 
     /**
@@ -135,7 +131,7 @@ public class AccountController {
     @ResponseBody
     @Timed
     public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
-        this.log.debug("REST request to set account's preferences");
+        log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
             User currentUser = authenticationService.getCurrentUser();
@@ -168,9 +164,9 @@ public class AccountController {
         } catch (Exception e) {
             log.debug("Error during setting preferences", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            return preferences;
         }
+            return preferences;
+
     }
 
 
@@ -202,7 +198,7 @@ public class AccountController {
     @ResponseBody
     @Timed
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
-        this.log.debug("REST request to set account's password");
+       log.debug("REST request to set account's password");
         try {
             User currentUser = authenticationService.getCurrentUser();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
