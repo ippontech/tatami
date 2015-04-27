@@ -17,14 +17,14 @@ var TatamiApp = angular.module('TatamiApp', [
 ]);
 
 TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if($state.includes('tatami.home') && toState !== fromState) {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     });
 }]);
 
-TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', 'localStorageService', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
+TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
     // Make state information available to $rootScope, and thus $scope in our controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
@@ -67,7 +67,7 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
 
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
-        $state.transitionTo('tatami.pageNotFound', null, { location: false })
+        $state.transitionTo('tatami.pageNotFound', null, { location: false });
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
@@ -90,7 +90,6 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
 
         // Go to login page
         event.preventDefault();
-
         $state.go('tatami.login.main');
     });
 }]);
@@ -100,8 +99,6 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
 
         // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
-
-        //$locationProvider.html5Mode(true);
 
         $stateProvider
             .state('tatami', {
