@@ -1,9 +1,9 @@
 var AccountModule = angular.module('AccountModule', [
-    'ProfileModule', 
-    'PreferencesModule', 
-    'PasswordModule', 
-    'FilesModule', 
-    'UsersModule', 
+    'ProfileModule',
+    'PreferencesModule',
+    'PasswordModule',
+    'FilesModule',
+    'UsersModule',
     'GroupsModule',
     'TagsModule',
     'TopPostersModule',
@@ -208,7 +208,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/tags/TagsView.html',
             resolve: {
                 tagList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
-                    if($stateParams.q.length == 0) {
+                    if($stateParams.q.length === 0) {
                         return {};
                     }
                     else {
@@ -248,11 +248,11 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
                     }
 
                     var temp = [];
-                    for(var i = 0; i < users.length; ++i) {
+                    for(var x = 0; x < users.length; ++x) {
                         // Create the current user to contain the user data, and how many posts they've made today
                         var curUser = {};
-                        curUser.info = users[i];
-                        curUser.statusCount = statusCounts[users[i].username];
+                        curUser.info = users[x];
+                        curUser.statusCount = statusCounts[users[x].username];
                         temp.push(curUser);
                     }
                     return temp;
