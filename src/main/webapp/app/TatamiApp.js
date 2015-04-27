@@ -24,7 +24,7 @@ TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
     });
 }]);
 
-TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', function($rootScope, $state, $stateParams, AuthenticationService, UserSession, localStorageService) {
+TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', function($rootScope, $state, $stateParams, AuthenticationService, UserSession) {
     // Make state information available to $rootScope, and thus $scope in our controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
