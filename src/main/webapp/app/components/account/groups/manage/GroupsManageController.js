@@ -23,7 +23,7 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
         if($scope.current.searchString) {
             UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
                 $scope.searchedMembers = result;
-            })
+            });
         }
         else {
             $scope.searchedMembers = {};
@@ -37,6 +37,6 @@ GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupServ
             function() {
                 $scope.$state.reload();
             }
-        )
-    }
+        );
+    };
 }]);
