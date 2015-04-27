@@ -1,6 +1,6 @@
 AccountModule.controller('FormController', ['$scope', function($scope) {
     // Forwards from the parent state to the default child state.
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParam) {
+    $scope.$on('$stateChangeSuccess', function(event, toState) {
         if(toState.name === 'tatami.account.groups') {
             $scope.$state.go('tatami.account.groups.main.top.list');
         }
