@@ -17,33 +17,22 @@ public class TwitterRouteBuilder extends SourceRouteBuilderBase {
                 id("twitter-" + configuration.getDomain()).
                 setHeader("login", simple(tatamiBotLogin)).
                 setHeader("tatamibotConfiguration", constant(configuration)).
-                // extraction of publishedDate ?
-//            setHeader("tatamibotLastUpdateDate", simple("xxxx")). 
-                        idempotentConsumer(simple("${header.tatamibotConfiguration.domain}-${body}"), idempotentRepository).
+                idempotentConsumer(simple("${header.tatamibotConfiguration.domain}-${body}"), idempotentRepository).
                 to("direct:toTatami");
     }
 
     String getTwitterEndpointUri() {
-
-        // TODO : add a map field to TatamibotConfiguration ?
         String twitterUser = "?";
         String twitterConsumerKey = "?";
         String twitterConsumerSecret = "?";
         String twitterAccessToken = "?";
         String twitterAccessTokenSecret = "?";
 
-        String twitterEndpointUrl = "twitter://timeline/user?user=" +
-                twitterUser +
-                "&type=polling&delay=60&consumerKey=" +
-                twitterConsumerKey +
-                "&consumerSecret=" +
-                twitterConsumerSecret +
-                "&accessToken=" +
-                twitterAccessToken +
-                "&accessTokenSecret=" +
-                twitterAccessTokenSecret;
-
-        return twitterEndpointUrl;
+        return "twitter://timeline/user?user=" + twitterUser +
+                "&type=polling&delay=60&consumerKey=" + twitterConsumerKey +
+                "&consumerSecret=" + twitterConsumerSecret +
+                "&accessToken=" + twitterAccessToken +
+                "&accessTokenSecret=" + twitterAccessTokenSecret;
     }
 
 }
