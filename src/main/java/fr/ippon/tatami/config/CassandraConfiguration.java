@@ -34,7 +34,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.*;
 @Configuration
 public class CassandraConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(CassandraConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraConfiguration.class);
 
     @Inject
     private Environment env;
