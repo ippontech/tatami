@@ -1109,6 +1109,7 @@
                             <!-- angular preloading -->
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/bootstrap-tour/docs/assets/vendor/jquery.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.js</source>
                             
                             <!-- tatami app preloading -->
@@ -1132,15 +1133,12 @@
                             <source>${project.basedir}/src/main/webapp/app/shared/topMenu/TopMenuModule.js</source>
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
-                        <jsSrcDir>src/main/webapp</jsSrcDir>
-                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir>
+                        <!-- <jsSrcDir>src/main/webapp</jsSrcDir>
+                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir -->>
                         <sourceExcludes>
                             <exclude>**/bower_components/**/*.*</exclude>
                             <exclude>**/js/vendor/**/*.*</exclude>
                         </sourceExcludes> 
-                        <specIncludes>
-                            <include>*Spec.js</include>
-                        </specIncludes>
                     </configuration>
                 </plugin>
                 <plugin>

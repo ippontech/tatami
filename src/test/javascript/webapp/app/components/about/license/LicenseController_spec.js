@@ -1,20 +1,21 @@
 describe("License controller test", function() {
 
-    beforeEach(module("LicenseController"));
+    var scope;
+    var ctrl;
+    var $stateProvider;
 
-    var $controller;
 
-    beforeEarch(inject(function(_$controller_) {
-        $controller = _$controller_;
+    beforeEach(module('AboutModule') {
+    };
+
+    beforeEach(inject(function($rootScope, $controller, $stateProvider) ) {
+        scope = $rootScope.$new();
+        ctrl = $controller('LicenseController', {$scope, $scope});
+        $stateProvidr = stateMock;
     }));
 
-
-    describe('$scope.getDate', function() {
-        it('checks date to be current year', function() {
-            var $scope = {};
-            var controller = $controller('LicenseController', { $scope: $scope });
-            expect $scope.endYear.equals(new Date().getFullYear();
-        });
-
+    it('Sanity check', function() {
+        expect(true).toBeTruthy();
     });
-}
+
+});
