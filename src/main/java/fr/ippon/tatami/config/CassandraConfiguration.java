@@ -40,7 +40,6 @@ public class CassandraConfiguration {
     private Environment env;
 
     private Cluster myCluster;
-    private String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
     @PreDestroy
     public void destroy() {
@@ -54,6 +53,7 @@ public class CassandraConfiguration {
         log.info("Configuring Cassandra keyspace");
         String cassandraHost = env.getProperty("cassandra.host");
         String cassandraClusterName = env.getProperty("cassandra.clusterName");
+        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
 
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
         cassandraHostConfigurator.setMaxActive(100);
@@ -129,7 +129,9 @@ public class CassandraConfiguration {
 
     private void addColumnFamily(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
 
-      ColumnFamilyDefinition cfd =
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
+
+        ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
 
         cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
@@ -137,6 +139,8 @@ public class CassandraConfiguration {
     }
 
     private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
+
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
 
         ColumnFamilyDefinition cfd =
                 HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
@@ -148,6 +152,8 @@ public class CassandraConfiguration {
 
 
     private void addColumnFamilyCounter(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
+        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
+
         ThriftCfDef cfd =
                 new ThriftCfDef(cassandraKeyspace, cfName, ComparatorType.UTF8TYPE);
 
