@@ -21,7 +21,6 @@ TatamiApp.filter('emoticon', function() {
             ':#': '/assets/img/emoticons/lips_sealed.png',
             '>:D': '/assets/img/emoticons/malicious.png',
             ':3': '/assets/img/emoticons/naww.png',
-            ':(': '/assets/img/emoticons/pouting.png',
             ':)': '/assets/img/emoticons/smiling.png',
             ':|': '/assets/img/emoticons/speechless.png',
             '>:)': '/assets/img/emoticons/spiteful.png',
@@ -36,8 +35,7 @@ TatamiApp.filter('emoticon', function() {
             ';)': '/assets/img/emoticons/winking_grinning.png',
             ';p': '/assets/img/emoticons/winking_tongue_out.png',
             ';P': '/assets/img/emoticons/winking_tongue_out.png',
-            ':t': '/assets/img/emoticons/trollface.png',
-            ';)': '/assets/img/emoticons/winking.png'
+            ':t': '/assets/img/emoticons/trollface.png'
         };
 
         function escapeRegExp(str) {
