@@ -41,7 +41,7 @@ FilesModule.controller('FilesController', [
             return "progress-bar progress-bar-warning";
         }
         else {
-             return "progress-bar progress-bar-success"
+             return "progress-bar progress-bar-success";
         }
-    }
+    };
 }]);
