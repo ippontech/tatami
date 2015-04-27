@@ -48,7 +48,7 @@ GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'Grou
             ngToast.create({
                 content: $translate.instant('tatami.form.fail'),
                 class: 'danger'
-            })
+            });
         });
     };
 }]);
