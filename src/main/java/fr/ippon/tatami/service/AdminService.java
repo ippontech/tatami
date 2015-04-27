@@ -85,7 +85,7 @@ public class AdminService {
     private void loadProperty(Map<String, String> properties, String key) {
         try {
             properties.put(key, env.getProperty(key));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             properties.put(key, "(Invalid value)");
         }
     }
