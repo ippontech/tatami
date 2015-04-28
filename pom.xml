@@ -1111,6 +1111,8 @@
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.js</source> 
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.js</source> 
                             
                             <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/app/TatamiApp.js</source>
