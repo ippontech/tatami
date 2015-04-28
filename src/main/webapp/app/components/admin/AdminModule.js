@@ -1,6 +1,6 @@
 var AdminModule = angular.module('AdminModule', []);
 
-AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider) {
     $stateProvider
         .state('admin',{
             url: '/admin?message',
@@ -17,5 +17,5 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }]
             },
             controller: 'AdminController'
-        })
+        });
 }]);

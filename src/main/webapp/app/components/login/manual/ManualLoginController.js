@@ -34,7 +34,7 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
 
             }
         })
-        .error(function(data, status, headers, config) {
+        .error(function(data) {
             console.log('Error');
             console.log(data);
         });

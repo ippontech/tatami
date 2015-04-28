@@ -11,5 +11,5 @@ AdminModule.controller('AdminController', [
                 AdminService.save({ options: 'reindex' });
                 $scope.$state.go('admin', { message: 'reindex' });
             }
-        }
+        };
 }]);

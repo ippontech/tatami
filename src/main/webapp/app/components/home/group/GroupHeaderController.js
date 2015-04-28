@@ -29,6 +29,6 @@ HomeModule.controller('GroupHeaderController', ['$scope', 'GroupService', 'profi
                     }
                 );
             }
-        }
+        };
     }
 ]);

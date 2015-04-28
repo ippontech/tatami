@@ -7,6 +7,6 @@ UsersModule.directive('tatamiAccountUser', function() {
             isAdmin: '='
         },
         templateUrl: '/app/components/account/users/directives/UserAccountView.html'
-    }
+    };
 
-})
+});

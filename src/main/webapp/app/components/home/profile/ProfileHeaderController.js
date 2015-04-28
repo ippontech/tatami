@@ -10,6 +10,6 @@ HomeModule.controller('ProfileHeaderController', ['$scope', 'UserService', 'user
                     $scope.user.friend = response.friend;
                     $scope.$state.reload();
             });
-        }
+        };
     }
 ]);
