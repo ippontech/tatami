@@ -14,7 +14,7 @@ UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService
     $scope.deactivate = function(user, index) {
         UserService.deactivate({ username: user.username }, { activate: true }, function(response) {
             $scope.usersList[index].activated = response.activated;
-        })
+        });
     };
 
     /**

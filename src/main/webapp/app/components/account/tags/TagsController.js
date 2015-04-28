@@ -32,7 +32,7 @@ TagsModule.controller('TagsController', [
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
 
             // Update the tag data data
-            if($scope.current.searchString.length == 0) {
+            if($scope.current.searchString.length === 0) {
                 $scope.tags = {};
             }
             else{
@@ -41,6 +41,6 @@ TagsModule.controller('TagsController', [
                     $scope.tags = result;
                 });
             }
-        }
+        };
     }
 ]);

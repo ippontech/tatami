@@ -17,7 +17,7 @@ PreferencesModule.controller('PreferencesController', [
                 ngToast.create({
                     content: $translate.instant('tatami.form.fail'),
                     class: 'danger'
-                })
+                });
             });
         };
 
@@ -30,5 +30,5 @@ PreferencesModule.controller('PreferencesController', [
                     $scope.prefs[pref] = false;
                 }
             }
-        }
+        };
 }]);

@@ -10,7 +10,7 @@ var AccountModule = angular.module('AccountModule', [
     'ngToast'
 ]);
 
-AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+AccountModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider) {
     $stateProvider
         .state('tatami.account',{
             url: '/account',

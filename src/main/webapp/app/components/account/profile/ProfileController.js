@@ -43,14 +43,14 @@ ProfileModule.controller('ProfileController', ['$scope', '$upload', '$translate'
                     fileFormDataName: 'uploadFile'
                 }).progress(function(evt) {
                     $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
-                }).success(function(data, status, headers, config) {
+                }).success(function() {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
                     $scope.$state.reload();
-                }).error(function(data, status, headers, config) {
+                }).error(function() {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
-                })
+                });
             }
         });
     }
