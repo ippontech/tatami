@@ -2,6 +2,7 @@ HomeModule.controller('StatusListController', [
     '$scope',
     '$timeout',
     '$window',
+    '$translate',
     'StatusService',
     'HomeService',
     'TagService',
@@ -11,7 +12,7 @@ HomeModule.controller('StatusListController', [
     'userRoles',
     'showModal',
     'poller',
-    function($scope, $timeout, $window, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal, poller) {
+    function($scope, $timeout, $window, $translate, StatusService, HomeService, TagService, GroupService, profile, statuses, userRoles, showModal, poller) {
         if(showModal && $scope.$state.includes('tatami.home.home.timeline')) {
             $scope.$state.go('tatami.home.home.timeline.presentation');
         }
@@ -128,12 +129,16 @@ HomeModule.controller('StatusListController', [
             }
         };
 
-        $scope.openReplyModal = function(status) {
-            $scope.$state.go($scope.$state.current.name + '.post', { statusId: status.statusId });
-        };
-
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;
+        };
+
+        $scope.getLanguageKey = function() {
+            return $translate.use();
+        };
+
+        $scope.openReplyModal = function(status) {
+            $scope.$state.go($scope.$state.current.name + '.post', { statusId: status.statusId });
         };
 
         $scope.favoriteStatus = function(status, index) {
