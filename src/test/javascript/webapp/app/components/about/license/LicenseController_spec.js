@@ -1,15 +1,14 @@
 describe("License controller test", function() {
-
-    var scope;
-    var ctrl;
-    var $stateProvider;
+    beforeEach(module('ui.router'))
+    beforeEach(module('AboutModule'));
 
 
-    beforeEach(module('AboutModule')); 
-
-
-    it('Sanity check', function() {
-        expect(true).toBeTruthy();
-    });
+    it('should set the date to todays date', inject($StateProvider, function($controller) {
+        var scope= {},
+            ctrl =$controller('LicenseController', {
+                $scope:scope
+            });
+        expect(new Date().getFullYear()).equals(scope.endYear);
+    }));
 
 });
