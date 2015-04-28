@@ -25,36 +25,27 @@ TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
 }]);
 
 TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 'UserSession', function($rootScope, $state, $stateParams, AuthenticationService, UserSession) {
-    // Make state information available to $rootScope, and thus $scope in our controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-
-    // When the app is started, determine if the user is authenticated, if so, send them to home timeline
     UserSession.authenticate().then(function(result) {
         if(result !== null) {
-            // We aren't logged in, clear the old session, and send the user to the login page
             if(result.action === null) {
                 if(angular.isDefined($state.current.data) && !$state.current.data.public) {
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
-                // If we are trying to access a state that is public, allow user
                 if(angular.isDefined($rootScope.destinationState)) {
                     $state.go($rootScope.destinationState, $rootScope.destinationParams);
                 }
                 else {
-                    // The destination state is undefined -- This is the first time accessing the site
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
             }
-
-            // We are logged in, but the session hasn't been set, so we set it
             if(angular.isDefined(result.username)) {
                 if(!UserSession.isAuthenticated()) {
                     UserSession.setLoginState(true);
                 }
-                // If there is no destination state, send user to timeline, since they are logged in
                 if(!angular.isDefined($rootScope.destinationState)) {
                     $state.go('tatami.home.home.timeline');
                 }
@@ -73,8 +64,6 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
         $rootScope.destinationState = toState;
         $rootScope.destinationParams = toStateParams;
-
-        // If the user is logged in, we allow them to go where they intend to
         if(UserSession.isAuthenticated()) {
             return;
         }
@@ -82,13 +71,8 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
         if(toState.data && toState.data.public) {
             return;
         }
-
-        // The user is not logged in, and trying to access a state that requires them to be logged in
-        // Stash the state they tried to access
         $rootScope.returnToState = toState;
         $rootScope.returnToParams = toStateParams;
-
-        // Go to login page
         event.preventDefault();
         $state.go('tatami.login.main');
     });
@@ -96,8 +80,6 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
 
 TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
     function($resourceProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
-
-        // Don't strip trailing slashes from REST URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
@@ -261,8 +243,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
 
     var organizeContext = ['statuses', 'context', function(statuses, context) {
         var statusesWithContext = [];
-
-        // Fill array with context statuses
         for(var i = 0; i < context.length; i++) {
             if(context[i] != null) {
                 statusesWithContext.push({ status: context[i], replies: [] });
@@ -270,8 +250,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
         }
 
         var individualStatuses = [];
-
-        // Attach replies to corresponding context status
         for(var i = 0; i < statuses.length; i++) {
             if(statuses[i].replyTo) {
                 for(var j = 0; j < statusesWithContext.length; j++) {
@@ -279,8 +257,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                         statusesWithContext[j].replies.unshift(statuses[i]);
                         break;
                     }
-
-                    // If the context reply doesn't exist, then make the reply an individual status
                     if(j == statusesWithContext.length - 1) {
                         individualStatuses.push(statuses[i]);
                         break;
@@ -289,8 +265,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             } else {
                 var addIt = true;
                 for(var j = 0; j < statusesWithContext.length; j++) {
-                    // If the status isn't already in the timeline as a
-                    // context status, then add it to individualStatuses
                     if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
                         addIt = false;
                         break;
@@ -301,10 +275,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         }
-
-        // Put remaining individual statuses (ones that aren't replies) into the timeline
         for(var i = 0; i < individualStatuses.length; i++) {
-            // If the timeline is empty, put in a status
             if(statusesWithContext.length == 0) {
                 statusesWithContext.push({ status: individualStatuses[i], replies: null });
                 continue;
@@ -312,9 +283,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
 
             for(var j = 0; j <= statusesWithContext.length; j++) {
                 try {
-                    // If the status block has replies, we need to check the 
-                    // last reply's post date/time, because that is the latest status in the block.
-                    // We order the timeline by the latest status in the block.
                     if(statusesWithContext[j].replies != null && statusesWithContext[j].replies.length != 0) {
                         var index = statusesWithContext[j].replies.length - 1;
                         if(statusesWithContext[j].replies[index].statusDate < individualStatuses[i].statusDate) {
@@ -322,14 +290,12 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                             break;
                         }
                     } else {
-                        // Otherwise compare using the date of the individual status
                         if(statusesWithContext[j].status.statusDate < individualStatuses[i].statusDate) {
                             statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
                             break;
                         }
                     }
                 } catch(err) {
-                    // For statuses that are at the end (bottom) of the timeline
                     statusesWithContext.push({ status: individualStatuses[i], replies: null });
                     break;
                 }
@@ -402,7 +368,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             }
         })
-        //state for all views that use home sidebar
         .state('tatami.home.home', {
             url: '^/home',
             abstract: true,
@@ -440,8 +405,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['StatusService', function(StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                //context: getContext,
-                //statusesWithContext: organizeContext,
                 showModal: ['statuses', function(statuses) {
                     return statuses.length === 0;
                 }]
@@ -518,8 +481,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 statuses: ['HomeService', function(HomeService) {
                     return HomeService.getCompanyTimeline().$promise;
                 }]//,
-                //context: getContext,
-                //statusesWithContext: organizeContext
             }
         })
         .state('tatami.home.home.tag', {
@@ -600,7 +561,6 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }]
             }
         })
-        //state for all views that use profile sidebar
         .state('tatami.home.profile', {
             url: '/profile/:username',
             abstract: true,
@@ -908,33 +868,26 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             templateUrl: 'app/components/account/topPosters/TopPostersView.html',
             resolve: {
                 topPosters: ['TopPostersService', function(TopPostersService) {
-                    // Get the {username, count} pairs for all the top posters
                     return TopPostersService.query().$promise;
                 }],
 
                 users: ['topPosters', 'UserService', '$q', function(topPosters, UserService, $q) {
-                    // For all the {user, count} pairs, find the user data
                     var temp = [];
                     for(var i = 0; i < topPosters.length; ++i) {
-                        // Store the result as a promise
                         temp.push(UserService.get({ username: topPosters[i].username }).$promise);
                         temp[i].statusCount = topPosters[i].statusCount;
                     }
-                    // return all promises
                     return $q.all(temp);
                 }],
 
                 userData: ['topPosters', 'users', function(topPosters, users) {
                     var statusCounts = [];
-                    // We want to associate the {username, count} pairs from the original to the user data, index based
-                    // on username.
                     for(var i = 0; i < topPosters.length; ++i) {
                         statusCounts[topPosters[i].username] = topPosters[i].statusCount;
                     }
 
                     var temp = [];
                     for(var x = 0; x < users.length; ++x) {
-                        // Create the current user to contain the user data, and how many posts they've made today
                         var curUser = {};
                         curUser.info = users[x];
                         curUser.statusCount = statusCounts[users[x].username];
@@ -980,7 +933,6 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             UserService.follow({ username: suggestion.username }, { friend: !suggestion.followingUser, friendShip: true }, 
                 function(response) {
                     $scope.suggestions[index].followingUser = response.friend;
-                    //$scope.$state.reload();
             });
         },
 
@@ -1127,12 +1079,10 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
-                    //$scope.$state.transitionTo('tatami.home.home.timeline');
             });
         };
 
         $scope.deleteStatus = function(status, index, confirmMessage) {
-            // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
                     if($scope.$stateParams.statusId == status.statusId) {
@@ -1308,12 +1258,10 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
-                    //$scope.$state.transitionTo('tatami.home.home.timeline');
             });
         };
 
         $scope.deleteStatus = function(status, index, confirmMessage) {
-            // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
                     $scope.statuses.splice(index, 1);
@@ -1466,11 +1414,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             onEnter: onEnterArray
         });
     }
-]);;/**
- * The purpose of this controller is to collect and maintain data in the status
- * creation window.
- */
-
+]);;
 PostModule.controller('PostController', [
     '$scope',
     '$modalInstance',
@@ -1530,10 +1474,7 @@ PostModule.controller('PostController', [
             progress: 0
         };
 
-        /**
-         * Watches the current.files ng-model and handles uploads
-         */
-        $scope.$watch('current.files', function() {
+                $scope.$watch('current.files', function() {
             if($scope.current.files != null) {
                 for(var i = 0; i < $scope.current.files.length; ++i) {
                     var file = $scope.current.files[i];
@@ -1565,11 +1506,7 @@ PostModule.controller('PostController', [
                 return parseInt(file.size / 1000000) + "M";
             }
         };
-        /**
-         * In order to set reply to a status, we must be able to set current status
-         * after an asynchronous get request.
-         */
-        $modalInstance.setCurrentStatus = function(status) {
+                $modalInstance.setCurrentStatus = function(status) {
             var defined = angular.isDefined(status);
             $scope.current.reply = defined;
             $scope.currentStatus = defined ? status : {};
@@ -1589,20 +1526,12 @@ PostModule.controller('PostController', [
             $scope.reset();
             $scope.$state.go('^');
         };
-
-        // Handles closing the modal via escape and clicking outside the modal
         $modalInstance.result.finally(function() {
             $scope.$state.go('^');
         });
 
 
-        /**
-         *
-         * @param param String argument representing the most up to date status content
-         *
-         * Simple function to change the current status content
-         */
-        $scope.statusChange = function(param) {
+                $scope.statusChange = function(param) {
             $scope.status.content = param;
         };
 
@@ -1630,10 +1559,7 @@ PostModule.controller('PostController', [
         };
 
 
-        /**
-         * Resets any previously set status data
-         */
-        $scope.reset = function() {
+                $scope.reset = function() {
             $scope.current.preview = false;
             $scope.current.geoLoc = false;
             $scope.current.uploadDone = true;
@@ -1648,12 +1574,7 @@ PostModule.controller('PostController', [
         };
 
 
-        /**
-         * Create a new status based on the current data in the controller.
-         * Uses the StatusService for this purpose, and we do nothing if no
-         * content has been provided by the user.
-         */
-        $scope.newStatus = function() {
+                $scope.newStatus = function() {
             if($scope.status.content.trim().length != 0) {
                 $scope.status.content = $scope.status.content.trim();
 
@@ -1667,12 +1588,8 @@ PostModule.controller('PostController', [
             }
         };
 
-        /** Geolocalization based functions **/
-
-        /**
-         * Determine whether the user means to use location data on the current status
-         */
-        $scope.updateLocation = function() {
+        
+                $scope.updateLocation = function() {
             if($scope.current.geoLoc) {
                 GeolocalisationService.getGeolocalisation($scope.getLocationString);
             } else {
@@ -1680,11 +1597,7 @@ PostModule.controller('PostController', [
             }
         };
 
-        /**
-         * Callback function used in getGeolocalisation. This function sets the status geolocation,
-         * and brings up a map.
-         */
-        $scope.getLocationString = function(position) {
+                $scope.getLocationString = function(position) {
             $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
             $scope.initMap();
         };
@@ -1693,10 +1606,7 @@ PostModule.controller('PostController', [
             return moment().diff(moment(date), 'days', true) >= 1;
         };
 
-        /**
-         * Create a map displaying the users current location in the status
-         */
-        $scope.initMap = function() {
+                $scope.initMap = function() {
             if ($scope.current.geoLoc) {
                 var geoLocalization = $scope.status.geoLocalization;
                 var latitude = geoLocalization.split(',')[0].trim();
@@ -1727,8 +1637,6 @@ PostModule.controller('PostController', [
         $rootScope.$broadcast('start-tour');
         $modalInstance.dismiss();
     };
-
-    // Handles closing the modal via escape and clicking outside the modal
     $modalInstance.result.finally(function() {
         $scope.$state.go('tatami.home.home.timeline');
     })
@@ -1751,7 +1659,6 @@ PostModule.controller('PostController', [
 }]);;AccountModule.controller('AccountController', ['$scope', '$location', 'profileInfo', function($scope, $location, profileInfo) {
     $scope.profile = profileInfo;
 }]);;AccountModule.controller('FormController', ['$scope', function($scope) {
-    // Forwards from the parent state to the default child state.
     $scope.$on('$stateChangeSuccess', function(event, toState) {
         if(toState.name === 'tatami.account.groups') {
             $scope.$state.go('tatami.account.groups.main.top.list');
@@ -1765,25 +1672,15 @@ PostModule.controller('PostController', [
     });
 }]);;var ProfileModule = angular.module('ProfileModule', []);;ProfileModule.controller('ProfileController', ['$scope', '$upload', '$translate', 'ProfileService', 'profileInfo', 'userLogin', 'ngToast',
     function($scope, $upload, $translate, ProfileService, profileInfo, userLogin, ngToast) {
-
-        // Current state of the view
         $scope.current = {
             avatar: []
         };
-
-        // Status of the current upload
         $scope.uploadStatus = {
             isUploading: false,
             progress: 0
         };
-
-        // Resolve the user data, profileInfo is inherited from account state
-        // Since profileInfo is a resolve from the parent state, updating the model will cause
-        // the first and last name in the side bar and text area to sync. Is this undesired?
         $scope.userProfile = profileInfo;
         $scope.userLogin = userLogin.login;
-
-        // Update the user information
         $scope.updateUser = function() {
             ProfileService.update($scope.userProfile, function() {
                 ngToast.create({
@@ -1796,8 +1693,6 @@ PostModule.controller('PostController', [
                 });
             });
         };
-
-        // Handle user avatar changes based on drag and drop
         $scope.$watch('current.avatar', function() {
             for(var i = 0; i < $scope.current.avatar.length; ++i){
                 var file = $scope.current.avatar[i];
@@ -1828,8 +1723,6 @@ PostModule.controller('PostController', [
     function($scope, $translate, PreferencesService, prefs, ngToast) {
 
         $scope.prefs = prefs;
-
-        // Update user preferences
         $scope.savePrefs = function() {
             $scope.validatePrefs();
             PreferencesService.save($scope.prefs, function() {
@@ -1861,10 +1754,7 @@ PostModule.controller('PostController', [
         newPasswordConfirmation: ''
     };
 
-    /**
-     * These booleans will determine whether popovers should be displayed
-     */
-    $scope.status = {
+        $scope.status = {
         oldEmpty: false,
         newEmpty: false,
         confirmWrong: false,
@@ -1873,23 +1763,17 @@ PostModule.controller('PostController', [
 
     $scope.changePassword = function() {
         if(!$scope.password.oldPassword) {
-            // Display a popover on Old password field
             $scope.oldEmpty = true;
         }
         else if(!$scope.password.newPassword) {
-            // Display a popover on the new password field
             $scope.newEmpty = true;
         }
         else if($scope.password.newPassword !== $scope.password.newPasswordConfirmation) {
-            // Display a popover on password confirmation
             cofirmWrong = true;
         }
         else {
-            // Everything is alright, we can send the new password
             PasswordService.save($scope.password, function() {
-                // Clear the fields after we have changed the password
                 $scope.reset();
-                // Alert user that the password has been changed
                 ngToast.create($translate.instant('tatami.account.password.save'));
 
             }, function() {
@@ -1917,16 +1801,10 @@ PostModule.controller('PostController', [
     'fileList',
     'ngToast',
     function($scope, $translate, FilesService, attachmentQuota, fileList, ngToast) {
-
-    // Initialize stuff
     $scope.quota = attachmentQuota[0];
     $scope.fileList = fileList;
 
-    /**
-     * Allows us to delete the supplied attachment
-     * @param attachment
-     */
-    $scope.delete = function(attachment, removalIndex) {
+        $scope.delete = function(attachment, removalIndex) {
         FilesService.delete({attachmentId: attachment}, { },
             function() {
                 $scope.fileList.splice(removalIndex, 1);
@@ -1964,15 +1842,9 @@ PostModule.controller('PostController', [
         });
 });;var UsersModule = angular.module('UsersModule', []);;UsersModule.controller('UsersController', ['$scope', 'usersList', 'SearchService', 'UserService', 'userRoles', function($scope, usersList, SearchService, UserService, userRoles) {
     $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
-    /**
-     * Information about the current state of the view
-     * @type {{searchString: string}}
-     */
-    $scope.current = {
+        $scope.current = {
         searchString: $scope.$stateParams.q
     };
-
-    // usersList is resolved during routing
     $scope.usersList = usersList;
 
     $scope.deactivate = function(user, index) {
@@ -1981,17 +1853,10 @@ PostModule.controller('PostController', [
         })
     };
 
-    /**
-     * Change the state (so the url contains the search parameter), and updates
-     * the user data based on the search term.
-     */
-    $scope.search = function() {
-        // Update the route
+        $scope.search = function() {
         $scope.$state.transitionTo('tatami.account.users.search',
             { q: $scope.current.searchString },
             { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
-
-        // Now update the users based on the search term
         SearchService.query({ term: 'users', q: $scope.current.searchString }, function(result) {
             $scope.usersList = result;
         });
@@ -2013,23 +1878,15 @@ PostModule.controller('PostController', [
     function($scope, GroupService, SearchService, userGroups, profileInfo) {
         $scope.userGroups = userGroups;
 
-        /**
-         * Determines the current look of the group page
-         * When createGroup is true, we display the group creation view
-         */
-        $scope.current = {
+                $scope.current = {
             searchString: $scope.$stateParams.q
         };
 
         $scope.search = function() {
-            // Update the route
             $scope.$state.transitionTo('tatami.account.groups.main.top.search',
                 { q: $scope.current.searchString },
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
-
-            // Update the group data
             SearchService.query({term: 'groups', q: $scope.current.searchString }, function(result) {
-                // Now update the user groups
                 $scope.userGroups = result;
             });
         };
@@ -2103,47 +1960,30 @@ PostModule.controller('PostController', [
     };
 }]);;GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'GroupService', 'ngToast', function($scope, $translate, GroupService, ngToast) {
     $scope.current = {};
-    /**
-     * When creating a group, the POST requires this payload
-     * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}
-     */
-    $scope.groups = {
+        $scope.groups = {
         name: "",
         description: "",
         publicGroup: true,
         archivedGroup: false
     };
 
-    /**
-     * Allows the user to toggle the group creation view
-     */
-    $scope.newGroup = function() {
+        $scope.newGroup = function() {
         $scope.current.createGroup = !$scope.current.createGroup;
     };
 
-    /**
-     * Allows the user to cancel group creation
-     */
-    $scope.cancelGroupCreate = function() {
+        $scope.cancelGroupCreate = function() {
         $scope.reset();
     };
 
-    /**
-     * Resets the group creation view
-     */
-    $scope.reset = function() {
+        $scope.reset = function() {
         $scope.groups = {};
         $scope.current.createGroup = false;
     };
 
-    /**
-     * Creates a new group on the server
-     */
-    $scope.createNewGroup = function() {
+        $scope.createNewGroup = function() {
         GroupService.save($scope.groups, function() {
             $scope.reset();
             $scope.$state.reload();
-            // Alert user of new group creation
             ngToast.create({
                 content: $translate.instant('tatami.account.groups.save')
             });
@@ -2171,11 +2011,7 @@ PostModule.controller('PostController', [
         $scope.tags = tagList;
 
 
-        /**
-         * Follows an unfollowed tag, or unfollows a followed tag, depending on the current state
-         * @param tag
-         */
-
+        
         $scope.followTag = function(tag, index) {
             TagService.follow(
                 { tag: tag.name },
@@ -2186,18 +2022,14 @@ PostModule.controller('PostController', [
         };
 
         $scope.search = function() {
-            // Update the route
             $scope.$state.transitionTo('tatami.account.tags.search',
                 { q: $scope.current.searchString },
                 { location: true, inherit: true, relative: $scope.$state.$current, notify: false });
-
-            // Update the tag data data
             if($scope.current.searchString.length == 0) {
                 $scope.tags = {};
             }
             else{
                 SearchService.query({term: 'tags', q: $scope.current.searchString }, function(result) {
-                    // Now update the tags
                     $scope.tags = result;
                 });
             }
@@ -2229,16 +2061,10 @@ PostModule.controller('PostController', [
                 $scope.$state.go('tatami.login.main', { action: data.action });
             }
             else {
-                // The user has logged in, authenticate them
                 UserSession.setLoginState(true);
-
-                // Redirect the user to the state they tried to access now that they are logged in
                 if(angular.isDefined($rootScope.returnToState) || angular.isDefined($rootScope.returnToStateParams)) {
-                    // redirect to previous state
                     $scope.$state.go($rootScope.returnToState.name, $rootScope.returnToParams);
                 }
-
-                // If they were not trying to access a specific state, send them to the home state
                 else {
                     $scope.$state.go('tatami.home.home.timeline');
                 }
@@ -2447,8 +2273,6 @@ moment.locale('fr', {
                 'previous': 'Prev',
                 'end': 'End'
             },
-
-            // Login View
             'login': {
                 'title': 'Login',
                 'mainTitle': 'Welcome to Tatami',
@@ -2484,7 +2308,6 @@ moment.locale('fr', {
             },
 
             'about': {
-                // Presentation Page
                 'presentation': {
                     'title': 'What is Tatami?',
                     'devices': 'Devices',
@@ -2529,20 +2352,14 @@ moment.locale('fr', {
                         'line1': 'Our sales team is looking forward to hearing from you! Call us at +33 01 46 12 48 48 or email us at'
                     }
                 },
-
-                // Terms of Service Page
                 'tos': {
                     'title': 'Terms of Service'
                 },
-
-                // License Page
                 'license': {
                     'title': 'Source Code License',
                     'copyright': 'Copyright'
                 }
             },
-
-            // Home View
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
@@ -2551,8 +2368,6 @@ moment.locale('fr', {
 
                 'newMessage': 'New Message',
                 'newMessages': 'New Messages',
-
-                //Top Menu
                 'menu': {
                     'logo': 'Ippon Technologies Logo',
                     'title': 'Tatami',
@@ -2584,8 +2399,6 @@ moment.locale('fr', {
                         'logout': 'Logout'
                     }
                 },
-
-                // Post Modal
                 'post': {
                     'mandatory': 'Comment is mandatory',
                     'content': {
@@ -2609,8 +2422,6 @@ moment.locale('fr', {
                     'markdown': 'Markdown Supported',
                     'button': 'Post'
                 },
-
-                // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'My Groups',
                     'whoToFollow': 'Who To Follow',
@@ -2624,8 +2435,6 @@ moment.locale('fr', {
                     'archivedToolTip': 'Archived Group',
                     'administratorToolTip': 'You administer this group.'
                 },
-
-                // Status List item or User List item
                 'status': {
                     'replyTo': 'In reply to',
                     'private': 'Private Message',
@@ -2643,16 +2452,12 @@ moment.locale('fr', {
                     'viewConversation': 'View Conversation',
                     'shares': 'Shares'
                 },
-
-                // Tag View
                 'tag': {
                     'title': 'Tag',
                     'follow': 'Follow',
                     'following': 'Following',
                     'unfollow': 'Unfollow'
                 },
-
-                // Group View
                 'group': {
                     'join': 'Join',
                     'joined': 'Joined',
@@ -2663,8 +2468,6 @@ moment.locale('fr', {
                     'membersSingular': '1 Member',
                     'membersPlural': '{{ amount }} Members'
                 },
-
-                // Profile View
                 'profile': {
                     'statuses': 'Statuses',
                     'following': 'Following',
@@ -2688,8 +2491,6 @@ moment.locale('fr', {
                     'userFollowersPlural': '@{{ username }} has {{ amount }} followers',
 
                     'deactivatedUser': 'Deactivated User',
-
-                    // Profile Sidebar View
                     'sidebar': {
                         'information': 'Information',
                         'statistics': 'Statistics',
@@ -2710,10 +2511,7 @@ moment.locale('fr', {
                     'statusesWith': 'Statuses with'
                 }
             },
-            
-            //Account View
             'account': {
-                // Profile Tab
                 'profile': {
                     'title': 'Profile',
                     'dropPhoto': 'Drop your photo here to update it',
@@ -2727,8 +2525,6 @@ moment.locale('fr', {
                     'confirmDelete': 'You are about to delete your account. Are you sure?',
                     'save': 'Your profile has been saved'
                 },
-
-                // Preferences Tab
                 'preferences': {
                     'title': 'Preferences',
                     'notifications': 'Notifications',
@@ -2745,8 +2541,6 @@ moment.locale('fr', {
                     },
                     'save': 'Your preferences have been saved'
                 },
-
-                // Password Tab
                 'password': {
                     'title': 'Password',
                     'update': 'Update your password',
@@ -2755,8 +2549,6 @@ moment.locale('fr', {
                     'confirm': 'Confirm New Password',
                     'save': 'Your password has been changed'
                 },
-
-                // Files Tab
                 'files': {
                     'title': 'Files',
                     'filename': 'Filename',
@@ -2764,8 +2556,6 @@ moment.locale('fr', {
                     'date': 'Date',
                     'delete': 'Delete'
                 },
-
-                // Users Tab
                 'users': {
                     'title': 'Users',
                     'following': 'Following',
@@ -2773,8 +2563,6 @@ moment.locale('fr', {
                     'search': 'Search',
                     'deactivated': 'This user is deactivated'
                 },
-
-                // Groups Tab
                 'groups': {
                     'title': 'Groups',
                     'createNewGroup': 'Create a new group',
@@ -2809,8 +2597,6 @@ moment.locale('fr', {
                     'remove': 'Remove',
                     'save': 'Your group has been created'
                 },
-
-                // Tags Tab
                 'tags': {
                     'title': 'Tags',
                     'trends': 'Trends',
@@ -2820,8 +2606,6 @@ moment.locale('fr', {
                     'following': 'Following',
                     'unfollow': 'Unfollow'
                 },
-
-                // Top Posters Tab
                 'topPosters': {
                     'title': 'Top Posters',
                     'username': 'Username',
@@ -2906,8 +2690,6 @@ moment.locale('fr', {
                 'previous': 'Précédent',
                 'end': 'Fin'
             },
-
-            // Login View
             'login': {
                 'title': 'Login',
                 'mainTitle': 'Bienvenue à Tatami',
@@ -2944,7 +2726,6 @@ moment.locale('fr', {
             },
 
             'about': {
-                // Presentation Page
                 'presentation': {
                     'title': 'Qu\'est-ce que c\'est Tatami?',
                     'devices': 'Appareils',
@@ -2989,20 +2770,14 @@ moment.locale('fr', {
                         'line1': 'Notre équipe de vente est impatient de vous entendre! Appelez-nous au +33 01 46 12 48 48 ou par courriel à'
                     }
                 },
-
-                // Terms of Service Page
                 'tos': {
                     'title': 'Conditions de service'
                 },
-
-                // License Page
                 'license': {
                     'title': 'Licence du source code',
                     'copyright': 'Droit d\'auteur'
                 }
             },
-
-            // Home View
             'home': {
                 'timeline': 'Timeline',
                 'mentions': 'Mentions',
@@ -3011,8 +2786,6 @@ moment.locale('fr', {
 
                 'newMessage': 'Nouveau Message',
                 'newMessages': 'Nouveau Messages',
-
-                //Top Menu
                 'menu': {
                     'logo': 'Ippon Technologies Logo',
                     'title': 'Tatami',
@@ -3044,8 +2817,6 @@ moment.locale('fr', {
                         'logout': 'Déconnexion'
                     }
                 },
-
-                // Post Modal
                 'post': {
                     'mandatory': 'Commentaire est obligatoire',
                     'content': {
@@ -3069,8 +2840,6 @@ moment.locale('fr', {
                     'markdown': 'Markdown Supported',
                     'button': 'Post'
                 },
-
-                // Home Sidebar View
                 'sidebar': {
                     'myGroups': 'Mes Groupes',
                     'whoToFollow': 'Qui Suivre',
@@ -3084,8 +2853,6 @@ moment.locale('fr', {
                     'archivedToolTip': 'Groupe archivé',
                     'administratorToolTip': 'Vous administrez ce groupe.'
                 },
-
-                // Status List item or User List item
                 'status': {
                     'replyTo': 'En réponse à',
                     'private': 'Message privé',
@@ -3103,16 +2870,12 @@ moment.locale('fr', {
                     'viewConversation': 'Voir La Conversation',
                     'shares': 'Partages'
                 },
-
-                // Tag View
                 'tag': {
                     'title': 'Tag',
                     'follow': 'Abonnés',
                     'following': 'Abonnements',
                     'unfollow': 'Se désabonné'
                 },
-
-                // Group View
                 'group': {
                     'join': 'Joindre',
                     'joined': 'Joined',
@@ -3123,8 +2886,6 @@ moment.locale('fr', {
                     'membersSingular': '1 Membre',
                     'membersPlural': '{{ amount }} Membres'
                 },
-
-                // Profile View
                 'profile': {
                     'statuses': 'Statuts',
                     'following': 'Abonnement',
@@ -3148,8 +2909,6 @@ moment.locale('fr', {
                     'userFollowersPlural': '@{{ username }} a {{ amount }} abonnements',
 
                     'deactivatedUser': 'Désactivé l\'utilisateur',
-
-                    // Profile Sidebar View
                     'sidebar': {
                         'information': 'Information',
                         'statistics': 'Statistiques',
@@ -3170,10 +2929,7 @@ moment.locale('fr', {
                     'statusesWith': 'Statuts avec'
                 }
             },
-
-            //Account View
             'account': {
-                // Profile Tab
                 'profile': {
                     'title': 'Profil',
                     'dropPhoto': 'Déposez votre photo ici pour la mettre à jour',
@@ -3187,8 +2943,6 @@ moment.locale('fr', {
                     'confirmDelete': 'Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?',
                     'save': 'Votre profil a été sauvé'
                 },
-
-                // Preferences Tab
                 'preferences': {
                     'title': 'Preferences',
                     'notifications': 'Notifications',
@@ -3205,8 +2959,6 @@ moment.locale('fr', {
                     },
                     'save': 'Vos préférences ont été sauvegardées'
                 },
-
-                // Password Tab
                 'password': {
                     'title': 'Mot de passe',
                     'update': 'Changez votre mot de passe',
@@ -3215,8 +2967,6 @@ moment.locale('fr', {
                     'confirm': 'Confirmer votre nouveau mot de passe',
                     'save': 'Votre mot de passe a été changé'
                 },
-
-                // Files Tab
                 'files': {
                     'title': 'Fichier',
                     'filename': 'Nom de fichier',
@@ -3224,8 +2974,6 @@ moment.locale('fr', {
                     'date': 'Date',
                     'delete': 'Supprimez'
                 },
-
-                // Users Tab
                 'users': {
                     'title': 'Utilisateur',
                     'following': 'Abonné',
@@ -3233,8 +2981,6 @@ moment.locale('fr', {
                     'search': 'Recherchez',
                     'deactivated': 'Cet utilisateur est désactivé'
                 },
-
-                // Groups Tab
                 'groups': {
                     'title': 'Groupes',
                     'createNewGroup': 'Créer un nouveau groupe',
@@ -3269,8 +3015,6 @@ moment.locale('fr', {
                     'remove': 'Supprimer',
                     'save': 'Votre groupe a été créé'
                 },
-
-                // Tags Tab
                 'tags': {
                     'title': 'Tags',
                     'trends': 'Tendances',
@@ -3280,8 +3024,6 @@ moment.locale('fr', {
                     'following': 'Abonnement',
                     'unfollow': 'Se désabonné'
                 },
-
-                // Top Posters Tab
                 'topPosters': {
                     'title': 'Top Posters',
                     'username': 'Username',
@@ -3632,21 +3374,11 @@ moment.locale('fr', {
         'follow': { method:'PUT', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },
         'getPopular': { method: 'GET', isArray: true, url: '/tatami/rest/tags/popular' }
     });
-}]);;/**
- * This service is used to handle getting the geolocalisation of a user
- */
-
+}]);;
 TatamiApp.factory('GeolocalisationService', function() {
     return {
         
-        /**
-         * Uses HTML5 to get geolocation information from the user
-         * @returns If geolocation data can be found for the user
-         *              then we return the position in the form
-         *              "lat, lon"
-         *          Otherwise, we return the empty string.
-         */
-        getGeolocalisation: function(callback) {
+                getGeolocalisation: function(callback) {
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(function(position) {
                     callback(position);
@@ -3654,12 +3386,7 @@ TatamiApp.factory('GeolocalisationService', function() {
             }
         },
 
-        /**
-         * Returns a string with the location data based on the openstreetmap website
-         * @param position The users position
-         * @returns {string} The URL to openstreetmaps
-         */
-        getGeolocUrl: function(position) {
+                getGeolocUrl: function(position) {
             var latitude = position.split(',')[0].trim();
             var longitude = position.split(',')[1].trim();
             return 'https://www.openstreetmap.org/?mlon=' + longitude + '&mlat=' + latitude;
@@ -3725,12 +3452,10 @@ TatamiApp.factory('GeolocalisationService', function() {
             }
 
             ProfileService.get(function(data) {
-                // Success
                 user = data;
                 authenticated = true;
                 deferred.resolve(user);
             }, function(data) {
-                // Error
                 user = null;
                 authenticated = false;
                 deferred.resolve(user);
@@ -3744,7 +3469,6 @@ TatamiApp.factory('GeolocalisationService', function() {
         authenticate: function() {
             return UserSession.authenticate().then(function(result) {
                 if(result !== null && result.action === null && $state.current.data && !$state.current.data.public) {
-                    // User isn't login in. Change the session token, and redirect to login
                     UserSession.clearSession();
                     $state.go('tatami.login.main');
                 }
@@ -3782,12 +3506,8 @@ TatamiApp.factory('GeolocalisationService', function() {
                     $scope.searchString = '';
                 });
         };
-
-        // Method to redirect to blog based on language. 
         $scope.goToBlog = function() {
             var lang = $translate.use();
-            // If it fails to detect the one being used, it will look for the proposed one.
-            // Useful in asynchronous scenarios.
             if(lang != 'fr' && lang != 'en')
                 lang = $translate.proposedLanguage();
            switch(lang) {
@@ -3811,7 +3531,6 @@ TatamiApp.factory('GeolocalisationService', function() {
                 if(angular.isDefined(result.users[0])) {
                     result.users[0].firstUser = true;
                 }
-                //$scope.results = result.groups.concat(result.users.concat(result.tags));
                 return result.groups.concat(result.users.concat(result.tags));
             })
         };
@@ -3821,7 +3540,6 @@ TatamiApp.factory('GeolocalisationService', function() {
         };
 
         $scope.searchStatuses = function(e) {
-            // If the enter key is pressed
             if(e.keyCode === 13) {
                 $scope.$state.go('tatami.home.search', { searchTerm: $scope.searchString });
             }
