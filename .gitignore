@@ -11,3 +11,5 @@ target
 src/main/webapp/WEB-INF/generated-wro4j
 .merge_file*
 .DS_Store
+
+phantomjsdriver.log
