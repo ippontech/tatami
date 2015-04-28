@@ -84,7 +84,7 @@ module.exports = function(grunt) {
             }
 
         },
-     comments: { //Strips comments out of file
+        comments: {
             your_target: {
                 // Target-specific file lists and/or options go here.
                 options: {
@@ -93,9 +93,21 @@ module.exports = function(grunt) {
                 },
                 src: ['src/main/webapp/TATAMI.CONCAT.js'] // files to remove comments from
             }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: {
+                    'src/main/webapp/TATAMI.CONCAT.js': ['src/main/webapp/TATAMI.CONCAT.js']
+                }
+            }
         }
+
     });
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-stripcomments');
-    grunt.registerTask('default', ['concat', 'comments']);
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.registerTask('default', ['concat', 'comments','uglify']);
 };
