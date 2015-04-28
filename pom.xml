@@ -468,6 +468,7 @@
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
+        
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
@@ -485,6 +486,14 @@
             </snapshots>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url> 
+        </pluginRepository>
+    </pluginRepositories>
+    
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
@@ -1036,12 +1045,33 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.mule.tools.javascript</groupId>
+                <artifactId>npm-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>fetch-modules</goal>
+                        </goals>
+                        <configuration>
+                            <packages>
+                                <package>grunt:0.4</package>
+                                <package>grunt-contrib-concat:0.5.1</package>
+                                <package>grunt-contrib-uglify:0.9.1</package>
+                                <package>grunt-stripcomments:0.3.1</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -1129,7 +1159,7 @@
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.js</source> 
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.js</source> 
-                            
+
                             <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
 
