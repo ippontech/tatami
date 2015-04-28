@@ -24,7 +24,7 @@ HomeModule.controller('StatusListContextController', [
         $scope.statusesWithContext = statusesWithContext;
         $scope.busy = false;
 
-        if(statuses.length == 0) {
+        if(statuses.length === 0) {
             $scope.end = true;
         } else {
             $scope.end = false;
@@ -36,11 +36,10 @@ HomeModule.controller('StatusListContextController', [
 
         if($scope.$state.is('tatami.home.home.timeline')) {
             var pollingDelay = 20000; // In milliseconds
-
             $timeout(function() {
                 var argument = {};
 
-                if($scope.statuses.length != 0) {
+                if($scope.statuses.length !== 0) {
                     argument = { start: statuses[0].timelineId };
                 }
 
@@ -64,8 +63,8 @@ HomeModule.controller('StatusListContextController', [
             var statusesWithContext = [];
 
             // Fill array with context statuses
-            for(var i = 0; i < context.length; i++) {
-                if(context[i] != null) {
+            for(i = 0; i < context.length; i++) {
+                if(context[i] !== null) {
                     statusesWithContext.push({ status: context[i], replies: [] });
                 }
             }
@@ -73,16 +72,16 @@ HomeModule.controller('StatusListContextController', [
             var individualStatuses = [];
 
             // Attach replies to corresponding context status
-            for(var i = 0; i < statuses.length; i++) {
+            for(i = 0; i < statuses.length; i++) {
                 if(statuses[i].replyTo) {
-                    for(var j = 0; j < statusesWithContext.length; j++) {
-                        if(statuses[i].replyTo == statusesWithContext[j].status.statusId) {
+                    for(j = 0; j < statusesWithContext.length; j++) {
+                        if(statuses[i].replyTo === statusesWithContext[j].status.statusId) {
                             statusesWithContext[j].replies.unshift(statuses[i]);
                             break;
                         }
 
                         // If the context reply doesn't exist, then make the reply an individual status
-                        if(j == statusesWithContext.length - 1) {
+                        if(j === statusesWithContext.length - 1) {
                             individualStatuses.push(statuses[i]);
                             break;
                         }
@@ -90,7 +89,7 @@ HomeModule.controller('StatusListContextController', [
                 } else {
                     var addIt = true;
                     // Check current timeline
-                    for(var j = 0; j < $scope.statusesWithContext.length; j++) {
+                    for(j = 0; j < $scope.statusesWithContext.length; j++) {
                         // If the status isn't already in the timeline as a
                         // context status, then add it to individualStatuses
                         if(statuses[i].statusId == $scope.statusesWithContext[j].status.statusId) {
@@ -99,7 +98,7 @@ HomeModule.controller('StatusListContextController', [
                         }
                     }
                     // Check new timeline chunk
-                    for(var j = 0; j < statusesWithContext.length; j++) {
+                    for(j = 0; j < statusesWithContext.length; j++) {
                         // If the status isn't already in the timeline as a
                         // context status, then add it to individualStatuses
                         if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
@@ -114,9 +113,9 @@ HomeModule.controller('StatusListContextController', [
             }
 
             // Put remaining individual statuses (ones that aren't replies) into the timeline
-            for(var i = 0; i < individualStatuses.length; i++) {
+            for(i = 0; i < individualStatuses.length; i++) {
                 // If the timeline is empty, put in a status
-                if(statusesWithContext.length == 0) {
+                if(statusesWithContext.length === 0) {
                     statusesWithContext.push({ status: individualStatuses[i], replies: null });
                     continue;
                 }
@@ -201,14 +200,14 @@ HomeModule.controller('StatusListContextController', [
 
         $scope.favoriteStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { favorite: !status.favorite }, 
-                function(response) {
+                function() {
                     $scope.$state.reload();
             });
         };
 
         $scope.shareStatus = function(status) {
             StatusService.update({ statusId: status.statusId }, { shared: !status.shareByMe }, 
-                function(response) {
+                function() {
                     $scope.$state.reload();
             });
         };
@@ -217,11 +216,10 @@ HomeModule.controller('StatusListContextController', [
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
-                    //$scope.$state.transitionTo('tatami.home.home.timeline');
             });
         };
 
-        $scope.deleteStatus = function(status, confirmMessage) {
+        $scope.deleteStatus = function(status) {
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
