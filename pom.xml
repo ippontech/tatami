@@ -486,13 +486,6 @@
             </snapshots>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Repository</name>
-            <url>https://repository.mulesoft.org/releases/</url> 
-        </pluginRepository>
-    </pluginRepositories>
     
     <prerequisites>
         <maven>3.0.0</maven>
@@ -1045,27 +1038,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.mule.tools.javascript</groupId>
-                <artifactId>npm-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>fetch-modules</goal>
-                        </goals>
-                        <configuration>
-                            <packages>
-                                <package>grunt:0.4</package>
-                                <package>grunt-contrib-concat:0.5.1</package>
-                                <package>grunt-contrib-uglify:0.9.1</package>
-                                <package>grunt-stripcomments:0.3.1</package>
-                            </packages>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
@@ -1154,12 +1126,13 @@
                         <preloadSources>
                             <!-- angular preloading -->
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/bootstrap-tour/docs/assets/vendor/jquery.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.min.js</source>
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.js</source> 
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.js</source> 
-
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.min.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.min.js</source> 
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js</source> 
+                            <source>${project.basedir}/src/main/webapp/assets/vendor/js/marked/marked.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/moment/moment.js</source>
                             <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
 
