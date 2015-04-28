@@ -1115,24 +1115,8 @@
                             <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.js</source> 
                             
                             <!-- tatami app preloading -->
-                            <source>${project.basedir}/src/main/webapp/app/TatamiApp.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/about/AboutModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/AccountModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/files/FilesModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/groups/GroupsModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/password/PasswordModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/preferences/PreferencesModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/profile/ProfileModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/tags/TagsModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/topPosters/TopPostersModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/account/users/UsersModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/admin/AdminModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/home/HomeModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/components/login/LoginModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/shared/sidebars/home/HomeSidebarModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/shared/sidebars/profile/ProfileSidebarModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/shared/topMenu/post/PostModule.js</source>
-                            <source>${project.basedir}/src/main/webapp/app/shared/topMenu/TopMenuModule.js</source>
+                            <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
+
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
                         <!-- <jsSrcDir>src/main/webapp</jsSrcDir>
