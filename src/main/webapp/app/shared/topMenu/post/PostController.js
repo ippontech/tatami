@@ -186,7 +186,9 @@ PostModule.controller('PostController', [
          * content has been provided by the user.
          */
         $scope.newStatus = function() {
-            if($scope.status.content) {
+            if($scope.status.content.trim().length != 0) {
+                $scope.status.content = $scope.status.content.trim();
+
                 StatusService.save($scope.status, function() {
                     $modalInstance.close();
                     $modalInstance.result.then(function() {
