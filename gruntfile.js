@@ -85,6 +85,5 @@ module.exports = function(grunt) {
 
    } );
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-stripcomments');
     grunt.registerTask('default', ['uglify']);
 };
