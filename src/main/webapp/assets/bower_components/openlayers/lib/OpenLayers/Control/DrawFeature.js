@@ -4,20 +4,74 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Control.js
+ * @requires OpenLayers/Feature/Vector.js
+ */
 
+/**
+ * Class: OpenLayers.Control.DrawFeature
+ * The DrawFeature control draws point, line or polygon features on a vector
+ * layer when active.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Control>
+ */
 OpenLayers.Control.DrawFeature = OpenLayers.Class(OpenLayers.Control, {
     
-        layer: null,
+    /**
+     * Property: layer
+     * {<OpenLayers.Layer.Vector>}
+     */
+    layer: null,
 
-        callbacks: null,
+    /**
+     * Property: callbacks
+     * {Object} The functions that are sent to the handler for callback
+     */
+    callbacks: null,
     
-        
-        multi: false,
+    /** 
+     * APIProperty: events
+     * {<OpenLayers.Events>} Events instance for listeners and triggering
+     *     control specific events.
+     *
+     * Register a listener for a particular event with the following syntax:
+     * (code)
+     * control.events.register(type, obj, listener);
+     * (end)
+     *
+     * Supported event types (in addition to those from <OpenLayers.Control.events>):
+     * featureadded - Triggered when a feature is added
+     */
+    
+    /**
+     * APIProperty: multi
+     * {Boolean} Cast features to multi-part geometries before passing to the
+     *     layer.  Default is false.
+     */
+    multi: false,
 
-        featureAdded: function() {},
+    /**
+     * APIProperty: featureAdded
+     * {Function} Called after each feature is added
+     */
+    featureAdded: function() {},
 
-        
-        initialize: function(layer, handler, options) {
+    /**
+     * APIProperty: handlerOptions
+     * {Object} Used to set non-default properties on the control's handler
+     */
+    
+    /**
+     * Constructor: OpenLayers.Control.DrawFeature
+     * 
+     * Parameters:
+     * layer - {<OpenLayers.Layer.Vector>} 
+     * handler - {<OpenLayers.Handler>} 
+     * options - {Object} 
+     */
+    initialize: function(layer, handler, options) {
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
         this.callbacks = OpenLayers.Util.extend(
             {
@@ -55,7 +109,10 @@ OpenLayers.Control.DrawFeature = OpenLayers.Class(OpenLayers.Control, {
         this.handler = new handler(this, this.callbacks, this.handlerOptions);
     },
 
-        drawFeature: function(geometry) {
+    /**
+     * Method: drawFeature
+     */
+    drawFeature: function(geometry) {
         var feature = new OpenLayers.Feature.Vector(geometry);
         var proceed = this.layer.events.triggerEvent(
             "sketchcomplete", {feature: feature}
@@ -68,43 +125,103 @@ OpenLayers.Control.DrawFeature = OpenLayers.Class(OpenLayers.Control, {
         }
     },
     
-        insertXY: function(x, y) {
+    /**
+     * APIMethod: insertXY
+     * Insert a point in the current sketch given x & y coordinates.
+     *
+     * Parameters:
+     * x - {Number} The x-coordinate of the point.
+     * y - {Number} The y-coordinate of the point.
+     */
+    insertXY: function(x, y) {
         if (this.handler && this.handler.line) {
             this.handler.insertXY(x, y);
         }
     },
 
-        insertDeltaXY: function(dx, dy) {
+    /**
+     * APIMethod: insertDeltaXY
+     * Insert a point given offsets from the previously inserted point.
+     *
+     * Parameters:
+     * dx - {Number} The x-coordinate offset of the point.
+     * dy - {Number} The y-coordinate offset of the point.
+     */
+    insertDeltaXY: function(dx, dy) {
         if (this.handler && this.handler.line) {
             this.handler.insertDeltaXY(dx, dy);
         }
     },
 
-        insertDirectionLength: function(direction, length) {
+    /**
+     * APIMethod: insertDirectionLength
+     * Insert a point in the current sketch given a direction and a length.
+     *
+     * Parameters:
+     * direction - {Number} Degrees clockwise from the positive x-axis.
+     * length - {Number} Distance from the previously drawn point.
+     */
+    insertDirectionLength: function(direction, length) {
         if (this.handler && this.handler.line) {
             this.handler.insertDirectionLength(direction, length);
         }
     },
 
-        insertDeflectionLength: function(deflection, length) {
+    /**
+     * APIMethod: insertDeflectionLength
+     * Insert a point in the current sketch given a deflection and a length.
+     *     The deflection should be degrees clockwise from the previously 
+     *     digitized segment.
+     *
+     * Parameters:
+     * deflection - {Number} Degrees clockwise from the previous segment.
+     * length - {Number} Distance from the previously drawn point.
+     */
+    insertDeflectionLength: function(deflection, length) {
         if (this.handler && this.handler.line) {
             this.handler.insertDeflectionLength(deflection, length);
         }
     },
     
-        undo: function() {
+    /**
+     * APIMethod: undo
+     * Remove the most recently added point in the current sketch geometry.
+     *
+     * Returns: 
+     * {Boolean} An edit was undone.
+     */
+    undo: function() {
         return this.handler.undo && this.handler.undo();
     },
     
-        redo: function() {
+    /**
+     * APIMethod: redo
+     * Reinsert the most recently removed point resulting from an <undo> call.
+     *     The undo stack is deleted whenever a point is added by other means.
+     *
+     * Returns: 
+     * {Boolean} An edit was redone.
+     */
+    redo: function() {
         return this.handler.redo && this.handler.redo();
     },
     
-        finishSketch: function() {
+    /**
+     * APIMethod: finishSketch
+     * Finishes the sketch without including the currently drawn point.
+     *     This method can be called to terminate drawing programmatically
+     *     instead of waiting for the user to end the sketch.
+     */
+    finishSketch: function() {
         this.handler.finishGeometry();
     },
 
-        cancel: function() {
+    /**
+     * APIMethod: cancel
+     * Cancel the current sketch.  This removes the current sketch and keeps
+     *     the drawing control active.
+     */
+    cancel: function() {
         this.handler.cancel();
     },
 

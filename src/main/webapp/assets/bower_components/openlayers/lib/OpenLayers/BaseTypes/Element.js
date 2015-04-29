@@ -3,14 +3,37 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Util.js
+ * @requires OpenLayers/BaseTypes.js
+ */
 
+/**
+ * Namespace: OpenLayers.Element
+ */
 OpenLayers.Element = {
 
-        visible: function(element) {
+    /**
+     * APIFunction: visible
+     * 
+     * Parameters: 
+     * element - {DOMElement}
+     * 
+     * Returns:
+     * {Boolean} Is the element visible?
+     */
+    visible: function(element) {
         return OpenLayers.Util.getElement(element).style.display != 'none';
     },
 
-        toggle: function() {
+    /**
+     * APIFunction: toggle
+     * Toggle the visibility of element(s) passed in
+     * 
+     * Parameters:
+     * element - {DOMElement} Actually user can pass any number of elements
+     */
+    toggle: function() {
         for (var i=0, len=arguments.length; i<len; i++) {
             var element = OpenLayers.Util.getElement(arguments[i]);
             var display = OpenLayers.Element.visible(element) ? 'none' 
@@ -19,29 +42,80 @@ OpenLayers.Element = {
         }
     },
 
-        remove: function(element) {
+    /**
+     * APIFunction: remove
+     * Remove the specified element from the DOM.
+     * 
+     * Parameters:
+     * element - {DOMElement}
+     */
+    remove: function(element) {
         element = OpenLayers.Util.getElement(element);
         element.parentNode.removeChild(element);
     },
 
-        getHeight: function(element) {
+    /**
+     * APIFunction: getHeight
+     *  
+     * Parameters:
+     * element - {DOMElement}
+     * 
+     * Returns:
+     * {Integer} The offset height of the element passed in
+     */
+    getHeight: function(element) {
         element = OpenLayers.Util.getElement(element);
         return element.offsetHeight;
     },
 
-        hasClass: function(element, name) {
+    /**
+     * Function: hasClass
+     * Tests if an element has the given CSS class name.
+     *
+     * Parameters:
+     * element - {DOMElement} A DOM element node.
+     * name - {String} The CSS class name to search for.
+     *
+     * Returns:
+     * {Boolean} The element has the given class name.
+     */
+    hasClass: function(element, name) {
         var names = element.className;
         return (!!names && new RegExp("(^|\\s)" + name + "(\\s|$)").test(names));
     },
     
-        addClass: function(element, name) {
+    /**
+     * Function: addClass
+     * Add a CSS class name to an element.  Safe where element already has
+     *     the class name.
+     *
+     * Parameters:
+     * element - {DOMElement} A DOM element node.
+     * name - {String} The CSS class name to add.
+     *
+     * Returns:
+     * {DOMElement} The element.
+     */
+    addClass: function(element, name) {
         if(!OpenLayers.Element.hasClass(element, name)) {
             element.className += (element.className ? " " : "") + name;
         }
         return element;
     },
 
-        removeClass: function(element, name) {
+    /**
+     * Function: removeClass
+     * Remove a CSS class name from an element.  Safe where element does not
+     *     have the class name.
+     *
+     * Parameters:
+     * element - {DOMElement} A DOM element node.
+     * name - {String} The CSS class name to remove.
+     *
+     * Returns:
+     * {DOMElement} The element.
+     */
+    removeClass: function(element, name) {
         var names = element.className;
         if(names) {
             element.className = OpenLayers.String.trim(
@@ -53,7 +127,19 @@ OpenLayers.Element = {
         return element;
     },
 
-        toggleClass: function(element, name) {
+    /**
+     * Function: toggleClass
+     * Remove a CSS class name from an element if it exists.  Add the class name
+     *     if it doesn't exist.
+     *
+     * Parameters:
+     * element - {DOMElement} A DOM element node.
+     * name - {String} The CSS class name to toggle.
+     *
+     * Returns:
+     * {DOMElement} The element.
+     */
+    toggleClass: function(element, name) {
         if(OpenLayers.Element.hasClass(element, name)) {
             OpenLayers.Element.removeClass(element, name);
         } else {
@@ -62,7 +148,17 @@ OpenLayers.Element = {
         return element;
     },
 
-        getStyle: function(element, style) {
+    /**
+     * APIFunction: getStyle
+     * 
+     * Parameters:
+     * element - {DOMElement}
+     * style - {?}
+     * 
+     * Returns:
+     * {?}
+     */
+    getStyle: function(element, style) {
         element = OpenLayers.Util.getElement(element);
 
         var value = null;

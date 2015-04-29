@@ -8,5 +8,7 @@ export function set (config) {
             this['_' + i] = prop;
         }
     }
+    // Lenient ordinal parsing accepts just a number in addition to
+    // number + (possibly) stuff coming from _ordinalParseLenient.
     this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
 }

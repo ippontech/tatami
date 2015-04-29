@@ -1,3 +1,10 @@
+//! moment.js locale configuration
+//! locale : korean (ko)
+//!
+//! authors
+//!
+//! - Kyungwook, Park : https://github.com/kyungw00k
+//! - Jeeeyul Lee <jeeeyul@gmail.com>
 
 import moment from '../moment';
 

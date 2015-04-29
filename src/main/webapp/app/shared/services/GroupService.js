@@ -6,11 +6,11 @@ TatamiApp.factory('GroupService', ['$resource', function($resource) {
             isArray: true,
             params: { groupId: '@groupId' },
             url: '/tatami/rest/groups/:groupId/timeline',
-            transformResponse: function(statuses) {
+            transformResponse: function(statuses, headersGetter) {
                 statuses = angular.fromJson(statuses);
 
                 for(var i = 0; i < statuses.length; i++) {
-                    statuses[i]['avatarURL'] = statuses[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+                    statuses[i]['avatarURL'] = statuses[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
 
                     if(statuses[i].geoLocalization) {
                         var latitude = statuses[i].geoLocalization.split(',')[0].trim();
@@ -29,11 +29,11 @@ TatamiApp.factory('GroupService', ['$resource', function($resource) {
             isArray: true,
             params: { groupId: '@groupId' },
             url: '/tatami/rest/groups/:groupId/members/',
-            transformResponse: function(users) {
+            transformResponse: function(users, headersGetter) {
                 users = angular.fromJson(users);
 
                 for(var i = 0; i < users.length; i++) {
-                    users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+                    users[i]['avatarURL'] = users[i].avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
                 }
 
                 return users;

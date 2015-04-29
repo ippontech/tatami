@@ -7,6 +7,11 @@ var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
 var formatFunctions = {};
 
 export var formatTokenFunctions = {};
+
+// token:    'M'
+// padded:   ['MM', 2]
+// ordinal:  'Mo'
+// callback: function () { this.month() + 1 }
 export function addFormatToken (token, padded, ordinal, callback) {
     var func = callback;
     if (typeof callback === 'string') {
@@ -55,6 +60,8 @@ function makeFormatFunction(format) {
         return output;
     };
 }
+
+// format date using native date object
 export function formatMoment(m, format) {
     if (!m.isValid()) {
         return m.localeData().invalidDate();

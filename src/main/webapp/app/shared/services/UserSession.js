@@ -40,7 +40,7 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
                 user = data;
                 authenticated = true;
                 deferred.resolve(user);
-            }, function() {
+            }, function(data) {
                 // Error
                 user = null;
                 authenticated = false;

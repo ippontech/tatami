@@ -4,7 +4,16 @@
  *  - Waldir
  */
 
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["pt"]
+ * Dictionary for Português.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["pt"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Servidor devolveu erro não contemplado ${statusText}",

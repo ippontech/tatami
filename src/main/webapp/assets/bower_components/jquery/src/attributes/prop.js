@@ -15,6 +15,7 @@ jQuery.fn.extend({
 	removeProp: function( name ) {
 		name = jQuery.propFix[ name ] || name;
 		return this.each(function() {
+			// try/catch handles cases where IE balks (such as removing a property on window)
 			try {
 				this[ name ] = undefined;
 				delete this[ name ];
@@ -32,6 +33,8 @@ jQuery.extend({
 	prop: function( elem, name, value ) {
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
+
+		// don't get/set properties on text, comment and attribute nodes
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -39,6 +42,7 @@ jQuery.extend({
 		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
 
 		if ( notxml ) {
+			// Fix name and attach hooks
 			name = jQuery.propFix[ name ] || name;
 			hooks = jQuery.propHooks[ name ];
 		}
@@ -58,6 +62,9 @@ jQuery.extend({
 	propHooks: {
 		tabIndex: {
 			get: function( elem ) {
+				// elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
+				// http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
+				// Use proper attribute retrieval(#12072)
 				var tabindex = jQuery.find.attr( elem, "tabindex" );
 
 				return tabindex ?
@@ -69,7 +76,11 @@ jQuery.extend({
 		}
 	}
 });
+
+// Some attributes require a special call on IE
+// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
 if ( !support.hrefNormalized ) {
+	// href/src property should get the full normalized URL (#10299/#12915)
 	jQuery.each([ "href", "src" ], function( i, name ) {
 		jQuery.propHooks[ name ] = {
 			get: function( elem ) {
@@ -78,6 +89,10 @@ if ( !support.hrefNormalized ) {
 		};
 	});
 }
+
+// Support: Safari, IE9+
+// mis-reports the default selected property of an option
+// Accessing the parent's selectedIndex property fixes it
 if ( !support.optSelected ) {
 	jQuery.propHooks.selected = {
 		get: function( elem ) {
@@ -85,6 +100,8 @@ if ( !support.optSelected ) {
 
 			if ( parent ) {
 				parent.selectedIndex;
+
+				// Make sure that it also works with optgroups, see #5701
 				if ( parent.parentNode ) {
 					parent.parentNode.selectedIndex;
 				}
@@ -108,6 +125,8 @@ jQuery.each([
 ], function() {
 	jQuery.propFix[ this.toLowerCase() ] = this;
 });
+
+// IE6/7 call enctype encoding
 if ( !support.enctype ) {
 	jQuery.propFix.enctype = "encoding";
 }

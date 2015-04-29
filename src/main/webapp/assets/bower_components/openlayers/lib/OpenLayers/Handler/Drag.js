@@ -3,32 +3,126 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Handler.js
+ */
 
+/**
+ * Class: OpenLayers.Handler.Drag
+ * The drag handler is used to deal with sequences of browser events related
+ *     to dragging.  The handler is used by controls that want to know when
+ *     a drag sequence begins, when a drag is happening, and when it has
+ *     finished.
+ *
+ * Controls that use the drag handler typically construct it with callbacks
+ *     for 'down', 'move', and 'done'.  Callbacks for these keys are called
+ *     when the drag begins, with each move, and when the drag is done.  In
+ *     addition, controls can have callbacks keyed to 'up' and 'out' if they
+ *     care to differentiate between the types of events that correspond with
+ *     the end of a drag sequence.  If no drag actually occurs (no mouse move)
+ *     the 'down' and 'up' callbacks will be called, but not the 'done'
+ *     callback.
+ *
+ * Create a new drag handler with the <OpenLayers.Handler.Drag> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Handler>
+ */
 OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
   
-        started: false,
+    /** 
+     * Property: started
+     * {Boolean} When a mousedown or touchstart event is received, we want to
+     * record it, but not set 'dragging' until the mouse moves after starting.
+     */
+    started: false,
 
-        stopDown: true,
+    /**
+     * Property: stopDown
+     * {Boolean} Stop propagation of mousedown events from getting to listeners
+     *     on the same element.  Default is true.
+     */
+    stopDown: true,
 
-        dragging: false,
+    /** 
+     * Property: dragging 
+     * {Boolean} 
+     */
+    dragging: false,
 
-        last: null,
+    /** 
+     * Property: last
+     * {<OpenLayers.Pixel>} The last pixel location of the drag.
+     */
+    last: null,
 
-        start: null,
+    /** 
+     * Property: start
+     * {<OpenLayers.Pixel>} The first pixel location of the drag.
+     */
+    start: null,
 
-        lastMoveEvt: null,
+    /**
+     * Property: lastMoveEvt
+     * {Object} The last mousemove event that occurred. Used to
+     *     position the map correctly when our "delay drag"
+     *     timeout expired.
+     */
+    lastMoveEvt: null,
 
-        oldOnselectstart: null,
+    /**
+     * Property: oldOnselectstart
+     * {Function}
+     */
+    oldOnselectstart: null,
     
-        interval: 0,
+    /**
+     * Property: interval
+     * {Integer} In order to increase performance, an interval (in 
+     *     milliseconds) can be set to reduce the number of drag events 
+     *     called. If set, a new drag event will not be set until the 
+     *     interval has passed. 
+     *     Defaults to 0, meaning no interval. 
+     */
+    interval: 0,
     
-        timeoutId: null,
+    /**
+     * Property: timeoutId
+     * {String} The id of the timeout used for the mousedown interval.
+     *     This is "private", and should be left alone.
+     */
+    timeoutId: null,
     
-        documentDrag: false,
+    /**
+     * APIProperty: documentDrag
+     * {Boolean} If set to true, the handler will also handle mouse moves when
+     *     the cursor has moved out of the map viewport. Default is false.
+     */
+    documentDrag: false,
     
-        documentEvents: null,
+    /**
+     * Property: documentEvents
+     * {Boolean} Are we currently observing document events?
+     */
+    documentEvents: null,
 
-        initialize: function(control, callbacks, options) {
+    /**
+     * Constructor: OpenLayers.Handler.Drag
+     * Returns OpenLayers.Handler.Drag
+     * 
+     * Parameters:
+     * control - {<OpenLayers.Control>} The control that is making use of
+     *     this handler.  If a handler is being used without a control, the
+     *     handlers setMap method must be overridden to deal properly with
+     *     the map.
+     * callbacks - {Object} An object containing a single function to be
+     *     called when the drag operation is finished. The callback should
+     *     expect to receive a single argument, the pixel location of the event.
+     *     Callbacks for 'move' and 'done' are supported. You can also speficy
+     *     callbacks for 'down', 'up', and 'out' to respond to those events.
+     * options - {Object} 
+     */
+    initialize: function(control, callbacks, options) {
         OpenLayers.Handler.prototype.initialize.apply(this, arguments);
         
         if (this.documentDrag === true) {
@@ -46,7 +140,17 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
     },
 
     
-        dragstart: function (evt) {
+    /**
+     * Method: dragstart
+     * This private method is factorized from mousedown and touchstart methods
+     *
+     * Parameters:
+     * evt - {Event} The event
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    dragstart: function (evt) {
         var propagate = true;
         this.dragging = false;
         if (this.checkModifiers(evt) &&
@@ -61,6 +165,8 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
             );
             this.down(evt);
             this.callback("down", [evt.xy]);
+
+            // prevent document dragging
             OpenLayers.Event.preventDefault(evt);
 
             if(!this.oldOnselectstart) {
@@ -79,7 +185,17 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return propagate;
     },
 
-        dragmove: function (evt) {
+    /**
+     * Method: dragmove
+     * This private method is factorized from mousemove and touchmove methods
+     *
+     * Parameters:
+     * evt - {Event} The event
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    dragmove: function (evt) {
         this.lastMoveEvt = evt;
         if (this.started && this._pointerId == evt.pointerId &&
             !this.timeoutId && (evt.xy.x != this.last.x ||
@@ -87,6 +203,8 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
             if(this.documentDrag === true && this.documentEvents) {
                 if(evt.element === document) {
                     this.adjustXY(evt);
+                    // do setEvent manually because the documentEvents are not
+                    // registered with the map
                     this.setEvent(evt);
                 } else {
                     this.removeDocumentEvents();
@@ -110,7 +228,17 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return true;
     },
 
-        dragend: function (evt) {
+    /**
+     * Method: dragend
+     * This private method is factorized from mouseup and touchend methods
+     *
+     * Parameters:
+     * evt - {Event} The event
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    dragend: function (evt) {
         if (this.started && this._pointerId == evt.pointerId) {
             if(this.documentDrag === true && this.documentEvents) {
                 this.adjustXY(evt);
@@ -133,57 +261,180 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return true;
     },
 
-    
-        down: function(evt) {
+    /**
+     * The four methods below (down, move, up, and out) are used by subclasses
+     *     to do their own processing related to these mouse events.
+     */
+
+    /**
+     * Method: down
+     * This method is called during the handling of the mouse down event.
+     *     Subclasses can do their own processing here.
+     *
+     * Parameters:
+     * evt - {Event} The mouse down event
+     */
+    down: function(evt) {
     },
 
-        move: function(evt) {
+    /**
+     * Method: move
+     * This method is called during the handling of the mouse move event.
+     *     Subclasses can do their own processing here.
+     *
+     * Parameters:
+     * evt - {Event} The mouse move event
+     *
+     */
+    move: function(evt) {
     },
 
-        up: function(evt) {
+    /**
+     * Method: up
+     * This method is called during the handling of the mouse up event.
+     *     Subclasses can do their own processing here.
+     *
+     * Parameters:
+     * evt - {Event} The mouse up event
+     */
+    up: function(evt) {
     },
 
-        out: function(evt) {
+    /**
+     * Method: out
+     * This method is called during the handling of the mouse out event.
+     *     Subclasses can do their own processing here.
+     *
+     * Parameters:
+     * evt - {Event} The mouse out event
+     */
+    out: function(evt) {
     },
 
-    
-        mousedown: function(evt) {
+    /**
+     * The methods below are part of the magic of event handling.  Because
+     *     they are named like browser events, they are registered as listeners
+     *     for the events they represent.
+     */
+
+    /**
+     * Method: mousedown
+     * Handle mousedown events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    mousedown: function(evt) {
         return this.dragstart(evt);
     },
 
-        touchstart: function(evt) {
+    /**
+     * Method: touchstart
+     * Handle touchstart events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    touchstart: function(evt) {
         this.startTouch();
+        // only allow the first pointer event to be monitored by noting its pointerId
+        // which is unique in the pointer model (and undefined in the touch model)
         if (!("_pointerId" in this)) {
             this._pointerId = evt.pointerId;
         }
         return this.dragstart(evt);
     },
 
-        mousemove: function(evt) {
+    /**
+     * Method: mousemove
+     * Handle mousemove events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    mousemove: function(evt) {
         return this.dragmove(evt);
     },
 
-        touchmove: function(evt) {
+    /**
+     * Method: touchmove
+     * Handle touchmove events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    touchmove: function(evt) {
         return this.dragmove(evt);
     },
 
-        removeTimeout: function() {
+    /**
+     * Method: removeTimeout
+     * Private. Called by mousemove() to remove the drag timeout.
+     */
+    removeTimeout: function() {
         this.timeoutId = null;
+        // if timeout expires while we're still dragging (mouseup
+        // hasn't occurred) then call mousemove to move to the
+        // correct position
         if(this.dragging) {
             this.mousemove(this.lastMoveEvt);
         }
     },
 
-        mouseup: function(evt) {
+    /**
+     * Method: mouseup
+     * Handle mouseup events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    mouseup: function(evt) {
         return this.dragend(evt);
     },
 
-        touchend: function(evt) {
+    /**
+     * Method: touchend
+     * Handle touchend events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    touchend: function(evt) {
+        // override evt.xy with last position since touchend does not have
+        // any touch position
         evt.xy = this.last;
         return this.dragend(evt);
     },
 
-        mouseout: function (evt) {
+    /**
+     * Method: mouseout
+     * Handle mouseout events
+     *
+     * Parameters:
+     * evt - {Event}
+     *
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    mouseout: function (evt) {
         if (this.started && OpenLayers.Util.mouseLeft(evt, this.map.viewPortDiv)) {
             if(this.documentDrag === true) {
                 this.addDocumentEvents();
@@ -207,11 +458,31 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return true;
     },
 
-        click: function (evt) {
+    /**
+     * Method: click
+     * The drag handler captures the click event.  If something else registers
+     *     for clicks on the same element, its listener will not be called 
+     *     after a drag.
+     * 
+     * Parameters: 
+     * evt - {Event} 
+     * 
+     * Returns:
+     * {Boolean} Let the event propagate.
+     */
+    click: function (evt) {
+        // let the click event propagate only if the mouse moved
         return (this.start == this.last);
     },
 
-        activate: function() {
+    /**
+     * Method: activate
+     * Activate the handler.
+     * 
+     * Returns:
+     * {Boolean} The handler was successfully activated.
+     */
+    activate: function() {
         var activated = false;
         if(OpenLayers.Handler.prototype.activate.apply(this, arguments)) {
             this.dragging = false;
@@ -220,7 +491,14 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return activated;
     },
 
-        deactivate: function() {
+    /**
+     * Method: deactivate 
+     * Deactivate the handler.
+     * 
+     * Returns:
+     * {Boolean} The handler was successfully deactivated.
+     */
+    deactivate: function() {
         var deactivated = false;
         if(OpenLayers.Handler.prototype.deactivate.apply(this, arguments)) {
             this.started = false;
@@ -235,20 +513,39 @@ OpenLayers.Handler.Drag = OpenLayers.Class(OpenLayers.Handler, {
         return deactivated;
     },
     
-        adjustXY: function(evt) {
+    /**
+     * Method: adjustXY
+     * Converts event coordinates that are relative to the document body to
+     * ones that are relative to the map viewport. The latter is the default in
+     * OpenLayers.
+     * 
+     * Parameters:
+     * evt - {Object}
+     */
+    adjustXY: function(evt) {
         var pos = OpenLayers.Util.pagePosition(this.map.viewPortDiv);
         evt.xy.x -= pos[0];
         evt.xy.y -= pos[1];
     },
     
-        addDocumentEvents: function() {
+    /**
+     * Method: addDocumentEvents
+     * Start observing document events when documentDrag is true and the mouse
+     * cursor leaves the map viewport while dragging.
+     */
+    addDocumentEvents: function() {
         OpenLayers.Element.addClass(document.body, "olDragDown");
         this.documentEvents = true;
         OpenLayers.Event.observe(document, "mousemove", this._docMove);
         OpenLayers.Event.observe(document, "mouseup", this._docUp);
     },
     
-        removeDocumentEvents: function() {
+    /**
+     * Method: removeDocumentEvents
+     * Stops observing document events when documentDrag is true and the mouse
+     * cursor re-enters the map viewport while dragging.
+     */
+    removeDocumentEvents: function() {
         OpenLayers.Element.removeClass(document.body, "olDragDown");
         this.documentEvents = false;
         OpenLayers.Event.stopObserving(document, "mousemove", this._docMove);

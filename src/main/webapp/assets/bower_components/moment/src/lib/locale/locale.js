@@ -1,3 +1,4 @@
+// Side effect imports
 import './prototype';
 
 import {

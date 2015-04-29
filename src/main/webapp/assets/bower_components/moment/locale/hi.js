@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : hindi (hi)
+//! author : Mayank Singhal : https://github.com/mayanksinghal
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
@@ -78,6 +81,8 @@
                 return symbolMap[match];
             });
         },
+        // Hindi notation for meridiems are quite fuzzy in practice. While there exists
+        // a rigid notion of a 'Pahar' it is not used as rigidly in modern Hindi.
         meridiemParse: /रात|सुबह|दोपहर|शाम/,
         meridiemHour : function (hour, meridiem) {
             if (hour === 12) {

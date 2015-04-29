@@ -3,26 +3,95 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/GML/Base.js
+ */
 
+/**
+ * Class: OpenLayers.Format.GML.v3
+ * Parses GML version 3.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.GML.Base>
+ */
 OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
     
-        schemaLocation: "http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd",
+    /**
+     * Property: schemaLocation
+     * {String} Schema location for a particular minor version.  The writers
+     *     conform with the Simple Features Profile for GML.
+     */
+    schemaLocation: "http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd",
 
-        curve: false,
+    /**
+     * Property: curve
+     * {Boolean} Write gml:Curve instead of gml:LineString elements.  This also
+     *     affects the elements in multi-part geometries.  Default is false.
+     *     To write gml:Curve elements instead of gml:LineString, set curve
+     *     to true in the options to the contstructor (cannot be changed after
+     *     instantiation).
+     */
+    curve: false,
     
-        multiCurve: true,
+    /**
+     * Property: multiCurve
+     * {Boolean} Write gml:MultiCurve instead of gml:MultiLineString.  Since
+     *     the latter is deprecated in GML 3, the default is true.  To write
+     *     gml:MultiLineString instead of gml:MultiCurve, set multiCurve to
+     *     false in the options to the constructor (cannot be changed after
+     *     instantiation).
+     */
+    multiCurve: true,
     
-        surface: false,
+    /**
+     * Property: surface
+     * {Boolean} Write gml:Surface instead of gml:Polygon elements.  This also
+     *     affects the elements in multi-part geometries.  Default is false.
+     *     To write gml:Surface elements instead of gml:Polygon, set surface
+     *     to true in the options to the contstructor (cannot be changed after
+     *     instantiation).
+     */
+    surface: false,
 
-        multiSurface: true,
+    /**
+     * Property: multiSurface
+     * {Boolean} Write gml:multiSurface instead of gml:MultiPolygon.  Since
+     *     the latter is deprecated in GML 3, the default is true.  To write
+     *     gml:MultiPolygon instead of gml:multiSurface, set multiSurface to
+     *     false in the options to the constructor (cannot be changed after
+     *     instantiation).
+     */
+    multiSurface: true,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.GML.v3
+     * Create a parser for GML v3.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     *
+     * Valid options properties:
+     * featureType - {String} Local (without prefix) feature typeName (required).
+     * featureNS - {String} Feature namespace (required).
+     * geometryName - {String} Geometry element name.
+     */
+    initialize: function(options) {
         OpenLayers.Format.GML.Base.prototype.initialize.apply(this, [options]);
     },
 
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "gml": OpenLayers.Util.applyDefaults({
             "_inherit": function(node, obj, container) {
+                // SRSReferenceGroup attributes
                 var dim = parseInt(node.getAttribute("srsDimension"), 10) ||
                     (container && container.srsDimension);
                 if (dim) {
@@ -78,6 +147,7 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                     this.regExes.trimSpace, ""
                 );
                 var coords = str.split(this.regExes.splitSpace);
+                // The "dimension" attribute is from the GML 3.0.1 spec.
                 var dim = obj.srsDimension ||
                     parseInt(node.getAttribute("srsDimension") || node.getAttribute("dimension"), 10) || 2;
                 var j, x, y, z;
@@ -183,7 +253,19 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
         "wfs": OpenLayers.Format.GML.Base.prototype.readers["wfs"]
     },
     
-        write: function(features) {
+    /**
+     * Method: write
+     *
+     * Parameters:
+     * features - {Array(<OpenLayers.Feature.Vector>) | OpenLayers.Feature.Vector}
+     *     An array of features or a single feature.
+     *
+     * Returns:
+     * {String} Given an array of features, a doc with a gml:featureMembers
+     *     element will be returned.  Given a single feature, a doc with a
+     *     gml:featureMember element will be returned.
+     */
+    write: function(features) {
         var name;
         if(OpenLayers.Util.isArray(features)) {
             name = "featureMembers";
@@ -199,7 +281,13 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [root]);
     },
 
-        writers: {
+    /**
+     * Property: writers
+     * As a compliment to the readers property, this structure contains public
+     *     writing functions grouped by namespace alias and named like the
+     *     node names they produce.
+     */
+    writers: {
         "gml": OpenLayers.Util.applyDefaults({
             "featureMembers": function(features) {
                 var node = this.createElementNSPlus("gml:featureMembers");
@@ -214,6 +302,7 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                 return node;
             },
             "pos": function(point) {
+                // only 2d for simple features profile
                 var pos = (this.xy) ?
                     (point.x + " " + point.y) : (point.y + " " + point.x);
                 return this.createElementNSPlus("gml:pos", {
@@ -241,6 +330,7 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                 return node;
             },
             "posList": function(points) {
+                // only 2d for simple features profile
                 var len = points.length;
                 var parts = new Array(len);
                 var point;
@@ -341,12 +431,14 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                 var node = this.createElementNSPlus("gml:Envelope");
                 this.writeNode("lowerCorner", bounds, node);
                 this.writeNode("upperCorner", bounds, node);
+                // srsName attribute is required for gml:Envelope
                 if(this.srsName) {
                     node.setAttribute("srsName", this.srsName);
                 }
                 return node;
             },
             "lowerCorner": function(bounds) {
+                // only 2d for simple features profile
                 var pos = (this.xy) ?
                     (bounds.left + " " + bounds.bottom) :
                     (bounds.bottom + " " + bounds.left);
@@ -355,6 +447,7 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                 });
             },
             "upperCorner": function(bounds) {
+                // only 2d for simple features profile
                 var pos = (this.xy) ?
                     (bounds.right + " " + bounds.top) :
                     (bounds.top + " " + bounds.right);
@@ -367,7 +460,11 @@ OpenLayers.Format.GML.v3 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
         "wfs": OpenLayers.Format.GML.Base.prototype.writers["wfs"]
     },
 
-        setGeometryTypes: function() {
+    /**
+     * Method: setGeometryTypes
+     * Sets the <geometryTypes> mapping.
+     */
+    setGeometryTypes: function() {
         this.geometryTypes = {
             "OpenLayers.Geometry.Point": "Point",
             "OpenLayers.Geometry.MultiPoint": "MultiPoint",

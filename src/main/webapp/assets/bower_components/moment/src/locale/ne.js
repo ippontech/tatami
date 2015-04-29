@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : nepali/nepalese
+//! author : suvash : https://github.com/suvash
 
 import moment from '../moment';
 

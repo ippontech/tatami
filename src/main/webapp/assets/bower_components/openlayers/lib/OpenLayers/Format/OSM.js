@@ -3,20 +3,76 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Feature/Vector.js
+ * @requires OpenLayers/Geometry/Point.js
+ * @requires OpenLayers/Geometry/LineString.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ * @requires OpenLayers/Projection.js
+ */
 
+/**
+ * Class: OpenLayers.Format.OSM
+ * OSM parser. Create a new instance with the
+ *     <OpenLayers.Format.OSM> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
 
-        checkTags: false,
+    /**
+     * APIProperty: checkTags
+     * {Boolean} Should tags be checked to determine whether something
+     * should be treated as a separate node. Will slow down parsing.
+     * Default is false.
+     */
+    checkTags: false,
 
-        shareNode: false,
+    /**
+     * APIProperty: shareNode
+     * {Boolean} Should nodes be shared between geometries.
+     */
+    shareNode: false,
 
-        interestingTagsExclude: null,
+    /**
+     * Property: interestingTagsExclude
+     * {Array} List of tags to exclude from 'interesting' checks on nodes.
+     * Must be set when creating the format. Will only be used if checkTags
+     * is set.
+     */
+    interestingTagsExclude: null,
 
-        areaTags: null,
+    /**
+     * APIProperty: areaTags
+     * {Array} List of tags indicating that something is an area.
+     * Must be set when creating the format. Will only be used if
+     * checkTags is true.
+     */
+    areaTags: null,
 
-        relationsParsers: {},
+    /**
+     * APIProperty: relationsParsers
+     * {Map({String, Function})} Map relation type to a functions that parce the relation.
+     * This can be set for example to:
+     * {
+     *     multipolygon: OpenLayers.Format.OSM.multipolygonParser,
+     *     boundary:     OpenLayers.Format.OSM.multipolygonParser,
+     *     route:        OpenLayers.Format.OSM.routeParser
+     * }
+     */
+    relationsParsers: {},
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.OSM
+     * Create a new parser for OSM.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
         var layer_defaults = {
           'interestingTagsExclude': ['source', 'source_ref',
               'source:ref', 'history', 'attribution', 'created_by'],
@@ -38,12 +94,24 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
             area[layer_defaults.areaTags[i]] = true;
         }
         layer_defaults.areaTags = area;
+
+        // OSM coordinates are always in longlat WGS84
         this.externalProjection = new OpenLayers.Projection("EPSG:4326");
 
         OpenLayers.Format.XML.prototype.initialize.apply(this, [layer_defaults]);
     },
 
-        read: function(doc) {
+    /**
+     * APIMethod: read
+     * Return a list of features from a OSM doc
+
+     * Parameters:
+     * doc - {Element} 
+     *
+     * Returns:
+     * Array({<OpenLayers.Feature.Vector>})
+     */
+    read: function(doc) {
         if (typeof doc == "string") {
             doc = OpenLayers.Format.XML.prototype.read.apply(this, [doc]);
         }
@@ -51,6 +119,8 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         var nodes = this.getNodes(doc);
         var ways = this.getWays(doc);
         var relations = this.getRelations(doc);
+
+        // Geoms will contain at least ways.length entries.
         var feat_list = [];
 
         for (var relation_id in relations) {
@@ -81,6 +151,7 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
                     way.tags);
                 feat.osm_id = parseInt(way.id);
                 feat.osm_version = parseInt(way.version);
+                // Since OSM is topological, we stash the node ID internally.
                 feat.geometry.osm_id = feat.osm_id;
                 feat.type = "way";
                 feat.fid = "way." + feat.osm_id;
@@ -96,10 +167,21 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return feat_list;
     },
 
-        getPointList: function(way, nodes) {
+    /**
+     * Method: getPointList
+     * Return a list of points corresponds with with the way.
+     *
+     * Parameters:
+     * way - way where we can find the nodes id.
+     * nodes - nodes the nodes map where we can find the nodes by id.
+     */
+    getPointList: function(way, nodes) {
         if (!way) {
+            // the way will not be on the bbox
             return [];
         }
+        // We know the minimal of this one ahead of time. (Could be -1
+        // due to areas/polygons)
         var point_list = new Array(way.nodes.length);
         for (var j = 0; j < way.nodes.length; j++) {
             var node = nodes[way.nodes[j]];
@@ -108,6 +190,7 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
             var point = node.geometry;
             if (!this.shareNode) {
                 point = new OpenLayers.Geometry.Point(node.geometry.x, node.geometry.y);
+                // Since OSM is topological, we stash the node ID internally.
                 point.osm_id = node.osm_id;
             }
 
@@ -116,7 +199,15 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return point_list;
     },
 
-        concatPathsIfLinear: function(lastPointList, pointList) {
+    /**
+     * Method: concatPathsIfLinear
+     * Return result.succed if pass are linear, result.lastPointList with the new way.
+     *
+     * Parameters:
+     * lastPointList - array of <OpenLayer.Geometry.Points>, the old concanated path
+     * pointList - array of <OpenLayer.Geometry.Points>, the new path
+     */
+    concatPathsIfLinear: function(lastPointList, pointList) {
         var result = {};
         if (lastPointList.length == 0) {
             result.succed = true;
@@ -176,7 +267,14 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return result;
     },
 
-        getNodes: function(doc) {
+    /**
+     * Method: gets
+     * Return the node items from a doc.
+     *
+     * Parameters:
+     * doc - {DOMElement} node to parse tags from
+     */
+    getNodes: function(doc) {
         var node_list = doc.getElementsByTagName("node");
         var nodes = {};
         for (var i = 0; i < node_list.length; i++) {
@@ -194,6 +292,8 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
             feat.osm_version = parseInt(node.getAttribute("version"));
             feat.type = "node";
             feat.fid = "node." + feat.osm_id;
+
+            // Since OSM is topological, we stash the node ID internally.
             feat.geometry.osm_id = feat.osm_id;
 
             nodes[id] = feat;
@@ -201,7 +301,14 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return nodes;
     },
 
-        getRelations: function(doc) {
+    /**
+     * Method: getRelations
+     * Return the relation items from a doc.
+     *
+     * Parameters:
+     * node - {DOMElement} node to parse tags from
+     */
+    getRelations: function(doc) {
         var relation_list = doc.getElementsByTagName("relation");
         var return_relations = {};
         for (var i = 0; i < relation_list.length; i++) {
@@ -238,7 +345,14 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
 
     },
 
-        getWays: function(doc) {
+    /**
+     * Method: getWays
+     * Return the way items from a doc.
+     *
+     * Parameters:
+     * doc - {DOMElement} node to parse tags from
+     */
+    getWays: function(doc) {
         var way_list = doc.getElementsByTagName("way");
         var return_ways = {};
         for (var i = 0; i < way_list.length; i++) {
@@ -271,7 +385,23 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
 
     },
 
-        getTags: function(dom_node, interesting_tags) {
+    /**
+     * Method: getTags
+     * Return the tags list attached to a specific DOM element.
+     *
+     * Parameters:
+     * dom_node - {DOMElement} node to parse tags from
+     * interesting_tags - {Boolean} whether the return from this function should
+     *    return a boolean indicating that it has 'interesting tags' --
+     *    tags like attribution and source are ignored. (To change the list
+     *    of tags, see interestingTagsExclude)
+     *
+     * Returns:
+     * tags - {Object} hash of tags
+     * interesting - {Boolean} if interesting_tags is passed, returns
+     *     whether there are any interesting tags on this element.
+     */
+    getTags: function(dom_node, interesting_tags) {
         var tag_list = dom_node.getElementsByTagName("tag");
         var tags = {};
         var interesting = false;
@@ -287,7 +417,15 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return interesting_tags ? [tags, interesting] : tags;
     },
 
-        isWayArea: function(way) {
+    /**
+     * Method: isWayArea
+     * Given a way object from getWays, check whether the tags and geometry
+     * indicate something is an area.
+     *
+     * Returns:
+     * {Boolean}
+     */
+    isWayArea: function(way) {
         var poly_shaped = false;
         var poly_tags = false;
 
@@ -305,7 +443,15 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return poly_shaped && (this.checkTags ? poly_tags : true);
     },
 
-        write: function(features) {
+    /**
+     * APIMethod: write
+     * Takes a list of features, returns a serialized OSM format file for use
+     * in tools like JOSM.
+     *
+     * Parameters:
+     * features - {Array(<OpenLayers.Feature.Vector>)}
+     */
+    write: function(features) {
         if (!(OpenLayers.Util.isArray(features))) {
             features = [features];
         }
@@ -315,6 +461,9 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         var root_node = this.createElementNS(null, "osm");
         root_node.setAttribute("version", "0.5");
         root_node.setAttribute("generator", "OpenLayers "+ OpenLayers.VERSION_NUMBER);
+
+        // Loop backwards, because the deserializer puts nodes last, and
+        // we want them first if possible
         for(var i = features.length - 1; i >= 0; i--) {
             var nodes = this.createFeatureNodes(features[i]);
             for (var j = 0; j < nodes.length; j++) {
@@ -324,7 +473,17 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [root_node]);
     },
 
-        createFeatureNodes: function(feature) {
+    /**
+     * Method: createFeatureNodes
+     * Takes a feature, returns a list of nodes from size 0->n.
+     * Will include all pieces of the serialization that are required which
+     * have not already been created. Calls out to createXML based on geometry
+     * type.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>}
+     */
+    createFeatureNodes: function(feature) {
         var nodes = [];
         var className = feature.geometry.CLASS_NAME;
         var type = className.substring(className.lastIndexOf(".") + 1);
@@ -336,7 +495,16 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         return nodes;
     },
 
-        createXML: {
+    /**
+     * Method: createXML
+     * Takes a feature, returns a list of nodes from size 0->n.
+     * Will include all pieces of the serialization that are required which
+     * have not already been created.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>}
+     */
+    createXML: {
         'point': function(point) {
             var id = null;
             var geometry = point.geometry ? point.geometry : point;
@@ -348,6 +516,7 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
             }
 
             var already_exists = false; // We don't return anything if the node
+                                        // has already been created
             if (point.osm_id) {
                 id = point.osm_id;
                 if (this.created_nodes[id]) {
@@ -408,12 +577,21 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
             var attrs = OpenLayers.Util.extend({'area':'yes'}, feature.attributes);
             var feat = new OpenLayers.Feature.Vector(feature.geometry.components[0], attrs);
             feat.osm_id = feature.osm_id;
+            // Since OSM is topological, we stash the node ID internally.
             feat.geometry.osm_id = feat.osm_id;
             return this.createXML['linestring'].apply(this, [feat]);
         }
     },
 
-        serializeTags: function(feature, node) {
+    /**
+     * Method: serializeTags
+     * Given a feature, serialize the attributes onto the given node.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>}
+     * node - {DOMNode}
+     */
+    serializeTags: function(feature, node) {
         for (var key in feature.attributes) {
             var tag = this.createElementNS(null, "tag");
             tag.setAttribute("k", key);
@@ -422,7 +600,16 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        setState: function(feature, node) {
+    /**
+     * Method: setState
+     * OpenStreetMap has a convention that 'state' is stored for modification or deletion.
+     * This allows the file to be uploaded via JOSM or the bulk uploader tool.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>}
+     * node - {DOMNode}
+     */
+    setState: function(feature, node) {
         if (feature.state) {
             var state = null;
             switch(feature.state) {
@@ -440,6 +627,20 @@ OpenLayers.Format.OSM = OpenLayers.Class(OpenLayers.Format.XML, {
     CLASS_NAME: "OpenLayers.Format.OSM"
 });
 
+/**
+ * Function that parse a multypolygone. Use the roles inner and enclave
+ * for inner border. all others will be considère as outer border.
+ *
+ * Parameters:
+ * relation - {DOMElement} the relation to parse
+ * parser - <OpenLayers.parser.OSM> the parser
+ * nodes - {Array({DOMElement})} all the available nodes
+ * ways - {Array({DOMElement})} all the available ways
+ * relations - {Array({DOMElement})} all the available relations
+ *
+ * Returns:
+ * {Array(<OpenLayers.Feature.Vector>)} a list of one element that represent the multypolygone
+ */
 OpenLayers.Format.OSM.multipolygonParser = function(relation, parser, nodes, ways, relations) {
     var lastRole = '';
     var lastPointList = [];
@@ -518,11 +719,25 @@ OpenLayers.Format.OSM.multipolygonParser = function(relation, parser, nodes, way
     return [feat];
 },
 
+/**
+ * Function that convert all the ways of a relation into a LineStrings.
+ *
+ * Parameters:
+ * relation - {DOMElement} the relation to parse
+ * parser - <OpenLayers.parser.OSM> the parser
+ * nodes - {Array({DOMElement})} all the available nodes
+ * ways - {Array({DOMElement})} all the available ways
+ *
+ * Returns:
+ * {Array(<OpenLayers.Geometry.LineString>)}
+ */
 OpenLayers.Format.OSM.getLineStrings = function(relation, parser, nodes, ways) {
     var geometries = [];
     for (var j = 0; j < relation.ways.length; j++) {
         var way = relation.ways[j]
         var ref = way.getAttribute("ref");
+
+        // TODO considere to create some area
         var pointList = parser.getPointList(ways[ref], nodes);
         if (pointList.length == 0) {
             continue;
@@ -533,6 +748,19 @@ OpenLayers.Format.OSM.getLineStrings = function(relation, parser, nodes, ways) {
     return geometries;
 }
 
+/**
+ * Function that parse a route. All the inner ways will be converted into a MultiLineString.
+ *
+ * Parameters:
+ * relation - {DOMElement} the relation to parse
+ * parser - <OpenLayers.parser.OSM> the parser
+ * nodes - {Array({DOMElement})} all the available nodes
+ * ways - {Array({DOMElement})} all the available ways
+ * relations - {Array({DOMElement})} all the available relations
+ *
+ * Returns:
+ * {Array(<OpenLayers.Feature.Vector>)} a list of one element that represent the route.
+ */
 OpenLayers.Format.OSM.routeParser = function(relation, parser, nodes, ways, relations) {
     var geometries = OpenLayers.Format.OSM.getLineStrings(relation, parser, nodes, ways);
     var geometry = new OpenLayers.Geometry.MultiLineString(geometries);
@@ -543,6 +771,20 @@ OpenLayers.Format.OSM.routeParser = function(relation, parser, nodes, ways, rela
     return [feat];
 }
 
+/**
+ * Function that parse a relation. All inerr way will be converten into LineLtrings,
+ * and all inner nodes into Points.
+ *
+ * Parameters:
+ * relation - {DOMElement} the relation to parse
+ * parser - <OpenLayers.parser.OSM> the parser
+ * nodes - {Array({DOMElement})} all the available nodes
+ * ways - {Array({DOMElement})} all the available ways
+ * relations - {Array({DOMElement})} all the available relations
+ *
+ * Returns:
+ * {Array(<OpenLayers.Feature.Vector>)} a lint of one element that represent the relation.
+ */
 OpenLayers.Format.OSM.genericParser = function(relation, parser, nodes, ways, relations) {
     var geometries = OpenLayers.Format.OSM.getLineStrings(relation, parser, nodes, ways);
     for (var j = 0; j < relation.nodes.length; j++) {
@@ -557,6 +799,20 @@ OpenLayers.Format.OSM.genericParser = function(relation, parser, nodes, ways, re
     return [feat];
 }
 
+/**
+ * Function that parse a route. All linear ways with the same role
+ * will be converted into one LineString.
+ *
+ * Parameters:
+ * relation - {DOMElement} the relation to parse
+ * parser - <OpenLayers.parser.OSM> the parser
+ * nodes - {Array({DOMElement})} all the available nodes
+ * ways - {Array({DOMElement})} all the available ways
+ * relations - {Array({DOMElement})} all the available relations
+ *
+ * Returns:
+ * {Array(<OpenLayers.Feature.Vector>)} a list of linear LineString.
+ */
 OpenLayers.Format.OSM.routeParserWithRoles = function(relation, parser, nodes, ways, relations) {
     var geometries = [];
     var lastRole = '';

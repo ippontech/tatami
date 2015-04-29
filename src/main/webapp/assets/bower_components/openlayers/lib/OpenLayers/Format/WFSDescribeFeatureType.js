@@ -3,20 +3,55 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Format/OGCExceptionReport.js
+ */
  
+/**
+ * Class: OpenLayers.Format.WFSDescribeFeatureType
+ * Read WFS DescribeFeatureType response
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
     OpenLayers.Format.XML, {
 
-        regExes: {
+    /**
+     * Property: regExes
+     * Compiled regular expressions for manipulating strings.
+     */
+    regExes: {
         trimSpace: (/^\s*|\s*$/g)
     },
     
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         xsd: "http://www.w3.org/2001/XMLSchema"
     },
     
-        
-        readers: {
+    /**
+     * Constructor: OpenLayers.Format.WFSDescribeFeatureType
+     * Create a new parser for WFS DescribeFeatureType responses.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "xsd": {
             "schema": function(node, obj) {
                 var complexTypes = [];
@@ -42,6 +77,8 @@ OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
                 }
                 obj.featureTypes = complexTypes;                
                 obj.targetPrefix = this.namespaceAlias[obj.targetNamespace];
+                
+                // map complexTypes to names of customTypes
                 var complexType, customType;
                 for(i=0, len=complexTypes.length; i<len; ++i) {
                     complexType = complexTypes[i];
@@ -53,6 +90,9 @@ OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
             },
             "complexType": function(node, obj) {
                 var complexType = {
+                    // this is a temporary typeName, it will be overwritten by
+                    // the schema reader with the metadata found in the
+                    // customTypes hash
                     "typeName": node.getAttribute("name")
                 };
                 this.readChildNodes(node, complexType);
@@ -134,7 +174,15 @@ OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
         }
     },
     
-        readRestriction: function(node, obj) {
+    /**
+     * Method: readRestriction
+     * Reads restriction defined in the child nodes of a restriction element
+     * 
+     * Parameters:
+     * node - {DOMElement} the node to parse
+     * obj - {Object} the object that receives the read result
+     */
+    readRestriction: function(node, obj) {
         var children = node.childNodes;
         var child, nodeName, value;
         for(var i=0, len=children.length; i<len; ++i) {
@@ -154,7 +202,16 @@ OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
         }
     },
     
-        read: function(data) {
+    /**
+     * Method: read
+     *
+     * Parameters:
+     * data - {DOMElement|String} A WFS DescribeFeatureType document.
+     *
+     * Returns:
+     * {Object} An object representing the WFS DescribeFeatureType response.
+     */
+    read: function(data) {
         if(typeof data == "string") { 
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -163,6 +220,7 @@ OpenLayers.Format.WFSDescribeFeatureType = OpenLayers.Class(
         }
         var schema = {};
         if (data.nodeName.split(":").pop() === 'ExceptionReport') {
+            // an exception must have occurred, so parse it
             var parser = new OpenLayers.Format.OGCExceptionReport();
             schema.error = parser.read(data);
         } else {

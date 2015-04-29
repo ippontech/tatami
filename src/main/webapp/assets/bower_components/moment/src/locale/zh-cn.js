@@ -1,3 +1,7 @@
+//! moment.js locale configuration
+//! locale : chinese (zh-cn)
+//! author : suupic : https://github.com/suupic
+//! author : Zeno Zeng : https://github.com/zenozeng
 
 import moment from '../moment';
 
@@ -30,6 +34,7 @@ export default moment.defineLocale('zh-cn', {
         } else if (meridiem === '下午' || meridiem === '晚上') {
             return hour + 12;
         } else {
+            // '中午'
             return hour >= 11 ? hour : hour + 12;
         }
     },
@@ -105,6 +110,7 @@ export default moment.defineLocale('zh-cn', {
         yy : '%d年'
     },
     week : {
+        // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
         dow : 1, // Monday is the first day of the week.
         doy : 4  // The week that contains Jan 4th is the first week of the year.
     }

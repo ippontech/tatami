@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Armenian (hy-am)
+//! author : Armendarabyan : https://github.com/armendarabyan
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

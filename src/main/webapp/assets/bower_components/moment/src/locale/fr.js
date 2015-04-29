@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : french (fr)
+//! author : John Fischer : https://github.com/jfroffice
 
 import moment from '../moment';
 

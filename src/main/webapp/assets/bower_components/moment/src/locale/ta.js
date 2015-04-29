@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : tamil (ta)
+//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 import moment from '../moment';
 
@@ -42,6 +45,7 @@ export default moment.defineLocale('ta', {
     ordinal : function (number) {
         return number + 'வது';
     },
+    // refer http://ta.wikipedia.org/s/1er1
     meridiemParse: /யாமம்|வைகறை|காலை|நண்பகல்|எற்பாடு|மாலை/,
     meridiem : function (hour, minute, isLower) {
         if (hour < 2) {

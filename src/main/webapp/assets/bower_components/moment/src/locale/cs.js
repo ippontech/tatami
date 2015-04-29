@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : czech (cs)
+//! author : petrbela : https://github.com/petrbela
 
 import moment from '../moment';
 
@@ -65,6 +68,7 @@ export default moment.defineLocale('cs', {
     monthsParse : (function (months, monthsShort) {
         var i, _monthsParse = [];
         for (i = 0; i < 12; i++) {
+            // use custom parser to solve problem with July (červenec)
             _monthsParse[i] = new RegExp('^' + months[i] + '$|^' + monthsShort[i] + '$', 'i');
         }
         return _monthsParse;

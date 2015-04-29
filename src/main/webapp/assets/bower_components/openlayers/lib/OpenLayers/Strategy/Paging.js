@@ -3,19 +3,60 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Strategy.js
+ */
 
+/**
+ * Class: OpenLayers.Strategy.Paging
+ * Strategy for vector feature paging
+ *
+ * Inherits from:
+ *  - <OpenLayers.Strategy>
+ */
 OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
     
-        features: null,
+    /**
+     * Property: features
+     * {Array(<OpenLayers.Feature.Vector>)} Cached features.
+     */
+    features: null,
     
-        length: 10,
+    /**
+     * Property: length
+     * {Integer} Number of features per page.  Default is 10.
+     */
+    length: 10,
     
-        num: null,
+    /**
+     * Property: num
+     * {Integer} The currently displayed page number.
+     */
+    num: null,
     
-        paging: false,
+    /**
+     * Property: paging
+     * {Boolean} The strategy is currently changing pages.
+     */
+    paging: false,
 
-        
-        activate: function() {
+    /**
+     * Constructor: OpenLayers.Strategy.Paging
+     * Create a new paging strategy.
+     *
+     * Parameters:
+     * options - {Object} Optional object whose properties will be set on the
+     *     instance.
+     */
+    
+    /**
+     * APIMethod: activate
+     * Activate the strategy.  Register any listeners, do appropriate setup.
+     * 
+     * Returns:
+     * {Boolean} The strategy was successfully activated.
+     */
+    activate: function() {
         var activated = OpenLayers.Strategy.prototype.activate.call(this);
         if(activated) {
             this.layer.events.on({
@@ -26,7 +67,15 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         return activated;
     },
     
-        deactivate: function() {
+    /**
+     * APIMethod: deactivate
+     * Deactivate the strategy.  Unregister any listeners, do appropriate
+     *     tear-down.
+     * 
+     * Returns:
+     * {Boolean} The strategy was successfully deactivated.
+     */
+    deactivate: function() {
         var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
         if(deactivated) {
             this.clearCache();
@@ -38,7 +87,15 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         return deactivated;
     },
     
-        cacheFeatures: function(event) {
+    /**
+     * Method: cacheFeatures
+     * Cache features before they are added to the layer.
+     *
+     * Parameters:
+     * event - {Object} The event that this was listening for.  This will come
+     *     with a batch of features to be paged.
+     */
+    cacheFeatures: function(event) {
         if(!this.paging) {
             this.clearCache();
             this.features = event.features;
@@ -46,7 +103,12 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         }
     },
     
-        clearCache: function() {
+    /**
+     * Method: clearCache
+     * Clear out the cached features.  This destroys features, assuming
+     *     nothing else has a reference.
+     */
+    clearCache: function() {
         if(this.features) {
             for(var i=0; i<this.features.length; ++i) {
                 this.features[i].destroy();
@@ -56,23 +118,54 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         this.num = null;
     },
     
-        pageCount: function() {
+    /**
+     * APIMethod: pageCount
+     * Get the total count of pages given the current cache of features.
+     *
+     * Returns:
+     * {Integer} The page count.
+     */
+    pageCount: function() {
         var numFeatures = this.features ? this.features.length : 0;
         return Math.ceil(numFeatures / this.length);
     },
 
-        pageNum: function() {
+    /**
+     * APIMethod: pageNum
+     * Get the zero based page number.
+     *
+     * Returns:
+     * {Integer} The current page number being displayed.
+     */
+    pageNum: function() {
         return this.num;
     },
 
-        pageLength: function(newLength) {
+    /**
+     * APIMethod: pageLength
+     * Gets or sets page length.
+     *
+     * Parameters:
+     * newLength - {Integer} Optional length to be set.
+     *
+     * Returns:
+     * {Integer} The length of a page (number of features per page).
+     */
+    pageLength: function(newLength) {
         if(newLength && newLength > 0) {
             this.length = newLength;
         }
         return this.length;
     },
 
-        pageNext: function(event) {
+    /**
+     * APIMethod: pageNext
+     * Display the next page of features.
+     *
+     * Returns:
+     * {Boolean} A new page was displayed.
+     */
+    pageNext: function(event) {
         var changed = false;
         if(this.features) {
             if(this.num === null) {
@@ -84,7 +177,14 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         return changed;
     },
 
-        pagePrevious: function() {
+    /**
+     * APIMethod: pagePrevious
+     * Display the previous page of features.
+     *
+     * Returns:
+     * {Boolean} A new page was displayed.
+     */
+    pagePrevious: function() {
         var changed = false;
         if(this.features) {
             if(this.num === null) {
@@ -96,7 +196,14 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
         return changed;
     },
     
-        page: function(start, event) {
+    /**
+     * Method: page
+     * Display the page starting at the given index from the cache.
+     *
+     * Returns:
+     * {Boolean} A new page was displayed.
+     */
+    page: function(start, event) {
         var changed = false;
         if(this.features) {
             if(start >= 0 && start < this.features.length) {
@@ -106,9 +213,12 @@ OpenLayers.Strategy.Paging = OpenLayers.Class(OpenLayers.Strategy, {
                     var features = this.features.slice(start, start + this.length);
                     this.layer.removeFeatures(this.layer.features);
                     this.num = num;
+                    // modify the event if any
                     if(event && event.features) {
+                        // this.was called by an event listener
                         event.features = features;
                     } else {
+                        // this was called directly on the strategy
                         this.layer.addFeatures(features);
                     }
                     this.paging = false;

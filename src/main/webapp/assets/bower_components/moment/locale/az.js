@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : azerbaijani (az)
+//! author : topchiyev : https://github.com/topchiyev
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

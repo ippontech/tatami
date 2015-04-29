@@ -5,11 +5,17 @@ import { addWeekParseToken } from '../parse/token';
 import toInt from '../utils/to-int';
 import { createLocal } from '../create/local';
 
+// FORMATTING
+
 addFormatToken('w', ['ww', 2], 'wo', 'week');
 addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
+// ALIASES
+
 addUnitAlias('week', 'w');
 addUnitAlias('isoWeek', 'W');
+
+// PARSING
 
 addRegexToken('w',  match1to2);
 addRegexToken('ww', match1to2, match2);
@@ -19,6 +25,16 @@ addRegexToken('WW', match1to2, match2);
 addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
     week[token.substr(0, 1)] = toInt(input);
 });
+
+// HELPERS
+
+// firstDayOfWeek       0 = sun, 6 = sat
+//                      the day of the week that starts the week
+//                      (usually sunday or monday)
+// firstDayOfWeekOfYear 0 = sun, 6 = sat
+//                      the first week is the week that contains the first
+//                      of this day of the week
+//                      (eg. ISO weeks use thursday (4))
 export function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
     var end = firstDayOfWeekOfYear - firstDayOfWeek,
         daysToDayOfWeek = firstDayOfWeekOfYear - mom.day(),
@@ -40,6 +56,8 @@ export function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
     };
 }
 
+// LOCALES
+
 export function localeWeek (mom) {
     return weekOfYear(mom, this._week.dow, this._week.doy).week;
 }
@@ -56,6 +74,8 @@ export function localeFirstDayOfWeek () {
 export function localeFirstDayOfYear () {
     return this._week.doy;
 }
+
+// MOMENTS
 
 export function getSetWeek (input) {
     var week = this.localeData().week(this);

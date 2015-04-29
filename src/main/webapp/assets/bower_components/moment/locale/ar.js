@@ -1,3 +1,8 @@
+//! moment.js locale configuration
+//! Locale: Arabic (ar)
+//! Author: Abdel Said: https://github.com/abdelsaid
+//! Changes in months, weekdays: Ahmed Elkhatib
+//! Native plural forms: forabi https://github.com/forabi
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

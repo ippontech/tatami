@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : thai (th)
+//! author : Kridsada Thanabulpong : https://github.com/sirn
 
 import moment from '../moment';
 

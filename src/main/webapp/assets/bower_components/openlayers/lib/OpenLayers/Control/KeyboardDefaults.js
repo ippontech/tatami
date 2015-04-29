@@ -3,17 +3,56 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Control.js
+ * @requires OpenLayers/Handler/Keyboard.js
+ * @requires OpenLayers/Events.js
+ */
 
+/**
+ * Class: OpenLayers.Control.KeyboardDefaults
+ * The KeyboardDefaults control adds panning and zooming functions, controlled
+ * with the keyboard. By default arrow keys pan, +/- keys zoom & Page Up/Page
+ * Down/Home/End scroll by three quarters of a page.
+ * 
+ * This control has no visible appearance.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Control>
+ */
 OpenLayers.Control.KeyboardDefaults = OpenLayers.Class(OpenLayers.Control, {
 
-        autoActivate: true,
+    /**
+     * APIProperty: autoActivate
+     * {Boolean} Activate the control when it is added to a map.  Default is
+     *     true.
+     */
+    autoActivate: true,
 
-        slideFactor: 75,
+    /**
+     * APIProperty: slideFactor
+     * Pixels to slide by.
+     */
+    slideFactor: 75,
 
-        observeElement: null,
+    /**
+     * APIProperty: observeElement
+     * {DOMelement|String} The DOM element to handle keys for. You
+     *     can use the map div here, to have the navigation keys
+     *     work when the map div has the focus. If undefined the
+     *     document is used.
+     */
+    observeElement: null,
 
-            
-        draw: function() {
+    /**
+     * Constructor: OpenLayers.Control.KeyboardDefaults
+     */
+        
+    /**
+     * Method: draw
+     * Create handler.
+     */
+    draw: function() {
         var observeElement = this.observeElement || document;
         this.handler = new OpenLayers.Handler.Keyboard( this,
                 {"keydown": this.defaultKeyPress},
@@ -21,7 +60,21 @@ OpenLayers.Control.KeyboardDefaults = OpenLayers.Class(OpenLayers.Control, {
         );
     },
     
-        defaultKeyPress: function (evt) {
+    /**
+     * Method: defaultKeyPress
+     * When handling the key event, we only use evt.keyCode. This holds 
+     * some drawbacks, though we get around them below. When interpretting
+     * the keycodes below (including the comments associated with them),
+     * consult the URL below. For instance, the Safari browser returns
+     * "IE keycodes", and so is supported by any keycode labeled "IE".
+     * 
+     * Very informative URL:
+     *    http://unixpapa.com/js/key.html
+     *
+     * Parameters:
+     * evt - {Event} 
+     */
+    defaultKeyPress: function (evt) {
         var size, handled = true;
 
         var target = OpenLayers.Event.element(evt);
@@ -79,6 +132,8 @@ OpenLayers.Control.KeyboardDefaults = OpenLayers.Class(OpenLayers.Control, {
                 handled = false;
         }
         if (handled) {
+            // prevent browser default not to move the page
+            // when moving the page with the keyboard
             OpenLayers.Event.stop(evt);
         }
     },

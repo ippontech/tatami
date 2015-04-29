@@ -3,15 +3,37 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/OWSCommon/v1.js
+ */
 
+/**
+ * Class: OpenLayers.Format.OWSCommon.v1_1_0
+ * Parser for OWS Common version 1.1.0.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.OWSCommon.v1>
+ */
 OpenLayers.Format.OWSCommon.v1_1_0 = OpenLayers.Class(OpenLayers.Format.OWSCommon.v1, {
 
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         ows: "http://www.opengis.net/ows/1.1",
         xlink: "http://www.w3.org/1999/xlink"
     },    
     
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "ows": OpenLayers.Util.applyDefaults({
             "ExceptionReport": function(node, obj) {
                 obj.exceptionReport = {
@@ -50,7 +72,13 @@ OpenLayers.Format.OWSCommon.v1_1_0 = OpenLayers.Class(OpenLayers.Format.OWSCommo
         }, OpenLayers.Format.OWSCommon.v1.prototype.readers["ows"])
     },
 
-        writers: {
+    /**
+     * Property: writers
+     * As a compliment to the readers property, this structure contains public
+     *     writing functions grouped by namespace alias and named like the
+     *     node names they produce.
+     */
+    writers: {
         "ows": OpenLayers.Util.applyDefaults({
             "Range": function(range) {
                 var node = this.createElementNSPlus("ows:Range", {

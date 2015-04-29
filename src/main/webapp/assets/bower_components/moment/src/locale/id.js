@@ -1,3 +1,7 @@
+//! moment.js locale configuration
+//! locale : Bahasa Indonesia (id)
+//! author : Mohammad Satrio Utomo : https://github.com/tyok
+//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 
 import moment from '../moment';
 

@@ -3,11 +3,70 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/JSON.js
+ * @requires OpenLayers/Feature/Vector.js
+ * @requires OpenLayers/Geometry/Point.js
+ * @requires OpenLayers/Geometry/MultiPoint.js
+ * @requires OpenLayers/Geometry/LineString.js
+ * @requires OpenLayers/Geometry/MultiLineString.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ * @requires OpenLayers/Geometry/MultiPolygon.js
+ * @requires OpenLayers/Console.js
+ */
 
+/**
+ * Class: OpenLayers.Format.GeoJSON
+ * Read and write GeoJSON. Create a new parser with the
+ *     <OpenLayers.Format.GeoJSON> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.JSON>
+ */
 OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
 
+    /**
+     * APIProperty: ignoreExtraDims
+     * {Boolean} Ignore dimensions higher than 2 when reading geometry
+     * coordinates.
+     */ 
+    ignoreExtraDims: false,
     
-        read: function(json, type, filter) {
+    /**
+     * Constructor: OpenLayers.Format.GeoJSON
+     * Create a new parser for GeoJSON.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+
+    /**
+     * APIMethod: read
+     * Deserialize a GeoJSON string.
+     *
+     * Parameters:
+     * json - {String} A GeoJSON string
+     * type - {String} Optional string that determines the structure of
+     *     the output.  Supported values are "Geometry", "Feature", and
+     *     "FeatureCollection".  If absent or null, a default of
+     *     "FeatureCollection" is assumed.
+     * filter - {Function} A function which will be called for every key and
+     *     value at every level of the final result. Each value will be
+     *     replaced by the result of the filter function. This can be used to
+     *     reform generic objects into instances of classes, or to transform
+     *     date strings into Date objects.
+     *
+     * Returns: 
+     * {Object} The return depends on the value of the type argument. If type
+     *     is "FeatureCollection" (the default), the return will be an array
+     *     of <OpenLayers.Feature.Vector>. If type is "Geometry", the input json
+     *     must represent a single geometry, and the return will be an
+     *     <OpenLayers.Geometry>.  If type is "Feature", the input json must
+     *     represent a single feature, and the return will be an
+     *     <OpenLayers.Feature.Vector>.
+     */
+    read: function(json, type, filter) {
         type = (type) ? type : "FeatureCollection";
         var results = null;
         var obj = null;
@@ -39,6 +98,7 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                     }
                     break;
                 case "FeatureCollection":
+                    // for type FeatureCollection, we allow input to be any type
                     results = [];
                     switch(obj.type) {
                         case "Feature":
@@ -74,7 +134,14 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
         return results;
     },
     
-        isValidType: function(obj, type) {
+    /**
+     * Method: isValidType
+     * Check if a GeoJSON object is a valid representative of the given type.
+     *
+     * Returns:
+     * {Boolean} The object is valid GeoJSON object of the given type.
+     */
+    isValidType: function(obj, type) {
         var valid = false;
         switch(type) {
             case "Geometry":
@@ -82,6 +149,7 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                     ["Point", "MultiPoint", "LineString", "MultiLineString",
                      "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
                     obj.type) == -1) {
+                    // unsupported geometry type
                     OpenLayers.Console.error("Unsupported geometry type: " +
                                               obj.type);
                 } else {
@@ -89,9 +157,11 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                 }
                 break;
             case "FeatureCollection":
+                // allow for any type to be converted to a feature collection
                 valid = true;
                 break;
             default:
+                // for Feature types must match
                 if(obj.type == type) {
                     valid = true;
                 } else {
@@ -102,13 +172,25 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
         return valid;
     },
     
-        parseFeature: function(obj) {
+    /**
+     * Method: parseFeature
+     * Convert a feature object from GeoJSON into an
+     *     <OpenLayers.Feature.Vector>.
+     *
+     * Parameters:
+     * obj - {Object} An object created from a GeoJSON object
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector>} A feature.
+     */
+    parseFeature: function(obj) {
         var feature, geometry, attributes, bbox;
         attributes = (obj.properties) ? obj.properties : {};
         bbox = (obj.geometry && obj.geometry.bbox) || obj.bbox;
         try {
             geometry = this.parseGeometry(obj.geometry);
         } catch(err) {
+            // deal with bad geometries
             throw err;
         }
         feature = new OpenLayers.Feature.Vector(geometry, attributes);
@@ -121,7 +203,17 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
         return feature;
     },
     
-        parseGeometry: function(obj) {
+    /**
+     * Method: parseGeometry
+     * Convert a geometry object from GeoJSON into an <OpenLayers.Geometry>.
+     *
+     * Parameters:
+     * obj - {Object} An object created from a GeoJSON object
+     *
+     * Returns: 
+     * {<OpenLayers.Geometry>} A geometry.
+     */
+    parseGeometry: function(obj) {
         if (obj == null) {
             return null;
         }
@@ -151,9 +243,12 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                     this, [obj.coordinates]
                 );
             } catch(err) {
+                // deal with bad coordinates
                 throw err;
             }
         }
+        // We don't reproject collections because the children are reprojected
+        // for us when they are created.
         if (this.internalProjection && this.externalProjection && !collection) {
             geometry.transform(this.externalProjection, 
                                this.internalProjection); 
@@ -161,8 +256,24 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
         return geometry;
     },
     
-        parseCoords: {
-                "point": function(array) {
+    /**
+     * Property: parseCoords
+     * Object with properties corresponding to the GeoJSON geometry types.
+     *     Property values are functions that do the actual parsing.
+     */
+    parseCoords: {
+        /**
+         * Method: parseCoords.point
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "point": function(array) {
             if (this.ignoreExtraDims == false && 
                   array.length != 2) {
                     throw "Only 2D points are supported: " + array;
@@ -170,7 +281,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.Point(array[0], array[1]);
         },
         
-                "multipoint": function(array) {
+        /**
+         * Method: parseCoords.multipoint
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "multipoint": function(array) {
             var points = [];
             var p = null;
             for(var i=0, len=array.length; i<len; ++i) {
@@ -184,7 +306,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.MultiPoint(points);
         },
 
-                "linestring": function(array) {
+        /**
+         * Method: parseCoords.linestring
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "linestring": function(array) {
             var points = [];
             var p = null;
             for(var i=0, len=array.length; i<len; ++i) {
@@ -198,7 +331,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.LineString(points);
         },
         
-                "multilinestring": function(array) {
+        /**
+         * Method: parseCoords.multilinestring
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "multilinestring": function(array) {
             var lines = [];
             var l = null;
             for(var i=0, len=array.length; i<len; ++i) {
@@ -212,7 +356,15 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.MultiLineString(lines);
         },
         
-                "polygon": function(array) {
+        /**
+         * Method: parseCoords.polygon
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "polygon": function(array) {
             var rings = [];
             var r, l;
             for(var i=0, len=array.length; i<len; ++i) {
@@ -227,7 +379,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.Polygon(rings);
         },
 
-                "multipolygon": function(array) {
+        /**
+         * Method: parseCoords.multipolygon
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "multipolygon": function(array) {
             var polys = [];
             var p = null;
             for(var i=0, len=array.length; i<len; ++i) {
@@ -241,7 +404,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return new OpenLayers.Geometry.MultiPolygon(polys);
         },
 
-                "box": function(array) {
+        /**
+         * Method: parseCoords.box
+         * Convert a coordinate array from GeoJSON into an
+         *     <OpenLayers.Geometry>.
+         *
+         * Parameters:
+         * array - {Object} The coordinates array from the GeoJSON fragment.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry>} A geometry.
+         */
+        "box": function(array) {
             if(array.length != 2) {
                 throw "GeoJSON box coordinates must have 2 elements";
             }
@@ -258,7 +432,21 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
 
     },
 
-        write: function(obj, pretty) {
+    /**
+     * APIMethod: write
+     * Serialize a feature, geometry, array of features into a GeoJSON string.
+     *
+     * Parameters:
+     * obj - {Object} An <OpenLayers.Feature.Vector>, <OpenLayers.Geometry>,
+     *     or an array of features.
+     * pretty - {Boolean} Structure the output with newlines and indentation.
+     *     Default is false.
+     *
+     * Returns:
+     * {String} The GeoJSON string representation of the input geometry,
+     *     features, or array of features.
+     */
+    write: function(obj, pretty) {
         var geojson = {
             "type": null
         };
@@ -289,7 +477,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                                                             [geojson, pretty]);
     },
 
-        createCRSObject: function(object) {
+    /**
+     * Method: createCRSObject
+     * Create the CRS object for an object.
+     *
+     * Parameters:
+     * object - {<OpenLayers.Feature.Vector>} 
+     *
+     * Returns:
+     * {Object} An object which can be assigned to the crs property
+     * of a GeoJSON object.
+     */
+    createCRSObject: function(object) {
        var proj = object.layer.projection.toString();
        var crs = {};
        if (proj.match(/epsg:/i)) {
@@ -313,8 +512,23 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
        return crs;
     },
     
-        extract: {
-                'feature': function(feature) {
+    /**
+     * Property: extract
+     * Object with properties corresponding to the GeoJSON types.
+     *     Property values are functions that do the actual value extraction.
+     */
+    extract: {
+        /**
+         * Method: extract.feature
+         * Return a partial GeoJSON object representing a single feature.
+         *
+         * Parameters:
+         * feature - {<OpenLayers.Feature.Vector>}
+         *
+         * Returns:
+         * {Object} An object representing the point.
+         */
+        'feature': function(feature) {
             var geom = this.extract.geometry.apply(this, [feature.geometry]);
             var json = {
                 "type": "Feature",
@@ -327,7 +541,17 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return json;
         },
         
-                'geometry': function(geometry) {
+        /**
+         * Method: extract.geometry
+         * Return a GeoJSON object representing a single geometry.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry>}
+         *
+         * Returns:
+         * {Object} An object representing the geometry.
+         */
+        'geometry': function(geometry) {
             if (geometry == null) {
                 return null;
             }
@@ -354,11 +578,32 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return json;
         },
 
-                'point': function(point) {
+        /**
+         * Method: extract.point
+         * Return an array of coordinates from a point.
+         *
+         * Parameters:
+         * point - {<OpenLayers.Geometry.Point>}
+         *
+         * Returns: 
+         * {Array} An array of coordinates representing the point.
+         */
+        'point': function(point) {
             return [point.x, point.y];
         },
 
-                'multipoint': function(multipoint) {
+        /**
+         * Method: extract.multipoint
+         * Return an array of point coordinates from a multipoint.
+         *
+         * Parameters:
+         * multipoint - {<OpenLayers.Geometry.MultiPoint>}
+         *
+         * Returns:
+         * {Array} An array of point coordinate arrays representing
+         *     the multipoint.
+         */
+        'multipoint': function(multipoint) {
             var array = [];
             for(var i=0, len=multipoint.components.length; i<len; ++i) {
                 array.push(this.extract.point.apply(this, [multipoint.components[i]]));
@@ -366,7 +611,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return array;
         },
         
-                'linestring': function(linestring) {
+        /**
+         * Method: extract.linestring
+         * Return an array of coordinate arrays from a linestring.
+         *
+         * Parameters:
+         * linestring - {<OpenLayers.Geometry.LineString>}
+         *
+         * Returns:
+         * {Array} An array of coordinate arrays representing
+         *     the linestring.
+         */
+        'linestring': function(linestring) {
             var array = [];
             for(var i=0, len=linestring.components.length; i<len; ++i) {
                 array.push(this.extract.point.apply(this, [linestring.components[i]]));
@@ -374,7 +630,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return array;
         },
 
-                'multilinestring': function(multilinestring) {
+        /**
+         * Method: extract.multilinestring
+         * Return an array of linestring arrays from a linestring.
+         * 
+         * Parameters:
+         * multilinestring - {<OpenLayers.Geometry.MultiLineString>}
+         * 
+         * Returns:
+         * {Array} An array of linestring arrays representing
+         *     the multilinestring.
+         */
+        'multilinestring': function(multilinestring) {
             var array = [];
             for(var i=0, len=multilinestring.components.length; i<len; ++i) {
                 array.push(this.extract.linestring.apply(this, [multilinestring.components[i]]));
@@ -382,7 +649,17 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return array;
         },
         
-                'polygon': function(polygon) {
+        /**
+         * Method: extract.polygon
+         * Return an array of linear ring arrays from a polygon.
+         *
+         * Parameters:
+         * polygon - {<OpenLayers.Geometry.Polygon>}
+         * 
+         * Returns:
+         * {Array} An array of linear ring arrays representing the polygon.
+         */
+        'polygon': function(polygon) {
             var array = [];
             for(var i=0, len=polygon.components.length; i<len; ++i) {
                 array.push(this.extract.linestring.apply(this, [polygon.components[i]]));
@@ -390,7 +667,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return array;
         },
 
-                'multipolygon': function(multipolygon) {
+        /**
+         * Method: extract.multipolygon
+         * Return an array of polygon arrays from a multipolygon.
+         * 
+         * Parameters:
+         * multipolygon - {<OpenLayers.Geometry.MultiPolygon>}
+         * 
+         * Returns:
+         * {Array} An array of polygon arrays representing
+         *     the multipolygon
+         */
+        'multipolygon': function(multipolygon) {
             var array = [];
             for(var i=0, len=multipolygon.components.length; i<len; ++i) {
                 array.push(this.extract.polygon.apply(this, [multipolygon.components[i]]));
@@ -398,7 +686,18 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             return array;
         },
         
-                'collection': function(collection) {
+        /**
+         * Method: extract.collection
+         * Return an array of geometries from a geometry collection.
+         * 
+         * Parameters:
+         * collection - {<OpenLayers.Geometry.Collection>}
+         * 
+         * Returns:
+         * {Array} An array of geometry objects representing the geometry
+         *     collection.
+         */
+        'collection': function(collection) {
             var len = collection.components.length;
             var array = new Array(len);
             for(var i=0; i<len; ++i) {

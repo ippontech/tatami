@@ -1,3 +1,9 @@
+/** 
+ * @requires Rico/license.js
+ * @requires OpenLayers/Console.js
+ * @requires OpenLayers/BaseTypes/Class.js
+ * @requires OpenLayers/BaseTypes/Element.js
+ */
 
 
 /*
@@ -27,20 +33,30 @@ OpenLayers.Rico.Color = OpenLayers.Class({
    },
 
    setHue: function(h) {
+
+      // get an HSB model, and set the new hue...
       var hsb = this.asHSB();
       hsb.h = h;
+
+      // convert back to RGB...
       this.rgb = OpenLayers.Rico.Color.HSBtoRGB(hsb.h, hsb.s, hsb.b);
    },
 
    setSaturation: function(s) {
+      // get an HSB model, and set the new hue...
       var hsb = this.asHSB();
       hsb.s = s;
+
+      // convert back to RGB and set values...
       this.rgb = OpenLayers.Rico.Color.HSBtoRGB(hsb.h, hsb.s, hsb.b);
    },
 
    setBrightness: function(b) {
+      // get an HSB model, and set the new hue...
       var hsb = this.asHSB();
       hsb.b = b;
+
+      // convert back to RGB and set values...
       this.rgb = OpenLayers.Rico.Color.HSBtoRGB( hsb.h, hsb.s, hsb.b );
    },
 
@@ -105,6 +121,10 @@ shortHexCode.charAt(i));
    return new OpenLayers.Rico.Color( parseInt(red,16), parseInt(green,16), parseInt(blue,16) );
 };
 
+/**
+ * Factory method for creating a color from the background of
+ * an HTML element.
+ */
 OpenLayers.Rico.Color.createColorFromBackground = function(elem) {
 
    var actualColor = 

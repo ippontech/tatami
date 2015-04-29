@@ -1,3 +1,12 @@
+/**
+ * @requires OpenLayers/Lang.js
+ */
+/**
+ * Namespace: OpenLayers.Lang["ro"]
+ * Dictionary for Romanian.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+*/
 OpenLayers.Lang.ro = {
     'unhandledRequest': "Cerere nesoluționată return ${statusText}",
     'Permalink': "Legatură permanentă",
@@ -6,6 +15,7 @@ OpenLayers.Lang.ro = {
     'noFID': "Nu pot actualiza un feature pentru care nu există FID.",
     'browserNotSupported':
         "Browserul tău nu suportă afișarea vectorilor. Supoetul curent pentru randare:\n${renderers}",
+    // console message
     'minZoomLevelError':
         "Proprietatea minZoomLevel este doar pentru a fi folosită " +
         "cu straturile FixedZoomLevels-descendent. De aceea acest " +
@@ -37,19 +47,23 @@ OpenLayers.Lang.ro = {
         "<a href='http://trac.openlayers.org/wiki/${layerLib}' " +
         "target='_blank'>apasă aici</a>",
     'Scale = 1 : ${scaleDenom}': "Scara = 1 : ${scaleDenom}",
+    //labels for the graticule control
     'W': 'V',
     'E': 'E',
     'N': 'N',
     'S': 'S',
     'Graticule': 'Graticule',
+    // console message
     'reprojectDeprecated':
         "folosești opțiunea 'reproject' " +
         "pentru stratul ${layerName} . Această opțiune este depreciată: " +
         "a fost utilizată pentru afișarea straturilor de bază comerciale " + 
         "Mai multe informații despre proiecția Mercator sunt disponibile aici " +
         "http://trac.openlayers.org/wiki/SphericalMercator.",
+    // console message
     'methodDeprecated':
         "Această metodă este depreciată și va fi înlăturată in versiunea 3.0. " +
         "folosește metoda ${newMethod}.",
+    // **** end ****
     'end': ''
 };

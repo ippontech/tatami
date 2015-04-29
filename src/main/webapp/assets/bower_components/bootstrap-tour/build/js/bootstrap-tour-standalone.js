@@ -28,6 +28,9 @@
 +function ($) {
   'use strict';
 
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
   function transitionEnd() {
     var el = document.createElement('bootstrap')
 
@@ -46,6 +49,8 @@
 
     return false // explicit for ie8 (  ._.)
   }
+
+  // http://blog.alexmaccaw.com/css-transitions
   $.fn.emulateTransitionEnd = function (duration) {
     var called = false, $el = this
     $(this).one($.support.transition.end, function () { called = true })
@@ -72,6 +77,9 @@
 
 +function ($) {
   'use strict';
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
 
   var Tooltip = function (element, options) {
     this.type       =
@@ -257,13 +265,20 @@
     var $tip   = this.tip()
     var width  = $tip[0].offsetWidth
     var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
     var marginTop = parseInt($tip.css('margin-top'), 10)
     var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
     if (isNaN(marginTop))  marginTop  = 0
     if (isNaN(marginLeft)) marginLeft = 0
 
     offset.top  = offset.top  + marginTop
     offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
     $.offset.setOffset($tip[0], $.extend({
       using: function (props) {
         $tip.css({
@@ -274,6 +289,8 @@
     }, offset), 0)
 
     $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
     var actualWidth  = $tip[0].offsetWidth
     var actualHeight = $tip[0].offsetHeight
 
@@ -417,6 +434,10 @@
     this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
   }
 
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
   var old = $.fn.tooltip
 
   $.fn.tooltip = function (option) {
@@ -432,6 +453,10 @@
   }
 
   $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
 
   $.fn.tooltip.noConflict = function () {
     $.fn.tooltip = old
@@ -452,6 +477,9 @@
 +function ($) {
   'use strict';
 
+  // POPOVER PUBLIC CLASS DEFINITION
+  // ===============================
+
   var Popover = function (element, options) {
     this.init('popover', element, options)
   }
@@ -464,6 +492,10 @@
     content: '',
     template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
   })
+
+
+  // NOTE: POPOVER EXTENDS tooltip.js
+  // ================================
 
   Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
 
@@ -484,6 +516,9 @@
     ](content)
 
     $tip.removeClass('fade top bottom left right in')
+
+    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+    // this manually by checking the contents.
     if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
   }
 
@@ -510,6 +545,10 @@
     return this.$tip
   }
 
+
+  // POPOVER PLUGIN DEFINITION
+  // =========================
+
   var old = $.fn.popover
 
   $.fn.popover = function (option) {
@@ -525,6 +564,10 @@
   }
 
   $.fn.popover.Constructor = Popover
+
+
+  // POPOVER NO CONFLICT
+  // ===================
 
   $.fn.popover.noConflict = function () {
     $.fn.popover = old

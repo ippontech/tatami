@@ -21,6 +21,9 @@
 
 +function ($) { "use strict";
 
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
   var Tooltip = function (element, options) {
     this.type       =
     this.options    =
@@ -194,8 +197,12 @@
     var $tip   = this.tip()
     var width  = $tip[0].offsetWidth
     var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
     var marginTop = parseInt($tip.css('margin-top'), 10)
     var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
     if (isNaN(marginTop))  marginTop  = 0
     if (isNaN(marginLeft)) marginLeft = 0
 
@@ -205,6 +212,8 @@
     $tip
       .offset(offset)
       .addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
     var actualWidth  = $tip[0].offsetWidth
     var actualHeight = $tip[0].offsetHeight
 
@@ -346,6 +355,10 @@
     this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
   }
 
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
   var old = $.fn.tooltip
 
   $.fn.tooltip = function (option) {
@@ -360,6 +373,10 @@
   }
 
   $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
 
   $.fn.tooltip.noConflict = function () {
     $.fn.tooltip = old

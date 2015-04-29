@@ -3,6 +3,8 @@ import { configFromStringAndFormat } from './from-string-and-format';
 import defaultParsingFlags from './default-parsing-flags';
 import { isValid } from './valid';
 import extend from '../utils/extend';
+
+// date from string and array of format strings
 export function configFromStringAndArray(config) {
     var tempConfig,
         bestMoment,
@@ -30,7 +32,11 @@ export function configFromStringAndArray(config) {
         if (!isValid(tempConfig)) {
             continue;
         }
+
+        // if there is any input that was not parsed add a penalty for that format
         currentScore += tempConfig._pf.charsLeftOver;
+
+        //or tokens
         currentScore += tempConfig._pf.unusedTokens.length * 10;
 
         tempConfig._pf.score = currentScore;

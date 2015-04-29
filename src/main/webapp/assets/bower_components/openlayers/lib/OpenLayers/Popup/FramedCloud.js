@@ -3,23 +3,66 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Popup/Framed.js
+ * @requires OpenLayers/Util.js
+ * @requires OpenLayers/BaseTypes/Bounds.js
+ * @requires OpenLayers/BaseTypes/Pixel.js
+ * @requires OpenLayers/BaseTypes/Size.js
+ */
 
+/**
+ * Class: OpenLayers.Popup.FramedCloud
+ * 
+ * Inherits from: 
+ *  - <OpenLayers.Popup.Framed>
+ */
 OpenLayers.Popup.FramedCloud = 
   OpenLayers.Class(OpenLayers.Popup.Framed, {
 
-        contentDisplayClass: "olFramedCloudPopupContent",
+    /** 
+     * Property: contentDisplayClass
+     * {String} The CSS class of the popup content div.
+     */
+    contentDisplayClass: "olFramedCloudPopupContent",
 
-        autoSize: true,
+    /**
+     * APIProperty: autoSize
+     * {Boolean} Framed Cloud is autosizing by default.
+     */
+    autoSize: true,
 
-        panMapIfOutOfView: true,
+    /**
+     * APIProperty: panMapIfOutOfView
+     * {Boolean} Framed Cloud does pan into view by default.
+     */
+    panMapIfOutOfView: true,
 
-        imageSize: new OpenLayers.Size(1276, 736),
+    /**
+     * APIProperty: imageSize
+     * {<OpenLayers.Size>}
+     */
+    imageSize: new OpenLayers.Size(1276, 736),
 
-        isAlphaImage: false,
+    /**
+     * APIProperty: isAlphaImage
+     * {Boolean} The FramedCloud does not use an alpha image (in honor of the 
+     *     good ie6 folk out there)
+     */
+    isAlphaImage: false,
 
-        fixedRelativePosition: false,
+    /** 
+     * APIProperty: fixedRelativePosition
+     * {Boolean} The Framed Cloud popup works in just one fixed position.
+     */
+    fixedRelativePosition: false,
 
-        positionBlocks: {
+    /**
+     * Property: positionBlocks
+     * {Object} Hash of differen position blocks, keyed by relativePosition
+     *     two-character code string (ie "tl", "tr", "bl", "br")
+     */
+    positionBlocks: {
         "tl": {
             'offset': new OpenLayers.Pixel(44, 0),
             'padding': new OpenLayers.Bounds(8, 40, 8, 9),
@@ -146,11 +189,33 @@ OpenLayers.Popup.FramedCloud =
         }
     },
 
-        minSize: new OpenLayers.Size(105, 10),
+    /**
+     * APIProperty: minSize
+     * {<OpenLayers.Size>}
+     */
+    minSize: new OpenLayers.Size(105, 10),
 
-        maxSize: new OpenLayers.Size(1200, 660),
+    /**
+     * APIProperty: maxSize
+     * {<OpenLayers.Size>}
+     */
+    maxSize: new OpenLayers.Size(1200, 660),
 
-        initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
+    /** 
+     * Constructor: OpenLayers.Popup.FramedCloud
+     * 
+     * Parameters:
+     * id - {String}
+     * lonlat - {<OpenLayers.LonLat>}
+     * contentSize - {<OpenLayers.Size>}
+     * contentHTML - {String}
+     * anchor - {Object} Object to which we'll anchor the popup. Must expose 
+     *     a 'size' (<OpenLayers.Size>) and 'offset' (<OpenLayers.Pixel>) 
+     *     (Note that this is generally an <OpenLayers.Icon>).
+     * closeBox - {Boolean}
+     * closeBoxCallback - {Function} Function to be called on closeBox click.
+     */
+    initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
                         closeBoxCallback) {
 
         this.imageSrc = OpenLayers.Util.getImageLocation('cloud-popup-relative.png');

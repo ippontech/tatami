@@ -3,10 +3,30 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Format/KML.js
+ * @requires OpenLayers/Format/GML.js
+ * @requires OpenLayers/Format/GML/v2.js
+ * @requires OpenLayers/Format/SLD/v1_0_0.js
+ * @requires OpenLayers/Format/OWSContext.js
+ * @requires OpenLayers/Format/OWSCommon/v1_0_0.js
+ */
 
+/**
+ * Class: OpenLayers.Format.OWSContext.v0_3_1
+ * Read and write OWSContext version 0.3.1.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
     
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         owc: "http://www.opengis.net/ows-context",
         gml: "http://www.opengis.net/gml",
         kml: "http://www.opengis.net/kml/2.2",
@@ -17,35 +37,114 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-        VERSION: "0.3.1", 
+    /**
+     * Constant: VERSION
+     * {String} 0.3.1
+     */
+    VERSION: "0.3.1", 
 
-        schemaLocation: "http://www.opengis.net/ows-context http://www.ogcnetwork.net/schemas/owc/0.3.1/owsContext.xsd",
+    /**
+     * Property: schemaLocation
+     * {String} Schema location
+     */
+    schemaLocation: "http://www.opengis.net/ows-context http://www.ogcnetwork.net/schemas/owc/0.3.1/owsContext.xsd",
 
-        defaultPrefix: "owc",
+    /**
+     * Property: defaultPrefix
+     * {String} Default namespace prefix to use.
+     */
+    defaultPrefix: "owc",
 
-        extractAttributes: true,
+    /**
+     * APIProperty: extractAttributes
+     * {Boolean} Extract attributes from GML.  Default is true.
+     */
+    extractAttributes: true,
     
-        regExes: {
+    /**
+     * APIProperty: xy
+     * {Boolean} Order of the GML coordinate true:(x,y) or false:(y,x)
+     * Changing is not recommended, a new Format should be instantiated.
+     */ 
+    xy: true, 
+
+    /**
+     * Property: regExes
+     * Compiled regular expressions for manipulating strings.
+     */
+    regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-        featureNS: "http://mapserver.gis.umn.edu/mapserver",
+    /**
+     * Property: featureNS
+     * {String} The namespace uri to use for writing InlineGeometry
+     */
+    featureNS: "http://mapserver.gis.umn.edu/mapserver",
 
-        featureType: 'vector',
+    /**
+     * Property: featureType
+     * {String} The name to use as the feature type when writing out
+     *     InlineGeometry
+     */
+    featureType: 'vector',
               
-        geometryName: 'geometry',
+    /**
+     * Property: geometryName
+     * {String} The name to use for the geometry attribute when writing out
+     *     InlineGeometry
+     */
+    geometryName: 'geometry',
 
-        nestingLayerLookup: null,
+    /**
+     * Property: nestingLayerLookup
+     * {Object} Hashtable lookup for nesting layer nodes. Used while writing 
+     *     the OWS context document. It is necessary to keep track of the 
+     *     nestingPaths for which nesting layer nodes have already been 
+     *     created, so (nesting) layer nodes are added to those nodes.
+     *
+     * For example:
+     *
+     *     If there are three layers with nestingPaths:
+     *         layer1.metadata.nestingPath = "a/b/"
+     *         layer2.metadata.nestingPath = "a/b/"
+     *         layer2.metadata.nestingPath = "a/c"
+     *
+     *     then a nesting layer node "a" should be created once and added 
+     *     to the resource list, a nesting layer node "b" should be created 
+     *     once and added under "a", and a nesting layer node "c" should be 
+     *     created and added under "a". The lookup paths for these nodes 
+     *     will be "a", "a/b", and "a/c" respectively.
+     */
+    nestingLayerLookup: null,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.OWSContext.v0_3_1
+     * Instances of this class are not created directly.  Use the
+     *     <OpenLayers.Format.OWSContext> constructor instead.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
         OpenLayers.Format.GML.v2.prototype.setGeometryTypes.call(this);
     },
 
-        setNestingPath : function(l){
+    /**
+     * Method: setNestingPath
+     * Set the nestingPath property of the layer depending on the position
+     *     of the layer in hierarchy of layers.
+     *
+     * Parameters:
+     * l - {Object} An object that may have a layersContext array property.
+     * 
+     */
+    setNestingPath : function(l){
         if(l.layersContext){
             for (var i = 0, len = l.layersContext.length; i < len; i++) {
                 var layerContext = l.layersContext[i];
@@ -65,7 +164,19 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        decomposeNestingPath: function(nPath){
+    /**
+     * Function: decomposeNestingPath
+     * Takes a nestingPath like "a/b/c" and decomposes it into subpaths:
+     * "a", "a/b", "a/b/c"
+     *
+     * Parameters:
+     * nPath  - {Array} the nesting path
+     *
+     * Returns:
+     * Array({String}) Array with subpaths, or empty array if there is nothing
+     *     to decompose
+     */
+    decomposeNestingPath: function(nPath){
         var a = [];
         if (OpenLayers.Util.isArray(nPath)) {
             var path = nPath.slice();
@@ -78,7 +189,19 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return a;
     },
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read OWS context data from a string or DOMElement, and return a list 
+     *     of layers. 
+     * 
+     * Parameters: 
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Object} The context object with a flat layer list as a property named
+     *     layersContext.
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -87,7 +210,10 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
         var context = {};
         this.readNode(data, context);
+        // since an OWSContext can be nested we need to go through this
+        // structure recursively      
         this.setNestingPath({layersContext : context.layersContext});
+        // after nesting path has been set, create a flat list of layers
         var layers = [];
         this.processLayer(layers, context);
         delete context.layersContext;
@@ -95,7 +221,16 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return context;
     },
 
-        processLayer: function(layerArray, layer) {
+    /**
+     * Method: processLayer
+     * Recursive function to get back a flat list of layers from the hierarchic
+     *     layer structure.
+     *
+     * Parameters:
+     * layerArray - {Array({Object})} Array of layerContext objects
+     * layer - {Object} layerContext object
+     */
+    processLayer: function(layerArray, layer) {
         if (layer.layersContext) {
             for (var i=0, len = layer.layersContext.length; i<len; i++) {
                 var l = layer.layersContext[i];
@@ -107,7 +242,17 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        write: function(context, options) {
+    /**
+     * APIMethod: write
+     *
+     * Parameters:
+     * context - {Object} An object representing the map context.
+     * options - {Object} Optional object.
+     *
+     * Returns:
+     * {String} An OWS Context document string.
+     */
+    write: function(context, options) {
         var name = "OWSContext";
         this.nestingLayerLookup = {}; //start with empty lookup
         options = options || {};
@@ -121,7 +266,15 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [root]);
     }, 
 
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "kml": {
             "Document": function(node, obj) {
                 obj.features = new OpenLayers.Format.KML(
@@ -179,6 +332,7 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 }
             },
             "Server": function(node, obj) {
+                // when having multiple Server types, we prefer WMS
                 if ((!obj.service && !obj.version) || 
                     (obj.service != 
                         OpenLayers.Format.Context.serviceTypes.WMS)) {
@@ -220,7 +374,13 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
         "feature": OpenLayers.Format.GML.v2.prototype.readers.feature
     },
 
-        writers: {
+    /**
+     * Property: writers
+     * As a compliment to the readers property, this structure contains public
+     *     writing functions grouped by namespace alias and named like the
+     *     node names they produce.
+     */
+    writers: {
         "owc": {
             "OWSContext": function(options) {
                 var node = this.createElementNSPlus("OWSContext", {
@@ -327,12 +487,16 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 subPaths = options.subPaths;
                 node = null;
                 title = null;
+                // subPaths is an array of an array
+                // recursively calling _Layer writer eats up subPaths, until a 
+                // real writer is called and nodes are returned.
                 if(subPaths.length > 0){
                     var path = subPaths[0].join("/");
                     var index = path.lastIndexOf("/");
                     node = this.nestingLayerLookup[path];
                     title = (index > 0)?path.substring(index + 1, path.length):path;
                     if(!node){
+                        // category layer
                         node = this.createElementNSPlus("Layer");
                         this.writeNode("ows:Title", title, node);
                         this.nestingLayerLookup[path] = node;
@@ -341,6 +505,7 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
                     this.writeNode("_Layer", options, node);
                     return node;
                 } else {
+                    // write out the actual layer
                     if (layer instanceof OpenLayers.Layer.WMS) {
                         node = this.writeNode("_WMS", layer);
                     } else if (layer instanceof OpenLayers.Layer.Vector) {
@@ -355,6 +520,8 @@ OpenLayers.Format.OWSContext.v0_3_1 = OpenLayers.Class(OpenLayers.Format.XML, {
                                 node = this.writeNode("_KML", layer);
                             }
                         } else {
+                            // write out as inline GML since we have no idea
+                            // about the original Format
                             this.setNamespace("feature", this.featureNS);
                             node = this.writeNode("_InlineGeometry", layer);
                         }

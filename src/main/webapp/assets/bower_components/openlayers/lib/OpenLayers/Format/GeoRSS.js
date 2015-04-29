@@ -3,25 +3,98 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Feature/Vector.js
+ * @requires OpenLayers/Geometry/Point.js
+ * @requires OpenLayers/Geometry/LineString.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ */
 
+/**
+ * Class: OpenLayers.Format.GeoRSS
+ * Read/write GeoRSS parser. Create a new instance with the 
+ *     <OpenLayers.Format.GeoRSS> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
     
-        rssns: "http://backend.userland.com/rss2",
+    /**
+     * APIProperty: rssns
+     * {String} RSS namespace to use. Defaults to
+     *   "http://backend.userland.com/rss2"
+     */
+    rssns: "http://backend.userland.com/rss2",
     
-        featureNS: "http://mapserver.gis.umn.edu/mapserver",
+    /**
+     * APIProperty: featurens
+     * {String} Feature Attributes namespace.  Defaults to
+     *    "http://mapserver.gis.umn.edu/mapserver"
+     */
+    featureNS: "http://mapserver.gis.umn.edu/mapserver",
     
-        georssns: "http://www.georss.org/georss",
+    /**
+     * APIProperty: georssns
+     * {String} GeoRSS namespace to use.  Defaults to
+     *     "http://www.georss.org/georss"
+     */
+    georssns: "http://www.georss.org/georss",
 
-        geons: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    /**
+     * APIProperty: geons
+     * {String} W3C Geo namespace to use.  Defaults to
+     *     "http://www.w3.org/2003/01/geo/wgs84_pos#"
+     */
+    geons: "http://www.w3.org/2003/01/geo/wgs84_pos#",
     
-        featureTitle: "Untitled",
+    /**
+     * APIProperty: featureTitle
+     * {String} Default title for features.  Defaults to "Untitled"
+     */
+    featureTitle: "Untitled",
     
-        featureDescription: "No Description",
+    /**
+     * APIProperty: featureDescription
+     * {String} Default description for features.  Defaults to "No Description"
+     */
+    featureDescription: "No Description",
     
-        gmlParser: null,
+    /**
+     * Property: gmlParse
+     * {Object} GML Format object for parsing features
+     * Non-API and only created if necessary
+     */
+    gmlParser: null,
 
-        
-        createGeometryFromItem: function(item) {
+    /**
+     * APIProperty: xy
+     * {Boolean} Order of the GML coordinate: true:(x,y) or false:(y,x)
+     * For GeoRSS the default is (y,x), therefore: false
+     */ 
+    xy: false,
+    
+    /**
+     * Constructor: OpenLayers.Format.GeoRSS
+     * Create a new parser for GeoRSS.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    
+    /**
+     * Method: createGeometryFromItem
+     * Return a geometry from a GeoRSS Item.
+     *
+     * Parameters:
+     * item - {DOMElement} A GeoRSS item node.
+     *
+     * Returns:
+     * {<OpenLayers.Geometry>} A geometry representing the node.
+     */
+    createGeometryFromItem: function(item) {
         var point = this.getElementsByTagNameNS(item, this.georssns, "point");
         var lat = this.getElementsByTagNameNS(item, this.geons, 'lat');
         var lon = this.getElementsByTagNameNS(item, this.geons, 'long');
@@ -106,7 +179,17 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return geometry;
     },        
 
-        createFeatureFromItem: function(item) {
+    /**
+     * Method: createFeatureFromItem
+     * Return a feature from a GeoRSS Item.
+     *
+     * Parameters:
+     * item - {DOMElement} A GeoRSS item node.
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector>} A feature representing the item.
+     */
+    createFeatureFromItem: function(item) {
         var geometry = this.createGeometryFromItem(item);
      
         /* Provide defaults for title and description */
@@ -141,7 +224,20 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return feature;
     },        
     
-        _getChildValue: function(node, nsuri, name, def) {
+    /**
+     * Method: _getChildValue
+     *
+     * Parameters:
+     * node - {DOMElement}
+     * nsuri - {String} Child node namespace uri ("*" for any).
+     * name - {String} Child node name.
+     * def - {String} Optional string default to return if no child found.
+     *
+     * Returns:
+     * {String} The value of the first child with the given tag name.  Returns
+     *     default value or empty string if none found.
+     */
+    _getChildValue: function(node, nsuri, name, def) {
         var value;
         var eles = this.getElementsByTagNameNS(node, nsuri, name);
         if(eles && eles[0] && eles[0].firstChild
@@ -153,7 +249,17 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return value;
     },
     
-        read: function(doc) {
+    /**
+     * APIMethod: read
+     * Return a list of features from a GeoRSS doc
+     *
+     * Parameters:
+     * doc - {Element} 
+     *
+     * Returns:
+     * {Array(<OpenLayers.Feature.Vector>)}
+     */
+    read: function(doc) {
         if (typeof doc == "string") { 
             doc = OpenLayers.Format.XML.prototype.read.apply(this, [doc]);
         }
@@ -174,7 +280,14 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
     },
     
 
-        write: function(features) {
+    /**
+     * APIMethod: write
+     * Accept Feature Collection, and return a string. 
+     * 
+     * Parameters: 
+     * features - {Array(<OpenLayers.Feature.Vector>)} List of features to serialize into a string.
+     */
+    write: function(features) {
         var georss;
         if(OpenLayers.Util.isArray(features)) {
             georss = this.createElementNS(this.rssns, "rss");
@@ -187,7 +300,17 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [georss]);
     },
 
-        createFeatureXML: function(feature) {
+    /**
+     * Method: createFeatureXML
+     * Accept an <OpenLayers.Feature.Vector>, and build a geometry for it.
+     * 
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>} 
+     *
+     * Returns:
+     * {DOMElement}
+     */
+    createFeatureXML: function(feature) {
         var geometryNode = this.buildGeometryNode(feature.geometry);
         var featureNode = this.createElementNS(this.rssns, "item");
         var titleNode = this.createElementNS(this.rssns, "title");
@@ -216,23 +339,36 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return featureNode;
     },    
     
-        buildGeometryNode: function(geometry) {
+    /** 
+     * Method: buildGeometryNode
+     * builds a GeoRSS node with a given geometry
+     * 
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>}
+     *
+     * Returns:
+     * {DOMElement} A gml node.
+     */
+    buildGeometryNode: function(geometry) {
         if (this.internalProjection && this.externalProjection) {
             geometry = geometry.clone();
             geometry.transform(this.internalProjection, 
                                this.externalProjection);
         }
         var node;
+        // match Polygon
         if (geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
             node = this.createElementNS(this.georssns, 'georss:polygon');
             
             node.appendChild(this.buildCoordinatesNode(geometry.components[0]));
         }
+        // match LineString
         else if (geometry.CLASS_NAME == "OpenLayers.Geometry.LineString") {
             node = this.createElementNS(this.georssns, 'georss:line');
             
             node.appendChild(this.buildCoordinatesNode(geometry));
         }
+        // match Point
         else if (geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
             node = this.createElementNS(this.georssns, 'georss:point');
             node.appendChild(this.buildCoordinatesNode(geometry));
@@ -242,7 +378,13 @@ OpenLayers.Format.GeoRSS = OpenLayers.Class(OpenLayers.Format.XML, {
         return node;         
     },
     
-        buildCoordinatesNode: function(geometry) {
+    /** 
+     * Method: buildCoordinatesNode
+     * 
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>}
+     */
+    buildCoordinatesNode: function(geometry) {
         var points = null;
         
         if (geometry.components) {

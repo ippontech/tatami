@@ -1,3 +1,8 @@
+//! moment.js locale configuration
+//! locale : austrian german (de-at)
+//! author : lluchs : https://github.com/lluchs
+//! author: Menelion Elensúle: https://github.com/Oire
+//! author : Martin Groller : https://github.com/MadMG
 
 import moment from '../moment';
 

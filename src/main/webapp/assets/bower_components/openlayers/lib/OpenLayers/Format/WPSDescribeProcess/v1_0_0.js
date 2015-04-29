@@ -3,31 +3,82 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
  
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Format/WPSDescribeProcess.js
+ * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
+ */
 
+/**
+ * Class: OpenLayers.Format.WPSDescribeProcess.v1_0_0
+ * Read WPS DescribeProcess 1.0.0 responses. 
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.WPSDescribeProcess.v1_0_0 = OpenLayers.Class(
     OpenLayers.Format.XML, {
     
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         wps: "http://www.opengis.net/wps/1.0.0",
         ows: "http://www.opengis.net/ows/1.1",
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-        errorProperty: "processDescriptions",
+    /**
+     * APIProperty: errorProperty
+     * {String} Which property of the returned object to check for in order to
+     * determine whether or not parsing has failed. In the case that the
+     * errorProperty is undefined on the returned object, the document will be
+     * run through an OGCExceptionReport parser.
+     */
+    errorProperty: "processDescriptions",
 
-        schemaLocation: "http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd",
+    /**
+     * Property: schemaLocation
+     * {String} Schema location
+     */
+    schemaLocation: "http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd",
 
-        defaultPrefix: "wps",
+    /**
+     * Property: defaultPrefix
+     */
+    defaultPrefix: "wps",
 
-        regExes: {
+    /**
+     * Property: regExes
+     * Compiled regular expressions for manipulating strings.
+     */
+    regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
     
-    
-        read: function(data) {
+    /**
+     * Constructor: OpenLayers.Format.WPSDescribeProcess
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+
+    /**
+     * APIMethod: read
+     * Parse a WPS DescribeProcess and return an object with its information.
+     * 
+     * Parameters: 
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Object}
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -39,7 +90,15 @@ OpenLayers.Format.WPSDescribeProcess.v1_0_0 = OpenLayers.Class(
         return info;
     },
 
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "wps": {
             "ProcessDescriptions": function(node, obj) {
                 obj.processDescriptions = {};

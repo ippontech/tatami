@@ -20,6 +20,9 @@
 
 +function ($) { "use strict";
 
+  // AFFIX CLASS DEFINITION
+  // ======================
+
   var Affix = function (element, options) {
     this.options = $.extend({}, Affix.DEFAULTS, options)
     this.$window = $(window)
@@ -74,6 +77,10 @@
     }
   }
 
+
+  // AFFIX PLUGIN DEFINITION
+  // =======================
+
   var old = $.fn.affix
 
   $.fn.affix = function (option) {
@@ -89,10 +96,18 @@
 
   $.fn.affix.Constructor = Affix
 
+
+  // AFFIX NO CONFLICT
+  // =================
+
   $.fn.affix.noConflict = function () {
     $.fn.affix = old
     return this
   }
+
+
+  // AFFIX DATA-API
+  // ==============
 
   $(window).on('load', function () {
     $('[data-spy="affix"]').each(function () {

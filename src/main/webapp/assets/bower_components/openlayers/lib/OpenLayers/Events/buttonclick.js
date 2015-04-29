@@ -3,27 +3,89 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Events.js
+ */
 
+/**
+ * Class: OpenLayers.Events.buttonclick
+ * Extension event type for handling buttons on top of a dom element. This
+ *     event type fires "buttonclick" on its <target> when a button was
+ *     clicked. Buttons are detected by the "olButton" class.
+ *
+ * This event type makes sure that button clicks do not interfere with other
+ *     events that are registered on the same <element>.
+ *
+ * Event types provided by this extension:
+ * - *buttonclick* Triggered when a button is clicked. Listeners receive an
+ *     object with a *buttonElement* property referencing the dom element of
+ *     the clicked button, and an *buttonXY* property with the click position
+ *     relative to the button.
+ */
 OpenLayers.Events.buttonclick = OpenLayers.Class({
     
-        target: null,
+    /**
+     * Property: target
+     * {<OpenLayers.Events>} The events instance that the buttonclick event will
+     * be triggered on.
+     */
+    target: null,
     
-        events: [
+    /**
+     * Property: events
+     * {Array} Events to observe and conditionally stop from propagating when
+     *     an element with the olButton class (or its olAlphaImg child) is
+     *     clicked.
+     */
+    events: [
         'mousedown', 'mouseup', 'click', 'dblclick',
         'touchstart', 'touchmove', 'touchend', 'keydown'
     ],
     
-        startRegEx: /^mousedown|touchstart$/,
+    /**
+     * Property: startRegEx
+     * {RegExp} Regular expression to test Event.type for events that start
+     *     a buttonclick sequence.
+     */
+    startRegEx: /^mousedown|touchstart$/,
 
-        cancelRegEx: /^touchmove$/,
+    /**
+     * Property: cancelRegEx
+     * {RegExp} Regular expression to test Event.type for events that cancel
+     *     a buttonclick sequence.
+     */
+    cancelRegEx: /^touchmove$/,
 
-        completeRegEx: /^mouseup|touchend$/,
+    /**
+     * Property: completeRegEx
+     * {RegExp} Regular expression to test Event.type for events that complete
+     *     a buttonclick sequence.
+     */
+    completeRegEx: /^mouseup|touchend$/,
 
-        isDeviceTouchCapable: 'ontouchstart' in window ||
+    /**
+     * Property: isDeviceTouchCapable
+     * {Boolean} Tells whether the browser detects touch events.
+     */
+    isDeviceTouchCapable: 'ontouchstart' in window ||
         window.DocumentTouch && document instanceof window.DocumentTouch,
     
-        
-        initialize: function(target) {
+    /**
+     * Property: startEvt
+     * {Event} The event that started the click sequence
+     */
+    
+    /**
+     * Constructor: OpenLayers.Events.buttonclick
+     * Construct a buttonclick event type. Applications are not supposed to
+     *     create instances of this class - they are created on demand by
+     *     <OpenLayers.Events> instances.
+     *
+     * Parameters:
+     * target - {<OpenLayers.Events>} The events instance that the buttonclick
+     *     event will be triggered on.
+     */
+    initialize: function(target) {
         this.target = target;
         for (var i=this.events.length-1; i>=0; --i) {
             this.target.register(this.events[i], this, this.buttonClick, {
@@ -32,18 +94,33 @@ OpenLayers.Events.buttonclick = OpenLayers.Class({
         }
     },
     
-        destroy: function() {
+    /**
+     * Method: destroy
+     */
+    destroy: function() {
         for (var i=this.events.length-1; i>=0; --i) {
             this.target.unregister(this.events[i], this, this.buttonClick);
         }
         delete this.target;
     },
 
-        getPressedButton: function(element) {
+    /**
+     * Method: getPressedButton
+     * Get the pressed button, if any. Returns undefined if no button
+     * was pressed.
+     *
+     * Arguments:
+     * element - {DOMElement} The event target.
+     *
+     * Returns:
+     * {DOMElement} The button element, or undefined.
+     */
+    getPressedButton: function(element) {
         var depth = 3, // limit the search depth
             button;
         do {
             if(OpenLayers.Element.hasClass(element, "olButton")) {
+                // hit!
                 button = element;
                 break;
             }
@@ -52,7 +129,14 @@ OpenLayers.Events.buttonclick = OpenLayers.Class({
         return button;
     },
     
-        ignore: function(element) {
+    /**
+     * Method: ignore
+     * Check for event target elements that should be ignored by OpenLayers.
+     *
+     * Parameters:
+     * element - {DOMElement} The event target.
+     */
+    ignore: function(element) {
         var depth = 3,
             ignore = false;
         do {
@@ -65,7 +149,14 @@ OpenLayers.Events.buttonclick = OpenLayers.Class({
         return ignore;
     },
 
-        buttonClick: function(evt) {
+    /**
+     * Method: buttonClick
+     * Check if a button was clicked, and fire the buttonclick event
+     *
+     * Parameters:
+     * evt - {Event}
+     */
+    buttonClick: function(evt) {
         var propagate = true,
             element = OpenLayers.Event.element(evt);
 
@@ -73,6 +164,7 @@ OpenLayers.Events.buttonclick = OpenLayers.Class({
            (OpenLayers.Event.isLeftClick(evt) &&
             !this.isDeviceTouchCapable ||
             !~evt.type.indexOf("mouse"))) {
+            // was a button pressed?
             var button = this.getPressedButton(element);
             if (button) {
                 if (evt.type === "keydown") {

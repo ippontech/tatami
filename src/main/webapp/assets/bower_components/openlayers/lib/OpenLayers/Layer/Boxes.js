@@ -4,11 +4,37 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Layer.js
+ * @requires OpenLayers/Layer/Markers.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.Boxes
+ * Draw divs as 'boxes' on the layer. 
+ *
+ * Inherits from:
+ *  - <OpenLayers.Layer.Markers>
+ */
 OpenLayers.Layer.Boxes = OpenLayers.Class(OpenLayers.Layer.Markers, {
 
-        
-        drawMarker: function(marker) {
+    /**
+     * Constructor: OpenLayers.Layer.Boxes
+     *
+     * Parameters:
+     * name - {String} 
+     * options - {Object} Hashtable of extra options to tag onto the layer
+     */
+    
+    /**
+     * Method: drawMarker 
+     * Calculate the pixel location for the marker, create it, and
+     *    add it to the layer's div
+     *
+     * Parameters: 
+     * marker - {<OpenLayers.Marker.Box>} 
+     */
+    drawMarker: function(marker) {
         var topleft = this.map.getLayerPxFromLonLat({
             lon: marker.bounds.left,
             lat: marker.bounds.top
@@ -32,7 +58,13 @@ OpenLayers.Layer.Boxes = OpenLayers.Class(OpenLayers.Layer.Markers, {
     },
 
 
-        removeMarker: function(marker) {
+    /**
+     * APIMethod: removeMarker 
+     * 
+     * Parameters:
+     * marker - {<OpenLayers.Marker.Box>} 
+     */
+    removeMarker: function(marker) {
         OpenLayers.Util.removeItem(this.markers, marker);
         if ((marker.div != null) &&
             (marker.div.parentNode == this.div) ) {

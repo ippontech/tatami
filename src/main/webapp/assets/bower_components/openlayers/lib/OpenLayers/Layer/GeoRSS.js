@@ -4,36 +4,100 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Layer/Markers.js
+ * @requires OpenLayers/Request/XMLHttpRequest.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.GeoRSS
+ * Add GeoRSS Point features to your map. 
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Layer.Markers>
+ */
 OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
 
-        location: null,
+    /** 
+     * Property: location 
+     * {String} store url of text file 
+     */
+    location: null,
 
-        features: null,
+    /** 
+     * Property: features 
+     * {Array(<OpenLayers.Feature>)} 
+     */
+    features: null,
     
-        formatOptions: null, 
+    /**
+     * APIProperty: formatOptions
+     * {Object} Hash of options which should be passed to the format when it is
+     * created. Must be passed in the constructor.
+     */
+    formatOptions: null, 
 
-        selectedFeature: null,
+    /** 
+     * Property: selectedFeature 
+     * {<OpenLayers.Feature>} 
+     */
+    selectedFeature: null,
 
-        icon: null,
+    /** 
+     * APIProperty: icon 
+     * {<OpenLayers.Icon>}. This determines the Icon to be used on the map
+     * for this GeoRSS layer.
+     */
+    icon: null,
 
-        popupSize: null, 
+    /**
+     * APIProperty: popupSize
+     * {<OpenLayers.Size>} This determines the size of GeoRSS popups. If 
+     * not provided, defaults to 250px by 120px. 
+     */
+    popupSize: null, 
     
-        useFeedTitle: true,
+    /** 
+     * APIProperty: useFeedTitle 
+     * {Boolean} Set layer.name to the first <title> element in the feed. Default is true. 
+     */
+    useFeedTitle: true,
     
-        initialize: function(name, location, options) {
+    /**
+    * Constructor: OpenLayers.Layer.GeoRSS
+    * Create a GeoRSS Layer.
+    *
+    * Parameters:
+    * name - {String} 
+    * location - {String} 
+    * options - {Object}
+    */
+    initialize: function(name, location, options) {
         OpenLayers.Layer.Markers.prototype.initialize.apply(this, [name, options]);
         this.location = location;
         this.features = [];
     },
 
-        destroy: function() {
+    /**
+     * Method: destroy 
+     */
+    destroy: function() {
+        // Warning: Layer.Markers.destroy() must be called prior to calling
+        // clearFeatures() here, otherwise we leak memory. Indeed, if
+        // Layer.Markers.destroy() is called after clearFeatures(), it won't be
+        // able to remove the marker image elements from the layer's div since
+        // the markers will have been destroyed by clearFeatures().
         OpenLayers.Layer.Markers.prototype.destroy.apply(this, arguments);
         this.clearFeatures();
         this.features = null;
     },
 
-        loadRSS: function() {
+    /**
+     * Method: loadRSS
+     * Start the load of the RSS data. Don't do this when we first add the layer,
+     * since we may not be visible at any point, and it would therefore be a waste.
+     */
+    loadRSS: function() {
         if (!this.loaded) {
             this.events.triggerEvent("loadstart");
             OpenLayers.Request.GET({
@@ -45,14 +109,30 @@ OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
         }    
     },    
     
-        moveTo:function(bounds, zoomChanged, minor) {
+    /**
+     * Method: moveTo
+     * If layer is visible and RSS has not been loaded, load RSS. 
+     * 
+     * Parameters:
+     * bounds - {Object} 
+     * zoomChanged - {Object} 
+     * minor - {Object} 
+     */
+    moveTo:function(bounds, zoomChanged, minor) {
         OpenLayers.Layer.Markers.prototype.moveTo.apply(this, arguments);
         if(this.visibility && !this.loaded){
             this.loadRSS();
         }
     },
         
-        parseData: function(ajaxRequest) {
+    /**
+     * Method: parseData
+     * Parse the data returned from the Events call.
+     *
+     * Parameters:
+     * ajaxRequest - {<OpenLayers.Request.XMLHttpRequest>} 
+     */
+    parseData: function(ajaxRequest) {
         var doc = ajaxRequest.responseXML;
         if (!doc || !doc.documentElement) {
             doc = OpenLayers.Format.XML.prototype.read(ajaxRequest.responseText);
@@ -86,6 +166,9 @@ OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
         for (var i=0, len=features.length; i<len; i++) {
             var data = {};
             var feature = features[i];
+            
+            // we don't support features with no geometry in the GeoRSS
+            // layer at this time. 
             if (!feature.geometry) {
                 continue;
             }    
@@ -110,6 +193,7 @@ OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
                              new OpenLayers.Size(250, 120);
             
             if (title || description) {
+                // we have supplemental data, store them.
                 data.title = title;
                 data.description = description;
             
@@ -137,7 +221,13 @@ OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
         this.events.triggerEvent("loadend");
     },
     
-        markerClick: function(evt) {
+    /**
+     * Method: markerClick
+     *
+     * Parameters:
+     * evt - {Event} 
+     */
+    markerClick: function(evt) {
         var sameMarkerClicked = (this == this.layer.selectedFeature);
         this.layer.selectedFeature = (!sameMarkerClicked) ? this : null;
         for(var i=0, len=this.layer.map.popups.length; i<len; i++) {
@@ -157,7 +247,11 @@ OpenLayers.Layer.GeoRSS = OpenLayers.Class(OpenLayers.Layer.Markers, {
         OpenLayers.Event.stop(evt);
     },
 
-        clearFeatures: function() {
+    /**
+     * Method: clearFeatures
+     * Destroy all features in this layer.
+     */
+    clearFeatures: function() {
         if (this.features != null) {
             while(this.features.length > 0) {
                 var feature = this.features[0];

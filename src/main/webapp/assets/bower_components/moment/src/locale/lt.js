@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Lithuanian (lt)
+//! author : Mindaugas Mozūras : https://github.com/mmozuras
 
 import moment from '../moment';
 

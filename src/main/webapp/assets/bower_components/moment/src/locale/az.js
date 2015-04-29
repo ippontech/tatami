@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : azerbaijani (az)
+//! author : topchiyev : https://github.com/topchiyev
 
 import moment from '../moment';
 

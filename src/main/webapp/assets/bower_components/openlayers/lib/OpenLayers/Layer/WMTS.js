@@ -3,42 +3,178 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Layer/Grid.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.WMTS
+ * Instances of the WMTS class allow viewing of tiles from a service that 
+ *     implements the OGC WMTS specification version 1.0.0.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Layer.Grid>
+ */
 OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
     
-        isBaseLayer: true,
+    /**
+     * APIProperty: isBaseLayer
+     * {Boolean} The layer will be considered a base layer.  Default is true.
+     */
+    isBaseLayer: true,
 
-        version: "1.0.0",
+    /**
+     * Property: version
+     * {String} WMTS version.  Default is "1.0.0".
+     */
+    version: "1.0.0",
     
-        requestEncoding: "KVP",
+    /**
+     * APIProperty: requestEncoding
+     * {String} Request encoding.  Can be "REST" or "KVP".  Default is "KVP".
+     */
+    requestEncoding: "KVP",
     
-        url: null,
+    /**
+     * APIProperty: url
+     * {String|Array(String)} The base URL or request URL template for the WMTS
+     * service. Must be provided. Array is only supported for base URLs, not
+     * for request URL templates. URL templates are only supported for
+     * REST <requestEncoding>.
+     */
+    url: null,
 
-        layer: null,
+    /**
+     * APIProperty: layer
+     * {String} The layer identifier advertised by the WMTS service.  Must be 
+     *     provided.
+     */
+    layer: null,
     
-        matrixSet: null,
+    /** 
+     * APIProperty: matrixSet
+     * {String} One of the advertised matrix set identifiers.  Must be provided.
+     */
+    matrixSet: null,
 
-        style: null,
+    /** 
+     * APIProperty: style
+     * {String} One of the advertised layer styles.  Must be provided.
+     */
+    style: null,
     
-        format: "image/jpeg",
+    /** 
+     * APIProperty: format
+     * {String} The image MIME type.  Default is "image/jpeg".
+     */
+    format: "image/jpeg",
     
-        tileOrigin: null,
+    /**
+     * APIProperty: tileOrigin
+     * {<OpenLayers.LonLat>} The top-left corner of the tile matrix in map 
+     *     units.  If the tile origin for each matrix in a set is different,
+     *     the <matrixIds> should include a topLeftCorner property.  If
+     *     not provided, the tile origin will default to the top left corner
+     *     of the layer <maxExtent>.
+     */
+    tileOrigin: null,
     
-        tileFullExtent: null,
+    /**
+     * APIProperty: tileFullExtent
+     * {<OpenLayers.Bounds>}  The full extent of the tile set.  If not supplied,
+     *     the layer's <maxExtent> property will be used.
+     */
+    tileFullExtent: null,
 
-        formatSuffix: null,    
+    /**
+     * APIProperty: formatSuffix
+     * {String} For REST request encoding, an image format suffix must be 
+     *     included in the request.  If not provided, the suffix will be derived
+     *     from the <format> property.
+     */
+    formatSuffix: null,    
 
-        matrixIds: null,
+    /**
+     * APIProperty: matrixIds
+     * {Array} A list of tile matrix identifiers.  If not provided, the matrix
+     *     identifiers will be assumed to be integers corresponding to the 
+     *     map zoom level.  If a list of strings is provided, each item should
+     *     be the matrix identifier that corresponds to the map zoom level.
+     *     Additionally, a list of objects can be provided.  Each object should
+     *     describe the matrix as presented in the WMTS capabilities.  These
+     *     objects should have the properties shown below.
+     * 
+     * Matrix properties:
+     * identifier - {String} The matrix identifier (required).
+     * scaleDenominator - {Number} The matrix scale denominator.
+     * topLeftCorner - {<OpenLayers.LonLat>} The top left corner of the 
+     *     matrix.  Must be provided if different than the layer <tileOrigin>.
+     * tileWidth - {Number} The tile width for the matrix.  Must be provided 
+     *     if different than the width given in the layer <tileSize>.
+     * tileHeight - {Number} The tile height for the matrix.  Must be provided 
+     *     if different than the height given in the layer <tileSize>.
+     */
+    matrixIds: null,
     
-        dimensions: null,
+    /**
+     * APIProperty: dimensions
+     * {Array} For RESTful request encoding, extra dimensions may be specified.
+     *     Items in this list should be property names in the <params> object.
+     *     Values of extra dimensions will be determined from the corresponding
+     *     values in the <params> object.
+     */
+    dimensions: null,
     
-        params: null,
+    /**
+     * APIProperty: params
+     * {Object} Extra parameters to include in tile requests.  For KVP 
+     *     <requestEncoding>, these properties will be encoded in the request 
+     *     query string.  For REST <requestEncoding>, these properties will
+     *     become part of the request path, with order determined by the 
+     *     <dimensions> list.
+     */
+    params: null,
     
-        zoomOffset: 0,
+    /**
+     * APIProperty: zoomOffset
+     * {Number} If your cache has more levels than you want to provide
+     *     access to with this layer, supply a zoomOffset.  This zoom offset
+     *     is added to the current map zoom level to determine the level
+     *     for a requested tile.  For example, if you supply a zoomOffset
+     *     of 3, when the map is at the zoom 0, tiles will be requested from
+     *     level 3 of your cache.  Default is 0 (assumes cache level and map
+     *     zoom are equivalent).  Additionally, if this layer is to be used
+     *     as an overlay and the cache has fewer zoom levels than the base
+     *     layer, you can supply a negative zoomOffset.  For example, if a
+     *     map zoom level of 1 corresponds to your cache level zero, you would
+     *     supply a -1 zoomOffset (and set the maxResolution of the layer
+     *     appropriately).  The zoomOffset value has no effect if complete
+     *     matrix definitions (including scaleDenominator) are supplied in
+     *     the <matrixIds> property.  Defaults to 0 (no zoom offset).
+     */
+    zoomOffset: 0,
 
-        serverResolutions: null,
+    /**
+     * APIProperty: serverResolutions
+     * {Array} A list of all resolutions available on the server.  Only set this
+     *     property if the map resolutions differ from the server. This
+     *     property serves two purposes. (a) <serverResolutions> can include
+     *     resolutions that the server supports and that you don't want to
+     *     provide with this layer; you can also look at <zoomOffset>, which is
+     *     an alternative to <serverResolutions> for that specific purpose.
+     *     (b) The map can work with resolutions that aren't supported by
+     *     the server, i.e. that aren't in <serverResolutions>. When the
+     *     map is displayed in such a resolution data for the closest
+     *     server-supported resolution is loaded and the layer div is
+     *     stretched as necessary.
+     */
+    serverResolutions: null,
 
-        formatSuffixMap: {
+    /**
+     * Property: formatSuffixMap
+     * {Object} a map between WMTS 'format' request parameter and tile image file suffix
+     */
+    formatSuffixMap: {
         "image/png": "png",
         "image/png8": "png",
         "image/png24": "png",
@@ -50,9 +186,43 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         "jpg": "jpg"
     },
     
-        matrix: null,
+    /**
+     * Property: matrix
+     * {Object} Matrix definition for the current map resolution.  Updated by
+     *     the <updateMatrixProperties> method.
+     */
+    matrix: null,
     
-        initialize: function(config) {
+    /**
+     * Constructor: OpenLayers.Layer.WMTS
+     * Create a new WMTS layer.
+     *
+     * Example:
+     * (code)
+     * var wmts = new OpenLayers.Layer.WMTS({
+     *     name: "My WMTS Layer",
+     *     url: "http://example.com/wmts", 
+     *     layer: "layer_id",
+     *     style: "default",
+     *     matrixSet: "matrix_id"
+     * });
+     * (end)
+     *
+     * Parameters:
+     * config - {Object} Configuration properties for the layer.
+     *
+     * Required configuration properties:
+     * url - {String} The base url for the service.  See the <url> property.
+     * layer - {String} The layer identifier.  See the <layer> property.
+     * style - {String} The layer style identifier.  See the <style> property.
+     * matrixSet - {String} The tile matrix set identifier.  See the <matrixSet>
+     *     property.
+     *
+     * Any other documented layer properties can be provided in the config object.
+     */
+    initialize: function(config) {
+
+        // confirm required properties are supplied
         var required = {
             url: true,
             layer: true,
@@ -68,9 +238,14 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         config.params = OpenLayers.Util.upperCaseObject(config.params);
         var args = [config.name, config.url, config.params, config];
         OpenLayers.Layer.Grid.prototype.initialize.apply(this, args);
+        
+
+        // determine format suffix (for REST)
         if (!this.formatSuffix) {
             this.formatSuffix = this.formatSuffixMap[this.format] || this.format.split("/").pop();            
         }
+
+        // expand matrixIds (may be array of string or array of object)
         if (this.matrixIds) {
             var len = this.matrixIds.length;
             if (len && typeof this.matrixIds[0] === "string") {
@@ -84,11 +259,18 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
 
     },
     
-        setMap: function() {
+    /**
+     * Method: setMap
+     */
+    setMap: function() {
         OpenLayers.Layer.Grid.prototype.setMap.apply(this, arguments);
     },
     
-        updateMatrixProperties: function() {
+    /**
+     * Method: updateMatrixProperties
+     * Called when map resolution changes to update matrix related properties.
+     */
+    updateMatrixProperties: function() {
         this.matrix = this.getMatrix();
         if (this.matrix) {
             if (this.matrix.topLeftCorner) {
@@ -110,31 +292,61 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         }
     },
     
-        moveTo:function(bounds, zoomChanged, dragging) {
+    /**
+     * Method: moveTo
+     * 
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>}
+     * zoomChanged - {Boolean} Tells when zoom has changed, as layers have to
+     *     do some init work in that case.
+     * dragging - {Boolean}
+     */
+    moveTo:function(bounds, zoomChanged, dragging) {
         if (zoomChanged || !this.matrix) {
             this.updateMatrixProperties();
         }
         return OpenLayers.Layer.Grid.prototype.moveTo.apply(this, arguments);
     },
 
-        clone: function(obj) {
+    /**
+     * APIMethod: clone
+     * 
+     * Parameters:
+     * obj - {Object}
+     * 
+     * Returns:
+     * {<OpenLayers.Layer.WMTS>} An exact clone of this <OpenLayers.Layer.WMTS>
+     */
+    clone: function(obj) {
         if (obj == null) {
             obj = new OpenLayers.Layer.WMTS(this.options);
         }
+        //get all additions from superclasses
         obj = OpenLayers.Layer.Grid.prototype.clone.apply(this, [obj]);
+        // copy/set any non-init, non-simple values here
         return obj;
     },
 
-        getIdentifier: function() {
+    /**
+     * Method: getIdentifier
+     * Get the current index in the matrixIds array.
+     */
+    getIdentifier: function() {
         return this.getServerZoom();
     },
     
-        getMatrix: function() {
+    /**
+     * Method: getMatrix
+     * Get the appropriate matrix definition for the current map resolution.
+     */
+    getMatrix: function() {
         var matrix;
         if (!this.matrixIds || this.matrixIds.length === 0) {
             matrix = {identifier: this.getIdentifier()};
         } else {
+            // get appropriate matrix given the map scale if possible
             if ("scaleDenominator" in this.matrixIds[0]) {
+                // scale denominator calculation based on WMTS spec
                 var denom = 
                     OpenLayers.METERS_PER_INCH * 
                     OpenLayers.INCHES_PER_UNIT[this.units] * 
@@ -149,13 +361,27 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
                     }
                 }
             } else {
+                // fall back on zoom as index
                 matrix = this.matrixIds[this.getIdentifier()];
             }
         }
         return matrix;
     },
     
-        getTileInfo: function(loc) {
+    /** 
+     * Method: getTileInfo
+     * Get tile information for a given location at the current map resolution.
+     *
+     * Parameters:
+     * loc - {<OpenLayers.LonLat} A location in map coordinates.
+     *
+     * Returns:
+     * {Object} An object with "col", "row", "i", and "j" properties.  The col
+     *     and row values are zero based tile indexes from the top left.  The
+     *     i and j values are the number of pixels to the left and top 
+     *     (respectively) of the given location within the target tile.
+     */
+    getTileInfo: function(loc) {
         var res = this.getServerResolution();
         
         var fx = (loc.lon - this.tileOrigin.lon) / (res * this.tileSize.w);
@@ -172,7 +398,16 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         };
     },
     
-        getURL: function(bounds) {
+    /**
+     * Method: getURL
+     * 
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>}
+     * 
+     * Returns:
+     * {String} A URL for the tile corresponding to the given bounds.
+     */
+    getURL: function(bounds) {
         bounds = this.adjustBounds(bounds);
         var url = "";
         if (!this.tileFullExtent || this.tileFullExtent.intersectsBounds(bounds)) {            
@@ -196,6 +431,7 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
                 if (url.indexOf("{") !== -1) {
                     var template = url.replace(/\{/g, "${");
                     var context = {
+                        // spec does not make clear if capital S or not
                         style: this.style, Style: this.style,
                         TileMatrixSet: this.matrixSet,
                         TileMatrix: this.matrix.identifier,
@@ -211,7 +447,10 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
                     }
                     url = OpenLayers.String.format(template, context);
                 } else {
+                    // include 'version', 'layer' and 'style' in tile resource url
                     var path = this.version + "/" + this.layer + "/" + this.style + "/";
+
+                    // append optional dimension path elements
                     if (dimensions) {
                         for (var i=0; i<dimensions.length; i++) {
                             if (params[dimensions[i]]) {
@@ -219,6 +458,8 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
                             }
                         }
                     }
+
+                    // append other required path elements
                     path = path + this.matrixSet + "/" + this.matrix.identifier + 
                         "/" + info.row + "/" + info.col + "." + this.formatSuffix;
 
@@ -228,6 +469,8 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
                     url = url + path;
                 }
             } else if (this.requestEncoding.toUpperCase() === "KVP") {
+
+                // assemble all required parameters
                 params = {
                     SERVICE: "WMTS",
                     REQUEST: "GetTile",
@@ -247,7 +490,15 @@ OpenLayers.Layer.WMTS = OpenLayers.Class(OpenLayers.Layer.Grid, {
         return url;    
     },
     
-        mergeNewParams: function(newParams) {
+    /**
+     * APIMethod: mergeNewParams
+     * Extend the existing layer <params> with new properties.  Tiles will be
+     *     reloaded with updated params in the request.
+     * 
+     * Parameters:
+     * newParams - {Object} Properties to extend to existing <params>.
+     */
+    mergeNewParams: function(newParams) {
         if (this.requestEncoding.toUpperCase() === "KVP") {
             return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(
                 this, [OpenLayers.Util.upperCaseObject(newParams)]

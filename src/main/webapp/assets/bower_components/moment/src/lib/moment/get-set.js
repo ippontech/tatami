@@ -21,6 +21,8 @@ export function set (mom, unit, value) {
     return mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
 }
 
+// MOMENTS
+
 export function getSet (units, value) {
     var unit;
     if (typeof units === 'object') {

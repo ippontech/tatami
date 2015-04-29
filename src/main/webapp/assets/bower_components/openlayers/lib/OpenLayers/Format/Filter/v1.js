@@ -2,33 +2,85 @@
  * full list of contributors). Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
+/**
+ * @requires OpenLayers/Format/Filter.js
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Filter/Function.js
+ * @requires OpenLayers/BaseTypes/Date.js
+ */
 
+/**
+ * Class: OpenLayers.Format.Filter.v1
+ * Superclass for Filter version 1 parsers.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
     
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         ogc: "http://www.opengis.net/ogc",
         gml: "http://www.opengis.net/gml",
         xlink: "http://www.w3.org/1999/xlink",
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-        defaultPrefix: "ogc",
+    /**
+     * Property: defaultPrefix
+     */
+    defaultPrefix: "ogc",
 
-        schemaLocation: null,
+    /**
+     * Property: schemaLocation
+     * {String} Schema location for a particular minor version.
+     */
+    schemaLocation: null,
     
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.Filter.v1
+     * Instances of this class are not created directly.  Use the
+     *     <OpenLayers.Format.Filter> constructor instead.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
     },
     
-        read: function(data) {
+    /**
+     * Method: read
+     *
+     * Parameters:
+     * data - {DOMElement} A Filter document element.
+     *
+     * Returns:
+     * {<OpenLayers.Filter>} A filter object.
+     */
+    read: function(data) {
         var obj = {};
         this.readers.ogc["Filter"].apply(this, [data, obj]);
         return obj.filter;
     },
     
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "ogc": {
             "_expression": function(node) {
+                // only the simplest of ogc:expression handled
+                // "some text and an <PropertyName>attribute</PropertyName>"}
                 var obj, value = "";
                 for(var child=node.firstChild; child; child=child.nextSibling) {
                     switch(child.nodeType) {
@@ -48,6 +100,10 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 return value;
             },
             "Filter": function(node, parent) {
+                // Filters correspond to subclasses of OpenLayers.Filter.
+                // Since they contain information we don't persist, we
+                // create a temporary object and then pass on the filter
+                // (ogc:Filter) to the parent obj.
                 var obj = {
                     fids: [],
                     filters: []
@@ -155,6 +211,7 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 obj.distanceUnits = node.getAttribute("units");
             },
             "Function": function(node, obj) {
+                //TODO write decoder for it
                 return;
             },
             "PropertyIsNull": function(node, obj) {
@@ -167,7 +224,20 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
     
-        readSpatial: function(node, obj, type) {
+    /**
+     * Method: readSpatial
+     *
+     * Read a {<OpenLayers.Filter.Spatial>} filter.
+     * 
+     * Parameters:
+     * node - {DOMElement} A DOM element that contains an ogc:expression.
+     * obj - {Object} The target object.
+     * type - {String} One of the OpenLayers.Filter.Spatial.* constants.
+     *
+     * Returns:
+     * {<OpenLayers.Filter.Spatial>} The created filter.
+     */
+    readSpatial: function(node, obj, type) {
         var filter = new OpenLayers.Filter.Spatial({
             type: type
         });
@@ -177,14 +247,38 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         obj.filters.push(filter);
     },
 
-        encodeLiteral: function(value) {
+    /**
+     * APIMethod: encodeLiteral
+     * Generates the string representation of a value for use in <Literal> 
+     *     elements.  The default encoder writes Date values as ISO 8601 
+     *     strings.
+     *
+     * Parameters:
+     * value - {Object} Literal value to encode
+     *
+     * Returns:
+     * {String} String representation of the provided value.
+     */
+    encodeLiteral: function(value) {
         if (value instanceof Date) {
             value = OpenLayers.Date.toISOString(value);
         }
         return value;
     },
 
-        writeOgcExpression: function(value, node) {
+    /**
+     * Method: writeOgcExpression
+     * Limited support for writing OGC expressions. Currently it supports
+     * (<OpenLayers.Filter.Function> || String || Number)
+     *
+     * Parameters:
+     * value - (<OpenLayers.Filter.Function> || String || Number)
+     * node - {DOMElement} A parent DOM element 
+     *
+     * Returns:
+     * {DOMElement} Updated node element.
+     */
+    writeOgcExpression: function(value, node) {
         if (value instanceof OpenLayers.Filter.Function){
             this.writeNode("Function", value, node);
         } else {
@@ -193,11 +287,26 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return node;
     },    
     
-        write: function(filter) {
+    /**
+     * Method: write
+     *
+     * Parameters:
+     * filter - {<OpenLayers.Filter>} A filter object.
+     *
+     * Returns:
+     * {DOMElement} An ogc:Filter element.
+     */
+    write: function(filter) {
         return this.writers.ogc["Filter"].apply(this, [filter]);
     },
     
-        writers: {
+    /**
+     * Property: writers
+     * As a compliment to the readers property, this structure contains public
+     *     writing functions grouped by namespace alias and named like the
+     *     node names they produce.
+     */
+    writers: {
         "ogc": {
             "Filter": function(filter) {
                 var node = this.createElementNSPlus("ogc:Filter");
@@ -248,36 +357,46 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
             },
             "PropertyIsLessThan": function(filter) {
                 var node = this.createElementNSPlus("ogc:PropertyIsLessThan");
+                // no ogc:expression handling for PropertyName for now
                 this.writeNode("PropertyName", filter, node);
+                // handle Literals or Functions for now
                 this.writeOgcExpression(filter.value, node);
                 return node;
             },
             "PropertyIsGreaterThan": function(filter) {
                 var node = this.createElementNSPlus("ogc:PropertyIsGreaterThan");
+                // no ogc:expression handling for PropertyName for now
                 this.writeNode("PropertyName", filter, node);
+                // handle Literals or Functions for now
                 this.writeOgcExpression(filter.value, node);
                 return node;
             },
             "PropertyIsLessThanOrEqualTo": function(filter) {
                 var node = this.createElementNSPlus("ogc:PropertyIsLessThanOrEqualTo");
+                // no ogc:expression handling for PropertyName for now
                 this.writeNode("PropertyName", filter, node);
+                // handle Literals or Functions for now
                 this.writeOgcExpression(filter.value, node);
                 return node;
             },
             "PropertyIsGreaterThanOrEqualTo": function(filter) {
                 var node = this.createElementNSPlus("ogc:PropertyIsGreaterThanOrEqualTo");
+                // no ogc:expression handling for PropertyName for now
                 this.writeNode("PropertyName", filter, node);
+                // handle Literals or Functions for now
                 this.writeOgcExpression(filter.value, node);
                 return node;
             },
             "PropertyIsBetween": function(filter) {
                 var node = this.createElementNSPlus("ogc:PropertyIsBetween");
+                // no ogc:expression handling for PropertyName for now
                 this.writeNode("PropertyName", filter, node);
                 this.writeNode("LowerBoundary", filter, node);
                 this.writeNode("UpperBoundary", filter, node);
                 return node;
             },
             "PropertyName": function(filter) {
+                // no ogc:expression handling for now
                 return this.createElementNSPlus("ogc:PropertyName", {
                     value: filter.property
                 });
@@ -290,11 +409,13 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 });
             },
             "LowerBoundary": function(filter) {
+                // handle Literals or Functions for now
                 var node = this.createElementNSPlus("ogc:LowerBoundary");
                 this.writeOgcExpression(filter.lowerBoundary, node);
                 return node;
             },
             "UpperBoundary": function(filter) {
+                // handle Literals or Functions for now
                 var node = this.createElementNSPlus("ogc:UpperBoundary");
                 this.writeNode("Literal", filter.upperBoundary, node);
                 return node;
@@ -341,7 +462,10 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        getFilterType: function(filter) {
+    /**
+     * Method: getFilterType
+     */
+    getFilterType: function(filter) {
         var filterType = this.filterMap[filter.type];
         if(!filterType) {
             throw "Filter writing not supported for rule type: " + filter.type;
@@ -349,7 +473,12 @@ OpenLayers.Format.Filter.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return filterType;
     },
     
-        filterMap: {
+    /**
+     * Property: filterMap
+     * {Object} Contains a member for each filter type.  Values are node names
+     *     for corresponding OGC Filter child elements.
+     */
+    filterMap: {
         "&&": "And",
         "||": "Or",
         "!": "Not",

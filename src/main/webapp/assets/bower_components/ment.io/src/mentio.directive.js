@@ -357,7 +357,9 @@ angular.module('mentio', [])
                     function (newValue) {
                         /*jshint maxcomplexity:14 */
                         /*jshint maxstatements:39 */
+                        // yes this function needs refactoring
                         if ((!newValue || newValue === '') && !scope.isActive()) {
+                            // ignore while setting up
                             return;
                         }
                         if (scope.triggerCharSet === undefined) {
@@ -367,6 +369,7 @@ angular.module('mentio', [])
                         }
 
                         if (scope.contentEditableMenuPasted) {
+                            // don't respond to changes from insertion of the menu content
                             scope.contentEditableMenuPasted = false;
                             return;
                         }
@@ -402,7 +405,8 @@ angular.module('mentio', [])
                                 )
                             )
                         {
-                                                        if (mentionInfo.mentionSelectedElement) {
+                            /** save selection info about the target control for later re-selection */
+                            if (mentionInfo.mentionSelectedElement) {
                                 scope.targetElement = mentionInfo.mentionSelectedElement;
                                 scope.targetElementPath = mentionInfo.mentionSelectedPath;
                                 scope.targetElementSelectedOffset = mentionInfo.mentionSelectedOffset;
@@ -430,6 +434,7 @@ angular.module('mentio', [])
                             } else if (scope.selectNotFound && currentTypedTerm && currentTypedTerm !== '') {
                                 var lastScope = scope.triggerCharMap[scope.currentMentionTriggerChar];
                                 if (lastScope) {
+                                    // just came out of typeahead state
                                     var text = lastScope.select({
                                         item: {label: currentTypedTerm}
                                     });
@@ -465,12 +470,18 @@ angular.module('mentio', [])
             },
             controller: function ($scope) {
                 $scope.visible = false;
+
+                // callable both with controller (menuItem) and without controller (local)
                 this.activate = $scope.activate = function (item) {
                     $scope.activeItem = item;
                 };
+
+                // callable both with controller (menuItem) and without controller (local)
                 this.isActive = $scope.isActive = function (item) {
                     return $scope.activeItem === item;
                 };
+
+                // callable both with controller (menuItem) and without controller (local)
                 this.selectItem = $scope.selectItem = function (item) {
                     var text = $scope.select({
                         item: item
@@ -541,6 +552,8 @@ angular.module('mentio', [])
                         $log.error('mentio-menu requires a trigger char');
                         return;
                     }
+                    // send own scope to mentio directive so that the menu
+                    // becomes attached
                     $rootScope.$broadcast('menuCreated',
                         {
                             targetElement : scope.forElem,
@@ -572,6 +585,7 @@ angular.module('mentio', [])
                 });
 
                 scope.$watch('isVisible()', function (visible) {
+                    // wait for the watch notification to show the menu
                     if (visible) {
                         var triggerCharSet = [];
                         triggerCharSet.push(scope.triggerChar);

@@ -4,28 +4,70 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Layer.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.Markers
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Layer> 
+ */
 OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
     
-        isBaseLayer: false,
+    /** 
+     * APIProperty: isBaseLayer 
+     * {Boolean} Markers layer is never a base layer.  
+     */
+    isBaseLayer: false,
     
-        markers: null,
+    /** 
+     * APIProperty: markers 
+     * {Array(<OpenLayers.Marker>)} internal marker list 
+     */
+    markers: null,
 
 
-        drawn: false,
+    /** 
+     * Property: drawn 
+     * {Boolean} internal state of drawing. This is a workaround for the fact
+     * that the map does not call moveTo with a zoomChanged when the map is
+     * first starting up. This lets us catch the case where we have *never*
+     * drawn the layer, and draw it even if the zoom hasn't changed.
+     */
+    drawn: false,
     
-        initialize: function(name, options) {
+    /**
+     * Constructor: OpenLayers.Layer.Markers 
+     * Create a Markers layer.
+     *
+     * Parameters:
+     * name - {String} 
+     * options - {Object} Hashtable of extra options to tag onto the layer
+     */
+    initialize: function(name, options) {
         OpenLayers.Layer.prototype.initialize.apply(this, arguments);
         this.markers = [];
     },
     
-        destroy: function() {
+    /**
+     * APIMethod: destroy 
+     */
+    destroy: function() {
         this.clearMarkers();
         this.markers = null;
         OpenLayers.Layer.prototype.destroy.apply(this, arguments);
     },
 
-        setOpacity: function(opacity) {
+    /**
+     * APIMethod: setOpacity
+     * Sets the opacity for all the markers.
+     * 
+     * Parameters:
+     * opacity - {Float}
+     */
+    setOpacity: function(opacity) {
         if (opacity != this.opacity) {
             this.opacity = opacity;
             for (var i=0, len=this.markers.length; i<len; i++) {
@@ -34,7 +76,15 @@ OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
         }
     },
 
-        moveTo:function(bounds, zoomChanged, dragging) {
+    /** 
+     * Method: moveTo
+     *
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>} 
+     * zoomChanged - {Boolean} 
+     * dragging - {Boolean} 
+     */
+    moveTo:function(bounds, zoomChanged, dragging) {
         OpenLayers.Layer.prototype.moveTo.apply(this, arguments);
 
         if (zoomChanged || !this.drawn) {
@@ -45,7 +95,13 @@ OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
         }
     },
 
-        addMarker: function(marker) {
+    /**
+     * APIMethod: addMarker
+     *
+     * Parameters:
+     * marker - {<OpenLayers.Marker>} 
+     */
+    addMarker: function(marker) {
         this.markers.push(marker);
 
         if (this.opacity < 1) {
@@ -58,14 +114,25 @@ OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
         }
     },
 
-        removeMarker: function(marker) {
+    /**
+     * APIMethod: removeMarker
+     *
+     * Parameters:
+     * marker - {<OpenLayers.Marker>} 
+     */
+    removeMarker: function(marker) {
         if (this.markers && this.markers.length) {
             OpenLayers.Util.removeItem(this.markers, marker);
             marker.erase();
         }
     },
 
-        clearMarkers: function() {
+    /**
+     * Method: clearMarkers
+     * This method removes all markers from a layer. The markers are not
+     * destroyed by this function, but are removed from the list of markers.
+     */
+    clearMarkers: function() {
         if (this.markers != null) {
             while(this.markers.length > 0) {
                 this.removeMarker(this.markers[0]);
@@ -73,7 +140,15 @@ OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
         }
     },
 
-        drawMarker: function(marker) {
+    /** 
+     * Method: drawMarker
+     * Calculate the pixel location for the marker, create it, and 
+     *    add it to the layer's div
+     *
+     * Parameters:
+     * marker - {<OpenLayers.Marker>} 
+     */
+    drawMarker: function(marker) {
         var px = this.map.getLayerPxFromLonLat(marker.lonlat);
         if (px == null) {
             marker.display(false);
@@ -87,7 +162,14 @@ OpenLayers.Layer.Markers = OpenLayers.Class(OpenLayers.Layer, {
         }
     },
     
-        getDataExtent: function () {
+    /** 
+     * APIMethod: getDataExtent
+     * Calculates the max extent which includes all of the markers.
+     * 
+     * Returns:
+     * {<OpenLayers.Bounds>}
+     */
+    getDataExtent: function () {
         var maxExtent = null;
         
         if ( this.markers && (this.markers.length > 0)) {

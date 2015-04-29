@@ -1,3 +1,13 @@
+/**
+ * @file
+ *
+ * ### Responsibilities
+ * - automate common tasks using grunt
+ *
+ * Scaffolded with generator-microjs v0.1.2
+ *
+ * @author  <>
+ */
 'use strict';
 
 module.exports = function (grunt) {
@@ -53,6 +63,8 @@ module.exports = function (grunt) {
                 ]
             }
         },
+
+        // Automatically inject Bower components into the app
         wiredep: {
             test: {
                 src: 'karma.conf.js',

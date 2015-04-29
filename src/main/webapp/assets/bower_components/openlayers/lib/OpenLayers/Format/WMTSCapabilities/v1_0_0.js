@@ -3,23 +3,61 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/WMTSCapabilities.js
+ * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
+ */
 
+/**
+ * Class: OpenLayers.Format.WMTSCapabilities.v1_0_0
+ * Read WMTS Capabilities version 1.0.0.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.WMTSCapabilities>
+ */
 OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
     OpenLayers.Format.OWSCommon.v1_1_0, {
         
-        version: "1.0.0",
+    /**
+     * Property: version
+     * {String} The parser version ("1.0.0").
+     */
+    version: "1.0.0",
 
-        namespaces: {
+    /**
+     * Property: namespaces
+     * {Object} Mapping of namespace aliases to namespace URIs.
+     */
+    namespaces: {
         ows: "http://www.opengis.net/ows/1.1",
         wmts: "http://www.opengis.net/wmts/1.0",
         xlink: "http://www.w3.org/1999/xlink"
     },    
     
-        yx: null,
+    /**
+     * Property: yx
+     * {Object} Members in the yx object are used to determine if a CRS URN
+     *     corresponds to a CRS with y,x axis order.  Member names are CRS URNs
+     *     and values are boolean.  Defaults come from the 
+     *     <OpenLayers.Format.WMTSCapabilities> prototype.
+     */
+    yx: null,
 
-        defaultPrefix: "wmts",
+    /**
+     * Property: defaultPrefix
+     * {String} The default namespace alias for creating element nodes.
+     */
+    defaultPrefix: "wmts",
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.WMTSCapabilities.v1_0_0
+     * Create a new parser for WMTS capabilities version 1.0.0. 
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
         this.options = options;
         var yx = OpenLayers.Util.extend(
@@ -28,7 +66,17 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
         this.yx = OpenLayers.Util.extend(yx, this.yx);
     },
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read capabilities data from a string, and return info about the WMTS.
+     * 
+     * Parameters: 
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Object} Information about the SOS service.
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -41,7 +89,15 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
         return capabilities;
     },
 
-        readers: {        
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {        
         "wmts": {
             "Capabilities": function(node, obj) {
                 this.readChildNodes(node, obj);
@@ -77,13 +133,17 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
                 obj.tileMatrixSetLinks.push(tileMatrixSetLink);
             },
             "TileMatrixSet": function(node, obj) {
+                // node could be child of wmts:Contents or wmts:TileMatrixSetLink
+                // duck type wmts:Contents by looking for layers
                 if (obj.layers) {
+                    // TileMatrixSet as object type in schema
                     var tileMatrixSet = {
                         matrixIds: []
                     };
                     this.readChildNodes(node, tileMatrixSet);
                     obj.tileMatrixSets[tileMatrixSet.identifier] = tileMatrixSet;
                 } else {
+                    // TileMatrixSet as string type in schema
                     obj.tileMatrixSet = this.getChildValue(node);
                 }
             },
@@ -109,7 +169,9 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
                 obj.maxTileCol = parseInt(this.getChildValue(node)); 
             },
             "TileMatrix": function(node, obj) {
+                // node could be child of wmts:TileMatrixSet or wmts:TileMatrixLimits
                 if (obj.identifier) {
+                    // node is child of wmts:TileMatrixSet
                     var tileMatrix = {
                         supportedCRS: obj.supportedCRS
                     };
@@ -125,8 +187,10 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
             "TopLeftCorner": function(node, obj) {                
                 var topLeftCorner = this.getChildValue(node);
                 var coords = topLeftCorner.split(" ");
+                // decide on axis order for the given CRS
                 var yx;
                 if (obj.supportedCRS) {
+                    // extract out version from URN
                     var crs = obj.supportedCRS.replace(
                         /urn:ogc:def:crs:(\w+):.+:(\w+)$/, 
                         "urn:ogc:def:crs:$1::$2"
@@ -196,6 +260,7 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
                 obj.infoFormats = obj.infoFormats || [];
                 obj.infoFormats.push(this.getChildValue(node));
             },
+            // not used for now, can be added in the future though
             /*"Themes": function(node, obj) {
                 obj.themes = [];
                 this.readChildNodes(node, obj.themes);
@@ -208,10 +273,12 @@ OpenLayers.Format.WMTSCapabilities.v1_0_0 = OpenLayers.Class(
             "WSDL": function(node, obj) {
                 obj.wsdl = {};
                 obj.wsdl.href = node.getAttribute("xlink:href");
+                // TODO: other attributes of <WSDL> element                
             },
             "ServiceMetadataURL": function(node, obj) {
                 obj.serviceMetadataUrl = {};
                 obj.serviceMetadataUrl.href = node.getAttribute("xlink:href");
+                // TODO: other attributes of <ServiceMetadataURL> element                
             },
             "Dimension": function(node, obj) {
                 var dimension = {values: []};

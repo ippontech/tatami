@@ -3,7 +3,17 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format.js
+ */
 
+/**
+ * Function: OpenLayers.Format.WFST
+ * Used to create a versioned WFS protocol.  Default version is 1.0.0.
+ *
+ * Returns:
+ * {<OpenLayers.Format>} A WFST format of the given version.
+ */
 OpenLayers.Format.WFST = function(options) {
     options = OpenLayers.Util.applyDefaults(
         options, OpenLayers.Format.WFST.DEFAULTS
@@ -15,6 +25,10 @@ OpenLayers.Format.WFST = function(options) {
     return new cls(options);
 };
 
+/**
+ * Constant: OpenLayers.Format.WFST.DEFAULTS
+ * {Object} Default properties for the WFST format.
+ */
 OpenLayers.Format.WFST.DEFAULTS = {
     "version": "1.0.0"
 };

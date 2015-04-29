@@ -2,6 +2,9 @@ import { matchOffset } from '../parse/regex';
 import { configFromStringAndFormat } from './from-string-and-format';
 import { hooks } from '../utils/hooks';
 import { deprecate } from '../utils/deprecate';
+
+// iso 8601 regex
+// 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
 var isoRegex = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
 
 var isoDates = [
@@ -11,6 +14,8 @@ var isoDates = [
     ['GGGG-[W]WW', /\d{4}-W\d{2}/],
     ['YYYY-DDD', /\d{4}-\d{3}/]
 ];
+
+// iso time formats and regexes
 var isoTimes = [
     ['HH:mm:ss.SSSS', /(T| )\d\d:\d\d:\d\d\.\d+/],
     ['HH:mm:ss', /(T| )\d\d:\d\d:\d\d/],
@@ -19,6 +24,8 @@ var isoTimes = [
 ];
 
 var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
+
+// date from iso format
 export function configFromISO(config) {
     var i, l,
         string = config._i,
@@ -28,6 +35,7 @@ export function configFromISO(config) {
         config._pf.iso = true;
         for (i = 0, l = isoDates.length; i < l; i++) {
             if (isoDates[i][1].exec(string)) {
+                // match[5] should be 'T' or undefined
                 config._f = isoDates[i][0] + (match[6] || ' ');
                 break;
             }
@@ -46,6 +54,8 @@ export function configFromISO(config) {
         config._isValid = false;
     }
 }
+
+// date from iso format or fallback
 export function configFromString(config) {
     var matched = aspNetJsonRegex.exec(config._i);
 

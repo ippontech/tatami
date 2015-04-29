@@ -3,12 +3,35 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Layer/XYZ.js
+ */
 
+/** 
+ * Class: OpenLayers.Layer.Bing
+ * Bing layer using direct tile access as provided by Bing Maps REST Services.
+ * See http://msdn.microsoft.com/en-us/library/ff701713.aspx for more
+ * information. Note: Terms of Service compliant use requires the map to be
+ * configured with an <OpenLayers.Control.Attribution> control and the
+ * attribution placed on or near the map.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Layer.XYZ>
+ */
 OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
 
-        key: null,
+    /**
+     * Property: key
+     * {String} API key for Bing maps, get your own key 
+     *     at http://bingmapsportal.com/ .
+     */
+    key: null,
 
-        serverResolutions: [
+    /**
+     * Property: serverResolutions
+     * {Array} the resolutions provided by the Bing servers.
+     */
+    serverResolutions: [
         156543.03390625, 78271.516953125, 39135.7584765625,
         19567.87923828125, 9783.939619140625, 4891.9698095703125,
         2445.9849047851562, 1222.9924523925781, 611.4962261962891,
@@ -19,28 +42,101 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         0.07464553542435169, 0.03732276771218, 0.01866138385609
     ],
     
-        attributionTemplate: '<span class="olBingAttribution ${type}">' +
+    /**
+     * Property: attributionTemplate
+     * {String}
+     */
+    attributionTemplate: '<span class="olBingAttribution ${type}">' +
          '<div><a target="_blank" href="http://www.bing.com/maps/">' +
          '<img src="${logo}" /></a></div>${copyrights}' +
          '<a style="white-space: nowrap" target="_blank" '+
          'href="http://www.microsoft.com/maps/product/terms.html">' +
          'Terms of Use</a></span>',
 
-        metadata: null,
+    /**
+     * Property: metadata
+     * {Object} Metadata for this layer, as returned by the callback script
+     */
+    metadata: null,
 
-        protocolRegex: /^http:/i,
+    /**
+     * Property: protocolRegex
+     * {RegExp} Regular expression to match and replace http: in bing urls
+     */
+    protocolRegex: /^http:/i,
     
-        type: "Road",
+    /**
+     * APIProperty: type
+     * {String} The layer identifier.  Any non-birdseye imageryType
+     *     from http://msdn.microsoft.com/en-us/library/ff701716.aspx can be
+     *     used.  Default is "Road".
+     */
+    type: "Road",
     
-        culture: "en-US",
+    /**
+     * APIProperty: culture
+     * {String} The culture identifier.  See http://msdn.microsoft.com/en-us/library/ff701709.aspx
+     * for the definition and the possible values.  Default is "en-US".
+     */
+    culture: "en-US",
     
-        metadataParams: null,
+    /**
+     * APIProperty: metadataParams
+     * {Object} Optional url parameters for the Get Imagery Metadata request
+     * as described here: http://msdn.microsoft.com/en-us/library/ff701716.aspx
+     */
+    metadataParams: null,
 
-        tileOptions: null,
+    /** APIProperty: tileOptions
+     *  {Object} optional configuration options for <OpenLayers.Tile> instances
+     *  created by this Layer. Default is
+     *
+     *  (code)
+     *  {crossOriginKeyword: 'anonymous'}
+     *  (end)
+     */
+    tileOptions: null,
 
-        protocol: ~window.location.href.indexOf('http') ? '' : 'http:',
+    /** APIProperty: protocol
+     *  {String} Protocol to use to fetch Imagery Metadata, tiles and bing logo
+     *  Can be 'http:' 'https:' or ''
+     *
+     *  Warning: tiles may not be available under both HTTP and HTTPS protocols.
+     *  Microsoft approved use of both HTTP and HTTPS urls for tiles. However
+     *  this is undocumented and the Imagery Metadata API always returns HTTP
+     *  urls.
+     *
+     *  Default is '', unless when executed from a file:/// uri, in which case
+     *  it is 'http:'.
+     */
+    protocol: ~window.location.href.indexOf('http') ? '' : 'http:',
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Layer.Bing
+     * Create a new Bing layer.
+     *
+     * Example:
+     * (code)
+     * var road = new OpenLayers.Layer.Bing({
+     *     name: "My Bing Aerial Layer",
+     *     type: "Aerial",
+     *     key: "my-api-key-here",
+     * });
+     * (end)
+     *
+     * Parameters:
+     * options - {Object} Configuration properties for the layer.
+     *
+     * Required configuration properties:
+     * key - {String} Bing Maps API key for your application. Get one at
+     *     http://bingmapsportal.com/.
+     * type - {String} The layer identifier.  Any non-birdseye imageryType
+     *     from http://msdn.microsoft.com/en-us/library/ff701716.aspx can be
+     *     used.
+     *
+     * Any other documented layer properties can be provided in the config object.
+     */
+    initialize: function(options) {
         options = OpenLayers.Util.applyDefaults({
             sphericalMercator: true
         }, options);
@@ -54,8 +150,13 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         this.loadMetadata(); 
     },
 
-        loadMetadata: function() {
+    /**
+     * Method: loadMetadata
+     */
+    loadMetadata: function() {
         this._callbackId = "_callback_" + this.id.replace(/\./g, "_");
+        // link the processMetadata method to the global scope and bind it
+        // to this instance
         window[this._callbackId] = OpenLayers.Function.bind(
             OpenLayers.Layer.Bing.processMetadata, this
         );
@@ -73,7 +174,12 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         document.getElementsByTagName("head")[0].appendChild(script);
     },
     
-        initLayer: function() {
+    /**
+     * Method: initLayer
+     *
+     * Sets layer properties according to the metadata provided by the API
+     */
+    initLayer: function() {
         var res = this.metadata.resourceSets[0].resources[0];
         var url = res.imageUrl.replace("{quadkey}", "${quadkey}");
         url = url.replace("{culture}", this.culture);
@@ -97,7 +203,13 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         this.updateAttribution();
     },
     
-        getURL: function(bounds) {
+    /**
+     * Method: getURL
+     *
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>}
+     */
+    getURL: function(bounds) {
         if (!this.url) {
             return;
         }
@@ -121,7 +233,12 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         return OpenLayers.String.format(url, {'quadkey': quadKey});
     },
     
-        updateAttribution: function() {
+    /**
+     * Method: updateAttribution
+     * Updates the attribution according to the requirements outlined in
+     * http://gis.638310.n2.nabble.com/Bing-imagery-td5789168.html
+     */
+    updateAttribution: function() {
         var metadata = this.metadata;
         if (!metadata.resourceSets || !this.map || !this.map.center) {
             return;
@@ -139,6 +256,7 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
             provider = providers[i];
             for (j=0,jj=provider.coverageAreas.length; j<jj; ++j) {
                 coverage = provider.coverageAreas[j];
+                // axis order provided is Y,X
                 bbox = OpenLayers.Bounds.fromArray(coverage.bbox, true);
                 if (extent.intersectsBounds(bbox) &&
                         zoom <= coverage.zoomMax && zoom >= coverage.zoomMin) {
@@ -158,20 +276,37 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         });
     },
     
-        setMap: function() {
+    /**
+     * Method: setMap
+     */
+    setMap: function() {
         OpenLayers.Layer.XYZ.prototype.setMap.apply(this, arguments);
         this.map.events.register("moveend", this, this.updateAttribution);
     },
     
-        clone: function(obj) {
+    /**
+     * APIMethod: clone
+     * 
+     * Parameters:
+     * obj - {Object}
+     * 
+     * Returns:
+     * {<OpenLayers.Layer.Bing>} An exact clone of this <OpenLayers.Layer.Bing>
+     */
+    clone: function(obj) {
         if (obj == null) {
             obj = new OpenLayers.Layer.Bing(this.options);
         }
+        //get all additions from superclasses
         obj = OpenLayers.Layer.XYZ.prototype.clone.apply(this, [obj]);
+        // copy/set any non-init, non-simple values here
         return obj;
     },
     
-        destroy: function() {
+    /**
+     * Method: destroy
+     */
+    destroy: function() {
         this.map &&
             this.map.events.unregister("moveend", this, this.updateAttribution);
         OpenLayers.Layer.XYZ.prototype.destroy.apply(this, arguments);
@@ -180,6 +315,14 @@ OpenLayers.Layer.Bing = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     CLASS_NAME: "OpenLayers.Layer.Bing"
 });
 
+/**
+ * Function: OpenLayers.Layer.Bing.processMetadata
+ * This function will be bound to an instance, linked to the global scope with
+ * an id, and called by the JSONP script returned by the API.
+ *
+ * Parameters:
+ * metadata - {Object} metadata as returned by the API
+ */
 OpenLayers.Layer.Bing.processMetadata = function(metadata) {
     this.metadata = metadata;
     this.initLayer();

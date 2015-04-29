@@ -15,6 +15,7 @@ if (window.XMLHttpRequest && !window.XMLHttpRequest.__isFileAPIShim) {
         return function (header, value) {
             if (header === '__setXHR_') {
                 var val = value(this);
+                // fix for angular < 1.2.0
                 if (val instanceof Function) {
                     val(this);
                 }
@@ -52,6 +53,7 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
                         promise.progress_fn(e)
                     });
                 }, false);
+                //fix for firefox not firing upload progress end, also IE8-9
                 xhr.upload.addEventListener('load', function (e) {
                     if (e.lengthComputable) {
                         e.config = config;
@@ -218,6 +220,9 @@ function linkFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile) 
                 updateModel($parse, $timeout, scope, ngModel, attr,
                     attr.ngFileChange || (attr.ngFileDrop && attr.ngFileDrop.indexOf('(') > 0), files, rejFiles, evt);
                 if (files.length == 0) evt.target.value = files;
+//                if (evt.target && evt.target.getAttribute('__ngf_gen__')) {
+//                    angular.element(evt.target).remove();
+//                }
             } finally {
                 isUpdating = false;
             }
@@ -277,6 +282,8 @@ function linkFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile) 
     	            evt.preventDefault()
     	        }
         	}
+        	
+        	// fix for android native browser
         	if (navigator.userAgent.toLowerCase().match(/android/)) {
                 setTimeout(function() {
                 	clickAndAssign();
@@ -309,6 +316,8 @@ angularFileUpload.directive('ngNoFileDrop', function () {
         if (dropAvailable()) elem.css('display', 'none')
     }
 });
+
+//for backward compatibility
 angularFileUpload.directive('ngFileDropAvailable', ['$parse', '$timeout', function ($parse, $timeout) {
     return function (scope, elem, attr) {
         if (dropAvailable()) {
@@ -344,6 +353,7 @@ function linkDrop(scope, elem, attr, ngModel, $parse, $timeout, $location) {
         if (disabled(scope)) return;
         evt.preventDefault();
         if (stopPropagation(scope)) evt.stopPropagation();
+        // handling dragover events from the Chrome download bar
         if (navigator.userAgent.indexOf("Chrome") > -1) {
             var b = evt.dataTransfer.effectAllowed;
             evt.dataTransfer.dropEffect = ('move' === b || 'linkMove' === b) ? 'move' : 'copy';

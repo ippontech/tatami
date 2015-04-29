@@ -1,4 +1,13 @@
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["nb"]
+ * Dictionary for norwegian bokmål (Norway). Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["nb"] = {
 
     'unhandledRequest': "Ubehandlet forespørsel returnerte ${statusText}",
@@ -13,6 +22,8 @@ OpenLayers.Lang["nb"] = {
 
     'browserNotSupported':
         "Din nettleser støtter ikke vektortegning. Tegnemetodene som støttes er:\n${renderers}",
+
+    // console message
     'minZoomLevelError':
         "Egenskapen minZoomLevel er kun ment til bruk på lag " +
         "basert på FixedZoomLevels. At dette wfs-laget sjekker " +
@@ -51,17 +62,23 @@ OpenLayers.Lang["nb"] = {
         "target='_blank'>her</a>.",
 
     'Scale = 1 : ${scaleDenom}': "Skala = 1 : ${scaleDenom}",
+    
+    //labels for the graticule control
     'W': 'V',
     'E': 'Ø',
     'N': 'N',
     'S': 'S',
     'Graticule': 'Gradnett',
+
+    // console message
     'reprojectDeprecated':
         "Du bruker innstillingen 'reproject' på laget ${layerName}. " +
         "Denne innstillingen er foreldet, den var ment for å støtte " +
         "visning av kartdata over kommersielle bakgrunnskart, men det " +
         "bør nå gjøres med støtten for Spherical Mercator. Mer informasjon " +
         "finnes på http://trac.openlayers.org/wiki/SphericalMercator.",
+
+    // console message
     'methodDeprecated':
         "Denne metoden er markert som foreldet og vil bli fjernet i 3.0. " +
         "Vennligst bruk ${newMethod} i stedet.",

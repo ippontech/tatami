@@ -4,16 +4,67 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Layer/Grid.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.TileCache
+ * A read only TileCache layer.  Used to requests tiles cached by TileCache in
+ *     a web accessible cache.  This means that you have to pre-populate your
+ *     cache before this layer can be used.  It is meant only to read tiles
+ *     created by TileCache, and not to make calls to TileCache for tile
+ *     creation.  Create a new instance with the
+ *     <OpenLayers.Layer.TileCache> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Layer.Grid>
+ */
 OpenLayers.Layer.TileCache = OpenLayers.Class(OpenLayers.Layer.Grid, {
 
-        isBaseLayer: true,
+    /** 
+     * APIProperty: isBaseLayer
+     * {Boolean} Treat this layer as a base layer.  Default is true.
+     */
+    isBaseLayer: true,
     
-        format: 'image/png',
+    /** 
+     * APIProperty: format
+     * {String} Mime type of the images returned.  Default is image/png.
+     */
+    format: 'image/png',
 
-        serverResolutions: null,
+    /**
+     * APIProperty: serverResolutions
+     * {Array} A list of all resolutions available on the server.  Only set this
+     *     property if the map resolutions differ from the server. This
+     *     property serves two purposes. (a) <serverResolutions> can include
+     *     resolutions that the server supports and that you don't want to
+     *     provide with this layer. (b) The map can work with resolutions
+     *     that aren't supported by the server, i.e. that aren't in
+     *     <serverResolutions>. When the map is displayed in such a resolution
+     *     data for the closest server-supported resolution is loaded and the
+     *     layer div is stretched as necessary.
+     */
+    serverResolutions: null,
 
-        initialize: function(name, url, layername, options) {
+    /**
+     * Constructor: OpenLayers.Layer.TileCache
+     * Create a new read only TileCache layer.
+     *
+     * Parameters:
+     * name - {String} Name of the layer displayed in the interface
+     * url - {String} Location of the web accessible cache (not the location of
+     *     your tilecache script!)
+     * layername - {String} Layer name as defined in the TileCache 
+     *     configuration
+     * options - {Object} Optional object with properties to be set on the
+     *     layer.  Note that you should speficy your resolutions to match
+     *     your TileCache configuration.  This can be done by setting
+     *     the resolutions array directly (here or on the map), by setting
+     *     maxResolution and numZoomLevels, or by using scale based properties.
+     */
+    initialize: function(name, url, layername, options) {
         this.layername = layername;
         OpenLayers.Layer.Grid.prototype.initialize.apply(this,
                                                          [name, url, {}, options]);
@@ -21,7 +72,15 @@ OpenLayers.Layer.TileCache = OpenLayers.Class(OpenLayers.Layer.Grid, {
         this.extension = (this.extension == 'jpg') ? 'jpeg' : this.extension;
     },    
 
-        clone: function (obj) {
+    /**
+     * APIMethod: clone
+     * obj - {Object} 
+     * 
+     * Returns:
+     * {<OpenLayers.Layer.TileCache>} An exact clone of this 
+     *     <OpenLayers.Layer.TileCache>
+     */
+    clone: function (obj) {
         
         if (obj == null) {
             obj = new OpenLayers.Layer.TileCache(this.name,
@@ -29,12 +88,26 @@ OpenLayers.Layer.TileCache = OpenLayers.Class(OpenLayers.Layer.Grid, {
                                                  this.layername,
                                                  this.getOptions());
         }
+
+        //get all additions from superclasses
         obj = OpenLayers.Layer.Grid.prototype.clone.apply(this, [obj]);
+
+        // copy/set any non-init, non-simple values here
 
         return obj;
     },    
     
-        getURL: function(bounds) {
+    /**
+     * Method: getURL
+     *
+     * Parameters:
+     * bounds - {<OpenLayers.Bounds>} 
+     * 
+     * Returns:
+     * {String} A string with the layer's url and parameters and also the 
+     *     passed-in bounds and appropriate tile size specified as parameters.
+     */
+    getURL: function(bounds) {
         var res = this.getServerResolution();
         var bbox = this.maxExtent;
         var size = this.tileSize;

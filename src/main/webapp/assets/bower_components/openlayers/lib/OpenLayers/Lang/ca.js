@@ -1,4 +1,13 @@
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["ca"]
+ * Dictionary for Catalan, UTF8 encoding. Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang.ca = {
 
     'unhandledRequest': "Resposta a petició no gestionada ${statusText}",
@@ -13,6 +22,8 @@ OpenLayers.Lang.ca = {
 
     'browserNotSupported':
         "El seu navegador no suporta renderització vectorial. Els renderitzadors suportats actualment són:\n${renderers}",
+
+    // console message
     'minZoomLevelError':
         "La propietat minZoomLevel s'ha d'utilitzar només " +
         "amb les capes que tenen FixedZoomLevels. El fet que " +
@@ -50,11 +61,15 @@ OpenLayers.Lang.ca = {
         "target='_blank'>féu clic aquí</a>",
 
     'Scale = 1 : ${scaleDenom}': "Escala = 1 : ${scaleDenom}",
+
+    //labels for the graticule control
     'W': 'O',
     'E': 'E',
     'N': 'N',
     'S': 'S',
     'Graticule': 'Retícula',    
+        
+    // console message
     'reprojectDeprecated':
         "Esteu fent servir l'opció 'reproject' a la capa " +
         "${layerName}. Aquesta opció és obsoleta: el seu ús fou concebut " +
@@ -62,9 +77,13 @@ OpenLayers.Lang.ca = {
         "però ara aquesta funcionalitat s'hauria d'assolir mitjançant el suport " +
         "de la projecció Spherical Mercator. Més informació disponible a " +
         "http://trac.openlayers.org/wiki/SphericalMercator.",
+
+    // console message
     'methodDeprecated':
         "Aquest mètode és obsolet i s'eliminarà a la versió 3.0. " +
         "Si us plau feu servir em mètode alternatiu ${newMethod}.",
+
+    // **** end ****
     'end': ''
 
 };

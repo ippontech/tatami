@@ -1,7 +1,23 @@
+/**
+ * File: Test.AnotherWay.xml_eq.js 
+ * Adds a xml_eq method to AnotherWay test objects.
+ *
+ */
 
 (function() {
 
-        function createNode(text) {
+    /**
+     * Function: createNode
+     * Given a string, try to create an XML DOM node.  Throws string messages
+     *     on failure.
+     * 
+     * Parameters:
+     * text - {String} An XML string.
+     *
+     * Returns:
+     * {DOMElement} An element node.
+     */
+    function createNode(text) {
         
         var index = text.indexOf('<');
         if(index > 0) {
@@ -43,7 +59,19 @@
         return root;
     }
     
-        function assertEqual(got, expected, msg) {
+    /**
+     * Function assertEqual
+     * Test two objects for equivalence (based on ==).  Throw an exception
+     *     if not equivalent.
+     * 
+     * Parameters:
+     * got - {Object}
+     * expected - {Object}
+     * msg - {String} The message to be thrown.  This message will be appended
+     *     with ": got {got} but expected {expected}" where got and expected are
+     *     replaced with string representations of the above arguments.
+     */
+    function assertEqual(got, expected, msg) {
         if(got === undefined) {
             got = "undefined";
         } else if (got === null) {
@@ -59,20 +87,47 @@
         }
     }
     
-        function assertElementNodesEqual(got, expected, options) {
+    /**
+     * Function assertElementNodesEqual
+     * Test two element nodes for equivalence.  Nodes are considered equivalent
+     *     if they are of the same type, have the same name, have the same
+     *     namespace prefix and uri, and if all child nodes are equivalent.
+     *     Throws a message as exception if not equivalent.
+     * 
+     * Parameters:
+     * got - {DOMElement}
+     * expected - {DOMElement}
+     * options - {Object} Optional object for configuring test options.
+     *
+     * Valid options:
+     * prefix - {Boolean} Compare element and attribute
+     *     prefixes (namespace uri always tested).  Default is false.
+     * includeWhiteSpace - {Boolean} Include whitespace only nodes when
+     *     comparing child nodes.  Default is false.
+     */
+    function assertElementNodesEqual(got, expected, options) {
         var testPrefix = (options && options.prefix === true);
+        
+        // compare types
         assertEqual(got.nodeType, expected.nodeType, "Node type mismatch");
+        
+        // compare names
         var gotName = testPrefix ?
             got.nodeName : got.nodeName.split(":").pop();
         var expName = testPrefix ?
             expected.nodeName : expected.nodeName.split(":").pop();
         assertEqual(gotName, expName, "Node name mismatch");
+        
+        // for text nodes compare value
         if(got.nodeType == 3) {
             assertEqual(
                 got.nodeValue, expected.nodeValue, "Node value mismatch"
             );
         }
+        // for element type nodes compare namespace, attributes, and children
         else if(got.nodeType == 1) {
+            
+            // test namespace alias and uri
             if(got.prefix || expected.prefix) {
                 if(testPrefix) {
                     assertEqual(
@@ -87,6 +142,8 @@
                     "Bad namespaceURI for " + got.nodeName
                 );
             }
+            
+            // compare attributes - disregard xmlns given namespace handling above
             var gotAttrLen = 0;
             var gotAttr = {};
             var expAttrLen = 0;
@@ -121,17 +178,21 @@
                 if(expAttr[name] == undefined) {
                     throw "Attribute name " + gotAttr[name].name + " expected for element " + got.nodeName;
                 }
+                // test attribute namespace
                 assertEqual(
                     gotAttr[name].namespaceURI, expAttr[name].namespaceURI,
                     "Attribute namespace mismatch for element " +
                     got.nodeName + " attribute name " + gotAttr[name].name
                 );
+                // test attribute value
                 assertEqual(
                     gotAttr[name].value, expAttr[name].value,
                     "Attribute value mismatch for element " + got.nodeName +
                     " attribute name " + gotAttr[name].name
                 );
             }
+            
+            // compare children
             var gotChildNodes = getChildNodes(got, options);
             var expChildNodes = getChildNodes(expected, options);
 
@@ -152,7 +213,25 @@
         return true;
     }
 
-        function getChildNodes(node, options) {
+    /**
+     * Function getChildNodes
+     * Returns the child nodes of the specified nodes. By default this method
+     *     will ignore child text nodes which are made up of whitespace content.
+     *     The 'includeWhiteSpace' option is used to control this behaviour.
+     * 
+     * Parameters:
+     * node - {DOMElement}
+     * options - {Object} Optional object for test configuration.
+     * 
+     * Valid options:
+     * includeWhiteSpace - {Boolean} Include whitespace only nodes when
+     *     comparing child nodes.  Default is false.
+     * 
+     * Returns:
+     * {Array} of {DOMElement}
+     */
+    function getChildNodes(node, options) {
+        //check whitespace
         if (options && options.includeWhiteSpace) {
             return node.childNodes;
         }
@@ -161,9 +240,11 @@
            for (var i = 0; i < node.childNodes.length; i++ ) {
               var child = node.childNodes[i];
               if (child.nodeType == 1) {
+                 //element node, add it 
                  nodes.push(child);
               }
               else if (child.nodeType == 3) {
+                 //text node, add if non empty
                  if (child.nodeValue && 
                        child.nodeValue.replace(/^\s*(.*?)\s*$/, "$1") != "" ) { 
 
@@ -176,8 +257,31 @@
         }
     } 
     
-        var proto = Test.AnotherWay._test_object_t.prototype;
+    /**
+     * Function: Test.AnotherWay._test_object_t.xml_eq
+     * Test if two XML nodes are equivalent.  Tests for same node types, same
+     *     node names, same namespace URI, same attributes, and recursively
+     *     tests child nodes for same criteria.
+     *
+     * (code)
+     * t.xml_eq(got, expected, message);
+     * (end)
+     * 
+     * Parameters:
+     * got - {DOMElement | String} A DOM node or XML string to test.
+     * expected - {DOMElement | String} The expected DOM node or XML string.
+     * msg - {String} A message to print with test output.
+     * options - {Object} Optional object for configuring test.
+     *
+     * Valid options:
+     * prefix - {Boolean} Compare element and attribute
+     *     prefixes (namespace uri always tested).  Default is false.
+     * includeWhiteSpace - {Boolean} Include whitespace only nodes when
+     *     comparing child nodes.  Default is false.
+     */
+    var proto = Test.AnotherWay._test_object_t.prototype;
     proto.xml_eq = function(got, expected, msg, options) {
+        // convert arguments to nodes if string
         if(typeof got == "string") {
             try {
                 got = createNode(got);
@@ -194,6 +298,8 @@
                 return;
             }
         }
+        
+        // test nodes for equivalence
         try {
             assertElementNodesEqual(got, expected, options);
             this.ok(true, msg);

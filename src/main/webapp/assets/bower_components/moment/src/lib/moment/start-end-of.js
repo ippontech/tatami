@@ -2,6 +2,8 @@ import { normalizeUnits } from '../units/aliases';
 
 export function startOf (units) {
     units = normalizeUnits(units);
+    // the following switch intentionally omits break keywords
+    // to utilize falling through the cases.
     switch (units) {
     case 'year':
         this.month(0);
@@ -24,12 +26,16 @@ export function startOf (units) {
     case 'second':
         this.milliseconds(0);
     }
+
+    // weeks are a special case
     if (units === 'week') {
         this.weekday(0);
     }
     if (units === 'isoWeek') {
         this.isoWeekday(1);
     }
+
+    // quarters are also special
     if (units === 'quarter') {
         this.month(Math.floor(this.month() / 3) * 3);
     }

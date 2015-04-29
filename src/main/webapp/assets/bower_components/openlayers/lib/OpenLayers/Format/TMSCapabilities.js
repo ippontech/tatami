@@ -3,13 +3,37 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/BaseTypes/Bounds.js
+ * @requires OpenLayers/BaseTypes/LonLat.js
+ */
 
+/**
+ * Class: OpenLayers.Format.TMSCapabilities
+ * Parse TMS Capabilities.
+ * See http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.TMSCapabilities = OpenLayers.Class(
     OpenLayers.Format.XML, {
 
-        defaultPrefix: "tms",
+    /**
+     * Property: defaultPrefix
+     */
+    defaultPrefix: "tms",
 
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "tms": {
             "Services": function(node, obj) {
                 obj.services = [];
@@ -94,7 +118,17 @@ OpenLayers.Format.TMSCapabilities = OpenLayers.Class(
         }
     },
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read TMS capabilities data from a string, and return a list of tilesets. 
+     * 
+     * Parameters: 
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Object} Information about the services served by this TMS instance.
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }

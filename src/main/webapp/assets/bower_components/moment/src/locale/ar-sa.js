@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Arabic Saudi Arabia (ar-sa)
+//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 import moment from '../moment';
 

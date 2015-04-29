@@ -7071,6 +7071,7 @@
         var i,
             b = moment(),
             meridiemTests = [
+                // h a patterns, expected hours, isValid
                 ['10 πμ',   10, true],
                 ['10 μμ',   22, true],
                 ['10 π.μ.', 10, true],
@@ -7086,7 +7087,11 @@
                 ['10 am',   10, false],
                 ['10 pm',   10, false]
             ];
+
+        // test that a formatted moment including meridiem string can be parsed back to the same moment
         assert.ok(b.isSame(moment(b.format('h:mm:ss a'), 'h:mm:ss a', 'el', true), 'seconds'), b.format('h:mm:ss a') + ' should be equal to ' + moment(b.format('h:mm:ss a'), 'h:mm:ss a', 'el', true).format('h:mm:ss a'));
+
+        // test that a formatted moment having a meridiem string can be parsed with strict flag
         assert.ok(moment(b.format('h:mm:ss a'), 'h:mm:ss a', 'el', true).isValid(), b.format('h:mm:ss a') + ' should be parsed as valid');
 
         for (i = 0; i < meridiemTests.length; i++) {
@@ -15525,6 +15530,7 @@
         var i, m, weekday, datestring;
         for (i = 2; i < 7; i++) {
             m = moment().subtract({d: i});
+            // Different date string
             weekday = parseInt(m.format('d'), 10);
             datestring = (weekday === 0) ? '[la scorsa] dddd [alle] LT' : '[lo scorso] dddd [alle] LT';
             assert.equal(m.calendar(), m.format(datestring), 'Today - ' + i + ' days current time');
@@ -17294,6 +17300,8 @@
         var i, m, weekday, datestring;
         for (i = 2; i < 7; i++) {
             m = moment().subtract({d: i});
+
+            // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday)
             weekday = parseInt(m.format('d'), 10);
             datestring = (weekday === 2 || weekday === 4 ? '[Leschten] dddd [um] LT' : '[Leschte] dddd [um] LT');
 
@@ -17497,6 +17505,7 @@
     });
 
     test('format week on US calendar', function (assert) {
+        // Tests, whether the weekday names are correct, even if the week does not start on Monday
         moment.locale('lt', {week: {dow: 0, doy: 6}});
         var expected = 'sekmadienis Sek S_pirmadienis Pir P_antradienis Ant A_trečiadienis Tre T_ketvirtadienis Ket K_penktadienis Pen Pn_šeštadienis Šeš Š'.split('_'), i;
         for (i = 0; i < expected.length; i++) {
@@ -28046,6 +28055,7 @@
         assert.equal(moment(a).add({d: 1}).calendar(),       'Завтра о 02:00',      'tomorrow at the same time');
         assert.equal(moment(a).subtract({h: 1}).calendar(),  'Сьогодні о 01:00',     'Now minus 1 hour');
         assert.equal(moment(a).subtract({d: 1}).calendar(),  'Вчора о 02:00',       'yesterday at the same time');
+        // A special case for Ukrainian since 11 hours have different preposition
         assert.equal(moment(a).add({h: 9}).calendar(),  'Сьогодні об 11:00',       'same day at 11 o\'clock');
     });
 
@@ -29975,6 +29985,8 @@
     });
 
     test('add across DST', function (assert) {
+        // Detect Safari bug and bail. Hours on 13th March 2011 are shifted
+        // with 1 ahead.
         if (new Date(2011, 2, 13, 5, 0, 0).getHours() !== 5) {
             return;
         }
@@ -30309,7 +30321,10 @@
 
     test('milliseconds format', function (assert) {
         assert.equal(moment('1', 'S').get('ms'), 100, 'deciseconds');
+        // assert.equal(moment('10', 'S', true).isValid(), false, 'deciseconds with two digits');
+        // assert.equal(moment('1', 'SS', true).isValid(), false, 'centiseconds with one digits');
         assert.equal(moment('12', 'SS').get('ms'), 120, 'centiseconds');
+        // assert.equal(moment('123', 'SS', true).isValid(), false, 'centiseconds with three digits');
         assert.equal(moment('123', 'SSS').get('ms'), 123, 'milliseconds');
         assert.equal(moment('1234', 'SSSS').get('ms'), 123, 'milliseconds with SSSS');
         assert.equal(moment('123456789101112', 'SSSS').get('ms'), 123, 'milliseconds with SSSS');
@@ -30385,6 +30400,8 @@
 
         assert.equal(moment('gibberish', ['YY-MM-DD', 'YY-DD-MM']).format('MM DD YYYY'), 'Invalid date', 'doest throw for invalid strings');
         assert.equal(moment('gibberish', []).format('MM DD YYYY'), 'Invalid date', 'doest throw for an empty array');
+
+        //https://github.com/moment/moment/issues/1143
         assert.equal(moment(
             'System Administrator and Database Assistant (7/1/2011), System Administrator and Database Assistant (7/1/2011), Database Coordinator (7/1/2011), Vice President (7/1/2011), System Administrator and Database Assistant (5/31/2012), Database Coordinator (7/1/2012), System Administrator and Database Assistant (7/1/2013)',
             ['MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ssZ'])
@@ -30722,6 +30739,8 @@
         assert.equal(moment('2010.*...', 'YYYY.*', true).isValid(), false, 'invalid format with regex chars');
         assert.equal(moment('2010.*', 'YYYY.*', true).year(), 2010, 'valid format with regex chars');
         assert.equal(moment('.*2010.*', '.*YYYY.*', true).year(), 2010, 'valid format with regex chars on both sides');
+
+        //strict tokens
         assert.equal(moment('-5-05-25', 'YYYY-MM-DD', true).isValid(), false, 'invalid negative year');
         assert.equal(moment('2-05-25', 'YYYY-MM-DD', true).isValid(), false, 'invalid one-digit year');
         assert.equal(moment('20-05-25', 'YYYY-MM-DD', true).isValid(), false, 'invalid two-digit year');
@@ -30749,6 +30768,8 @@
 
         assert.equal(moment('+002012-05-25', 'YYYYY-MM-DD', true).isValid(), true, 'valid six-digit year');
         assert.equal(moment('+2012-05-25', 'YYYYY-MM-DD', true).isValid(), false, 'invalid four-digit year');
+
+        //thse are kinda pointless, but they should work as expected
         assert.equal(moment('1', 'S', true).isValid(), true, 'valid one-digit milisecond');
         assert.equal(moment('12', 'S', true).isValid(), false, 'invalid two-digit milisecond');
         assert.equal(moment('123', 'S', true).isValid(), false, 'invalid three-digit milisecond');
@@ -30760,6 +30781,8 @@
         assert.equal(moment('1', 'SSS', true).isValid(), false, 'invalid one-digit milisecond');
         assert.equal(moment('12', 'SSS', true).isValid(), false, 'invalid two-digit milisecond');
         assert.equal(moment('123', 'SSS', true).isValid(), true, 'valid three-digit milisecond');
+
+        // strict parsing respects month length
         assert.ok(moment('1 January 2000', 'D MMMM YYYY', true).isValid(), 'capital long-month + MMMM');
         assert.ok(!moment('1 January 2000', 'D MMM YYYY', true).isValid(), 'capital long-month + MMM');
         assert.ok(!moment('1 Jan 2000', 'D MMMM YYYY', true).isValid(), 'capital short-month + MMMM');
@@ -30791,6 +30814,8 @@
         return function (input, format, expected, description, asymetrical) {
             var m = moment(input, format);
             test.equal(m.format('YYYY MM DD'), expected, 'compare: ' + description);
+
+            //test round trip
             if (!asymetrical) {
                 test.equal(m.format(format), input, 'round trip: ' + description);
             }
@@ -30799,6 +30824,8 @@
 
     test('parsing week and weekday information', function (assert) {
         var ver = getVerifier(assert);
+
+        // year
         ver('12', 'gg', '2012 01 01', 'week-year two digits');
         ver('2012', 'gggg', '2012 01 01', 'week-year four digits');
 
@@ -30810,6 +30837,8 @@
 
         ver('13', 'GG', '2012 12 31', 'iso week-year two digits previous year');
         ver('2013', 'GGGG', '2012 12 31', 'iso week-year four digits previous year');
+
+        // year + week
         ver('1999 37', 'gggg w', '1999 09 05', 'week');
         ver('1999 37', 'gggg ww', '1999 09 05', 'week double');
         ver('1999 37', 'GGGG W', '1999 09 13', 'iso week');
@@ -30820,10 +30849,14 @@
 
         ver('1999 37 4', 'gggg ww e', '1999 09 09', 'day');
         ver('1999 37 04', 'gggg ww e', '1999 09 09', 'day wide', true);
+
+        // year + week + day
         ver('1999 37 4', 'gggg ww d', '1999 09 09', 'd');
         ver('1999 37 Th', 'gggg ww dd', '1999 09 09', 'dd');
         ver('1999 37 Thu', 'gggg ww ddd', '1999 09 09', 'ddd');
         ver('1999 37 Thursday', 'gggg ww dddd', '1999 09 09', 'dddd');
+
+        // lower-order only
         assert.equal(moment('22', 'ww').week(), 22, 'week sets the week by itself');
         assert.equal(moment('22', 'ww').weekYear(), moment().weekYear(), 'week keeps this year');
         assert.equal(moment('2012 22', 'YYYY ww').weekYear(), 2012, 'week keeps parsed year');
@@ -30831,10 +30864,18 @@
         assert.equal(moment('22', 'WW').isoWeek(), 22, 'iso week sets the week by itself');
         assert.equal(moment('2012 22', 'YYYY WW').weekYear(), 2012, 'iso week keeps parsed year');
         assert.equal(moment('22', 'WW').isoWeekYear(), moment().isoWeekYear(), 'iso week keeps this year');
+
+        // order
         ver('6 2013 2', 'e gggg w', '2013 01 12', 'order doesn\'t matter');
         ver('6 2013 2', 'E GGGG W', '2013 01 12', 'iso order doesn\'t matter');
+
+        //can parse other stuff too
         assert.equal(moment('1999-W37-4 3:30', 'GGGG-[W]WW-E HH:mm').format('YYYY MM DD HH:mm'), '1999 09 16 03:30', 'parsing weeks and hours');
+
+        // In safari, all years before 1300 are shifted back with one day.
+        // http://stackoverflow.com/questions/20768975/safari-subtracts-1-day-from-dates-before-1300
         if (new Date('1300-01-01').getUTCFullYear() === 1300) {
+            // Years less than 100
             ver('0098-06', 'GGGG-WW', '0098 02 03', 'small years work', true);
         }
     });
@@ -30859,6 +30900,8 @@
             ver('1999 37 lun.', 'gggg ww ddd', '1999 09 13', 'localized d uses 0-indexed days: Mon');
             ver('1999 37 lundi', 'gggg ww dddd', '1999 09 13', 'localized d uses 0-indexed days: Monday');
             ver('1999 37 4', 'gggg ww d', '1999 09 16', 'localized d uses 0-indexed days: 4');
+
+            //sunday goes at the end of the week
             ver('1999 37 0', 'gggg ww d', '1999 09 19', 'localized d uses 0-indexed days: 0 = sund');
             ver('1999 37 Di', 'gggg ww dd', '1999 09 19', 'localized d uses 0-indexed days: 0 = sund');
         }
@@ -31189,6 +31232,7 @@
 
     test('diff between utc and local', function (assert) {
         if (moment([2012]).utcOffset() === moment([2011]).utcOffset()) {
+            // Russia's utc offset on 1st of Jan 2012 vs 2011 is different
             assert.equal(moment([2012]).utc().diff([2011], 'years'), 1, 'year diff');
         }
         assert.equal(moment([2010, 2, 2]).utc().diff([2010, 0, 2], 'months'), 2, 'month diff');
@@ -31214,6 +31258,7 @@
     });
 
     test('month diffs', function (assert) {
+        // due to floating point math errors, these tests just need to be accurate within 0.00000001
         assert.equal(moment([2012, 0, 1]).diff([2012, 1, 1], 'months', true), -1, 'Jan 1 to Feb 1 should be 1 month');
         equal(assert, moment([2012, 0, 1]).diff([2012, 0, 1, 12], 'months', true), -0.5 / 31, 'Jan 1 to Jan 1 noon should be 0.5 / 31 months');
         assert.equal(moment([2012, 0, 15]).diff([2012, 1, 15], 'months', true), -1, 'Jan 15 to Feb 15 should be 1 month');
@@ -31226,6 +31271,8 @@
     });
 
     test('exact month diffs', function (assert) {
+        // generate all pairs of months and compute month diff, with fixed day
+        // of month = 15.
 
         var m1, m2;
         for (m1 = 0; m1 < 12; ++m1) {
@@ -31237,6 +31284,7 @@
     });
 
     test('year diffs', function (assert) {
+        // due to floating point math errors, these tests just need to be accurate within 0.00000001
         equal(assert, moment([2012, 0, 1]).diff([2013, 0, 1], 'years', true), -1, 'Jan 1 2012 to Jan 1 2013 should be 1 year');
         equal(assert, moment([2012, 1, 28]).diff([2013, 1, 28], 'years', true), -1, 'Feb 28 2012 to Feb 28 2013 should be 1 year');
         equal(assert, moment([2012, 2, 1]).diff([2013, 2, 1], 'years', true), -1, 'Mar 1 2012 to Mar 1 2013 should be 1 year');
@@ -31695,6 +31743,9 @@
     });
 
     test('asGetters', function (assert) {
+        // 400 years have exactly 146097 days
+
+        // years
         assert.equal(moment.duration(1, 'year').asYears(),            1,           '1 year as years');
         assert.equal(moment.duration(1, 'year').asMonths(),           12,          '1 year as months');
         assert.equal(moment.duration(400, 'year').asMonths(),         4800,        '400 years as months');
@@ -31708,6 +31759,8 @@
         assert.equal(moment.duration(1, 'year').asMinutes(),          525600,      '1 year as minutes');
         assert.equal(moment.duration(1, 'year').asSeconds(),          31536000,    '1 year as seconds');
         assert.equal(moment.duration(1, 'year').asMilliseconds(),     31536000000, '1 year as milliseconds');
+
+        // months
         assert.equal(moment.duration(1, 'month').asYears().toFixed(4), 0.0833,     '1 month as years');
         assert.equal(moment.duration(1, 'month').asMonths(),           1,          '1 month as months');
         assert.equal(moment.duration(1, 'month').asWeeks().toFixed(3), 4.286,      '1 month as weeks');
@@ -31731,6 +31784,8 @@
         assert.equal(moment.duration(1, 'month').asMinutes(),          43200,      '1 month as minutes');
         assert.equal(moment.duration(1, 'month').asSeconds(),          2592000,    '1 month as seconds');
         assert.equal(moment.duration(1, 'month').asMilliseconds(),     2592000000, '1 month as milliseconds');
+
+        // weeks
         assert.equal(moment.duration(1, 'week').asYears().toFixed(4),  0.0192,    '1 week as years');
         assert.equal(moment.duration(1, 'week').asMonths().toFixed(3), 0.230,     '1 week as months');
         assert.equal(moment.duration(1, 'week').asWeeks(),             1,         '1 week as weeks');
@@ -31739,6 +31794,8 @@
         assert.equal(moment.duration(1, 'week').asMinutes(),           10080,     '1 week as minutes');
         assert.equal(moment.duration(1, 'week').asSeconds(),           604800,    '1 week as seconds');
         assert.equal(moment.duration(1, 'week').asMilliseconds(),      604800000, '1 week as milliseconds');
+
+        // days
         assert.equal(moment.duration(1, 'day').asYears().toFixed(4),  0.0027,   '1 day as years');
         assert.equal(moment.duration(1, 'day').asMonths().toFixed(3), 0.033,    '1 day as months');
         assert.equal(moment.duration(1, 'day').asWeeks().toFixed(3),  0.143,    '1 day as weeks');
@@ -31747,6 +31804,8 @@
         assert.equal(moment.duration(1, 'day').asMinutes(),           1440,     '1 day as minutes');
         assert.equal(moment.duration(1, 'day').asSeconds(),           86400,    '1 day as seconds');
         assert.equal(moment.duration(1, 'day').asMilliseconds(),      86400000, '1 day as milliseconds');
+
+        // hours
         assert.equal(moment.duration(1, 'hour').asYears().toFixed(6),  0.000114, '1 hour as years');
         assert.equal(moment.duration(1, 'hour').asMonths().toFixed(5), 0.00137,  '1 hour as months');
         assert.equal(moment.duration(1, 'hour').asWeeks().toFixed(5),  0.00595,  '1 hour as weeks');
@@ -31755,6 +31814,8 @@
         assert.equal(moment.duration(1, 'hour').asMinutes(),           60,       '1 hour as minutes');
         assert.equal(moment.duration(1, 'hour').asSeconds(),           3600,     '1 hour as seconds');
         assert.equal(moment.duration(1, 'hour').asMilliseconds(),      3600000,  '1 hour as milliseconds');
+
+        // minutes
         assert.equal(moment.duration(1, 'minute').asYears().toFixed(8),  0.00000190, '1 minute as years');
         assert.equal(moment.duration(1, 'minute').asMonths().toFixed(7), 0.0000228,  '1 minute as months');
         assert.equal(moment.duration(1, 'minute').asWeeks().toFixed(7),  0.0000992,  '1 minute as weeks');
@@ -31763,6 +31824,8 @@
         assert.equal(moment.duration(1, 'minute').asMinutes(),           1,          '1 minute as minutes');
         assert.equal(moment.duration(1, 'minute').asSeconds(),           60,         '1 minute as seconds');
         assert.equal(moment.duration(1, 'minute').asMilliseconds(),      60000,      '1 minute as milliseconds');
+
+        // seconds
         assert.equal(moment.duration(1, 'second').asYears().toFixed(10),  0.0000000317, '1 second as years');
         assert.equal(moment.duration(1, 'second').asMonths().toFixed(9),  0.000000380,  '1 second as months');
         assert.equal(moment.duration(1, 'second').asWeeks().toFixed(8),   0.00000165,   '1 second as weeks');
@@ -31771,6 +31834,8 @@
         assert.equal(moment.duration(1, 'second').asMinutes().toFixed(4), 0.0167,       '1 second as minutes');
         assert.equal(moment.duration(1, 'second').asSeconds(),            1,            '1 second as seconds');
         assert.equal(moment.duration(1, 'second').asMilliseconds(),       1000,         '1 second as milliseconds');
+
+        // milliseconds
         assert.equal(moment.duration(1, 'millisecond').asYears().toFixed(13),  0.0000000000317, '1 millisecond as years');
         assert.equal(moment.duration(1, 'millisecond').asMonths().toFixed(12), 0.000000000380,  '1 millisecond as months');
         assert.equal(moment.duration(1, 'millisecond').asWeeks().toFixed(11),  0.00000000165,   '1 millisecond as weeks');
@@ -31785,6 +31850,9 @@
         var dS = moment.duration(1, 'milliseconds'),
             ds = moment.duration(3, 'seconds'),
             dm = moment.duration(13, 'minutes');
+
+        // Tests for issue #1867.
+        // Floating point errors for small duration units were introduced in version 2.8.0.
         assert.equal(dS.as('milliseconds'), 1, 'as("milliseconds")');
         assert.equal(dS.asMilliseconds(),   1, 'asMilliseconds()');
         assert.equal(ds.as('seconds'),      3, 'as("seconds")');
@@ -31801,6 +31869,7 @@
 
     test('add', function (assert) {
         var d = moment.duration({months: 4, weeks: 3, days: 2});
+        // for some reason, d._data._months does not get updated; use d._months instead.
         assert.equal(d.add(1, 'month')._months, 5, 'Add months');
         assert.equal(d.add(5, 'days')._days, 28, 'Add days');
         assert.equal(d.add(10000)._milliseconds, 10000, 'Add milliseconds');
@@ -31823,6 +31892,7 @@
 
     test('subtract', function (assert) {
         var d = moment.duration({months: 2, weeks: 2, days: 0, hours: 5});
+        // for some reason, d._data._months does not get updated; use d._months instead.
         assert.equal(d.subtract(1, 'months')._months, 1, 'Subtract months');
         assert.equal(d.subtract(14, 'days')._days, 0, 'Subtract days');
         assert.equal(d.subtract(10000)._milliseconds, 5 * 60 * 60 * 1000 - 10000, 'Subtract milliseconds');
@@ -32120,10 +32190,14 @@
         var date = moment.utc('2012-10-09T20:30:40.678');
 
         assert.equal(date.toISOString(), '2012-10-09T20:30:40.678Z', 'should output ISO8601 on moment.fn.toISOString');
+
+        // big years
         date = moment.utc('+020123-10-09T20:30:40.678');
         assert.equal(date.toISOString(), '+020123-10-09T20:30:40.678Z', 'ISO8601 format on big positive year');
+        // negative years
         date = moment.utc('-000001-10-09T20:30:40.678');
         assert.equal(date.toISOString(), '-000001-10-09T20:30:40.678Z', 'ISO8601 format on negative year');
+        // big negative years
         date = moment.utc('-020123-10-09T20:30:40.678');
         assert.equal(date.toISOString(), '-020123-10-09T20:30:40.678Z', 'ISO8601 format on big negative year');
     });
@@ -32139,6 +32213,7 @@
     });
 
     test('iso week formats', function (assert) {
+        // http://en.wikipedia.org/wiki/ISO_week_date
         var cases = {
             '2005-01-02': '2004-53',
             '2005-12-31': '2005-52',
@@ -32170,6 +32245,7 @@
     });
 
     test('iso week year formats', function (assert) {
+        // http://en.wikipedia.org/wiki/ISO_week_date
         var cases = {
             '2005-01-02': '2004-53',
             '2005-12-31': '2005-52',
@@ -32202,6 +32278,7 @@
     });
 
     test('week year formats', function (assert) {
+        // http://en.wikipedia.org/wiki/ISO_week_date
         var cases = {
             '2005-01-02': '2004-53',
             '2005-12-31': '2005-52',
@@ -32381,6 +32458,8 @@
         assert.equal(a.get('minute'), 7, 'minute');
         assert.equal(a.get('second'), 8, 'second');
         assert.equal(a.get('milliseconds'), 9, 'milliseconds');
+
+        //actual getters tested elsewhere
         assert.equal(a.get('weekday'), a.weekday(), 'weekday');
         assert.equal(a.get('isoWeekday'), a.isoWeekday(), 'isoWeekday');
         assert.equal(a.get('week'), a.week(), 'week');
@@ -32443,6 +32522,8 @@
         assert.equal(a.minutes(), 7, 'minute');
         assert.equal(a.seconds(), 8, 'second');
         assert.equal(a.milliseconds(), 9, 'milliseconds');
+
+        // Test month() behavior. See https://github.com/timrwood/moment/pull/822
         a = moment('20130531', 'YYYYMMDD');
         a.month(3);
         assert.equal(a.month(), 3, 'month edge case');
@@ -32465,10 +32546,43 @@
         assert.equal(a.minutes(), 7, 'minute');
         assert.equal(a.seconds(), 8, 'second');
         assert.equal(a.milliseconds(), 9, 'milliseconds');
+
+        // Test month() behavior. See https://github.com/timrwood/moment/pull/822
         a = moment('20130531', 'YYYYMMDD');
         a.month(3);
         assert.equal(a.month(), 3, 'month edge case');
     });
+
+    // Disable this, until we weekYear setter is fixed.
+    // https://github.com/moment/moment/issues/1379
+    // test('setters programatic with weeks', function (assert) {
+    //     var a = moment();
+    //     a.set('weekYear', 2001);
+    //     a.set('week', 49);
+    //     a.set('day', 4);
+    //     assert.equals(a.weekYear(), 2001);
+    //     assert.equals(a.week(), 49);
+    //     assert.equals(a.day(), 4);
+
+    //     a.set('weekday', 1);
+    //     assert.equals(a.weekday(), 1);
+
+    //     assert.done();
+    //},
+
+    // I think this suffers from the same issue as the non-iso version.
+    // test('setters programatic with weeks ISO', function (assert) {
+    //     var a = moment();
+    //     a.set('isoWeekYear', 2001);
+    //     a.set('isoWeek', 49);
+    //     a.set('isoWeekday', 4);
+
+    //     assert.equals(a.weekYear(), 2001);
+    //     assert.equals(a.week(), 49);
+    //     assert.equals(a.day(), 4);
+
+    //     assert.done();
+    //},
 
     test('setters strings', function (assert) {
         var a = moment([2012]).locale('en');
@@ -32483,6 +32597,7 @@
 
     test('setters - falsey values', function (assert) {
         var a = moment();
+        // ensure minutes wasn't coincidentally 0 already
         a.minutes(1);
         a.minutes(0);
         assert.equal(a.minutes(), 0, 'falsey value');
@@ -33483,6 +33598,7 @@
 
     test('is moment with hacked hasOwnProperty', function (assert) {
         var obj = {};
+        // HACK to suppress jshint warning about bad property name
         obj['hasOwnMoney'.replace('Money', 'Property')] = function () {
             return true;
         };
@@ -33973,7 +34089,10 @@
     });
 
     test('oddball permissiveness', function (assert) {
+        //https://github.com/moment/moment/issues/1128
         assert.ok(moment('2010-10-3199', ['MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY-MM-DD']).isValid());
+
+        //https://github.com/moment/moment/issues/1122
         assert.ok(moment('3:25', ['h:mma', 'hh:mma', 'H:mm', 'HH:mm']).isValid());
     });
 
@@ -34228,6 +34347,7 @@
 
     module('locale', {
         setup : function () {
+            // TODO: Remove once locales are switched to ES6
             helpers_each([{
                 name: 'en-gb',
                 data: {}
@@ -34312,7 +34432,9 @@
 
     test('library ensure inheritance', function (assert) {
         moment.locale('made-up', {
+            // I put them out of order
             months : 'February_March_April_May_June_July_August_September_October_November_December_January'.split('_')
+            // the rest of the properties should be inherited.
         });
 
         assert.equal(moment([2012, 5, 6]).format('MMMM'), 'July', 'Override some of the configs');
@@ -34963,33 +35085,46 @@
     }
 
     test('overflow with array', function (assert) {
+        //months
         assert.equal(flags([2010, 0]).overflow, -1, 'month 0 valid');
         assert.equal(flags([2010, 1]).overflow, -1, 'month 1 valid');
         assert.equal(flags([2010, -1]).overflow, 1, 'month -1 invalid');
         assert.equal(flags([2100, 12]).overflow, 1, 'month 12 invalid');
+
+        //days
         assert.equal(flags([2010, 1, 16]).overflow, -1, 'date valid');
         assert.equal(flags([2010, 1, -1]).overflow, 2, 'date -1 invalid');
         assert.equal(flags([2010, 1, 0]).overflow, 2, 'date 0 invalid');
         assert.equal(flags([2010, 1, 32]).overflow, 2, 'date 32 invalid');
         assert.equal(flags([2012, 1, 29]).overflow, -1, 'date leap year valid');
         assert.equal(flags([2010, 1, 29]).overflow, 2, 'date leap year invalid');
+
+        //hours
         assert.equal(flags([2010, 1, 1, 8]).overflow, -1, 'hour valid');
         assert.equal(flags([2010, 1, 1, 0]).overflow, -1, 'hour 0 valid');
         assert.equal(flags([2010, 1, 1, -1]).overflow, 3, 'hour -1 invalid');
         assert.equal(flags([2010, 1, 1, 25]).overflow, 3, 'hour 25 invalid');
         assert.equal(flags([2010, 1, 1, 24, 1]).overflow, 3, 'hour 24:01 invalid');
+
+        //minutes
         assert.equal(flags([2010, 1, 1, 8, 15]).overflow, -1, 'minute valid');
         assert.equal(flags([2010, 1, 1, 8, 0]).overflow, -1, 'minute 0 valid');
         assert.equal(flags([2010, 1, 1, 8, -1]).overflow, 4, 'minute -1 invalid');
         assert.equal(flags([2010, 1, 1, 8, 60]).overflow, 4, 'minute 60 invalid');
+
+        //seconds
         assert.equal(flags([2010, 1, 1, 8, 15, 12]).overflow, -1, 'second valid');
         assert.equal(flags([2010, 1, 1, 8, 15, 0]).overflow, -1, 'second 0 valid');
         assert.equal(flags([2010, 1, 1, 8, 15, -1]).overflow, 5, 'second -1 invalid');
         assert.equal(flags([2010, 1, 1, 8, 15, 60]).overflow, 5, 'second 60 invalid');
+
+        //milliseconds
         assert.equal(flags([2010, 1, 1, 8, 15, 12, 345]).overflow, -1, 'millisecond valid');
         assert.equal(flags([2010, 1, 1, 8, 15, 12, 0]).overflow, -1, 'millisecond 0 valid');
         assert.equal(flags([2010, 1, 1, 8, 15, 12, -1]).overflow, 6, 'millisecond -1 invalid');
         assert.equal(flags([2010, 1, 1, 8, 15, 12, 1000]).overflow, 6, 'millisecond 1000 invalid');
+
+        // 24 hrs
         assert.equal(flags([2010, 1, 1, 24, 0, 0, 0]).overflow, -1, '24:00:00.000 is fine');
         assert.equal(flags([2010, 1, 1, 24, 1, 0, 0]).overflow, 3, '24:01:00.000 is wrong hour');
         assert.equal(flags([2010, 1, 1, 24, 0, 1, 0]).overflow, 3, '24:00:01.000 is wrong hour');
@@ -34997,31 +35132,46 @@
     });
 
     test('overflow without format', function (assert) {
+        //months
         assert.equal(flags('2001-01', 'YYYY-MM').overflow, -1, 'month 1 valid');
         assert.equal(flags('2001-12', 'YYYY-MM').overflow, -1, 'month 12 valid');
         assert.equal(flags('2001-13', 'YYYY-MM').overflow, 1, 'month 13 invalid');
+
+        //days
         assert.equal(flags('2010-01-16', 'YYYY-MM-DD').overflow, -1, 'date 16 valid');
         assert.equal(flags('2010-01-0',  'YYYY-MM-DD').overflow, 2, 'date 0 invalid');
         assert.equal(flags('2010-01-32', 'YYYY-MM-DD').overflow, 2, 'date 32 invalid');
         assert.equal(flags('2012-02-29', 'YYYY-MM-DD').overflow, -1, 'date leap year valid');
         assert.equal(flags('2010-02-29', 'YYYY-MM-DD').overflow, 2, 'date leap year invalid');
+
+        //days of the year
         assert.equal(flags('2010 300', 'YYYY DDDD').overflow, -1, 'day 300 of year valid');
         assert.equal(flags('2010 365', 'YYYY DDDD').overflow, -1, 'day 365 of year valid');
         assert.equal(flags('2010 366', 'YYYY DDDD').overflow, 2, 'day 366 of year invalid');
         assert.equal(flags('2012 366', 'YYYY DDDD').overflow, -1, 'day 366 of leap year valid');
         assert.equal(flags('2012 367', 'YYYY DDDD').overflow, 2, 'day 367 of leap year invalid');
+
+        //hours
         assert.equal(flags('08', 'HH').overflow, -1, 'hour valid');
         assert.equal(flags('00', 'HH').overflow, -1, 'hour 0 valid');
         assert.equal(flags('25', 'HH').overflow, 3, 'hour 25 invalid');
         assert.equal(flags('24:01', 'HH:mm').overflow, 3, 'hour 24:01 invalid');
+
+        //minutes
         assert.equal(flags('08:15', 'HH:mm').overflow, -1, 'minute valid');
         assert.equal(flags('08:00', 'HH:mm').overflow, -1, 'minute 0 valid');
         assert.equal(flags('08:60', 'HH:mm').overflow, 4, 'minute 60 invalid');
+
+        //seconds
         assert.equal(flags('08:15:12', 'HH:mm:ss').overflow, -1, 'second valid');
         assert.equal(flags('08:15:00', 'HH:mm:ss').overflow, -1, 'second 0 valid');
         assert.equal(flags('08:15:60', 'HH:mm:ss').overflow, 5, 'second 60 invalid');
+
+        //milliseconds
         assert.equal(flags('08:15:12:345', 'HH:mm:ss:SSSS').overflow, -1, 'millisecond valid');
         assert.equal(flags('08:15:12:000', 'HH:mm:ss:SSSS').overflow, -1, 'millisecond 0 valid');
+
+        //this is OK because we don't match the last digit, so it's 100 ms
         assert.equal(flags('08:15:12:1000', 'HH:mm:ss:SSSS').overflow, -1, 'millisecond 1000 actually valid');
     });
 
@@ -35418,25 +35568,35 @@
 
     test('default thresholds', function (assert) {
         var a = moment();
+
+        // Seconds to minutes threshold
         a.subtract(44, 'seconds');
         assert.equal(a.fromNow(), 'a few seconds ago', 'Below default seconds to minutes threshold');
         a.subtract(1, 'seconds');
         assert.equal(a.fromNow(), 'a minute ago', 'Above default seconds to minutes threshold');
+
+        // Minutes to hours threshold
         a = moment();
         a.subtract(44, 'minutes');
         assert.equal(a.fromNow(), '44 minutes ago', 'Below default minute to hour threshold');
         a.subtract(1, 'minutes');
         assert.equal(a.fromNow(), 'an hour ago', 'Above default minute to hour threshold');
+
+        // Hours to days threshold
         a = moment();
         a.subtract(21, 'hours');
         assert.equal(a.fromNow(), '21 hours ago', 'Below default hours to day threshold');
         a.subtract(1, 'hours');
         assert.equal(a.fromNow(), 'a day ago', 'Above default hours to day threshold');
+
+        // Days to month threshold
         a = moment();
         a.subtract(25, 'days');
         assert.equal(a.fromNow(), '25 days ago', 'Below default days to month (singular) threshold');
         a.subtract(1, 'days');
         assert.equal(a.fromNow(), 'a month ago', 'Above default days to month (singular) threshold');
+
+        // months to year threshold
         a = moment();
         a.subtract(10, 'months');
         assert.equal(a.fromNow(), '10 months ago', 'Below default days to years threshold');
@@ -35445,6 +35605,7 @@
     });
 
     test('custom thresholds', function (assert) {
+        // Seconds to minutes threshold
         moment.relativeTimeThreshold('s', 55);
 
         var a = moment();
@@ -35454,6 +35615,8 @@
         assert.equal(a.fromNow(), 'a minute ago', 'Above custom seconds to minutes threshold');
 
         moment.relativeTimeThreshold('s', 45);
+
+        // Minutes to hours threshold
         moment.relativeTimeThreshold('m', 55);
         a = moment();
         a.subtract(54, 'minutes');
@@ -35461,6 +35624,8 @@
         a.subtract(1, 'minutes');
         assert.equal(a.fromNow(), 'an hour ago', 'Above custom minutes to hours threshold');
         moment.relativeTimeThreshold('m', 45);
+
+        // Hours to days threshold
         moment.relativeTimeThreshold('h', 24);
         a = moment();
         a.subtract(23, 'hours');
@@ -35468,6 +35633,8 @@
         a.subtract(1, 'hours');
         assert.equal(a.fromNow(), 'a day ago', 'Above custom hours to days threshold');
         moment.relativeTimeThreshold('h', 22);
+
+        // Days to month threshold
         moment.relativeTimeThreshold('d', 28);
         a = moment();
         a.subtract(27, 'days');
@@ -35475,6 +35642,8 @@
         a.subtract(1, 'days');
         assert.equal(a.fromNow(), 'a month ago', 'Above custom days to month (singular) threshold');
         moment.relativeTimeThreshold('d', 26);
+
+        // months to years threshold
         moment.relativeTimeThreshold('M', 9);
         a = moment();
         a.subtract(8, 'months');
@@ -35822,6 +35991,7 @@
 
     test('startOf across DST +1', function (assert) {
         var oldUpdateOffset = moment.updateOffset,
+            // Based on a real story somewhere in America/Los_Angeles
             dstAt = moment('2014-03-09T02:00:00-08:00').parseZone(),
             m;
 
@@ -35849,11 +36019,14 @@
         m.startOf('h');
         assert.equal(m.format(), '2014-03-09T01:00:00-08:00', 'startOf(\'hour\') before +1');
 
+        // There is no such time as 2:30-7 to try startOf('hour') across that
+
         moment.updateOffset = oldUpdateOffset;
     });
 
     test('startOf across DST -1', function (assert) {
         var oldUpdateOffset = moment.updateOffset,
+            // Based on a real story somewhere in America/Los_Angeles
             dstAt = moment('2014-11-02T02:00:00-07:00').parseZone(),
             m;
 
@@ -35872,9 +36045,13 @@
         m = moment('2014-11-02T09:00:00-08:00').parseZone();
         m.startOf('d');
         assert.equal(m.format(), '2014-11-02T00:00:00-07:00', 'startOf(\'day\') across -1');
+
+        // note that utc offset is -8
         m = moment('2014-11-02T01:30:00-08:00').parseZone();
         m.startOf('h');
         assert.equal(m.format(), '2014-11-02T01:00:00-08:00', 'startOf(\'hour\') after +1');
+
+        // note that utc offset is -7
         m = moment('2014-11-02T01:30:00-07:00').parseZone();
         m.startOf('h');
         assert.equal(m.format(), '2014-11-02T01:00:00-07:00', 'startOf(\'hour\') before +1');
@@ -36011,9 +36188,12 @@
     test('utc and local', function (assert) {
         var m = moment(Date.UTC(2011, 1, 2, 3, 4, 5, 6)), offset, expected;
         m.utc();
+        // utc
         assert.equal(m.date(), 2, 'the day should be correct for utc');
         assert.equal(m.day(), 3, 'the date should be correct for utc');
         assert.equal(m.hours(), 3, 'the hours should be correct for utc');
+
+        // local
         m.local();
         if (m.zone() > 180) {
             assert.equal(m.date(), 1, 'the date should be correct for local');
@@ -36194,6 +36374,8 @@
     test('change hours when changing the utc offset', function (assert) {
         var m = moment.utc([2000, 0, 1, 6]);
         assert.equal(m.hour(), 6, 'UTC 6AM should be 6AM at +0000');
+
+        // sanity check
         m.utcOffset(0);
         assert.equal(m.hour(), 6, 'UTC 6AM should be 6AM at +0000');
 
@@ -36272,6 +36454,8 @@
 
         moment.updateOffset = oldOffset;
     });
+
+    //////////////////
     test('getters and setters', function (assert) {
         var a = moment([2011, 5, 20]);
 
@@ -36614,6 +36798,10 @@
         var m = moment(),
             fmt = 'YYYY-DD-MM HH:mm:ss',
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             assert.equal(m.clone().utcOffset(z * 60, true).format(fmt),
                     m.format(fmt),
@@ -36624,6 +36812,10 @@
     test('local to zone, keepLocalTime = false', function (assert) {
         var m = moment(),
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             assert.equal(m.clone().utcOffset(z * 60).valueOf(),
                     m.valueOf(),
@@ -36651,6 +36843,10 @@
         var m = moment(),
             fmt = 'YYYY-DD-MM HH:mm:ss',
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             m.utcOffset(z * 60);
 
@@ -36663,6 +36859,10 @@
     test('zone to local, keepLocalTime = false', function (assert) {
         var m = moment(),
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             m.utcOffset(z * 60);
 
@@ -36727,6 +36927,7 @@
     module('week year');
 
     test('iso week year', function (assert) {
+        // Some examples taken from http://en.wikipedia.org/wiki/ISO_week
         assert.equal(moment([2005, 0, 1]).isoWeekYear(), 2004);
         assert.equal(moment([2005, 0, 2]).isoWeekYear(), 2004);
         assert.equal(moment([2005, 0, 3]).isoWeekYear(), 2005);
@@ -36749,6 +36950,7 @@
     });
 
     test('week year', function (assert) {
+        // Some examples taken from http://en.wikipedia.org/wiki/ISO_week
         moment.locale('dow: 1,doy: 4', {week: {dow: 1, doy: 4}}); // like iso
         assert.equal(moment([2005, 0, 1]).weekYear(), 2004);
         assert.equal(moment([2005, 0, 2]).weekYear(), 2004);
@@ -37152,6 +37354,9 @@
     });
 
     test('years with iso week 53', function (assert) {
+        // Based on a table taken from http://en.wikipedia.org/wiki/ISO_week_date
+        // (as downloaded on 2014-01-06) listing the 71 years in a 400-year cycle
+        // that have 53 weeks; in this case reflecting the 2000 based cycle
         assert.equal(moment([2004, 11, 31]).isoWeek(), 53, 'Dec 31 2004 should be iso week 53');
         assert.equal(moment([2009, 11, 31]).isoWeek(), 53, 'Dec 31 2009 should be iso week 53');
         assert.equal(moment([2015, 11, 31]).isoWeek(), 53, 'Dec 31 2015 should be iso week 53');
@@ -37226,6 +37431,9 @@
     });
 
     test('count years with iso week 53', function (assert) {
+        // Based on http://en.wikipedia.org/wiki/ISO_week_date (as seen on 2014-01-06)
+        // stating that there are 71 years in a 400-year cycle that have 53 weeks;
+        // in this case reflecting the 2000 based cycle
         var count = 0, i;
         for (i = 0; i < 400; i++) {
             count += (moment([2000 + i, 11, 31]).isoWeek() === 53) ? 1 : 0;
@@ -37438,6 +37646,10 @@
         var m = moment(),
             fmt = 'YYYY-DD-MM HH:mm:ss',
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             assert.equal(m.clone().zone(z * 60, true).format(fmt), m.format(fmt),
                     'local to zone(' + z + ':00) failed to keep local time');
@@ -37447,6 +37659,10 @@
     test('local to zone, keepLocalTime = false', function (assert) {
         var m = moment(),
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             assert.equal(m.clone().zone(z * 60).valueOf(), m.valueOf(),
                     'local to zone(' + z + ':00) failed to keep utc time (implicit)');
@@ -37472,6 +37688,10 @@
         var m = moment(),
             fmt = 'YYYY-DD-MM HH:mm:ss',
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             m.zone(z * 60);
 
@@ -37483,6 +37703,10 @@
     test('zone to local, keepLocalTime = false', function (assert) {
         var m = moment(),
             z;
+
+        // Apparently there is -12:00 and +14:00
+        // http://en.wikipedia.org/wiki/UTC+14:00
+        // http://en.wikipedia.org/wiki/UTC-12:00
         for (z = -12; z <= 14; ++z) {
             m.zone(z * 60);
 

@@ -12,6 +12,8 @@ export function daysInMonth(year, month) {
     return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
 }
 
+// FORMATTING
+
 addFormatToken('M', ['MM', 2], 'Mo', function () {
     return this.month() + 1;
 });
@@ -24,7 +26,11 @@ addFormatToken('MMMM', 0, 0, function (format) {
     return this.localeData().months(this, format);
 });
 
+// ALIASES
+
 addUnitAlias('month', 'M');
+
+// PARSING
 
 addRegexToken('M',    match1to2);
 addRegexToken('MM',   match1to2, match2);
@@ -37,12 +43,15 @@ addParseToken(['M', 'MM'], function (input, array) {
 
 addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
     var month = config._locale.monthsParse(input, token, config._strict);
+    // if we didn't find a month name, mark the date as invalid.
     if (month != null) {
         array[MONTH] = month;
     } else {
         config._pf.invalidMonth = input;
     }
 });
+
+// LOCALES
 
 export var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
 export function localeMonths (m) {
@@ -64,6 +73,7 @@ export function localeMonthsParse (monthName, format, strict) {
     }
 
     for (i = 0; i < 12; i++) {
+        // make the regex if we don't have it already
         mom = createUTC([2000, i]);
         if (strict && !this._longMonthsParse[i]) {
             this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
@@ -73,6 +83,7 @@ export function localeMonthsParse (monthName, format, strict) {
             regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
             this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
         }
+        // test the regex
         if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
             return i;
         } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
@@ -83,10 +94,15 @@ export function localeMonthsParse (monthName, format, strict) {
     }
 }
 
+// MOMENTS
+
 export function setMonth (mom, value) {
     var dayOfMonth;
+
+    // TODO: Move this out of here!
     if (typeof value === 'string') {
         value = mom.localeData().monthsParse(value);
+        // TODO: Another silent failure?
         if (typeof value !== 'number') {
             return mom;
         }

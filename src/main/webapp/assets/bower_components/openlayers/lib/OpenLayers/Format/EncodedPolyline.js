@@ -3,16 +3,55 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format.js
+ * @requires OpenLayers/Feature/Vector.js
+ */
 
+/**
+ * Class: OpenLayers.Format.EncodedPolyline
+ * Class for reading and writing encoded polylines.  Create a new instance
+ * with the <OpenLayers.Format.EncodedPolyline> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format>
+ */
 OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
 
-        geometryType: "linestring",
+    /**
+     * APIProperty: geometryType
+     * {String} Geometry type to output. One of: linestring (default),
+     *     linearring, point, multipoint or polygon. If the geometryType is
+     *     point, only the first point of the string is returned.
+     */
+    geometryType: "linestring",
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.EncodedPolyline
+     * Create a new parser for encoded polylines
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *           this instance
+     *
+     * Returns:
+     * {<OpenLayers.Format.EncodedPolyline>} A new encoded polylines parser.
+     */
+    initialize: function(options) {
         OpenLayers.Format.prototype.initialize.apply(this, [options]);
     },
 
-        read: function(encoded) {
+    /**
+     * APIMethod: read
+     * Deserialize an encoded polyline string and return a vector feature.
+     *
+     * Parameters:
+     * encoded - {String} An encoded polyline string
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector>} A vector feature with a linestring.
+     */
+    read: function(encoded) {
         var geomType;
         if (this.geometryType == "linestring")
             geomType = OpenLayers.Geometry.LineString;
@@ -50,7 +89,20 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
         );
     },
 
-        decode: function(encoded, dims, opt_factor) {
+    /**
+     * APIMethod: decode
+     * Deserialize an encoded string and return an array of n-dimensional
+     * points.
+     *
+     * Parameters:
+     * encoded - {String} An encoded string
+     * dims - {int} The dimension of the points that are returned
+     *
+     * Returns:
+     * {Array(Array(int))} An array containing n-dimensional arrays of
+     *     coordinates.
+     */
+    decode: function(encoded, dims, opt_factor) {
         var factor = opt_factor || 1e5;
         var flatPoints = this.decodeDeltas(encoded, dims, factor);
         var flatPointsLength = flatPoints.length;
@@ -69,7 +121,18 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
         return points;
     },
 
-        write: function(features) {
+    /**
+     * APIMethod: write
+     * Serialize a feature or array of features into a WKT string.
+     *
+     * Parameters:
+     * features - {<OpenLayers.Feature.Vector>|Array} A feature or array of
+     *            features
+     *
+     * Returns:
+     * {String} The WKT string representation of the input geometries
+     */
+    write: function(features) {
         var feature;
         if (features.constructor == Array)
             feature = features[0];
@@ -103,7 +166,19 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
         return this.encodeDeltas(flatPoints, 2);
     },
 
-        encode: function (points, dims, opt_factor) {
+    /**
+     * APIMethod: encode
+     * Serialize an array of n-dimensional points and return an encoded string
+     *
+     * Parameters:
+     * points - {Array(Array(int))} An array containing n-dimensional
+     *          arrays of coordinates
+     * dims - {int} The dimension of the points that should be read
+     *
+     * Returns:
+     * {String} An encoded string
+     */
+    encode: function (points, dims, opt_factor) {
         var factor = opt_factor || 1e5;
         var flatPoints = [];
 
@@ -119,7 +194,22 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
         return this.encodeDeltas(flatPoints, dims, factor);
     },
 
-        encodeDeltas: function(numbers, dimension, opt_factor) {
+    /**
+     * APIMethod: encodeDeltas
+     * Encode a list of n-dimensional points and return an encoded string
+     *
+     * Attention: This function will modify the passed array!
+     *
+     * Parameters:
+     * numbers - {Array.<number>} A list of n-dimensional points.
+     * dimension - {number} The dimension of the points in the list.
+     * opt_factor - {number=} The factor by which the numbers will be
+     * multiplied. The remaining decimal places will get rounded away.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeDeltas: function(numbers, dimension, opt_factor) {
       var factor = opt_factor || 1e5;
       var d;
 
@@ -143,7 +233,20 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeDeltas: function(encoded, dimension, opt_factor) {
+    /**
+     * APIMethod: decodeDeltas
+     * Decode a list of n-dimensional points from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     * dimension - {number} The dimension of the points in the encoded string.
+     * opt_factor - {number=} The factor by which the resulting numbers will
+     * be divided.
+     *
+     * Returns:
+     * {Array.<number>} A list of n-dimensional points.
+     */
+    decodeDeltas: function(encoded, dimension, opt_factor) {
       var factor = opt_factor || 1e5;
       var d;
 
@@ -167,7 +270,21 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        encodeFloats: function(numbers, opt_factor) {
+    /**
+     * APIMethod: encodeFloats
+     * Encode a list of floating point numbers and return an encoded string
+     *
+     * Attention: This function will modify the passed array!
+     *
+     * Parameters:
+     * numbers - {Array.<number>} A list of floating point numbers.
+     * opt_factor - {number=} The factor by which the numbers will be
+     * multiplied. The remaining decimal places will get rounded away.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeFloats: function(numbers, opt_factor) {
       var factor = opt_factor || 1e5;
 
       var numbersLength = numbers.length;
@@ -179,7 +296,18 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeFloats: function(encoded, opt_factor) {
+    /**
+     * APIMethod: decodeFloats
+     * Decode a list of floating point numbers from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     * opt_factor - {number=} The factor by which the result will be divided.
+     *
+     * Returns:
+     * {Array.<number>} A list of floating point numbers.
+     */
+    decodeFloats: function(encoded, opt_factor) {
       var factor = opt_factor || 1e5;
 
       var numbers = this.decodeSignedIntegers(encoded);
@@ -193,7 +321,19 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        encodeSignedIntegers: function(numbers) {
+    /**
+     * APIMethod: encodeSignedIntegers
+     * Encode a list of signed integers and return an encoded string
+     *
+     * Attention: This function will modify the passed array!
+     *
+     * Parameters:
+     * numbers - {Array.<number>} A list of signed integers.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeSignedIntegers: function(numbers) {
       var numbersLength = numbers.length;
       for (var i = 0; i < numbersLength; ++i) {
         var num = numbers[i];
@@ -210,7 +350,17 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeSignedIntegers: function(encoded) {
+    /**
+     * APIMethod: decodeSignedIntegers
+     * Decode a list of signed integers from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     *
+     * Returns:
+     * {Array.<number>} A list of signed integers.
+     */
+    decodeSignedIntegers: function(encoded) {
       var numbers = this.decodeUnsignedIntegers(encoded);
 
       var numbersLength = numbers.length;
@@ -223,7 +373,17 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        encodeUnsignedIntegers: function(numbers) {
+    /**
+     * APIMethod: encodeUnsignedIntegers
+     * Encode a list of unsigned integers and return an encoded string
+     *
+     * Parameters:
+     * numbers - {Array.<number>} A list of unsigned integers.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeUnsignedIntegers: function(numbers) {
       var encoded = '';
 
       var numbersLength = numbers.length;
@@ -235,7 +395,17 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeUnsignedIntegers: function(encoded) {
+    /**
+     * APIMethod: decodeUnsignedIntegers
+     * Decode a list of unsigned integers from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     *
+     * Returns:
+     * {Array.<number>} A list of unsigned integers.
+     */
+    decodeUnsignedIntegers: function(encoded) {
       var numbers = [];
 
       var current = 0;
@@ -260,19 +430,52 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        encodeFloat: function(num, opt_factor) {
+    /**
+     * Method: encodeFloat
+     * Encode one single floating point number and return an encoded string
+     *
+     * Parameters:
+     * num - {number} Floating point number that should be encoded.
+     * opt_factor - {number=} The factor by which num will be multiplied.
+     * The remaining decimal places will get rounded away.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeFloat: function(num, opt_factor) {
       num = Math.round(num * (opt_factor || 1e5));
       return this.encodeSignedInteger(num);
     },
 
 
-        decodeFloat: function(encoded, opt_factor) {
+    /**
+     * Method: decodeFloat
+     * Decode one single floating point number from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     * opt_factor - {number=} The factor by which the result will be divided.
+     *
+     * Returns:
+     * {number} The decoded floating point number.
+     */
+    decodeFloat: function(encoded, opt_factor) {
       var result = this.decodeSignedInteger(encoded);
       return result / (opt_factor || 1e5);
     },
 
 
-        encodeSignedInteger: function(num) {
+    /**
+     * Method: encodeSignedInteger
+     * Encode one single signed integer and return an encoded string
+     *
+     * Parameters:
+     * num - {number} Signed integer that should be encoded.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeSignedInteger: function(num) {
       var signedNum = num << 1;
       if (num < 0) {
         signedNum = ~(signedNum);
@@ -282,13 +485,33 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeSignedInteger: function(encoded) {
+    /**
+     * Method: decodeSignedInteger
+     * Decode one single signed integer from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     *
+     * Returns:
+     * {number} The decoded signed integer.
+     */
+    decodeSignedInteger: function(encoded) {
       var result = this.decodeUnsignedInteger(encoded);
       return ((result & 1) ? ~(result >> 1) : (result >> 1));
     },
 
 
-        encodeUnsignedInteger: function(num) {
+    /**
+     * Method: encodeUnsignedInteger
+     * Encode one single unsigned integer and return an encoded string
+     *
+     * Parameters:
+     * num - {number} Unsigned integer that should be encoded.
+     *
+     * Returns:
+     * {string} The encoded string.
+     */
+    encodeUnsignedInteger: function(num) {
       var value, encoded = '';
       while (num >= 0x20) {
         value = (0x20 | (num & 0x1f)) + 63;
@@ -301,7 +524,17 @@ OpenLayers.Format.EncodedPolyline = OpenLayers.Class(OpenLayers.Format, {
     },
 
 
-        decodeUnsignedInteger: function(encoded) {
+    /**
+     * Method: decodeUnsignedInteger
+     * Decode one single unsigned integer from an encoded string
+     *
+     * Parameters:
+     * encoded - {string} An encoded string.
+     *
+     * Returns:
+     * {number} The decoded unsigned integer.
+     */
+    decodeUnsignedInteger: function(encoded) {
       var result = 0;
       var shift = 0;
 

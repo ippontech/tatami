@@ -2,6 +2,8 @@
 
 angular.module('mentio')
     .factory('mentioUtil', function ($window, $location, $anchorScroll, $timeout) {
+
+        // public
         function popUnderMention (ctx, triggerCharSet, selectionEl, requireLeadingSpace) {
             var coordinates;
             var mentionInfo = getTriggerInfo(ctx, triggerCharSet, requireLeadingSpace, false);
@@ -14,6 +16,8 @@ angular.module('mentio')
                 } else {
                     coordinates = getContentEditableCaretPosition(ctx, mentionInfo.mentionPosition);
                 }
+
+                // Move the button into place.
                 selectionEl.css({
                     top: coordinates.top + 'px',
                     left: coordinates.left + 'px',
@@ -34,6 +38,7 @@ angular.module('mentio')
 
         function scrollIntoView(ctx, elem)
         {
+            // cheap hack in px - need to check styles relative to the element
             var reasonableBuffer = 20;
             var maxScrollDisplacement = 100;
             var clientRect;
@@ -119,6 +124,8 @@ angular.module('mentio')
                 lastNode = frag.appendChild(node);
             }
             range.insertNode(frag);
+
+            // Preserve the selection
             if (lastNode) {
                 range = range.cloneRange();
                 range.setStartAfter(lastNode);
@@ -138,6 +145,8 @@ angular.module('mentio')
                 selectElement(ctx, targetElement, path, offset);
             }
         }
+
+        // public
         function replaceMacroText (ctx, targetElement, path, offset, macros, text) {
             resetSelection(ctx, targetElement, path, offset);
 
@@ -163,6 +172,8 @@ angular.module('mentio')
                 }
             }
         }
+
+        // public
         function replaceTriggerText (ctx, targetElement, path, offset, triggerCharSet, 
                 text, requireLeadingSpace, hasTrailingSpace) {
             resetSelection(ctx, targetElement, path, offset);
@@ -180,6 +191,7 @@ angular.module('mentio')
                     myField.selectionStart = startPos + text.length;
                     myField.selectionEnd = startPos + text.length;
                 } else {
+                    // add a space to the end of the pasted text
                     text = text + '\xA0';
                     pasteHtml(ctx, text, mentionInfo.mentionPosition,
                             mentionInfo.mentionPosition + mentionInfo.mentionText.length + 1);
@@ -198,12 +210,15 @@ angular.module('mentio')
                 }
             }
         }
+
+        // public
         function getMacroMatch (ctx, macros) {
             var selected, path = [], offset;
 
             if (selectedElementIsTextAreaOrInput(ctx)) {
                 selected = getDocument(ctx).activeElement;
             } else {
+                // content editable
                 var selectionInfo = getContentEditableSelectedPath(ctx);
                 if (selectionInfo) {
                     selected = selectionInfo.selected;
@@ -222,6 +237,7 @@ angular.module('mentio')
                     (effectiveRange.charAt(effectiveRange.length - 1) === '\xA0' ||
                         effectiveRange.charAt(effectiveRange.length - 1) === ' ')) {
                     hasTrailingSpace = true;
+                    // strip space
                     effectiveRange = effectiveRange.substring(0, effectiveRange.length-1);
                 }
 
@@ -251,6 +267,7 @@ angular.module('mentio')
         }
 
         function getContentEditableSelectedPath(ctx) {
+            // content editable
             var sel = getWindowSelection(ctx);
             var selected = sel.anchorNode;
             var path = [];
@@ -267,6 +284,7 @@ angular.module('mentio')
                     }
                 }
                 path.reverse();
+                // getRangeAt may not exist, need alternative
                 offset = sel.getRangeAt(0).startOffset;
                 return {
                     selected: selected,
@@ -275,12 +293,16 @@ angular.module('mentio')
                 };
             }
         }
+
+        // public
         function getTriggerInfo (ctx, triggerCharSet, requireLeadingSpace, menuAlreadyActive, hasTrailingSpace) {
             /*jshint maxcomplexity:11 */
+            // yes this function needs refactoring 
             var selected, path, offset;
             if (selectedElementIsTextAreaOrInput(ctx)) {
                 selected = getDocument(ctx).activeElement;
             } else {
+                // content editable
                 var selectionInfo = getContentEditableSelectedPath(ctx);
                 if (selectionInfo) {
                     selected = selectionInfo.selected;
@@ -389,6 +411,8 @@ angular.module('mentio')
             range.setEnd(sel.anchorNode, selectedNodePosition);
 
             range.collapse(false);
+
+            // Create the marker element containing a single invisible character using DOM methods and insert it
             markerEl = getDocument(ctx).createElement('span');
             markerEl.id = markerId;
             markerEl.appendChild(getDocument(ctx).createTextNode(markerTextChar));
@@ -470,8 +494,12 @@ angular.module('mentio')
             if (element.nodeName !== 'INPUT') {
                 style.wordWrap = 'break-word';
             }
+
+            // position off-screen
             style.position = 'absolute';
             style.visibility = 'hidden';
+
+            // transfer the element's properties to the div
             properties.forEach(function (prop) {
                 style[prop] = computed[prop];
             });
@@ -507,12 +535,18 @@ angular.module('mentio')
         }
 
         return {
+            // public
             popUnderMention: popUnderMention,
             replaceMacroText: replaceMacroText,
             replaceTriggerText: replaceTriggerText,
             getMacroMatch: getMacroMatch,
             getTriggerInfo: getTriggerInfo,
             selectElement: selectElement,
+
+
+
+
+            // private: for unit testing only
             getTextAreaOrInputUnderlinePosition: getTextAreaOrInputUnderlinePosition,
             getTextPrecedingCurrentSelection: getTextPrecedingCurrentSelection,
             getContentEditableSelectedPath: getContentEditableSelectedPath,

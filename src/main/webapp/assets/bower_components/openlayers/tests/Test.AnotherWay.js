@@ -1,3 +1,28 @@
+/**
+ *  Test.AnotherWay version 0.5
+ *  
+ *  Copyright (c) 2005 Artem Khodush, http://straytree.org
+ *  
+ *  Permission is hereby granted, free of charge, to any person obtaining
+ *  a copy of this software and associated documentation files (the
+ *  "Software"), to deal in the Software without restriction, including
+ *  without limitation the rights to use, copy, modify, merge, publish,
+ *  distribute, sublicense, and/or sell copies of the Software, and to
+ *  permit persons to whom the Software is furnished to do so, subject to
+ *  the following conditions:
+ *  
+ *  The above copyright notice and this permission notice shall be
+ *  included in all copies or substantial portions of the Software.
+ *  
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *  
+ */
 
 if (typeof(Test) == "undefined") {
     Test = {};
@@ -49,6 +74,8 @@ Test.AnotherWay._add_test_page_url = function(test_url, convention){
     var table = document.getElementById("testtable");
     var record_select = document.getElementById("record_select");
     var index = Test.AnotherWay._g_test_page_urls.length;
+    
+    // trim spaces.
     if (test_url.match("^(\\s*)(.*\\S)(\\s*)$")) {
         test_url = RegExp.$2;
     }
@@ -99,6 +126,9 @@ Test.AnotherWay._show_error = function(msg){
     error_div.appendChild(document.createTextNode(msg));
     error_div.style.display = "block";
 };
+
+// read urls from the list in the html file inside the list_iframe
+// fill on-screen list with urls and "run" buttons, and fill the g_test_page_urls object.
 Test.AnotherWay._list_iframe_onload = function(){
     if (window.frames.list_iframe != null && window.frames.list_iframe.location != "" && window.frames.list_iframe.location != "about:blank") {
         var list_doc = window.frames.list_iframe.document;
@@ -157,6 +187,8 @@ Test.AnotherWay._unselect_all_onclick = function(){
 Test.AnotherWay._run_one_onclick = function(){
     Test.AnotherWay._run_test_page(this.id);
 };
+
+// construct an object that will gather results of running one test function
 Test.AnotherWay._test_object_t = function(fun_name){
     this.name = fun_name; // name of the test function
     this.n_plan = null; // planned number of assertions
@@ -168,6 +200,11 @@ Test.AnotherWay._test_object_t = function(fun_name){
     this.wait_result_milliseconds = 0; // how long to wait before collecting results from the test
     this.second_wait_msg = null; // <p> status message (in addition to the page wait_msg)
     this.delay_actions = []; // array of actions to be perfomed after the test function returns
+    //  action : { acton_kind: "call" | "window" | "replay"
+    //              when "call":        { call_fn call_delay_milliseconds } call_fn takes nothing
+    //              when "window" :     { wnd_url wnd_wnd wnd_fn wnd_timeout_milliseconds wnd_dont_close } wnd_fn takes wnd
+    //              wnen "replay" :     { replay_wnd replay_events replay_event_i replay_checkpoints } checkpoint_fn takes this, wnd
+    //  }
     this.delay_action_i = null; // index of delay action currently being performed
     this.delay_prev_timer_time = 0; // for counting time while performing delay_actions
     this.delay_current_milliseconds_left = 0; // time left before the next action, runs down
@@ -247,6 +284,7 @@ Test.AnotherWay._constructor_name = function(x){
         s = "unknown";
     }
     if (s == "unknown") {
+        // hackish attempt to guess a type
         var is_array = true;
         var index = 0;
         for (i in x) {
@@ -461,6 +499,7 @@ Test.AnotherWay._html_eq_node = function(expected, got, path, msg, expected_loc_
                     msg.msg = Test.AnotherWay._html_eq_fail_msg(path, "node names", expected.nodeName, got.nodeName);
                     return false;
                 }
+                // compare attributes
                 var expected_attrs = {};
                 var got_attrs = {};
                 var i;
@@ -529,6 +568,7 @@ Test.AnotherWay._html_eq_node = function(expected, got, path, msg, expected_loc_
                             }
                         }
                 }
+                // compare child nodes
                 Test.AnotherWay._html_eq_remove_blank_nodes(expected);
                 Test.AnotherWay._html_eq_remove_blank_nodes(got);
                 var expected_length = expected.childNodes.length;
@@ -694,6 +734,7 @@ Test.AnotherWay._action_estimate_milliseconds = function(action){
 
 Test.AnotherWay._g_timeout_granularity = 200;
 Test.AnotherWay._g_tests_queue = []; // vector of { url: string, test_objects : array of test_object_t, test_object_i: int, wait_msg: <p> object, loading_timeout_milliseconds: int, timeout_id: id }
+// load one html page, schedule further processing
 Test.AnotherWay._run_test_page = function(id, called_from_outside){
     if (id.match(/^test(\d+)/)) {
         id = RegExp.$1;
@@ -704,6 +745,12 @@ Test.AnotherWay._run_test_page = function(id, called_from_outside){
         });
         if (Test.AnotherWay._g_tests_queue.length == 1) {
             if (!called_from_outside) {
+                // Crap. Be careful stepping around.
+                // For Mozilla and Opera, when this file is included into the frameset page that is in another directory (and _g_outside_path_correction!=null)
+                // but the test pages are started from within it (by "run" buttons), then:
+                // depending on whether the page is the first one loaded into the test frame or not,
+                // the base url for relative test pages differs.
+                // Crap, like I said.
                 Test.AnotherWay._g_tests_queue[0].suppress_outside_path_correction = true;
             }
             Test.AnotherWay._start_loading_page();
@@ -726,6 +773,7 @@ Test.AnotherWay._load_next_page = function(){
 Test.AnotherWay._g_opera_path_correction = null; // ugly wart to support opera
 Test.AnotherWay._g_outside_path_correction = null; // ugly wart to accomodate Opera and Mozilla, where relative url relates to the directory where the page that calls this function is located
 Test.AnotherWay._set_iframe_location = function(iframe, loc, outside_path_correction){
+    // allow to load only locations with the same origin
     var proto_end = loc.indexOf("://");
     if (proto_end != -1) { // otherwise, it's safe to assume (for Opera, Mozilla and IE ) that loc will be treated as relative
         var main_loc = window.location.href;
@@ -743,6 +791,7 @@ Test.AnotherWay._set_iframe_location = function(iframe, loc, outside_path_correc
             };
         }
     }
+    // opera cannot handle urls relative to file:// without assistance
     if (window.opera != null && window.location.protocol == "file:" && loc.indexOf(":") == -1) {
         var base = window.location.href;
         var q_pos = base.indexOf("?");
@@ -756,6 +805,7 @@ Test.AnotherWay._set_iframe_location = function(iframe, loc, outside_path_correc
             loc = base + loc;
         }
     }
+    // if this function is called from another page, and if that page is in another directory, correction is needed
     if (outside_path_correction != null) {
         var pos = loc.indexOf(outside_path_correction);
         if (pos == 0) {
@@ -777,6 +827,7 @@ Test.AnotherWay._start_loading_page = function(){
     test_page.timeout_id = setTimeout(Test.AnotherWay._loading_timeout, Test.AnotherWay._g_timeout_granularity);
     test_page.wait_msg = Test.AnotherWay._print_counter_result(test_page.url, "loading...", test_page.loading_timeout_milliseconds, "loading");
     if (test_page.convention == "jsan") {
+        // the tests in that page will run when it's loading, so the test object must be ready
         Test.AnotherWay._g_test_object_for_jsan = new Test.AnotherWay._test_object_t(test_page.url);
     }
     var outside_path_correction = null;
@@ -820,6 +871,7 @@ Test.AnotherWay._strip_query_and_hash = function(s){
 Test.AnotherWay._is_url_loaded = function(url, wnd){
     var loaded = false;
     if (wnd != null && wnd.location != null) {
+        // after some popup blocker interference, location may behave strange..
         var location_s = "";
         location_s += wnd.location;
         if (location_s != "") {
@@ -847,6 +899,7 @@ Test.AnotherWay._is_url_loaded = function(url, wnd){
     }
     return loaded;
 };
+// find and run all test functions in the g_cur_page html page.
 Test.AnotherWay._test_page_onload = function(){
     if (Test.AnotherWay._g_tests_queue.length == 0) {
         return;
@@ -859,6 +912,7 @@ Test.AnotherWay._test_page_onload = function(){
     Test.AnotherWay._unprint_result(test_page.wait_msg);
     
     if (test_page.convention == "anotherway") {
+        // get test function names (those beginning with "test")
         if (typeof(Test.AnotherWay._g_test_iframe.document.scripts) != 'undefined') { // IE
             for (var i = 0; i < Test.AnotherWay._g_test_iframe.document.scripts.length; ++i) {
                 var script_text = Test.AnotherWay._g_test_iframe.document.scripts[i].text;
@@ -881,6 +935,7 @@ Test.AnotherWay._test_page_onload = function(){
         }
         else { // otherwise (not IE) it ought to work like this
             for (var i in Test.AnotherWay._g_test_iframe) {
+                // Hack to prevent failure in FF3.0b1 (innerWidth/innerHeight) and FF>=3.5 (sessionStorage)
                 if (i == "innerWidth" || i == "innerHeight" || i == "sessionStorage") {
                     continue;
                 }
@@ -894,6 +949,7 @@ Test.AnotherWay._test_page_onload = function(){
     }
     else 
         if (test_page.convention == "jsan") {
+            // the test object is already filled with results
             test_page.test_objects.push(Test.AnotherWay._g_test_object_for_jsan);
         }
     
@@ -921,11 +977,15 @@ Test.AnotherWay._handle_exception = function(o, e, title){
         else {
             s += e.toString();
         }
+    //  if( e.location!=null ) {  // XXX figure out how to display exception location if it's present (like in mozilla)
+    //      s+=" location: "+e.location.toString();
+    //  }
     o.exception = s;
     s = [];
     if (e.stack) {
         var lines = e.stack.split("\n");
         for (var i = 0; i < lines.length; ++i) {
+            // format of the line: func_name(args)@file_name:line_no
             if (lines[i].match(/(\w*)\(([^\)]*)\)@(.*):([^:]*)$/)) {
                 var func_name = RegExp.$1;
                 if (func_name.length == 0) {
@@ -968,9 +1028,11 @@ Test.AnotherWay._delay_actions_timeout = function(){
     var test_object = test_page.test_objects[test_page.test_object_i];
     var finished = true;
     if (test_object.delay_action_i == null) {
+        // set up to start first action
         test_object.delay_action_i = -1;
     }
     else {
+        // perform current action
         var milliseconds_passed = (new Date()).getTime() - test_object.delay_prev_timer_time;
         test_object.delay_current_milliseconds_left -= milliseconds_passed;
         test_object.delay_total_milliseconds_left -= milliseconds_passed;
@@ -1100,7 +1162,11 @@ Test.AnotherWay._delay_continue_action = function(test_object, milliseconds_pass
             else 
                 if (action.action_kind == "replay") {
                     if (finished) {
+                        //              try {
                         Test.AnotherWay._delay_replay_event(test_object, action.replay_wnd, action.replay_events[action.replay_event_i], action.replay_checkpoints);
+                        //              }catch( e ) { // disabled, until I know how to gel location info from an exception
+                        //                  Test.AnotherWay._handle_exception( test_object, e, "while replaying event" );
+                        //              }
                         ++action.replay_event_i;
                         finished = action.replay_event_i == action.replay_events.length;
                         if (!finished) {
@@ -1128,6 +1194,7 @@ Test.AnotherWay._delay_replay_event = function(test_object, wnd, event, checkpoi
                 var e = wnd.document.createEvent("MouseEvents");
                 var related_target = Test.AnotherWay._record_node_path_to_node(event["relatedTarget"], wnd.document);
                 e.initMouseEvent(event["type"], event["cancelable"], event["bubbles"], wnd.document.defaultView, event["detail"], event["screenX"], event["screenY"], event["clientX"], event["clientY"], event["ctrlKey"], event["altKey"], event["shiftKey"], event["metaKey"], event["button"], Test.AnotherWay._record_node_path_to_node(event["relatedTarget"], wnd.document));
+                // Firefox 1.0.6 somehow loses relatedTarget somewhere on the way. Pass through our own, for those who choose to care.
                 e.passThroughRelatedTarget = related_target;
                 target.dispatchEvent(e);
             }
@@ -1145,6 +1212,7 @@ Test.AnotherWay._print_counter_result = function(url, msg, milliseconds, style){
 };
 
 Test.AnotherWay._g_result_count = 0; // for assigning unique ids to result paragraphs
+// number of pages tested
 Test.AnotherWay._g_ok_pages = 0;
 Test.AnotherWay._g_fail_pages = 0;
 
@@ -1162,6 +1230,7 @@ Test.AnotherWay._print_result = function(url, msg, style, test_objects){
         text += msg;
     }
     if (test_objects != null) {
+        // compose summary and detail texts
         var total_ok = 0;
         var total_detail_ok = 0;
         var total_fail = 0;
@@ -1256,6 +1325,8 @@ Test.AnotherWay._print_result = function(url, msg, style, test_objects){
             pages_total += " fail " + Test.AnotherWay._g_fail_pages;
         }
         pages_total += " ok " + Test.AnotherWay._g_ok_pages;
+        
+        // also count out the total number of tests in fail and ok
         Test.AnotherWay._openlayers_sum_total_detail_ok  = Test.AnotherWay._openlayers_sum_total_detail_ok || 0;
         Test.AnotherWay._openlayers_sum_total_detail_ok += (total_detail_ok||0);
         
@@ -1270,6 +1341,7 @@ Test.AnotherWay._print_result = function(url, msg, style, test_objects){
     if (results.scrollHeight != null && results.scrollTop != null && results.offsetHeight != null) {
         results.scrollTop = results.scrollHeight - results.offsetHeight;
     }
+    // when test_objects is not null, the results are final - good time to clean up
     if (test_objects != null) {
         for (var i = 0; i < test_objects.length; ++i) {
             var actions = test_objects[i].delay_actions;
@@ -1372,6 +1444,8 @@ Test.AnotherWay._tab_mouseout = function(){
         Test.AnotherWay._set_css_class(this, "inactive_tab");
     }
 };
+
+// recording mouse input
 Test.AnotherWay._record_check_onfocus = function(){
     var o = this;
     var check_select = o.type != "text";
@@ -1504,6 +1578,7 @@ Test.AnotherWay._record_window_setup = function(wnd) // insert recording control
     Test.AnotherWay._g_record_mouse_over_record_control = false;
     var doc = wnd.document;
     doc.body.appendChild(record_control);
+    // opera sans-serif font is different
     if (window.opera) {
         cursor_over_indicator = Test.AnotherWay._record_control_get_element("record_cursor_over");
         cursor_over_indicator.style.width = "18em";
@@ -1512,6 +1587,7 @@ Test.AnotherWay._record_window_setup = function(wnd) // insert recording control
     }
     doc.addEventListener("keydown", Test.AnotherWay._record_control_keydown, true);
     doc.addEventListener("keyup", Test.AnotherWay._record_control_keyup, true);
+    //  doc.addEventListener( "keypress", Test.AnotherWay._record_event, true ); // replaying is not supported by any known browser
     
     doc.body.addEventListener("mousemove", Test.AnotherWay._record_on_mousemove, true);
     doc.body.addEventListener("click", Test.AnotherWay._record_event, true);
@@ -1695,6 +1771,7 @@ Test.AnotherWay._record_control_keydown = function(event){
             }
     Test.AnotherWay._record_control_update_ui();
     if (!handled) {
+        //      Test.AnotherWay._record_event( event ); // replaying is not supported in any known browser
     }
     return;
 };
@@ -1724,6 +1801,8 @@ Test.AnotherWay._record_control_keyup = function(event){
                             window.clearInterval(Test.AnotherWay._g_record_update_time_interval);
                         }
                         Test.AnotherWay._g_record_waiting_for_results = true;
+                        // open a new window for self, pass a parameter to dump recorded events as javascript code there
+                        // (the easiest way to obtain a document from the same origin, so it's writable, is to open this same page again)
                         Test.AnotherWay._g_record_paused = false;
                         var loc = window.location;
                         loc = loc.protocol + "//" + loc.host + loc.pathname + "?recording_results=" + Test.AnotherWay._g_record_random_id;
@@ -1771,6 +1850,7 @@ Test.AnotherWay._record_control_keyup = function(event){
     Test.AnotherWay._g_record_keydown = null;
     Test.AnotherWay._record_control_update_ui();
     if (!handled) {
+        //      Test.AnotherWay._record_event( event ); // replaying is not supported in any known browser
     }
     return;
 };
@@ -1934,6 +2014,8 @@ Test.AnotherWay._record_on_mousemove = function(event){
     if (!Test.AnotherWay._g_record_mouse_over_record_control && Test.AnotherWay._g_record_started && !Test.AnotherWay._g_record_paused) {
         highlight_element = event.target;
     }
+    // highlight border disabled on recording - it causes page to scroll, issuing spurious mouseover/mouseout event
+    //Test.AnotherWay._record_control_update_highlight( highlight_element, "border" );
     
     if (Test.AnotherWay._g_record_include_mousemove) {
         Test.AnotherWay._record_event(event);
@@ -1958,6 +2040,7 @@ Test.AnotherWay._record_display_checkpoint = function(o){
     p.appendChild(p.ownerDocument.createTextNode(checkpoint_text));
 };
 Test.AnotherWay._record_save_results = function(doc){
+    // strange, but DOM-style append does not work here in opera 8.
     var append = function(s){
         doc.write("<div>" + s + "</div>");
     };
@@ -2206,6 +2289,7 @@ Test.AnotherWay._record_prepare_doc_for_results = function(){
     document.write("body { font: normal normal smaller sans-serif; }");
     document.write("div { margin-top: 3px; }");
     document.write("</style></head><body>");
+    // opera and mozilla disagree over who the opener is.
     if (typeof(window.opener.Test) != "undefined" && typeof(window.opener.Test.AnotherWay) != "undefined") {
         window.opener.Test.AnotherWay._record_save_results(document);
         window.opener.Test.AnotherWay._g_record_waiting_for_results = false;
@@ -2220,6 +2304,8 @@ Test.AnotherWay._record_prepare_doc_for_results = function(){
     document.write("</body>");
     document.close();
 };
+
+// global initialization
 onload = function(){
     if (window.opera) {
         var good_opera = typeof(window.opera.version) == "function";
@@ -2251,6 +2337,7 @@ onload = function(){
             var param = params[param_i].split("=");
             if (param[0] == "recording_results") {
                 if (window.opener != null) {
+                    // we were told to show recording results - replace everything in the document with the results
                     Test.AnotherWay._record_prepare_doc_for_results();
                     return;
                 }
@@ -2271,6 +2358,9 @@ onload = function(){
                             if (param[0] == "testframe") {
                                 if (window.opera && !good_opera) {
                                     Test.AnotherWay._show_error("testframe parameter does not work in versions of Opera prior to 8.0. Sorry (pathches are welcome).");
+                                // Opera 7 barfs on attempt to access frame.frameElement.
+                                // if someone knows a way to assign onload handler to that iframe in Opera 7
+                                // without disrupting code that works in other browsers, patches are welcome.
                                 }
                                 else {
                                     var frame_path = param[1].split(".");
@@ -2341,6 +2431,7 @@ onload = function(){
         }
     } 
     catch (e) {
+        // ignore stupid opera error if the frame has onload handler assigned in the inline html
     }
     var handlers = {
         "run_all": {

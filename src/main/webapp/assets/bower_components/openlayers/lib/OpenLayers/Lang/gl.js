@@ -2,7 +2,16 @@
  *  - Toliño
  */
 
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["gl"]
+ * Dictionary for Galego.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["gl"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Solicitude non xerada; a resposta foi: ${statusText}",

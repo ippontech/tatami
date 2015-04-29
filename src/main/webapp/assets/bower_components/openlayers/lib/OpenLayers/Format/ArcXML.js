@@ -3,19 +3,57 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ * @requires OpenLayers/Geometry/Point.js
+ * @requires OpenLayers/Geometry/MultiPolygon.js
+ * @requires OpenLayers/Geometry/LinearRing.js
+ */
 
+/**
+ * Class: OpenLayers.Format.ArcXML
+ * Read/Write ArcXML. Create a new instance with the <OpenLayers.Format.ArcXML>
+ *     constructor.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
 
-        fontStyleKeys: [
+    /**
+     * Property: fontStyleKeys
+     * {Array} List of keys used in font styling.
+     */
+    fontStyleKeys: [
         'antialiasing', 'blockout', 'font', 'fontcolor','fontsize', 'fontstyle',
         'glowing', 'interval', 'outline', 'printmode', 'shadow', 'transparency'
     ],
 
-        request: null,
+    /**
+     * Property: request
+     * A get_image request destined for an ArcIMS server.
+     */
+    request: null,
     
-        response: null,
+    /**
+     * Property: response
+     * A parsed response from an ArcIMS server.
+     */
+    response: null,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Format.ArcXML
+     * Create a new parser/writer for ArcXML.  Create an instance of this class
+     *    to begin authoring a request to an ArcIMS service.  This is used
+     *    primarily by the ArcIMS layer, but could be used to do other wild
+     *    stuff, like geocoding.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
         this.request = new OpenLayers.Format.ArcXML.Request();
         this.response = new OpenLayers.Format.ArcXML.Response();
 
@@ -46,6 +84,9 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                 this.addCoordSys(props.featurecoordsys, options.featureCoordSys);
                 this.addCoordSys(props.filtercoordsys, options.filterCoordSys);
             } else {
+                // if an arcxml object is being created with no request type, it is
+                // probably going to consume a response, so do not throw an error if
+                // the requesttype is not defined
                 this.request = null;
             }
         }
@@ -53,7 +94,15 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
     },
     
-        parseEnvelope: function(env, arr) {
+    /**
+     * Method: parseEnvelope
+     * Parse an array of coordinates into an ArcXML envelope structure.
+     *
+     * Parameters:
+     * env - {Object} An envelope object that will contain the parsed coordinates.
+     * arr - {Array(double)} An array of coordinates in the order: [ minx, miny, maxx, maxy ]
+     */
+    parseEnvelope: function(env, arr) {
         if (arr && arr.length == 4) {          
             env.minx = arr[0];
             env.miny = arr[1];
@@ -62,13 +111,33 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
     
-        addLayers: function(ll, lyrs) {
+    /** 
+     * Method: addLayers
+     * Add a collection of layers to another collection of layers. Each layer in the list is tuple of
+     * { id, visible }.  These layer collections represent the 
+     * /ARCXML/REQUEST/get_image/PROPERTIES/LAYERLIST/LAYERDEF items in ArcXML
+     *
+     * TODO: Add support for dynamic layer rendering.
+     *
+     * Parameters:
+     * ll - {Array({id,visible})} A list of layer definitions.
+     * lyrs - {Array({id,visible})} A list of layer definitions.
+     */
+    addLayers: function(ll, lyrs) {
         for(var lind = 0, len=lyrs.length; lind < len; lind++) {
             ll.push(lyrs[lind]);
         }
     },
     
-        addImageSize: function(imsize, olsize) {
+    /**
+     * Method: addImageSize
+     * Set the size of the requested image.
+     *
+     * Parameters:
+     * imsize - {Object} An ArcXML imagesize object.
+     * olsize - {<OpenLayers.Size>} The image size to set.
+     */
+    addImageSize: function(imsize, olsize) {
         if (olsize !== null) {
             imsize.width = olsize.w;
             imsize.height = olsize.h;
@@ -77,11 +146,24 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        addCoordSys: function(featOrFilt, fsys) {
+    /**
+     * Method: addCoordSys
+     * Add the coordinate system information to an object. The object may be 
+     *
+     * Parameters:
+     * featOrFilt - {Object} A featurecoordsys or filtercoordsys ArcXML structure.
+     * fsys - {String} or {<OpenLayers.Projection>} or {filtercoordsys} or 
+     * {featurecoordsys} A projection representation. If it's a {String}, 
+     * the value is assumed to be the SRID.  If it's a {OpenLayers.Projection} 
+     * AND Proj4js is available, the projection number and name are extracted 
+     * from there.  If it's a filter or feature ArcXML structure, it is copied.
+     */
+    addCoordSys: function(featOrFilt, fsys) {
         if (typeof fsys == "string") {
             featOrFilt.id = parseInt(fsys);
             featOrFilt.string = fsys;
         }
+        // is this a proj4js instance?
         else if (typeof fsys == "object" && fsys.proj !== null){
             featOrFilt.id = fsys.proj.srsProjNumber;
             featOrFilt.string = fsys.proj.srsCode;
@@ -90,7 +172,18 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-        iserror: function(data) {
+    /**
+     * APIMethod: iserror
+     * Check to see if the response from the server was an error.
+     *
+     * Parameters:
+     * data - {String} or {DOMElement} data to read/parse. If nothing is supplied,
+     * the current response is examined.
+     *
+     * Returns:
+     * {Boolean} true if the response was an error.
+     */
+    iserror: function(data) {
         var ret = null; 
         
         if (!data) {
@@ -104,7 +197,18 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         return ret;
     },
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read data from a string, and return an response. 
+     * 
+     * Parameters:
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {<OpenLayers.Format.ArcXML.Response>} An ArcXML response. Note that this response
+     *     data may change in the future. 
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -117,12 +221,16 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                 arcNode = data.documentElement.getElementsByTagName("ARCXML")[0];
             }
         }
+          
+        // in Safari, arcNode will be there but will have a child named 
+        // parsererror
         if (!arcNode || arcNode.firstChild.nodeName === 'parsererror') {
             var error, source;
             try {
                 error = data.firstChild.nodeValue;
                 source = data.firstChild.childNodes[1].firstChild.nodeValue;
             } catch (err) {
+                // pass
             }
             throw {
                 message: "Error parsing the ArcXML request", 
@@ -135,7 +243,14 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         return response;
     },
     
-        write: function(request) {       
+    /**
+     * APIMethod: write
+     * Generate an ArcXml document string for sending to an ArcIMS server. 
+     * 
+     * Returns:
+     * {String} A string representing the ArcXML document request.
+     */
+    write: function(request) {       
         if (!request) {
             request = this.request;
         }    
@@ -235,6 +350,7 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                   
                         var queryElem = null;
                         if (typeof query.spatialfilter == "boolean" && query.spatialfilter) {
+                            // handle spatial filter madness
                             queryElem = this.createElementNS("", "SPATIALQUERY");
                         }
                         else {
@@ -309,6 +425,7 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                 if (typeof fquery.accuracy == "number") {
                     qElem.setAttribute("accuracy", fquery.accuracy);
                 }
+                //qElem.setAttribute("featurelimit", "5");
             
                 if (fquery.featurecoordsys != null) {
                     var fcsElem1 = this.createElementNS("", "FEATURECOORDSYS");
@@ -531,6 +648,8 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                         if (typeof exact.symbol.transparency == "number") {
                             selem.setAttribute("transparency", exact.symbol.transparency);
                         }
+                        //if (typeof exact.symbol.type == "string")
+                        //    selem.setAttribute("type", exact.symbol.type);
                         if (typeof exact.symbol.usecentroid == "string") {
                             selem.setAttribute("usecentroid", exact.symbol.usecentroid);
                         }
@@ -604,7 +723,15 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         return polyElem;
     },
     
-        parseResponse: function(data) {
+    /**
+     * Method: parseResponse
+     * Take an ArcXML response, and parse in into this object's internal properties.
+     *
+     * Parameters:
+     * data - {String} or {DOMElement} The ArcXML response, as either a string or the
+     * top level DOMElement of the response.
+     */
+    parseResponse: function(data) {
         if(typeof data == "string") { 
             var newData = new OpenLayers.Format.XML();
             data = newData.read(data);
@@ -654,12 +781,17 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                 }
             } else if (rtype == "FEATURES") {
                 var features = responseNode[0].getElementsByTagName("FEATURES");
+            
+                // get the feature count
                 var featureCount = features[0].getElementsByTagName("FEATURECOUNT");
                 response.features.featurecount = featureCount[0].getAttribute("count");
             
                 if (response.features.featurecount > 0) {
+                    // get the feature envelope
                     var envelope = features[0].getElementsByTagName("ENVELOPE");
                     response.features.envelope = this.parseAttributes(envelope[0], typeof(0));
+
+                    // get the field values per feature
                     var featureList = features[0].getElementsByTagName("FEATURE");
                     for (var fn = 0; fn < featureList.length; fn++) {
                         var feature = new OpenLayers.Feature.Vector();
@@ -674,6 +806,8 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                         var geom = featureList[fn].getElementsByTagName("POLYGON");
 
                         if (geom.length > 0) {
+                            // if there is a polygon, create an openlayers polygon, and assign
+                            // it to the .geometry property of the feature
                             var ring = geom[0].getElementsByTagName("RING");
 
                             var polys = [];
@@ -710,7 +844,16 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
     },
     
     
-        parseAttributes: function(node,type) {
+    /**
+     * Method: parseAttributes
+     *
+     * Parameters:
+     * node - {<DOMElement>} An element to parse attributes from.
+     *
+     * Returns:
+     * {Object} An attributes object, with properties set to attribute values.
+     */
+    parseAttributes: function(node,type) {
         var attributes = {};
         for(var attr = 0; attr < node.attributes.length; attr++) {
             if (type == "number") {
@@ -723,11 +866,21 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
     },
     
     
-        parsePointGeometry: function(node) {
+    /**
+     * Method: parsePointGeometry
+     *
+     * Parameters:
+     * node - {<DOMElement>} An element to parse <COORDS> or <POINT> arcxml data from.
+     *
+     * Returns:
+     * {<OpenLayers.Geometry.LinearRing>} A linear ring represented by the node's points.
+     */
+    parsePointGeometry: function(node) {
         var ringPoints = [];
         var coords = node.getElementsByTagName("COORDS");
 
         if (coords.length > 0) {
+            // if coords is present, it's the only coords item
             var coordArr = this.getChildValue(coords[0]);
             coordArr = coordArr.split(/;/);
             for (var cn = 0; cn < coordArr.length; cn++) {

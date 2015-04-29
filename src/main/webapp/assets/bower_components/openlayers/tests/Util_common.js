@@ -1,8 +1,12 @@
 function com_test_getRenderedDimensions(t) {
     t.plan(17);
     var content = (new Array(100)).join("foo ");
+    
+    // test with fixed width
     var fw = OpenLayers.Util.getRenderedDimensions(content, {w: 20});
     t.eq(fw.w, 20, "got the fixed width");
+    
+    // test with fixed height
     var fh = OpenLayers.Util.getRenderedDimensions(content, {h: 15});
     t.eq(fh.h, 15, "got the fixed height");        
     
@@ -20,6 +24,7 @@ function com_test_getRenderedDimensions(t) {
     var testName,
         finalSize,
         initialSize = OpenLayers.Util.getRenderedDimensions(content, null);
+    // containerElement option on absolute position with width and height
     testName = "Absolute with w&h: ";
     var optionAbsDiv ={
         containerElement: document.getElementById("absoluteDiv")
@@ -38,6 +43,7 @@ function com_test_getRenderedDimensions(t) {
     testName = "Absolute with w&h (set width): ";
     finalSize = OpenLayers.Util.getRenderedDimensions(content, {w: 20}, optionAbsDiv);
     t.eq(finalSize.w, 20, testName + "got the fixed width to 20px");
+    // containerElement option on absolute position without width and height
     testName = "Absolute without w&h: ";
     var optionAbsDiv00 ={
         containerElement: document.getElementById("absoluteDiv00")

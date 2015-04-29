@@ -3,11 +3,29 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/WMSCapabilities/v1.js
+ */
 
+/**
+ * Class: OpenLayers.Format.WMSCapabilities.v1_1
+ * Abstract class not to be instantiated directly.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.WMSCapabilities.v1>
+ */
 OpenLayers.Format.WMSCapabilities.v1_1 = OpenLayers.Class(
     OpenLayers.Format.WMSCapabilities.v1, {
     
-        readers: {
+    /**
+     * Property: readers
+     * Contains public functions, grouped by namespace prefix, that will
+     *     be applied when a namespaced node is found matching the function
+     *     name.  The function will be applied in the scope of this parser
+     *     with two arguments: the node being read and a context object passed
+     *     from the parent.
+     */
+    readers: {
         "wms": OpenLayers.Util.applyDefaults({
             "WMT_MS_Capabilities": function(node, obj) {
                 this.readChildNodes(node, obj);

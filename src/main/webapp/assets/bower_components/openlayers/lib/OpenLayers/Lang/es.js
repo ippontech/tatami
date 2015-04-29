@@ -1,4 +1,13 @@
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["es"]
+ * Dictionary for Spanish, UTF8 encoding. Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang.es = {
 
     'unhandledRequest': "Respuesta a petición no gestionada ${statusText}",
@@ -13,6 +22,8 @@ OpenLayers.Lang.es = {
 
     'browserNotSupported':
         "Su navegador no soporta renderización vectorial. Los renderizadores soportados actualmente son:\n${renderers}",
+
+    // console message
     'minZoomLevelError':
         "La propiedad minZoomLevel debe sólo utilizarse " +
         "con las capas que tienen FixedZoomLevels. El hecho de que " +
@@ -51,11 +62,15 @@ OpenLayers.Lang.es = {
         "target='_blank'>haga clic aquí</a>",
 
     'Scale = 1 : ${scaleDenom}': "Escala = 1 : ${scaleDenom}",
+
+    //labels for the graticule control
     'W': 'O',
     'E': 'E',
     'N': 'N',
     'S': 'S',
     'Graticule': 'Retícula',
+    
+    // console message
     'reprojectDeprecated':
         "Está usando la opción 'reproject' en la capa " +
         "${layerName}. Esta opción es obsoleta: su uso fue diseñado " +
@@ -63,9 +78,13 @@ OpenLayers.Lang.es = {
         "pero ahora esa funcionalidad debería conseguirse mediante el soporte " +
         "de la proyección Spherical Mercator. Más información disponible en " +
         "http://trac.openlayers.org/wiki/SphericalMercator.",
+
+    // console message
     'methodDeprecated':
         "Este método es obsoleto y se eliminará en la versión 3.0. " +
         "Por favor utilice el método ${newMethod} en su lugar.",
+
+    // **** end ****
     'end': ''
 
 };

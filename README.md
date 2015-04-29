@@ -26,14 +26,9 @@ Installation for developers
 
 - Clone, fork or download the source code from this Github page
 - Install [Maven 3](http://maven.apache.org/)
-- Install [npm](https://www.npmjs.com/)
-- Point your terminal to the directory you cloned Tatami to.
-    - Type `npm install`
-    - You may need to give root user permissions: `sudo !!`
 - Run Cassandra from Maven : `mvn cassandra:run`
 - Run Jetty from Maven : `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
-
 
 To create users, use the registration form. As we have not configured a SMTP server (you can configure it in src/main/resources/META-INF/tatami/tatami.properties - see below "installation for production use" for more options), the validation URL as well as the password will not be e-mailed to you, but you can see them in the log (look at the Jetty console output).
 
@@ -58,13 +53,6 @@ export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:
 ### Cassandra troubleshooting
 
 On Mac OS X, you should use JDK 6 and not JDK 7, see [issue #281](https://github.com/ippontech/tatami/issues/281#issuecomment-12430701).
-
-
-How to Contribute
----------------------------------------
-In order to assure code quality, Ippon manages the pull requests for the project, and upholds certain rules regarding how individuals may contribute. 
-You may find these rules in your Tatami installation in the file `CONTRIBUTING.md`.
-
 
 Installation for production use
 ---------------------------------------

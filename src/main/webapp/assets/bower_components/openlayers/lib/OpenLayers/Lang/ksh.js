@@ -2,7 +2,16 @@
  *  - Purodha
  */
 
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["ksh"]
+ * Dictionary for Ripoarisch.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["ksh"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Met dä Antwoot op en Aanfrooch ham_mer nix aanjefange: ${statusText}",

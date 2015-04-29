@@ -3,20 +3,52 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Events.js
+ */
 
+/**
+ * Class: OpenLayers.Events.featureclick
+ *
+ * Extension event type for handling feature click events, including overlapping
+ * features. 
+ * 
+ * Event types provided by this extension:
+ * - featureclick 
+ */
 OpenLayers.Events.featureclick = OpenLayers.Class({
     
-        cache: null,
+    /**
+     * Property: cache
+     * {Object} A cache of features under the mouse.
+     */
+    cache: null,
     
-        map: null,
+    /**
+     * Property: map
+     * {<OpenLayers.Map>} The map to register browser events on.
+     */
+    map: null,
     
-        provides: ["featureclick", "nofeatureclick", "featureover", "featureout"],
+    /**
+     * Property: provides
+     * {Array(String)} The event types provided by this extension.
+     */
+    provides: ["featureclick", "nofeatureclick", "featureover", "featureout"],
     
     lastClientX: 0,
 
     lastClientY: 0,
     
-        initialize: function(target) {
+    /**
+     * Constructor: OpenLayers.Events.featureclick
+     * Create a new featureclick event type.
+     *
+     * Parameters:
+     * target - {<OpenLayers.Events>} The events instance to create the events
+     *     for.
+     */
+    initialize: function(target) {
         this.target = target;
         if (target.object instanceof OpenLayers.Map) {
             this.setMap(target.object);
@@ -38,7 +70,13 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
         }
     },
     
-        setMap: function(map) {
+    /**
+     * Method: setMap
+     *
+     * Parameters:
+     * map - {<OpenLayers.Map>} The map to register browser events on.
+     */
+    setMap: function(map) {
         this.map = map;
         this.cache = {};
         map.events.register("mousedown", this, this.start, {extension: true});
@@ -49,17 +87,43 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
         map.events.register("mousemove", this, this.onMousemove, {extension: true});
     },
     
-        start: function(evt) {
+    /**
+     * Method: start
+     * Sets startEvt = evt.
+     *
+     * Parameters:
+     * evt - {<OpenLayers.Event>}
+     */
+    start: function(evt) {
         this.startEvt = evt;
     },
     
-        onClick: function(evt) {
+    /**
+     * Method: cancel
+     * Deletes the start event.
+     *
+     * Parameters:
+     * evt - {<OpenLayers.Event>}
+     */    
+    cancel: function(evt) {
+        delete this.startEvt;
+    },
+    
+    /**
+     * Method: onClick
+     * Listener for the click event.
+     *
+     * Parameters:
+     * evt - {<OpenLayers.Event>}
+     */
+    onClick: function(evt) {
         if (!this.startEvt || evt.type !== "touchend" &&
                 !OpenLayers.Event.isLeftClick(evt)) {
             return;
         }
         var features = this.getFeatures(this.startEvt);
         delete this.startEvt;
+        // fire featureclick events
         var feature, layer, more, clicked = {};
         for (var i=0, len=features.length; i<len; ++i) {
             feature = features[i];
@@ -70,6 +134,7 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                 break;
             }
         }
+        // fire nofeatureclick events on all vector layers with no targets
         for (i=0, len=this.map.layers.length; i<len; ++i) {
             layer = this.map.layers[i];
             if (layer instanceof OpenLayers.Layer.Vector && !clicked[layer.id]) {
@@ -78,10 +143,18 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
         }
     },
     
-        onMousemove: function(evt) {
+    /**
+     * Method: onMousemove
+     * Listener for the mousemove event.
+     *
+     * Parameters:
+     * evt - {<OpenLayers.Event>}
+     */
+    onMousemove: function(evt) {
         delete this.startEvt;
         var clientX = evt.clientX;
         var clientY = evt.clientY;
+	//this is a fix for Chrome 34. Mousemove event is triggered even cursor did not move.
         if (this.lastClientX == clientX && this.lastClientY == clientY) {
             return;
         } else {
@@ -97,6 +170,7 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                 newly.push(feature);
             }
         }
+        // check if already over features
         var out = [];
         for (var id in this.cache) {
             feature = this.cache[id];
@@ -105,9 +179,11 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                     out.push(feature);
                 }
             } else {
+                // removed
                 delete this.cache[id];
             }
         }
+        // fire featureover events
         var more;
         for (i=0, len=newly.length; i<len; ++i) {
             feature = newly[i];
@@ -117,6 +193,7 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                 break;
             }
         }
+        // fire featureout events
         for (i=0, len=out.length; i<len; ++i) {
             feature = out[i];
             delete this.cache[feature.id];
@@ -127,7 +204,18 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
         }
     },
     
-        triggerEvent: function(type, evt) {
+    /**
+     * Method: triggerEvent
+     * Determines where to trigger the event and triggers it.
+     *
+     * Parameters:
+     * type - {String} The event type to trigger
+     * evt - {Object} The listener argument
+     *
+     * Returns:
+     * {Boolean} The last listener return.
+     */
+    triggerEvent: function(type, evt) {
         var layer = evt.feature ? evt.feature.layer : evt.layer,
             object = this.target.object;
         if (object instanceof OpenLayers.Map || object === layer) {
@@ -135,10 +223,21 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
         }
     },
 
-        getFeatures: function(evt) {
+    /**
+     * Method: getFeatures
+     * Get all features at the given screen location.
+     *
+     * Parameters:
+     * evt - {Object} Event object.
+     *
+     * Returns:
+     * {Array(<OpenLayers.Feature.Vector>)} List of features at the given point.
+     */
+    getFeatures: function(evt) {
         var x = evt.clientX, y = evt.clientY,
             features = [], targets = [], layers = [],
             layer, renderer, target, feature, i, len, featureId;
+        // go through all layers looking for targets
         for (i=this.map.layers.length-1; i>=0; --i) {
             layer = this.map.layers[i];
             renderer = layer.renderer;
@@ -154,6 +253,7 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                                 targets.push(target);
                                 target = document.elementFromPoint(x, y);
                             } else {
+                                // sketch, all bets off
                                 target = false;
                             }
                         }
@@ -169,16 +269,22 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
                 }
             }
         }
+        // restore feature visibility
         for (i=0, len=targets.length; i<len; ++i) {
             targets[i].style.display = "";
         }
+        // restore layer visibility
         for (i=layers.length-1; i>=0; --i) {
             layers[i].div.style.display = "block";
         }
         return features;
     },
     
-        destroy: function() {
+    /**
+     * APIMethod: destroy
+     * Clean up.
+     */
+    destroy: function() {
         for (var i=this.provides.length-1; i>=0; --i) {
             delete this.target.extensions[this.provides[i]];
         }        
@@ -198,8 +304,32 @@ OpenLayers.Events.featureclick = OpenLayers.Class({
     
 });
  
+/**
+ * Class: OpenLayers.Events.nofeatureclick
+ *
+ * Extension event type for handling click events that do not hit a feature. 
+ * 
+ * Event types provided by this extension:
+ * - nofeatureclick 
+ */
 OpenLayers.Events.nofeatureclick = OpenLayers.Events.featureclick;
 
+/**
+ * Class: OpenLayers.Events.featureover
+ *
+ * Extension event type for handling hovering over a feature. 
+ * 
+ * Event types provided by this extension:
+ * - featureover 
+ */
 OpenLayers.Events.featureover = OpenLayers.Events.featureclick;
 
+/**
+ * Class: OpenLayers.Events.featureout
+ *
+ * Extension event type for handling leaving a feature. 
+ * 
+ * Event types provided by this extension:
+ * - featureout 
+ */
 OpenLayers.Events.featureout = OpenLayers.Events.featureclick;

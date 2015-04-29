@@ -2,6 +2,8 @@ import { createLocal } from '../create/local';
 import { cloneWithOffset } from '../units/offset';
 
 export function calendar (time) {
+    // We want to compare the start of today, vs this.
+    // Getting start-of-today depends on whether we're local/utc/offset or not.
     var now = time || createLocal(),
         sod = cloneWithOffset(now, this).startOf('day'),
         diff = this.diff(sod, 'days', true),

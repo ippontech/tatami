@@ -1,4 +1,13 @@
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["zh-CN"]
+ * Dictionary for Simplified Chinese.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["zh-CN"] = {
 
     'unhandledRequest': "未处理的请求，返回值为 ${statusText}",
@@ -13,6 +22,8 @@ OpenLayers.Lang["zh-CN"] = {
 
     'browserNotSupported':
         "你使用的浏览器不支持矢量渲染。当前支持的渲染方式包括：\n${renderers}",
+
+    // console message
     'minZoomLevelError':
         "minZoomLevel属性仅适合用于" +
         "使用了固定缩放级别的图层。这个 " +
@@ -50,6 +61,8 @@ OpenLayers.Lang["zh-CN"] = {
         "target='_blank'>点击这里</a>",
 
     'Scale = 1 : ${scaleDenom}': "比例尺 = 1 : ${scaleDenom}",
+
+    // console message
     'reprojectDeprecated':
         "你正在使用 ${layerName} 图层上的'reproject'选项。" +
         "这个选项已经不再使用：" +
@@ -57,6 +70,8 @@ OpenLayers.Lang["zh-CN"] = {
         "不过现在该功能可以通过使用Spherical Mercator来实现。" +
         "更多信息可以参阅" +
         "http://trac.openlayers.org/wiki/SphericalMercator.",
+
+    // console message
     'methodDeprecated':
         "该方法已经不再被支持，并且将在3.0中被移除。" +
         "请使用 ${newMethod} 方法来替代。",

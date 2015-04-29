@@ -3,42 +3,167 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/** 
+ * @requires OpenLayers/Control.js
+ * @requires OpenLayers/BaseTypes.js
+ * @requires OpenLayers/Events/buttonclick.js
+ * @requires OpenLayers/Map.js
+ * @requires OpenLayers/Handler/Click.js
+ * @requires OpenLayers/Handler/Drag.js
+ */
 
+/**
+ * Class: OpenLayers.Control.OverviewMap
+ * The OverMap control creates a small overview map, useful to display the 
+ * extent of a zoomed map and your main map and provide additional 
+ * navigation options to the User.  By default the overview map is drawn in
+ * the lower right corner of the main map. Create a new overview map with the
+ * <OpenLayers.Control.OverviewMap> constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Control>
+ */
 OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
 
-        element: null,
+    /**
+     * Property: element
+     * {DOMElement} The DOM element that contains the overview map
+     */
+    element: null,
     
-        ovmap: null,
+    /**
+     * APIProperty: ovmap
+     * {<OpenLayers.Map>} A reference to the overview map itself.
+     */
+    ovmap: null,
 
-        size: {w: 180, h: 90},
+    /**
+     * APIProperty: size
+     * {<OpenLayers.Size>} The overvew map size in pixels.  Note that this is
+     * the size of the map itself - the element that contains the map (default
+     * class name olControlOverviewMapElement) may have padding or other style
+     * attributes added via CSS.
+     */
+    size: {w: 180, h: 90},
 
-        layers: null,
+    /**
+     * APIProperty: layers
+     * {Array(<OpenLayers.Layer>)} Ordered list of layers in the overview map.
+     * If none are sent at construction, the base layer for the main map is used.
+     */
+    layers: null,
     
-        minRectSize: 15,
+    /**
+     * APIProperty: minRectSize
+     * {Integer} The minimum width or height (in pixels) of the extent
+     *     rectangle on the overview map.  When the extent rectangle reaches
+     *     this size, it will be replaced depending on the value of the
+     *     <minRectDisplayClass> property.  Default is 15 pixels.
+     */
+    minRectSize: 15,
     
-        minRectDisplayClass: "RectReplacement",
+    /**
+     * APIProperty: minRectDisplayClass
+     * {String} Replacement style class name for the extent rectangle when
+     *     <minRectSize> is reached.  This string will be suffixed on to the
+     *     displayClass.  Default is "RectReplacement".
+     *
+     * Example CSS declaration:
+     * (code)
+     * .olControlOverviewMapRectReplacement {
+     *     overflow: hidden;
+     *     cursor: move;
+     *     background-image: url("img/overview_replacement.gif");
+     *     background-repeat: no-repeat;
+     *     background-position: center;
+     * }
+     * (end)
+     */
+    minRectDisplayClass: "RectReplacement",
 
-        minRatio: 8,
+    /**
+     * APIProperty: minRatio
+     * {Float} The ratio of the overview map resolution to the main map
+     *     resolution at which to zoom farther out on the overview map.
+     */
+    minRatio: 8,
 
-        maxRatio: 32,
+    /**
+     * APIProperty: maxRatio
+     * {Float} The ratio of the overview map resolution to the main map
+     *     resolution at which to zoom farther in on the overview map.
+     */
+    maxRatio: 32,
     
-        mapOptions: null,
+    /**
+     * APIProperty: mapOptions
+     * {Object} An object containing any non-default properties to be sent to
+     *     the overview map's map constructor.  These should include any
+     *     non-default options that the main map was constructed with.
+     */
+    mapOptions: null,
 
-        autoPan: false,
+    /**
+     * APIProperty: autoPan
+     * {Boolean} Always pan the overview map, so the extent marker remains in
+     *     the center.  Default is false.  If true, when you drag the extent
+     *     marker, the overview map will update itself so the marker returns
+     *     to the center.
+     */
+    autoPan: false,
     
-        handlers: null,
+    /**
+     * Property: handlers
+     * {Object}
+     */
+    handlers: null,
 
-        resolutionFactor: 1,
+    /**
+     * Property: resolutionFactor
+     * {Object}
+     */
+    resolutionFactor: 1,
 
-        maximized: false,
+    /**
+     * APIProperty: maximized
+     * {Boolean} Start as maximized (visible). Defaults to false.
+     */
+    maximized: false,
 
-        initialize: function(options) {
+    /**
+     * APIProperty: maximizeTitle
+     * {String}  This property is used for showing a tooltip over the  
+     * maximize div. Defaults to "" (no title).
+     */ 
+    maximizeTitle: "",
+
+    /**
+     * APIProperty: minimizeTitle
+     * {String}  This property is used for showing a tooltip over the  
+     * minimize div. Defaults to "" (no title).
+     */ 
+    minimizeTitle: "",
+
+    /**
+     * Constructor: OpenLayers.Control.OverviewMap
+     * Create a new overview map
+     *
+     * Parameters:
+     * options - {Object} Properties of this object will be set on the overview
+     * map object.  Note, to set options on the map object contained in this
+     * control, set <mapOptions> as one of the options properties.
+     */
+    initialize: function(options) {
         this.layers = [];
         this.handlers = {};
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
     },
     
-        destroy: function() {
+    /**
+     * APIMethod: destroy
+     * Deconstruct the control
+     */
+    destroy: function() {
         if (!this.mapDiv) { // we've already been destroyed
             return;
         }
@@ -88,12 +213,114 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         OpenLayers.Control.prototype.destroy.apply(this, arguments);    
     },
 
-        baseLayerDraw: function() {
+    /**
+     * Method: draw
+     * Render the control in the browser.
+     */    
+    draw: function() {
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+        if (this.layers.length === 0) {
+            if (this.map.baseLayer) {
+                var layer = this.map.baseLayer.clone();
+                this.layers = [layer];
+            } else {
+                this.map.events.register("changebaselayer", this, this.baseLayerDraw);
+                return this.div;
+            }
+        }
+
+        // create overview map DOM elements
+        this.element = document.createElement('div');
+        this.element.className = this.displayClass + 'Element';
+        this.element.style.display = 'none';
+
+        this.mapDiv = document.createElement('div');
+        this.mapDiv.style.width = this.size.w + 'px';
+        this.mapDiv.style.height = this.size.h + 'px';
+        this.mapDiv.style.position = 'relative';
+        this.mapDiv.style.overflow = 'hidden';
+        this.mapDiv.id = OpenLayers.Util.createUniqueID('overviewMap');
+        
+        this.extentRectangle = document.createElement('div');
+        this.extentRectangle.style.position = 'absolute';
+        this.extentRectangle.style.zIndex = 1000;  //HACK
+        this.extentRectangle.className = this.displayClass+'ExtentRectangle';
+
+        this.element.appendChild(this.mapDiv);  
+
+        this.div.appendChild(this.element);
+
+        // Optionally add min/max buttons if the control will go in the
+        // map viewport.
+        if(!this.outsideViewport) {
+            this.div.className += " " + this.displayClass + 'Container';
+            // maximize button div
+            var img = OpenLayers.Util.getImageLocation('layer-switcher-maximize.png');
+            this.maximizeDiv = OpenLayers.Util.createAlphaImageDiv(
+                                        this.displayClass + 'MaximizeButton', 
+                                        null, 
+                                        null, 
+                                        img, 
+                                        'absolute');
+            this.maximizeDiv.style.display = 'none';
+            this.maximizeDiv.className = this.displayClass + 'MaximizeButton olButton';
+            if (this.maximizeTitle) {
+                this.maximizeDiv.title = this.maximizeTitle;
+            }
+            this.div.appendChild(this.maximizeDiv);
+    
+            // minimize button div
+            var img = OpenLayers.Util.getImageLocation('layer-switcher-minimize.png');
+            this.minimizeDiv = OpenLayers.Util.createAlphaImageDiv(
+                                        'OpenLayers_Control_minimizeDiv', 
+                                        null, 
+                                        null, 
+                                        img, 
+                                        'absolute');
+            this.minimizeDiv.style.display = 'none';
+            this.minimizeDiv.className = this.displayClass + 'MinimizeButton olButton';
+            if (this.minimizeTitle) {
+                this.minimizeDiv.title = this.minimizeTitle;
+            }
+            this.div.appendChild(this.minimizeDiv);            
+            this.minimizeControl();
+        } else {
+            // show the overview map
+            this.element.style.display = '';
+        }
+        if(this.map.getExtent()) {
+            this.update();
+        }
+        
+        this.map.events.on({
+            buttonclick: this.onButtonClick,
+            moveend: this.update,
+            scope: this
+        });
+        
+        if (this.maximized) {
+            this.maximizeControl();
+        }
+        return this.div;
+    },
+    
+    /**
+     * Method: baseLayerDraw
+     * Draw the base layer - called if unable to complete in the initial draw
+     */
+    baseLayerDraw: function() {
         this.draw();
         this.map.events.unregister("changebaselayer", this, this.baseLayerDraw);
     },
 
-        rectDrag: function(px) {
+    /**
+     * Method: rectDrag
+     * Handle extent rectangle drag
+     *
+     * Parameters:
+     * px - {<OpenLayers.Pixel>} The pixel location of the drag.
+     */
+    rectDrag: function(px) {
         var deltaX = this.handlers.drag.last.x - px.x;
         var deltaY = this.handlers.drag.last.y - px.y;
         if(deltaX != 0 || deltaY != 0) {
@@ -101,6 +328,7 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
             var rectLeft = this.rectPxBounds.left;
             var rectHeight = Math.abs(this.rectPxBounds.getHeight());
             var rectWidth = this.rectPxBounds.getWidth();
+            // don't allow dragging off of parent element
             var newTop = Math.max(0, (rectTop - deltaY));
             newTop = Math.min(newTop,
                               this.ovmap.size.h - this.hComp - rectHeight);
@@ -114,7 +342,14 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
     
-        mapDivClick: function(evt) {
+    /**
+     * Method: mapDivClick
+     * Handle browser events
+     *
+     * Parameters:
+     * evt - {<OpenLayers.Event>} evt
+     */
+    mapDivClick: function(evt) {
         var pxCenter = this.rectPxBounds.getCenterPixel();
         var deltaX = evt.xy.x - pxCenter.x;
         var deltaY = evt.xy.y - pxCenter.y;
@@ -133,7 +368,13 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         this.updateMapToRect();
     },
     
-        onButtonClick: function(evt) {
+    /**
+     * Method: onButtonClick
+     *
+     * Parameters:
+     * evt - {Event}
+     */
+    onButtonClick: function(evt) {
         if (evt.buttonElement === this.minimizeDiv) {
             this.minimizeControl();
         } else if (evt.buttonElement === this.maximizeDiv) {
@@ -141,7 +382,14 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        maximizeControl: function(e) {
+    /**
+     * Method: maximizeControl
+     * Unhide the control.  Called when the control is in the map viewport.
+     *
+     * Parameters:
+     * e - {<OpenLayers.Event>}
+     */
+    maximizeControl: function(e) {
         this.element.style.display = '';
         this.showToggle(false);
         if (e != null) {
@@ -149,7 +397,15 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        minimizeControl: function(e) {
+    /**
+     * Method: minimizeControl
+     * Hide all the contents of the control, shrink the size, 
+     * add the maximize icon
+     * 
+     * Parameters:
+     * e - {<OpenLayers.Event>}
+     */
+    minimizeControl: function(e) {
         this.element.style.display = 'none';
         this.showToggle(true);
         if (e != null) {
@@ -157,7 +413,14 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        showToggle: function(minimize) {
+    /**
+     * Method: showToggle
+     * Hide/Show the toggle depending on whether the control is minimized
+     *
+     * Parameters:
+     * minimize - {Boolean} 
+     */
+    showToggle: function(minimize) {
         if (this.maximizeDiv) {
             this.maximizeDiv.style.display = minimize ? '' : 'none';
         }
@@ -166,7 +429,11 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        update: function() {
+    /**
+     * Method: update
+     * Update the overview map after layers move.
+     */
+    update: function() {
         if(this.ovmap == null) {
             this.createMap();
         }
@@ -174,10 +441,17 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         if(this.autoPan || !this.isSuitableOverview()) {
             this.updateOverview();
         }
+        
+        // update extent rectangle
         this.updateRectToMap();
     },
     
-        isSuitableOverview: function() {
+    /**
+     * Method: isSuitableOverview
+     * Determines if the overview map is suitable given the extent and
+     * resolution of the main map.
+     */
+    isSuitableOverview: function() {
         var mapExtent = this.map.getExtent();
         var maxExtent = this.map.getMaxExtent();
         var testExtent = new OpenLayers.Bounds(
@@ -198,13 +472,19 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
                 (this.ovmap.getExtent().containsBounds(testExtent)));
     },
     
-        updateOverview: function() {
+    /**
+     * Method updateOverview
+     * Called by <update> if <isSuitableOverview> returns true
+     */
+    updateOverview: function() {
         var mapRes = this.map.getResolution();
         var targetRes = this.ovmap.getResolution();
         var resRatio = targetRes / mapRes;
         if(resRatio > this.maxRatio) {
+            // zoom in overview map
             targetRes = this.minRatio * mapRes;            
         } else if(resRatio <= this.minRatio) {
+            // zoom out overview map
             targetRes = this.maxRatio * mapRes;
         }
         var center;
@@ -220,16 +500,25 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         this.updateRectToMap();
     },
     
-        createMap: function() {
+    /**
+     * Method: createMap
+     * Construct the map that this control contains
+     */
+    createMap: function() {
+        // create the overview map
         var options = OpenLayers.Util.extend(
                         {controls: [], maxResolution: 'auto', 
                          fallThrough: false}, this.mapOptions);
         this.ovmap = new OpenLayers.Map(this.mapDiv, options);
         this.ovmap.viewPortDiv.appendChild(this.extentRectangle);
+        
+        // prevent ovmap from being destroyed when the page unloads, because
+        // the OverviewMap control has to do this (and does it).
         OpenLayers.Event.stopObserving(window, 'unload', this.ovmap.unloadDestroy);
         
         this.ovmap.addLayers(this.layers);
         this.ovmap.zoomToMaxExtent();
+        // check extent rectangle border width
         this.wComp = parseInt(OpenLayers.Element.getStyle(this.extentRectangle,
                                                'border-left-width')) +
                      parseInt(OpenLayers.Element.getStyle(this.extentRectangle,
@@ -281,7 +570,12 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
         
-        updateRectToMap: function() {
+    /**
+     * Method: updateRectToMap
+     * Updates the extent rectangle position and size to match the map extent
+     */
+    updateRectToMap: function() {
+        // If the projections differ we need to reproject
         var bounds;
         if (this.ovmap.getProjection() != this.map.getProjection()) {
             bounds = this.map.getExtent().transform(
@@ -296,7 +590,11 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         }
     },
     
-        updateMapToRect: function() {
+    /**
+     * Method: updateMapToRect
+     * Updates the map extent to match the extent rectangle position and size
+     */
+    updateMapToRect: function() {
         var lonLatBounds = this.getMapBoundsFromRectBounds(this.rectPxBounds);
         if (this.ovmap.getProjection() != this.map.getProjection()) {
             lonLatBounds = lonLatBounds.transform(
@@ -306,7 +604,14 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         this.map.panTo(lonLatBounds.getCenterLonLat());
     },
 
-        setRectPxBounds: function(pxBounds) {
+    /**
+     * Method: setRectPxBounds
+     * Set extent rectangle pixel bounds.
+     *
+     * Parameters:
+     * pxBounds - {<OpenLayers.Bounds>}
+     */
+    setRectPxBounds: function(pxBounds) {
         var top = Math.max(pxBounds.top, 0);
         var left = Math.max(pxBounds.left, 0);
         var bottom = Math.min(pxBounds.top + Math.abs(pxBounds.getHeight()),
@@ -338,7 +643,18 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         );
     },
 
-        getRectBoundsFromMapBounds: function(lonLatBounds) {
+    /**
+     * Method: getRectBoundsFromMapBounds
+     * Get the rect bounds from the map bounds.
+     *
+     * Parameters:
+     * lonLatBounds - {<OpenLayers.Bounds>}
+     *
+     * Returns:
+     * {<OpenLayers.Bounds>}A bounds which is the passed-in map lon/lat extent
+     * translated into pixel bounds for the overview map
+     */
+    getRectBoundsFromMapBounds: function(lonLatBounds) {
         var leftBottomPx = this.getOverviewPxFromLonLat({
             lon: lonLatBounds.left,
             lat: lonLatBounds.bottom
@@ -355,7 +671,18 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         return bounds;
     },
 
-        getMapBoundsFromRectBounds: function(pxBounds) {
+    /**
+     * Method: getMapBoundsFromRectBounds
+     * Get the map bounds from the rect bounds.
+     *
+     * Parameters:
+     * pxBounds - {<OpenLayers.Bounds>}
+     *
+     * Returns:
+     * {<OpenLayers.Bounds>} Bounds which is the passed-in overview rect bounds
+     * translated into lon/lat bounds for the overview map
+     */
+    getMapBoundsFromRectBounds: function(pxBounds) {
         var leftBottomLonLat = this.getLonLatFromOverviewPx({
             x: pxBounds.left,
             y: pxBounds.bottom
@@ -368,7 +695,21 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
                                      rightTopLonLat.lon, rightTopLonLat.lat);
     },
 
-        getLonLatFromOverviewPx: function(overviewMapPx) {
+    /**
+     * Method: getLonLatFromOverviewPx
+     * Get a map location from a pixel location
+     *
+     * Parameters:
+     * overviewMapPx - {<OpenLayers.Pixel>|Object} OpenLayers.Pixel or
+     *                                             an object with a
+     *                                             'x' and 'y' properties.
+     *
+     * Returns:
+     * {Object} Location which is the passed-in overview map
+     * OpenLayers.Pixel, translated into lon/lat by the overview
+     * map. An object with a 'lon' and 'lat' properties.
+     */
+    getLonLatFromOverviewPx: function(overviewMapPx) {
         var size = this.ovmap.size;
         var res  = this.ovmap.getResolution();
         var center = this.ovmap.getExtent().getCenterLonLat();
@@ -382,7 +723,19 @@ OpenLayers.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control, {
         };
     },
 
-        getOverviewPxFromLonLat: function(lonlat) {
+    /**
+     * Method: getOverviewPxFromLonLat
+     * Get a pixel location from a map location
+     *
+     * Parameters:
+     * lonlat - {<OpenLayers.LonLat>|Object} OpenLayers.LonLat or an
+     *     object with a 'lon' and 'lat' properties.
+     *
+     * Returns:
+     * {Object} Location which is the passed-in OpenLayers.LonLat, 
+     * translated into overview map pixels
+     */
+    getOverviewPxFromLonLat: function(lonlat) {
         var res = this.ovmap.getResolution();
         var extent = this.ovmap.getExtent();
         if (extent) {

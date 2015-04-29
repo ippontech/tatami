@@ -3,7 +3,17 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/WCSCapabilities.js
+ */
 
+/**
+ * Class: OpenLayers.Format.WCSCapabilities.v1
+ * Abstract class not to be instantiated directly.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.WCSCapabilities.v1 = OpenLayers.Class(
     OpenLayers.Format.XML, {
 
@@ -12,9 +22,22 @@ OpenLayers.Format.WCSCapabilities.v1 = OpenLayers.Class(
         splitSpace: (/\s+/)
     },
 
-        defaultPrefix: "wcs",
+    /**
+     * Property: defaultPrefix
+     */
+    defaultPrefix: "wcs",
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read capabilities data from a string, and return a list of coverages. 
+     * 
+     * Parameters: 
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Array} List of named coverages.
+     */
+    read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }

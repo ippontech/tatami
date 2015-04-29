@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : slovenian (sl)
+//! author : Robert Sedovšek : https://github.com/sedovsek
 
 import moment from '../moment';
 

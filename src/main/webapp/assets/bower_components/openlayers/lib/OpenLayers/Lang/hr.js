@@ -2,7 +2,16 @@
  *  - Mvrban
  */
 
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["hr"]
+ * Dictionary for Hrvatski.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["hr"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Nepodržani zahtjev ${statusText}",

@@ -8,6 +8,8 @@ var thresholds = {
     d: 26,  // days to month
     M: 11   // months to year
 };
+
+// helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
 function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
     return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
 }
@@ -37,6 +39,8 @@ function relativeTime (posNegDuration, withoutSuffix, locale) {
     a[4] = locale;
     return substituteTimeAgo.apply(null, a);
 }
+
+// This function allows you to set a threshold for relative time strings
 export function getSetRelativeTimeThreshold (threshold, limit) {
     if (thresholds[threshold] === undefined) {
         return false;

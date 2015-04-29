@@ -4,24 +4,67 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Control.js
+ * @requires OpenLayers/Events/buttonclick.js
+ */
 
+/**
+ * Class: OpenLayers.Control.PanZoom
+ * The PanZoom is a visible control, composed of a
+ * <OpenLayers.Control.PanPanel> and a <OpenLayers.Control.ZoomPanel>. By
+ * default it is drawn in the upper left corner of the map.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Control>
+ */
 OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
 
-        slideFactor: 50,
+    /** 
+     * APIProperty: slideFactor
+     * {Integer} Number of pixels by which we'll pan the map in any direction 
+     *     on clicking the arrow buttons.  If you want to pan by some ratio
+     *     of the map dimensions, use <slideRatio> instead.
+     */
+    slideFactor: 50,
 
-        slideRatio: null,
+    /** 
+     * APIProperty: slideRatio
+     * {Number} The fraction of map width/height by which we'll pan the map            
+     *     on clicking the arrow buttons.  Default is null.  If set, will
+     *     override <slideFactor>. E.g. if slideRatio is .5, then the Pan Up
+     *     button will pan up half the map height. 
+     */
+    slideRatio: null,
 
-        buttons: null,
+    /** 
+     * Property: buttons
+     * {Array(DOMElement)} Array of Button Divs 
+     */
+    buttons: null,
 
-        position: null,
+    /** 
+     * Property: position
+     * {<OpenLayers.Pixel>} 
+     */
+    position: null,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Control.PanZoom
+     * 
+     * Parameters:
+     * options - {Object}
+     */
+    initialize: function(options) {
         this.position = new OpenLayers.Pixel(OpenLayers.Control.PanZoom.X,
                                              OpenLayers.Control.PanZoom.Y);
         OpenLayers.Control.prototype.initialize.apply(this, arguments);
     },
 
-        destroy: function() {
+    /**
+     * APIMethod: destroy
+     */
+    destroy: function() {
         if (this.map && !this.outsideViewport) {
             this.map.events.unregister("buttonclick", this, this.onButtonClick);
         }
@@ -31,7 +74,13 @@ OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
         OpenLayers.Control.prototype.destroy.apply(this, arguments);
     },
 
-        setMap: function(map) {
+    /** 
+     * Method: setMap
+     *
+     * Properties:
+     * map - {<OpenLayers.Map>} 
+     */
+    setMap: function(map) {
         OpenLayers.Control.prototype.setMap.apply(this, arguments);
         var target;
         if (this.outsideViewport) {
@@ -43,9 +92,21 @@ OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
         target.events.register('buttonclick', this, this.onButtonClick);
     },
 
-        draw: function(px) {
+    /**
+     * Method: draw
+     *
+     * Parameters:
+     * px - {<OpenLayers.Pixel>} 
+     * 
+     * Returns:
+     * {DOMElement} A reference to the container div for the PanZoom control.
+     */
+    draw: function(px) {
+        // initialize our internal div
         OpenLayers.Control.prototype.draw.apply(this, arguments);
         px = this.position;
+
+        // place the controls
         this.buttons = [];
 
         var sz = {w: 18, h: 18};
@@ -66,31 +127,62 @@ OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
         return this.div;
     },
     
-        _addButton:function(id, img, xy, sz) {
+    /**
+     * Method: _addButton
+     * 
+     * Parameters:
+     * id - {String} 
+     * img - {String} 
+     * xy - {<OpenLayers.Pixel>} 
+     * sz - {<OpenLayers.Size>} 
+     * 
+     * Returns:
+     * {DOMElement} A Div (an alphaImageDiv, to be precise) that contains the
+     *     image of the button, and has all the proper event handlers set.
+     */
+    _addButton:function(id, img, xy, sz) {
         var imgLocation = OpenLayers.Util.getImageLocation(img);
         var btn = OpenLayers.Util.createAlphaImageDiv(
                                     this.id + "_" + id, 
                                     xy, sz, imgLocation, "absolute");
         btn.style.cursor = "pointer";
+        //we want to add the outer div
         this.div.appendChild(btn);
         btn.action = id;
         btn.className = "olButton";
+    
+        //we want to remember/reference the outer div
         this.buttons.push(btn);
         return btn;
     },
     
-        _removeButton: function(btn) {
+    /**
+     * Method: _removeButton
+     * 
+     * Parameters:
+     * btn - {Object}
+     */
+    _removeButton: function(btn) {
         this.div.removeChild(btn);
         OpenLayers.Util.removeItem(this.buttons, btn);
     },
     
-        removeButtons: function() {
+    /**
+     * Method: removeButtons
+     */
+    removeButtons: function() {
         for(var i=this.buttons.length-1; i>=0; --i) {
             this._removeButton(this.buttons[i]);
         }
     },
     
-        onButtonClick: function(evt) {
+    /**
+     * Method: onButtonClick
+     *
+     * Parameters:
+     * evt - {Event}
+     */
+    onButtonClick: function(evt) {
         var btn = evt.buttonElement;
         switch (btn.action) {
             case "panup": 
@@ -117,7 +209,16 @@ OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
         }
     },
     
-        getSlideFactor: function(dim) {
+    /**
+     * Method: getSlideFactor
+     *
+     * Parameters:
+     * dim - {String} "w" or "h" (for width or height).
+     *
+     * Returns:
+     * {Number} The slide factor for panning in the requested direction.
+     */
+    getSlideFactor: function(dim) {
         return this.slideRatio ?
             this.map.getSize()[dim] * this.slideRatio :
             this.slideFactor;
@@ -126,6 +227,14 @@ OpenLayers.Control.PanZoom = OpenLayers.Class(OpenLayers.Control, {
     CLASS_NAME: "OpenLayers.Control.PanZoom"
 });
 
+/**
+ * Constant: X
+ * {Integer}
+ */
 OpenLayers.Control.PanZoom.X = 4;
 
+/**
+ * Constant: Y
+ * {Integer}
+ */
 OpenLayers.Control.PanZoom.Y = 4;

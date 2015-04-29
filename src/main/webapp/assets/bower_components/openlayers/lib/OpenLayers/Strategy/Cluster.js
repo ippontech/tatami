@@ -3,23 +3,78 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Strategy.js
+ */
 
+/**
+ * Class: OpenLayers.Strategy.Cluster
+ * Strategy for vector feature clustering.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Strategy>
+ */
 OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
     
-        distance: 20,
+    /**
+     * APIProperty: distance
+     * {Integer} Pixel distance between features that should be considered a
+     *     single cluster.  Default is 20 pixels.
+     */
+    distance: 20,
     
-        threshold: null,
+    /**
+     * APIProperty: threshold
+     * {Integer} Optional threshold below which original features will be
+     *     added to the layer instead of clusters.  For example, a threshold
+     *     of 3 would mean that any time there are 2 or fewer features in
+     *     a cluster, those features will be added directly to the layer instead
+     *     of a cluster representing those features.  Default is null (which is
+     *     equivalent to 1 - meaning that clusters may contain just one feature).
+     */
+    threshold: null,
     
-        features: null,
+    /**
+     * Property: features
+     * {Array(<OpenLayers.Feature.Vector>)} Cached features.
+     */
+    features: null,
     
-        clusters: null,
+    /**
+     * Property: clusters
+     * {Array(<OpenLayers.Feature.Vector>)} Calculated clusters.
+     */
+    clusters: null,
     
-        clustering: false,
+    /**
+     * Property: clustering
+     * {Boolean} The strategy is currently clustering features.
+     */
+    clustering: false,
     
-        resolution: null,
+    /**
+     * Property: resolution
+     * {Float} The resolution (map units per pixel) of the current cluster set.
+     */
+    resolution: null,
 
-        
-        activate: function() {
+    /**
+     * Constructor: OpenLayers.Strategy.Cluster
+     * Create a new clustering strategy.
+     *
+     * Parameters:
+     * options - {Object} Optional object whose properties will be set on the
+     *     instance.
+     */
+    
+    /**
+     * APIMethod: activate
+     * Activate the strategy.  Register any listeners, do appropriate setup.
+     * 
+     * Returns:
+     * {Boolean} The strategy was successfully activated.
+     */
+    activate: function() {
         var activated = OpenLayers.Strategy.prototype.activate.call(this);
         if(activated) {
             this.layer.events.on({
@@ -32,7 +87,15 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         return activated;
     },
     
-        deactivate: function() {
+    /**
+     * APIMethod: deactivate
+     * Deactivate the strategy.  Unregister any listeners, do appropriate
+     *     tear-down.
+     * 
+     * Returns:
+     * {Boolean} The strategy was successfully deactivated.
+     */
+    deactivate: function() {
         var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
         if(deactivated) {
             this.clearCache();
@@ -46,7 +109,18 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         return deactivated;
     },
     
-        cacheFeatures: function(event) {
+    /**
+     * Method: cacheFeatures
+     * Cache features before they are added to the layer.
+     *
+     * Parameters:
+     * event - {Object} The event that this was listening for.  This will come
+     *     with a batch of features to be clustered.
+     *     
+     * Returns:
+     * {Boolean} False to stop features from being added to the layer.
+     */
+    cacheFeatures: function(event) {
         var propagate = true;
         if(!this.clustering) {
             this.clearCache();
@@ -57,13 +131,25 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         return propagate;
     },
     
-        clearCache: function() {
+    /**
+     * Method: clearCache
+     * Clear out the cached features.
+     */
+    clearCache: function() {
         if(!this.clustering) {
             this.features = null;
         }
     },
     
-        cluster: function(event) {
+    /**
+     * Method: cluster
+     * Cluster features based on some threshold distance.
+     *
+     * Parameters:
+     * event - {Object} The event received when cluster is called as a
+     *     result of a moveend event.
+     */
+    cluster: function(event) {
         if((!event || event.zoomChanged) && this.features) {
             var resolution = this.layer.map.getResolution();
             if(resolution != this.resolution || !this.clustersExist()) {
@@ -105,6 +191,9 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
                         }
                     }
                     this.clustering = true;
+                    // A legitimate feature addition could occur during this
+                    // addFeatures call.  For clustering to behave well, features
+                    // should be removed from a layer before requesting a new batch.
                     this.layer.addFeatures(clusters);
                     this.clustering = false;
                 }
@@ -113,7 +202,14 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         }
     },
     
-        clustersExist: function() {
+    /**
+     * Method: clustersExist
+     * Determine whether calculated clusters are already on the layer.
+     *
+     * Returns:
+     * {Boolean} The calculated clusters are already on the layer.
+     */
+    clustersExist: function() {
         var exist = false;
         if(this.clusters && this.clusters.length > 0 &&
            this.clusters.length == this.layer.features.length) {
@@ -128,7 +224,18 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         return exist;
     },
     
-        shouldCluster: function(cluster, feature) {
+    /**
+     * Method: shouldCluster
+     * Determine whether to include a feature in a given cluster.
+     *
+     * Parameters:
+     * cluster - {<OpenLayers.Feature.Vector>} A cluster.
+     * feature - {<OpenLayers.Feature.Vector>} A feature.
+     *
+     * Returns:
+     * {Boolean} The feature should be included in the cluster.
+     */
+    shouldCluster: function(cluster, feature) {
         var cc = cluster.geometry.getBounds().getCenterLonLat();
         var fc = feature.geometry.getBounds().getCenterLonLat();
         var distance = (
@@ -139,12 +246,30 @@ OpenLayers.Strategy.Cluster = OpenLayers.Class(OpenLayers.Strategy, {
         return (distance <= this.distance);
     },
     
-        addToCluster: function(cluster, feature) {
+    /**
+     * Method: addToCluster
+     * Add a feature to a cluster.
+     *
+     * Parameters:
+     * cluster - {<OpenLayers.Feature.Vector>} A cluster.
+     * feature - {<OpenLayers.Feature.Vector>} A feature.
+     */
+    addToCluster: function(cluster, feature) {
         cluster.cluster.push(feature);
         cluster.attributes.count += 1;
     },
     
-        createCluster: function(feature) {
+    /**
+     * Method: createCluster
+     * Given a feature, create a cluster.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>}
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector>} A cluster.
+     */
+    createCluster: function(feature) {
         var center = feature.geometry.getBounds().getCenterLonLat();
         var cluster = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point(center.lon, center.lat),

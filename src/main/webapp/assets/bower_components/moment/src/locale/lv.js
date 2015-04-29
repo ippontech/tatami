@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : latvian (lv)
+//! author : Kristaps Karlsons : https://github.com/skakri
 
 import moment from '../moment';
 

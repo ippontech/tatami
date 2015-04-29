@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : hrvatski (hr)
+//! author : Bojan Marković : https://github.com/bmarkovic
 
 import moment from '../moment';
 

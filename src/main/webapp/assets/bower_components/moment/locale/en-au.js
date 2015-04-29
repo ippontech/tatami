@@ -1,3 +1,5 @@
+//! moment.js locale configuration
+//! locale : australian english (en-au)
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

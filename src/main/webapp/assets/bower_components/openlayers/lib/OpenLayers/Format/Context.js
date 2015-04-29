@@ -3,15 +3,61 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML/VersionedOGC.js
+ */
 
+/**
+ * Class: OpenLayers.Format.Context
+ * Base class for both Format.WMC and Format.OWSContext
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.XML.VersionedOGC>
+ */
 OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC, {
 
-        layerOptions: null,
+    /**
+     * Property: layerOptions
+     * {Object} Default options for layers created by the parser. These
+     *     options are overridden by the options which are read from the
+     *     capabilities document.
+     */
+    layerOptions: null,
 
-        layerParams: null,
+    /**
+     * Property: layerParams
+     * {Object} Default parameters for layers created by the parser. This
+     *     can be used e.g. to override DEFAULT_PARAMS for 
+     *     OpenLayers.Layer.WMS.
+     */
+    layerParams: null,
 
-    
-        read: function(data, options) {
+    /**
+     * Constructor: OpenLayers.Format.Context
+     * Create a new parser for Context documents.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+
+    /**
+     * APIMethod: read
+     * Read Context data from a string, and return an object with map
+     *     properties and a list of layers.
+     *
+     * Parameters:
+     * data - {String} or {DOMElement} data to read/parse.
+     * options - {Object} The options object must contain a map property.  If
+     *     the map property is a string, it must be the id of a dom element
+     *     where the new map will be placed.  If the map property is an
+     *     <OpenLayers.Map>, the layers from the context document will be added
+     *     to the map.
+     *
+     * Returns:
+     * {<OpenLayers.Map>} A map based on the context.
+     */
+    read: function(data, options) {
         var context = OpenLayers.Format.XML.VersionedOGC.prototype.read.apply(this, 
             arguments);
         var map;
@@ -23,18 +69,32 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
                 var mapOptions = options.map;
                 if(OpenLayers.Util.isElement(mapOptions) ||
                    typeof mapOptions == "string") {
+                    // we assume mapOptions references a div
+                    // element
                     mapOptions = {div: mapOptions};
                 }
                 map = this.contextToMap(context, mapOptions);
             }
         } else {
+            // not documented as part of the API, provided as a non-API option
             map = context;
         }
         return map;
     },
 
-        getLayerFromContext: function(layerContext) {
+    /**
+     * Method: getLayerFromContext
+     * Create a WMS layer from a layerContext object.
+     *
+     * Parameters:
+     * layerContext - {Object} An object representing a WMS layer.
+     *
+     * Returns:
+     * {<OpenLayers.Layer.WMS>} A WMS layer.
+     */
+    getLayerFromContext: function(layerContext) {
         var i, len;
+        // fill initial options object from layerContext
         var options = {
             queryable: layerContext.queryable, //keep queryable for api compatibility
             visibility: layerContext.visibility,
@@ -74,6 +134,7 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
             version: layerContext.version
         };
         if (layerContext.formats && layerContext.formats.length>0) {
+            // set default value for params if current attribute is not positionned
             params.format = layerContext.formats[0].value;
             for (i=0, len=layerContext.formats.length; i<len; i++) {
                 var format = layerContext.formats[i];
@@ -87,6 +148,10 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
             for (i=0, len=layerContext.styles.length; i<len; i++) {
                 var style = layerContext.styles[i];
                 if (style.current == true) {
+                    // three style types to consider
+                    // 1) linked SLD
+                    // 2) inline SLD
+                    // 3) named style
                     if(style.href) {
                         params.sld = style.href;
                     } else if(style.body) {
@@ -108,6 +173,8 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
             options.strategies = [new OpenLayers.Strategy.BBOX()];
             options.protocol = new OpenLayers.Protocol.WFS({
                 url: layerContext.url,
+                // since we do not know featureNS, let the protocol
+                // determine it automagically using featurePrefix
                 featurePrefix: layerContext.name.split(":")[0],
                 featureType: layerContext.name.split(":").pop()
             });
@@ -116,6 +183,7 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
                 options
             );
         } else if (service == OpenLayers.Format.Context.serviceTypes.KML) {
+            // use a vector layer with an HTTP Protcol and a Fixed strategy
             options.strategies = [new OpenLayers.Strategy.Fixed()];
             options.protocol = new OpenLayers.Protocol.HTTP({
                 url: layerContext.url, 
@@ -126,6 +194,7 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
                 options
             );
         } else if (service == OpenLayers.Format.Context.serviceTypes.GML) {
+            // use a vector layer with a HTTP Protocol and a Fixed strategy
             options.strategies = [new OpenLayers.Strategy.Fixed()];
             options.protocol = new OpenLayers.Protocol.HTTP({
                 url: layerContext.url, 
@@ -136,6 +205,7 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
                 options
             );
         } else if (layerContext.features) {
+            // inline GML or KML features
             layer = new OpenLayers.Layer.Vector(
                 layerContext.title || layerContext.name,
                 options
@@ -152,7 +222,17 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
         return layer;
     },
 
-        getLayersFromContext: function(layersContext) {
+    /**
+     * Method: getLayersFromContext
+     * Create an array of layers from an array of layerContext objects.
+     *
+     * Parameters:
+     * layersContext - {Array(Object)} An array of objects representing layers.
+     *
+     * Returns:
+     * {Array(<OpenLayers.Layer>)} An array of layers.
+     */
+    getLayersFromContext: function(layersContext) {
         var layers = [];
         for (var i=0, len=layersContext.length; i<len; i++) {
             var layer = this.getLayerFromContext(layersContext[i]);
@@ -163,7 +243,18 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
         return layers;
     },
 
-        contextToMap: function(context, options) {
+    /**
+     * Method: contextToMap
+     * Create a map given a context object.
+     *
+     * Parameters:
+     * context - {Object} The context object.
+     * options - {Object} Default map options.
+     *
+     * Returns:
+     * {<OpenLayers.Map>} A map based on the context object.
+     */
+    contextToMap: function(context, options) {
         options = OpenLayers.Util.applyDefaults({
             maxExtent:  context.maxExtent,
             projection: context.projection,
@@ -194,12 +285,34 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
         return map;
     },
 
-        mergeContextToMap: function(context, map) {
+    /**
+     * Method: mergeContextToMap
+     * Add layers from a context object to a map.
+     *
+     * Parameters:
+     * context - {Object} The context object.
+     * map - {<OpenLayers.Map>} The map.
+     *
+     * Returns:
+     * {<OpenLayers.Map>} The same map with layers added.
+     */
+    mergeContextToMap: function(context, map) {
         map.addLayers(this.getLayersFromContext(context.layersContext));
         return map;
     },
 
-        write: function(obj, options) {
+    /**
+     * APIMethod: write
+     * Write a context document given a map.
+     *
+     * Parameters:
+     * obj - {<OpenLayers.Map> | Object} A map or context object.
+     * options - {Object} Optional configuration object.
+     *
+     * Returns:
+     * {String} A context document string.
+     */
+    write: function(obj, options) {
         obj = this.toContext(obj);
         return OpenLayers.Format.XML.VersionedOGC.prototype.write.apply(this,
             arguments);
@@ -208,6 +321,10 @@ OpenLayers.Format.Context = OpenLayers.Class(OpenLayers.Format.XML.VersionedOGC,
     CLASS_NAME: "OpenLayers.Format.Context"
 });
 
+/**
+ * Constant: OpenLayers.Format.Context.serviceTypes
+ * Enumeration for service types
+ */
 OpenLayers.Format.Context.serviceTypes = {
     "WMS": "urn:ogc:serviceType:WMS",
     "WFS": "urn:ogc:serviceType:WFS",

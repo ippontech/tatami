@@ -3,24 +3,114 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/BaseTypes/Class.js
+ * @requires OpenLayers/Events.js
+ */
 
+/**
+ * Class: OpenLayers.Handler
+ * Base class to construct a higher-level handler for event sequences.  All
+ *     handlers have activate and deactivate methods.  In addition, they have
+ *     methods named like browser events.  When a handler is activated, any
+ *     additional methods named like a browser event is registered as a
+ *     listener for the corresponding event.  When a handler is deactivated,
+ *     those same methods are unregistered as event listeners.
+ *
+ * Handlers also typically have a callbacks object with keys named like
+ *     the abstracted events or event sequences that they are in charge of
+ *     handling.  The controls that wrap handlers define the methods that
+ *     correspond to these abstract events - so instead of listening for
+ *     individual browser events, they only listen for the abstract events
+ *     defined by the handler.
+ *     
+ * Handlers are created by controls, which ultimately have the responsibility
+ *     of making changes to the the state of the application.  Handlers
+ *     themselves may make temporary changes, but in general are expected to
+ *     return the application in the same state that they found it.
+ */
 OpenLayers.Handler = OpenLayers.Class({
 
-        id: null,
+    /**
+     * Property: id
+     * {String}
+     */
+    id: null,
         
-        control: null,
+    /**
+     * APIProperty: control
+     * {<OpenLayers.Control>}. The control that initialized this handler.  The
+     *     control is assumed to have a valid map property - that map is used
+     *     in the handler's own setMap method.
+     */
+    control: null,
 
-        map: null,
+    /**
+     * Property: map
+     * {<OpenLayers.Map>}
+     */
+    map: null,
 
-        keyMask: null,
+    /**
+     * APIProperty: keyMask
+     * {Integer} Use bitwise operators and one or more of the OpenLayers.Handler
+     *     constants to construct a keyMask.  The keyMask is used by
+     *     <checkModifiers>.  If the keyMask matches the combination of keys
+     *     down on an event, checkModifiers returns true.
+     *
+     * Example:
+     * (code)
+     *     // handler only responds if the Shift key is down
+     *     handler.keyMask = OpenLayers.Handler.MOD_SHIFT;
+     *
+     *     // handler only responds if Ctrl-Shift is down
+     *     handler.keyMask = OpenLayers.Handler.MOD_SHIFT |
+     *                       OpenLayers.Handler.MOD_CTRL;
+     * (end)
+     */
+    keyMask: null,
 
-        active: false,
+    /**
+     * Property: active
+     * {Boolean}
+     */
+    active: false,
     
-        evt: null,
+    /**
+     * Property: evt
+     * {Event} This property references the last event handled by the handler.
+     *     Note that this property is not part of the stable API.  Use of the
+     *     evt property should be restricted to controls in the library
+     *     or other applications that are willing to update with changes to
+     *     the OpenLayers code.
+     */
+    evt: null,
     
-        touch: false,
+    /**
+     * Property: touch
+     * {Boolean} Indicates the support of touch events. When touch events are 
+     *     started touch will be true and all mouse related listeners will do 
+     *     nothing.
+     */
+    touch: false,
 
-        initialize: function(control, callbacks, options) {
+    /**
+     * Constructor: OpenLayers.Handler
+     * Construct a handler.
+     *
+     * Parameters:
+     * control - {<OpenLayers.Control>} The control that initialized this
+     *     handler.  The control is assumed to have a valid map property; that
+     *     map is used in the handler's own setMap method.  If a map property
+     *     is present in the options argument it will be used instead.
+     * callbacks - {Object} An object whose properties correspond to abstracted
+     *     events or sequences of browser events.  The values for these
+     *     properties are functions defined by the control that get called by
+     *     the handler.
+     * options - {Object} An optional object whose properties will be set on
+     *     the handler.
+     */
+    initialize: function(control, callbacks, options) {
         OpenLayers.Util.extend(this, options);
         this.control = control;
         this.callbacks = callbacks;
@@ -33,11 +123,23 @@ OpenLayers.Handler = OpenLayers.Class({
         this.id = OpenLayers.Util.createUniqueID(this.CLASS_NAME + "_");
     },
     
-        setMap: function (map) {
+    /**
+     * Method: setMap
+     */
+    setMap: function (map) {
         this.map = map;
     },
 
-        checkModifiers: function (evt) {
+    /**
+     * Method: checkModifiers
+     * Check the keyMask on the handler.  If no <keyMask> is set, this always
+     *     returns true.  If a <keyMask> is set and it matches the combination
+     *     of keys down on an event, this returns true.
+     *
+     * Returns:
+     * {Boolean} The keyMask matches the keys down on an event.
+     */
+    checkModifiers: function (evt) {
         if(this.keyMask == null) {
             return true;
         }
@@ -53,10 +155,18 @@ OpenLayers.Handler = OpenLayers.Class({
         return (keyModifiers == this.keyMask);
     },
 
-        activate: function() {
+    /**
+     * APIMethod: activate
+     * Turn on the handler.  Returns false if the handler was already active.
+     * 
+     * Returns: 
+     * {Boolean} The handler was activated.
+     */
+    activate: function() {
         if(this.active) {
             return false;
         }
+        // register for event handlers defined on this class.
         var events = OpenLayers.Events.prototype.BROWSER_EVENTS;
         for (var i=0, len=events.length; i<len; i++) {
             if (this[events[i]]) {
@@ -67,10 +177,18 @@ OpenLayers.Handler = OpenLayers.Class({
         return true;
     },
     
-        deactivate: function() {
+    /**
+     * APIMethod: deactivate
+     * Turn off the handler.  Returns false if the handler was already inactive.
+     * 
+     * Returns:
+     * {Boolean} The handler was deactivated.
+     */
+    deactivate: function() {
         if(!this.active) {
             return false;
         }
+        // unregister event handlers defined on this class.
         var events = OpenLayers.Events.prototype.BROWSER_EVENTS;
         for (var i=0, len=events.length; i<len; i++) {
             if (this[events[i]]) {
@@ -82,7 +200,13 @@ OpenLayers.Handler = OpenLayers.Class({
         return true;
     },
 
-        startTouch: function() {
+    /**
+     * Method: startTouch
+     * Start touch events, this method must be called by subclasses in 
+     *     "touchstart" method. When touch events are started <touch> will be
+     *     true and all mouse related listeners will do nothing.
+     */
+    startTouch: function() {
         if (!this.touch) {
             this.touch = true;
             var events = [
@@ -97,43 +221,105 @@ OpenLayers.Handler = OpenLayers.Class({
         }
     },
 
-        callback: function (name, args) {
+    /**
+    * Method: callback
+    * Trigger the control's named callback with the given arguments
+    *
+    * Parameters:
+    * name - {String} The key for the callback that is one of the properties
+    *     of the handler's callbacks object.
+    * args - {Array(*)} An array of arguments (any type) with which to call 
+    *     the callback (defined by the control).
+    */
+    callback: function (name, args) {
         if (name && this.callbacks[name]) {
             this.callbacks[name].apply(this.control, args);
         }
     },
 
-        register: function (name, method) {
+    /**
+    * Method: register
+    * register an event on the map
+    */
+    register: function (name, method) {
+        // TODO: deal with registerPriority in 3.0
         this.map.events.registerPriority(name, this, method);
         this.map.events.registerPriority(name, this, this.setEvent);
     },
 
-        unregister: function (name, method) {
+    /**
+    * Method: unregister
+    * unregister an event from the map
+    */
+    unregister: function (name, method) {
         this.map.events.unregister(name, this, method);   
         this.map.events.unregister(name, this, this.setEvent);
     },
     
-        setEvent: function(evt) {
+    /**
+     * Method: setEvent
+     * With each registered browser event, the handler sets its own evt
+     *     property.  This property can be accessed by controls if needed
+     *     to get more information about the event that the handler is
+     *     processing.
+     *
+     * This allows modifier keys on the event to be checked (alt, shift, ctrl,
+     *     and meta cannot be checked with the keyboard handler).  For a
+     *     control to determine which modifier keys are associated with the
+     *     event that a handler is currently processing, it should access
+     *     (code)handler.evt.altKey || handler.evt.shiftKey ||
+     *     handler.evt.ctrlKey || handler.evt.metaKey(end).
+     *
+     * Parameters:
+     * evt - {Event} The browser event.
+     */
+    setEvent: function(evt) {
         this.evt = evt;
         return true;
     },
 
-        destroy: function () {
+    /**
+     * Method: destroy
+     * Deconstruct the handler.
+     */
+    destroy: function () {
+        // unregister event listeners
         this.deactivate();
+        // eliminate circular references
         this.control = this.map = null;        
     },
 
     CLASS_NAME: "OpenLayers.Handler"
 });
 
+/**
+ * Constant: OpenLayers.Handler.MOD_NONE
+ * If set as the <keyMask>, <checkModifiers> returns false if any key is down.
+ */
 OpenLayers.Handler.MOD_NONE  = 0;
 
+/**
+ * Constant: OpenLayers.Handler.MOD_SHIFT
+ * If set as the <keyMask>, <checkModifiers> returns false if Shift is down.
+ */
 OpenLayers.Handler.MOD_SHIFT = 1;
 
+/**
+ * Constant: OpenLayers.Handler.MOD_CTRL
+ * If set as the <keyMask>, <checkModifiers> returns false if Ctrl is down.
+ */
 OpenLayers.Handler.MOD_CTRL  = 2;
 
+/**
+ * Constant: OpenLayers.Handler.MOD_ALT
+ * If set as the <keyMask>, <checkModifiers> returns false if Alt is down.
+ */
 OpenLayers.Handler.MOD_ALT   = 4;
 
+/**
+ * Constant: OpenLayers.Handler.MOD_META
+ * If set as the <keyMask>, <checkModifiers> returns false if Cmd is down.
+ */
 OpenLayers.Handler.MOD_META  = 8;
 
 

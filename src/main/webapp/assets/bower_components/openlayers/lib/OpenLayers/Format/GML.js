@@ -3,26 +3,94 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Feature/Vector.js
+ * @requires OpenLayers/Geometry/Point.js
+ * @requires OpenLayers/Geometry/MultiPoint.js
+ * @requires OpenLayers/Geometry/LineString.js
+ * @requires OpenLayers/Geometry/MultiLineString.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ * @requires OpenLayers/Geometry/MultiPolygon.js
+ */
 
+/**
+ * Class: OpenLayers.Format.GML
+ * Read/Write GML. Create a new instance with the <OpenLayers.Format.GML>
+ *     constructor.  Supports the GML simple features profile.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Format.XML>
+ */
 OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
     
-        featureNS: "http://mapserver.gis.umn.edu/mapserver",
+    /**
+     * APIProperty: featureNS
+     * {String} Namespace used for feature attributes.  Default is
+     *     "http://mapserver.gis.umn.edu/mapserver".
+     */
+    featureNS: "http://mapserver.gis.umn.edu/mapserver",
     
-        featurePrefix: "feature",
+    /**
+     * APIProperty: featurePrefix
+     * {String} Namespace alias (or prefix) for feature nodes.  Default is
+     *     "feature".
+     */
+    featurePrefix: "feature",
     
-        featureName: "featureMember", 
+    /**
+     * APIProperty: featureName
+     * {String} Element name for features. Default is "featureMember".
+     */
+    featureName: "featureMember", 
     
-        layerName: "features",
+    /**
+     * APIProperty: layerName
+     * {String} Name of data layer. Default is "features".
+     */
+    layerName: "features",
     
-        geometryName: "geometry",
+    /**
+     * APIProperty: geometryName
+     * {String} Name of geometry element.  Defaults to "geometry".
+     */
+    geometryName: "geometry",
     
-        collectionName: "FeatureCollection",
+    /** 
+     * APIProperty: collectionName
+     * {String} Name of featureCollection element.
+     */
+    collectionName: "FeatureCollection",
     
-        gmlns: "http://www.opengis.net/gml",
+    /**
+     * APIProperty: gmlns
+     * {String} GML Namespace.
+     */
+    gmlns: "http://www.opengis.net/gml",
 
-        extractAttributes: true,
+    /**
+     * APIProperty: extractAttributes
+     * {Boolean} Extract attributes from GML.
+     */
+    extractAttributes: true,
     
-        initialize: function(options) {
+    /**
+     * APIProperty: xy
+     * {Boolean} Order of the GML coordinate true:(x,y) or false:(y,x)
+     * Changing is not recommended, a new Format should be instantiated.
+     */ 
+    xy: true,
+    
+    /**
+     * Constructor: OpenLayers.Format.GML
+     * Create a new parser for GML.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    initialize: function(options) {
+        // compile regular expressions once instead of every time they are used
         this.regExes = {
             trimSpace: (/^\s*|\s*$/g),
             removeSpace: (/\s*/g),
@@ -32,7 +100,17 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
     },
 
-        read: function(data) {
+    /**
+     * APIMethod: read
+     * Read data from a string, and return a list of features. 
+     * 
+     * Parameters:
+     * data - {String} or {DOMElement} data to read/parse.
+     *
+     * Returns:
+     * {Array(<OpenLayers.Feature.Vector>)} An array of features.
+     */
+    read: function(data) {
         if(typeof data == "string") { 
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -49,15 +127,28 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return features;
     },
     
-        parseFeature: function(node) {
+    /**
+     * Method: parseFeature
+     * This function is the core of the GML parsing code in OpenLayers.
+     *    It creates the geometries that are then attached to the returned
+     *    feature, and calls parseAttributes() to get attribute data out.
+     *    
+     * Parameters:
+     * node - {DOMElement} A GML feature node. 
+     */
+    parseFeature: function(node) {
+        // only accept one geometry per feature - look for highest "order"
         var order = ["MultiPolygon", "Polygon",
                      "MultiLineString", "LineString",
                      "MultiPoint", "Point", "Envelope"];
+        // FIXME: In case we parse a feature with no geometry, but boundedBy an Envelope,
+        // this code creates a geometry derived from the Envelope. This is not correct.
         var type, nodeList, geometry, parser;
         for(var i=0; i<order.length; ++i) {
             type = order[i];
             nodeList = this.getElementsByTagNameNS(node, this.gmlns, type);
             if(nodeList.length > 0) {
+                // only deal with first geometry of this type
                 parser = this.parseGeometry[type.toLowerCase()];
                 if(parser) {
                     geometry = parser.apply(this, [nodeList[0]]);
@@ -68,6 +159,7 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                 } else {
                     throw new TypeError("Unsupported geometry type: " + type);
                 }
+                // stop looking for different geometry types
                 break;
             }
         }
@@ -86,6 +178,8 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                 geometry = box.toGeometry();
             }
         }
+        
+        // construct feature (optionally with attributes)
         var attributes;
         if(this.extractAttributes) {
             attributes = this.parseAttributes(node);
@@ -100,6 +194,8 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             featureNSPrefix: firstChild.prefix
         };
         feature.type = feature.gml.featureType;
+                
+        // assign fid - this can come from a "fid" or "id" attribute
         var childNode = node.firstChild;
         var fid;
         while(childNode) {
@@ -116,17 +212,43 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return feature;
     },
     
-        parseGeometry: {
+    /**
+     * Property: parseGeometry
+     * Properties of this object are the functions that parse geometries based
+     *     on their type.
+     */
+    parseGeometry: {
         
-                point: function(node) {
-                        var nodeList, coordString;
+        /**
+         * Method: parseGeometry.point
+         * Given a GML node representing a point geometry, create an OpenLayers
+         *     point geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.Point>} A point geometry.
+         */
+        point: function(node) {
+            /**
+             * Three coordinate variations to consider:
+             * 1) <gml:pos>x y z</gml:pos>
+             * 2) <gml:coordinates>x, y, z</gml:coordinates>
+             * 3) <gml:coord><gml:X>x</gml:X><gml:Y>y</gml:Y></gml:coord>
+             */
+            var nodeList, coordString;
             var coords = [];
+
+            // look for <gml:pos>
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns, "pos");
             if(nodeList.length > 0) {
                 coordString = nodeList[0].firstChild.nodeValue;
                 coordString = coordString.replace(this.regExes.trimSpace, "");
                 coords = coordString.split(this.regExes.splitSpace);
             }
+
+            // look for <gml:coordinates>
             if(coords.length == 0) {
                 nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "coordinates");
@@ -137,6 +259,8 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                     coords = coordString.split(",");
                 }
             }
+
+            // look for <gml:coord>
             if(coords.length == 0) {
                 nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "coord");
@@ -151,6 +275,8 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                     }
                 }
             }
+                
+            // preserve third dimension
             if(coords.length == 2) {
                 coords[2] = null;
             }
@@ -165,7 +291,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             }
         },
         
-                multipoint: function(node) {
+        /**
+         * Method: parseGeometry.multipoint
+         * Given a GML node representing a multipoint geometry, create an
+         *     OpenLayers multipoint geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.MultiPoint>} A multipoint geometry.
+         */
+        multipoint: function(node) {
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "Point");
             var components = [];
@@ -181,10 +318,28 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return new OpenLayers.Geometry.MultiPoint(components);
         },
         
-                linestring: function(node, ring) {
-                        var nodeList, coordString;
+        /**
+         * Method: parseGeometry.linestring
+         * Given a GML node representing a linestring geometry, create an
+         *     OpenLayers linestring geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.LineString>} A linestring geometry.
+         */
+        linestring: function(node, ring) {
+            /**
+             * Two coordinate variations to consider:
+             * 1) <gml:posList dimension="d">x0 y0 z0 x1 y1 z1</gml:posList>
+             * 2) <gml:coordinates>x0, y0, z0 x1, y1, z1</gml:coordinates>
+             */
+            var nodeList, coordString;
             var coords = [];
             var points = [];
+
+            // look for <gml:posList>
             nodeList = this.getElementsByTagNameNS(node, this.gmlns, "posList");
             if(nodeList.length > 0) {
                 coordString = this.getChildValue(nodeList[0]);
@@ -204,6 +359,8 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                     }
                 }
             }
+
+            // look for <gml:coordinates>
             if(coords.length == 0) {
                 nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "coordinates");
@@ -243,7 +400,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return line;
         },
         
-                multilinestring: function(node) {
+        /**
+         * Method: parseGeometry.multilinestring
+         * Given a GML node representing a multilinestring geometry, create an
+         *     OpenLayers multilinestring geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.MultiLineString>} A multilinestring geometry.
+         */
+        multilinestring: function(node) {
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "LineString");
             var components = [];
@@ -260,11 +428,23 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return new OpenLayers.Geometry.MultiLineString(components);
         },
         
-                polygon: function(node) {
+        /**
+         * Method: parseGeometry.polygon
+         * Given a GML node representing a polygon geometry, create an
+         *     OpenLayers polygon geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.Polygon>} A polygon geometry.
+         */
+        polygon: function(node) {
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "LinearRing");
             var components = [];
             if(nodeList.length > 0) {
+                // this assumes exterior ring first, inner rings after
                 var ring;
                 for(var i=0; i<nodeList.length; ++i) {
                     ring = this.parseGeometry.linestring.apply(this,
@@ -277,7 +457,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return new OpenLayers.Geometry.Polygon(components);
         },
         
-                multipolygon: function(node) {
+        /**
+         * Method: parseGeometry.multipolygon
+         * Given a GML node representing a multipolygon geometry, create an
+         *     OpenLayers multipolygon geometry.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Geometry.MultiPolygon>} A multipolygon geometry.
+         */
+        multipolygon: function(node) {
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                        "Polygon");
             var components = [];
@@ -352,7 +543,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return envelope; 
         },
 
-                box: function(node) {
+        /**
+         * Method: parseGeometry.box
+         * Given a GML node representing a box geometry, create an
+         *     OpenLayers.Bounds.
+         *
+         * Parameters:
+         * node - {DOMElement} A GML node.
+         *
+         * Returns:
+         * {<OpenLayers.Bounds>} A bounds representing the box.
+         */
+        box: function(node) {
             var nodeList = this.getElementsByTagNameNS(node, this.gmlns,
                                                    "coordinates");
             var coordString;
@@ -375,12 +577,23 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         
     },
     
-        parseAttributes: function(node) {
+    /**
+     * Method: parseAttributes
+     *
+     * Parameters:
+     * node - {DOMElement}
+     *
+     * Returns:
+     * {Object} An attributes object.
+     */
+    parseAttributes: function(node) {
         var attributes = {};
+        // assume attributes are children of the first type 1 child
         var childNode = node.firstChild;
         var children, i, child, grandchildren, grandchild, name, value;
         while(childNode) {
             if(childNode.nodeType == 1) {
+                // attributes are type 1 children with one type 3 child
                 children = childNode.childNodes;
                 for(i=0; i<children.length; ++i) {
                     child = children[i];
@@ -398,6 +611,10 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
                                 attributes[name] = value;
                             }
                         } else {
+                            // If child has no childNodes (grandchildren),
+                            // set an attribute with null value.
+                            // e.g. <prefix:fieldname/> becomes
+                            // {fieldname: null}
                             attributes[child.nodeName.split(":").pop()] = null;
                         }
                     }
@@ -409,7 +626,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return attributes;
     },
     
-        write: function(features) {
+    /**
+     * APIMethod: write
+     * Generate a GML document string given a list of features. 
+     * 
+     * Parameters:
+     * features - {Array(<OpenLayers.Feature.Vector>)} List of features to
+     *     serialize into a string.
+     *
+     * Returns:
+     * {String} A string representing the GML document.
+     */
+    write: function(features) {
         if(!(OpenLayers.Util.isArray(features))) {
             features = [features];
         }
@@ -421,7 +649,17 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [gml]);
     },
 
-        createFeatureXML: function(feature) {
+    /** 
+     * Method: createFeatureXML
+     * Accept an OpenLayers.Feature.Vector, and build a GML node for it.
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>} The feature to be built as GML.
+     *
+     * Returns:
+     * {DOMElement} A node reprensting the feature in GML.
+     */
+    createFeatureXML: function(feature) {
         var geometry = feature.geometry;
         var geometryNode = this.buildGeometryNode(geometry);
         var geomContainer = this.createElementNS(this.featureNS,
@@ -449,7 +687,10 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return featureNode;
     },
     
-        buildGeometryNode: function(geometry) {
+    /**
+     * APIMethod: buildGeometryNode
+     */
+    buildGeometryNode: function(geometry) {
         if (this.externalProjection && this.internalProjection) {
             geometry = geometry.clone();
             geometry.transform(this.internalProjection, 
@@ -461,15 +702,44 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         return builder.apply(this, [geometry]);
     },
 
-        buildGeometry: {
+    /**
+     * Property: buildGeometry
+     * Object containing methods to do the actual geometry node building
+     *     based on geometry type.
+     */
+    buildGeometry: {
+        // TBD retrieve the srs from layer
+        // srsName is non-standard, so not including it until it's right.
+        // gml.setAttribute("srsName",
+        //                  "http://www.opengis.net/gml/srs/epsg.xml#4326");
 
-                point: function(geometry) {
+        /**
+         * Method: buildGeometry.point
+         * Given an OpenLayers point geometry, create a GML point.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.Point>} A point geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML point node.
+         */
+        point: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:Point");
             gml.appendChild(this.buildCoordinatesNode(geometry));
             return gml;
         },
         
-                multipoint: function(geometry) {
+        /**
+         * Method: buildGeometry.multipoint
+         * Given an OpenLayers multipoint geometry, create a GML multipoint.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.MultiPoint>} A multipoint geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML multipoint node.
+         */
+        multipoint: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:MultiPoint");
             var points = geometry.components;
             var pointMember, pointGeom;
@@ -484,13 +754,35 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return gml;            
         },
         
-                linestring: function(geometry) {
+        /**
+         * Method: buildGeometry.linestring
+         * Given an OpenLayers linestring geometry, create a GML linestring.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.LineString>} A linestring geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML linestring node.
+         */
+        linestring: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:LineString");
             gml.appendChild(this.buildCoordinatesNode(geometry));
             return gml;
         },
         
-                multilinestring: function(geometry) {
+        /**
+         * Method: buildGeometry.multilinestring
+         * Given an OpenLayers multilinestring geometry, create a GML
+         *     multilinestring.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.MultiLineString>} A multilinestring
+         *     geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML multilinestring node.
+         */
+        multilinestring: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:MultiLineString");
             var lines = geometry.components;
             var lineMember, lineGeom;
@@ -505,13 +797,33 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return gml;
         },
         
-                linearring: function(geometry) {
+        /**
+         * Method: buildGeometry.linearring
+         * Given an OpenLayers linearring geometry, create a GML linearring.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.LinearRing>} A linearring geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML linearring node.
+         */
+        linearring: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:LinearRing");
             gml.appendChild(this.buildCoordinatesNode(geometry));
             return gml;
         },
         
-                polygon: function(geometry) {
+        /**
+         * Method: buildGeometry.polygon
+         * Given an OpenLayers polygon geometry, create a GML polygon.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.Polygon>} A polygon geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML polygon node.
+         */
+        polygon: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:Polygon");
             var rings = geometry.components;
             var ringMember, ringGeom, type;
@@ -527,7 +839,18 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             return gml;
         },
         
-                multipolygon: function(geometry) {
+        /**
+         * Method: buildGeometry.multipolygon
+         * Given an OpenLayers multipolygon geometry, create a GML multipolygon.
+         *
+         * Parameters:
+         * geometry - {<OpenLayers.Geometry.MultiPolygon>} A multipolygon
+         *     geometry.
+         *
+         * Returns:
+         * {DOMElement} A GML multipolygon node.
+         */
+        multipolygon: function(geometry) {
             var gml = this.createElementNS(this.gmlns, "gml:MultiPolygon");
             var polys = geometry.components;
             var polyMember, polyGeom;
@@ -543,14 +866,37 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
 
         },
  
-                bounds: function(bounds) {
+        /**
+         * Method: buildGeometry.bounds
+         * Given an OpenLayers bounds, create a GML box.
+         *
+         * Parameters:
+         * bounds - {<OpenLayers.Geometry.Bounds>} A bounds object.
+         *
+         * Returns:
+         * {DOMElement} A GML box node.
+         */
+        bounds: function(bounds) {
             var gml = this.createElementNS(this.gmlns, "gml:Box");
             gml.appendChild(this.buildCoordinatesNode(bounds));
             return gml;
         }
     },
 
-        buildCoordinatesNode: function(geometry) {
+    /**
+     * Method: buildCoordinates
+     * builds the coordinates XmlNode
+     * (code)
+     * <gml:coordinates decimal="." cs="," ts=" ">...</gml:coordinates>
+     * (end)
+     *
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>} 
+     *
+     * Returns:
+     * {XmlNode} created xmlNode
+     */
+    buildCoordinatesNode: function(geometry) {
         var coordinatesNode = this.createElementNS(this.gmlns,
                                                    "gml:coordinates");
         coordinatesNode.setAttribute("decimal", ".");

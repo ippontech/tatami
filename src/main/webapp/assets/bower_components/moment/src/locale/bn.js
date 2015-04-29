@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Bengali (bn)
+//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
 import moment from '../moment';
 
@@ -77,6 +80,9 @@ export default moment.defineLocale('bn', {
     isPM: function (input) {
         return /^(দুপুর|বিকেল|রাত)$/.test(input);
     },
+    //Bengali is a vast language its spoken
+    //in different forms in various parts of the world.
+    //I have just generalized with most common one used
     meridiem : function (hour, minute, isLower) {
         if (hour < 4) {
             return 'রাত';

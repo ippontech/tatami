@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Marathi (mr)
+//! author : Harshad Kale : https://github.com/kalehv
 
 import moment from '../moment';
 

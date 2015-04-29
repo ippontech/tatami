@@ -3,11 +3,42 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Geometry/Curve.js
+ */
 
+/**
+ * Class: OpenLayers.Geometry.LineString
+ * A LineString is a Curve which, once two points have been added to it, can 
+ * never be less than two points long.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Geometry.Curve>
+ */
 OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
 
-    
-        removeComponent: function(point) {
+    /**
+     * Constructor: OpenLayers.Geometry.LineString
+     * Create a new LineString geometry
+     *
+     * Parameters:
+     * points - {Array(<OpenLayers.Geometry.Point>)} An array of points used to
+     *          generate the linestring
+     *
+     */
+
+    /**
+     * APIMethod: removeComponent
+     * Only allows removal of a point if there are three or more points in 
+     * the linestring. (otherwise the result would be just a single point)
+     *
+     * Parameters: 
+     * point - {<OpenLayers.Geometry.Point>} The point to be removed
+     *
+     * Returns: 
+     * {Boolean} The component was removed.
+     */
+    removeComponent: function(point) {
         var removed = this.components && (this.components.length > 2);
         if (removed) {
             OpenLayers.Geometry.Collection.prototype.removeComponent.apply(this, 
@@ -16,7 +47,22 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return removed;
     },
     
-        intersects: function(geometry) {
+    /**
+     * APIMethod: intersects
+     * Test for instersection between two geometries.  This is a cheapo
+     *     implementation of the Bently-Ottmann algorigithm.  It doesn't
+     *     really keep track of a sweep line data structure.  It is closer
+     *     to the brute force method, except that segments are sorted and
+     *     potential intersections are only calculated when bounding boxes
+     *     intersect.
+     *
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>}
+     *
+     * Returns:
+     * {Boolean} The input geometry intersects this geometry.
+     */
+    intersects: function(geometry) {
         var intersect = false;
         var type = geometry.CLASS_NAME;
         if(type == "OpenLayers.Geometry.LineString" ||
@@ -34,6 +80,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
             }
             var seg1, seg1x1, seg1x2, seg1y1, seg1y2,
                 seg2, seg2y1, seg2y2;
+            // sweep right
             outer: for(var i=0, len=segs1.length; i<len; ++i) {
                 seg1 = segs1[i];
                 seg1x1 = seg1.x1;
@@ -43,17 +90,21 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 inner: for(var j=0, jlen=segs2.length; j<jlen; ++j) {
                     seg2 = segs2[j];
                     if(seg2.x1 > seg1x2) {
+                        // seg1 still left of seg2
                         break;
                     }
                     if(seg2.x2 < seg1x1) {
+                        // seg2 still left of seg1
                         continue;
                     }
                     seg2y1 = seg2.y1;
                     seg2y2 = seg2.y2;
                     if(Math.min(seg2y1, seg2y2) > Math.max(seg1y1, seg1y2)) {
+                        // seg2 above seg1
                         continue;
                     }
                     if(Math.max(seg2y1, seg2y2) < Math.min(seg1y1, seg1y2)) {
+                        // seg2 below seg1
                         continue;
                     }
                     if(OpenLayers.Geometry.segmentsIntersect(seg1, seg2)) {
@@ -68,7 +119,16 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return intersect;
     },
     
-        getSortedSegments: function() {
+    /**
+     * Method: getSortedSegments
+     *
+     * Returns:
+     * {Array} An array of segment objects.  Segment objects have properties
+     *     x1, y1, x2, and y2.  The start point is represented by x1 and y1.
+     *     The end point is represented by x2 and y2.  Start and end are
+     *     ordered so that x1 < x2.
+     */
+    getSortedSegments: function() {
         var numSeg = this.components.length - 1;
         var segments = new Array(numSeg), point1, point2;
         for(var i=0; i<numSeg; ++i) {
@@ -90,13 +150,39 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 };
             }
         }
+        // more efficient to define this somewhere static
         function byX1(seg1, seg2) {
             return seg1.x1 - seg2.x1;
         }
         return segments.sort(byX1);
     },
     
-        splitWithSegment: function(seg, options) {
+    /**
+     * Method: splitWithSegment
+     * Split this geometry with the given segment.
+     *
+     * Parameters:
+     * seg - {Object} An object with x1, y1, x2, and y2 properties referencing
+     *     segment endpoint coordinates.
+     * options - {Object} Properties of this object will be used to determine
+     *     how the split is conducted.
+     *
+     * Valid options:
+     * edge - {Boolean} Allow splitting when only edges intersect.  Default is
+     *     true.  If false, a vertex on the source segment must be within the
+     *     tolerance distance of the intersection to be considered a split.
+     * tolerance - {Number} If a non-null value is provided, intersections
+     *     within the tolerance distance of one of the source segment's
+     *     endpoints will be assumed to occur at the endpoint.
+     *
+     * Returns:
+     * {Object} An object with *lines* and *points* properties.  If the given
+     *     segment intersects this linestring, the lines array will reference
+     *     geometries that result from the split.  The points array will contain
+     *     all intersection points.  Intersection points are sorted along the
+     *     segment (in order from x1,y1 to x2,y2).
+     */
+    splitWithSegment: function(seg, options) {
         var edge = !(options && options.edge === false);
         var tolerance = options && options.tolerance;
         var lines = [];
@@ -125,6 +211,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                     vertex = false;
                 }
                 if(vertex || edge) {
+                    // push intersections different than the previous
                     if(!point.equals(intersections[intersections.length-1])) {
                         intersections.push(point.clone());
                     }
@@ -150,6 +237,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
             lines.push(new OpenLayers.Geometry.LineString(points));
         }
         if(intersections.length > 0) {
+            // sort intersections along segment
             var xDir = seg.x1 < seg.x2 ? 1 : -1;
             var yDir = seg.y1 < seg.y2 ? 1 : -1;
             result = {
@@ -162,7 +250,36 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return result;
     },
 
-        split: function(target, options) {
+    /**
+     * Method: split
+     * Use this geometry (the source) to attempt to split a target geometry.
+     * 
+     * Parameters:
+     * target - {<OpenLayers.Geometry>} The target geometry.
+     * options - {Object} Properties of this object will be used to determine
+     *     how the split is conducted.
+     *
+     * Valid options:
+     * mutual - {Boolean} Split the source geometry in addition to the target
+     *     geometry.  Default is false.
+     * edge - {Boolean} Allow splitting when only edges intersect.  Default is
+     *     true.  If false, a vertex on the source must be within the tolerance
+     *     distance of the intersection to be considered a split.
+     * tolerance - {Number} If a non-null value is provided, intersections
+     *     within the tolerance distance of an existing vertex on the source
+     *     will be assumed to occur at the vertex.
+     * 
+     * Returns:
+     * {Array} A list of geometries (of this same type as the target) that
+     *     result from splitting the target with the source geometry.  The
+     *     source and target geometry will remain unmodified.  If no split
+     *     results, null will be returned.  If mutual is true and a split
+     *     results, return will be an array of two arrays - the first will be
+     *     all geometries that result from splitting the source geometry and
+     *     the second will be all geometries that result from splitting the
+     *     target geometry.
+     */
+    split: function(target, options) {
         var results = null;
         var mutual = options && options.mutual;
         var sourceSplit, targetSplit, sourceParts, targetParts;
@@ -185,6 +302,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 for(var j=0; j<targetParts.length; ++j) {
                     splits = targetParts[j].splitWithSegment(seg, options);
                     if(splits) {
+                        // splice in new features
                         lines = splits.lines;
                         if(lines.length > 0) {
                             lines.unshift(j, 1);
@@ -235,12 +353,55 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return results;
     },
 
-        splitWith: function(geometry, options) {
+    /**
+     * Method: splitWith
+     * Split this geometry (the target) with the given geometry (the source).
+     *
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>} A geometry used to split this
+     *     geometry (the source).
+     * options - {Object} Properties of this object will be used to determine
+     *     how the split is conducted.
+     *
+     * Valid options:
+     * mutual - {Boolean} Split the source geometry in addition to the target
+     *     geometry.  Default is false.
+     * edge - {Boolean} Allow splitting when only edges intersect.  Default is
+     *     true.  If false, a vertex on the source must be within the tolerance
+     *     distance of the intersection to be considered a split.
+     * tolerance - {Number} If a non-null value is provided, intersections
+     *     within the tolerance distance of an existing vertex on the source
+     *     will be assumed to occur at the vertex.
+     * 
+     * Returns:
+     * {Array} A list of geometries (of this same type as the target) that
+     *     result from splitting the target with the source geometry.  The
+     *     source and target geometry will remain unmodified.  If no split
+     *     results, null will be returned.  If mutual is true and a split
+     *     results, return will be an array of two arrays - the first will be
+     *     all geometries that result from splitting the source geometry and
+     *     the second will be all geometries that result from splitting the
+     *     target geometry.
+     */
+    splitWith: function(geometry, options) {
         return geometry.split(this, options);
 
     },
 
-        getVertices: function(nodes) {
+    /**
+     * APIMethod: getVertices
+     * Return a list of all points in this geometry.
+     *
+     * Parameters:
+     * nodes - {Boolean} For lines, only return vertices that are
+     *     endpoints.  If false, for lines, only vertices that are not
+     *     endpoints will be returned.  If not provided, all vertices will
+     *     be returned.
+     *
+     * Returns:
+     * {Array} A list of all vertices in the geometry.
+     */
+    getVertices: function(nodes) {
         var vertices;
         if(nodes === true) {
             vertices = [
@@ -255,7 +416,34 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return vertices;
     },
 
-        distanceTo: function(geometry, options) {
+    /**
+     * APIMethod: distanceTo
+     * Calculate the closest distance between two geometries (on the x-y plane).
+     *
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>} The target geometry.
+     * options - {Object} Optional properties for configuring the distance
+     *     calculation.
+     *
+     * Valid options:
+     * details - {Boolean} Return details from the distance calculation.
+     *     Default is false.
+     * edge - {Boolean} Calculate the distance from this geometry to the
+     *     nearest edge of the target geometry.  Default is true.  If true,
+     *     calling distanceTo from a geometry that is wholly contained within
+     *     the target will result in a non-zero distance.  If false, whenever
+     *     geometries intersect, calling distanceTo will return 0.  If false,
+     *     details cannot be returned.
+     *
+     * Returns:
+     * {Number | Object} The distance between this geometry and the target.
+     *     If details is true, the return will be an object with distance,
+     *     x0, y0, x1, and x2 properties.  The x0 and y0 properties represent
+     *     the coordinates of the closest point on this geometry. The x1 and y1
+     *     properties represent the coordinates of the closest point on the
+     *     target geometry.
+     */
+    distanceTo: function(geometry, options) {
         var edge = !(options && options.edge === false);
         var details = edge && options && options.details;
         var result, best = {};
@@ -324,6 +512,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 best = best.distance;
             }
             if(min !== 0) {
+                // check the final vertex in this line's sorted segments
                 if(seg0) {
                     result = geometry.distanceTo(
                         new OpenLayers.Geometry.Point(seg0.x2, seg0.y2),
@@ -345,6 +534,7 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
             }
         } else {
             best = geometry.distanceTo(this, options);
+            // swap since target comes from this line
             if(details) {
                 best = {
                     distance: best.distance,
@@ -356,7 +546,19 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
         return best;
     },
     
-        simplify: function(tolerance){
+    /**
+     * APIMethod: simplify
+     * This function will return a simplified LineString.
+     * Simplification is based on the Douglas-Peucker algorithm.
+     *
+     *
+     * Parameters:
+     * tolerance - {number} threshold for simplification in map units
+     *
+     * Returns:
+     * {OpenLayers.Geometry.LineString} the simplified LineString
+     */
+    simplify: function(tolerance){
         if (this && this !== null) {
             var points = this.getVertices();
             if (points.length < 3) {
@@ -367,7 +569,10 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 return (a-b);
             };
     
-                        var douglasPeuckerReduction = function(points, firstPoint, lastPoint, tolerance){
+            /**
+             * Private function doing the Douglas-Peucker reduction
+             */
+            var douglasPeuckerReduction = function(points, firstPoint, lastPoint, tolerance){
                 var maxDistance = 0;
                 var indexFarthest = 0;
     
@@ -380,13 +585,22 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
                 }
     
                 if (maxDistance > tolerance && indexFarthest != firstPoint) {
+                    //Add the largest point that exceeds the tolerance
                     pointIndexsToKeep.push(indexFarthest);
                     douglasPeuckerReduction(points, firstPoint, indexFarthest, tolerance);
                     douglasPeuckerReduction(points, indexFarthest, lastPoint, tolerance);
                 }
             };
     
-                        var perpendicularDistance = function(point1, point2, point){
+            /**
+             * Private function calculating the perpendicular distance
+             * TODO: check whether OpenLayers.Geometry.LineString::distanceTo() is faster or slower
+             */
+            var perpendicularDistance = function(point1, point2, point){
+                //Area = |(1/2)(x1y2 + x2y3 + x3y1 - x2y1 - x3y2 - x1y3)|   *Area of triangle
+                //Base = v((x1-x2)²+(x1-x2)²)                               *Base of Triangle*
+                //Area = .5*Base*H                                          *Solve for height
+                //Height = Area/.5/Base
     
                 var area = Math.abs(0.5 * (point1.x * point2.y + point2.x * point.y + point.x * point1.y - point2.x * point1.y - point.x * point2.y - point1.x * point.y));
                 var bottom = Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
@@ -398,10 +612,15 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
             var firstPoint = 0;
             var lastPoint = points.length - 1;
             var pointIndexsToKeep = [];
+    
+            //Add the first and last index to the keepers
             pointIndexsToKeep.push(firstPoint);
             pointIndexsToKeep.push(lastPoint);
+    
+            //The first and the last point cannot be the same
             while (points[firstPoint].equals(points[lastPoint])) {
                 lastPoint--;
+                //Addition: the first point not equal to first point in the LineString is kept as well
                 pointIndexsToKeep.push(lastPoint);
             }
     
@@ -423,8 +642,23 @@ OpenLayers.Geometry.LineString = OpenLayers.Class(OpenLayers.Geometry.Curve, {
 });
 
 
+/**
+ * Function: OpenLayers.Geometry.LineString.geodesic
+ *
+ * Parameters:
+ * interpolate - {function(number): OpenLayers.Geometry.Point} Interpolate
+ *     function.
+ * transform - {function(OpenLayers.Geometry.Point): OpenLayers.Geometry.Point}
+ *     Transform from longitude/latitude to projected coordinates.
+ * squaredTolerance - {number} Squared tolerance.
+ *
+ * Returns:
+ * {OpenLayers.Geometry.LineString}
+ */
 OpenLayers.Geometry.LineString.geodesic =
         function(interpolate, transform, squaredTolerance) {
+    // FIXME reduce garbage generation
+    // FIXME optimize stack operations
 
     var components = [];
 
@@ -444,26 +678,35 @@ OpenLayers.Geometry.LineString.geodesic =
     var geoM, m, fracA, fracB, fracM, key;
 
     while (--maxIterations > 0 && fractionStack.length > 0) {
+        // Pop the a coordinate off the stack
         fracA = fractionStack.pop();
         geoA = geoStack.pop();
         a = stack.pop();
+        // Add the a coordinate if it has not been added yet
         key = fracA.toString();
         if (!(key in fractions)) {
             components.push(a);
             fractions[key] = true;
         }
+        // Pop the b coordinate off the stack
         fracB = fractionStack.pop();
         geoB = geoStack.pop();
         b = stack.pop();
+        // Find the m point between the a and b coordinates
         fracM = (fracA + fracB) / 2;
         geoM = interpolate(fracM);
         m = transform(geoM);
         if (OpenLayers.Geometry.distanceSquaredToSegment(m, {x1: a.x, y1: a.y,
                 x2: b.x, y2: b.y}).distance < squaredTolerance) {
+            // If the m point is sufficiently close to the straight line, then
+            // we discard it. Just use the b coordinate and move on to the next
+            // line segment.
             components.push(b);
             key = fracB.toString();
             fractions[key] = true;
         } else {
+            // Otherwise, we need to subdivide the current line segment.
+            // Split it into two and push the two line segments onto the stack.
             fractionStack.push(fracB, fracM, fracM, fracA);
             stack.push(b, m, m, a);
             geoStack.push(geoB, geoM, geoM, geoA);
@@ -474,6 +717,20 @@ OpenLayers.Geometry.LineString.geodesic =
 };
 
 
+/**
+ * Function: OpenLayers.Geometry.LineString.geodesicMeridian
+ * Generate a meridian (line at constant longitude).
+ *
+ * Parameters:
+ * lon - {number} Longitude.
+ * lat1 - {number} Latitude 1.
+ * lat2 - {number} Latitude 2.
+ * projection - {OpenLayers.Projection} Projection.
+ * squaredTolerance - {number} Squared tolerance.
+ *
+ * Returns:
+ * {OpenLayers.Geometry.LineString} Line geometry for the meridian at <lon>.
+ */
 OpenLayers.Geometry.LineString.geodesicMeridian =
         function(lon, lat1, lat2, projection, squaredTolerance) {
     var epsg4326Projection = new OpenLayers.Projection('EPSG:4326');
@@ -490,6 +747,20 @@ OpenLayers.Geometry.LineString.geodesicMeridian =
 };
 
 
+/**
+ * Function: OpenLayers.Geometry.LineString.geodesicParallel
+ * Generate a parallel (line at constant latitude).
+ *
+ * Parameters:
+ * lat - {number} Latitude.
+ * lon1 - {number} Longitude 1.
+ * lon2 - {number} Longitude 2.
+ * projection {OpenLayers.Projection} Projection.
+ * squaredTolerance - {number} Squared tolerance.
+ *
+ * Returns:
+ * {OpenLayers.Geometry.LineString} Line geometry for the parallel at <lat>.
+ */
 OpenLayers.Geometry.LineString.geodesicParallel =
         function(lat, lon1, lon2, projection, squaredTolerance) {
     var epsg4326Projection = new OpenLayers.Projection('EPSG:4326');

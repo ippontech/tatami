@@ -3,76 +3,224 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Layer/Vector.js
+ * @requires OpenLayers/Geometry/Polygon.js
+ */
 
+/**
+ * Class: OpenLayers.Layer.PointGrid
+ * A point grid layer dynamically generates a regularly spaced grid of point
+ *     features.  This is a specialty layer for cases where an application needs
+ *     a regular grid of points.  It can be used, for example, in an editing
+ *     environment to snap to a grid.
+ *
+ * Create a new vector layer with the <OpenLayers.Layer.PointGrid> constructor.
+ * (code)
+ * // create a grid with points spaced at 10 map units
+ * var points = new OpenLayers.Layer.PointGrid({dx: 10, dy: 10});
+ *
+ * // create a grid with different x/y spacing rotated 15 degrees clockwise.
+ * var points = new OpenLayers.Layer.PointGrid({dx: 5, dy: 10, rotation: 15});
+ * (end)
+ *
+ * Inherits from:
+ *  - <OpenLayers.Layer.Vector>
+ */
 OpenLayers.Layer.PointGrid = OpenLayers.Class(OpenLayers.Layer.Vector, {
 
-        dx: null,
+    /**
+     * APIProperty: dx
+     * {Number} Point grid spacing in the x-axis direction (map units).  
+     * Read-only.  Use the <setSpacing> method to modify this value.
+     */
+    dx: null,
 
-        dy: null,
+    /**
+     * APIProperty: dy
+     * {Number} Point grid spacing in the y-axis direction (map units).  
+     * Read-only.  Use the <setSpacing> method to modify this value.
+     */
+    dy: null,
 
-        ratio: 1.5,
+    /**
+     * APIProperty: ratio
+     * {Number} Ratio of the desired grid size to the map viewport size.  
+     * Default is 1.5.  Larger ratios mean the grid is recalculated less often 
+     * while panning.  The <maxFeatures> setting has precedence when determining
+     * grid size.  Read-only.  Use the <setRatio> method to modify this value.
+     */
+    ratio: 1.5,
 
-        maxFeatures: 250,
+    /**
+     * APIProperty: maxFeatures
+     * {Number} The maximum number of points to generate in the grid.  Default
+     * is 250.  Read-only.  Use the <setMaxFeatures> method to modify this value.
+     */
+    maxFeatures: 250,
 
-        rotation: 0,
+    /**
+     * APIProperty: rotation
+     * {Number} Grid rotation (in degrees clockwise from the positive x-axis).
+     * Default is 0.  Read-only.  Use the <setRotation> method to modify this
+     * value.
+     */
+    rotation: 0,
 
-        origin: null,
+    /**
+     * APIProperty: origin
+     * {<OpenLayers.LonLat>} Grid origin.  The grid lattice will be aligned with 
+     * the origin.  If not set at construction, the center of the map's maximum 
+     * extent is used.  Read-only.  Use the <setOrigin> method to modify this 
+     * value.
+     */
+    origin: null,
 
-        gridBounds: null,
+    /**
+     * Property: gridBounds
+     * {<OpenLayers.Bounds>}  Internally cached grid bounds (with optional 
+     * rotation applied).
+     */
+    gridBounds: null,
 
-        initialize: function(config) {
+    /**
+     * Constructor: OpenLayers.Layer.PointGrid
+     * Creates a new point grid layer.
+     *
+     * Parameters:
+     * config - {Object} An object containing all configuration properties for
+     *     the layer.  The <dx> and <dy> properties are required to be set at 
+     *     construction.  Any other layer properties may be set in this object.
+     */
+    initialize: function(config) {
         config = config || {};
         OpenLayers.Layer.Vector.prototype.initialize.apply(this, [config.name, config]);
     },
     
-        setMap: function(map) {        
+    /** 
+     * Method: setMap
+     * The layer has been added to the map. 
+     * 
+     * Parameters:
+     * map - {<OpenLayers.Map>} 
+     */
+    setMap: function(map) {        
         OpenLayers.Layer.Vector.prototype.setMap.apply(this, arguments);
         map.events.register("moveend", this, this.onMoveEnd);
     },
 
-        removeMap: function(map) {
+    /**
+     * Method: removeMap
+     * The layer has been removed from the map.
+     *
+     * Parameters:
+     * map - {<OpenLayers.Map>}
+     */
+    removeMap: function(map) {
         map.events.unregister("moveend", this, this.onMoveEnd);
         OpenLayers.Layer.Vector.prototype.removeMap.apply(this, arguments);
     },
     
-        setRatio: function(ratio) {
+    /**
+     * APIMethod: setRatio
+     * Set the grid <ratio> property and update the grid.  Can only be called
+     *     after the layer has been added to a map with a center/extent.
+     *
+     * Parameters:
+     * ratio - {Number}
+     */
+    setRatio: function(ratio) {
         this.ratio = ratio;
         this.updateGrid(true);
     },
     
-        setMaxFeatures: function(maxFeatures) {
+    /**
+     * APIMethod: setMaxFeatures
+     * Set the grid <maxFeatures> property and update the grid.  Can only be 
+     *     called after the layer has been added to a map with a center/extent.
+     *
+     * Parameters:
+     * maxFeatures - {Number}
+     */
+    setMaxFeatures: function(maxFeatures) {
         this.maxFeatures = maxFeatures;
         this.updateGrid(true);
     },
 
-        setSpacing: function(dx, dy) {
+    /**
+     * APIMethod: setSpacing
+     * Set the grid <dx> and <dy> properties and update the grid.  If only one
+     *     argument is provided, it will be set as <dx> and <dy>.  Can only be 
+     *     called after the layer has been added to a map with a center/extent.
+     *
+     * Parameters:
+     * dx - {Number}
+     * dy - {Number}
+     */
+    setSpacing: function(dx, dy) {
         this.dx = dx;
         this.dy = dy || dx;
         this.updateGrid(true);
     },
     
-        setOrigin: function(origin) {
+    /**
+     * APIMethod: setOrigin
+     * Set the grid <origin> property and update the grid.  Can only be called
+     *     after the layer has been added to a map with a center/extent.
+     *
+     * Parameters:
+     * origin - {<OpenLayers.LonLat>}
+     */
+    setOrigin: function(origin) {
         this.origin = origin;
         this.updateGrid(true);
     },
     
-        getOrigin: function() {
+    /**
+     * APIMethod: getOrigin
+     * Get the grid <origin> property.
+     *
+     * Returns:
+     * {<OpenLayers.LonLat>} The grid origin.
+     */
+    getOrigin: function() {
         if (!this.origin) {
             this.origin = this.map.getExtent().getCenterLonLat();
         }
         return this.origin;
     },
     
-        setRotation: function(rotation) {
+    /**
+     * APIMethod: setRotation
+     * Set the grid <rotation> property and update the grid.  Rotation values
+     *     are in degrees clockwise from the positive x-axis (negative values
+     *     for counter-clockwise rotation).  Can only be called after the layer 
+     *     has been added to a map with a center/extent.
+     *
+     * Parameters:
+     * rotation - {Number} Degrees clockwise from the positive x-axis.
+     */
+    setRotation: function(rotation) {
         this.rotation = rotation;
         this.updateGrid(true);
     },
     
-        onMoveEnd: function() {
+    /**
+     * Method: onMoveEnd
+     * Listener for map "moveend" events.
+     */
+    onMoveEnd: function() {
         this.updateGrid();
     },
     
-        getViewBounds: function() {
+    /**
+     * Method: getViewBounds
+     * Gets the (potentially rotated) view bounds for grid calculations.
+     *
+     * Returns:
+     * {<OpenLayers.Bounds>}
+     */
+    getViewBounds: function() {
         var bounds = this.map.getExtent();
         if (this.rotation) {
             var origin = this.getOrigin();
@@ -84,7 +232,15 @@ OpenLayers.Layer.PointGrid = OpenLayers.Class(OpenLayers.Layer.Vector, {
         return bounds;
     },
     
-        updateGrid: function(force) {
+    /**
+     * Method: updateGrid
+     * Update the grid.
+     *
+     * Parameters:
+     * force - {Boolean} Update the grid even if the previous bounds are still
+     *     valid.
+     */
+    updateGrid: function(force) {
         if (force || this.invalidBounds()) {
             var viewBounds = this.getViewBounds();
             var origin = this.getOrigin();
@@ -125,7 +281,16 @@ OpenLayers.Layer.PointGrid = OpenLayers.Class(OpenLayers.Layer.Vector, {
         }
     },
 
-        invalidBounds: function() {
+    /**
+     * Method: invalidBounds
+     * Determine whether the previously generated point grid is invalid. 
+     *     This occurs when the map bounds extends beyond the previously 
+     *     generated grid bounds.
+     *
+     * Returns:
+     * {Boolean} 
+     */
+    invalidBounds: function() {
         return !this.gridBounds || !this.gridBounds.containsBounds(this.getViewBounds());
     },
 

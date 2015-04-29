@@ -1,3 +1,7 @@
+//! moment.js locale configuration
+//! locale : ukrainian (uk)
+//! author : zemlanin : https://github.com/zemlanin
+//! Author : Menelion Elensúle : https://github.com/Oire
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
@@ -106,6 +110,7 @@
             y : 'рік',
             yy : relativeTimeWithPlural
         },
+        // M. E.: those two are virtually unused but a user might want to implement them for his/her website for some reason
         meridiemParse: /ночі|ранку|дня|вечора/,
         isPM: function (input) {
             return /^(дня|вечора)$/.test(input);

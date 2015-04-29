@@ -1,3 +1,7 @@
+//! moment.js locale configuration
+//! locale : norwegian bokmål (nb)
+//! authors : Espen Hovlandsdal : https://github.com/rexxars
+//!           Sigurd Gartmann : https://github.com/sigurdga
 
 import moment from '../moment';
 

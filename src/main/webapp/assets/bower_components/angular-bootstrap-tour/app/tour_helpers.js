@@ -8,7 +8,14 @@
         var helpers = {},
             safeApply;
 
-                safeApply = helpers.safeApply = function(scope, fn) {
+        /**
+         * Helper function that calls scope.$apply if a digest is not currently in progress
+         * Borrowed from: https://coderwall.com/p/ngisma
+         *
+         * @param {$rootScope.Scope} scope
+         * @param {Function} fn
+         */
+        safeApply = helpers.safeApply = function(scope, fn) {
             var phase = scope.$$phase;
             if (phase === '$apply' || phase === '$digest') {
                 if (fn && (typeof(fn) === 'function')) {
@@ -19,7 +26,14 @@
             }
         };
 
-                function compileTemplate(template, scope) {
+        /**
+         * Compiles and links a template to the provided scope
+         *
+         * @param {String} template
+         * @param {$rootScope.Scope} scope
+         * @returns {Function}
+         */
+        function compileTemplate(template, scope) {
             return function (/*index, step*/) {
                 var $template = angular.element(template); //requires jQuery
                 safeApply(scope, function () {
@@ -30,7 +44,14 @@
 
         }
 
-                function lookupTemplate(templateUrl, scope) {
+        /**
+         * Looks up a template by URL and passes it to {@link helpers.compile}
+         *
+         * @param {String} templateUrl
+         * @param {$rootScope.Scope} scope
+         * @returns {Promise}
+         */
+        function lookupTemplate(templateUrl, scope) {
 
             return $http.get(templateUrl, {
                 cache: $templateCache
@@ -43,7 +64,13 @@
 
         }
 
-                function stringToBoolean(string) {
+        /**
+         * Converts a stringified boolean to a JS boolean
+         *
+         * @param string
+         * @returns {*}
+         */
+        function stringToBoolean(string) {
             if (string === 'true') {
                 return true;
             } else if (string === 'false') {
@@ -53,7 +80,14 @@
             return string;
         }
 
-                helpers.attachTemplate = function (scope, attrs, options) {
+        /**
+         * Helper function that attaches proper compiled template to options
+         *
+         * @param {$rootScope.Scope} scope
+         * @param {Attributes} attrs
+         * @param {Object} options represents the tour or step object
+         */
+        helpers.attachTemplate = function (scope, attrs, options) {
 
             var deferred = $q.defer(),
                 template;
@@ -77,7 +111,15 @@
 
         };
 
-                helpers.attachEventHandlers = function (scope, attrs, options, events) {
+        /**
+         * Helper function that attaches event handlers to options
+         *
+         * @param {$rootScope.Scope} scope
+         * @param {Attributes} attrs
+         * @param {Object} options represents the tour or step object
+         * @param {Array} events
+         */
+        helpers.attachEventHandlers = function (scope, attrs, options, events) {
 
             angular.forEach(events, function (eventName) {
                 if (attrs[helpers.getAttrName(eventName)]) {
@@ -91,7 +133,14 @@
 
         };
 
-                helpers.attachInterpolatedValues = function (attrs, options, keys) {
+        /**
+         * Helper function that attaches observers to option attributes
+         *
+         * @param {Attributes} attrs
+         * @param {Object} options represents the tour or step object
+         * @param {Array} keys attribute names
+         */
+        helpers.attachInterpolatedValues = function (attrs, options, keys) {
 
             angular.forEach(keys, function (key) {
                 if (attrs[helpers.getAttrName(key)]) {
@@ -104,7 +153,13 @@
 
         };
 
-                helpers.getAttrName = function (option) {
+        /**
+         * Returns the attribute name for an option depending on the prefix
+         *
+         * @param {string} option - name of option
+         * @returns {string} potentially prefixed name of option, or just name of option
+         */
+        helpers.getAttrName = function (option) {
             if (TourConfig.get('prefixOptions')) {
                 return TourConfig.get('prefix') + option.charAt(0).toUpperCase() + option.substr(1);
             } else {

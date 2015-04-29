@@ -3,7 +3,17 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format.js
+ */
 
+/**
+ * Class: OpenLayers.Format.CSWGetDomain
+ * Default version is 2.0.2.
+ *
+ * Returns:
+ * {<OpenLayers.Format>} A CSWGetDomain format of the given version.
+ */
 OpenLayers.Format.CSWGetDomain = function(options) {
     options = OpenLayers.Util.applyDefaults(
         options, OpenLayers.Format.CSWGetDomain.DEFAULTS
@@ -15,6 +25,10 @@ OpenLayers.Format.CSWGetDomain = function(options) {
     return new cls(options);
 };
 
+/**
+ * Constant: DEFAULTS
+ * {Object} Default properties for the CSWGetDomain format.
+ */
 OpenLayers.Format.CSWGetDomain.DEFAULTS = {
     "version": "2.0.2"
 };

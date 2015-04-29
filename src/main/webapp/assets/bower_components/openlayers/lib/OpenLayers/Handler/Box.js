@@ -3,16 +3,58 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Handler.js
+ * @requires OpenLayers/Handler/Drag.js
+ */
 
+/**
+ * Class: OpenLayers.Handler.Box
+ * Handler for dragging a rectangle across the map.  Box is displayed 
+ * on mouse down, moves on mouse move, and is finished on mouse up.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Handler> 
+ */
 OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
 
-        dragHandler: null,
+    /** 
+     * Property: dragHandler 
+     * {<OpenLayers.Handler.Drag>} 
+     */
+    dragHandler: null,
 
-        boxDivClassName: 'olHandlerBoxZoomBox',
+    /**
+     * APIProperty: boxDivClassName
+     * {String} The CSS class to use for drawing the box. Default is
+     *     olHandlerBoxZoomBox
+     */
+    boxDivClassName: 'olHandlerBoxZoomBox',
     
-        boxOffsets: null,
+    /**
+     * Property: boxOffsets
+     * {Object} Caches box offsets from css. This is used by the getBoxOffsets
+     * method.
+     */
+    boxOffsets: null,
 
-        initialize: function(control, callbacks, options) {
+    /**
+     * Constructor: OpenLayers.Handler.Box
+     *
+     * Parameters:
+     * control - {<OpenLayers.Control>} 
+     * callbacks - {Object} An object with a properties whose values are
+     *     functions.  Various callbacks described below.
+     * options - {Object} 
+     *
+     * Named callbacks:
+     * start - Called when the box drag operation starts.
+     * done - Called when the box drag operation is finished.
+     *     The callback should expect to receive a single argument, the box 
+     *     bounds or a pixel. If the box dragging didn't span more than a 5 
+     *     pixel distance, a pixel will be returned instead of a bounds object.
+     */
+    initialize: function(control, callbacks, options) {
         OpenLayers.Handler.prototype.initialize.apply(this, arguments);
         this.dragHandler = new OpenLayers.Handler.Drag(
             this, 
@@ -26,7 +68,10 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         );
     },
 
-        destroy: function() {
+    /**
+     * Method: destroy
+     */
+    destroy: function() {
         OpenLayers.Handler.prototype.destroy.apply(this, arguments);
         if (this.dragHandler) {
             this.dragHandler.destroy();
@@ -34,14 +79,23 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         }            
     },
 
-        setMap: function (map) {
+    /**
+     * Method: setMap
+     */
+    setMap: function (map) {
         OpenLayers.Handler.prototype.setMap.apply(this, arguments);
         if (this.dragHandler) {
             this.dragHandler.setMap(map);
         }
     },
 
-        startBox: function (xy) {
+    /**
+    * Method: startBox
+    *
+    * Parameters:
+    * xy - {<OpenLayers.Pixel>}
+    */
+    startBox: function (xy) {
         this.callback("start", []);
         this.zoomBox = OpenLayers.Util.createDiv('zoomBox', {
             x: -9999, y: -9999
@@ -56,7 +110,10 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         );
     },
 
-        moveBox: function (xy) {
+    /**
+    * Method: moveBox
+    */
+    moveBox: function (xy) {
         var startX = this.dragHandler.start.x;
         var startY = this.dragHandler.start.y;
         var deltaX = Math.abs(startX - xy.x);
@@ -71,7 +128,10 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
             startY - deltaY - offset.top : startY - offset.top) + "px";
     },
 
-        endBox: function(end) {
+    /**
+    * Method: endBox
+    */
+    endBox: function(end) {
         var result;
         if (Math.abs(this.dragHandler.start.x - end.x) > 5 ||    
             Math.abs(this.dragHandler.start.y - end.y) > 5) {   
@@ -89,7 +149,11 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         this.callback("done", [result]);
     },
 
-        removeBox: function() {
+    /**
+     * Method: removeBox
+     * Remove the zoombox from the screen and nullify our reference to it.
+     */
+    removeBox: function() {
         this.map.viewPortDiv.removeChild(this.zoomBox);
         this.zoomBox = null;
         this.boxOffsets = null;
@@ -99,7 +163,10 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
 
     },
 
-        activate: function () {
+    /**
+     * Method: activate
+     */
+    activate: function () {
         if (OpenLayers.Handler.prototype.activate.apply(this, arguments)) {
             this.dragHandler.activate();
             return true;
@@ -108,7 +175,10 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         }
     },
 
-        deactivate: function () {
+    /**
+     * Method: deactivate
+     */
+    deactivate: function () {
         if (OpenLayers.Handler.prototype.deactivate.apply(this, arguments)) {
             if (this.dragHandler.deactivate()) {
                 if (this.zoomBox) {
@@ -121,9 +191,28 @@ OpenLayers.Handler.Box = OpenLayers.Class(OpenLayers.Handler, {
         }
     },
     
-        getBoxOffsets: function() {
+    /**
+     * Method: getBoxOffsets
+     * Determines border offsets for a box, according to the box model.
+     * 
+     * Returns:
+     * {Object} an object with the following offsets:
+     *     - left
+     *     - right
+     *     - top
+     *     - bottom
+     *     - width
+     *     - height
+     */
+    getBoxOffsets: function() {
         if (!this.boxOffsets) {
+            // Determine the box model. If the testDiv's clientWidth is 3, then
+            // the borders are outside and we are dealing with the w3c box
+            // model. Otherwise, the browser uses the traditional box model and
+            // the borders are inside the box bounds, leaving us with a
+            // clientWidth of 1.
             var testDiv = document.createElement("div");
+            //testDiv.style.visibility = "hidden";
             testDiv.style.position = "absolute";
             testDiv.style.border = "1px solid black";
             testDiv.style.width = "3px";

@@ -2,7 +2,16 @@
  *  - Sannab
  */
 
+/**
+ * @requires OpenLayers/Lang.js
+ */
 
+/**
+ * Namespace: OpenLayers.Lang["sv"]
+ * Dictionary for Svenska.  Keys for entries are used in calls to
+ *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
+ *     strings formatted for use with <OpenLayers.String.format> calls.
+ */
 OpenLayers.Lang["sv"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Ej hanterad fråga retur ${statusText}",

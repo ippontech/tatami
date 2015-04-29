@@ -3,37 +3,111 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Control.js
+ * @requires OpenLayers/Lang.js
+ * @requires OpenLayers/Util.js
+ * @requires OpenLayers/Events/buttonclick.js
+ */
 
+/**
+ * Class: OpenLayers.Control.LayerSwitcher
+ * The LayerSwitcher control displays a table of contents for the map. This
+ * allows the user interface to switch between BaseLasyers and to show or hide
+ * Overlays. By default the switcher is shown minimized on the right edge of
+ * the map, the user may expand it by clicking on the handle.
+ *
+ * To create the LayerSwitcher outside of the map, pass the Id of a html div
+ * as the first argument to the constructor.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Control>
+ */
 OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
 
-        layerStates: null,
+    /**  
+     * Property: layerStates 
+     * {Array(Object)} Basically a copy of the "state" of the map's layers 
+     *     the last time the control was drawn. We have this in order to avoid
+     *     unnecessarily redrawing the control.
+     */
+    layerStates: null,
 
-        layersDiv: null,
+  // DOM Elements
 
-        baseLayersDiv: null,
+    /**
+     * Property: layersDiv
+     * {DOMElement}
+     */
+    layersDiv: null,
 
-        baseLayers: null,
+    /**
+     * Property: baseLayersDiv
+     * {DOMElement}
+     */
+    baseLayersDiv: null,
+
+    /**
+     * Property: baseLayers
+     * {Array(Object)}
+     */
+    baseLayers: null,
 
 
-        dataLbl: null,
+    /**
+     * Property: dataLbl
+     * {DOMElement}
+     */
+    dataLbl: null,
 
-        dataLayersDiv: null,
+    /**
+     * Property: dataLayersDiv
+     * {DOMElement}
+     */
+    dataLayersDiv: null,
 
-        dataLayers: null,
+    /**
+     * Property: dataLayers
+     * {Array(Object)}
+     */
+    dataLayers: null,
 
 
-        minimizeDiv: null,
+    /**
+     * Property: minimizeDiv
+     * {DOMElement}
+     */
+    minimizeDiv: null,
 
-        maximizeDiv: null,
+    /**
+     * Property: maximizeDiv
+     * {DOMElement}
+     */
+    maximizeDiv: null,
 
-        ascending: true,
+    /**
+     * APIProperty: ascending
+     * {Boolean}
+     */
+    ascending: true,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Control.LayerSwitcher
+     *
+     * Parameters:
+     * options - {Object}
+     */
+    initialize: function(options) {
         OpenLayers.Control.prototype.initialize.apply(this, arguments);
         this.layerStates = [];
     },
 
-        destroy: function() {
+    /**
+     * APIMethod: destroy
+     */
+    destroy: function() {
+
+        //clear out layers info and unregister their events
         this.clearLayersArray("base");
         this.clearLayersArray("data");
 
@@ -50,7 +124,13 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         OpenLayers.Control.prototype.destroy.apply(this, arguments);
     },
 
-        setMap: function(map) {
+    /**
+     * Method: setMap
+     *
+     * Properties:
+     * map - {<OpenLayers.Map>}
+     */
+    setMap: function(map) {
         OpenLayers.Control.prototype.setMap.apply(this, arguments);
 
         this.map.events.on({
@@ -68,18 +148,37 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        draw: function() {
+    /**
+     * Method: draw
+     *
+     * Returns:
+     * {DOMElement} A reference to the DIV DOMElement containing the
+     *     switcher tabs.
+     */
+    draw: function() {
         OpenLayers.Control.prototype.draw.apply(this);
+
+        // create layout divs
         this.loadContents();
+
+        // set mode to minimize
         if(!this.outsideViewport) {
             this.minimizeControl();
         }
+
+        // populate div with current info
         this.redraw();
 
         return this.div;
     },
 
-        onButtonClick: function(evt) {
+    /**
+     * Method: onButtonClick
+     *
+     * Parameters:
+     * evt - {Event}
+     */
+    onButtonClick: function(evt) {
         var button = evt.buttonElement;
         if (button === this.minimizeDiv) {
             this.minimizeControl();
@@ -101,13 +200,28 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        clearLayersArray: function(layersType) {
+    /**
+     * Method: clearLayersArray
+     * User specifies either "base" or "data". we then clear all the
+     *     corresponding listeners, the div, and reinitialize a new array.
+     *
+     * Parameters:
+     * layersType - {String}
+     */
+    clearLayersArray: function(layersType) {
         this[layersType + "LayersDiv"].innerHTML = "";
         this[layersType + "Layers"] = [];
     },
 
 
-        checkRedraw: function() {
+    /**
+     * Method: checkRedraw
+     * Checks if the layer state has changed since the last redraw() call.
+     *
+     * Returns:
+     * {Boolean} The layer state changed since the last redraw() call.
+     */
+    checkRedraw: function() {
         if ( !this.layerStates.length ||
              (this.map.layers.length != this.layerStates.length) ) {
             return true;
@@ -127,15 +241,33 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         return false;
     },
 
-        redraw: function() {
+    /**
+     * Method: redraw
+     * Goes through and takes the current state of the Map and rebuilds the
+     *     control to display that state. Groups base layers into a
+     *     radio-button group and lists each data layer with a checkbox.
+     *
+     * Returns:
+     * {DOMElement} A reference to the DIV DOMElement containing the control
+     */
+    redraw: function() {
+        //if the state hasn't changed since last redraw, no need
+        // to do anything. Just return the existing div.
         if (!this.checkRedraw()) {
             return this.div;
         }
+
+        //clear out previous layers
         this.clearLayersArray("base");
         this.clearLayersArray("data");
 
         var containsOverlays = false;
         var containsBaseLayers = false;
+
+        // Save state -- for checking layer if the map state changed.
+        // We save this before redrawing, because in the process of redrawing
+        // we will trigger more visibility changes, and we want to not redraw
+        // and enter an infinite loop.
         var len = this.map.layers.length;
         this.layerStates = new Array(len);
         for (var i=0; i <len; i++) {
@@ -161,9 +293,16 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
                 } else {
                     containsOverlays = true;
                 }
+
+                // only check a baselayer if it is *the* baselayer, check data
+                //  layers if they are visible
                 var checked = (baseLayer) ? (layer == this.map.baseLayer)
                                           : layer.getVisibility();
+
+                // create input element
                 var inputElem = document.createElement("input"),
+                    // The input shall have an id attribute so we can use
+                    // labels to interact with them.
                     inputId = OpenLayers.Util.createUniqueID(
                         this.id + "_input_"
                     );
@@ -181,7 +320,11 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
                 if (!baseLayer && !layer.inRange) {
                     inputElem.disabled = true;
                 }
+
+                // create span
                 var labelSpan = document.createElement("label");
+                // this isn't the DOM attribute 'for', but an arbitrary name we
+                // use to find the appropriate input element in <onButtonClick>
                 labelSpan["for"] = inputElem.id;
                 OpenLayers.Element.addClass(labelSpan, "labelSpan olButton");
                 labelSpan._layer = layer.id;
@@ -192,6 +335,7 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
                 labelSpan.innerHTML = layer.name;
                 labelSpan.style.verticalAlign = (baseLayer) ? "bottom"
                                                             : "baseline";
+                // create line break
                 var br = document.createElement("br");
 
 
@@ -211,19 +355,34 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
                 groupDiv.appendChild(br);
             }
         }
+
+        // if no overlays, dont display the overlay label
         this.dataLbl.style.display = (containsOverlays) ? "" : "none";
+
+        // if no baselayers, dont display the baselayer label
         this.baseLbl.style.display = (containsBaseLayers) ? "" : "none";
 
         return this.div;
     },
 
-        updateMap: function() {
+    /**
+     * Method: updateMap
+     * Cycles through the loaded data and base layer input arrays and makes
+     *     the necessary calls to the Map object such that that the map's
+     *     visual state corresponds to what the user has selected in
+     *     the control.
+     */
+    updateMap: function() {
+
+        // set the newly selected base layer
         for(var i=0, len=this.baseLayers.length; i<len; i++) {
             var layerEntry = this.baseLayers[i];
             if (layerEntry.inputElem.checked) {
                 this.map.setBaseLayer(layerEntry.layer, false);
             }
         }
+
+        // set the correct visibilities for the overlays
         for(var i=0, len=this.dataLayers.length; i<len; i++) {
             var layerEntry = this.dataLayers[i];
             layerEntry.layer.setVisibility(layerEntry.inputElem.checked);
@@ -231,7 +390,17 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
 
     },
 
-        maximizeControl: function(e) {
+    /**
+     * Method: maximizeControl
+     * Set up the labels and divs for the control
+     *
+     * Parameters:
+     * e - {Event}
+     */
+    maximizeControl: function(e) {
+
+        // set the div's width and height to empty values, so
+        // the div dimensions can be controlled by CSS
         this.div.style.width = "";
         this.div.style.height = "";
 
@@ -242,7 +411,20 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        minimizeControl: function(e) {
+    /**
+     * Method: minimizeControl
+     * Hide all the contents of the control, shrink the size,
+     *     add the maximize icon
+     *
+     * Parameters:
+     * e - {Event}
+     */
+    minimizeControl: function(e) {
+
+        // to minimize the control we set its div's width
+        // and height to 0px, we cannot just set "display"
+        // to "none" because it would hide the maximize
+        // div
         this.div.style.width = "0px";
         this.div.style.height = "0px";
 
@@ -253,7 +435,15 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-        showControls: function(minimize) {
+    /**
+     * Method: showControls
+     * Hide/Show all LayerSwitcher controls depending on whether we are
+     *     minimized or not
+     *
+     * Parameters:
+     * minimize - {Boolean}
+     */
+    showControls: function(minimize) {
 
         this.maximizeDiv.style.display = minimize ? "" : "none";
         this.minimizeDiv.style.display = minimize ? "none" : "";
@@ -261,7 +451,13 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         this.layersDiv.style.display = minimize ? "none" : "";
     },
 
-        loadContents: function() {
+    /**
+     * Method: loadContents
+     * Set up the labels and divs for the control
+     */
+    loadContents: function() {
+
+        // layers list div
         this.layersDiv = document.createElement("div");
         this.layersDiv.id = this.id + "_layersDiv";
         OpenLayers.Element.addClass(this.layersDiv, "layersDiv");
@@ -293,6 +489,8 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         }
 
         this.div.appendChild(this.layersDiv);
+
+        // maximize button div
         var img = OpenLayers.Util.getImageLocation('layer-switcher-maximize.png');
         this.maximizeDiv = OpenLayers.Util.createAlphaImageDiv(
                                     "OpenLayers_Control_MaximizeDiv",
@@ -304,6 +502,8 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {
         this.maximizeDiv.style.display = "none";
 
         this.div.appendChild(this.maximizeDiv);
+
+        // minimize button div
         var img = OpenLayers.Util.getImageLocation('layer-switcher-minimize.png');
         this.minimizeDiv = OpenLayers.Util.createAlphaImageDiv(
                                     "OpenLayers_Control_MinimizeDiv",

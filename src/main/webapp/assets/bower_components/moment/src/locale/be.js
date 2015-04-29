@@ -1,3 +1,8 @@
+//! moment.js locale configuration
+//! locale : belarusian (be)
+//! author : Dmitry Demidov : https://github.com/demidov91
+//! author: Praleska: http://praleska.pro/
+//! Author : Menelion Elensúle : https://github.com/Oire
 
 import moment from '../moment';
 

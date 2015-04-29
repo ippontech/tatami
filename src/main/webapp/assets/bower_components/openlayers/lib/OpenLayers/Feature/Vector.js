@@ -2,35 +2,134 @@
  * full list of contributors). Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
+
+// TRASH THIS
 OpenLayers.State = {
-        UNKNOWN: 'Unknown',
+    /** states */
+    UNKNOWN: 'Unknown',
     INSERT: 'Insert',
     UPDATE: 'Update',
     DELETE: 'Delete'
 };
 
+/**
+ * @requires OpenLayers/Feature.js
+ * @requires OpenLayers/Util.js
+ */
 
+/**
+ * Class: OpenLayers.Feature.Vector
+ * Vector features use the OpenLayers.Geometry classes as geometry description.
+ * They have an 'attributes' property, which is the data object, and a 'style'
+ * property, the default values of which are defined in the 
+ * <OpenLayers.Feature.Vector.style> objects.
+ * 
+ * Inherits from:
+ *  - <OpenLayers.Feature>
+ */
 OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
 
-        fid: null,
+    /** 
+     * Property: fid 
+     * {String} 
+     */
+    fid: null,
     
-        geometry: null,
+    /** 
+     * APIProperty: geometry 
+     * {<OpenLayers.Geometry>} 
+     */
+    geometry: null,
 
-        attributes: null,
+    /** 
+     * APIProperty: attributes 
+     * {Object} This object holds arbitrary, serializable properties that
+     *     describe the feature.
+     */
+    attributes: null,
 
-        bounds: null,
+    /**
+     * Property: bounds
+     * {<OpenLayers.Bounds>} The box bounding that feature's geometry, that
+     *     property can be set by an <OpenLayers.Format> object when
+     *     deserializing the feature, so in most cases it represents an
+     *     information set by the server. 
+     */
+    bounds: null,
 
-        state: null,
+    /** 
+     * Property: state 
+     * {String} 
+     */
+    state: null,
     
-        style: null,
+    /** 
+     * APIProperty: style 
+     * {Object} 
+     */
+    style: null,
 
-        url: null,
+    /**
+     * APIProperty: url
+     * {String} If this property is set it will be taken into account by
+     *     {<OpenLayers.HTTP>} when updating or deleting the feature.
+     */
+    url: null,
     
-        renderIntent: "default",
+    /**
+     * Property: renderIntent
+     * {String} rendering intent currently being used
+     */
+    renderIntent: "default",
     
-        modified: null,
+    /**
+     * APIProperty: modified
+     * {Object} An object with the originals of the geometry and attributes of
+     * the feature, if they were changed. Currently this property is only read
+     * by <OpenLayers.Format.WFST.v1>, and written by
+     * <OpenLayers.Control.ModifyFeature>, which sets the geometry property.
+     * Applications can set the originals of modified attributes in the
+     * attributes property. Note that applications have to check if this
+     * object and the attributes property is already created before using it.
+     * After a change made with ModifyFeature, this object could look like
+     *
+     * (code)
+     * {
+     *     geometry: >Object
+     * }
+     * (end)
+     *
+     * When an application has made changes to feature attributes, it could
+     * have set the attributes to something like this:
+     *
+     * (code)
+     * {
+     *     attributes: {
+     *         myAttribute: "original"
+     *     }
+     * }
+     * (end)
+     *
+     * Note that <OpenLayers.Format.WFST.v1> only checks for truthy values in
+     * *modified.geometry* and the attribute names in *modified.attributes*,
+     * but it is recommended to set the original values (and not just true) as
+     * attribute value, so applications could use this information to undo
+     * changes.
+     */
+    modified: null,
 
-        initialize: function(geometry, attributes, style) {
+    /** 
+     * Constructor: OpenLayers.Feature.Vector
+     * Create a vector feature. 
+     * 
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>} The geometry that this feature
+     *     represents.
+     * attributes - {Object} An optional object that will be mapped to the
+     *     <attributes> property. 
+     * style - {Object} An optional style object.
+     */
+    initialize: function(geometry, attributes, style) {
         OpenLayers.Feature.prototype.initialize.apply(this,
                                                       [null, null, attributes]);
         this.lonlat = null;
@@ -44,7 +143,11 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         this.style = style ? style : null; 
     },
     
-        destroy: function() {
+    /** 
+     * Method: destroy
+     * nullify references to prevent circular references and memory leaks
+     */
+    destroy: function() {
         if (this.layer) {
             this.layer.removeFeatures(this);
             this.layer = null;
@@ -55,14 +158,39 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         OpenLayers.Feature.prototype.destroy.apply(this, arguments);
     },
     
-        clone: function () {
+    /**
+     * Method: clone
+     * Create a clone of this vector feature.  Does not set any non-standard
+     *     properties.
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector>} An exact clone of this vector feature.
+     */
+    clone: function () {
         return new OpenLayers.Feature.Vector(
             this.geometry ? this.geometry.clone() : null,
             this.attributes,
             this.style);
     },
 
-        onScreen:function(boundsOnly) {
+    /**
+     * Method: onScreen
+     * Determine whether the feature is within the map viewport.  This method
+     *     tests for an intersection between the geometry and the viewport
+     *     bounds.  If a more efficient but less precise geometry bounds
+     *     intersection is desired, call the method with the boundsOnly
+     *     parameter true.
+     *
+     * Parameters:
+     * boundsOnly - {Boolean} Only test whether a feature's bounds intersects
+     *     the viewport bounds.  Default is false.  If false, the feature's
+     *     geometry must intersect the viewport for onScreen to return true.
+     * 
+     * Returns:
+     * {Boolean} The feature is currently visible on screen (optionally
+     *     based on its bounds if boundsOnly is true).
+     */
+    onScreen:function(boundsOnly) {
         var onScreen = false;
         if(this.layer && this.layer.map) {
             var screenBounds = this.layer.map.getExtent();
@@ -77,7 +205,20 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         return onScreen;
     },
 
-        getVisibility: function() {
+    /**
+     * Method: getVisibility
+     * Determine whether the feature is displayed or not. It may not displayed
+     *     because:
+     *     - its style display property is set to 'none',
+     *     - it doesn't belong to any layer,
+     *     - the styleMap creates a symbolizer with display property set to 'none'
+     *          for it,
+     *     - the layer which it belongs to is not visible.
+     * 
+     * Returns:
+     * {Boolean} The feature is currently displayed.
+     */
+    getVisibility: function() {
         return !(this.style && this.style.display == 'none' ||
                  !this.layer ||
                  this.layer && this.layer.styleMap &&
@@ -85,18 +226,56 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
                  this.layer && !this.layer.getVisibility());
     },
     
-        createMarker: function() {
+    /**
+     * Method: createMarker
+     * HACK - we need to decide if all vector features should be able to
+     *     create markers
+     * 
+     * Returns:
+     * {<OpenLayers.Marker>} For now just returns null
+     */
+    createMarker: function() {
         return null;
     },
 
-        destroyMarker: function() {
+    /**
+     * Method: destroyMarker
+     * HACK - we need to decide if all vector features should be able to
+     *     delete markers
+     * 
+     * If user overrides the createMarker() function, s/he should be able
+     *   to also specify an alternative function for destroying it
+     */
+    destroyMarker: function() {
+        // pass
     },
 
-        createPopup: function() {
+    /**
+     * Method: createPopup
+     * HACK - we need to decide if all vector features should be able to
+     *     create popups
+     * 
+     * Returns:
+     * {<OpenLayers.Popup>} For now just returns null
+     */
+    createPopup: function() {
         return null;
     },
 
-        atPoint: function(lonlat, toleranceLon, toleranceLat) {
+    /**
+     * Method: atPoint
+     * Determins whether the feature intersects with the specified location.
+     * 
+     * Parameters: 
+     * lonlat - {<OpenLayers.LonLat>|Object} OpenLayers.LonLat or an
+     *     object with a 'lon' and 'lat' properties.
+     * toleranceLon - {float} Optional tolerance in Geometric Coords
+     * toleranceLat - {float} Optional tolerance in Geographic Coords
+     * 
+     * Returns:
+     * {Boolean} Whether or not the feature is at the specified location
+     */
+    atPoint: function(lonlat, toleranceLon, toleranceLat) {
         var atPoint = false;
         if(this.geometry) {
             atPoint = this.geometry.atPoint(lonlat, toleranceLon, 
@@ -105,12 +284,27 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         return atPoint;
     },
 
-        destroyPopup: function() {
+    /**
+     * Method: destroyPopup
+     * HACK - we need to decide if all vector features should be able to
+     * delete popups
+     */
+    destroyPopup: function() {
+        // pass
     },
 
-        move: function(location) {
+    /**
+     * Method: move
+     * Moves the feature and redraws it at its new location
+     *
+     * Parameters:
+     * location - {<OpenLayers.LonLat> or <OpenLayers.Pixel>} the
+     *         location to which to move the feature.
+     */
+    move: function(location) {
 
         if(!this.layer || !this.geometry.move){
+            //do nothing if no layer or immoveable geometry
             return undefined;
         }
 
@@ -129,7 +323,14 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         return lastPixel;
     },
     
-        toState: function(state) {
+    /**
+     * Method: toState
+     * Sets the new state
+     *
+     * Parameters:
+     * state - {String} 
+     */
+    toState: function(state) {
         if (state == OpenLayers.State.UPDATE) {
             switch (this.state) {
                 case OpenLayers.State.UNKNOWN:
@@ -151,6 +352,7 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
         } else if (state == OpenLayers.State.DELETE) {
             switch (this.state) {
                 case OpenLayers.State.INSERT:
+                    // the feature should be destroyed
                     break;
                 case OpenLayers.State.DELETE:
                     break;

@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : polish (pl)
+//! author : Rafal Hirsz : https://github.com/evoL
 
 import moment from '../moment';
 

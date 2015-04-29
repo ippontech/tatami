@@ -1,6 +1,11 @@
+// total counters
 Test.AnotherWay._openlayers_sum_total_detail_ok=0;
 Test.AnotherWay._openlayers_sum_total_detail_fail=0;
 Test.AnotherWay._startTime = null;
+
+// method overwrites
+//
+// behaviour (timing)
 Test.AnotherWay._old_run_all_onclick = Test.AnotherWay._run_all_onclick;
 Test.AnotherWay._run_all_onclick = function(){
     Test.AnotherWay._startTime = (new Date()).getTime();
@@ -21,6 +26,8 @@ Test.AnotherWay._run_one_onclick = function(){
     Test.AnotherWay.reset_running_time();
     Test.AnotherWay._old_run_one_onclick.apply(this, arguments);
 };
+
+// test page loading
 Test.AnotherWay.old_load_next_page = Test.AnotherWay._load_next_page;
 Test.AnotherWay._load_next_page = function(){
     document.getElementById("test_iframe_el").style.display = "none";
@@ -33,6 +40,8 @@ Test.AnotherWay._add_test_page_url = function(test_url, convention){
     var table = document.getElementById("testtable");
     var record_select = document.getElementById("record_select");
     var index = Test.AnotherWay._g_test_page_urls.length;
+    
+    // trim spaces.
     if (test_url.match("^(\\s*)(.*\\S)(\\s*)$")) {
         test_url = RegExp.$2;
     }
@@ -57,12 +66,16 @@ Test.AnotherWay._add_test_page_url = function(test_url, convention){
     
     cell = row.insertCell(-1);
     cell.setAttribute("width", "75%");
+     
+    // make the URL a clickable link that opens in a new window
+    // start changes 
     link = document.createElement("a");
     link.href=test_url;
     link.target='_blank';
     link.title='Opens testfile in a new window.';
     link.appendChild(document.createTextNode(test_url));    
     cell.appendChild(link);
+    // end changes
     
     cell = row.insertCell(-1);
     cell_child = document.createElement("input");
@@ -95,6 +108,8 @@ Test.AnotherWay._set_iframe_location = function(iframe, loc, outside_path_correc
     }
     return Test.AnotherWay.old_set_iframe_location.call(this, iframe, loc, outside_path_correction);
 };
+
+// new methods
 Test.AnotherWay.update_running_time = function() {
     var now = (new Date()).getTime();
     var floor = Math.floor;
@@ -113,6 +128,8 @@ Test.AnotherWay.update_running_time = function() {
 Test.AnotherWay.reset_running_time = function(){
     document.getElementById('running-time').innerHTML = '';
 };
+
+// quickfilter
 Test.AnotherWay.bindQuicksearchListener = function(){
     var input = document.getElementById('quickfilter');
     if (input.addEventListener) {
@@ -120,6 +137,7 @@ Test.AnotherWay.bindQuicksearchListener = function(){
     } else if (input.attachEvent) {
         input.attachEvent('onkeyup', Test.AnotherWay.quicksearch);
     } else {
+        // remove the input field
         input.parentNode.removeChild(input);
     }
 };
@@ -158,6 +176,8 @@ Test.AnotherWay.unfilterTestList = function() {
         }
     }
 };
+
+// bind our quicksearch init method to body onload.
 (function(win) {
     if (win.addEventListener) {
         win.addEventListener('load', Test.AnotherWay.bindQuicksearchListener);

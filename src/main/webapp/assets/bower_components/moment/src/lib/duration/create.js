@@ -4,11 +4,17 @@ import hasOwnProp from '../utils/has-own-prop';
 import { DATE, HOUR, MINUTE, SECOND, MILLISECOND } from '../units/constants';
 import { cloneWithOffset } from '../units/offset';
 import { createLocal } from '../create/local';
+
+// ASP.NET json date format regex
 var aspNetRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/;
+
+// from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+// somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
 var isoRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/;
 
 export function createDuration (input, key) {
     var duration = input,
+        // matching against regexp is expensive, do it on demand
         match = null,
         sign,
         ret,
@@ -70,7 +76,11 @@ export function createDuration (input, key) {
 createDuration.fn = Duration.prototype;
 
 function parseIso (inp, sign) {
+    // We'd normally use ~~inp for this, but unfortunately it also
+    // converts floats to ints.
+    // inp may be undefined, so careful calling replace on it.
     var res = inp && parseFloat(inp.replace(',', '.'));
+    // apply sign while we're at it
     return (isNaN(res) ? 0 : res) * sign;
 }
 

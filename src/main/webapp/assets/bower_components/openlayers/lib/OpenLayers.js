@@ -16,9 +16,19 @@
  */
 
 (function() {
-        var singleFile = (typeof OpenLayers == "object" && OpenLayers.singleFile);
+    /**
+     * Before creating the OpenLayers namespace, check to see if
+     * OpenLayers.singleFile is true.  This occurs if the
+     * OpenLayers/SingleFile.js script is included before this one - as is the
+     * case with old single file build profiles that included both
+     * OpenLayers.js and OpenLayers/SingleFile.js.
+     */
+    var singleFile = (typeof OpenLayers == "object" && OpenLayers.singleFile);
     
-        var scriptName = (!singleFile) ? "lib/OpenLayers.js" : "OpenLayers.js";
+    /**
+     * Relative path of this script.
+     */
+    var scriptName = (!singleFile) ? "lib/OpenLayers.js" : "OpenLayers.js";
 
     /*
      * If window.OpenLayers isn't set when this script (OpenLayers.js) is
@@ -41,8 +51,20 @@
      */
     var jsFiles = window.OpenLayers;
 
-        window.OpenLayers = {
-                _getScriptLocation: (function() {
+    /**
+     * Namespace: OpenLayers
+     * The OpenLayers object provides a namespace for all things OpenLayers
+     */
+    window.OpenLayers = {
+        /**
+         * Method: _getScriptLocation
+         * Return the path to this script. This is also implemented in
+         * OpenLayers/SingleFile.js
+         *
+         * Returns:
+         * {String} Path to this script
+         */
+        _getScriptLocation: (function() {
             var r = new RegExp("(^|(.*?\\/))(" + scriptName + ")(\\?|$)"),
                 s = document.getElementsByTagName('script'),
                 src, m, l = "";
@@ -59,10 +81,53 @@
             return (function() { return l; });
         })(),
         
-                ImgPath : ''
+        /**
+         * APIProperty: ImgPath
+         * {String} Set this to the path where control images are stored, a path  
+         * given here must end with a slash. If set to '' (which is the default) 
+         * OpenLayers will use its script location + "img/".
+         * 
+         * You will need to set this property when you have a singlefile build of 
+         * OpenLayers that either is not named "OpenLayers.js" or if you move
+         * the file in a way such that the image directory cannot be derived from 
+         * the script location.
+         * 
+         * If your custom OpenLayers build is named "my-custom-ol.js" and the images
+         * of OpenLayers are in a folder "/resources/external/images/ol" a correct
+         * way of including OpenLayers in your HTML would be:
+         * 
+         * (code)
+         *   <script src="/path/to/my-custom-ol.js" type="text/javascript"></script>
+         *   <script type="text/javascript">
+         *      // tell OpenLayers where the control images are
+         *      // remember the trailing slash
+         *      OpenLayers.ImgPath = "/resources/external/images/ol/";
+         *   </script>
+         * (end code)
+         * 
+         * Please remember that when your OpenLayers script is not named 
+         * "OpenLayers.js" you will have to make sure that the default theme is 
+         * loaded into the page by including an appropriate <link>-tag, 
+         * e.g.:
+         * 
+         * (code)
+         *   <link rel="stylesheet" href="/path/to/default/style.css"  type="text/css">
+         * (end code)
+         */
+        ImgPath : ''
     };
 
-        if(!singleFile) {
+    /**
+     * OpenLayers.singleFile is a flag indicating this file is being included
+     * in a Single File Library build of the OpenLayers Library.
+     * 
+     * When we are *not* part of a SFL build we dynamically include the
+     * OpenLayers library code.
+     * 
+     * When we *are* part of a SFL build we do not dynamically include the 
+     * OpenLayers library code as it will be appended at the end of this file.
+     */
+    if(!singleFile) {
         if (!jsFiles) {
             jsFiles = [
                 "OpenLayers/BaseTypes/Class.js",
@@ -351,6 +416,9 @@
                 "OpenLayers/WPSProcess.js"
             ]; // etc.
         }
+
+        // use "parser-inserted scripts" for guaranteed execution order
+        // http://hsivonen.iki.fi/script-execution/
         var scriptTags = new Array(jsFiles.length);
         var host = OpenLayers._getScriptLocation() + "lib/";
         for (var i=0, len=jsFiles.length; i<len; i++) {
@@ -363,4 +431,12 @@
     }
 })();
 
+/**
+ * Constant: VERSION_NUMBER
+ *
+ * This constant identifies the version of OpenLayers.
+ *
+ * When asking questions or reporting issues, make sure to include the output of
+ *     OpenLayers.VERSION_NUMBER in the question or issue-description.
+ */
 OpenLayers.VERSION_NUMBER="Release 2.14 dev";

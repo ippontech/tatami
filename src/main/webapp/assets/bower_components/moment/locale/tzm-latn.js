@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Morocco Central Atlas Tamaziɣt in Latin (tzm-latn)
+//! author : Abdel Said : https://github.com/abdelsaid
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

@@ -3,13 +3,46 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Format/XML.js
+ * @requires OpenLayers/Format/Context.js
+ */
 
+/**
+ * Class: OpenLayers.Format.WMC
+ * Read and write Web Map Context documents.
+ *
+ * Inherits from:
+ *  - <OpenLayers.Format.Context>
+ */
 OpenLayers.Format.WMC = OpenLayers.Class(OpenLayers.Format.Context, {
     
-        defaultVersion: "1.1.0",
+    /**
+     * APIProperty: defaultVersion
+     * {String} Version number to assume if none found.  Default is "1.1.0".
+     */
+    defaultVersion: "1.1.0",
 
-        
-        layerToContext: function(layer) {
+    /**
+     * Constructor: OpenLayers.Format.WMC
+     * Create a new parser for Web Map Context documents.
+     *
+     * Parameters:
+     * options - {Object} An optional object whose properties will be set on
+     *     this instance.
+     */
+    
+    /**
+     * Method: layerToContext
+     * Create a layer context object given a wms layer object.
+     *
+     * Parameters:
+     * layer - {<OpenLayers.Layer.WMS>} The layer.
+     *
+     * Returns:
+     * {Object} A layer context object.
+     */
+    layerToContext: function(layer) {
         var parser = this.getParser();
         var layerContext = {
             queryable: layer.queryable,
@@ -96,7 +129,18 @@ OpenLayers.Format.WMC = OpenLayers.Class(OpenLayers.Format.Context, {
         return layerContext;
     },
     
-        toContext: function(obj) {
+    /**
+     * Method: toContext
+     * Create a context object free from layer given a map or a
+     * context object.
+     *
+     * Parameters:
+     * obj - {<OpenLayers.Map> | Object} The map or context.
+     *
+     * Returns:
+     * {Object} A context object.
+     */
+    toContext: function(obj) {
         var context = {};
         var layers = obj.layers;
         if (obj.CLASS_NAME == "OpenLayers.Map") {
@@ -112,6 +156,7 @@ OpenLayers.Format.WMC = OpenLayers.Class(OpenLayers.Format.Context, {
             context.contactInformation = metadata.contactInformation;
             context.maxExtent = obj.maxExtent;
         } else {
+            // copy all obj properties except the "layers" property
             OpenLayers.Util.applyDefaults(context, obj);
             if (context.layers != undefined) {
                 delete(context.layers);
@@ -121,6 +166,8 @@ OpenLayers.Format.WMC = OpenLayers.Class(OpenLayers.Format.Context, {
         if (context.layersContext == undefined) {
             context.layersContext = [];
         }
+
+        // let's convert layers into layersContext object (if any)
         if (layers != undefined && OpenLayers.Util.isArray(layers)) {
             for (var i=0, len=layers.length; i<len; i++) {
                 var layer = layers[i];

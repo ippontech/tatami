@@ -35,9 +35,8 @@ TopMenuModule.controller('TopMenuController', [
             var lang = $translate.use();
             // If it fails to detect the one being used, it will look for the proposed one.
             // Useful in asynchronous scenarios.
-            if (lang !== 'fr' && lang !== 'en') {
-            lang = $translate.proposedLanguage();
-        }
+            if(lang != 'fr' && lang != 'en')
+                lang = $translate.proposedLanguage();
            switch(lang) {
                case 'fr':
                    window.open("http://blog.ippon.fr/");
@@ -59,7 +58,7 @@ TopMenuModule.controller('TopMenuController', [
                 if(angular.isDefined(result.users[0])) {
                     result.users[0].firstUser = true;
                 }
-
+                //$scope.results = result.groups.concat(result.users.concat(result.tags));
                 return result.groups.concat(result.users.concat(result.tags));
             })
         };
@@ -75,7 +74,7 @@ TopMenuModule.controller('TopMenuController', [
             }
         };
 
-        $scope.goToPage = function($item) {
+        $scope.goToPage = function($item, $model, $label) {
             if($item.groupId) {
                 $scope.$state.go('tatami.home.home.group.statuses', { groupId: $item.groupId });
             }

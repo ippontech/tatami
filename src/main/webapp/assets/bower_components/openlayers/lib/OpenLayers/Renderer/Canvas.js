@@ -3,22 +3,68 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/Renderer.js
+ */
 
+/**
+ * Class: OpenLayers.Renderer.Canvas 
+ * A renderer based on the 2D 'canvas' drawing element.
+ * 
+ * Inherits:
+ *  - <OpenLayers.Renderer>
+ */
 OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
     
-        hitDetection: true,
+    /**
+     * APIProperty: hitDetection
+     * {Boolean} Allow for hit detection of features.  Default is true.
+     */
+    hitDetection: true,
     
-        hitOverflow: 0,
+    /**
+     * Property: hitOverflow
+     * {Number} The method for converting feature identifiers to color values
+     *     supports 16777215 sequential values.  Two features cannot be 
+     *     predictably detected if their identifiers differ by more than this
+     *     value.  The hitOverflow allows for bigger numbers (but the 
+     *     difference in values is still limited).
+     */
+    hitOverflow: 0,
 
-        canvas: null, 
+    /**
+     * Property: canvas
+     * {Canvas} The canvas context object.
+     */
+    canvas: null, 
     
-        features: null,
+    /**
+     * Property: features
+     * {Object} Internal object of feature/style pairs for use in redrawing the layer.
+     */
+    features: null,
     
-        pendingRedraw: false,
+    /**
+     * Property: pendingRedraw
+     * {Boolean} The renderer needs a redraw call to render features added while
+     *     the renderer was locked.
+     */
+    pendingRedraw: false,
     
-        cachedSymbolBounds: {},
+    /**
+     * Property: cachedSymbolBounds
+     * {Object} Internal cache of calculated symbol extents.
+     */
+    cachedSymbolBounds: {},
     
-        initialize: function(containerID, options) {
+    /**
+     * Constructor: OpenLayers.Renderer.Canvas
+     *
+     * Parameters:
+     * containerID - {<String>}
+     * options - {Object} Optional properties to be set on the renderer.
+     */
+    initialize: function(containerID, options) {
         OpenLayers.Renderer.prototype.initialize.apply(this, arguments);
         this.root = document.createElement("canvas");
         this.container.appendChild(this.root);
@@ -31,20 +77,59 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
     
-        setExtent: function() {
+    /**
+     * Method: setExtent
+     * Set the visible part of the layer.
+     *
+     * Parameters:
+     * extent - {<OpenLayers.Bounds>}
+     * resolutionChanged - {Boolean}
+     *
+     * Returns:
+     * {Boolean} true to notify the layer that the new extent does not exceed
+     *     the coordinate range, and the features will not need to be redrawn.
+     *     False otherwise.
+     */
+    setExtent: function() {
         OpenLayers.Renderer.prototype.setExtent.apply(this, arguments);
+        // always redraw features
         return false;
     },
     
-        eraseGeometry: function(geometry, featureId) {
+    /** 
+     * Method: eraseGeometry
+     * Erase a geometry from the renderer. Because the Canvas renderer has
+     *     'memory' of the features that it has drawn, we have to remove the
+     *     feature so it doesn't redraw.   
+     * 
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>}
+     * featureId - {String}
+     */
+    eraseGeometry: function(geometry, featureId) {
         this.eraseFeatures(this.features[featureId][0]);
     },
 
-        supported: function() {
+    /**
+     * APIMethod: supported
+     * 
+     * Returns:
+     * {Boolean} Whether or not the browser supports the renderer class
+     */
+    supported: function() {
         return OpenLayers.CANVAS_SUPPORTED;
     },    
     
-        setSize: function(size) {
+    /**
+     * Method: setSize
+     * Sets the size of the drawing surface.
+     *
+     * Once the size is updated, redraw the canvas.
+     *
+     * Parameters:
+     * size - {<OpenLayers.Size>} 
+     */
+    setSize: function(size) {
         this.size = size.clone();
         var root = this.root;
         root.style.width = size.w + "px";
@@ -61,10 +146,25 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
     
-        drawFeature: function(feature, style) {
+    /**
+     * Method: drawFeature
+     * Draw the feature. Stores the feature in the features list,
+     * then redraws the layer. 
+     *
+     * Parameters:
+     * feature - {<OpenLayers.Feature.Vector>} 
+     * style - {<Object>} 
+     *
+     * Returns:
+     * {Boolean} The feature has been drawn completely.  If the feature has no
+     *     geometry, undefined will be returned.  If the feature is not rendered
+     *     for other reasons, false will be returned.
+     */
+    drawFeature: function(feature, style) {
         var rendered;
         if (feature.geometry) {
             style = this.applyDefaultSymbolizer(style || feature.style);
+            // don't render if display none or feature outside extent
             var bounds = feature.geometry.getBounds();
 
             var worldBounds;
@@ -76,9 +176,11 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
 
             rendered = (style.display !== "none") && !!bounds && intersects;
             if (rendered) {
+                // keep track of what we have rendered for redraw
                 this.features[feature.id] = [feature, style];
             }
             else {
+                // remove from features tracked for redraw
                 delete(this.features[feature.id]);
             }
             this.pendingRedraw = true;
@@ -90,7 +192,16 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         return rendered;
     },
 
-        drawGeometry: function(geometry, style, featureId) {
+    /** 
+     * Method: drawGeometry
+     * Used when looping (in redraw) over the features; draws
+     * the canvas. 
+     *
+     * Parameters:
+     * geometry - {<OpenLayers.Geometry>} 
+     * style - {Object} 
+     */
+    drawGeometry: function(geometry, style, featureId) {
         var className = geometry.CLASS_NAME;
         if ((className == "OpenLayers.Geometry.Collection") ||
             (className == "OpenLayers.Geometry.MultiPoint") ||
@@ -121,7 +232,222 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
 
-        setCanvasStyle: function(type, style) {
+    /**
+     * Method: drawExternalGraphic
+     * Called to draw External graphics. 
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawExternalGraphic: function(geometry, style, featureId) {
+        var img = new Image();
+
+        var title = style.title || style.graphicTitle;        
+        if (title) {
+            img.title = title;           
+        }
+
+        var width = style.graphicWidth || style.graphicHeight;
+        var height = style.graphicHeight || style.graphicWidth;
+        width = width ? width : style.pointRadius * 2;
+        height = height ? height : style.pointRadius * 2;
+        var xOffset = (style.graphicXOffset != undefined) ?
+           style.graphicXOffset : -(0.5 * width);
+        var yOffset = (style.graphicYOffset != undefined) ?
+           style.graphicYOffset : -(0.5 * height);
+        var _clearRectId = this._clearRectId;
+
+        var opacity = style.graphicOpacity || style.fillOpacity;
+        
+        var onLoad = function() {
+            if(!this.features[featureId] ||
+                                     _clearRectId !== this._clearRectId) {
+                return;
+            }
+            var pt = this.getLocalXY(geometry);
+            var p0 = pt[0];
+            var p1 = pt[1];
+            if(!isNaN(p0) && !isNaN(p1)) {
+                var x = (p0 + xOffset) | 0;
+                var y = (p1 + yOffset) | 0;
+                var canvas = this.canvas;
+                canvas.globalAlpha = opacity;
+                var factor = OpenLayers.Renderer.Canvas.drawImageScaleFactor ||
+                    (OpenLayers.Renderer.Canvas.drawImageScaleFactor =
+                        /android 2.1/.test(navigator.userAgent.toLowerCase()) ?
+                            // 320 is the screen width of the G1 phone, for
+                            // which drawImage works out of the box.
+                            320 / window.screen.width : 1
+                    );
+                canvas.drawImage(
+                    img, x*factor, y*factor, width*factor, height*factor
+                );
+                if (this.hitDetection) {
+                    this.setHitContextStyle("fill", featureId);
+                    this.hitContext.fillRect(x, y, width, height);
+                }
+            }
+        };
+        img.onload = OpenLayers.Function.bind(onLoad, this);
+        img.src = style.externalGraphic;
+        if (img.complete) {
+            img.onload();
+            img.onload = null;
+        }
+    },
+
+    /**
+     * Method: drawNamedSymbol
+     * Called to draw Well Known Graphic Symbol Name. 
+     * This method is only called by the renderer itself.
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawNamedSymbol: function(geometry, style, featureId) {
+        var x, y, cx, cy, i, symbolBounds, scaling, angle;
+        var unscaledStrokeWidth;
+        var deg2rad = Math.PI / 180.0;
+        
+        var symbol = OpenLayers.Renderer.symbol[style.graphicName];
+         
+        if (!symbol) {
+            throw new Error(style.graphicName + ' is not a valid symbol name');
+        }
+        
+        if (!symbol.length || symbol.length < 2) return;
+        
+        var pt = this.getLocalXY(geometry);
+        var p0 = pt[0];
+        var p1 = pt[1];
+       
+        if (isNaN(p0) || isNaN(p1)) return;
+        
+        // Use rounded line caps
+        this.canvas.lineCap = "round";
+        this.canvas.lineJoin = "round";
+        
+        if (this.hitDetection) {
+            this.hitContext.lineCap = "round";
+            this.hitContext.lineJoin = "round";
+        }
+        
+        // Scale and rotate symbols, using precalculated bounds whenever possible.
+        if (style.graphicName in this.cachedSymbolBounds) {
+            symbolBounds = this.cachedSymbolBounds[style.graphicName];
+        } else {
+            symbolBounds = new OpenLayers.Bounds();
+            for(i = 0; i < symbol.length; i+=2) {
+                symbolBounds.extend(new OpenLayers.LonLat(symbol[i], symbol[i+1]));
+            }
+            this.cachedSymbolBounds[style.graphicName] = symbolBounds;
+        }
+        
+        // Push symbol scaling, translation and rotation onto the transformation stack in reverse order.
+        // Don't forget to apply all canvas transformations to the hitContext canvas as well(!)
+        this.canvas.save();
+        if (this.hitDetection) { this.hitContext.save(); }
+        
+        // Step 3: place symbol at the desired location
+        this.canvas.translate(p0,p1);
+        if (this.hitDetection) { this.hitContext.translate(p0,p1); }
+        
+        // Step 2a. rotate the symbol if necessary
+        angle = deg2rad * style.rotation; // will be NaN when style.rotation is undefined.
+        if (!isNaN(angle)) {
+            this.canvas.rotate(angle);
+            if (this.hitDetection) { this.hitContext.rotate(angle); }
+        }
+                
+        // // Step 2: scale symbol such that pointRadius equals half the maximum symbol dimension.
+        scaling = 2.0 * style.pointRadius / Math.max(symbolBounds.getWidth(), symbolBounds.getHeight());
+        this.canvas.scale(scaling,scaling);
+        if (this.hitDetection) { this.hitContext.scale(scaling,scaling); }
+        
+        // Step 1: center the symbol at the origin        
+        cx = symbolBounds.getCenterLonLat().lon;
+        cy = symbolBounds.getCenterLonLat().lat;
+        this.canvas.translate(-cx,-cy);
+        if (this.hitDetection) { this.hitContext.translate(-cx,-cy); }        
+
+        // Don't forget to scale stroke widths, because they are affected by canvas scale transformations as well(!)
+        // Alternative: scale symbol coordinates manually, so stroke width scaling is not needed anymore.
+        unscaledStrokeWidth = style.strokeWidth;
+        style.strokeWidth = unscaledStrokeWidth / scaling;
+            
+        if (style.fill !== false) {
+            this.setCanvasStyle("fill", style);
+            this.canvas.beginPath();
+            for (i=0; i<symbol.length; i=i+2) {
+                x = symbol[i];
+                y = symbol[i+1];
+                if (i == 0) this.canvas.moveTo(x,y);
+                this.canvas.lineTo(x,y);
+            }
+            this.canvas.closePath();
+            this.canvas.fill();
+
+            if (this.hitDetection) {
+                this.setHitContextStyle("fill", featureId, style);
+                this.hitContext.beginPath();
+                for (i=0; i<symbol.length; i=i+2) {
+                    x = symbol[i];
+                    y = symbol[i+1];
+                    if (i == 0) this.canvas.moveTo(x,y);
+                    this.hitContext.lineTo(x,y);
+                }
+                this.hitContext.closePath();
+                this.hitContext.fill();
+            }
+        }  
+        
+        if (style.stroke !== false) {
+            this.setCanvasStyle("stroke", style);
+            this.canvas.beginPath();
+            for (i=0; i<symbol.length; i=i+2) {
+                x = symbol[i];
+                y = symbol[i+1];
+                if (i == 0) this.canvas.moveTo(x,y);
+                this.canvas.lineTo(x,y);
+            }
+            this.canvas.closePath();
+            this.canvas.stroke();
+            
+            
+            if (this.hitDetection) {
+                this.setHitContextStyle("stroke", featureId, style, scaling);
+                this.hitContext.beginPath();
+                for (i=0; i<symbol.length; i=i+2) {
+                    x = symbol[i];
+                    y = symbol[i+1];
+                    if (i == 0) this.hitContext.moveTo(x,y);
+                    this.hitContext.lineTo(x,y);
+                }
+                this.hitContext.closePath();
+                this.hitContext.stroke();
+            }
+            
+        }
+        
+        style.strokeWidth = unscaledStrokeWidth;
+        this.canvas.restore();
+        if (this.hitDetection) { this.hitContext.restore(); }
+        this.setCanvasStyle("reset");  
+    },
+
+    /**
+     * Method: setCanvasStyle
+     * Prepare the canvas for drawing by setting various global settings.
+     *
+     * Parameters:
+     * type - {String} one of 'stroke', 'fill', or 'reset'
+     * style - {Object} Symbolizer hash
+     */
+    setCanvasStyle: function(type, style) {
         if (type === "fill") {     
             this.canvas.globalAlpha = style['fillOpacity'];
             this.canvas.fillStyle = style['fillColor'];
@@ -135,7 +461,17 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
     
-        featureIdToHex: function(featureId) {
+    /**
+     * Method: featureIdToHex
+     * Convert a feature ID string into an RGB hex string.
+     *
+     * Parameters:
+     * featureId - {String} Feature id
+     *
+     * Returns:
+     * {String} RGB hex string.
+     */
+    featureIdToHex: function(featureId) {
         var id = Number(featureId.split("_").pop()) + 1; // zero for no feature
         if (id >= 16777216) {
             this.hitOverflow = id - 16777215;
@@ -147,7 +483,16 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         return hex;
     },
     
-        setHitContextStyle: function(type, featureId, symbolizer, strokeScaling) {
+    /**
+     * Method: setHitContextStyle
+     * Prepare the hit canvas for drawing by setting various global settings.
+     *
+     * Parameters:
+     * type - {String} one of 'stroke', 'fill', or 'reset'
+     * featureId - {String} The feature id.
+     * symbolizer - {<OpenLayers.Symbolizer>} The symbolizer.
+     */
+    setHitContextStyle: function(type, featureId, symbolizer, strokeScaling) {
         var hex = this.featureIdToHex(featureId);
         if (type == "fill") {
             this.hitContext.globalAlpha = 1.0;
@@ -155,6 +500,8 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         } else if (type == "stroke") {  
             this.hitContext.globalAlpha = 1.0;
             this.hitContext.strokeStyle = hex;
+            // bump up stroke width to deal with antialiasing. If strokeScaling is defined, we're rendering a symbol 
+            // on a transformed canvas, so the antialias width bump has to scale as well.
             if (typeof strokeScaling === "undefined") {
                 this.hitContext.lineWidth = symbolizer.strokeWidth + 2;
             } else {
@@ -166,7 +513,107 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
 
-        renderPath: function(context, geometry, style, featureId, type) {
+    /**
+     * Method: drawPoint
+     * This method is only called by the renderer itself.
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawPoint: function(geometry, style, featureId) {
+        if(style.graphic !== false) {
+            if(style.externalGraphic) {
+                this.drawExternalGraphic(geometry, style, featureId);
+            } else if (style.graphicName && (style.graphicName != "circle")) {
+                this.drawNamedSymbol(geometry, style, featureId);
+            } else {
+                var pt = this.getLocalXY(geometry);
+                var p0 = pt[0];
+                var p1 = pt[1];
+                if(!isNaN(p0) && !isNaN(p1)) {
+                    var twoPi = Math.PI*2;
+                    var radius = style.pointRadius;
+                    if(style.fill !== false) {
+                        this.setCanvasStyle("fill", style);
+                        this.canvas.beginPath();
+                        this.canvas.arc(p0, p1, radius, 0, twoPi, true);
+                        this.canvas.fill();
+                        if (this.hitDetection) {
+                            this.setHitContextStyle("fill", featureId, style);
+                            this.hitContext.beginPath();
+                            this.hitContext.arc(p0, p1, radius, 0, twoPi, true);
+                            this.hitContext.fill();
+                        }
+                    }
+
+                    if(style.stroke !== false) {
+                        this.setCanvasStyle("stroke", style);
+                        this.canvas.beginPath();
+                        this.canvas.arc(p0, p1, radius, 0, twoPi, true);
+                        this.canvas.stroke();
+                        if (this.hitDetection) {
+                            this.setHitContextStyle("stroke", featureId, style);
+                            this.hitContext.beginPath();
+                            this.hitContext.arc(p0, p1, radius, 0, twoPi, true);
+                            this.hitContext.stroke();
+                        }
+                        this.setCanvasStyle("reset");
+                    }
+                }
+            }
+        }
+    },
+    
+    /**
+     * Method: drawLineString
+     * This method is only called by the renderer itself.
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawLineString: function(geometry, style, featureId) {
+        style = OpenLayers.Util.applyDefaults({fill: false}, style);
+        this.drawLinearRing(geometry, style, featureId);
+    },    
+    
+    /**
+     * Method: drawLinearRing
+     * This method is only called by the renderer itself.
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawLinearRing: function(geometry, style, featureId) {
+        if (style.fill !== false) {
+            this.setCanvasStyle("fill", style);
+            this.renderPath(this.canvas, geometry, style, featureId, "fill");
+            if (this.hitDetection) {
+                this.setHitContextStyle("fill", featureId, style);
+                this.renderPath(this.hitContext, geometry, style, featureId, "fill");
+            }
+        }
+        if (style.stroke !== false) {
+            this.setCanvasStyle("stroke", style);
+            this.renderPath(this.canvas, geometry, style, featureId, "stroke");
+            if (this.hitDetection) {
+                this.setHitContextStyle("stroke", featureId, style);
+                this.renderPath(this.hitContext, geometry, style, featureId, "stroke");
+            }
+        }
+        this.setCanvasStyle("reset");
+    },
+    
+    /**
+     * Method: renderPath
+     * Render a path with stroke and optional fill.
+     */
+    renderPath: function(context, geometry, style, featureId, type) {
         var components = geometry.components;
         var len = components.length;
         context.beginPath();
@@ -187,7 +634,30 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
     
-                this.canvas.globalCompositeOperation = "destination-out";
+    /**
+     * Method: drawPolygon
+     * This method is only called by the renderer itself.
+     * 
+     * Parameters: 
+     * geometry - {<OpenLayers.Geometry>}
+     * style    - {Object}
+     * featureId - {String}
+     */ 
+    drawPolygon: function(geometry, style, featureId) {
+        var components = geometry.components;
+        var len = components.length;
+        this.drawLinearRing(components[0], style, featureId);
+        // erase inner rings
+        for (var i=1; i<len; ++i) {
+            /** 
+             * Note that this is overly aggressive.  Here we punch holes through 
+             * all previously rendered features on the same canvas.  A better 
+             * solution for polygons with interior rings would be to draw the 
+             * polygon on a sketch canvas first.  We could erase all holes 
+             * there and then copy the drawing to the layer canvas. 
+             * TODO: http://trac.osgeo.org/openlayers/ticket/3130 
+             */
+            this.canvas.globalCompositeOperation = "destination-out";
             if (this.hitDetection) {
                 this.hitContext.globalCompositeOperation = "destination-out";
             }
@@ -208,7 +678,15 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         }
     },
     
-        drawText: function(location, style) {
+    /**
+     * Method: drawText
+     * This method is only called by the renderer itself.
+     *
+     * Parameters:
+     * location - {<OpenLayers.Point>}
+     * style    - {Object}
+     */
+    drawText: function(location, style) {
         var pt = this.getLocalXY(location);
 
         this.setCanvasStyle("reset");
@@ -222,6 +700,7 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         var labelRows = style.label.split('\n');
         var numRows = labelRows.length;
         if (this.canvas.fillText) {
+            // HTML5
             this.canvas.font = fontStyle;
             this.canvas.textAlign =
                 OpenLayers.Renderer.Canvas.LABEL_ALIGN[style.labelAlign[0]] ||
@@ -250,7 +729,9 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
                 this.canvas.fillText(labelRows[i], pt[0], pt[1] + (lineHeight*i));
             }
         } else if (this.canvas.mozDrawText) {
+            // Mozilla pre-Gecko1.9.1 (<FF3.1)
             this.canvas.mozTextStyle = fontStyle;
+            // No built-in text alignment, so we measure and adjust the position
             var hfactor =
                 OpenLayers.Renderer.Canvas.LABEL_FACTOR[style.labelAlign[0]];
             if (hfactor == null) {
@@ -274,7 +755,14 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         this.setCanvasStyle("reset");
     },
     
-        getLocalXY: function(point) {
+    /**
+     * Method: getLocalXY
+     * transform geographic xy into pixel xy
+     *
+     * Parameters: 
+     * point - {<OpenLayers.Geometry.Point>}
+     */
+    getLocalXY: function(point) {
         var resolution = this.getResolution();
         var extent = this.extent;
         var x = ((point.x - this.featureDx) / resolution + (-extent.left / resolution));
@@ -282,10 +770,46 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         return [x, y];
     },
 
-        getFeatureIdFromEvent: function(evt) {
+    /**
+     * Method: clear
+     * Clear all vectors from the renderer.
+     */    
+    clear: function() {
+        this.clearCanvas();
+        this.features = {};
+    },
+
+    /**
+     * Method: clearCanvas
+     * Clear the canvas element of the renderer.
+     */    
+    clearCanvas: function() {
+        var height = this.root.height;
+        var width = this.root.width;
+        this.canvas.clearRect(0, 0, width, height);
+        this._clearRectId = OpenLayers.Util.createUniqueID();
+        if (this.hitDetection) {
+            this.hitContext.clearRect(0, 0, width, height);
+        }
+    },
+
+    /**
+     * Method: getFeatureIdFromEvent
+     * Returns a feature id from an event on the renderer.  
+     * 
+     * Parameters:
+     * evt - {<OpenLayers.Event>} 
+     *
+     * Returns:
+     * {<OpenLayers.Feature.Vector} A feature or undefined.  This method returns a 
+     *     feature instead of a feature id to avoid an unnecessary lookup on the
+     *     layer.
+     */
+    getFeatureIdFromEvent: function(evt) {
         var featureId, feature;
         
         if (this.hitDetection && this.root.style.display !== "none") {
+            // this dragging check should go in the feature handler
             if (!this.map.dragging) {
                 var xy = evt.xy;
                 var x = xy.x | 0;
@@ -298,6 +822,9 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
                         try {
                             feature = this.features[featureId][0];
                         } catch(err) {
+                            // Because of antialiasing on the canvas, when the hit location is at a point where the edge of
+                            // one symbol intersects the interior of another symbol, a wrong hit color (and therefore id) results.
+                            // todo: set Antialiasing = 'off' on the hitContext as soon as browsers allow it.
                         }
                     }
                 }
@@ -306,7 +833,15 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         return feature;
     },
     
-        eraseFeatures: function(features) {
+    /**
+     * Method: eraseFeatures 
+     * This is called by the layer to erase features; removes the feature from
+     *     the list, then redraws the layer.
+     * 
+     * Parameters:
+     * features - {Array(<OpenLayers.Feature.Vector>)} 
+     */
+    eraseFeatures: function(features) {
         if(!(OpenLayers.Util.isArray(features))) {
             features = [features];
         }
@@ -316,7 +851,15 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
         this.redraw();
     },
 
-        redraw: function() {
+    /**
+     * Method: redraw
+     * The real 'meat' of the function: any time things have changed,
+     *     redraw() can be called to loop over all the data and (you guessed
+     *     it) redraw it.  Unlike Elements-based Renderers, we can't interact
+     *     with things once they're drawn, to remove them, for example, so
+     *     instead we have to just clear everything and draw from scratch.
+     */
+    redraw: function() {
         if (!this.locked) {
             this.clearCanvas();
             var labelMap = [];
@@ -344,6 +887,10 @@ OpenLayers.Renderer.Canvas = OpenLayers.Class(OpenLayers.Renderer, {
     CLASS_NAME: "OpenLayers.Renderer.Canvas"
 });
 
+/**
+ * Constant: OpenLayers.Renderer.Canvas.LABEL_ALIGN
+ * {Object}
+ */
 OpenLayers.Renderer.Canvas.LABEL_ALIGN = {
     "l": "left",
     "r": "right",
@@ -351,6 +898,10 @@ OpenLayers.Renderer.Canvas.LABEL_ALIGN = {
     "b": "bottom"
 };
 
+/**
+ * Constant: OpenLayers.Renderer.Canvas.LABEL_FACTOR
+ * {Object}
+ */
 OpenLayers.Renderer.Canvas.LABEL_FACTOR = {
     "l": 0,
     "r": -1,
@@ -358,4 +909,10 @@ OpenLayers.Renderer.Canvas.LABEL_FACTOR = {
     "b": -1
 };
 
+/**
+ * Constant: OpenLayers.Renderer.Canvas.drawImageScaleFactor
+ * {Number} Scale factor to apply to the canvas drawImage arguments. This
+ *     is always 1 except for Android 2.1 devices, to work around
+ *     http://code.google.com/p/android/issues/detail?id=5141.
+ */
 OpenLayers.Renderer.Canvas.drawImageScaleFactor = null;

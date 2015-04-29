@@ -4,26 +4,77 @@
  * full text of the license. */
 
 
+/**
+ * @requires OpenLayers/Layer/Google.js
+ */
 
+/**
+ * Constant: OpenLayers.Layer.Google.v3
+ * 
+ * Mixin providing functionality specific to the Google Maps API v3.
+ * 
+ * To use this layer, you must include the GMaps v3 API in your html. To match
+ * Google's zoom animation better with OpenLayers animated zooming, configure
+ * your map with a zoomDuration of 10:
+ *
+ * (code)
+ * new OpenLayers.Map('map', {zoomDuration: 10});
+ * (end)
+ * 
+ * Note that this layer configures the google.maps.map object with the
+ * "disableDefaultUI" option set to true. Using UI controls that the Google
+ * Maps API provides is not supported by the OpenLayers API.
+ */
 OpenLayers.Layer.Google.v3 = {
     
-        DEFAULTS: {
+    /**
+     * Constant: DEFAULTS
+     * {Object} It is not recommended to change the properties set here. Note
+     * that Google.v3 layers only work when sphericalMercator is set to true.
+     * 
+     * (code)
+     * {
+     *     sphericalMercator: true,
+     *     projection: "EPSG:900913"
+     * }
+     * (end)
+     */
+    DEFAULTS: {
         sphericalMercator: true,
         projection: "EPSG:900913"
     },
 
-        animationEnabled: true, 
+    /**
+     * APIProperty: animationEnabled
+     * {Boolean} If set to true, the transition between zoom levels will be
+     *     animated (if supported by the GMaps API for the device used). Set to
+     *     false to match the zooming experience of other layer types. Default
+     *     is true. Note that the GMaps API does not give us control over zoom
+     *     animation, so if set to false, when zooming, this will make the
+     *     layer temporarily invisible, wait until GMaps reports the map being
+     *     idle, and make it visible again. The result will be a blank layer
+     *     for a few moments while zooming.
+     */
+    animationEnabled: true, 
 
-        loadMapObject: function() {
+    /** 
+     * Method: loadMapObject
+     * Load the GMap and register appropriate event listeners.
+     */
+    loadMapObject: function() {
         if (!this.type) {
             this.type = google.maps.MapTypeId.ROADMAP;
         }
         var mapObject;
         var cache = OpenLayers.Layer.Google.cache[this.map.id];
         if (cache) {
+            // there are already Google layers added to this map
             mapObject = cache.mapObject;
+            // increment the layer count
             ++cache.count;
         } else {
+            // this is the first Google layer for this map
+            // create GMap
             var center = this.map.getCenter();
             var container = document.createElement('div');
             container.className = "olForeignContainer";
@@ -47,6 +98,9 @@ OpenLayers.Layer.Google.v3 = {
             googleControl.style.width = '100%';
             googleControl.style.height = '100%';
             mapObject.controls[google.maps.ControlPosition.TOP_LEFT].push(googleControl);
+            
+            // cache elements for use by any other google layers added to
+            // this same map
             cache = {
                 googleControl: googleControl,
                 mapObject: mapObject,
@@ -58,13 +112,23 @@ OpenLayers.Layer.Google.v3 = {
         this.setGMapVisibility(this.visibility);
     },
     
-        onMapResize: function() {
+    /**
+     * APIMethod: onMapResize
+     */
+    onMapResize: function() {
         if (this.visibility) {
             google.maps.event.trigger(this.mapObject, "resize");
         }
     },
 
-        setGMapVisibility: function(visible) {
+    /**
+     * Method: setGMapVisibility
+     * Display the GMap container and associated elements.
+     * 
+     * Parameters:
+     * visible - {Boolean} Display the GMap elements.
+     */
+    setGMapVisibility: function(visible) {
         var cache = OpenLayers.Layer.Google.cache[this.map.id];
         var map = this.map;
         if (cache) {
@@ -104,11 +168,31 @@ OpenLayers.Layer.Google.v3 = {
         }
     },
     
-        getMapContainer: function() {
+    /**
+     * Method: getMapContainer
+     * 
+     * Returns:
+     * {DOMElement} the GMap container's div
+     */
+    getMapContainer: function() {
         return this.mapObject.getDiv();
     },
+    
+  //
+  // TRANSLATION: MapObject Bounds <-> OpenLayers.Bounds
+  //
 
-        getMapObjectBoundsFromOLBounds: function(olBounds) {
+    /**
+     * APIMethod: getMapObjectBoundsFromOLBounds
+     * 
+     * Parameters:
+     * olBounds - {<OpenLayers.Bounds>}
+     * 
+     * Returns:
+     * {Object} A MapObject Bounds, translated from olBounds
+     *          Returns null if null value is passed in
+     */
+    getMapObjectBoundsFromOLBounds: function(olBounds) {
         var moBounds = null;
         if (olBounds != null) {
             var sw = this.sphericalMercator ? 
@@ -124,8 +208,27 @@ OpenLayers.Layer.Google.v3 = {
         }
         return moBounds;
     },
+
+
+    /************************************
+     *                                  *
+     *   MapObject Interface Controls   *
+     *                                  *
+     ************************************/
+
+
+  // LonLat - Pixel Translation
   
-        getMapObjectLonLatFromMapObjectPixel: function(moPixel) {
+    /**
+     * APIMethod: getMapObjectLonLatFromMapObjectPixel
+     * 
+     * Parameters:
+     * moPixel - {Object} MapObject Pixel format
+     * 
+     * Returns:
+     * {Object} MapObject LonLat translated from MapObject Pixel
+     */
+    getMapObjectLonLatFromMapObjectPixel: function(moPixel) {
         var size = this.map.getSize();
         var lon = this.getLongitudeFromMapObjectLonLat(this.mapObject.center);
         var lat = this.getLatitudeFromMapObjectLonLat(this.mapObject.center);
@@ -145,7 +248,16 @@ OpenLayers.Layer.Google.v3 = {
         return this.getMapObjectLonLatFromLonLat(lonlat.lon, lonlat.lat);
     },
 
-        getMapObjectPixelFromMapObjectLonLat: function(moLonLat) {
+    /**
+     * APIMethod: getMapObjectPixelFromMapObjectLonLat
+     * 
+     * Parameters:
+     * moLonLat - {Object} MapObject LonLat format
+     * 
+     * Returns:
+     * {Object} MapObject Pixel transtlated from MapObject LonLat
+     */
+    getMapObjectPixelFromMapObjectLonLat: function(moLonLat) {
         var lon = this.getLongitudeFromMapObjectLonLat(moLonLat);
         var lat = this.getLatitudeFromMapObjectLonLat(moLonLat);
         var res = this.map.getResolution();
@@ -155,7 +267,15 @@ OpenLayers.Layer.Google.v3 = {
     },
 
   
-        setMapObjectCenter: function(center, zoom) {
+    /** 
+     * APIMethod: setMapObjectCenter
+     * Set the mapObject to the specified center and zoom
+     * 
+     * Parameters:
+     * center - {Object} MapObject LonLat format
+     * zoom - {int} MapObject zoom format
+     */
+    setMapObjectCenter: function(center, zoom) {
         if (this.animationEnabled === false && zoom != this.mapObject.zoom) {
             var mapContainer = this.getMapContainer();
             google.maps.event.addListenerOnce(
@@ -172,12 +292,43 @@ OpenLayers.Layer.Google.v3 = {
             zoom: zoom
         });
     },
+   
+    
+  // Bounds
   
-        getMapObjectZoomFromMapObjectBounds: function(moBounds) {
+    /** 
+     * APIMethod: getMapObjectZoomFromMapObjectBounds
+     * 
+     * Parameters:
+     * moBounds - {Object} MapObject Bounds format
+     * 
+     * Returns:
+     * {Object} MapObject Zoom for specified MapObject Bounds
+     */
+    getMapObjectZoomFromMapObjectBounds: function(moBounds) {
         return this.mapObject.getBoundsZoomLevel(moBounds);
     },
+
+    /************************************
+     *                                  *
+     *       MapObject Primitives       *
+     *                                  *
+     ************************************/
+
+
+  // LonLat
     
-        getMapObjectLonLatFromLonLat: function(lon, lat) {
+    /**
+     * APIMethod: getMapObjectLonLatFromLonLat
+     * 
+     * Parameters:
+     * lon - {Float}
+     * lat - {Float}
+     * 
+     * Returns:
+     * {Object} MapObject LonLat built from lon and lat params
+     */
+    getMapObjectLonLatFromLonLat: function(lon, lat) {
         var gLatLng;
         if(this.sphericalMercator) {
             var lonlat = this.inverseMercator(lon, lat);
@@ -188,7 +339,19 @@ OpenLayers.Layer.Google.v3 = {
         return gLatLng;
     },
     
-        getMapObjectPixelFromXY: function(x, y) {
+  // Pixel
+    
+    /**
+     * APIMethod: getMapObjectPixelFromXY
+     * 
+     * Parameters:
+     * x - {Integer}
+     * y - {Integer}
+     * 
+     * Returns:
+     * {Object} MapObject Pixel from x and y parameters
+     */
+    getMapObjectPixelFromXY: function(x, y) {
         return new google.maps.Point(x, y);
     }
     

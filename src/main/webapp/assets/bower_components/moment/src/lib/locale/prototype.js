@@ -25,6 +25,8 @@ proto._relativeTime   = defaultRelativeTime;
 proto.relativeTime    = relativeTime;
 proto.pastFuture      = pastFuture;
 proto.set             = set;
+
+// Month
 import {
     localeMonthsParse,
     defaultLocaleMonths,      localeMonths,
@@ -36,11 +38,15 @@ proto._months      = defaultLocaleMonths;
 proto.monthsShort  =        localeMonthsShort;
 proto._monthsShort = defaultLocaleMonthsShort;
 proto.monthsParse  =        localeMonthsParse;
+
+// Week
 import { localeWeek, defaultLocaleWeek, localeFirstDayOfYear, localeFirstDayOfWeek } from '../units/week';
 proto.week = localeWeek;
 proto._week = defaultLocaleWeek;
 proto.firstDayOfYear = localeFirstDayOfYear;
 proto.firstDayOfWeek = localeFirstDayOfWeek;
+
+// Day of Week
 import {
     localeWeekdaysParse,
     defaultLocaleWeekdays,      localeWeekdays,
@@ -55,6 +61,8 @@ proto._weekdaysMin   = defaultLocaleWeekdaysMin;
 proto.weekdaysShort  =        localeWeekdaysShort;
 proto._weekdaysShort = defaultLocaleWeekdaysShort;
 proto.weekdaysParse  =        localeWeekdaysParse;
+
+// Hours
 import { localeIsPM, defaultLocaleMeridiemParse, localeMeridiem } from '../units/hour';
 
 proto.isPM = localeIsPM;

@@ -209,6 +209,8 @@ var cases = {
     ])
     
 };
+
+// some cases for v3 use the same geometries
 OpenLayers.Util.extend(cases, {
     "v3/point.xml": cases["v2/point-coordinates.xml"],
     "v3/linestring.xml": cases["v2/linestring-coordinates.xml"],

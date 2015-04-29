@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : catalan (ca)
+//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 import moment from '../moment';
 

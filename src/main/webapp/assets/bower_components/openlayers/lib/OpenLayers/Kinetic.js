@@ -3,39 +3,99 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
+/**
+ * @requires OpenLayers/BaseTypes/Class.js
+ * @requires OpenLayers/Animation.js
+ */
 
 OpenLayers.Kinetic = OpenLayers.Class({
 
-        threshold: 0,
+    /**
+     * Property: threshold
+     * In most cases changing the threshold isn't needed.
+     * In px/ms, default to 0.
+     */
+    threshold: 0,
 
-        deceleration: 0.0035,
+    /**
+     * Property: deceleration
+     * {Float} the deseleration in px/ms², default to 0.0035.
+     */
+    deceleration: 0.0035,
 
-        nbPoints: 100,
+    /**
+     * Property: nbPoints
+     * {Integer} the number of points we use to calculate the kinetic
+     * initial values.
+     */
+    nbPoints: 100,
 
-        delay: 200,
+    /**
+     * Property: delay
+     * {Float} time to consider to calculate the kinetic initial values.
+     * In ms, default to 200.
+     */
+    delay: 200,
 
-        points: undefined,
+    /**
+     * Property: points
+     * List of points use to calculate the kinetic initial values.
+     */
+    points: undefined,
 
-        timerId: undefined,
+    /**
+     * Property: timerId
+     * ID of the timer.
+     */
+    timerId: undefined,
 
-        initialize: function(options) {
+    /**
+     * Constructor: OpenLayers.Kinetic
+     *
+     * Parameters:
+     * options - {Object}
+     */
+    initialize: function(options) {
         OpenLayers.Util.extend(this, options);
     },
 
-        begin: function() {
+    /**
+     * Method: begin
+     * Begins the dragging.
+     */
+    begin: function() {
         OpenLayers.Animation.stop(this.timerId);
         this.timerId = undefined;
         this.points = [];
     },
 
-        update: function(xy) {
+    /**
+     * Method: update
+     * Updates during the dragging.
+     *
+     * Parameters:
+     * xy - {<OpenLayers.Pixel>} The new position.
+     */
+    update: function(xy) {
         this.points.unshift({xy: xy, tick: new Date().getTime()});
         if (this.points.length > this.nbPoints) {
             this.points.pop();
         }
     },
 
-        end: function(xy) {
+    /**
+     * Method: end
+     * Ends the dragging, start the kinetic.
+     *
+     * Parameters:
+     * xy - {<OpenLayers.Pixel>} The last position.
+     *
+     * Returns:
+     * {Object} An object with two properties: "speed", and "theta". The
+     *     "speed" and "theta" values are to be passed to the move 
+     *     function when starting the animation.
+     */
+    end: function(xy) {
         var last, now = new Date().getTime();
         for (var i = 0, l = this.points.length, point; i < l; i++) {
             point = this.points[i];
@@ -61,7 +121,17 @@ OpenLayers.Kinetic = OpenLayers.Class({
         return {speed: speed, theta: theta};
     },
 
-        move: function(info, callback) {
+    /**
+     * Method: move
+     * Launch the kinetic move pan.
+     *
+     * Parameters:
+     * info - {Object} An object with two properties, "speed", and "theta".
+     *     These values are those returned from the "end" call.
+     * callback - {Function} Function called on every step of the animation,
+     *     receives x, y (values to pan), end (is the last point).
+     */
+    move: function(info, callback) {
         var v0 = info.speed;
         var fx = Math.cos(info.theta);
         var fy = -Math.sin(info.theta);

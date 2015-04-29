@@ -20,6 +20,9 @@
 
 +function ($) { "use strict";
 
+  // CAROUSEL CLASS DEFINITION
+  // =========================
+
   var Carousel = function (element, options) {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
@@ -153,6 +156,10 @@
     return this
   }
 
+
+  // CAROUSEL PLUGIN DEFINITION
+  // ==========================
+
   var old = $.fn.carousel
 
   $.fn.carousel = function (option) {
@@ -171,10 +178,18 @@
 
   $.fn.carousel.Constructor = Carousel
 
+
+  // CAROUSEL NO CONFLICT
+  // ====================
+
   $.fn.carousel.noConflict = function () {
     $.fn.carousel = old
     return this
   }
+
+
+  // CAROUSEL DATA-API
+  // =================
 
   $(document).on('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
     var $this   = $(this), href

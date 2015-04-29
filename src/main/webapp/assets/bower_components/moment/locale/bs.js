@@ -1,3 +1,7 @@
+//! moment.js locale configuration
+//! locale : bosnian (bs)
+//! author : Nedim Cholich : https://github.com/frontyard
+//! based on (hr) translation by Bojan Marković
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

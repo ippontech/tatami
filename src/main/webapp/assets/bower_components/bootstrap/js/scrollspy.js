@@ -20,6 +20,9 @@
 
 +function ($) { "use strict";
 
+  // SCROLLSPY CLASS DEFINITION
+  // ==========================
+
   function ScrollSpy(element, options) {
     var href
     var process  = $.proxy(this.process, this)
@@ -113,6 +116,10 @@
     active.trigger('activate.bs.scrollspy')
   }
 
+
+  // SCROLLSPY PLUGIN DEFINITION
+  // ===========================
+
   var old = $.fn.scrollspy
 
   $.fn.scrollspy = function (option) {
@@ -128,10 +135,18 @@
 
   $.fn.scrollspy.Constructor = ScrollSpy
 
+
+  // SCROLLSPY NO CONFLICT
+  // =====================
+
   $.fn.scrollspy.noConflict = function () {
     $.fn.scrollspy = old
     return this
   }
+
+
+  // SCROLLSPY DATA-API
+  // ==================
 
   $(window).on('load', function () {
     $('[data-spy="scroll"]').each(function () {

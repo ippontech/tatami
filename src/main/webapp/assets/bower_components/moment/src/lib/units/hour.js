@@ -6,6 +6,8 @@ import { addParseToken } from '../parse/token';
 import { HOUR } from './constants';
 import toInt from '../utils/to-int';
 
+// FORMATTING
+
 addFormatToken('H', ['HH', 2], 0, 'hour');
 addFormatToken('h', ['hh', 2], 0, function () {
     return this.hours() % 12 || 12;
@@ -20,7 +22,11 @@ function meridiem (token, lowercase) {
 meridiem('a', true);
 meridiem('A', false);
 
+// ALIASES
+
 addUnitAlias('hour', 'h');
+
+// PARSING
 
 function matchMeridiem (isStrict, locale) {
     return locale._meridiemParse;
@@ -43,7 +49,11 @@ addParseToken(['h', 'hh'], function (input, array, config) {
     config._pf.bigHour = true;
 });
 
+// LOCALES
+
 export function localeIsPM (input) {
+    // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+    // Using charAt should be more compatible.
     return ((input + '').toLowerCase().charAt(0) === 'p');
 }
 
@@ -55,4 +65,12 @@ export function localeMeridiem (hours, minutes, isLower) {
         return isLower ? 'am' : 'AM';
     }
 }
+
+
+// MOMENTS
+
+// Setting the hour should keep the time, because the user explicitly
+// specified which hour he wants. So trying to maintain the same hour (in
+// a new timezone) makes sense. Adding/subtracting hours does not follow
+// this rule.
 export var getSetHour = makeGetSet('Hours', true);

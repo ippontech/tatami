@@ -1,3 +1,6 @@
+//! moment.js locale configuration
+//! locale : Luxembourgish (lb)
+//! author : mweimerskirch : https://github.com/mweimerskirch, David Raison : https://github.com/kwisatz
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
@@ -30,30 +33,42 @@
         }
         return 'virun ' + string;
     }
-        function eifelerRegelAppliesToNumber(number) {
+    /**
+     * Returns true if the word before the given number loses the '-n' ending.
+     * e.g. 'an 10 Deeg' but 'a 5 Deeg'
+     *
+     * @param number {integer}
+     * @returns {boolean}
+     */
+    function eifelerRegelAppliesToNumber(number) {
         number = parseInt(number, 10);
         if (isNaN(number)) {
             return false;
         }
         if (number < 0) {
+            // Negative Number --> always true
             return true;
         } else if (number < 10) {
+            // Only 1 digit
             if (4 <= number && number <= 7) {
                 return true;
             }
             return false;
         } else if (number < 100) {
+            // 2 digits
             var lastDigit = number % 10, firstDigit = number / 10;
             if (lastDigit === 0) {
                 return eifelerRegelAppliesToNumber(firstDigit);
             }
             return eifelerRegelAppliesToNumber(lastDigit);
         } else if (number < 10000) {
+            // 3 or 4 digits --> recursively check first digit
             while (number >= 10) {
                 number = number / 10;
             }
             return eifelerRegelAppliesToNumber(number);
         } else {
+            // Anything larger than 4 digits: recursively check first n-3 digits
             number = number / 1000;
             return eifelerRegelAppliesToNumber(number);
         }
@@ -80,6 +95,7 @@
             nextWeek: 'dddd [um] LT',
             lastDay: '[Gëschter um] LT',
             lastWeek: function () {
+                // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
                 switch (this.day()) {
                     case 2:
                     case 4:

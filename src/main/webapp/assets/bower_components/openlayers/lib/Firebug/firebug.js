@@ -143,6 +143,8 @@ if (!window.console || !console.firebug) { (function()
                 toggleConsole();
         }
     };
+ 
+    // ********************************************************************************************
        
     var consoleFrame = null;
     var consoleBody = null;
@@ -159,6 +161,8 @@ if (!window.console || !console.firebug) { (function()
     var isIE = navigator.userAgent.indexOf("MSIE") != -1;
     var isOpera = navigator.userAgent.indexOf("Opera") != -1;
     var isSafari = navigator.userAgent.indexOf("AppleWebKit") != -1;
+
+    // ********************************************************************************************
 
     function toggleConsole(forceOpen)
     {
@@ -329,6 +333,8 @@ if (!window.console || !console.firebug) { (function()
     {
         groupStack.pop();
     }
+    
+    // ********************************************************************************************
 
     function logFormatted(objects, className)
     {
@@ -427,6 +433,8 @@ if (!window.console || !console.firebug) { (function()
             return null;
         }
     }
+
+    // ********************************************************************************************
 
     function appendText(object, html)
     {
@@ -548,6 +556,8 @@ if (!window.console || !console.firebug) { (function()
                 '</div>');
         }
     }
+
+    // ********************************************************************************************
     
     function addEvent(object, name, handler)
     {
