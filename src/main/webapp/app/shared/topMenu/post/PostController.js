@@ -33,26 +33,26 @@ PostModule.controller('PostController', [
             return filteredGroups;
         };
 
-        $scope.current = {                      // This is the current instance of the status window
-            preview: false,                     // Determines if the status is being previewed by the user
-            geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-            groups: groups,                     // The groups the user belongs to
-            reply: false,                       // Determine if this status is a reply to another user
-            uploadDone: true,                   // If the file upload is done, we should not show the progess bar
-            uploadProgress: 0,                  // The progress of the file currently being uploaded
+        $scope.current = {  // This is the current instance of the status window
+            preview: false, // Determines if the status is being previewed by the user
+            geoLoc: false,  // Determine if the geolocalization checkbox is checked
+            groups: groups, // The groups the user belongs to
+            reply: false,   // Determine if this status is a reply to another user
+            uploadDone: true,// If the file upload is done, we should not show the progess bar
+            uploadProgress: 0,// The progress of the file currently being uploaded
             upload: [],
             contentEmpty: true,
             files: [],
             attachments: []
         };
 
-        $scope.status = {            // This is the current user status information
-            content: "",             // The content contained in this status
-            groupId: "",             // The groupId that this status is being broadcast to
-            replyTo: "",             // The user we are replying to
-            attachmentIds: [],       // An array of all the attachments contained in the status
-            geoLocalization: "",     // The geographical location of the user when posting the status
-            statusPrivate: false     // Determines whether the status is private
+        $scope.status = {   // This is the current user status information
+            content: "",    // The content contained in this status
+            groupId: "",    // The groupId that this status is being broadcast to
+            replyTo: "",     // The user we are replying to
+            attachmentIds: [], // An array of all the attachments contained in the status
+            geoLocalization: "", // The geographical location of the user when posting the status
+            statusPrivate: false // Determines whether the status is private
         };
 
         $scope.charCount = 750;
@@ -235,8 +235,8 @@ PostModule.controller('PostController', [
                 var longitude = geoLocalization.split(',')[1].trim();
 
                 var map = new OpenLayers.Map("simpleMap");
-                var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                var fromProjection = new OpenLayers.Projection("EPSG:4326");// Transform from WGS 1984
+                var toProjection = new OpenLayers.Projection("EPSG:900913");// to Spherical Mercator Projection
                 var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
                 var mapnik = new OpenLayers.Layer.OSM();
                 var position = lonLat;
