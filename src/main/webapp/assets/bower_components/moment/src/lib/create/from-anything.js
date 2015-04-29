@@ -41,7 +41,6 @@ function createFromConfig (config) {
 
     res = new Moment(checkOverflow(config));
     if (res._nextDay) {
-        // Adding is smart enough around DST
         res.add(1, 'd');
         res._nextDay = undefined;
     }
@@ -65,7 +64,6 @@ function configFromInput(config) {
     } else if (typeof(input) === 'object') {
         configFromObject(config);
     } else if (typeof(input) === 'number') {
-        // from milliseconds
         config._d = new Date(input);
     } else {
         hooks.createFromInputFallback(config);
@@ -79,8 +77,6 @@ export function createLocalOrUTC (input, format, locale, strict, isUTC) {
         strict = locale;
         locale = undefined;
     }
-    // object construction must be done this way.
-    // https://github.com/moment/moment/issues/1423
     c._isAMomentObject = true;
     c._useUTC = c._isUTC = isUTC;
     c._l = locale;

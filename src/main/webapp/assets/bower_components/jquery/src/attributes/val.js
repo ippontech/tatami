@@ -22,9 +22,7 @@ jQuery.fn.extend({
 				ret = elem.value;
 
 				return typeof ret === "string" ?
-					// handle most common string cases
 					ret.replace(rreturn, "") :
-					// handle cases where value is null/undef or number
 					ret == null ? "" : ret;
 			}
 
@@ -45,8 +43,6 @@ jQuery.fn.extend({
 			} else {
 				val = value;
 			}
-
-			// Treat null/undefined as ""; convert numbers to string
 			if ( val == null ) {
 				val = "";
 			} else if ( typeof val === "number" ) {
@@ -58,8 +54,6 @@ jQuery.fn.extend({
 			}
 
 			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
-
-			// If set returns undefined, fall back to normal setting
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
 				this.value = val;
 			}
@@ -74,8 +68,6 @@ jQuery.extend({
 				var val = jQuery.find.attr( elem, "value" );
 				return val != null ?
 					val :
-					// Support: IE10-11+
-					// option.text throws exceptions (#14686, #14858)
 					jQuery.trim( jQuery.text( elem ) );
 			}
 		},
@@ -90,26 +82,15 @@ jQuery.extend({
 					i = index < 0 ?
 						max :
 						one ? index : 0;
-
-				// Loop through all the selected options
 				for ( ; i < max; i++ ) {
 					option = options[ i ];
-
-					// oldIE doesn't update selected after form reset (#2551)
 					if ( ( option.selected || i === index ) &&
-							// Don't return options that are disabled or in a disabled optgroup
 							( support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
 							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
-
-						// Get the specific value for the option
 						value = jQuery( option ).val();
-
-						// We don't need an array for one selects
 						if ( one ) {
 							return value;
 						}
-
-						// Multi-Selects return an array
 						values.push( value );
 					}
 				}
@@ -127,17 +108,10 @@ jQuery.extend({
 					option = options[ i ];
 
 					if ( jQuery.inArray( jQuery.valHooks.option.get( option ), values ) >= 0 ) {
-
-						// Support: IE6
-						// When new option element is added to select box we need to
-						// force reflow of newly added node in order to workaround delay
-						// of initialization properties
 						try {
 							option.selected = optionSet = true;
 
 						} catch ( _ ) {
-
-							// Will be executed only in IE6
 							option.scrollHeight;
 						}
 
@@ -145,8 +119,6 @@ jQuery.extend({
 						option.selected = false;
 					}
 				}
-
-				// Force browsers to behave consistently when non-matching value is set
 				if ( !optionSet ) {
 					elem.selectedIndex = -1;
 				}
@@ -156,8 +128,6 @@ jQuery.extend({
 		}
 	}
 });
-
-// Radios and checkboxes getter/setter
 jQuery.each([ "radio", "checkbox" ], function() {
 	jQuery.valHooks[ this ] = {
 		set: function( elem, value ) {
@@ -168,8 +138,6 @@ jQuery.each([ "radio", "checkbox" ], function() {
 	};
 	if ( !support.checkOn ) {
 		jQuery.valHooks[ this ].get = function( elem ) {
-			// Support: Webkit
-			// "" is returned instead of "on" if a value isn't specified
 			return elem.getAttribute("value") === null ? "on" : elem.value;
 		};
 	}

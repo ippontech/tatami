@@ -1,6 +1,3 @@
-// Adding a mode parameter with "build" as value in the run-tests.html will 
-// make usage of the build version of the library.
-// get the OLLoader.js script location
 (function() {
     var r = new RegExp("(^|(.*?\\/))(" + "OLLoader.js" + ")(\\?|$)"),
         s = document.getElementsByTagName('script'),

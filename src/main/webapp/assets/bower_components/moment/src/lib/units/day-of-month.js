@@ -6,15 +6,9 @@ import { addParseToken } from '../parse/token';
 import { DATE } from './constants';
 import toInt from '../utils/to-int';
 
-// FORMATTING
-
 addFormatToken('D', ['DD', 2], 'Do', 'date');
 
-// ALIASES
-
 addUnitAlias('date', 'D');
-
-// PARSING
 
 addRegexToken('D',  match1to2);
 addRegexToken('DD', match1to2, match2);
@@ -26,7 +20,5 @@ addParseToken(['D', 'DD'], DATE);
 addParseToken('Do', function (input, array) {
     array[DATE] = toInt(input.match(match1to2)[0], 10);
 });
-
-// MOMENTS
 
 export var getSetDayOfMonth = makeGetSet('Date', true);

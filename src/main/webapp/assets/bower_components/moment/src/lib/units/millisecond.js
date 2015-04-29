@@ -6,8 +6,6 @@ import { addParseToken } from '../parse/token';
 import { MILLISECOND } from './constants';
 import toInt from '../utils/to-int';
 
-// FORMATTING
-
 addFormatToken('S', 0, 0, function () {
     return ~~(this.millisecond() / 100);
 });
@@ -23,11 +21,7 @@ function milliseconds (token) {
 milliseconds('SSS');
 milliseconds('SSSS');
 
-// ALIASES
-
 addUnitAlias('millisecond', 'ms');
-
-// PARSING
 
 addRegexToken('S',    match1to3, match1);
 addRegexToken('SS',   match1to3, match2);
@@ -36,7 +30,5 @@ addRegexToken('SSSS', matchUnsigned);
 addParseToken(['S', 'SS', 'SSS', 'SSSS'], function (input, array) {
     array[MILLISECOND] = toInt(('0.' + input) * 1000);
 });
-
-// MOMENTS
 
 export var getSetMillisecond = makeGetSet('Milliseconds', false);

@@ -44,8 +44,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
             '(smile)' : '<img src="http://a248.e.akamai.net/assets.github.com/images/icons/emoji/smile.png"' +
                 ' height="20" width="20">'
         };
-
-        // shows the use of dynamic values in mentio-id and mentio-for to link elements
         $scope.myIndexValue = "5";
 
         $scope.searchProducts = function(term) {
@@ -95,7 +93,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
             var deferred = $q.defer();
             /* the select() function can also return a Promise which ment.io will handle
             propertly during replacement */
-                    // simulated async promise              
             $timeout(function() {
                 deferred.resolve('#' + item.sku);
             }, 500);
@@ -103,7 +100,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
         };
 
         $scope.getPeopleText = function(item) {
-            // note item.label is sent when the typedText wasn't found
             return '[~<i>' + (item.name || item.label) + '</i>]';
         };
 
@@ -112,7 +108,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
         };
 
         $scope.resetDemo = function() {
-            // finally enter content that will raise a menu after everything is set up
             $timeout(function() {
                 var html = "Try me @ or add a macro like brb, omw, (smile)";
                 var htmlContent = document.querySelector('#htmlContent');
@@ -120,7 +115,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
                     var ngHtmlContent = angular.element(htmlContent);
                     ngHtmlContent.html(html);
                     ngHtmlContent.scope().htmlContent = html;
-                    // select right after the @
                     mentioUtil.selectElement(null, htmlContent, [0], 8);
                     ngHtmlContent.scope().$apply();
                 }
@@ -144,8 +138,6 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
             link: function(scope, element, attrs, ngModel) {
                 function read() {
                     var html = element.html();
-                    // When we clear the content editable the browser leaves a <br> behind
-                    // If strip-br attribute is provided then we strip this out
                     if (attrs.stripBr && html === '<br>') {
                         html = '';
                     }
@@ -153,15 +145,11 @@ angular.module('mentio-demo', ['mentio', 'ngRoute', 'ui.tinymce'])
                 }
 
                 if(!ngModel) return; // do nothing if no ng-model
-
-                // Specify how UI should be updated
                 ngModel.$render = function() {
                     if (ngModel.$viewValue !== element.html()) {
                         element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
                     }
                 };
-
-                // Listen for change events to enable binding
                 element.on('blur keyup change', function() {
                     scope.$apply(read);
                 });

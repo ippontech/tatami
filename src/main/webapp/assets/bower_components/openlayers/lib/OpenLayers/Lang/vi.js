@@ -2,16 +2,7 @@
  *  - Minh Nguyen
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["vi"]
- * Dictionary for Tiếng Việt.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["vi"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Không xử lý được phản hồi ${statusText} cho yêu cầu",

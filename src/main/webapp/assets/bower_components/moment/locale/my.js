@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : Burmese (my)
-//! author : Squar team, mysquar.com
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

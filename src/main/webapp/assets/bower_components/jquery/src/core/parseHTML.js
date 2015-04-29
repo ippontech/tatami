@@ -3,10 +3,6 @@ define([
 	"./var/rsingleTag",
 	"../manipulation" // buildFragment
 ], function( jQuery, rsingleTag ) {
-
-// data: string of html
-// context (optional): If specified, the fragment will be created in this context, defaults to document
-// keepScripts (optional): If true, will include scripts passed in the html string
 jQuery.parseHTML = function( data, context, keepScripts ) {
 	if ( !data || typeof data !== "string" ) {
 		return null;
@@ -19,8 +15,6 @@ jQuery.parseHTML = function( data, context, keepScripts ) {
 
 	var parsed = rsingleTag.exec( data ),
 		scripts = !keepScripts && [];
-
-	// Single tag
 	if ( parsed ) {
 		return [ context.createElement( parsed[1] ) ];
 	}

@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : Tagalog/Filipino (tl-ph)
-//! author : Dan Hagman
 
 import moment from '../moment';
 

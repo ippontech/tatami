@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // TAB CLASS DEFINITION
-  // ====================
-
   var Tab = function (element) {
     this.element = $(element)
   }
@@ -96,10 +93,6 @@
     $active.removeClass('in')
   }
 
-
-  // TAB PLUGIN DEFINITION
-  // =====================
-
   var old = $.fn.tab
 
   $.fn.tab = function ( option ) {
@@ -114,18 +107,10 @@
 
   $.fn.tab.Constructor = Tab
 
-
-  // TAB NO CONFLICT
-  // ===============
-
   $.fn.tab.noConflict = function () {
     $.fn.tab = old
     return this
   }
-
-
-  // TAB DATA-API
-  // ============
 
   $(document).on('click.bs.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
     e.preventDefault()

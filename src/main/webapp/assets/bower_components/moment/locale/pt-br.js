@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : brazilian portuguese (pt-br)
-//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

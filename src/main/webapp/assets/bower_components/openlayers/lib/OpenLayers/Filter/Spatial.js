@@ -3,82 +3,21 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Filter.js
- */
 
-/**
- * Class: OpenLayers.Filter.Spatial
- * This class represents a spatial filter.
- * Currently implemented: BBOX, DWithin and Intersects
- * 
- * Inherits from:
- * - <OpenLayers.Filter>
- */
 OpenLayers.Filter.Spatial = OpenLayers.Class(OpenLayers.Filter, {
 
-    /**
-     * APIProperty: type
-     * {String} Type of spatial filter.
-     *
-     * The type should be one of:
-     * - OpenLayers.Filter.Spatial.BBOX
-     * - OpenLayers.Filter.Spatial.INTERSECTS
-     * - OpenLayers.Filter.Spatial.DWITHIN
-     * - OpenLayers.Filter.Spatial.WITHIN
-     * - OpenLayers.Filter.Spatial.CONTAINS
-     */
-    type: null,
+        type: null,
     
-    /**
-     * APIProperty: property
-     * {String} Name of the context property to compare.
-     */
-    property: null,
+        property: null,
     
-    /**
-     * APIProperty: value
-     * {<OpenLayers.Bounds> || <OpenLayers.Geometry>} The bounds or geometry
-     *     to be used by the filter.  Use bounds for BBOX filters and geometry
-     *     for INTERSECTS or DWITHIN filters.
-     */
-    value: null,
+        value: null,
 
-    /**
-     * APIProperty: distance
-     * {Number} The distance to use in a DWithin spatial filter.
-     */
-    distance: null,
+        distance: null,
 
-    /**
-     * APIProperty: distanceUnits
-     * {String} The units to use for the distance, e.g. 'm'.
-     */
-    distanceUnits: null,
+        distanceUnits: null,
     
-    /** 
-     * Constructor: OpenLayers.Filter.Spatial
-     * Creates a spatial filter.
-     *
-     * Parameters:
-     * options - {Object} An optional object with properties to set on the
-     *     filter.
-     * 
-     * Returns:
-     * {<OpenLayers.Filter.Spatial>}
-     */
-
-   /**
-    * Method: evaluate
-    * Evaluates this filter for a specific feature.
-    * 
-    * Parameters:
-    * feature - {<OpenLayers.Feature.Vector>} feature to apply the filter to.
-    * 
-    * Returns:
-    * {Boolean} The feature meets filter criteria.
-    */
-    evaluate: function(feature) {
+    
+       evaluate: function(feature) {
         var intersect = false;
         switch(this.type) {
             case OpenLayers.Filter.Spatial.BBOX:
@@ -99,14 +38,7 @@ OpenLayers.Filter.Spatial = OpenLayers.Class(OpenLayers.Filter, {
         return intersect;
     },
 
-    /**
-     * APIMethod: clone
-     * Clones this filter.
-     * 
-     * Returns:
-     * {<OpenLayers.Filter.Spatial>} Clone of this filter.
-     */
-    clone: function() {
+        clone: function() {
         var options = OpenLayers.Util.applyDefaults({
             value: this.value && this.value.clone && this.value.clone()
         }, this);

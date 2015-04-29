@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : Persian (fa)
-//! author : Ebrahim Byagowi : https://github.com/ebraminio
 
 import moment from '../moment';
 

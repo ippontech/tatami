@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // ALERT CLASS DEFINITION
-  // ======================
-
   var dismiss = '[data-dismiss="alert"]'
   var Alert   = function (el) {
     $(el).on('click', dismiss, this.close)
@@ -62,10 +59,6 @@
       removeElement()
   }
 
-
-  // ALERT PLUGIN DEFINITION
-  // =======================
-
   var old = $.fn.alert
 
   $.fn.alert = function (option) {
@@ -80,18 +73,10 @@
 
   $.fn.alert.Constructor = Alert
 
-
-  // ALERT NO CONFLICT
-  // =================
-
   $.fn.alert.noConflict = function () {
     $.fn.alert = old
     return this
   }
-
-
-  // ALERT DATA-API
-  // ==============
 
   $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
 

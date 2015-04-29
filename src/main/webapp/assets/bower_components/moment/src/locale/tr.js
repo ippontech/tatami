@@ -1,7 +1,3 @@
-//! moment.js locale configuration
-//! locale : turkish (tr)
-//! authors : Erhan Gundogan : https://github.com/erhangundogan,
-//!           Burak Yiğit Kaya: https://github.com/BYK
 
 import moment from '../moment';
 

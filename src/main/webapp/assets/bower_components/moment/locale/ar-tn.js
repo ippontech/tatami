@@ -1,5 +1,3 @@
-//! moment.js locale configuration
-//! locale  : Tunisian Arabic (ar-tn)
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

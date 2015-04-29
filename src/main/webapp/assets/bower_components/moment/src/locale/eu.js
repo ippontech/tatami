@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : euskara (eu)
-//! author : Eneko Illarramendi : https://github.com/eillarra
 
 import moment from '../moment';
 

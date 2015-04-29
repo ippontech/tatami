@@ -49,21 +49,16 @@
                     mimeString,
                     bb;
                 if (dataURI.split(',')[0].indexOf('base64') >= 0) {
-                    // Convert base64 to raw binary data held in a string:
                     byteString = atob(dataURI.split(',')[1]);
                 } else {
-                    // Convert base64/URLEncoded data component to raw binary data:
                     byteString = decodeURIComponent(dataURI.split(',')[1]);
                 }
-                // Write the bytes of the string to an ArrayBuffer:
                 arrayBuffer = new ArrayBuffer(byteString.length);
                 intArray = new Uint8Array(arrayBuffer);
                 for (i = 0; i < byteString.length; i += 1) {
                     intArray[i] = byteString.charCodeAt(i);
                 }
-                // Separate out the mime component:
                 mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-                // Write the ArrayBuffer (or ArrayBufferView) to a blob:
                 if (hasBlobConstructor) {
                     return new Blob(
                         [hasArrayBufferViewSupport ? intArray : arrayBuffer],
@@ -105,8 +100,6 @@
 		document = window.document,
 		doctype = document.doctype || {},
 		userAgent = window.navigator.userAgent,
-
-		// https://github.com/blueimp/JavaScript-Load-Image/blob/master/load-image.js#L48
 		apiURL = (window.createObjectURL && window) || (window.URL && URL.revokeObjectURL && URL) || (window.webkitURL && webkitURL),
 
 		Blob = window.Blob,
@@ -124,8 +117,6 @@
 		cors = html5 && ('withCredentials' in (new XMLHttpRequest)),
 
 		chunked = html5 && !!Blob && !!(Blob.prototype.webkitSlice || Blob.prototype.mozSlice || Blob.prototype.slice),
-
-		// https://github.com/blueimp/JavaScript-Canvas-to-Blob
 		dataURLtoBlob = window.dataURLtoBlob,
 
 
@@ -159,10 +150,7 @@
 			return	ar && ('length' in ar);
 		},
 
-		/**
-		 * Iterate over a object or array
-		 */
-		_each = function (obj, fn, ctx){
+				_each = function (obj, fn, ctx){
 			if( obj ){
 				if( _isArray(obj) ){
 					for( var i = 0, n = obj.length; i < n; i++ ){
@@ -181,10 +169,7 @@
 			}
 		},
 
-		/**
-		 * Merge the contents of two or more objects together into the first object
-		 */
-		_extend = function (dst){
+				_extend = function (dst){
 			var args = arguments, i = 1, _ext = function (val, key){ dst[key] = val; };
 			for( ; i < args.length; i++ ){
 				_each(args[i], _ext);
@@ -192,10 +177,7 @@
 			return  dst;
 		},
 
-		/**
-		 * Add event listener
-		 */
-		_on = function (el, type, fn){
+				_on = function (el, type, fn){
 			if( el ){
 				var uid = api.uid(el);
 
@@ -223,10 +205,7 @@
 		},
 
 
-		/**
-		 * Remove event listener
-		 */
-		_off = function (el, type, fn){
+				_off = function (el, type, fn){
 			if( el ){
 				var uid = api.uid(el), events = _elEvents[uid] || {};
 
@@ -276,10 +255,7 @@
 		},
 
 
-		/**
-		 * FileAPI (core object)
-		 */
-		api = {
+				api = {
 			version: '2.0.7',
 
 			cors: false,
@@ -308,8 +284,6 @@
 				, tif:	'image/tiff'
 				, txt:	'text/plain'
 			},
-
-			// Fallback for flash
 			accept: {
 				  'image/*': 'art bm bmp dwg dxf cbr cbz fif fpx gif ico iefs jfif jpe jpeg jpg jps jut mcf nap nif pbm pcx pgm pict pm png pnm qif qtif ras rast rf rp svf tga tif tiff xbm xbm xpm xwd'
 				, 'audio/*': 'm4a flac aac rm mpa wav wma ogg mp3 mp2 m3u mod amf dmf dsm far gdm imf it m15 med okt s3m stm sfx ult uni xm sid ac3 dts cue aif aiff wpl ape mac mpc mpp shn wv nsf spc gym adplug adx dsp adp ymf ast afc hps xs'
@@ -350,14 +324,7 @@
 				}
 			},
 
-			/**
-			 * Create new image
-			 *
-			 * @param {String} [src]
-			 * @param {Function} [fn]   1. error -- boolean, 2. img -- Image element
-			 * @returns {HTMLElement}
-			 */
-			newImage: function (src, fn){
+						newImage: function (src, fn){
 				var img = document.createElement('img');
 				if( fn ){
 					api.event.one(img, 'error load', function (evt){
@@ -369,11 +336,7 @@
 				return	img;
 			},
 
-			/**
-			 * Get XHR
-			 * @returns {XMLHttpRequest}
-			 */
-			getXHR: function (){
+						getXHR: function (){
 				var xhr;
 
 				if( XMLHttpRequest ){
@@ -447,11 +410,7 @@
 				return	str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 			},
 
-			/**
-			 * Simple Defer
-			 * @return	{Object}
-			 */
-			defer: function (){
+						defer: function (){
 				var
 					  list = []
 					, result
@@ -519,22 +478,10 @@
 			},
 
 
-			/**
-			 * For each object
-			 *
-			 * @param	{Object|Array}	obj
-			 * @param	{Function}		fn
-			 * @param	{*}				[ctx]
-			 */
-			each: _each,
+						each: _each,
 
 
-			/**
-			 * Async for
-			 * @param {Array} array
-			 * @param {Function} callback
-			 */
-			afor: function (array, callback){
+						afor: function (array, callback){
 				var i = 0, n = array.length;
 
 				if( _isArray(array) && n-- ){
@@ -548,42 +495,20 @@
 			},
 
 
-			/**
-			 * Merge the contents of two or more objects together into the first object
-			 *
-			 * @param	{Object}	dst
-			 * @return	{Object}
-			 */
-			extend: _extend,
+						extend: _extend,
 
 
-			/**
-			 * Is file?
-			 * @param  {File}  file
-			 * @return {Boolean}
-			 */
-			isFile: function (file){
+						isFile: function (file){
 				return _toString.call(file) === '[object File]';
 			},
 
 
-			/**
-			 * Is blob?
-			 * @param   {Blob}  blob
-			 * @returns {Boolean}
-			 */
-			isBlob: function (blob) {
+						isBlob: function (blob) {
 				return this.isFile(blob) || (_toString.call(blob) === '[object Blob]');
 			},
 
 
-			/**
-			 * Is canvas element
-			 *
-			 * @param	{HTMLElement}	el
-			 * @return	{Boolean}
-			 */
-			isCanvas: function (el){
+						isCanvas: function (el){
 				return	el && _rcanvas.test(el.nodeName);
 			},
 
@@ -595,13 +520,7 @@
 
 
 
-			/**
-			 * Read as DataURL
-			 *
-			 * @param {File|Element} file
-			 * @param {Function} fn
-			 */
-			readAsDataURL: function (file, fn){
+						readAsDataURL: function (file, fn){
 				if( api.isCanvas(file) ){
 					_emit(file, fn, 'load', api.toDataURL(file));
 				}
@@ -611,21 +530,13 @@
 			},
 
 
-			/**
-			 * Read as Binary string
-			 *
-			 * @param {File} file
-			 * @param {Function} fn
-			 */
-			readAsBinaryString: function (file, fn){
+						readAsBinaryString: function (file, fn){
 				if( _hasSupportReadAs('BinaryString') ){
 					_readAs(file, fn, 'BinaryString');
 				} else {
-					// Hello IE10!
 					_readAs(file, function (evt){
 						if( evt.type == 'load' ){
 							try {
-								// dataURL -> binaryString
 								evt.result = api.toBinaryString(evt.result);
 							} catch (e){
 								evt.type = 'error';
@@ -638,25 +549,12 @@
 			},
 
 
-			/**
-			 * Read as ArrayBuffer
-			 *
-			 * @param {File} file
-			 * @param {Function} fn
-			 */
-			readAsArrayBuffer: function(file, fn){
+						readAsArrayBuffer: function(file, fn){
 				_readAs(file, fn, 'ArrayBuffer');
 			},
 
 
-			/**
-			 * Read as text
-			 *
-			 * @param {File} file
-			 * @param {String} encoding
-			 * @param {Function} [fn]
-			 */
-			readAsText: function(file, encoding, fn){
+						readAsText: function(file, encoding, fn){
 				if( !fn ){
 					fn	= encoding;
 					encoding = 'utf-8';
@@ -666,14 +564,7 @@
 			},
 
 
-			/**
-			 * Convert image or canvas to DataURL
-			 *
-			 * @param   {Element}  el      Image or Canvas element
-			 * @param   {String}   [type]  mime-type
-			 * @return  {String}
-			 */
-			toDataURL: function (el, type){
+						toDataURL: function (el, type){
 				if( typeof el == 'string' ){
 					return  el;
 				}
@@ -683,29 +574,15 @@
 			},
 
 
-			/**
-			 * Canvert string, image or canvas to binary string
-			 *
-			 * @param   {String|Element} val
-			 * @return  {String}
-			 */
-			toBinaryString: function (val){
+						toBinaryString: function (val){
 				return  window.atob(api.toDataURL(val).replace(_rdata, ''));
 			},
 
 
-			/**
-			 * Read file or DataURL as ImageElement
-			 *
-			 * @param	{File|String}	file
-			 * @param	{Function}		fn
-			 * @param	{Boolean}		[progress]
-			 */
-			readAsImage: function (file, fn, progress){
+						readAsImage: function (file, fn, progress){
 				if( api.isFile(file) ){
 					if( apiURL ){
-						/** @namespace apiURL.createObjectURL */
-						var data = apiURL.createObjectURL(file);
+												var data = apiURL.createObjectURL(file);
 						if( data === undef ){
 							_emit(file, fn, 'error');
 						}
@@ -735,8 +612,7 @@
 						var events = 'error abort load';
 						_one(file, events, function _fn(evt){
 							if( evt.type == 'load' && apiURL ){
-								/** @namespace apiURL.revokeObjectURL */
-								apiURL.revokeObjectURL(file.src);
+																apiURL.revokeObjectURL(file.src);
 							}
 
 							_off(file, events, _fn);
@@ -748,20 +624,13 @@
 					_emit(file, fn, { type: 'error' });
 				}
 				else {
-					// Created image
 					var img = api.newImage(file.dataURL || file);
 					api.readAsImage(img, fn, progress);
 				}
 			},
 
 
-			/**
-			 * Make file by name
-			 *
-			 * @param	{String}	name
-			 * @return	{Array}
-			 */
-			checkFileObj: function (name){
+						checkFileObj: function (name){
 				var file = {}, accept = api.accept;
 
 				if( typeof name == 'object' ){
@@ -786,13 +655,7 @@
 			},
 
 
-			/**
-			 * Get drop files
-			 *
-			 * @param	{Event}	evt
-			 * @param	{Function} callback
-			 */
-			getDropFiles: function (evt, callback){
+						getDropFiles: function (evt, callback){
 				var
 					  files = []
 					, dataTransfer = _getDataTransfer(evt)
@@ -831,15 +694,7 @@
 			},
 
 
-			/**
-			 * Get file list
-			 *
-			 * @param	{HTMLInputElement|Event}	input
-			 * @param	{String|Function}	[filter]
-			 * @param	{Function}			[callback]
-			 * @return	{Array|Null}
-			 */
-			getFiles: function (input, filter, callback){
+						getFiles: function (input, filter, callback){
 				var files = [];
 
 				if( callback ){
@@ -848,7 +703,6 @@
 				}
 
 				if( input.jquery ){
-					// jQuery object
 					input.each(function (){
 						files = files.concat(api.getFiles(this));
 					});
@@ -861,30 +715,24 @@
 				}
 
 				if( input.originalEvent ){
-					// jQuery event
 					input = _fixEvent(input.originalEvent);
 				}
 				else if( input.srcElement ){
-					// IE Event
 					input = _fixEvent(input);
 				}
 
 
 				if( input.dataTransfer ){
-					// Drag'n'Drop
 					input = input.dataTransfer;
 				}
 				else if( input.target ){
-					// Event
 					input = input.target;
 				}
 
 				if( input.files ){
-					// Input[type="file"]
 					files = input.files;
 
 					if( !html5 ){
-						// Partial support for file api
 						files[0].blob	= input;
 						files[0].iframe	= true;
 					}
@@ -904,12 +752,7 @@
 			},
 
 
-			/**
-			 * Get total file size
-			 * @param	{Array}	files
-			 * @return	{Number}
-			 */
-			getTotalSize: function (files){
+						getTotalSize: function (files){
 				var size = 0, i = files && files.length;
 				while( i-- ){
 					size += files[i].size;
@@ -918,13 +761,7 @@
 			},
 
 
-			/**
-			 * Get image information
-			 *
-			 * @param	{File}		file
-			 * @param	{Function}	fn
-			 */
-			getInfo: function (file, fn){
+						getInfo: function (file, fn){
 				var info = {}, readers = _infoReader.concat();
 
 				if( api.isFile(file) ){
@@ -957,26 +794,13 @@
 			},
 
 
-			/**
-			 * Add information reader
-			 *
-			 * @param {RegExp} mime
-			 * @param {Function} fn
-			 */
-			addInfoReader: function (mime, fn){
+						addInfoReader: function (mime, fn){
 				fn.test = function (type){ return mime.test(type); };
 				_infoReader.push(fn);
 			},
 
 
-			/**
-			 * Filter of array
-			 *
-			 * @param	{Array}		input
-			 * @param	{Function}	fn
-			 * @return	{Array}
-			 */
-			filter: function (input, fn){
+						filter: function (input, fn){
 				var result = [], i = 0, n = input.length, val;
 
 				for( ; i < n; i++ ){
@@ -992,16 +816,8 @@
 			},
 
 
-			/**
-			 * Filter files
-			 *
-			 * @param	{Array}		files
-			 * @param	{Function}	eachFn
-			 * @param	{Function}	resultFn
-			 */
-			filterFiles: function (files, eachFn, resultFn){
+						filterFiles: function (files, eachFn, resultFn){
 				if( files.length ){
-					// HTML5 or Flash
 					var queue = files.concat(), file, result = [], deleted = [];
 
 					(function _next(){
@@ -1056,28 +872,17 @@
 					, _nextFile
 					, _complete = false
 				;
-
-
-				// calc total size
 				_each(dataArray, function (data){
 					_total += data.size;
 				});
-
-				// Array of files
 				proxyXHR.files = [];
 				_each(dataArray, function (data){
 					proxyXHR.files.push(data.file);
 				});
-
-				// Set upload status props
 				proxyXHR.total	= _total;
 				proxyXHR.loaded	= 0;
 				proxyXHR.filesLeft = dataArray.length;
-
-				// emit "beforeupload"  event
 				options.beforeupload(proxyXHR, options);
-
-				// Upload by file
 				_nextFile = function (){
 					var
 						  data = dataArray.shift()
@@ -1094,13 +899,8 @@
 					}
 
 					if( ( proxyXHR.statusText != 'abort' || proxyXHR.current ) && data ){
-						// Mark active job
 						_complete = false;
-
-						// Set current upload file
 						proxyXHR.currentFile = _file;
-
-						// Prepare file options
 						if (_file && options.prepare(_file, _fileOptions) === false) {
 							_nextFile.call(_this);
 							return;
@@ -1109,30 +909,23 @@
 
 						_this._getFormData(_fileOptions, data, function (form){
 							if( !_loaded ){
-								// emit "upload" event
 								options.upload(proxyXHR, options);
 							}
 
 							var xhr = new api.XHR(_extend({}, _fileOptions, {
 
 								upload: _file ? function (){
-									// emit "fileupload" event
 									options.fileupload(_file, xhr, _fileOptions);
 								} : noop,
 
 								progress: _file ? function (evt){
 									if( !_fileLoaded ){
-										// For ignore the double calls.
 										_fileLoaded = (evt.loaded === evt.total);
-
-										// emit "fileprogress" event
 										options.fileprogress({
 											  type:   'progress'
 											, total:  data.total = evt.total
 											, loaded: data.loaded = evt.loaded
 										}, _file, xhr, _fileOptions);
-
-										// emit "progress" event
 										options.progress({
 											  type:   'progress'
 											, total:  _total
@@ -1151,53 +944,31 @@
 										data.loaded	= data.total;
 
 										if( !err ) {
-											// emulate 100% "progress"
 											this.progress(data);
-
-											// fixed throttle event
 											_fileLoaded = true;
-
-											// bytes loaded
 											_loaded += data.size; // data.size != data.total, it's desirable fix this
 											proxyXHR.loaded = _loaded;
 										}
-
-										// emit "filecomplete" event
 										options.filecomplete(err, xhr, _file, _fileOptions);
 									}
-
-									// upload next file
 									setTimeout(function () {_nextFile.call(_this);}, 0);
 								}
 							})); // xhr
-
-
-							// ...
 							proxyXHR.abort = function (current){
 								if (!current) { dataArray.length = 0; }
 								this.current = current;
 								xhr.abort();
 							};
-
-							// Start upload
 							xhr.send(form);
 						});
 					}
 					else {
 						var successful = proxyXHR.status == 200 || proxyXHR.status == 201 || proxyXHR.status == 204;
 						options.complete(successful ? false : (proxyXHR.statusText || 'error'), proxyXHR, options);
-						// Mark done state
 						_complete = true;
 					}
 				};
-
-
-				// Next tick
 				setTimeout(_nextFile, 0);
-
-
-				// Append more files to the existing request
-				// first - add them to the queue head/tail
 				proxyXHR.append = function (files, first) {
 					files = api._getFilesDataArray([].concat(files));
 
@@ -1217,9 +988,6 @@
 						_nextFile.call(_this);
 					}
 				};
-
-
-				// Removes file from queue by file reference and returns it
 				proxyXHR.remove = function (file) {
 				    var i = dataArray.length, _file;
 				    while( i-- ){
@@ -1269,7 +1037,6 @@
 				});
 
 				if( !files.length ){
-					// Create fake `file` object
 					files.push({ file: { name: api.expando } });
 				}
 
@@ -1289,8 +1056,6 @@
 					, isOrignTrans = trans && _isOriginTransform(trans)
 					, postNameConcat = api.postNameConcat
 				;
-
-				// Append data
 				_each(options.data, function add(val, name){
 					if( typeof val == 'object' ){
 						_each(val, function (v, i){
@@ -1302,106 +1067,7 @@
 					}
 				});
 
-				(function _addFile(file/**Object*/){
-					if( file.image ){ // This is a FileAPI.Image
-						queue.inc();
-
-						file.toData(function (err, image){
-							// @todo: error
-							filename = filename || (new Date).getTime()+'.png';
-
-							_addFile(image);
-							queue.next();
-						});
-					}
-					else if( api.Image && trans && (/^image/.test(file.type) || _rimgcanvas.test(file.nodeName)) ){
-						queue.inc();
-
-						if( isOrignTrans ){
-							// Convert to array for transform function
-							trans = [trans];
-						}
-
-						api.Image.transform(file, trans, options.imageAutoOrientation, function (err, images){
-							if( isOrignTrans && !err ){
-								if( !dataURLtoBlob && !api.flashEngine ){
-									// Canvas.toBlob or Flash not supported, use multipart
-									Form.multipart = true;
-								}
-
-								Form.append(name, images[0], filename,  trans[0].type || filetype);
-							}
-							else {
-								var addOrigin = 0;
-
-								if( !err ){
-									_each(images, function (image, idx){
-										if( !dataURLtoBlob && !api.flashEngine ){
-											Form.multipart = true;
-										}
-
-										if( !trans[idx].postName ){
-											addOrigin = 1;
-										}
-
-										Form.append(trans[idx].postName || postNameConcat(name, idx), image, filename, trans[idx].type || filetype);
-									});
-								}
-
-								if( err || options.imageOriginal ){
-									Form.append(postNameConcat(name, (addOrigin ? 'original' : null)), file, filename, filetype);
-								}
-							}
-
-							queue.next();
-						});
-					}
-					else if( filename !== api.expando ){
-						Form.append(name, file, filename);
-					}
-				})(file);
-
-				queue.check();
-			},
-
-
-			reset: function (inp, notRemove){
-				var parent, clone;
-
-				if( jQuery ){
-					clone = jQuery(inp).clone(true).insertBefore(inp).val('')[0];
-					if( !notRemove ){
-						jQuery(inp).remove();
-					}
-				} else {
-					parent  = inp.parentNode;
-					clone   = parent.insertBefore(inp.cloneNode(true), inp);
-					clone.value = '';
-
-					if( !notRemove ){
-						parent.removeChild(inp);
-					}
-
-					_each(_elEvents[api.uid(inp)], function (fns, type){
-						_each(fns, function (fn){
-							_off(inp, type, fn);
-							_on(clone, type, fn);
-						});
-					});
-				}
-
-				return  clone;
-			},
-
-
-			/**
-			 * Load remote file
-			 *
-			 * @param   {String}    url
-			 * @param   {Function}  fn
-			 * @return  {XMLHttpRequest}
-			 */
-			load: function (url, fn){
+				(function _addFile(file			load: function (url, fn){
 				var xhr = api.getXHR();
 				if( xhr ){
 					xhr.open('GET', url, true);
@@ -1410,9 +1076,7 @@
 				        xhr.overrideMimeType('text/plain; charset=x-user-defined');
 					}
 
-					_on(xhr, 'progress', function (/**Event*/evt){
-						/** @namespace evt.lengthComputable */
-						if( evt.lengthComputable ){
+					_on(xhr, 'progress', function (						if( evt.lengthComputable ){
 							fn({ type: evt.type, loaded: evt.loaded, total: evt.total }, xhr);
 						}
 					});
@@ -1422,8 +1086,7 @@
 							xhr.onreadystatechange = null;
 							if( xhr.status == 200 ){
 								url = url.split('/');
-								/** @namespace xhr.responseBody */
-								var file = {
+																var file = {
 								      name: url[url.length-1]
 									, size: xhr.getResponseHeader('Content-Length')
 									, type: xhr.getResponseHeader('Content-Type')
@@ -1452,8 +1115,6 @@
 				}
 
 				while( i < str.length ){
-					//all three "& 0xff" added below are there to fix a known bug
-					//with bytes returned by xhr.responseText
 					var
 						  byte1 = str.charCodeAt(i++) & 0xff
 						, byte2 = str.charCodeAt(i++) & 0xff
@@ -1499,8 +1160,6 @@
 	function _readAs(file, fn, as, encoding){
 		if( api.isBlob(file) && _hasSupportReadAs(as) ){
 			var Reader = new FileReader;
-
-			// Add event listener
 			_on(Reader, _readerEvents, function _fn(evt){
 				var type = evt.type;
 				if( type == 'progress' ){
@@ -1517,7 +1176,6 @@
 
 
 			try {
-				// ReadAs ...
 				if( encoding ){
 					Reader['readAs'+as](file, encoding);
 				}
@@ -1536,7 +1194,6 @@
 
 
 	function _isRegularFile(file, callback){
-		// http://stackoverflow.com/questions/8856628/detecting-folders-directories-in-javascript-filelist-objects
 		if( !file.type && (file.size % 4096) === 0 && (file.size <= 102400) ){
 			if( FileReader ){
 				try {
@@ -1575,17 +1232,13 @@
 
 	function _readEntryAsFiles(entry, callback){
 		if( !entry ){
-			// error
 			callback('invalid entry');
 		}
 		else if( entry.isFile ){
-			// Read as file
 			entry.file(function(file){
-				// success
 				file.fullPath = entry.fullPath;
 				callback(false, [file]);
 			}, function (err){
-				// error
 				callback('FileError.code: '+err.code);
 			});
 		}
@@ -1593,7 +1246,6 @@
 			var reader = entry.createReader(), result = [];
 
 			reader.readEntries(function(entries){
-				// success
 				api.afor(entries, function (next, entry){
 					_readEntryAsFiles(entry, function (err, files){
 						if( err ){
@@ -1612,7 +1264,6 @@
 					});
 				});
 			}, function (err){
-				// error
 				callback('directory_reader: ' + err);
 			});
 		}
@@ -1655,36 +1306,7 @@
 		}
 		return	false;
 	}
-
-
-	// Add default image info reader
-	api.addInfoReader(/^image/, function (file/**File*/, callback/**Function*/){
-		if( !file.__dimensions ){
-			var defer = file.__dimensions = api.defer();
-
-			api.readAsImage(file, function (evt){
-				var img = evt.target;
-				defer.resolve(evt.type == 'load' ? false : 'error', {
-					  width:  img.width
-					, height: img.height
-				});
-                img.src = api.EMPTY_PNG;
-				img = null;
-			});
-		}
-
-		file.__dimensions.then(callback);
-	});
-
-
-	/**
-	 * Drag'n'Drop special event
-	 *
-	 * @param	{HTMLElement}	el
-	 * @param	{Function}		onHover
-	 * @param	{Function}		onDrop
-	 */
-	api.event.dnd = function (el, onHover, onDrop){
+	api.addInfoReader(/^image/, function (file	api.event.dnd = function (el, onHover, onDrop){
 		var _id, _type;
 
 		if( !onDrop ){
@@ -1693,7 +1315,6 @@
 		}
 
 		if( FileReader ){
-			// Hover
 			_on(el, 'dragenter dragleave dragover', onHover.ff = onHover.ff || function (evt){
 				var
 					  types = _getDataTransfer(evt).types
@@ -1726,9 +1347,6 @@
 					}, 50);
 				}
 			});
-
-
-			// Drop
 			_on(el, 'drop', onDrop.ff = onDrop.ff || function (evt){
 				evt[preventDefault]();
 
@@ -1746,19 +1364,10 @@
 	};
 
 
-	/**
-	 * Remove drag'n'drop
-	 * @param	{HTMLElement}	el
-	 * @param	{Function}		onHover
-	 * @param	{Function}		onDrop
-	 */
-	api.event.dnd.off = function (el, onHover, onDrop){
+		api.event.dnd.off = function (el, onHover, onDrop){
 		_off(el, 'dragenter dragleave dragover', onHover.ff);
 		_off(el, 'drop', onDrop.ff);
 	};
-
-
-	// Support jQuery
 	if( jQuery && !jQuery.fn.dnd ){
 		jQuery.fn.dnd = function (onHover, onDrop){
 			return this.each(function (){
@@ -1772,26 +1381,15 @@
 			});
 		};
 	}
-
-	// @export
 	window.FileAPI  = _extend(api, window.FileAPI);
-
-
-	// Debug info
 	api.log('FileAPI: ' + api.version);
 	api.log('protocol: ' + window.location.protocol);
 	api.log('doctype: [' + doctype.name + '] ' + doctype.publicId + ' ' + doctype.systemId);
-
-
-	// @detect 'x-ua-compatible'
 	_each(document.getElementsByTagName('meta'), function (meta){
 		if( /x-ua-compatible/i.test(meta.getAttribute('http-equiv')) ){
 			api.log('meta.http-equiv: ' + meta.getAttribute('content'));
 		}
 	});
-
-
-	// @configuration
 	if( !api.flashUrl ){ api.flashUrl = api.staticPath + 'FileAPI.flash.swf'; }
 	if( !api.flashImageUrl ){ api.flashImageUrl = api.staticPath + 'FileAPI.flash.image.swf'; }
 	if( !api.flashWebcamUrl ){ api.flashWebcamUrl = api.staticPath + 'FileAPI.flash.camera.swf'; }
@@ -1932,11 +1530,7 @@
 				, queue = api.queue(function (){ image.src = api.EMPTY_PNG; fn(false, canvas); })
 				, renderImageToCanvas = api.renderImageToCanvas
 			;
-
-			// Normalize angle
 			deg = deg - Math.floor(deg/360)*360;
-
-			// For `renderImageToCanvas`
 			image._type = this.file.type;
 
 			while(m.multipass && min(w/dw, h/dh) > 2 ){
@@ -1976,11 +1570,8 @@
 			);
 			dw = canvas.width;
 			dh = canvas.height;
-
-			// Apply overlay
 			overlay && api.each([].concat(overlay), function (over){
 				queue.inc();
-				// preload
 				var img = new window.Image, fn = function (){
 					var
 						  x = over.x|0
@@ -1989,11 +1580,7 @@
 						, h = over.h || img.height
 						, rel = over.rel
 					;
-
-					// center  |  right  |  left
 					x = (rel == 1 || rel == 4 || rel == 7) ? (dw - w + x)/2 : (rel == 2 || rel == 5 || rel == 8 ? dw - (w + x) : x);
-
-					// center  |  bottom  |  top
 					y = (rel == 3 || rel == 4 || rel == 5) ? (dh - h + y)/2 : (rel >= 6 ? dh - (h + y) : y);
 
 					api.event.off(img, 'error load abort', fn);
@@ -2036,7 +1623,6 @@
 
 			if( strategy == 'preview' ){
 				if( dw != sw || dh != sh ){
-					// Make preview
 					var w, h;
 
 					if( df >= sf ){
@@ -2101,7 +1687,6 @@
 
 				if( matrix.deg == 'auto' ){
 					api.getInfo(_this.file, function (err, info){
-						// rotate by exif orientation
 						matrix.deg = exifOrientation[info && info.exif && info.exif.Orientation] || 0;
 						_this._trans(fn);
 					});
@@ -2130,7 +1715,6 @@
 
 	Image.transform = function (file, transform, autoOrientation, fn){
 		function _transform(err, img){
-			// img -- info object
 			var
 				  images = {}
 				, queue = api.queue(function (err){
@@ -2192,18 +1776,12 @@
 				queue.fail();
 			}
 		}
-
-
-		// @todo: Оло-ло, нужно рефакторить это место
 		if( file.width ){
 			_transform(false, file);
 		} else {
 			api.getInfo(file, _transform);
 		}
 	};
-
-
-	// @const
 	api.each(['TOP', 'CENTER', 'BOTTOM'], function (x, i){
 		api.each(['LEFT', 'CENTER', 'RIGHT'], function (y, j){
 			Image[x+'_'+y] = i*3 + j;
@@ -2212,13 +1790,7 @@
 	});
 
 
-	/**
-	 * Trabsform element to canvas
-	 *
-	 * @param    {Image|HTMLVideoElement}   el
-	 * @returns  {Canvas}
-	 */
-	Image.toCanvas = function(el){
+		Image.toCanvas = function(el){
 		var canvas		= document.createElement('canvas');
 		canvas.width	= el.videoWidth || el.width;
 		canvas.height	= el.videoHeight || el.height;
@@ -2227,32 +1799,18 @@
 	};
 
 
-	/**
-	 * Create image from DataURL
-	 * @param  {String}  dataURL
-	 * @param  {Object}  size
-	 * @param  {Function}  callback
-	 */
-	Image.fromDataURL = function (dataURL, size, callback){
+		Image.fromDataURL = function (dataURL, size, callback){
 		var img = api.newImage(dataURL);
 		api.extend(img, size);
 		callback(img);
 	};
 
 
-	/**
-	 * Apply filter (caman.js)
-	 *
-	 * @param  {Canvas|Image}   canvas
-	 * @param  {String|Function}  filter
-	 * @param  {Function}  doneFn
-	 */
-	Image.applyFilter = function (canvas, filter, doneFn){
+		Image.applyFilter = function (canvas, filter, doneFn){
 		if( typeof filter == 'function' ){
 			filter(canvas, doneFn);
 		}
 		else if( window.Caman ){
-			// http://camanjs.com/guides/
 			window.Caman(canvas.tagName == 'IMG' ? Image.toCanvas(canvas) : canvas, function (){
 				if( typeof filter == 'string' ){
 					this[filter]();
@@ -2268,10 +1826,7 @@
 	};
 
 
-	/**
-	 * For load-image-ios.js
-	 */
-	api.renderImageToCanvas = function (canvas, img, sx, sy, sw, sh, dx, dy, dw, dh){
+		api.renderImageToCanvas = function (canvas, img, sx, sy, sw, sh, dx, dy, dw, dh){
 		try {
 			return canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
 		} catch (ex) {
@@ -2279,9 +1834,6 @@
 			throw ex;
 		}
 	};
-
-
-	// @export
 	api.support.canvas = api.support.transform = support;
 	api.Image = Image;
 })(FileAPI, document);
@@ -2308,16 +1860,12 @@
 	factory(FileAPI);
 }(function (loadImage) {
     'use strict';
-
-    // Only apply fixes on the iOS platform:
     if (!window.navigator || !window.navigator.platform ||
              !(/iP(hone|od|ad)/).test(window.navigator.platform)) {
         return;
     }
 
     var originalRenderMethod = loadImage.renderImageToCanvas;
-
-    // Detects subsampling in JPEG images:
     loadImage.detectSubsampling = function (img) {
         var canvas,
             context;
@@ -2326,15 +1874,10 @@
             canvas.width = canvas.height = 1;
             context = canvas.getContext('2d');
             context.drawImage(img, -img.width + 1, 0);
-            // subsampled image becomes half smaller in rendering size.
-            // check alpha channel value to confirm image is covering edge pixel or not.
-            // if alpha value is 0 image is not covering, hence subsampled.
             return context.getImageData(0, 0, 1, 1).data[3] === 0;
         }
         return false;
     };
-
-    // Detects vertical squash in JPEG images:
     loadImage.detectVerticalSquash = function (img, subsampled) {
         var naturalHeight = img.naturalHeight || img.height,
             canvas = document.createElement('canvas'),
@@ -2351,7 +1894,6 @@
         canvas.height = naturalHeight;
         context.drawImage(img, 0, 0);
         data = context.getImageData(0, 0, 1, naturalHeight).data;
-        // search image edge pixel position in case it is squashed vertically:
         sy = 0;
         ey = naturalHeight;
         py = naturalHeight;
@@ -2366,9 +1908,6 @@
         }
         return (py / naturalHeight) || 1;
     };
-
-    // Renders image to canvas while working around iOS image scaling bugs:
-    // https://github.com/blueimp/JavaScript-Load-Image/issues/13
     loadImage.renderImageToCanvas = function (
         canvas,
         img,
@@ -2494,8 +2033,6 @@
 		},
 
 		toData: function (fn, options){
-		    // allow chunked transfer if we have only one file to send
-		    // flag is used below and in XHR._send
 		    options._chunked = api.support.chunked && options.chunkSize > 0 && api.filter(this.items, function (item){ return item.file; }).length == 1;
 
 			if( !api.support.html5 ){
@@ -2530,155 +2067,7 @@
 
 
 		toHtmlData: function (fn){
-			this._to(document.createDocumentFragment(), fn, function (file, data/**DocumentFragment*/){
-				var blob = file.blob, hidden;
-
-				if( file.file ){
-					api.reset(blob, true);
-					// set new name
-					blob.name = file.name;
-					blob.disabled = false;
-					data.appendChild(blob);
-				}
-				else {
-					hidden = document.createElement('input');
-					hidden.name  = file.name;
-					hidden.type  = 'hidden';
-					hidden.value = blob;
-					data.appendChild(hidden);
-				}
-			});
-		},
-
-		toPlainData: function (fn){
-			this._to({}, fn, function (file, data, queue){
-				if( file.file ){
-					data.type = file.file;
-				}
-
-				if( file.blob.toBlob ){
-				    // canvas
-					queue.inc();
-					_convertFile(file, function (file, blob){
-						data.name = file.name;
-						data.file = blob;
-						data.size = blob.length;
-						data.type = file.type;
-						queue.next();
-					});
-				}
-				else if( file.file ){
-				    // file
-					data.name = file.blob.name;
-					data.file = file.blob;
-					data.size = file.blob.size;
-					data.type = file.type;
-				}
-				else {
-				    // additional data
-				    if( !data.params ){
-				        data.params = [];
-				    }
-				    data.params.push(encodeURIComponent(file.name) +"="+ encodeURIComponent(file.blob));
-				}
-
-				data.start = -1;
-				data.end = data.file && data.file.FileAPIReadPosition || -1;
-				data.retry = 0;
-			});
-		},
-
-		toFormData: function (fn){
-			this._to(new FormData, fn, function (file, data, queue){
-				if( file.blob && file.blob.toBlob ){
-					queue.inc();
-					_convertFile(file, function (file, blob){
-						data.append(file.name, blob, file.file);
-						queue.next();
-					});
-				}
-				else if( file.file ){
-					data.append(file.name, file.blob, file.file);
-				}
-				else {
-					data.append(file.name, file.blob);
-				}
-
-				if( file.file ){
-					data.append('_'+file.name, file.file);
-				}
-			});
-		},
-
-
-		toMultipartData: function (fn){
-			this._to([], fn, function (file, data, queue, boundary){
-				queue.inc();
-				_convertFile(file, function (file, blob){
-					data.push(
-						  '--_' + boundary + ('\r\nContent-Disposition: form-data; name="'+ file.name +'"'+ (file.file ? '; filename="'+ encodeURIComponent(file.file) +'"' : '')
-						+ (file.file ? '\r\nContent-Type: '+ (file.type || 'application/octet-stream') : '')
-						+ '\r\n'
-						+ '\r\n'+ (file.file ? blob : encodeURIComponent(blob))
-						+ '\r\n')
-					);
-					queue.next();
-				}, true);
-			}, api.expando);
-		}
-	};
-
-
-	function _convertFile(file, fn, useBinaryString){
-		var blob = file.blob, filename = file.file;
-
-		if( filename ){
-			if( !blob.toDataURL ){
-				// The Blob is not an image.
-				api.readAsBinaryString(blob, function (evt){
-					if( evt.type == 'load' ){
-						fn(file, evt.result);
-					}
-				});
-				return;
-			}
-
-			var
-				  mime = { 'image/jpeg': '.jpe?g', 'image/png': '.png' }
-				, type = mime[file.type] ? file.type : 'image/png'
-				, ext  = mime[type] || '.png'
-				, quality = blob.quality || 1
-			;
-
-			if( !filename.match(new RegExp(ext+'$', 'i')) ){
-				// Does not change the current extension, but add a new one.
-				filename += ext.replace('?', '');
-			}
-
-			file.file = filename;
-			file.type = type;
-
-			if( !useBinaryString && blob.toBlob ){
-				blob.toBlob(function (blob){
-					fn(file, blob);
-				}, type, quality);
-			}
-			else {
-				fn(file, api.toBinaryString(blob.toDataURL(type, quality)));
-			}
-		}
-		else {
-			fn(file, blob);
-		}
-	}
-
-
-	// @export
-	api.Form = Form;
-})(FileAPI, window);
-
-/*global window, FileAPI, Uint8Array */
-
+			this._to(document.createDocumentFragment(), fn, function (file, data
 (function (window, api){
 	"use strict";
 
@@ -2750,7 +2139,6 @@
 			var _this = this, options = this.options;
 
 			FormData.toData(function (data){
-				// Start uploading
 				options.upload(options, _this);
 				_this._send.call(_this, options, data);
 			}, options);
@@ -2762,17 +2150,12 @@
 			api.log('XHR._send:', data);
 
 			if( !options.cache ){
-				// No cache
 				url += (~url.indexOf('?') ? '&' : '?') + api.uid();
 			}
 
 			if( data.nodeName ){
 				var jsonp = options.jsonp;
-
-				// prepare callback in GET
 				url = url.replace(/([a-z]+)=(\?)/i, '$1='+uid);
-
-				// legacy
 				options.upload(options, _this);
 
 				var
@@ -2788,8 +2171,6 @@
 							}
 						}
 					},
-
-					// jsonp-callack
 					complete = window[uid] = function (status, statusText, response){
 						_this.readyState	= 4;
 						_this.responseText	= response;
@@ -2831,8 +2212,6 @@
 							+ (jsonp && (options.url.indexOf('=?') < 0) ? '<input value="'+ uid +'" name="'+jsonp+'" type="hidden"/>' : '')
 							+ '</form>'
 				;
-
-				// get form-data & transport
 				var
 					  form = xhr.getElementsByTagName('form')[0]
 					, transport = xhr.getElementsByTagName('iframe')[0]
@@ -2841,23 +2220,14 @@
 				form.appendChild(data);
 
 				api.log(form.parentNode.innerHTML);
-
-				// append to DOM
 				document.body.appendChild(xhr);
-
-				// keep a reference to node-transport
 				_this.xhr.node = xhr;
-
-				// send
 				_this.readyState = 2; // loaded
 				form.submit();
 				form = null;
 			}
 			else {
-				// Clean url
 				url = url.replace(/([a-z]+)=(\?)&?/i, '');
-
-				// html5
 				if (this.xhr && this.xhr.aborted) {
 					api.log("Error: already aborted");
 					return;
@@ -2884,166 +2254,8 @@
 
 
 				if ( options._chunked ) {
-					// chunked upload
 					if( xhr.upload ){
-						xhr.upload.addEventListener('progress', api.throttle(function (/**Event*/evt){
-							if (!data.retry) {
-								// show progress only for correct chunk uploads
-								options.progress({
-									  type:			evt.type
-									, total:		data.size
-									, loaded:		data.start + evt.loaded
-									, totalSize:	data.size
-								}, _this, options);
-							}
-						}, 100), false);
-					}
-
-					xhr.onreadystatechange = function (){
-						var lkb = parseInt(xhr.getResponseHeader('X-Last-Known-Byte'), 10);
-
-						_this.status     = xhr.status;
-						_this.statusText = xhr.statusText;
-						_this.readyState = xhr.readyState;
-
-						if( xhr.readyState == 4 ){
-							for( var k in _xhrResponsePostfix ){
-								_this['response'+k]  = xhr['response'+k];
-							}
-							xhr.onreadystatechange = null;
-
-							if (!xhr.status || xhr.status - 201 > 0) {
-								api.log("Error: " + xhr.status);
-								// some kind of error
-								// 0 - connection fail or timeout, if xhr.aborted is true, then it's not recoverable user action
-								// up - server error
-								if (((!xhr.status && !xhr.aborted) || 500 == xhr.status || 416 == xhr.status) && ++data.retry <= options.chunkUploadRetry) {
-									// let's try again the same chunk
-									// only applicable for recoverable error codes 500 && 416
-									var delay = xhr.status ? 0 : api.chunkNetworkDownRetryTimeout;
-
-									// inform about recoverable problems
-									options.pause(data.file, options);
-
-									// smart restart if server reports about the last known byte
-									api.log("X-Last-Known-Byte: " + lkb);
-									if (lkb) {
-										data.end = lkb;
-									} else {
-										data.end = data.start - 1;
-										if (416 == xhr.status) {
-											data.end = data.end - options.chunkSize;
-										}
-									}
-
-									setTimeout(function () {
-										_this._send(options, data);
-									}, delay);
-								} else {
-									// no mo retries
-									_this.end(xhr.status);
-								}
-							} else {
-								// success
-								data.retry = 0;
-
-								if (data.end == data.size - 1) {
-									// finished
-									_this.end(xhr.status);
-								} else {
-									// next chunk
-
-									// shift position if server reports about the last known byte
-									api.log("X-Last-Known-Byte: " + lkb);
-									if (lkb) {
-										data.end = lkb;
-									}
-									data.file.FileAPIReadPosition = data.end;
-
-									setTimeout(function () {
-										_this._send(options, data);
-									}, 0);
-								}
-							}
-
-							xhr = null;
-						}
-					};
-
-					data.start = data.end + 1;
-					data.end = Math.max(Math.min(data.start + options.chunkSize, data.size) - 1, data.start);
-
-					// Retrieve a slice of file
-					var
-						  file = data.file
-						, slice = (file.slice || file.mozSlice || file.webkitSlice).call(file, data.start, data.end + 1)
-					;
-
-					if( data.size && !slice.size ){
-						setTimeout(function (){
-							_this.end(-1);
-						});
-					} else {
-						xhr.setRequestHeader("Content-Range", "bytes " + data.start + "-" + data.end + "/" + data.size);
-						xhr.setRequestHeader("Content-Disposition", 'attachment; filename=' + encodeURIComponent(data.name));
-						xhr.setRequestHeader("Content-Type", data.type || "application/octet-stream");
-
-						xhr.send(slice);
-					}
-
-					file = slice = null;
-				} else {
-					// single piece upload
-					if( xhr.upload ){
-						// https://github.com/blueimp/jQuery-File-Upload/wiki/Fixing-Safari-hanging-on-very-high-speed-connections-%281Gbps%29
-						xhr.upload.addEventListener('progress', api.throttle(function (/**Event*/evt){
-							options.progress(evt, _this, options);
-						}, 100), false);
-					}
-
-					xhr.onreadystatechange = function (){
-						_this.status     = xhr.status;
-						_this.statusText = xhr.statusText;
-						_this.readyState = xhr.readyState;
-
-						if( xhr.readyState == 4 ){
-							for( var k in _xhrResponsePostfix ){
-								_this['response'+k]  = xhr['response'+k];
-							}
-							xhr.onreadystatechange = null;
-
-							if (!xhr.status || xhr.status > 201) {
-								api.log("Error: " + xhr.status);
-								if (((!xhr.status && !xhr.aborted) || 500 == xhr.status) && (options.retry || 0) < options.uploadRetry) {
-									options.retry = (options.retry || 0) + 1;
-									var delay = api.networkDownRetryTimeout;
-
-									// inform about recoverable problems
-									options.pause(options.file, options);
-
-									setTimeout(function () {
-										_this._send(options, data);
-									}, delay);
-								} else {
-									//success
-									_this.end(xhr.status);
-								}
-							} else {
-								//success
-								_this.end(xhr.status);
-							}
-
-							xhr = null;
-						}
-					};
-
-					if( api.isArray(data) ){
-						// multipart
-						xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=_'+api.expando);
-						var rawData = data.join('') +'--_'+ api.expando +'--';
-
-						/** @namespace  xhr.sendAsBinary  https://developer.mozilla.org/ru/XMLHttpRequest#Sending_binary_content */
-						if( xhr.sendAsBinary ){
+						xhr.upload.addEventListener('progress', api.throttle(function (						if( xhr.sendAsBinary ){
 							xhr.sendAsBinary(rawData);
 						}
 						else {
@@ -3052,27 +2264,17 @@
 
 						}
 					} else {
-						// FormData
 						xhr.send(data);
 					}
 				}
 			}
 		}
 	};
-
-
-	// @export
 	api.XHR = XHR;
 })(window, FileAPI);
 
-/**
- * @class	FileAPI.Camera
- * @author	RubaXa	<trash@rubaxa.org>
- * @support	Chrome 21+, FF 18+, Opera 12+
- */
 
 /*global window, FileAPI, jQuery */
-/** @namespace LocalMediaStream -- https://developer.mozilla.org/en-US/docs/WebRTC/MediaStream_API#LocalMediaStream */
 (function (window, api){
 	"use strict";
 
@@ -3086,9 +2288,6 @@
 
 		html5 = !!getMedia
 	;
-
-
-	// Support "media"
 	api.support.media = html5;
 
 
@@ -3103,11 +2302,7 @@
 		},
 
 
-		/**
-		 * Start camera streaming
-		 * @param	{Function}	callback
-		 */
-		start: function (callback){
+				start: function (callback){
 			var
 				  _this = this
 				, video = _this.video
@@ -3117,44 +2312,11 @@
 					_this._active = !err;
 					clearTimeout(_failId);
 					clearTimeout(_successId);
-//					api.event.off(video, 'loadedmetadata', _complete);
 					callback && callback(err, _this);
 				}
 			;
 
-			getMedia.call(navigator, { video: true }, function (stream/**LocalMediaStream*/){
-				// Success
-				_this.stream = stream;
-
-//				api.event.on(video, 'loadedmetadata', function (){
-//					_complete(null);
-//				});
-
-				// Set camera stream
-				video.src = URL.createObjectURL(stream);
-
-				// Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-				// See crbug.com/110938.
-				_successId = setInterval(function (){
-					if( _detectVideoSignal(video) ){
-						_complete(null);
-					}
-				}, 1000);
-
-				_failId = setTimeout(function (){
-					_complete('timeout');
-				}, 5000);
-
-				// Go-go-go!
-				video.play();
-			}, _complete/*error*/);
-		},
-
-
-		/**
-		 * Stop camera streaming
-		 */
-		stop: function (){
+			getMedia.call(navigator, { video: true }, function (stream		stop: function (){
 			try {
 				this._active = false;
 				this.video.pause();
@@ -3163,43 +2325,22 @@
 		},
 
 
-		/**
-		 * Create screenshot
-		 * @return {FileAPI.Camera.Shot}
-		 */
-		shot: function (){
+				shot: function (){
 			return	new Shot(this.video);
 		}
 	};
 
 
-	/**
-	 * Get camera element from container
-	 *
-	 * @static
-	 * @param	{HTMLElement}	el
-	 * @return	{Camera}
-	 */
-	Camera.get = function (el){
+		Camera.get = function (el){
 		return	new Camera(el.firstChild);
 	};
 
 
-	/**
-	 * Publish camera element into container
-	 *
-	 * @static
-	 * @param	{HTMLElement}	el
-	 * @param	{Object}		options
-	 * @param	{Function}		[callback]
-	 */
-	Camera.publish = function (el, options, callback){
+		Camera.publish = function (el, options, callback){
 		if( typeof options == 'function' ){
 			callback = options;
 			options = {};
 		}
-
-		// Dimensions of "camera"
 		options = api.extend({}, {
 			  width:	'100%'
 			, height:	'100%'
@@ -3208,7 +2349,6 @@
 
 
 		if( el.jquery ){
-			// Extract first element, from jQuery collection
 			el = el[0];
 		}
 
@@ -3218,7 +2358,6 @@
 				callback(err);
 			}
 			else {
-				// Get camera
 				var cam = Camera.get(el);
 				if( options.start ){
 					cam.start(callback);
@@ -3235,24 +2374,15 @@
 
 
 		if( api.html5 && html5 ){
-			// Create video element
 			var video = document.createElement('video');
-
-			// Set dimensions
 			video.style.width	= _px(options.width);
 			video.style.height	= _px(options.height);
-
-			// Clean container
 			if( window.jQuery ){
 				jQuery(el).empty();
 			} else {
 				el.innerHTML = '';
 			}
-
-			// Add "camera" to container
 			el.appendChild(video);
-
-			// end
 			doneFn();
 		}
 		else {
@@ -3266,10 +2396,7 @@
 	};
 
 
-	/**
-	 * @class	FileAPI.Camera.Shot
-	 */
-	var Shot = function (video){
+		var Shot = function (video){
 		var canvas	= video.nodeName ? api.Image.toCanvas(video) : video;
 		var shot	= api.Image(canvas);
 		shot.type	= 'image/png';
@@ -3280,24 +2407,12 @@
 	};
 
 
-	/**
-	 * Add "px" postfix, if value is a number
-	 *
-	 * @private
-	 * @param	{*}  val
-	 * @return	{String}
-	 */
-	function _px(val){
+		function _px(val){
 		return	val >= 0 ? val + 'px' : val;
 	}
 
 
-	/**
-	 * @private
-	 * @param	{HTMLVideoElement} video
-	 * @return	{Boolean}
-	 */
-	function _detectVideoSignal(video){
+		function _detectVideoSignal(video){
 		var canvas = document.createElement('canvas'), ctx, res = false;
 		try {
 			ctx = canvas.getContext('2d');
@@ -3307,18 +2422,10 @@
 		catch( e ){}
 		return	res;
 	}
-
-
-	// @export
 	Camera.Shot	= Shot;
 	api.Camera	= Camera;
 })(window, FileAPI);
 
-/**
- * FileAPI fallback to Flash
- *
- * @flash-developer  "Vladimir Demidov" <v.demidov@corp.mail.ru>
- */
 
 /*global window, ActiveXObject, FileAPI */
 (function (window, jQuery, api) {
@@ -3372,10 +2479,7 @@
 				_fn: {},
 
 
-				/**
-				 * Initialization & preload flash object
-				 */
-				init: function (){
+								init: function (){
 					var child = document.body && document.body.firstChild;
 
 					if( child ){
@@ -3411,19 +2515,11 @@
 				},
 
 
-				/**
-				 * Publish flash-object
-				 *
-				 * @param {HTMLElement} el
-				 * @param {String} id
-				 * @param {Object} [opts]
-				 */
-				publish: function (el, id, opts){
+								publish: function (el, id, opts){
 					opts = opts || {};
 					el.innerHTML = _makeFlashHTML({
 						  id: id
 						, src: _getUrl(api.flashUrl, 'r=' + api.version)
-//						, src: _getUrl('http://v.demidov.boom.corp.mail.ru/uploaderfileapi/FlashFileAPI.swf?1')
 						, wmode: opts.camera ? '' : 'transparent'
 						, flashvars: 'callback=' + (opts.onEvent || 'FileAPI.Flash.onEvent')
 							+ '&flashId='+ id
@@ -3482,16 +2578,10 @@
 							;
 	
 							if( api.multiFlash ){
-								// check state:
-								//   i — published
-								//   i — initialization
-								//   r — ready
 								if( state == 'i' || state == 'r' ){
-									// publish fail
 									return	false;
 								}
 								else if( state != 'p' ){
-									// set "init" state
 									target.setAttribute(_attr, 'i');
 	
 									var dummy = document.createElement('div');
@@ -3512,19 +2602,14 @@
 	
 									wrapper.appendChild(dummy);
 									flash.publish(dummy, api.uid());
-	
-									// set "publish" state
 									target.setAttribute(_attr, 'p');
 								}
 	
 								return	true;
 							}
 							else if( wrapper ){
-								// Use one flash element
 								var box = _getDimensions(wrapper);
 								_css(flash.getEl(), box);
-	
-								// Set current input
 								flash.curInp = target;
 							}
 						}
@@ -3539,7 +2624,6 @@
 					
 					if( type == 'ready' ){
 						try {
-							// set "ready" state
 							flash.getInput(evt.flashId).setAttribute(_attr, 'r');
 						} catch (e){
 						}
@@ -3571,11 +2655,7 @@
 					var node = flash.getInput(evt.flashId);
 
 					if( node ){
-						// Set multiple mode
 						flash.cmd(evt, 'multiple', node.getAttribute('multiple') != null);
-
-
-						// Set files filter
 						var accept = [], exts = {};
 
 						_each((node.getAttribute('accept') || '').split(/,\s*/), function (mime){
@@ -3655,7 +2735,6 @@
 					} catch (e){
 						api.log('(js -> flash).onError:', e);
 						if( !last ){
-							// try again
 							setTimeout(function (){ flash.cmd(id, name, data, true); }, 50);
 						}
 					}
@@ -3664,8 +2743,6 @@
 
 				patch: function (){
 					api.flashEngine = true;
-
-					// FileAPI
 					_inherit(api, {
 						getFiles: function (input, filter, callback){
 							if( callback ){
@@ -3677,7 +2754,6 @@
 
 
 							if( !files ){
-								// Файлов нету, вызываем родительский метод
 								return	this.parent.apply(this, arguments);
 							}
 
@@ -3704,14 +2780,6 @@
 							else {
 								if( !file.__info ){
 									var defer = file.__info = api.defer();
-
-//									flash.cmd(file, 'getFileInfo', {
-//										  id: file.id
-//										, callback: _wrap(function _(err, info){
-//											_unwrap(_);
-//											defer.resolve(err, file.info = info);
-//										})
-//									});
 									defer.resolve(null, file.info = null);
 
 								}
@@ -3720,9 +2788,6 @@
 							}
 						}
 					});
-
-
-					// FileAPI.Image
 					api.support.transform = true;
 					api.Image && _inherit(api.Image.prototype, {
 						get: function (fn, scaleMode){
@@ -3833,8 +2898,6 @@
 							}
 						}
 					});
-
-					// FileAPI.Form
 					_inherit(api.Form.prototype, {
 						toData: function (fn){
 							var items = this.items, i = items.length;
@@ -3849,9 +2912,6 @@
 							fn(items);
 						}
 					});
-
-
-					// FileAPI.XHR
 					_inherit(api.XHR.prototype, {
 						_send: function (options, formData){
 							if(
@@ -3859,7 +2919,6 @@
 								|| formData.append && api.support.html5
 								|| api.isArray(formData) && (typeof formData[0] === 'string')
 							){
-								// HTML5, Multipart or IFrame
 								return	this.parent.apply(this, arguments);
 							}
 
@@ -3934,9 +2993,6 @@
 									})
 								});
 							});
-
-
-							// #2174: FileReference.load() call while FileReference.upload() or vice versa
 							_each(files, function (file){
 								queue.inc();
 								api.getInfo(file, queue.next);
@@ -4068,7 +3124,6 @@
 
 			function _setImage(){
 				try {
-					// Get flash-object by id
 					var img = flash.get(flashId);
 					img.setImage(base64);
 				} catch (e){
@@ -4120,12 +3175,7 @@
 				, height:	el.offsetHeight
 			};
 		}
-
-		// @export
 		api.Flash = flash;
-
-
-		// Check dataURI support
 		api.newImage('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==', function (err, img){
 			api.support.dataURI = !(img.width != 1 || img.height != 1);
 			flash.init();
@@ -4133,11 +3183,6 @@
 	})();
 })(window, window.jQuery, FileAPI);
 
-/**
- * FileAPI fallback to Flash
- *
- * @flash-developer  "Vladimir Demidov" <v.demidov@corp.mail.ru>
- */
 
 /*global window, FileAPI */
 (function (window, jQuery, api) {
@@ -4189,14 +3234,10 @@
                             })
                         }));
                     };
-                    // Run
                     _each(_cameraQueue, function (args) {
                         api.Camera.fallback.apply(api.Camera, args);
                     });
                     _cameraQueue = [];
-
-
-                    // FileAPI.Camera:proto
                     api.extend(api.Camera.prototype, {
                         _id: function () {
                             return this.video.id;

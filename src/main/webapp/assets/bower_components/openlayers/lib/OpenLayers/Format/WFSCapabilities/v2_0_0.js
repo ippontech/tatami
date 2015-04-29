@@ -3,77 +3,30 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/WFSCapabilities.js
- * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
- */
 
-/**
- * Class: OpenLayers.Format.WFSCapabilities.v2_0_0
- * Abstract class not to be instantiated directly.
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WFSCapabilities.v2_0_0 = OpenLayers.Class(
     OpenLayers.Format.XML, {
 
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         wfs: "http://www.opengis.net/wfs/2.0",
         xlink: "http://www.w3.org/1999/xlink",
         xsi: "http://www.w3.org/2001/XMLSchema-instance",
         ows: "http://www.opengis.net/ows/1.1"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * APIProperty: errorProperty
-     * {String} Which property of the returned object to check for in order to
-     * determine whether or not parsing has failed. In the case that the
-     * errorProperty is undefined on the returned object, the document will be
-     * run through an OGCExceptionReport parser.
-     */
-    errorProperty: "featureTypeList",
+        errorProperty: "featureTypeList",
 
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "wfs",
+        defaultPrefix: "wfs",
     
-    /**
-     * Constructor: OpenLayers.Format.WFSCapabilities.v1_1
-     * Create an instance of one of the subclasses.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * APIMethod: read
-     * Read capabilities data from a string, and return a list of layers. 
-     * 
-     * Parameters: 
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Array} List of named layers.
-     */
-    read: function(data) {
+    
+        read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -86,15 +39,7 @@ OpenLayers.Format.WFSCapabilities.v2_0_0 = OpenLayers.Class(
         return capabilities;
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "wfs": {
             "WFS_Capabilities": function(node, obj) {
                 this.readChildNodes(node, obj);

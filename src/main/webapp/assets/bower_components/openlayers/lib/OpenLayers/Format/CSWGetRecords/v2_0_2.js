@@ -3,30 +3,10 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- * @requires OpenLayers/Format/CSWGetRecords.js
- * @requires OpenLayers/Format/Filter/v1_0_0.js
- * @requires OpenLayers/Format/Filter/v1_1_0.js
- * @requires OpenLayers/Format/OWSCommon/v1_0_0.js
- */
 
-/**
- * Class: OpenLayers.Format.CSWGetRecords.v2_0_2
- *     A format for creating CSWGetRecords v2.0.2 transactions. 
- *     Create a new instance with the
- *     <OpenLayers.Format.CSWGetRecords.v2_0_2> constructor.
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         csw: "http://www.opengis.net/cat/csw/2.0.2",
         dc: "http://purl.org/dc/elements/1.1/",
         dct: "http://purl.org/dc/terms/",
@@ -39,130 +19,42 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
         xmlns: "http://www.w3.org/2000/xmlns/"
     },
     
-    /**
-     * Property: defaultPrefix
-     * {String} The default prefix (used by Format.XML).
-     */
-    defaultPrefix: "csw",
+        defaultPrefix: "csw",
     
-    /**
-     * Property: version
-     * {String} CSW version number.
-     */
-    version: "2.0.2",
+        version: "2.0.2",
     
-    /**
-     * Property: schemaLocation
-     * {String} http://www.opengis.net/cat/csw/2.0.2
-     *   http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd
-     */
-    schemaLocation: "http://www.opengis.net/cat/csw/2.0.2 http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd",
+        schemaLocation: "http://www.opengis.net/cat/csw/2.0.2 http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd",
 
-    /**
-     * APIProperty: requestId
-     * {String} Value of the requestId attribute of the GetRecords element.
-     */
-    requestId: null,
+        requestId: null,
 
-    /**
-     * APIProperty: resultType
-     * {String} Value of the resultType attribute of the GetRecords element,
-     *     specifies the result type in the GetRecords response, "hits" is
-     *     the default.
-     */
-    resultType: null,
+        resultType: null,
 
-    /**
-     * APIProperty: outputFormat
-     * {String} Value of the outputFormat attribute of the GetRecords element,
-     *     specifies the format of the GetRecords response,
-     *     "application/xml" is the default.
-     */
-    outputFormat: null,
+        outputFormat: null,
 
-    /**
-     * APIProperty: outputSchema
-     * {String} Value of the outputSchema attribute of the GetRecords element,
-     *     specifies the schema of the GetRecords response.
-     */
-    outputSchema: null,
+        outputSchema: null,
 
-    /**
-     * APIProperty: startPosition
-     * {String} Value of the startPosition attribute of the GetRecords element,
-     *     specifies the start position (offset+1) for the GetRecords response,
-     *     1 is the default.
-     */
-    startPosition: null,
+        startPosition: null,
 
-    /**
-     * APIProperty: maxRecords
-     * {String} Value of the maxRecords attribute of the GetRecords element,
-     *     specifies the maximum number of records in the GetRecords response,
-     *     10 is the default.
-     */
-    maxRecords: null,
+        maxRecords: null,
 
-    /**
-     * APIProperty: DistributedSearch
-     * {String} Value of the csw:DistributedSearch element, used when writing
-     *     a csw:GetRecords document.
-     */
-    DistributedSearch: null,
+        DistributedSearch: null,
 
-    /**
-     * APIProperty: ResponseHandler
-     * {Array({String})} Values of the csw:ResponseHandler elements, used when
-     *     writting a csw:GetRecords document.
-     */
-    ResponseHandler: null,
+        ResponseHandler: null,
 
-    /**
-     * APIProperty: Query
-     * {String} Value of the csw:Query element, used when writing a csw:GetRecords
-     *     document.
-     */
-    Query: null,
+        Query: null,
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Constructor: OpenLayers.Format.CSWGetRecords.v2_0_2
-     * A class for parsing and generating CSWGetRecords v2.0.2 transactions.
-     *
-     * Parameters:
-     * options - {Object} Optional object whose properties will be set on the
-     *     instance.
-     *
-     * Valid options properties (documented as class properties):
-     * - requestId
-     * - resultType
-     * - outputFormat
-     * - outputSchema
-     * - startPosition
-     * - maxRecords
-     * - DistributedSearch
-     * - ResponseHandler
-     * - Query
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
     },
 
-    /**
-     * APIMethod: read
-     * Parse the response from a GetRecords request.
-     */
-    read: function(data) {
+        read: function(data) {
         if(typeof data == "string") { 
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -174,15 +66,7 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
         return obj;
     },
     
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "csw": {
             "GetRecordsResponse": function(node, obj) {
                 obj.records = [];
@@ -250,9 +134,6 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
             }
         },
         "dc": {
-            // audience, contributor, coverage, creator, date, description, format,
-            // identifier, language, provenance, publisher, relation, rights,
-            // rightsHolder, source, subject, title, type, URI
             "*": function(node, obj) {
                 var name = node.localName || node.nodeName.split(":").pop();
                 if (!(OpenLayers.Util.isArray(obj[name]))) {
@@ -270,7 +151,6 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
             }
         },
         "dct": {
-            // abstract, modified, spatial
             "*": function(node, obj) {
                 var name = node.localName || node.nodeName.split(":").pop();
                 if (!(OpenLayers.Util.isArray(obj[name]))) {
@@ -299,17 +179,7 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
         }, OpenLayers.Format.OWSCommon.v1_0_0.prototype.readers["ows"])
     },
     
-    /**
-     * Method: write
-     * Given an configuration js object, write a CSWGetRecords request. 
-     *
-     * Parameters:
-     * options - {Object} A object mapping the request.
-     *
-     * Returns:
-     * {String} A serialized CSWGetRecords request.
-     */
-    write: function(options) {
+        write: function(options) {
         var node = this.writeNode("csw:GetRecords", options);
         this.setAttributeNS(
             node, this.namespaces.xmlns,
@@ -318,13 +188,7 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
         return OpenLayers.Format.XML.prototype.write.apply(this, [node]);
     },
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "csw": {
             "GetRecords": function(options) {
                 if (!options) {
@@ -351,7 +215,6 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
                 }
                 var ResponseHandler = options.ResponseHandler || this.ResponseHandler;
                 if (OpenLayers.Util.isArray(ResponseHandler) && ResponseHandler.length > 0) {
-                    // ResponseHandler must be a non-empty array
                     for(var i=0, len=ResponseHandler.length; i<len; i++) {
                         this.writeNode(
                             "csw:ResponseHandler",
@@ -388,7 +251,6 @@ OpenLayers.Format.CSWGetRecords.v2_0_2 = OpenLayers.Class(OpenLayers.Format.XML,
                 });
                 var ElementName = options.ElementName;
                 if (OpenLayers.Util.isArray(ElementName) && ElementName.length > 0) {
-                    // ElementName must be a non-empty array
                     for(var i=0, len=ElementName.length; i<len; i++) {
                         this.writeNode(
                             "csw:ElementName",

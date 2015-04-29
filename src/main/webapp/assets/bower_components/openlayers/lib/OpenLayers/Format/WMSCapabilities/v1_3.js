@@ -55,11 +55,9 @@ OpenLayers.Format.WMSCapabilities.v1_3 = OpenLayers.Class(
                 obj.bbox[bbox.srs] = bbox;
             },
             "CRS": function(node, obj) {
-                // CRS is the synonym of SRS
                 this.readers.wms.SRS.apply(this, [node, obj]); 
             },
             "EX_GeographicBoundingBox": function(node, obj) {
-                // replacement of LatLonBoundingBox
                 obj.llbbox = [];
                 this.readChildNodes(node, obj.llbbox);
                 
@@ -89,9 +87,6 @@ OpenLayers.Format.WMSCapabilities.v1_3 = OpenLayers.Class(
                 }
             },
             "Dimension": function(node, obj) {
-                // dimension has extra attributes: default, multipleValues, 
-                // nearestValue, current which used to be part of Extent. It now
-                // also contains the values.
                 var name = node.getAttribute("name").toLowerCase();
                 var dim = {
                     name: name,
@@ -104,16 +99,9 @@ OpenLayers.Format.WMSCapabilities.v1_3 = OpenLayers.Class(
                     values: this.getChildValue(node).split(",")
                     
                 };
-                // Theoretically there can be more dimensions with the same
-                // name, but with a different unit. Until we meet such a case,
-                // let's just keep the same structure as the WMS 1.1 
-                // GetCapabilities parser uses. We will store the last
-                // one encountered.
                 obj.dimensions[dim.name] = dim;
             },
             "Keyword": function(node, obj) {
-                // TODO: should we change the structure of keyword in v1.js?
-                // Make it an object with a value instead of a string?
                 var keyword = {value: this.getChildValue(node), 
                     vocabulary: node.getAttribute("vocabulary")};
                 if (obj.keywords) {
@@ -124,7 +112,6 @@ OpenLayers.Format.WMSCapabilities.v1_3 = OpenLayers.Class(
         "sld": {
             "UserDefinedSymbolization": function(node, obj) {
                 this.readers.wms.UserDefinedSymbolization.apply(this, [node, obj]);
-                // add the two extra attributes
                 obj.userSymbols.inlineFeature = parseInt(node.getAttribute("InlineFeature")) == 1;
                 obj.userSymbols.remoteWCS = parseInt(node.getAttribute("RemoteWCS")) == 1;
             },
