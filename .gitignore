@@ -13,3 +13,7 @@ src/main/webapp/WEB-INF/generated-wro4j
 .DS_Store
 
 phantomjsdriver.log
+
+*.log
+
+src/main/webapp/TATAMI.CONCAT.js
