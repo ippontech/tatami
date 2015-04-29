@@ -4,10 +4,6 @@
    factory(global.moment)
 }(this, function (moment) { 'use strict';
 
-    //! moment.js locale configuration
-    //! locale : afrikaans (af)
-    //! author : Werner Mollentze : https://github.com/wernerm
-
     var af = moment.defineLocale('af', {
         months : 'Januarie_Februarie_Maart_April_Mei_Junie_Julie_Augustus_September_Oktober_November_Desember'.split('_'),
         monthsShort : 'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Aug_Sep_Okt_Nov_Des'.split('_'),
@@ -66,11 +62,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Moroccan Arabic (ar-ma)
-    //! author : ElFadili Yassine : https://github.com/ElFadiliY
-    //! author : Abdel Said : https://github.com/abdelsaid
-
     var ar_ma = moment.defineLocale('ar-ma', {
         months : 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
         monthsShort : 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
@@ -113,10 +104,6 @@
             doy : 12  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Arabic Saudi Arabia (ar-sa)
-    //! author : Suhail Alkowaileet : https://github.com/xsoh
 
     var ar_sa__symbolMap = {
         '1': '١',
@@ -206,9 +193,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale  : Tunisian Arabic (ar-tn)
-
     var ar_tn = moment.defineLocale('ar-tn', {
         months: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
         monthsShort: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
@@ -251,12 +235,6 @@
             doy: 4 // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! Locale: Arabic (ar)
-    //! Author: Abdel Said: https://github.com/abdelsaid
-    //! Changes in months, weekdays: Ahmed Elkhatib
-    //! Native plural forms: forabi https://github.com/forabi
 
     var ar__symbolMap = {
         '1': '١',
@@ -377,10 +355,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : azerbaijani (az)
-    //! author : topchiyev : https://github.com/topchiyev
-
     var az__suffixes = {
         1: '-inci',
         5: '-inci',
@@ -469,12 +443,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : belarusian (be)
-    //! author : Dmitry Demidov : https://github.com/demidov91
-    //! author: Praleska: http://praleska.pro/
-    //! Author : Menelion Elensúle : https://github.com/Oire
 
     function be__plural(word, num) {
         var forms = word.split('_');
@@ -606,10 +574,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : bulgarian (bg)
-    //! author : Krasen Borisov : https://github.com/kraz
-
     var bg = moment.defineLocale('bg', {
         months : 'януари_февруари_март_април_май_юни_юли_август_септември_октомври_ноември_декември'.split('_'),
         monthsShort : 'янр_фев_мар_апр_май_юни_юли_авг_сеп_окт_ное_дек'.split('_'),
@@ -684,10 +648,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Bengali (bn)
-    //! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
     var bn__symbolMap = {
         '1': '১',
@@ -765,9 +725,6 @@
         isPM: function (input) {
             return /^(দুপুর|বিকেল|রাত)$/.test(input);
         },
-        //Bengali is a vast language its spoken
-        //in different forms in various parts of the world.
-        //I have just generalized with most common one used
         meridiem : function (hour, minute, isLower) {
             if (hour < 4) {
                 return 'রাত';
@@ -786,10 +743,6 @@
             doy : 6  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : tibetan (bo)
-    //! author : Thupten N. Chakrishar : https://github.com/vajradog
 
     var bo__symbolMap = {
         '1': '༡',
@@ -886,10 +839,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : breton (br)
-    //! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
-
     function relativeTimeWithMutation(number, withoutSuffix, key) {
         var format = {
             'mm': 'munutenn',
@@ -981,11 +930,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : bosnian (bs)
-    //! author : Nedim Cholich : https://github.com/frontyard
-    //! based on (hr) translation by Bojan Marković
 
     function bs__translate(number, withoutSuffix, key) {
         var result = number + ' ';
@@ -1112,10 +1056,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : catalan (ca)
-    //! author : Juan G. Hurtado : https://github.com/juanghurtado
-
     var ca = moment.defineLocale('ca', {
         months : 'gener_febrer_març_abril_maig_juny_juliol_agost_setembre_octubre_novembre_desembre'.split('_'),
         monthsShort : 'gen._febr._mar._abr._mai._jun._jul._ag._set._oct._nov._des.'.split('_'),
@@ -1179,10 +1119,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : czech (cs)
-    //! author : petrbela : https://github.com/petrbela
 
     var cs__months = 'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split('_'),
         cs__monthsShort = 'led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro'.split('_');
@@ -1248,7 +1184,6 @@
         monthsParse : (function (months, monthsShort) {
             var i, _monthsParse = [];
             for (i = 0; i < 12; i++) {
-                // use custom parser to solve problem with July (červenec)
                 _monthsParse[i] = new RegExp('^' + months[i] + '$|^' + monthsShort[i] + '$', 'i');
             }
             return _monthsParse;
@@ -1326,10 +1261,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : chuvash (cv)
-    //! author : Anatoly Mironov : https://github.com/mirontoli
-
     var cv = moment.defineLocale('cv', {
         months : 'кăрлач_нарăс_пуш_ака_май_çĕртме_утă_çурла_авăн_юпа_чӳк_раштав'.split('_'),
         monthsShort : 'кăр_нар_пуш_ака_май_çĕр_утă_çур_ав_юпа_чӳк_раш'.split('_'),
@@ -1378,17 +1309,12 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Welsh (cy)
-    //! author : Robert Allen
-
     var cy = moment.defineLocale('cy', {
         months: 'Ionawr_Chwefror_Mawrth_Ebrill_Mai_Mehefin_Gorffennaf_Awst_Medi_Hydref_Tachwedd_Rhagfyr'.split('_'),
         monthsShort: 'Ion_Chwe_Maw_Ebr_Mai_Meh_Gor_Aws_Med_Hyd_Tach_Rhag'.split('_'),
         weekdays: 'Dydd Sul_Dydd Llun_Dydd Mawrth_Dydd Mercher_Dydd Iau_Dydd Gwener_Dydd Sadwrn'.split('_'),
         weekdaysShort: 'Sul_Llun_Maw_Mer_Iau_Gwe_Sad'.split('_'),
         weekdaysMin: 'Su_Ll_Ma_Me_Ia_Gw_Sa'.split('_'),
-        // time formats are the same as en-gb
         longDateFormat: {
             LT: 'HH:mm',
             LTS : 'LT:ss',
@@ -1421,7 +1347,6 @@
             yy: '%d flynedd'
         },
         ordinalParse: /\d{1,2}(fed|ain|af|il|ydd|ed|eg)/,
-        // traditional ordinal numbers above 31 are not commonly used in colloquial Welsh
         ordinal: function (number) {
             var b = number,
                 output = '',
@@ -1445,10 +1370,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : danish (da)
-    //! author : Ulrik Nielsen : https://github.com/mrbase
 
     var da = moment.defineLocale('da', {
         months : 'januar_februar_marts_april_maj_juni_juli_august_september_oktober_november_december'.split('_'),
@@ -1494,12 +1415,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : austrian german (de-at)
-    //! author : lluchs : https://github.com/lluchs
-    //! author: Menelion Elensúle: https://github.com/Oire
-    //! author : Martin Groller : https://github.com/MadMG
 
     function de_at__processRelativeTime(number, withoutSuffix, key, isFuture) {
         var format = {
@@ -1560,11 +1475,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : german (de)
-    //! author : lluchs : https://github.com/lluchs
-    //! author: Menelion Elensúle: https://github.com/Oire
-
     function de__processRelativeTime(number, withoutSuffix, key, isFuture) {
         var format = {
             'm': ['eine Minute', 'einer Minute'],
@@ -1623,10 +1533,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : modern greek (el)
-    //! author : Aggelos Karalias : https://github.com/mehiel
 
     var el = moment.defineLocale('el', {
         monthsNominativeEl : 'Ιανουάριος_Φεβρουάριος_Μάρτιος_Απρίλιος_Μάιος_Ιούνιος_Ιούλιος_Αύγουστος_Σεπτέμβριος_Οκτώβριος_Νοέμβριος_Δεκέμβριος'.split('_'),
@@ -1707,9 +1613,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : australian english (en-au)
-
     var en_au = moment.defineLocale('en-au', {
         months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
         monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
@@ -1762,10 +1665,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : canadian english (en-ca)
-    //! author : Jonathan Abourbih : https://github.com/jonbca
-
     var en_ca = moment.defineLocale('en-ca', {
         months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
         monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
@@ -1813,10 +1712,6 @@
             return number + output;
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : great britain english (en-gb)
-    //! author : Chris Gedrim : https://github.com/chrisgedrim
 
     var en_gb = moment.defineLocale('en-gb', {
         months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
@@ -1869,12 +1764,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : esperanto (eo)
-    //! author : Colin Dean : https://github.com/colindean
-    //! komento: Mi estas malcerta se mi korekte traktis akuzativojn en tiu traduko.
-    //!          Se ne, bonvolu korekti kaj avizi min por ke mi povas lerni!
 
     var eo = moment.defineLocale('eo', {
         months : 'januaro_februaro_marto_aprilo_majo_junio_julio_aŭgusto_septembro_oktobro_novembro_decembro'.split('_'),
@@ -1931,10 +1820,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : spanish (es)
-    //! author : Julio Napurí : https://github.com/julionc
 
     var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
         es__monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
@@ -2000,11 +1885,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : estonian (et)
-    //! author : Henry Kehlmann : https://github.com/madhenry
-    //! improvements : Illimar Tambek : https://github.com/ragulka
-
     function et__processRelativeTime(number, withoutSuffix, key, isFuture) {
         var format = {
             's' : ['mõne sekundi', 'mõni sekund', 'paar sekundit'],
@@ -2069,10 +1949,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : euskara (eu)
-    //! author : Eneko Illarramendi : https://github.com/eillarra
-
     var eu = moment.defineLocale('eu', {
         months : 'urtarrila_otsaila_martxoa_apirila_maiatza_ekaina_uztaila_abuztua_iraila_urria_azaroa_abendua'.split('_'),
         monthsShort : 'urt._ots._mar._api._mai._eka._uzt._abu._ira._urr._aza._abe.'.split('_'),
@@ -2121,10 +1997,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Persian (fa)
-    //! author : Ebrahim Byagowi : https://github.com/ebraminio
 
     var fa__symbolMap = {
         '1': '۱',
@@ -2215,10 +2087,6 @@
             doy : 12 // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : finnish (fi)
-    //! author : Tarmo Aidantausta : https://github.com/bleadof
 
     var numbersPast = 'nolla yksi kaksi kolme neljä viisi kuusi seitsemän kahdeksan yhdeksän'.split(' '),
         numbersFuture = [
@@ -2312,10 +2180,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : faroese (fo)
-    //! author : Ragnar Johannesen : https://github.com/ragnar123
-
     var fo = moment.defineLocale('fo', {
         months : 'januar_februar_mars_apríl_mai_juni_juli_august_september_oktober_november_desember'.split('_'),
         monthsShort : 'jan_feb_mar_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_'),
@@ -2361,10 +2225,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : canadian french (fr-ca)
-    //! author : Jonathan Abourbih : https://github.com/jonbca
-
     var fr_ca = moment.defineLocale('fr-ca', {
         months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
         monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
@@ -2407,10 +2267,6 @@
             return number + (number === 1 ? 'er' : '');
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : french (fr)
-    //! author : John Fischer : https://github.com/jfroffice
 
     var fr = moment.defineLocale('fr', {
         months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
@@ -2458,10 +2314,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : frisian (fy)
-    //! author : Robin van der Vliet : https://github.com/robin0van0der0v
 
     var fy__monthsShortWithDots = 'jan._feb._mrt._apr._mai_jun._jul._aug._sep._okt._nov._des.'.split('_'),
         fy__monthsShortWithoutDots = 'jan_feb_mrt_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_');
@@ -2518,10 +2370,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : galician (gl)
-    //! author : Juan G. Hurtado : https://github.com/juanghurtado
 
     var gl = moment.defineLocale('gl', {
         months : 'Xaneiro_Febreiro_Marzo_Abril_Maio_Xuño_Xullo_Agosto_Setembro_Outubro_Novembro_Decembro'.split('_'),
@@ -2582,12 +2430,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Hebrew (he)
-    //! author : Tomer Cohen : https://github.com/tomer
-    //! author : Moshe Simantov : https://github.com/DevelopmentIL
-    //! author : Tal Ater : https://github.com/TalAter
 
     var he = moment.defineLocale('he', {
         months : 'ינואר_פברואר_מרץ_אפריל_מאי_יוני_יולי_אוגוסט_ספטמבר_אוקטובר_נובמבר_דצמבר'.split('_'),
@@ -2653,10 +2495,6 @@
             }
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : hindi (hi)
-    //! author : Mayank Singhal : https://github.com/mayanksinghal
 
     var hi__symbolMap = {
         '1': '१',
@@ -2730,8 +2568,6 @@
                 return hi__symbolMap[match];
             });
         },
-        // Hindi notation for meridiems are quite fuzzy in practice. While there exists
-        // a rigid notion of a 'Pahar' it is not used as rigidly in modern Hindi.
         meridiemParse: /रात|सुबह|दोपहर|शाम/,
         meridiemHour : function (hour, meridiem) {
             if (hour === 12) {
@@ -2765,10 +2601,6 @@
             doy : 6  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : hrvatski (hr)
-    //! author : Bojan Marković : https://github.com/bmarkovic
 
     function hr__translate(number, withoutSuffix, key) {
         var result = number + ' ';
@@ -2895,10 +2727,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : hungarian (hu)
-    //! author : Adam Brunner : https://github.com/adambrunner
-
     var weekEndings = 'vasárnap hétfőn kedden szerdán csütörtökön pénteken szombaton'.split(' ');
     function hu__translate(number, withoutSuffix, key, isFuture) {
         var num = number,
@@ -2992,10 +2820,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Armenian (hy-am)
-    //! author : Armendarabyan : https://github.com/armendarabyan
 
     function hy_am__monthsCaseReplace(m, format) {
         var months = {
@@ -3093,11 +2917,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Bahasa Indonesia (id)
-    //! author : Mohammad Satrio Utomo : https://github.com/tyok
-    //! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
-
     var id = moment.defineLocale('id', {
         months : 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
         monthsShort : 'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Ags_Sep_Okt_Nov_Des'.split('_'),
@@ -3164,10 +2983,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : icelandic (is)
-    //! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 
     function is__plural(n) {
         if (n % 100 === 11) {
@@ -3281,11 +3096,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : italian (it)
-    //! author : Lorenzo : https://github.com/aliem
-    //! author: Mattia Larentis: https://github.com/nostalgiaz
-
     var it = moment.defineLocale('it', {
         months : 'gennaio_febbraio_marzo_aprile_maggio_giugno_luglio_agosto_settembre_ottobre_novembre_dicembre'.split('_'),
         monthsShort : 'gen_feb_mar_apr_mag_giu_lug_ago_set_ott_nov_dic'.split('_'),
@@ -3340,10 +3150,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : japanese (ja)
-    //! author : LI Long : https://github.com/baryon
-
     var ja = moment.defineLocale('ja', {
         months : '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
         monthsShort : '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
@@ -3393,10 +3199,6 @@
             yy : '%d年'
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Georgian (ka)
-    //! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 
     function ka__monthsCaseReplace(m, format) {
         var months = {
@@ -3486,10 +3288,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : khmer (km)
-    //! author : Kruy Vanna : https://github.com/kruyvanna
-
     var km = moment.defineLocale('km', {
         months: 'មករា_កុម្ភៈ_មិនា_មេសា_ឧសភា_មិថុនា_កក្កដា_សីហា_កញ្ញា_តុលា_វិច្ឆិកា_ធ្នូ'.split('_'),
         monthsShort: 'មករា_កុម្ភៈ_មិនា_មេសា_ឧសភា_មិថុនា_កក្កដា_សីហា_កញ្ញា_តុលា_វិច្ឆិកា_ធ្នូ'.split('_'),
@@ -3532,14 +3330,6 @@
             doy: 4 // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : korean (ko)
-    //!
-    //! authors
-    //!
-    //! - Kyungwook, Park : https://github.com/kyungw00k
-    //! - Jeeeyul Lee <jeeeyul@gmail.com>
 
     var ko = moment.defineLocale('ko', {
         months : '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'),
@@ -3590,10 +3380,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Luxembourgish (lb)
-    //! author : mweimerskirch : https://github.com/mweimerskirch, David Raison : https://github.com/kwisatz
-
     function lb__processRelativeTime(number, withoutSuffix, key, isFuture) {
         var format = {
             'm': ['eng Minutt', 'enger Minutt'],
@@ -3618,42 +3404,30 @@
         }
         return 'virun ' + string;
     }
-    /**
-     * Returns true if the word before the given number loses the '-n' ending.
-     * e.g. 'an 10 Deeg' but 'a 5 Deeg'
-     *
-     * @param number {integer}
-     * @returns {boolean}
-     */
-    function eifelerRegelAppliesToNumber(number) {
+        function eifelerRegelAppliesToNumber(number) {
         number = parseInt(number, 10);
         if (isNaN(number)) {
             return false;
         }
         if (number < 0) {
-            // Negative Number --> always true
             return true;
         } else if (number < 10) {
-            // Only 1 digit
             if (4 <= number && number <= 7) {
                 return true;
             }
             return false;
         } else if (number < 100) {
-            // 2 digits
             var lastDigit = number % 10, firstDigit = number / 10;
             if (lastDigit === 0) {
                 return eifelerRegelAppliesToNumber(firstDigit);
             }
             return eifelerRegelAppliesToNumber(lastDigit);
         } else if (number < 10000) {
-            // 3 or 4 digits --> recursively check first digit
             while (number >= 10) {
                 number = number / 10;
             }
             return eifelerRegelAppliesToNumber(number);
         } else {
-            // Anything larger than 4 digits: recursively check first n-3 digits
             number = number / 1000;
             return eifelerRegelAppliesToNumber(number);
         }
@@ -3680,7 +3454,6 @@
             nextWeek: 'dddd [um] LT',
             lastDay: '[Gëschter um] LT',
             lastWeek: function () {
-                // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
                 switch (this.day()) {
                     case 2:
                     case 4:
@@ -3712,10 +3485,6 @@
             doy: 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Lithuanian (lt)
-    //! author : Mindaugas Mozūras : https://github.com/mmozuras
 
     var lt__units = {
         'm' : 'minutė_minutės_minutę',
@@ -3817,10 +3586,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : latvian (lv)
-    //! author : Kristaps Karlsons : https://github.com/skakri
-
     var lv__units = {
         'mm': 'minūti_minūtes_minūte_minūtes',
         'hh': 'stundu_stundas_stunda_stundas',
@@ -3884,10 +3649,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : macedonian (mk)
-    //! author : Borislav Mickov : https://github.com/B0k0
 
     var mk = moment.defineLocale('mk', {
         months : 'јануари_февруари_март_април_мај_јуни_јули_август_септември_октомври_ноември_декември'.split('_'),
@@ -3964,10 +3725,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : malayalam (ml)
-    //! author : Floyd Pink : https://github.com/floydpink
-
     var ml = moment.defineLocale('ml', {
         months : 'ജനുവരി_ഫെബ്രുവരി_മാർച്ച്_ഏപ്രിൽ_മേയ്_ജൂൺ_ജൂലൈ_ഓഗസ്റ്റ്_സെപ്റ്റംബർ_ഒക്ടോബർ_നവംബർ_ഡിസംബർ'.split('_'),
         monthsShort : 'ജനു._ഫെബ്രു._മാർ._ഏപ്രി._മേയ്_ജൂൺ_ജൂലൈ._ഓഗ._സെപ്റ്റ._ഒക്ടോ._നവം._ഡിസം.'.split('_'),
@@ -4023,10 +3780,6 @@
             }
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Marathi (mr)
-    //! author : Harshad Kale : https://github.com/kalehv
 
     var mr__symbolMap = {
         '1': '१',
@@ -4134,10 +3887,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Bahasa Malaysia (ms-MY)
-    //! author : Weldan Jamili : https://github.com/weldan
-
     var ms_my = moment.defineLocale('ms-my', {
         months : 'Januari_Februari_Mac_April_Mei_Jun_Julai_Ogos_September_Oktober_November_Disember'.split('_'),
         monthsShort : 'Jan_Feb_Mac_Apr_Mei_Jun_Jul_Ogs_Sep_Okt_Nov_Dis'.split('_'),
@@ -4204,10 +3953,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Burmese (my)
-    //! author : Squar team, mysquar.com
 
     var my__symbolMap = {
         '1': '၁',
@@ -4286,11 +4031,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : norwegian bokmål (nb)
-    //! authors : Espen Hovlandsdal : https://github.com/rexxars
-    //!           Sigurd Gartmann : https://github.com/sigurdga
-
     var nb = moment.defineLocale('nb', {
         months : 'januar_februar_mars_april_mai_juni_juli_august_september_oktober_november_desember'.split('_'),
         monthsShort : 'jan_feb_mar_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_'),
@@ -4335,10 +4075,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : nepali/nepalese
-    //! author : suvash : https://github.com/suvash
 
     var ne__symbolMap = {
         '1': '१',
@@ -4448,10 +4184,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : dutch (nl)
-    //! author : Joris Röling : https://github.com/jjupiter
-
     var nl__monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_'),
         nl__monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
 
@@ -4508,10 +4240,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : norwegian nynorsk (nn)
-    //! author : https://github.com/mechuwind
-
     var nn = moment.defineLocale('nn', {
         months : 'januar_februar_mars_april_mai_juni_juli_august_september_oktober_november_desember'.split('_'),
         monthsShort : 'jan_feb_mar_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_'),
@@ -4556,10 +4284,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : polish (pl)
-    //! author : Rafal Hirsz : https://github.com/evoL
 
     var monthsNominative = 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
         monthsSubjective = 'stycznia_lutego_marca_kwietnia_maja_czerwca_lipca_sierpnia_września_października_listopada_grudnia'.split('_');
@@ -4646,10 +4370,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : brazilian portuguese (pt-br)
-    //! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
-
     var pt_br = moment.defineLocale('pt-br', {
         months : 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
         monthsShort : 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
@@ -4694,10 +4414,6 @@
         ordinalParse: /\d{1,2}º/,
         ordinal : '%dº'
     });
-
-    //! moment.js locale configuration
-    //! locale : portuguese (pt)
-    //! author : Jefferson : https://github.com/jalex79
 
     var pt = moment.defineLocale('pt', {
         months : 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
@@ -4747,11 +4463,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : romanian (ro)
-    //! author : Vlad Gurdiga : https://github.com/gurdiga
-    //! author : Valentin Agachi : https://github.com/avaly
 
     function ro__relativeTimeWithPlural(number, withoutSuffix, key) {
         var format = {
@@ -4810,11 +4521,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : russian (ru)
-    //! author : Viktorminator : https://github.com/Viktorminator
-    //! Author : Menelion Elensúle : https://github.com/Oire
 
     function ru__plural(word, num) {
         var forms = word.split('_');
@@ -4964,11 +4670,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : slovak (sk)
-    //! author : Martin Minka : https://github.com/k2s
-    //! based on work of petrbela : https://github.com/petrbela
-
     var sk__months = 'január_február_marec_apríl_máj_jún_júl_august_september_október_november_december'.split('_'),
         sk__monthsShort = 'jan_feb_mar_apr_máj_jún_júl_aug_sep_okt_nov_dec'.split('_');
     function sk__plural(n) {
@@ -5033,7 +4734,6 @@
         monthsParse : (function (months, monthsShort) {
             var i, _monthsParse = [];
             for (i = 0; i < 12; i++) {
-                // use custom parser to solve problem with July (červenec)
                 _monthsParse[i] = new RegExp('^' + months[i] + '$|^' + monthsShort[i] + '$', 'i');
             }
             return _monthsParse;
@@ -5110,10 +4810,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : slovenian (sl)
-    //! author : Robert Sedovšek : https://github.com/sedovsek
 
     function sl__translate(number, withoutSuffix, key) {
         var result = number + ' ';
@@ -5247,12 +4943,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Albanian (sq)
-    //! author : Flakërim Ismani : https://github.com/flakerimi
-    //! author: Menelion Elensúle: https://github.com/Oire (tests)
-    //! author : Oerd Cukalla : https://github.com/oerd (fixes)
-
     var sq = moment.defineLocale('sq', {
         months : 'Janar_Shkurt_Mars_Prill_Maj_Qershor_Korrik_Gusht_Shtator_Tetor_Nëntor_Dhjetor'.split('_'),
         monthsShort : 'Jan_Shk_Mar_Pri_Maj_Qer_Kor_Gus_Sht_Tet_Nën_Dhj'.split('_'),
@@ -5304,10 +4994,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : Serbian-cyrillic (sr-cyrl)
-    //! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
     var sr_cyrl__translator = {
         words: { //Different grammatical cases
@@ -5402,10 +5088,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Serbian-latin (sr)
-    //! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
-
     var sr__translator = {
         words: { //Different grammatical cases
             m: ['jedan minut', 'jedne minute'],
@@ -5499,10 +5181,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : swedish (sv)
-    //! author : Jens Alm : https://github.com/ulmus
-
     var sv = moment.defineLocale('sv', {
         months : 'januari_februari_mars_april_maj_juni_juli_augusti_september_oktober_november_december'.split('_'),
         monthsShort : 'jan_feb_mar_apr_maj_jun_jul_aug_sep_okt_nov_dec'.split('_'),
@@ -5555,10 +5233,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : tamil (ta)
-    //! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
-
     var ta = moment.defineLocale('ta', {
         months : 'ஜனவரி_பிப்ரவரி_மார்ச்_ஏப்ரல்_மே_ஜூன்_ஜூலை_ஆகஸ்ட்_செப்டெம்பர்_அக்டோபர்_நவம்பர்_டிசம்பர்'.split('_'),
         monthsShort : 'ஜனவரி_பிப்ரவரி_மார்ச்_ஏப்ரல்_மே_ஜூன்_ஜூலை_ஆகஸ்ட்_செப்டெம்பர்_அக்டோபர்_நவம்பர்_டிசம்பர்'.split('_'),
@@ -5600,7 +5274,6 @@
         ordinal : function (number) {
             return number + 'வது';
         },
-        // refer http://ta.wikipedia.org/s/1er1
         meridiemParse: /யாமம்|வைகறை|காலை|நண்பகல்|எற்பாடு|மாலை/,
         meridiem : function (hour, minute, isLower) {
             if (hour < 2) {
@@ -5638,10 +5311,6 @@
             doy : 6  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : thai (th)
-    //! author : Kridsada Thanabulpong : https://github.com/sirn
 
     var th = moment.defineLocale('th', {
         months : 'มกราคม_กุมภาพันธ์_มีนาคม_เมษายน_พฤษภาคม_มิถุนายน_กรกฎาคม_สิงหาคม_กันยายน_ตุลาคม_พฤศจิกายน_ธันวาคม'.split('_'),
@@ -5693,10 +5362,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Tagalog/Filipino (tl-ph)
-    //! author : Dan Hagman
-
     var tl_ph = moment.defineLocale('tl-ph', {
         months : 'Enero_Pebrero_Marso_Abril_Mayo_Hunyo_Hulyo_Agosto_Setyembre_Oktubre_Nobyembre_Disyembre'.split('_'),
         monthsShort : 'Ene_Peb_Mar_Abr_May_Hun_Hul_Ago_Set_Okt_Nob_Dis'.split('_'),
@@ -5743,11 +5408,6 @@
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : turkish (tr)
-    //! authors : Erhan Gundogan : https://github.com/erhangundogan,
-    //!           Burak Yiğit Kaya: https://github.com/BYK
 
     var tr__suffixes = {
         1: '\'inci',
@@ -5823,10 +5483,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Morocco Central Atlas Tamaziɣt in Latin (tzm-latn)
-    //! author : Abdel Said : https://github.com/abdelsaid
-
     var tzm_latn = moment.defineLocale('tzm-latn', {
         months : 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
         monthsShort : 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
@@ -5870,10 +5526,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : Morocco Central Atlas Tamaziɣt (tzm)
-    //! author : Abdel Said : https://github.com/abdelsaid
-
     var tzm = moment.defineLocale('tzm', {
         months : 'ⵉⵏⵏⴰⵢⵔ_ⴱⵕⴰⵢⵕ_ⵎⴰⵕⵚ_ⵉⴱⵔⵉⵔ_ⵎⴰⵢⵢⵓ_ⵢⵓⵏⵢⵓ_ⵢⵓⵍⵢⵓⵣ_ⵖⵓⵛⵜ_ⵛⵓⵜⴰⵏⴱⵉⵔ_ⴽⵟⵓⴱⵕ_ⵏⵓⵡⴰⵏⴱⵉⵔ_ⴷⵓⵊⵏⴱⵉⵔ'.split('_'),
         monthsShort : 'ⵉⵏⵏⴰⵢⵔ_ⴱⵕⴰⵢⵕ_ⵎⴰⵕⵚ_ⵉⴱⵔⵉⵔ_ⵎⴰⵢⵢⵓ_ⵢⵓⵏⵢⵓ_ⵢⵓⵍⵢⵓⵣ_ⵖⵓⵛⵜ_ⵛⵓⵜⴰⵏⴱⵉⵔ_ⴽⵟⵓⴱⵕ_ⵏⵓⵡⴰⵏⴱⵉⵔ_ⴷⵓⵊⵏⴱⵉⵔ'.split('_'),
@@ -5916,11 +5568,6 @@
             doy : 12  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : ukrainian (uk)
-    //! author : zemlanin : https://github.com/zemlanin
-    //! Author : Menelion Elensúle : https://github.com/Oire
 
     function uk__plural(word, num) {
         var forms = word.split('_');
@@ -6022,7 +5669,6 @@
             y : 'рік',
             yy : uk__relativeTimeWithPlural
         },
-        // M. E.: those two are virtually unused but a user might want to implement them for his/her website for some reason
         meridiemParse: /ночі|ранку|дня|вечора/,
         isPM: function (input) {
             return /^(дня|вечора)$/.test(input);
@@ -6058,10 +5704,6 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : uzbek (uz)
-    //! author : Sardor Muminov : https://github.com/muminoff
 
     var uz = moment.defineLocale('uz', {
         months : 'январь_февраль_март_апрель_май_июнь_июль_август_сентябрь_октябрь_ноябрь_декабрь'.split('_'),
@@ -6105,10 +5747,6 @@
             doy : 7  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : vietnamese (vi)
-    //! author : Bang Nguyen : https://github.com/bangnk
 
     var vi = moment.defineLocale('vi', {
         months : 'tháng 1_tháng 2_tháng 3_tháng 4_tháng 5_tháng 6_tháng 7_tháng 8_tháng 9_tháng 10_tháng 11_tháng 12'.split('_'),
@@ -6161,11 +5799,6 @@
         }
     });
 
-    //! moment.js locale configuration
-    //! locale : chinese (zh-cn)
-    //! author : suupic : https://github.com/suupic
-    //! author : Zeno Zeng : https://github.com/zenozeng
-
     var zh_cn = moment.defineLocale('zh-cn', {
         months : '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'),
         monthsShort : '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
@@ -6195,7 +5828,6 @@
             } else if (meridiem === '下午' || meridiem === '晚上') {
                 return hour + 12;
             } else {
-                // '中午'
                 return hour >= 11 ? hour : hour + 12;
             }
         },
@@ -6271,15 +5903,10 @@
             yy : '%d年'
         },
         week : {
-            // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
             dow : 1, // Monday is the first day of the week.
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
-
-    //! moment.js locale configuration
-    //! locale : traditional chinese (zh-tw)
-    //! author : Ben : https://github.com/ben-lin
 
     var zh_tw = moment.defineLocale('zh-tw', {
         months : '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'),

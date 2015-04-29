@@ -1,7 +1,3 @@
-/**
- * @requires OpenLayers/Console.js
- * @requires Rico/Color.js
- */
 
 
 /*
@@ -44,19 +40,7 @@ OpenLayers.Rico.Corner = {
         this._roundCornersImpl(e, color, bgColor);
     },
 
-    /**   This is a helper function to change the background
-    *     color of <div> that has had Rico rounded corners added.
-    *
-    *     It seems we cannot just set the background color for the
-    *     outer <div> so each <span> element used to create the
-    *     corners must have its background color set individually.
-    *
-    * @param {DOM} theDiv - A child of the outer <div> that was
-    *                        supplied to the `round` method.
-    *
-    * @param {String} newColor - The new background color to use.
-    */
-    changeColor: function(theDiv, newColor) {
+        changeColor: function(theDiv, newColor) {
    
         theDiv.style.backgroundColor = newColor;
 
@@ -68,17 +52,7 @@ OpenLayers.Rico.Corner = {
     }, 
 
 
-    /**   This is a helper function to change the background
-    *     opacity of <div> that has had Rico rounded corners added.
-    *
-    *     See changeColor (above) for algorithm explanation
-    *
-    * @param {DOM} theDiv A child of the outer <div> that was
-    *                        supplied to the `round` method.
-    *
-    * @param {int} newOpacity The new opacity to use (0-1).
-    */
-    changeOpacity: function(theDiv, newOpacity) {
+        changeOpacity: function(theDiv, newOpacity) {
    
         var mozillaOpacity = newOpacity;
         var ieOpacity = 'alpha(opacity=' + newOpacity * 100 + ')';
@@ -95,21 +69,9 @@ OpenLayers.Rico.Corner = {
 
     },
 
-    /** this function takes care of redoing the rico cornering
-    *    
-    *    you can't just call updateRicoCorners() again and pass it a 
-    *    new options string. you have to first remove the divs that 
-    *    rico puts on top and below the content div.
-    *
-    * @param {DOM} theDiv - A child of the outer <div> that was
-    *                        supplied to the `round` method.
-    *
-    * @param {Object} options - list of options
-    */
-    reRound: function(theDiv, options) {
+        reRound: function(theDiv, options) {
 
         var topRico = theDiv.parentNode.childNodes[0];
-        //theDiv would be theDiv.parentNode.childNodes[1]
         var bottomRico = theDiv.parentNode.childNodes[2];
        
         theDiv.parentNode.removeChild(topRico);

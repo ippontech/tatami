@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : dutch (nl)
-//! author : Joris Röling : https://github.com/jjupiter
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

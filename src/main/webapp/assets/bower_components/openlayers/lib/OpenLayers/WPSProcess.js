@@ -3,97 +3,27 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/SingleFile.js
- */
 
-/**
- * @requires OpenLayers/Geometry.js
- * @requires OpenLayers/Feature/Vector.js
- * @requires OpenLayers/Format/WKT.js
- * @requires OpenLayers/Format/GeoJSON.js
- * @requires OpenLayers/Format/WPSExecute.js
- * @requires OpenLayers/Request.js
- */
 
-/**
- * Class: OpenLayers.WPSProcess
- * Representation of a WPS process. Usually instances of
- * <OpenLayers.WPSProcess> are created by calling 'getProcess' on an
- * <OpenLayers.WPSClient> instance.
- *
- * Currently <OpenLayers.WPSProcess> supports processes that have geometries
- * or features as output, using WKT or GeoJSON as output format. It also
- * supports chaining of processes by using the <output> method to create a
- * handle that is used as process input instead of a static value.
- */
 OpenLayers.WPSProcess = OpenLayers.Class({
     
-    /**
-     * Property: client
-     * {<OpenLayers.WPSClient>} The client that manages this process.
-     */
-    client: null,
+        client: null,
     
-    /**
-     * Property: server
-     * {String} Local client identifier for this process's server.
-     */
-    server: null,
+        server: null,
     
-    /**
-     * Property: identifier
-     * {String} Process identifier known to the server.
-     */
-    identifier: null,
+        identifier: null,
     
-    /**
-     * Property: description
-     * {Object} DescribeProcess response for this process.
-     */
-    description: null,
+        description: null,
     
-    /**
-     * APIProperty: localWPS
-     * {String} Service endpoint for locally chained WPS processes. Default is
-     *     'http://geoserver/wps'.
-     */
-    localWPS: 'http://geoserver/wps',
+        localWPS: 'http://geoserver/wps',
     
-    /**
-     * Property: formats
-     * {Object} OpenLayers.Format instances keyed by mimetype.
-     */
-    formats: null,
+        formats: null,
     
-    /**
-     * Property: chained
-     * {Integer} Number of chained processes for pending execute requests that
-     * don't have a full configuration yet.
-     */
-    chained: 0,
+        chained: 0,
     
-    /**
-     * Property: executeCallbacks
-     * {Array} Callbacks waiting to be executed until all chained processes
-     * are configured;
-     */
-    executeCallbacks: null,
+        executeCallbacks: null,
     
-    /**
-     * Constructor: OpenLayers.WPSProcess
-     *
-     * Parameters:
-     * options - {Object} Object whose properties will be set on the instance.
-     *
-     * Available options:
-     * client - {<OpenLayers.WPSClient>} Mandatory. Client that manages this
-     *     process.
-     * server - {String} Mandatory. Local client identifier of this process's
-     *     server.
-     * identifier - {String} Mandatory. Process identifier known to the server.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         OpenLayers.Util.extend(this, options);        
         this.executeCallbacks = [];
         this.formats = {
@@ -102,21 +32,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         };
     },
     
-    /**
-     * Method: describe
-     * Makes the client issue a DescribeProcess request asynchronously.
-     *
-     * Parameters:
-     * options - {Object} Configuration for the method call
-     *
-     * Available options:
-     * callback - {Function} Callback to execute when the description is
-     *     available. Will be called with the parsed description as argument.
-     *     Optional.
-     * scope - {Object} The scope in which the callback will be executed.
-     *     Default is the global object.
-     */
-    describe: function(options) {
+        describe: function(options) {
         options = options || {};
         if (!this.description) {
             this.client.describeProcess(this.server, this.identifier, function(description) {
@@ -135,28 +51,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         }
     },
     
-    /**
-     * APIMethod: configure
-     * Configure the process, but do not execute it. Use this for processes
-     * that are chained as input of a different process by means of the
-     * <output> method.
-     *
-     * Parameters:
-     * options - {Object}
-     *
-     * Returns:
-     * {<OpenLayers.WPSProcess>} this process.
-     *
-     * Available options:
-     * inputs - {Object} The inputs for the process, keyed by input identifier.
-     *     For spatial data inputs, the value of an input is usually an
-     *     <OpenLayers.Geometry>, an <OpenLayers.Feature.Vector> or an array of
-     *     geometries or features.
-     * callback - {Function} Callback to call when the configuration is
-     *     complete. Optional.
-     * scope - {Object} Optional scope for the callback.
-     */
-    configure: function(options) {
+        configure: function(options) {
         this.describe({
             callback: function() {
                 var description = this.description,
@@ -175,34 +70,11 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         return this;
     },
     
-    /**
-     * APIMethod: execute
-     * Configures and executes the process
-     *
-     * Parameters:
-     * options - {Object}
-     *
-     * Available options:
-     * inputs - {Object} The inputs for the process, keyed by input identifier.
-     *     For spatial data inputs, the value of an input is usually an
-     *     <OpenLayers.Geometry>, an <OpenLayers.Feature.Vector> or an array of
-     *     geometries or features.
-     * output - {String} The identifier of the output to request and parse.
-     *     Optional. If not provided, the first output will be requested.
-     * success - {Function} Callback to call when the process is complete.
-     *     This function is called with an outputs object as argument, which
-     *     will have a property with the identifier of the requested output
-     *     (or 'result' if output was not configured). For processes that
-     *     generate spatial output, the value will be an array of
-     *     <OpenLayers.Feature.Vector> instances.
-     * scope - {Object} Optional scope for the success callback.
-     */
-    execute: function(options) {
+        execute: function(options) {
         this.configure({
             inputs: options.inputs,
             callback: function() {
                 var me = this;
-                //TODO For now we only deal with a single output
                 var outputIndex = this.getOutputIndex(
                     me.description.processOutputs, options.output
                 );
@@ -210,13 +82,9 @@ OpenLayers.WPSProcess = OpenLayers.Class({
                 (function callback() {
                     OpenLayers.Util.removeItem(me.executeCallbacks, callback);
                     if (me.chained !== 0) {
-                        // need to wait until chained processes have a
-                        // description and configuration - see chainProcess
                         me.executeCallbacks.push(callback);
                         return;
                     }
-                    // all chained processes are added as references now, so
-                    // let's proceed.
                     OpenLayers.Request.POST({
                         url: me.client.servers[me.server].url,
                         data: new OpenLayers.Format.WPSExecute().write(me.description),
@@ -236,7 +104,6 @@ OpenLayers.WPSProcess = OpenLayers.Class({
                                 var mimeType = me.findMimeType(
                                     output.complexOutput.supported.formats
                                 );
-                                //TODO For now we assume a spatial output
                                 result = me.formats[mimeType].read(response.responseText);
                                 if (result instanceof OpenLayers.Feature.Vector) {
                                     result = [result];
@@ -256,64 +123,21 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         });
     },
     
-    /**
-     * APIMethod: output
-     * Chain an output of a configured process (see <configure>) as input to
-     * another process.
-     *
-     * (code)
-     * intersect = client.getProcess('opengeo', 'JTS:intersection');    
-     * intersect.configure({
-     *     // ...
-     * });
-     * buffer = client.getProcess('opengeo', 'JTS:buffer');
-     * buffer.execute({
-     *     inputs: {
-     *         geom: intersect.output('result'), // <-- here we're chaining
-     *         distance: 1
-     *     },
-     *     // ...
-     * });
-     * (end)
-     *
-     * Parameters:
-     * identifier - {String} Identifier of the output that we're chaining. If
-     *     not provided, the first output will be used.
-     */
-    output: function(identifier) {
+        output: function(identifier) {
         return new OpenLayers.WPSProcess.ChainLink({
             process: this,
             output: identifier
         });
     },
     
-    /**
-     * Method: parseDescription
-     * Parses the DescribeProcess response
-     *
-     * Parameters:
-     * description - {Object}
-     */
-    parseDescription: function(description) {
+        parseDescription: function(description) {
         var server = this.client.servers[this.server];
         this.description = new OpenLayers.Format.WPSDescribeProcess()
             .read(server.processDescription[this.identifier])
             .processDescriptions[this.identifier];
     },
     
-    /**
-     * Method: setInputData
-     * Sets the data for a single input
-     *
-     * Parameters:
-     * input - {Object}  An entry from the dataInputs array of the process
-     *     description.
-     * data - {Mixed} For spatial data inputs, this is usually an
-     *     <OpenLayers.Geometry>, an <OpenLayers.Feature.Vector> or an array of
-     *     geometries or features.
-     */
-    setInputData: function(input, data) {
-        // clear any previous data
+        setInputData: function(input, data) {
         delete input.data;
         delete input.reference;
         if (data instanceof OpenLayers.WPSProcess.ChainLink) {
@@ -347,19 +171,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         }
     },
     
-    /**
-     * Method: setResponseForm
-     * Sets the responseForm property of the <execute> payload.
-     *
-     * Parameters:
-     * options - {Object} See below.
-     *
-     * Available options:
-     * outputIndex - {Integer} The index of the output to use. Optional.
-     * supportedFormats - {Object} Object with supported mime types as key,
-     *     and true as value for supported types. Optional.
-     */
-    setResponseForm: function(options) {
+        setResponseForm: function(options) {
         options = options || {};
         var output = this.description.processOutputs[options.outputIndex || 0];
         var mimeType;
@@ -374,19 +186,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         };
     },
     
-    /**
-     * Method: getOutputIndex
-     * Gets the index of a processOutput by its identifier
-     *
-     * Parameters:
-     * outputs - {Array} The processOutputs array to look at
-     * identifier - {String} The identifier of the output
-     *
-     * Returns
-     * {Integer} The index of the processOutput with the provided identifier
-     *     in the outputs array.
-     */
-    getOutputIndex: function(outputs, identifier) {
+        getOutputIndex: function(outputs, identifier) {
         var output;
         if (identifier) {
             for (var i=outputs.length-1; i>=0; --i) {
@@ -401,15 +201,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         return output;
     },
     
-    /**
-     * Method: chainProcess
-     * Sets a fully configured chained process as input for this process.
-     *
-     * Parameters:
-     * input - {Object} The dataInput that the chained process provides.
-     * chainLink - {<OpenLayers.WPSProcess.ChainLink>} The process to chain.
-     */
-    chainProcess: function(input, chainLink) {
+        chainProcess: function(input, chainLink) {
         var output = this.getOutputIndex(
             chainLink.process.description.processOutputs, chainLink.output
         );
@@ -429,19 +221,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         }
     },
     
-    /**
-     * Method: toFeatures
-     * Converts spatial input into features so it can be processed by
-     * <OpenLayers.Format> instances.
-     *
-     * Parameters:
-     * source - {Mixed} An <OpenLayers.Geometry>, an
-     *     <OpenLayers.Feature.Vector>, or an array of geometries or features
-     *
-     * Returns:
-     * {Array(<OpenLayers.Feature.Vector>)}
-     */
-    toFeatures: function(source) {
+        toFeatures: function(source) {
         var isArray = OpenLayers.Util.isArray(source);
         if (!isArray) {
             source = [source];
@@ -456,21 +236,7 @@ OpenLayers.WPSProcess = OpenLayers.Class({
         return isArray ? target : target[0];
     },
     
-    /**
-     * Method: findMimeType
-     * Finds a supported mime type.
-     *
-     * Parameters:
-     * sourceFormats - {Object} An object literal with mime types as key and
-     *     true as value for supported formats.
-     * targetFormats - {Object} Like <sourceFormats>, but optional to check for
-     *     supported mime types on a different target than this process.
-     *     Default is to check against this process's supported formats.
-     *
-     * Returns:
-     * {String} A supported mime type.
-     */
-    findMimeType: function(sourceFormats, targetFormats) {
+        findMimeType: function(sourceFormats, targetFormats) {
         targetFormats = targetFormats || this.formats;
         for (var f in sourceFormats) {
             if (f in targetFormats) {
@@ -483,32 +249,13 @@ OpenLayers.WPSProcess = OpenLayers.Class({
     
 });
 
-/**
- * Class: OpenLayers.WPSProcess.ChainLink
- * Type for chaining processes.
- */
 OpenLayers.WPSProcess.ChainLink = OpenLayers.Class({
     
-    /**
-     * Property: process
-     * {<OpenLayers.WPSProcess>} The process to chain
-     */
-    process: null,
+        process: null,
     
-    /**
-     * Property: output
-     * {String} The output identifier of the output we are going to use as
-     *     input for another process.
-     */
-    output: null,
+        output: null,
     
-    /**
-     * Constructor: OpenLayers.WPSProcess.ChainLink
-     *
-     * Parameters:
-     * options - {Object} Properties to set on the instance.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         OpenLayers.Util.extend(this, options);
     },
     

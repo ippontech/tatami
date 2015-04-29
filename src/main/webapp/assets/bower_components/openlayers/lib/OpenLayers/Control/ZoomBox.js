@@ -3,71 +3,19 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Control.js
- * @requires OpenLayers/Handler/Box.js
- */
 
-/**
- * Class: OpenLayers.Control.ZoomBox
- * The ZoomBox control enables zooming directly to a given extent, by drawing 
- * a box on the map. The box is drawn by holding down shift, whilst dragging 
- * the mouse.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.ZoomBox = OpenLayers.Class(OpenLayers.Control, {
-    /**
-     * Property: type
-     * {OpenLayers.Control.TYPE}
-     */
-    type: OpenLayers.Control.TYPE_TOOL,
+        type: OpenLayers.Control.TYPE_TOOL,
 
-    /**
-     * Property: out
-     * {Boolean} Should the control be used for zooming out?
-     */
-    out: false,
+        out: false,
 
-    /**
-     * APIProperty: keyMask
-     * {Integer} Zoom only occurs if the keyMask matches the combination of 
-     *     keys down. Use bitwise operators and one or more of the
-     *     <OpenLayers.Handler> constants to construct a keyMask. Leave null if 
-     *     not used mask. Default is null.
-     */
-    keyMask: null,
+        keyMask: null,
 
-    /**
-     * APIProperty: alwaysZoom
-     * {Boolean} Always zoom in/out when box drawn, even if the zoom level does
-     * not change.
-     */
-    alwaysZoom: false,
+        alwaysZoom: false,
     
-    /**
-     * APIProperty: zoomOnClick
-     * {Boolean} Should we zoom when no box was dragged, i.e. the user only
-     * clicked? Default is true.
-     */
-    zoomOnClick: true,
+        zoomOnClick: true,
 
-    /**
-     * Method: draw
-     */    
-    draw: function() {
-        this.handler = new OpenLayers.Handler.Box( this,
-                            {done: this.zoomBox}, {keyMask: this.keyMask} );
-    },
-
-    /**
-     * Method: zoomBox
-     *
-     * Parameters:
-     * position - {<OpenLayers.Bounds>} or {<OpenLayers.Pixel>}
-     */
-    zoomBox: function (position) {
+        zoomBox: function (position) {
         if (position instanceof OpenLayers.Bounds) {
             var bounds,
                 targetCenterPx = position.getCenterPixel();
@@ -95,7 +43,6 @@ OpenLayers.Control.ZoomBox = OpenLayers.Class(OpenLayers.Control, {
                 var ymax = center.lat + (extent.getHeight()/2)*zoomFactor;
                 bounds = new OpenLayers.Bounds(xmin, ymin, xmax, ymax);
             }
-            // always zoom in/out 
             var lastZoom = this.map.getZoom(),
                 size = this.map.getSize(),
                 centerPx = {x: size.w / 2, y: size.h / 2},

@@ -3,109 +3,29 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Popup/Anchored.js
- */
 
-/**
- * Class: OpenLayers.Popup.Framed
- * 
- * Inherits from:
- *  - <OpenLayers.Popup.Anchored>
- */
 OpenLayers.Popup.Framed =
   OpenLayers.Class(OpenLayers.Popup.Anchored, {
 
-    /**
-     * Property: imageSrc
-     * {String} location of the image to be used as the popup frame
-     */
-    imageSrc: null,
+        imageSrc: null,
 
-    /**
-     * Property: imageSize
-     * {<OpenLayers.Size>} Size (measured in pixels) of the image located
-     *     by the 'imageSrc' property.
-     */
-    imageSize: null,
+        imageSize: null,
 
-    /**
-     * APIProperty: isAlphaImage
-     * {Boolean} The image has some alpha and thus needs to use the alpha 
-     *     image hack. Note that setting this to true will have no noticeable
-     *     effect in FF or IE7 browsers, but will all but crush the ie6 
-     *     browser. 
-     *     Default is false.
-     */
-    isAlphaImage: false,
+        isAlphaImage: false,
 
-    /**
-     * Property: positionBlocks
-     * {Object} Hash of different position blocks (Object/Hashs). Each block 
-     *     will be keyed by a two-character 'relativePosition' 
-     *     code string (ie "tl", "tr", "bl", "br"). Block properties are 
-     *     'offset', 'padding' (self-explanatory), and finally the 'blocks'
-     *     parameter, which is an array of the block objects. 
-     * 
-     *     Each block object must have 'size', 'anchor', and 'position' 
-     *     properties.
-     * 
-     *     Note that positionBlocks should never be modified at runtime.
-     */
-    positionBlocks: null,
+        positionBlocks: null,
 
-    /**
-     * Property: blocks
-     * {Array[Object]} Array of objects, each of which is one "block" of the 
-     *     popup. Each block has a 'div' and an 'image' property, both of 
-     *     which are DOMElements, and the latter of which is appended to the 
-     *     former. These are reused as the popup goes changing positions for
-     *     great economy and elegance.
-     */
-    blocks: null,
+        blocks: null,
 
-    /** 
-     * APIProperty: fixedRelativePosition
-     * {Boolean} We want the framed popup to work dynamically placed relative
-     *     to its anchor but also in just one fixed position. A well designed
-     *     framed popup will have the pixels and logic to display itself in 
-     *     any of the four relative positions, but (understandably), this will
-     *     not be the case for all of them. By setting this property to 'true', 
-     *     framed popup will not recalculate for the best placement each time
-     *     it's open, but will always open the same way. 
-     *     Note that if this is set to true, it is generally advisable to also
-     *     set the 'panIntoView' property to true so that the popup can be 
-     *     scrolled into view (since it will often be offscreen on open)
-     *     Default is false.
-     */
-    fixedRelativePosition: false,
+        fixedRelativePosition: false,
 
-    /** 
-     * Constructor: OpenLayers.Popup.Framed
-     * 
-     * Parameters:
-     * id - {String}
-     * lonlat - {<OpenLayers.LonLat>}
-     * contentSize - {<OpenLayers.Size>}
-     * contentHTML - {String}
-     * anchor - {Object} Object to which we'll anchor the popup. Must expose 
-     *     a 'size' (<OpenLayers.Size>) and 'offset' (<OpenLayers.Pixel>) 
-     *     (Note that this is generally an <OpenLayers.Icon>).
-     * closeBox - {Boolean}
-     * closeBoxCallback - {Function} Function to be called on closeBox click.
-     */
-    initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
+        initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
                         closeBoxCallback) {
 
         OpenLayers.Popup.Anchored.prototype.initialize.apply(this, arguments);
 
         if (this.fixedRelativePosition) {
-            //based on our decided relativePostion, set the current padding
-            // this keeps us from getting into trouble 
             this.updateRelativePosition();
-            
-            //make calculateRelativePosition always return the specified
-            // fixed position.
             this.calculateRelativePosition = function(px) {
                 return this.relativePosition;
             };
@@ -125,18 +45,13 @@ OpenLayers.Popup.Framed =
         this.groupDiv.style.width = "100%";
     },
 
-    /** 
-     * APIMethod: destroy
-     */
-    destroy: function() {
+        destroy: function() {
         this.imageSrc = null;
         this.imageSize = null;
         this.isAlphaImage = null;
 
         this.fixedRelativePosition = false;
         this.positionBlocks = null;
-
-        //remove our blocks
         for(var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i];
 
@@ -155,63 +70,24 @@ OpenLayers.Popup.Framed =
         OpenLayers.Popup.Anchored.prototype.destroy.apply(this, arguments);
     },
 
-    /**
-     * APIMethod: setBackgroundColor
-     */
-    setBackgroundColor:function(color) {
-        //does nothing since the framed popup's entire scheme is based on a 
-        // an image -- changing the background color makes no sense. 
+        setBackgroundColor:function(color) {
     },
 
-    /**
-     * APIMethod: setBorder
-     */
-    setBorder:function() {
-        //does nothing since the framed popup's entire scheme is based on a 
-        // an image -- changing the popup's border makes no sense. 
+        setBorder:function() {
     },
 
-    /**
-     * Method: setOpacity
-     * Sets the opacity of the popup.
-     * 
-     * Parameters:
-     * opacity - {float} A value between 0.0 (transparent) and 1.0 (solid).   
-     */
-    setOpacity:function(opacity) {
-        //does nothing since we suppose that we'll never apply an opacity
-        // to a framed popup
+        setOpacity:function(opacity) {
     },
 
-    /**
-     * APIMethod: setSize
-     * Overridden here, because we need to update the blocks whenever the size
-     *     of the popup has changed.
-     * 
-     * Parameters:
-     * contentSize - {<OpenLayers.Size>} the new size for the popup's 
-     *     contents div (in pixels).
-     */
-    setSize:function(contentSize) { 
+        setSize:function(contentSize) { 
         OpenLayers.Popup.Anchored.prototype.setSize.apply(this, arguments);
 
         this.updateBlocks();
     },
 
-    /**
-     * Method: updateRelativePosition
-     * When the relative position changes, we need to set the new padding 
-     *     BBOX on the popup, reposition the close div, and update the blocks.
-     */
-    updateRelativePosition: function() {
-
-        //update the padding
+        updateRelativePosition: function() {
         this.padding = this.positionBlocks[this.relativePosition].padding;
-
-        //update the position of our close box to new padding
         if (this.closeDiv) {
-            // use the content div's css padding to determine if we should
-            //  padd the close div
             var contentDivPadding = this.getContentDivPadding();
 
             this.closeDiv.style.right = contentDivPadding.right + 
@@ -223,20 +99,7 @@ OpenLayers.Popup.Framed =
         this.updateBlocks();
     },
 
-    /** 
-     * Method: calculateNewPx
-     * Besides the standard offset as determined by the Anchored class, our 
-     *     Framed popups have a special 'offset' property for each of their 
-     *     positions, which is used to offset the popup relative to its anchor.
-     * 
-     * Parameters:
-     * px - {<OpenLayers.Pixel>}
-     * 
-     * Returns:
-     * {<OpenLayers.Pixel>} The the new px position of the popup on the screen
-     *     relative to the passed-in px.
-     */
-    calculateNewPx:function(px) {
+        calculateNewPx:function(px) {
         var newPx = OpenLayers.Popup.Anchored.prototype.calculateNewPx.apply(
             this, arguments
         );
@@ -246,15 +109,8 @@ OpenLayers.Popup.Framed =
         return newPx;
     },
 
-    /**
-     * Method: createBlocks
-     */
-    createBlocks: function() {
+        createBlocks: function() {
         this.blocks = [];
-
-        //since all positions contain the same number of blocks, we can 
-        // just pick the first position and use its blocks array to create
-        // our blocks array
         var firstPosition = null;
         for(var key in this.positionBlocks) {
             firstPosition = key;
@@ -287,13 +143,7 @@ OpenLayers.Popup.Framed =
         }
     },
 
-    /**
-     * Method: updateBlocks
-     * Internal method, called on initialize and when the popup's relative
-     *     position has changed. This function takes care of re-positioning
-     *     the popup's blocks in their appropropriate places.
-     */
-    updateBlocks: function() {
+        updateBlocks: function() {
         if (!this.blocks) {
             this.createBlocks();
         }
@@ -304,18 +154,10 @@ OpenLayers.Popup.Framed =
     
                 var positionBlock = position.blocks[i];
                 var block = this.blocks[i];
-    
-                // adjust sizes
                 var l = positionBlock.anchor.left;
                 var b = positionBlock.anchor.bottom;
                 var r = positionBlock.anchor.right;
                 var t = positionBlock.anchor.top;
-    
-                //note that we use the isNaN() test here because if the 
-                // size object is initialized with a "auto" parameter, the 
-                // size constructor calls parseFloat() on the string, 
-                // which will turn it into NaN
-                //
                 var w = (isNaN(positionBlock.size.w)) ? this.size.w - (r + l) 
                                                       : positionBlock.size.w;
     

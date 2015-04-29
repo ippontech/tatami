@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : Arabic Saudi Arabia (ar-sa)
-//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

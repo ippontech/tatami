@@ -3,210 +3,67 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Control.js
- * @requires OpenLayers/Lang.js
- * @requires OpenLayers/Rule.js
- * @requires OpenLayers/StyleMap.js
- * @requires OpenLayers/Layer/Vector.js
- */
 
-/**
- * Class: OpenLayers.Control.Graticule
- * The Graticule displays a grid of latitude/longitude lines reprojected on
- * the map.
- * The grid is specified by a list of widths in degrees (with height the same as
- * the width). The grid height can be specified as a multiple of the width.
- * This allows making the grid more regular in specific regions of some
- * projections. The grid can also be specified by lists of both widths and
- * heights. This allows matching externally-defined grid systems.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- *
- */
 OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
 
-    /**
-     * APIProperty: autoActivate
-     * {Boolean} Activate the control when it is added to a map. Default is
-     *     true.
-     */
-    autoActivate: true,
+        autoActivate: true,
 
-    /**
-     * APIProperty: intervals
-     * {Array(Float)} A list of possible graticule widths in degrees.
-     */
-    intervals: [90, 45, 30, 20, 10, 5, 2, 1,
+        intervals: [90, 45, 30, 20, 10, 5, 2, 1,
         0.5, 0.2, 0.1, 0.05, 0.01,
         0.005, 0.002, 0.001
     ],
 
-    /**
-     * APIProperty: intervalHeights
-     * {Array(Float)} A list of possible graticule heights in degrees.
-     * Length must match intervals array.
-     * Default is null (same as widths).
-     */
-    intervalHeights: null,
+        intervalHeights: null,
 
-    /**
-     * Property: intervalHeightFactor
-     * {Number} Factor to compute graticule height from the width.
-     * Can be used to match existing grid systems, or improve regularity of
-     * grid. Default is 1.
-     * Ignored if intervalHeights are set explicitly.
-     */
-    intervalHeightFactor: 1,
+        intervalHeightFactor: 1,
 
-    /**
-     * APIProperty: displayInLayerSwitcher
-     * {Boolean} Allows the Graticule control to be switched on and off by
-     *     LayerSwitcher control. Defaults is true.
-     */
-    displayInLayerSwitcher: true,
+        displayInLayerSwitcher: true,
 
-    /**
-     * APIProperty: visible
-     * {Boolean} should the graticule be initially visible (default=true)
-     */
-    visible: true,
+        visible: true,
 
-    /**
-     * APIProperty: numPoints
-     * {Integer} The number of points to use in each graticule line.  Higher
-     * numbers result in a smoother curve for projected maps.
-     * *Deprecated*. The number of points is now determined by adaptive
-     * quantization.
-     */
-    numPoints: 50,
+        numPoints: 50,
 
-    /**
-     * APIProperty: targetSize
-     * {Integer} The maximum size of the grid in pixels on the map
-     */
-    targetSize: 200,
+        targetSize: 200,
 
-    /**
-     * APIProperty: layerName
-     * {String} The name to be displayed in the layer switcher, default is set
-     *     by {<OpenLayers.Lang>}.
-     */
-    layerName: null,
+        layerName: null,
 
-    /**
-     * APIProperty: labelled
-     * {Boolean} Should the graticule lines be labelled?. default=true
-     */
-    labelled: true,
+        labelled: true,
 
-    /**
-     * APIProperty: labelFormat
-     * {String} the format of the labels, default = 'dm'. See
-     * <OpenLayers.Util.getFormattedLonLat> for other options.
-     */
-    labelFormat: 'dm',
+        labelFormat: 'dm',
 
-    /**
-     * APIProperty: labelLonYOffset
-     * {Integer} the offset of the longitude (X) label from the bottom of the
-     * map.
-     */
-    labelLonYOffset: 2,
+        labelLonYOffset: 2,
 
-    /**
-     * APIProperty: labelLatXOffset
-     * {Integer} the offset of the latitude (Y) label from the right of the map.
-     */
-    labelLatXOffset: -2,
+        labelLatXOffset: -2,
 
-    /**
-     * APIProperty: lineSymbolizer
-     * {symbolizer} the symbolizer used to render lines
-     */
-    lineSymbolizer: {
+        lineSymbolizer: {
         strokeColor: "#333",
         strokeWidth: 1,
         strokeOpacity: 0.5
     },
 
-    /**
-     * APIProperty: labelSymbolizer
-     * {symbolizer} the symbolizer used to render labels
-     */
-    labelSymbolizer: null,
+        labelSymbolizer: null,
 
-    /**
-     * Property: gratLayer
-     * {<OpenLayers.Layer.Vector>} vector layer used to draw the graticule on
-     */
-    gratLayer: null,
+        gratLayer: null,
 
-    /**
-     * Property: epsg4326Projection
-     * {OpenLayers.Projection}
-     */
-    epsg4326Projection: null,
+        epsg4326Projection: null,
 
-    /**
-     * Property: projection
-     * {OpenLayers.Projection} The projection of the graticule.
-     */
-    projection: null,
+        projection: null,
 
-    /**
-     * Property: projectionCenterLonLat
-     * {OpenLayers.LonLat} The center of the projection's validity extent.
-     */
-    projectionCenterLonLat: null,
+        projectionCenterLonLat: null,
 
-    /**
-     * Property: maxLat
-     * {number}
-     */
-    maxLat: Infinity,
+        maxLat: Infinity,
 
-    /**
-     * Propety: maxLon
-     * {number}
-     */
-    maxLon: Infinity,
+        maxLon: Infinity,
 
-    /**
-     * Property: minLat
-     * {number}
-     */
-    minLat: -Infinity,
+        minLat: -Infinity,
 
-    /**
-     * Property: minLon
-     * {number}
-     */
-    minLon: -Infinity,
+        minLon: -Infinity,
 
-    /**
-     * Property: meridians
-     * {Array.<OpenLayers.Feature.Vector>}
-     */
-    meridians: null,
+        meridians: null,
 
-    /**
-     * Property. parallels
-     * {Array.<OpenLayers.Feature.Vector>}
-     */
-    parallels: null,
+        parallels: null,
 
-    /**
-     * Constructor: OpenLayers.Control.Graticule
-     * Create a new graticule control to display a grid of latitude longitude
-     * lines.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be used
-     *     to extend the control.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         options = options || {};
         options.layerName = options.layerName || OpenLayers.i18n("Graticule");
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
@@ -225,10 +82,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         this.meridians = [];
     },
 
-    /**
-     * APIMethod: destroy
-     */
-    destroy: function() {
+        destroy: function() {
         this.deactivate();
         OpenLayers.Control.prototype.destroy.apply(this, arguments);
         if (this.gratLayer) {
@@ -237,15 +91,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: draw
-     *
-     * initializes the graticule layer and does the initial update
-     *
-     * Returns:
-     * {DOMElement}
-     */
-    draw: function() {
+        draw: function() {
         OpenLayers.Control.prototype.draw.apply(this, arguments);
         if (!this.gratLayer) {
             var gratStyle = new OpenLayers.Style({}, {
@@ -262,18 +108,13 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 }),
                 visibility: this.visible,
                 displayInLayerSwitcher: this.displayInLayerSwitcher,
-                // Prefer the canvas renderer to avoid coordinate range issues
-                // with graticule lines
                 renderers: ['Canvas', 'VML', 'SVG']
             });
         }
         return this.div;
     },
 
-    /**
-     * APIMethod: activate
-     */
-    activate: function() {
+        activate: function() {
         if (OpenLayers.Control.prototype.activate.apply(this, arguments)) {
             this.map.addLayer(this.gratLayer);
             this.map.events.register('moveend', this, this.update);
@@ -284,10 +125,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * APIMethod: deactivate
-     */
-    deactivate: function() {
+        deactivate: function() {
         if (OpenLayers.Control.prototype.deactivate.apply(this, arguments)) {
             this.map.events.unregister('moveend', this, this.update);
             this.map.removeLayer(this.gratLayer);
@@ -297,17 +135,8 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: update
-     *
-     * calculates the grid to be displayed and actually draws it
-     *
-     * Returns:
-     * {DOMElement}
-     */
-    update: function() {
+        update: function() {
         var map = this.map;
-        //wait for the map to be initialized before proceeding
         var extent = this.map.getExtent();
         if (!extent) {
             return;
@@ -324,13 +153,9 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         }
 
         this.createGraticule(extent, center, resolution, squaredTolerance);
-
-        // Draw the lines
         this.gratLayer.destroyFeatures();
         this.gratLayer.addFeatures(this.meridians);
         this.gratLayer.addFeatures(this.parallels);
-
-        // Draw the labels
         if (this.labelled) {
             var left = new OpenLayers.Geometry.LineString([
                 new OpenLayers.Geometry.Point(extent.left, extent.bottom),
@@ -346,8 +171,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 line = this.meridians[i];
                 labelPoint = line.attributes.labelPoint;
                 labelAlign = 'cb';
-                // If there is no intersection with the bottom of the viewport,
-                // intersect with the left.
                 if (!labelPoint) {
                     split = line.geometry.split(left);
                     if (split) {
@@ -370,8 +193,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 line = this.parallels[i];
                 labelPoint = line.attributes.labelPoint;
                 labelAlign = 'rb';
-                // If there is no intersection with the right of the viewport,
-                // intersect with the top.
                 if (!labelPoint) {
                     split = line.geometry.split(top);
                     if (split) {
@@ -394,20 +215,9 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: createGraticule
-     *
-     * Parameters:
-     * extent - {OpenLayers.Bounds} Extent.
-     * center - {OpenLayers.LonLat} Center.
-     * resolution - {number} Resolution.
-     * squaredTolerance - {number} Squared tolerance.
-     */
-    createGraticule: function(extent, center, resolution, squaredTolerance) {
+        createGraticule: function(extent, center, resolution, squaredTolerance) {
         var centerLonLat = center.clone().transform(
             this.projection, this.epsg4326Projection);
-        // If centerLonLat could not be transformed (e.g. [0, 0] in polar
-        // projections), we shift the center a bit to get a result.
         if (isNaN(centerLonLat.lon) || isNaN(centerLonLat.lat)) {
             centerLonLat = center.add(0.000000001, 0.000000001).transform(
                 this.projection, this.epsg4326Projection);
@@ -415,18 +225,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         var extentGeom = extent.toGeometry();
         var extent4326 = extent.clone()
             .transform(this.projection, this.epsg4326Projection);
-
-        // Optimize the length of graticule lines: Instead of always calculating
-        // and rendering them from one end of the world to the other, we only
-        // want to create them for the visible map viewport. To make sure that
-        // our graticule lines are long enough (even in polar projections), we
-        // only make this optimization under certain conditions:
-        // * When we look at a small subset of the world
-        // * When coordinates increase south -> north and west -> east
-        // * When the projection center is not inside the extent.
-        // With these conditions, a valid grid will be available for all
-        // projections within their validity extent. Outside the validity
-        // extent, partial grid lines may occur.
         var minLon, minLat, maxLon, maxLat;
         var pixelSize = this.map.getGeodesicPixelSize();
         if (pixelSize.w < 0.5 && pixelSize.h < 0.5 &&
@@ -450,11 +248,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         var size = this.map.getSize();
         var idx, prevIdx, lon, lat, visibleIntervals, interval, intervalIndex;
         var centerLon, centerLat;
-
-        // Create meridians
-
-        // Start with the coarsest interval, then refine until we reach the
-        // desired targetSize
         visibleIntervals = Math.ceil(size.w / this.targetSize);
         intervalIndex = 0;
         do {
@@ -473,7 +266,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 idx = this.addMeridian(
                     lon, minLat, maxLat, squaredTolerance, extentGeom, idx);
                 if (prevIdx == idx) {
-                    // bail out if we're producing lines that are not visible
                     break;
                 }
             }
@@ -487,7 +279,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 idx = this.addMeridian(
                     lon, minLat, maxLat, squaredTolerance, extentGeom, idx);
                 if (prevIdx == idx) {
-                    // bail out if we're producing lines that are not visible
                     break;
                 }
             }
@@ -495,11 +286,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
             idx <= visibleIntervals);
 
         this.meridians.length = idx;
-
-        // Create parallels
-
-        // Start with the coarsest interval, then refine until we reach the
-        // desired targetSize
         visibleIntervals = Math.ceil(size.h / this.targetSize);
         intervalIndex = 0;
         do {
@@ -520,7 +306,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 idx = this.addParallel(
                     lat, minLon, maxLon, squaredTolerance, extentGeom, idx);
                 if (prevIdx == idx) {
-                    // bail out if we're producing lines that are not visible
                     break;
                 }
             }
@@ -534,7 +319,6 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
                 idx = this.addParallel(
                     lat, minLon, maxLon, squaredTolerance, extentGeom, idx);
                 if (prevIdx == idx) {
-                    // bail out if we're producing lines that are not visible
                     break;
                 }
             }
@@ -545,13 +329,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         this.parallels.length = idx;
     },
 
-    /**
-     * Method: updateProjectionInfo
-     *
-     * Parameters:
-     * projection - {OpenLayers.Projection} Projection.
-     */
-    updateProjectionInfo: function(projection) {
+        updateProjectionInfo: function(projection) {
         var defaults = OpenLayers.Projection.defaults[projection.getCode()];
         var extent = defaults && defaults.maxExtent ?
             OpenLayers.Bounds.fromArray(defaults.maxExtent) :
@@ -563,31 +341,13 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         this.maxLon = worldExtent[2];
         this.minLat = worldExtent[1];
         this.minLon = worldExtent[0];
-
-        // Use the center of the transformed projection extent rather than the
-        // transformed center of the projection extent. This way we avoid issues
-        // with polar projections where [0, 0] cannot be transformed.
         this.projectionCenterLonLat = extent.clone().transform(
             projection, this.epsg4326Projection).getCenterLonLat();
 
         this.projection = projection;
     },
 
-    /**
-     * Method: addMeridian
-     *
-     * Parameters:
-     * lon - {number} Longitude.
-     * minLat - {number} Minimum latitude.
-     * maxLat - {number} Maximum latitude.
-     * squaredTolerance - {number} Squared tolerance.
-     * extentGeom - {OpenLayers.Geometry.Polygon} Extent.
-     * index {number} Index.
-     *
-     * Returns:
-     * {number} Index.
-     */
-    addMeridian: function(
+        addMeridian: function(
             lon, minLat, maxLat, squaredTolerance, extentGeom, index) {
         var lineString = OpenLayers.Geometry.LineString.geodesicMeridian(
             lon, minLat, maxLat, this.projection, squaredTolerance);
@@ -603,21 +363,7 @@ OpenLayers.Control.Graticule = OpenLayers.Class(OpenLayers.Control, {
         return index;
     },
 
-    /**
-     * Method: addParallel
-     *
-     * Parameters:
-     * lat - {number} Latitude.
-     * minLon - {number} Minimum longitude.
-     * maxLon - {number} Maximum longitude.
-     * squaredTolerance - {number} Squared tolerance.
-     * extentGeom - {OpenLayers.Geometry.Polygon} Extent.
-     * index - {number} Index.
-     *
-     * Returns:
-     * {number} Index.
-     */
-    addParallel: function(
+        addParallel: function(
             lat, minLon, maxLon, squaredTolerance, extentGeom, index) {
         var lineString = OpenLayers.Geometry.LineString.geodesicParallel(
             lat, minLon, maxLon, this.projection, squaredTolerance);

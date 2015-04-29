@@ -3,68 +3,30 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/SOSCapabilities.js
- * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
- * @requires OpenLayers/Format/GML/v3.js
- */
 
-/**
- * Class: OpenLayers.Format.SOSCapabilities.v1_0_0
- * Read SOS Capabilities version 1.0.0.
- * 
- * Inherits from:
- *  - <OpenLayers.Format.SOSCapabilities>
- */
 OpenLayers.Format.SOSCapabilities.v1_0_0 = OpenLayers.Class(
     OpenLayers.Format.SOSCapabilities, {
 
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         ows: "http://www.opengis.net/ows/1.1",
         sos: "http://www.opengis.net/sos/1.0",
         gml: "http://www.opengis.net/gml",
         xlink: "http://www.w3.org/1999/xlink"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
     
-    /**
-     * Constructor: OpenLayers.Format.SOSCapabilities.v1_0_0
-     * Create a new parser for SOS capabilities version 1.0.0. 
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
         this.options = options;
     },
 
-    /**
-     * APIMethod: read
-     * Read capabilities data from a string, and return info about the SOS.
-     * 
-     * Parameters: 
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Object} Information about the SOS service.
-     */
-    read: function(data) {
+        read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -76,15 +38,7 @@ OpenLayers.Format.SOSCapabilities.v1_0_0 = OpenLayers.Class(
         return capabilities;
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "gml": OpenLayers.Util.applyDefaults({
             "name": function(node, obj) {
                 obj.name = this.getChildValue(node);

@@ -12,8 +12,6 @@ import toInt from '../utils/to-int';
 import compareArrays from '../utils/compare-arrays';
 import { hooks } from '../utils/hooks';
 
-// FORMATTING
-
 function offset (token, separator) {
     addFormatToken(token, 0, 0, function () {
         var offset = this.utcOffset();
@@ -29,20 +27,12 @@ function offset (token, separator) {
 offset('Z', ':');
 offset('ZZ', '');
 
-// PARSING
-
 addRegexToken('Z',  matchOffset);
 addRegexToken('ZZ', matchOffset);
 addParseToken(['Z', 'ZZ'], function (input, array, config) {
     config._useUTC = true;
     config._tzm = offsetFromString(input);
 });
-
-// HELPERS
-
-// timezone chunker
-// '+10:00' > ['10',  '00']
-// '-1530'  > ['-15', '30']
 var chunkOffset = /([\+\-]|\d\d)/gi;
 
 function offsetFromString(string) {
@@ -53,14 +43,11 @@ function offsetFromString(string) {
 
     return parts[0] === '+' ? minutes : -minutes;
 }
-
-// Return a moment from input, that is local/utc/zone equivalent to model.
 export function cloneWithOffset(input, model) {
     var res, diff;
     if (model._isUTC) {
         res = model.clone();
         diff = (isMoment(input) || isDate(input) ? +input : +createLocal(input)) - (+res);
-        // Use low-level api, because this fn is low-level api.
         res._d.setTime(+res._d + diff);
         hooks.updateOffset(res, false);
         return res;
@@ -71,29 +58,9 @@ export function cloneWithOffset(input, model) {
 }
 
 function getDateOffset (m) {
-    // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-    // https://github.com/moment/moment/pull/1871
     return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
 }
-
-// HOOKS
-
-// This function will be called whenever a moment is mutated.
-// It is intended to keep the offset in sync with the timezone.
 hooks.updateOffset = function () {};
-
-// MOMENTS
-
-// keepLocalTime = true means only change the timezone, without
-// affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
-// 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
-// +0200, so we adjust the time as needed, to be valid.
-//
-// Keeping the time actually adds/subtracts (one hour)
-// from the actual represented time. That is why we call updateOffset
-// a second time. In case it wants us to change the offset again
-// _changeInProgress == true case, then we have to adjust, because
-// there is no such time in the given timezone.
 export function getSetOffset (input, keepLocalTime) {
     var offset = this._offset || 0,
         localAdjust;

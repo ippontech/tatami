@@ -3,26 +3,10 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- * @requires OpenLayers/Format/SOSGetFeatureOfInterest.js
- */
 
-/**
- * Class: OpenLayers.Format.SOSGetObservation
- * Read and write SOS GetObersation (to get the actual values from a sensor) 
- *     version 1.0.0
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         ows: "http://www.opengis.net/ows",
         gml: "http://www.opengis.net/gml",
         sos: "http://www.opengis.net/sos/1.0",
@@ -34,52 +18,21 @@ OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
         xmlns: "http://www.w3.org/2000/xmlns/"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Constant: VERSION
-     * {String} 1.0.0
-     */
-    VERSION: "1.0.0",
+        VERSION: "1.0.0",
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location
-     */
-    schemaLocation: "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd",
+        schemaLocation: "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd",
 
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "sos",
+        defaultPrefix: "sos",
 
-    /**
-     * Constructor: OpenLayers.Format.SOSGetObservation
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * Method: read
-     * 
-     * Parameters: 
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Object} An object containing the measurements
-     */
-    read: function(data) {
+    
+        read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -91,16 +44,7 @@ OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
         return info;
     },
 
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * options - {Object} Optional object.
-     *
-     * Returns:
-     * {String} An SOS GetObservation request XML string.
-     */
-    write: function(options) {
+        write: function(options) {
         var node = this.writeNode("sos:GetObservation", options);
         this.setAttributeNS(
             node, this.namespaces.xmlns,
@@ -117,15 +61,7 @@ OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [node]);
     }, 
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "om": {
             "ObservationCollection": function(node, obj) {
                 obj.id = this.getAttributeNS(node, this.namespaces.gml, "id");
@@ -164,7 +100,6 @@ OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
                 observation.fois = [];
                 observation.fois.push(foi);
                 this.readChildNodes(node, foi);
-                // postprocessing to get actual features
                 var features = [];
                 for (var i=0, len=foi.features.length; i<len; i++) {
                     var feature = foi.features[i];
@@ -197,13 +132,7 @@ OpenLayers.Format.SOSGetObservation = OpenLayers.Class(OpenLayers.Format.XML, {
         }, OpenLayers.Format.SOSGetFeatureOfInterest.prototype.readers.gml)
     },
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "sos": {
             "GetObservation": function(options) {
                 var node = this.createElementNSPlus("GetObservation", {

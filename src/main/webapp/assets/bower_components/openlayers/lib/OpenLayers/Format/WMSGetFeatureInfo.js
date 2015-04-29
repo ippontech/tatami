@@ -3,71 +3,24 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- */
 
-/**
- * Class: OpenLayers.Format.WMSGetFeatureInfo
- * Class to read GetFeatureInfo responses from Web Mapping Services
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
 
-    /**
-     * APIProperty: layerIdentifier
-     * {String} All xml nodes containing this search criteria will populate an
-     *     internal array of layer nodes.
-     */
-    layerIdentifier: '_layer',
+        layerIdentifier: '_layer',
 
-    /**
-     * APIProperty: featureIdentifier
-     * {String} All xml nodes containing this search criteria will populate an
-     *     internal array of feature nodes for each layer node found.
-     */
-    featureIdentifier: '_feature',
+        featureIdentifier: '_feature',
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Property: gmlFormat
-     * {<OpenLayers.Format.GML>} internal GML format for parsing geometries
-     *     in msGMLOutput
-     */
-    gmlFormat: null,
+        gmlFormat: null,
 
-    /**
-     * Constructor: OpenLayers.Format.WMSGetFeatureInfo
-     * Create a new parser for WMS GetFeatureInfo responses
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * APIMethod: read
-     * Read WMS GetFeatureInfo data from a string, and return an array of features
-     *
-     * Parameters:
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Array(<OpenLayers.Feature.Vector>)} An array of features.
-     */
-    read: function(data) {
+    
+        read: function(data) {
         var result;
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
@@ -79,8 +32,6 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
             if(read) {
                 result = read.call(this, root);
             } else {
-                // fall-back to GML since this is a common output format for WMS
-                // GetFeatureInfo responses
                 result = new OpenLayers.Format.GML((this.options ? this.options : {})).read(data);
             }
         } else {
@@ -90,17 +41,7 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
     },
 
 
-    /**
-     * Method: read_msGMLOutput
-     * Parse msGMLOutput nodes.
-     *
-     * Parameters:
-     * data - {DOMElement}
-     *
-     * Returns:
-     * {Array}
-     */
-    read_msGMLOutput: function(data) {
+        read_msGMLOutput: function(data) {
         var response = [];
         var layerNodes = this.getSiblingNodesByTagCriteria(data,
             this.layerIdentifier);
@@ -131,17 +72,7 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
         return response;
     },
 
-    /**
-     * Method: read_FeatureInfoResponse
-     * Parse FeatureInfoResponse nodes.
-     *
-     * Parameters:
-     * data - {DOMElement}
-     *
-     * Returns:
-     * {Array}
-     */
-    read_FeatureInfoResponse: function(data) {
+        read_FeatureInfoResponse: function(data) {
         var response = [];
         var featureNodes = this.getElementsByTagNameNS(data, '*',
             'FIELDS');
@@ -149,9 +80,6 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
         for(var i=0, len=featureNodes.length;i<len;i++) {
             var featureNode = featureNodes[i];
             var geom = null;
-
-            // attributes can be actual attributes on the FIELDS tag,
-            // or FIELD children
             var attributes = {};
             var j;
             var jlen = featureNode.attributes.length;
@@ -178,21 +106,7 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
         return response;
     },
 
-    /**
-     * Method: getSiblingNodesByTagCriteria
-     * Recursively searches passed xml node and all it's descendant levels for
-     *     nodes whose tagName contains the passed search string. This returns an
-     *     array of all sibling nodes which match the criteria from the highest
-     *     hierarchial level from which a match is found.
-     *
-     * Parameters:
-     * node - {DOMElement} An xml node
-     * criteria - {String} Search string which will match some part of a tagName
-     *
-     * Returns:
-     * Array({DOMElement}) An array of sibling xml nodes
-     */
-    getSiblingNodesByTagCriteria: function(node, criteria){
+        getSiblingNodesByTagCriteria: function(node, criteria){
         var nodes = [];
         var children, tagName, n, matchNodes, child;
         if (node && node.hasChildNodes()) {
@@ -223,20 +137,7 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
         return nodes;
     },
 
-    /**
-     * Method: parseAttributes
-     *
-     * Parameters:
-     * node - {<DOMElement>}
-     *
-     * Returns:
-     * {Object} An attributes object.
-     *
-     * Notes:
-     * Assumes that attributes are direct child xml nodes of the passed node
-     * and contain only a single text node.
-     */
-    parseAttributes: function(node){
+        parseAttributes: function(node){
         var attributes = {};
         if (node.nodeType == 1) {
             var children = node.childNodes;
@@ -250,15 +151,11 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
                     if (grandchildren.length == 0) {
                         attributes[name] = null;
                     } else if (grandchildren.length == 1 ||
-                            // to include separate big tag (with Firefox)
-                            // without including boundedBy and geom.
                             grandchildren[0].nodeValue.replace(
                                 this.regExes.trimSpace, "").length > 0) {
                         var grandchild = grandchildren[0];
                         if (grandchild.nodeType == 3 ||
                                 grandchild.nodeType == 4) {
-                            // wholeText doesn't exist everywhere but we need it for FireFox
-                            // see i.e.: http://msdn.microsoft.com/en-us/library/ie/ff974769%28v=vs.85%29.aspx
                             var attribute = grandchild.wholeText ?
                                 grandchild.wholeText :
                                 grandchild.nodeValue;
@@ -272,20 +169,7 @@ OpenLayers.Format.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Format.XML, {
         return attributes;
     },
 
-    /**
-     * Method: parseGeometry
-     * Parse the geometry and the feature bounds out of the node using
-     *     Format.GML
-     *
-     * Parameters:
-     * node - {<DOMElement>}
-     *
-     * Returns:
-     * {Object} An object containing the geometry and the feature bounds
-    */
-    parseGeometry: function(node) {
-        // we need to use the old Format.GML parser since we do not know the
-        // geometry name
+        parseGeometry: function(node) {
         if (!this.gmlFormat) {
             this.gmlFormat = new OpenLayers.Format.GML();
         }

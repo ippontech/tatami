@@ -5,7 +5,6 @@ var gutil = require('gulp-util');
 var fs = require('fs');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-//var wrap = require('gulp-wrap');
 var templateCache = require('gulp-angular-templatecache');
 var gjshint = require('gulp-jshint');
 var ngAnnotate = require('gulp-ng-annotate');
@@ -35,85 +34,7 @@ gulp.task('site', ['copy', 'dist'], function () {
     app.listen(port, function () {
         var lrServer = require('gulp-livereload')();
 
-        gulp.watch(['src/**/*.*', 'ment.io/*.*'], ['dist']).on('change', function (file) {
-            console.log('Reload', file.path);
-            lrServer.changed(file.path);
-        });
-
-        // open the browser
-        require('open')('http://localhost:' + port + '/ment.io', openBrowser);
-
-        console.log('Example app started on port [%s]', port);
-    });
-});
-
-gulp.task('dist', ['tpl'], function () {
-    return gulp.src([
-        'src/mentio.directive.js',
-        'src/mentio.service.js',
-        'src/templates.js'
-    ])
-    .pipe(gjshint())
-    .pipe(gjshint.reporter(stylish))
-    .pipe(ngAnnotate())
-    .pipe(concat('mentio.js'))
-    .pipe(gulp.dest('dist'))
-    .pipe(uglify())
-    .pipe(concat('mentio.min.js'))
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('jshint', function () {
-    return gulp.src('src/**/*.js')
-        .pipe(gjshint())
-        .pipe(gjshint.reporter(stylish));
-});
-
-gulp.task('tpl', function () {
-    return gulp.src('src/**/*.tpl.html')
-        .pipe(templateCache({
-            module: 'mentio'
-        }))
-        .pipe(gulp.dest('src'));
-});
-
-gulp.task('copy', function() {
-    gulp.src(['bower_components/angular-ui-tinymce/src/tinymce.js'])
-    .pipe(gulp.dest('ment.io'))
-});
-
-// Basic usage:
-// Will patch the version
-gulp.task('bump', function(){
-  gulp.src(['./package.json', './bower.json'])
-  .pipe(bump())
-  .pipe(gulp.dest('./'));
-});
-
-function testTask (params) {
-    var karma = require('gulp-karma');
-
-    var karmaConfig = {
-        configFile: './karma.conf.js',
-        action: params.isWatch ? 'watch' : 'run'
-    };
-
-    if (params.coverageReporter) {
-        karmaConfig.coverageReporter = params.coverageReporter;
-    }
-
-    if (params.reporters) {
-        karmaConfig.reporters = params.reporters;
-    }
-
-    return gulp.src('DO_NOT_MATCH') //use the files in the karma.conf.js
-        .pipe(karma(karmaConfig));
-}
-
-/**
- * Run the karma spec tests
- */
-gulp.task('test', ['copy', 'dist'], function () {
+        gulp.watch(['srcgulp.task('test', ['copy', 'dist'], function () {
     testTask({
         isWatch: gutil.env.hasOwnProperty('watch')
     });

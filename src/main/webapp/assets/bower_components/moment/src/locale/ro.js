@@ -1,7 +1,3 @@
-//! moment.js locale configuration
-//! locale : romanian (ro)
-//! author : Vlad Gurdiga : https://github.com/gurdiga
-//! author : Valentin Agachi : https://github.com/avaly
 
 import moment from '../moment';
 

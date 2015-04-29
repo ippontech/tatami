@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // POPOVER PUBLIC CLASS DEFINITION
-  // ===============================
-
   var Popover = function (element, options) {
     this.init('popover', element, options)
   }
@@ -35,10 +32,6 @@
   , content: ''
   , template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
   })
-
-
-  // NOTE: POPOVER EXTENDS tooltip.js
-  // ================================
 
   Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
 
@@ -57,9 +50,6 @@
     $tip.find('.popover-content')[this.options.html ? 'html' : 'text'](content)
 
     $tip.removeClass('fade top bottom left right in')
-
-    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-    // this manually by checking the contents.
     if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
   }
 
@@ -86,10 +76,6 @@
     return this.$tip
   }
 
-
-  // POPOVER PLUGIN DEFINITION
-  // =========================
-
   var old = $.fn.popover
 
   $.fn.popover = function (option) {
@@ -104,10 +90,6 @@
   }
 
   $.fn.popover.Constructor = Popover
-
-
-  // POPOVER NO CONFLICT
-  // ===================
 
   $.fn.popover.noConflict = function () {
     $.fn.popover = old

@@ -5,16 +5,7 @@
  *  - Александр Сигачёв
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["ru"]
- * Dictionary for Русский.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["ru"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Необработанный запрос вернул ${statusText}",

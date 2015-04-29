@@ -3,61 +3,18 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Control.js
- * @requires OpenLayers/Events/buttonclick.js
- */
 
-/**
- * Class: OpenLayers.Control.Zoom
- * The Zoom control is a pair of +/- links for zooming in and out.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.Zoom = OpenLayers.Class(OpenLayers.Control, {
     
-    /**
-     * APIProperty: zoomInText
-     * {String}
-     * Text for zoom-in link.  Default is "+".
-     */
-    zoomInText: "+",
+        zoomInText: "+",
 
-    /**
-     * APIProperty: zoomInId
-     * {String}
-     * Instead of having the control create a zoom in link, you can provide 
-     *     the identifier for an anchor element already added to the document.
-     *     By default, an element with id "olZoomInLink" will be searched for
-     *     and used if it exists.
-     */
-    zoomInId: "olZoomInLink",
+        zoomInId: "olZoomInLink",
 
-    /**
-     * APIProperty: zoomOutText
-     * {String}
-     * Text for zoom-out link.  Default is "\u2212".
-     */
-    zoomOutText: "\u2212",
+        zoomOutText: "\u2212",
 
-    /**
-     * APIProperty: zoomOutId
-     * {String}
-     * Instead of having the control create a zoom out link, you can provide 
-     *     the identifier for an anchor element already added to the document.
-     *     By default, an element with id "olZoomOutLink" will be searched for
-     *     and used if it exists.
-     */
-    zoomOutId: "olZoomOutLink",
+        zoomOutId: "olZoomOutLink",
 
-    /**
-     * Method: draw
-     *
-     * Returns:
-     * {DOMElement} A reference to the DOMElement containing the zoom links.
-     */
-    draw: function() {
+        draw: function() {
         var div = OpenLayers.Control.prototype.draw.apply(this),
             links = this.getOrCreateLinks(div),
             zoomIn = links.zoomIn,
@@ -75,16 +32,7 @@ OpenLayers.Control.Zoom = OpenLayers.Class(OpenLayers.Control, {
         return div;
     },
     
-    /**
-     * Method: getOrCreateLinks
-     * 
-     * Parameters:
-     * el - {DOMElement}
-     *
-     * Return: 
-     * {Object} Object with zoomIn and zoomOut properties referencing links.
-     */
-    getOrCreateLinks: function(el) {
+        getOrCreateLinks: function(el) {
         var zoomIn = document.getElementById(this.zoomInId),
             zoomOut = document.getElementById(this.zoomOutId);
         if (!zoomIn) {
@@ -108,11 +56,7 @@ OpenLayers.Control.Zoom = OpenLayers.Class(OpenLayers.Control, {
         };
     },
     
-    /**
-     * Method: onZoomClick
-     * Called when zoomin/out link is clicked.
-     */
-    onZoomClick: function(evt) {
+        onZoomClick: function(evt) {
         var button = evt.buttonElement;
         if (button === this.zoomInLink) {
             this.map.zoomIn();
@@ -121,11 +65,7 @@ OpenLayers.Control.Zoom = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /** 
-     * Method: destroy
-     * Clean up.
-     */
-    destroy: function() {
+        destroy: function() {
         if (this.map) {
             this.map.events.unregister("buttonclick", this, this.onZoomClick);
         }

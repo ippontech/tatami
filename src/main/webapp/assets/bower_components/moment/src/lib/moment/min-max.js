@@ -17,12 +17,6 @@ export var prototypeMax = deprecate(
         return other > this ? this : other;
     }
 );
-
-// Pick a moment m from moments so that m[fn](other) is true for all
-// other. This relies on the function fn to be transitive.
-//
-// moments should either be an array of moment objects or an array, whose
-// first element is an array of moment objects.
 function pickBy(fn, moments) {
     var res, i;
     if (moments.length === 1 && isArray(moments[0])) {
@@ -39,8 +33,6 @@ function pickBy(fn, moments) {
     }
     return res;
 }
-
-// TODO: Use [].sort instead?
 export function min () {
     var args = [].slice.call(arguments, 0);
 

@@ -3,17 +3,7 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format.js
- */
 
-/**
- * Class: OpenLayers.Format.CSWGetRecords
- * Default version is 2.0.2.
- *
- * Returns:
- * {<OpenLayers.Format>} A CSWGetRecords format of the given version.
- */
 OpenLayers.Format.CSWGetRecords = function(options) {
     options = OpenLayers.Util.applyDefaults(
         options, OpenLayers.Format.CSWGetRecords.DEFAULTS
@@ -25,10 +15,6 @@ OpenLayers.Format.CSWGetRecords = function(options) {
     return new cls(options);
 };
 
-/**
- * Constant: DEFAULTS
- * {Object} Default properties for the CSWGetRecords format.
- */
 OpenLayers.Format.CSWGetRecords.DEFAULTS = {
     "version": "2.0.2"
 };

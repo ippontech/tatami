@@ -2,16 +2,7 @@
  *  - Arkadiusz Grabka
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["pl"]
- * Dictionary for Polish.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Nieobsługiwane żądanie zwróciło ${statusText}",
@@ -26,8 +17,6 @@ OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
 
     'browserNotSupported':
         "Twoja przeglądarka nie obsługuje renderowania wektorów. Obecnie obsługiwane renderowanie to:\n${renderers}",
-
-    // console message
     'minZoomLevelError':
         "Właściwość minZoomLevel jest przeznaczona tylko do użytku " +
         "z warstwami FixedZoomLevels-descendent." +
@@ -65,15 +54,11 @@ OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
         "target='_blank'>kliknij tutaj</a>",
 
     'Scale = 1 : ${scaleDenom}': "Skala = 1 : ${scaleDenom}",
-    
-    //labels for the graticule control
     'W': 'ZACH',
     'E': 'WSCH',
     'N': 'PN',
     'S': 'PD',
     'Graticule': 'Siatka',
-
-    // console message
     'reprojectDeprecated':
         "w warstwie ${layerName} używasz opcji 'reproject'. " +
         "Ta opcja jest przestarzała: " +
@@ -81,8 +66,6 @@ OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
         "jednak obecnie ta funkcjonalność powinien zostać osiągnięty za pomocą Spherical Mercator " +
         "its use was designed to support displaying data over commercial. Więcje informacji na ten temat możesz znaleźć na stronie " + 
         "http://trac.openlayers.org/wiki/SphericalMercator.",
-
-    // console message
     'methodDeprecated':
         "Ta metoda jest przestarzała i będzie usunięta od wersji 3.0. " +
         "W zamian użyj ${newMethod}."

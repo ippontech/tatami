@@ -40,8 +40,6 @@ proto.toString       = toISOString;
 proto.toJSON         = toISOString;
 proto.locale         = locale;
 proto.localeData     = localeData;
-
-// Deprecations
 import { deprecate } from '../utils/deprecate';
 
 proto.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString);

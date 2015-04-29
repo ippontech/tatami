@@ -2,16 +2,7 @@
  *  - Fulup
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["br"]
- * Dictionary for Brezhoneg.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["br"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Distro evel reked anveret ${statusText}",
