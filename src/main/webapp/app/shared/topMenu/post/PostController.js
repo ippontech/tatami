@@ -66,7 +66,7 @@ PostModule.controller('PostController', [
          * Watches the current.files ng-model and handles uploads
          */
         $scope.$watch('current.files', function() {
-            if($scope.current.files != null) {
+            if($scope.current.files !== null) {
                 for(var i = 0; i < $scope.current.files.length; ++i) {
                     var file = $scope.current.files[i];
                     $scope.uploadStatus.isUploading = true;
@@ -76,25 +76,25 @@ PostModule.controller('PostController', [
                         fileFormDataName: 'uploadFile'
                     }).progress(function(evt) {
                         $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
-                    }).success(function(data, status, headers, config) {
+                    }).success(function(data) {
                         $scope.current.attachments.push(data[0]);
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
                         $scope.status.attachmentIds.push(data[0].attachmentId);
-                    }).error(function(data, status, headers, config) {
+                    }).error(function() {
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
                     })
                 }
             }
         });
-
+        var filesize = parseInt(file.size / 1000);
         $scope.fileSize = function(file) {
             if(file.size / 1000 < 1000) {
-                return parseInt(file.size / 1000) + "K";
+                return filesize + "K";
             }
             else{
-                return parseInt(file.size / 1000000) + "M";
+                return filesize + "M";
             }
         };
         /**
@@ -114,7 +114,7 @@ PostModule.controller('PostController', [
             }
         };
 
-        $modalInstance.setCurrentStatus(curStatus)
+        $modalInstance.setCurrentStatus(curStatus);
 
         $scope.closeModal = function() {
             $modalInstance.dismiss();
@@ -152,7 +152,7 @@ PostModule.controller('PostController', [
             if(term.length > 0) {
                 return SearchService.query({ 'term': 'tags', q: term }, function(result) {
                     $scope.tags = result;
-                })
+                });
             }
 
         };
@@ -186,7 +186,7 @@ PostModule.controller('PostController', [
          * content has been provided by the user.
          */
         $scope.newStatus = function() {
-            if($scope.status.content.trim().length != 0) {
+            if($scope.status.content.trim().length !== 0) {
                 $scope.status.content = $scope.status.content.trim();
 
                 StatusService.save($scope.status, function() {
@@ -234,7 +234,7 @@ PostModule.controller('PostController', [
                 var latitude = geoLocalization.split(',')[0].trim();
                 var longitude = geoLocalization.split(',')[1].trim();
 
-                map = new OpenLayers.Map("simpleMap");
+                var map = new OpenLayers.Map("simpleMap");
                 var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
                 var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
                 var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
