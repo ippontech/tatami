@@ -88,13 +88,13 @@ PostModule.controller('PostController', [
                 }
             }
         });
-        var filesize = parseInt(file.size / 1000);
         $scope.fileSize = function(file) {
             if(file.size / 1000 < 1000) {
-                return filesize + "K";
+                return parseInt(file.size / 1000) + "K";
+
             }
             else{
-                return filesize + "M";
+                return parseInt(file.size / 1000000) + "M";
             }
         };
         /**
