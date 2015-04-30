@@ -1,6 +1,7 @@
 var AboutModule = angular.module('AboutModule', []);
 
 AboutModule.config(['$stateProvider', function($stateProvider) {
+    console.info("loading states");
     $stateProvider
         .state('tatami.about',{
             url: '/about',
@@ -40,5 +41,8 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             data: {
                 public: true
             }
+            
         });
+        console.info("Finished loading");
+        state.test = "working";
 }]);
