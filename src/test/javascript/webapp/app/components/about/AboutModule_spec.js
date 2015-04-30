@@ -1,21 +1,20 @@
 describe("About module routing test", function() {
 
-    var rootScope, state, injector;
+    var stateProvider, rootScope;
     beforeEach(module("ui.router"));
     beforeEach(module("AboutModule"));
 // beforeEach(module('aboutBody'));
-    
-    beforeEach(inject(function ($rootScope, $state, $injector) {
-        rootScope = $rootScope;
-        state = $state;
-        injector = $injector;
+
+    beforeEach(inject(function ($rootScope, $stateProvider) {
+        stateProvider=$stateProvider;
+        rootScope=$rootScope;
     }));
 
 
 
     it('test routing to license', function() {
-        //state.transitionTo('tatami.about.license');
-        console.info(state.get());
+        state.transitionTo('tatami.about.license');
+        console.info(stateProvider);
         rootScope.$apply();
 
     });
