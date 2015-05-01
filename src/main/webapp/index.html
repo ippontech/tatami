@@ -34,30 +34,7 @@
     <script src="/assets/vendor/js/respond/respond.js"></script>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!--
-    <c:if test="${googleAnalyticsKey ne ''}">
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', '${googleAnalyticsKey}']);
-            _gaq.push(['_trackPageview']);
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </c:if>
-    -->
-
-    <!--
-    <sec:authorize ifAnyGranted="ROLE_USER">
-        <c:if test="${not empty user.rssUid}">
-            <link rel="alternate" type="application/rss+xml" title="RSS"
-                  href="/tatami/syndic/${user.rssUid}" />
-        </c:if>
-    </sec:authorize>
-    -->
+    
 </head>
 <body ng-app="TatamiApp" tour>
     <toast></toast>
@@ -111,181 +88,13 @@
     <!-- Minified version causes errors in console -->
     <script src="/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js"></script>
 
-    <!--- ------------------------------------------------------------------ -->
+
 
     <!--- ------------------------------------------------------------------ -->
-    <!-- App and Highest Level Modules -->
+    <!-- All Tatami files (webapp/app/**/*.js) are included in TATAMI.CONCAT.js -->
     <!--- ------------------------------------------------------------------ -->
-
     <script src="TATAMI.CONCAT.js"></script>
-
-    <script src="/app/TatamiApp.js"></script>
-    <script src="/app/shared/topMenu/TopMenuModule.js"></script>
-    <script src="/app/components/login/LoginModule.js"></script>
-    <script src="/app/components/about/AboutModule.js"></script>
-    <script src="/app/components/home/HomeModule.js"></script>
-    <script src="/app/components/account/AccountModule.js"></script>
-    <script src="/app/components/admin/AdminModule.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- About Section -->
     <!--- ------------------------------------------------------------------ -->
 
-    <!-- License View -->
-    <script src="/app/components/about/license/LicenseController.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- Home Section -->
-    <!--- ------------------------------------------------------------------ -->
-    
-    <!-- Home Sidebar View -->
-    <script src="/app/shared/sidebars/home/HomeSidebarModule.js"></script>
-    <script src="/app/shared/sidebars/home/HomeSidebarController.js"></script>
-
-    <!-- Profile Sidebar View -->
-    <script src="/app/shared/sidebars/profile/ProfileSidebarModule.js"></script>
-    <script src="/app/shared/sidebars/profile/ProfileSidebarController.js"></script>
-
-    <!-- Tag View -->
-    <script src="/app/components/home/tag/TagHeaderController.js"></script>
-
-    <!-- Search View -->
-    <script src="/app/components/home/search/SearchHeaderController.js"></script>
-
-    <!-- Group View -->
-    <script src="/app/components/home/group/GroupHeaderController.js"></script>
-
-    <!-- Profile View -->
-    <script src="/app/components/home/profile/ProfileHeaderController.js"></script>
-
-    <!-- Status View -->
-    <script src="/app/components/home/status/StatusController.js"></script>
-
-    <!-- List Views -->
-    <!--<script src="/app/shared/lists/status/withContext/StatusListContextController.js"></script>-->
-    <script src="/app/shared/lists/status/withoutContext/StatusListController.js"></script>
-    <script src="/app/shared/lists/user/UserListController.js"></script>
-
-    <!-- Post New Status Modal -->
-    <script src="/app/shared/topMenu/post/PostModule.js"></script>
-    <script src="/app/shared/topMenu/post/PostController.js"></script>
-
-    <!-- Presentation Modal -->
-    <script src="/app/components/home/welcome/WelcomeController.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- Admin Section -->
-    <!--- ------------------------------------------------------------------ -->
-    <script src="/app/components/admin/AdminController.js"></script>
-    <script src="/app/components/admin/AdminService.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- Account Section -->
-    <!--- ------------------------------------------------------------------ -->
-    
-    <!-- Account Module -->
-    <script src="/app/components/account/AccountController.js"></script>
-
-    <!-- Form Subview (for views with tabs) -->
-    <script src="/app/components/account/FormController.js"></script>
-
-    <!-- Profile View -->
-    <script src="/app/components/account/profile/ProfileModule.js"></script>
-    <script src="/app/components/account/profile/ProfileController.js"></script>
-
-    <!-- Preferences View -->
-    <script src="/app/components/account/preferences/PreferencesModule.js"></script>
-    <script src="/app/components/account/preferences/PreferencesController.js"></script>
-    <script src="/app/components/account/preferences/PreferencesService.js"></script>
-
-    <!-- Password View -->
-    <script src="/app/components/account/password/PasswordModule.js"></script>
-    <script src="/app/components/account/password/PasswordController.js"></script>
-    <script src="/app/components/account/password/PasswordService.js"></script>
-
-    <!-- Files View -->
-    <script src="/app/components/account/files/FilesModule.js"></script>
-    <script src="/app/components/account/files/FilesController.js"></script>
-    <script src="/app/components/account/files/FilesService.js"></script>
-
-    <!-- Users View -->
-    <script src="/app/components/account/users/UsersModule.js"></script>
-    <script src="/app/components/account/users/UsersController.js"></script>
-
-    <!-- Groups View -->
-    <script src="/app/components/account/groups/GroupsModule.js"></script>
-    <script src="/app/components/account/groups/GroupsController.js"></script>
-    <script src="/app/components/account/groups/manage/GroupsManageController.js"></script>
-    <script src="/app/components/account/groups/creation/GroupsCreateController.js"></script>
-    <script src="/app/components/account/groups/list/GroupListController.js"></script>
-
-    <!-- Tags View -->
-    <script src="/app/components/account/tags/TagsModule.js"></script>
-    <script src="/app/components/account/tags/TagsController.js"></script>
-
-    <!-- Statuses of the Day View -->
-    <script src="/app/components/account/topPosters/TopPostersModule.js"></script>
-    <script src="/app/components/account/topPosters/TopPostersController.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- Login Section -->
-    <!--- ------------------------------------------------------------------ -->
-    <script src="/app/components/login/LoginModule.js"></script>
-    <script src="/app/components/login/manual/ManualLoginController.js"></script>
-
-    <!-- Password Recovery -->
-    <script src="/app/components/login/recoverPassword/RecoverPasswordController.js"></script>
-
-    <!-- Register -->
-    <script src="/app/components/login/register/RegisterController.js"></script>
-
-    <!-- Google Login -->
-    <script src="/app/components/login/google/GoogleLoginController.js"></script>
-
-    <!-- Email -->
-    <script src="/app/components/login/email/EmailRegistrationController.js"></script>
-
-    <!-- Login Services -->
-    <script src="/app/components/login/RegistrationService.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- Shared Files Section -->
-    <!--- ------------------------------------------------------------------ -->
-
-    <!-- Shared Configs -->
-    <script src="/app/shared/configs/MarkedConfig.js"></script>
-    <script src="/app/shared/configs/TranslateConfig.js"></script>
-    <script src="/app/shared/configs/MomentConfig.js"></script>
-
-    <!-- Shared Filters -->
-    <script src="/app/shared/filters/MarkdownFilter.js"></script>
-    <script src="/app/shared/filters/EmoticonFilter.js"></script>
-    <script src="/app/shared/filters/PlaceholderFilter.js"></script>
-
-    <!-- Shared Services -->
-    <script src="/app/shared/services/HomeService.js"></script>
-    <script src="/app/shared/services/StatusService.js"></script>
-    <script src="/app/shared/services/ProfileService.js"></script>
-    <script src="/app/shared/services/UserService.js"></script>
-    <script src="/app/shared/services/GroupService.js"></script>
-    <script src="/app/shared/services/TagService.js"></script>
-    <script src="/app/shared/services/GeolocService.js"></script>
-    <script src="/app/shared/services/SearchService.js"></script>
-    <script src="/app/shared/services/TopPostersService.js"></script>
-    <script src="/app/shared/services/UserSession.js"></script>
-    <script src="/app/shared/services/AuthenticationService.js"></script>
-
-    <!-- TopMenu -->
-    <script src="/app/shared/topMenu/TopMenuController.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-    
-    <!-- End Footer -->
 </body>
 </html>
