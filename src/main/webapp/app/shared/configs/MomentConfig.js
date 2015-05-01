@@ -1,5 +1,5 @@
-TatamiApp.run(['amMoment', function(amMoment) {
-    amMoment.changeLocale('en');
+TatamiApp.run(['$translate', 'amMoment', function($translate, amMoment) {
+    amMoment.changeLocale($translate.use());
 }]);
 
 moment.locale('en', {
@@ -20,22 +20,20 @@ moment.locale('en', {
     }
 });
 
-/*
 moment.locale('fr', {
     relativeTime : {
         future: "",
         past:   "%s",
-        s:  "1d",
-        m:  "1m",
-        mm: "%dm",
-        h:  "1h",
-        hh: "%dh",
-        d:  "1j",
-        dd: "%dj",
-        M:  "1m",
-        MM: "%dm",
-        y:  "1a",
-        yy: "%da"
+        s:  "1 s",
+        m:  "1 min",
+        mm: "%d min",
+        h:  "1 h",
+        hh: "%d h",
+        d:  "1 j",
+        dd: "%d j",
+        M:  "1 m",
+        MM: "%d m",
+        y:  "1 a",
+        yy: "%d a"
     }
 });
-*/

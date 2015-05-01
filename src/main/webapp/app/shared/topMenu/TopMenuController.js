@@ -3,9 +3,10 @@ TopMenuModule.controller('TopMenuController', [
     '$window',
     '$http',
     '$translate',
+    'amMoment',
     'UserSession',
     'SearchService',
-    function($scope, $window, $http, $translate, UserSession, SearchService) {
+    function($scope, $window, $http, $translate, amMoment, UserSession, SearchService) {
         $scope.current = {};
         $scope.current.searchString = '';
 
@@ -15,6 +16,7 @@ TopMenuModule.controller('TopMenuController', [
 
         $scope.changeLanguage = function(key) {
             $translate.use(key);
+            amMoment.changeLocale(key);
         };
 
         $scope.openPostModal = function() {

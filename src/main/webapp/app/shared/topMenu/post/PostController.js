@@ -6,13 +6,21 @@
 PostModule.controller('PostController', [
     '$scope',
     '$modalInstance',
+    '$translate',
     '$upload',
     'StatusService',
     'GeolocalisationService',
     'groups',
     'curStatus',
     'SearchService',
-    function($scope, $modalInstance, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
+    function($scope, $modalInstance, $translate, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
+        $scope.isOneDayOrMore = function(date) {
+            return moment().diff(moment(date), 'days', true) >= 1;
+        };
+
+        $scope.getLanguageKey = function() {
+            return $translate.use();
+        };
 
         $scope.determineTitle = function() {
             if(angular.isDefined(curStatus)) {
@@ -219,10 +227,6 @@ PostModule.controller('PostController', [
         $scope.getLocationString = function(position) {
             $scope.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
             $scope.initMap();
-        };
-
-        $scope.isOneDayOrMore = function(date) {
-            return moment().diff(moment(date), 'days', true) >= 1;
         };
 
         /**
