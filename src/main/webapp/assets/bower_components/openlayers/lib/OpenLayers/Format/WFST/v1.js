@@ -3,27 +3,10 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- * @requires OpenLayers/Format/WFST.js
- * @requires OpenLayers/Filter/Spatial.js
- * @requires OpenLayers/Filter/FeatureId.js
- */
 
-/**
- * Class: OpenLayers.Format.WFST.v1
- * Superclass for WFST parsers.
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         xlink: "http://www.w3.org/1999/xlink",
         xsi: "http://www.w3.org/2001/XMLSchema-instance",
         wfs: "http://www.opengis.net/wfs",
@@ -33,60 +16,19 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         xmlns: "http://www.w3.org/2000/xmlns/"
     },
     
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "wfs",
+        defaultPrefix: "wfs",
 
-    /**
-     * Property: version
-     * {String} WFS version number.
-     */
-    version: null,
+        version: null,
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location for a particular minor version.
-     */
-    schemaLocations: null,
+        schemaLocations: null,
     
-    /**
-     * APIProperty: srsName
-     * {String} URI for spatial reference system.
-     */
-    srsName: null,
+        srsName: null,
 
-    /**
-     * APIProperty: extractAttributes
-     * {Boolean} Extract attributes from GML.  Default is true.
-     */
-    extractAttributes: true,
+        extractAttributes: true,
     
-    /**
-     * APIProperty: xy
-     * {Boolean} Order of the GML coordinate true:(x,y) or false:(y,x)
-     * Changing is not recommended, a new Format should be instantiated.
-     */ 
-    xy: true,
-
-    /**
-     * Property: stateName
-     * {Object} Maps feature states to node names.
-     */
-    stateName: null,
+        stateName: null,
     
-    /**
-     * Constructor: OpenLayers.Format.WFST.v1
-     * Instances of this class are not created directly.  Use the
-     *     <OpenLayers.Format.WFST.v1_0_0> or <OpenLayers.Format.WFST.v1_1_0>
-     *     constructor instead.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-    initialize: function(options) {
-        // set state name mapping
+        initialize: function(options) {
         this.stateName = {};
         this.stateName[OpenLayers.State.INSERT] = "wfs:Insert";
         this.stateName[OpenLayers.State.UPDATE] = "wfs:Update";
@@ -94,10 +36,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         OpenLayers.Format.XML.prototype.initialize.apply(this, [options]);
     },
     
-    /**
-     * Method: getSrsName
-     */
-    getSrsName: function(feature, options) {
+        getSrsName: function(feature, options) {
         var srsName = options && options.srsName;
         if(!srsName) {
             if(feature && feature.layer) {
@@ -109,27 +48,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return srsName;
     },
 
-    /**
-     * APIMethod: read
-     * Parse the response from a transaction.  Because WFS is split into
-     *     Transaction requests (create, update, and delete) and GetFeature
-     *     requests (read), this method handles parsing of both types of
-     *     responses.
-     *
-     * Parameters:
-     * data - {String | Document} The WFST document to read
-     * options - {Object} Options for the reader
-     *
-     * Valid options properties:
-     * output - {String} either "features" or "object". The default is
-     *     "features", which means that the method will return an array of
-     *     features. If set to "object", an object with a "features" property
-     *     and other properties read by the parser will be returned.
-     *
-     * Returns:
-     * {Array | Object} Output depending on the output option.
-     */
-    read: function(data, options) {
+        read: function(data, options) {
         options = options || {};
         OpenLayers.Util.applyDefaults(options, {
             output: "features"
@@ -151,15 +70,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return obj;
     },
     
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "wfs": {
             "FeatureCollection": function(node, obj) {
                 obj.features = [];
@@ -168,39 +79,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
     
-    /**
-     * Method: write
-     * Given an array of features, write a WFS transaction.  This assumes
-     *     the features have a state property that determines the operation
-     *     type - insert, update, or delete.
-     *
-     * Parameters:
-     * features - {Array(<OpenLayers.Feature.Vector>)} A list of features. See
-     *     below for a more detailed description of the influence of the
-     *     feature's *modified* property.
-     * options - {Object}
-     *
-     * feature.modified rules:
-     * If a feature has a modified property set, the following checks will be
-     * made before a feature's geometry or attribute is included in an Update
-     * transaction:
-     * - *modified* is not set at all: The geometry and all attributes will be
-     *     included.
-     * - *modified.geometry* is set (null or a geometry): The geometry will be
-     *     included. If *modified.attributes* is not set, all attributes will
-     *     be included.
-     * - *modified.attributes* is set: Only the attributes set in 
-     *     *modified.attributes* will be included.
-     *     If *modified.geometry* is not set, the geometry will not be included.
-     *
-     * Valid options include:
-     * - *multi* {Boolean} If set to true, geometries will be casted to
-     *   Multi geometries before writing.
-     *
-     * Returns:
-     * {String} A serialized WFS transaction.
-     */
-    write: function(features, options) {
+        write: function(features, options) {
         var node = this.writeNode("wfs:Transaction", {
             features:features,
             options: options
@@ -214,13 +93,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [node]);
     },
     
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "wfs": {
             "GetFeature": function(options) {
                 var node = this.createElementNSPlus("wfs:GetFeature", {
@@ -257,7 +130,6 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 var i, len;
                 var features = obj.features;
                 if(features) {
-                    // temporarily re-assigning geometry types
                     if (options.multi === true) {
                         OpenLayers.Util.extend(this.geometryTypes, {
                             "OpenLayers.Geometry.Point": "MultiPoint",
@@ -276,7 +148,6 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                             }, node);
                         }
                     }
-                    // switch back to original geometry types assignment
                     if (options.multi === true) {
                         this.setGeometryTypes();
                     }
@@ -327,8 +198,6 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                         "xmlns:" + this.featurePrefix, this.featureNS
                     );
                 }
-                
-                // add in geometry
                 var modified = feature.modified;
                 if (this.geometryName !== null && (!modified || modified.geometry !== undefined)) {
                     this.srsName = this.getSrsName(feature);
@@ -336,8 +205,6 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                         "Property", {name: this.geometryName, value: feature.geometry}, node
                     );
                 }
-        
-                // add in attributes
                 for(var key in feature.attributes) {
                     if(feature.attributes[key] !== undefined &&
                                 (!modified || !modified.attributes ||
@@ -347,8 +214,6 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                         );
                     }
                 }
-                
-                // add feature id filter
                 this.writeNode("ogc:Filter", new OpenLayers.Filter.FeatureId({
                     fids: [feature.fid]
                 }), node);
@@ -401,14 +266,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-    /**
-     * Method: schemaLocationAttr
-     * Generate the xsi:schemaLocation attribute value.
-     *
-     * Returns:
-     * {String} The xsi:schemaLocation attribute or undefined if none.
-     */
-    schemaLocationAttr: function(options) {
+        schemaLocationAttr: function(options) {
         options = OpenLayers.Util.extend({
             featurePrefix: this.featurePrefix,
             schema: this.schema
@@ -429,21 +287,13 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         return value;
     },
     
-    /**
-     * Method: setFilterProperty
-     * Set the property of each spatial filter.
-     *
-     * Parameters:
-     * filter - {<OpenLayers.Filter>}
-     */
-    setFilterProperty: function(filter) {
+        setFilterProperty: function(filter) {
         if(filter.filters) {
             for(var i=0, len=filter.filters.length; i<len; ++i) {
                 OpenLayers.Format.WFST.v1.prototype.setFilterProperty.call(this, filter.filters[i]);
             }
         } else {
             if(filter instanceof OpenLayers.Filter.Spatial && !filter.property) {
-                // got a spatial filter without property, so set it
                 filter.property = this.geometryName;
             }
         }

@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // MODAL CLASS DEFINITION
-  // ======================
-
   var Modal = function (element, options) {
     this.options   = options
     this.$element  = $(element)
@@ -191,10 +188,6 @@
     }
   }
 
-
-  // MODAL PLUGIN DEFINITION
-  // =======================
-
   var old = $.fn.modal
 
   $.fn.modal = function (option, _relatedTarget) {
@@ -211,18 +204,10 @@
 
   $.fn.modal.Constructor = Modal
 
-
-  // MODAL NO CONFLICT
-  // =================
-
   $.fn.modal.noConflict = function () {
     $.fn.modal = old
     return this
   }
-
-
-  // MODAL DATA-API
-  // ==============
 
   $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
     var $this   = $(this)

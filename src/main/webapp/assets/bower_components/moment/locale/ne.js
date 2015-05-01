@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : nepali/nepalese
-//! author : suvash : https://github.com/suvash
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

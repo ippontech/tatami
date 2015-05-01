@@ -1,7 +1,3 @@
-//! moment.js locale configuration
-//! locale : italian (it)
-//! author : Lorenzo : https://github.com/aliem
-//! author: Mattia Larentis: https://github.com/nostalgiaz
 
 import moment from '../moment';
 

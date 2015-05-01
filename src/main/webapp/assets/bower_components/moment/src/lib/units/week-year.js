@@ -7,8 +7,6 @@ import toInt from '../utils/to-int';
 import { hooks } from '../utils/hooks';
 import { createLocal } from '../create/local';
 
-// FORMATTING
-
 addFormatToken(0, ['gg', 2], 0, function () {
     return this.weekYear() % 100;
 });
@@ -26,12 +24,8 @@ addWeekYearFormatToken('ggggg',    'weekYear');
 addWeekYearFormatToken('GGGG',  'isoWeekYear');
 addWeekYearFormatToken('GGGGG', 'isoWeekYear');
 
-// ALIASES
-
 addUnitAlias('weekYear', 'gg');
 addUnitAlias('isoWeekYear', 'GG');
-
-// PARSING
 
 addRegexToken('G',      matchSigned);
 addRegexToken('g',      matchSigned);
@@ -50,13 +44,9 @@ addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
     week[token] = hooks.parseTwoDigitYear(input);
 });
 
-// HELPERS
-
 function weeksInYear(year, dow, doy) {
     return weekOfYear(createLocal([year, 11, 31 + dow - doy]), dow, doy).week;
 }
-
-// MOMENTS
 
 export function getSetWeekYear (input) {
     var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;

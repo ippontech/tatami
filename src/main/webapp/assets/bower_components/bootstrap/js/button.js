@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // BUTTON PUBLIC CLASS DEFINITION
-  // ==============================
-
   var Button = function (element, options) {
     this.$element = $(element)
     this.options  = $.extend({}, Button.DEFAULTS, options)
@@ -43,8 +40,6 @@
     if (!data.resetText) $el.data('resetText', $el[val]())
 
     $el[val](data[state] || this.options[state])
-
-    // push to event loop to allow forms to submit
     setTimeout(function () {
       state == 'loadingText' ?
         $el.addClass(d).attr(d, d) :
@@ -59,7 +54,6 @@
     if ($parent.length) {
       var $input = this.$element.find('input')
       if ($input.prop('type') === 'radio') {
-        // see if clicking on current one
         if ($input.prop('checked') && this.$element.hasClass('active'))
           changed = false
         else
@@ -70,10 +64,6 @@
 
     if (changed) this.$element.toggleClass('active')
   }
-
-
-  // BUTTON PLUGIN DEFINITION
-  // ========================
 
   var old = $.fn.button
 
@@ -92,18 +82,10 @@
 
   $.fn.button.Constructor = Button
 
-
-  // BUTTON NO CONFLICT
-  // ==================
-
   $.fn.button.noConflict = function () {
     $.fn.button = old
     return this
   }
-
-
-  // BUTTON DATA-API
-  // ===============
 
   $(document).on('click.bs.button.data-api', '[data-toggle^=button]', function (e) {
     var $btn = $(e.target)

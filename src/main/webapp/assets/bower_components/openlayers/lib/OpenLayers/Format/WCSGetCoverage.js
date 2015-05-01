@@ -3,71 +3,29 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
- */
 
-/**
- * Class: OpenLayers.Format.WCSGetCoverage version 1.1.0
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WCSGetCoverage = OpenLayers.Class(OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         ows: "http://www.opengis.net/ows/1.1",
         wcs: "http://www.opengis.net/wcs/1.1",
         xlink: "http://www.w3.org/1999/xlink",
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Constant: VERSION
-     * {String} 1.1.2
-     */
-    VERSION: "1.1.2",
+        VERSION: "1.1.2",
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location
-     */
-    schemaLocation: "http://www.opengis.net/wcs/1.1 http://schemas.opengis.net/wcs/1.1/wcsGetCoverage.xsd",
+        schemaLocation: "http://www.opengis.net/wcs/1.1 http://schemas.opengis.net/wcs/1.1/wcsGetCoverage.xsd",
 
-    /**
-     * Constructor: OpenLayers.Format.WCSGetCoverage
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * options - {Object} Optional object.
-     *
-     * Returns:
-     * {String} A WCS GetCoverage request XML string.
-     */
-    write: function(options) {
+    
+        write: function(options) {
         var node = this.writeNode("wcs:GetCoverage", options);
         this.setAttributeNS(
             node, this.namespaces.xsi,
@@ -76,13 +34,7 @@ OpenLayers.Format.WCSGetCoverage = OpenLayers.Class(OpenLayers.Format.XML, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [node]);
     }, 
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "wcs": {
             "GetCoverage": function(options) {
                 var node = this.createElementNSPlus("wcs:GetCoverage", {

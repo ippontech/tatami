@@ -1,14 +1,4 @@
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["zh-TW"]
- * Dictionary for Traditional Chinese. (Used Mainly in Taiwan) 
- * Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["zh-TW"] = {
 
     'unhandledRequest': "未處理的請求，傳回值為 ${statusText}。",
@@ -23,8 +13,6 @@ OpenLayers.Lang["zh-TW"] = {
 
     'browserNotSupported':
         "您的瀏覽器未支援向量渲染. 目前支援的渲染方式是:\n${renderers}",
-
-    // console message
     'minZoomLevelError':
         "minZoomLevel 屬性僅適合用在 " +
         "FixedZoomLevels-descendent 類型的圖層. 這個" +
@@ -62,8 +50,6 @@ OpenLayers.Lang["zh-TW"] = {
         "target='_blank'>請按這裡</a>",
 
     'Scale = 1 : ${scaleDenom}': "Scale = 1 : ${scaleDenom}",
-
-    // console message
     'reprojectDeprecated':
         "你正使用 'reproject' 這個選項 " +
         "在 ${layerName} 層。這個選項已經不再使用:" +
@@ -71,8 +57,6 @@ OpenLayers.Lang["zh-TW"] = {
         "但這個功能已經被" +
         "Spherical Mercator所取代。更多的資訊可以在 " +
         "http://trac.openlayers.org/wiki/SphericalMercator 找到。",
-
-    // console message
     'methodDeprecated':
         "這個方法已經不再使用且在3.0將會被移除，" +
         "請使用 ${newMethod} 來代替。",

@@ -15,7 +15,6 @@ if (window.XMLHttpRequest && !window.XMLHttpRequest.__isFileAPIShim) {
         return function (header, value) {
             if (header === '__setXHR_') {
                 var val = value(this);
-                // fix for angular < 1.2.0
                 if (val instanceof Function) {
                     val(this);
                 }
@@ -53,7 +52,6 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
                         promise.progress_fn(e)
                     });
                 }, false);
-                //fix for firefox not firing upload progress end, also IE8-9
                 xhr.upload.addEventListener('load', function (e) {
                     if (e.lengthComputable) {
                         e.config = config;
@@ -220,9 +218,6 @@ function linkFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile) 
                 updateModel($parse, $timeout, scope, ngModel, attr,
                     attr.ngFileChange || (attr.ngFileDrop && attr.ngFileDrop.indexOf('(') > 0), files, rejFiles, evt);
                 if (files.length == 0) evt.target.value = files;
-//                if (evt.target && evt.target.getAttribute('__ngf_gen__')) {
-//                    angular.element(evt.target).remove();
-//                }
             } finally {
                 isUpdating = false;
             }
@@ -282,8 +277,6 @@ function linkFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile) 
     	            evt.preventDefault()
     	        }
         	}
-        	
-        	// fix for android native browser
         	if (navigator.userAgent.toLowerCase().match(/android/)) {
                 setTimeout(function() {
                 	clickAndAssign();
@@ -316,8 +309,6 @@ angularFileUpload.directive('ngNoFileDrop', function () {
         if (dropAvailable()) elem.css('display', 'none')
     }
 });
-
-//for backward compatibility
 angularFileUpload.directive('ngFileDropAvailable', ['$parse', '$timeout', function ($parse, $timeout) {
     return function (scope, elem, attr) {
         if (dropAvailable()) {
@@ -353,7 +344,6 @@ function linkDrop(scope, elem, attr, ngModel, $parse, $timeout, $location) {
         if (disabled(scope)) return;
         evt.preventDefault();
         if (stopPropagation(scope)) evt.stopPropagation();
-        // handling dragover events from the Chrome download bar
         if (navigator.userAgent.indexOf("Chrome") > -1) {
             var b = evt.dataTransfer.effectAllowed;
             evt.dataTransfer.dropEffect = ('move' === b || 'linkMove' === b) ? 'move' : 'copy';
@@ -662,7 +652,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 			if (header === '__setXHR_') {
 				initializeUploadListener(this);
 				var val = value(this);
-				// fix for angular < 1.2.0
 				if (val instanceof Function) {
 					val(this);
 				}
@@ -715,7 +704,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 						xhr.__total = e.total;
 						xhr.__loaded = e.loaded;
 						if (e.total === e.loaded) {
-							// fix flash issue that doesn't call complete if there is no response text from the server  
 							var _this = this
 							setTimeout(function() {
 								if (!xhr.__completed) {
@@ -771,11 +759,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 					fileElem = elem.__ngf_elem__ = createFileElemFn();
 					fileElem.addClass('js-fileapi-wrapper');
 					if (!isInputTypeFile(elem)) {
-//						if (fileElem.parent().css('position') === '' || fileElem.parent().css('position') === 'static') {
-//							fileElem.parent().css('position', 'relative');
-//						}
-//						elem.parent()[0].insertBefore(fileElem[0], elem[0]);
-//						elem.css('overflow', 'hidden');
 					}
 					setTimeout(function() {
 						fileElem.bind('mouseenter', makeFlashInput);
@@ -783,7 +766,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 					fileElem.bind('change', function(evt) {
 				    	fileApiChangeFn.apply(this, [evt]);
 						changeFn.apply(this, [evt]);
-//						alert('change' +  evt);
 					});
 				} else {
 					bindAttr(elem.__ngf_elem__);
@@ -816,7 +798,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 
 		var fileApiChangeFn = function(evt) {
 			var files = FileAPI.getFiles(evt);
-			//just a double check for #233
 			for (var i = 0; i < files.length; i++) {
 				if (files[i].size === undefined) files[i].size = 0;
 				if (files[i].name === undefined) files[i].name = 'file';
@@ -826,7 +807,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 				evt.target = {};
 			}
 			evt.target.files = files;
-			// if evt.target.files is not writable use helper field
 			if (evt.target.files != files) {
 				evt.__files_ = files;
 			}
@@ -861,7 +841,6 @@ if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.fo
 	};
 
 	(function () {
-		//load FileAPI
 		if (!window.FileAPI) {
 			window.FileAPI = {};
 		}

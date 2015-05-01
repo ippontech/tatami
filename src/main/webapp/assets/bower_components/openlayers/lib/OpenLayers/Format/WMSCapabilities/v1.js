@@ -3,58 +3,20 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/WMSCapabilities.js
- * @requires OpenLayers/Format/OGCExceptionReport.js
- * @requires OpenLayers/Format/XML.js
- */
 
-/**
- * Class: OpenLayers.Format.WMSCapabilities.v1
- * Abstract class not to be instantiated directly. Creates
- * the common parts for both WMS 1.1.X and WMS 1.3.X.
- * 
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WMSCapabilities.v1 = OpenLayers.Class(
     OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         wms: "http://www.opengis.net/wms",
         xlink: "http://www.w3.org/1999/xlink",
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "wms",
+        defaultPrefix: "wms",
     
-    /**
-     * Constructor: OpenLayers.Format.WMSCapabilities.v1
-     * Create an instance of one of the subclasses.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * APIMethod: read
-     * Read capabilities data from a string, and return a list of layers. 
-     * 
-     * Parameters: 
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Array} List of named layers.
-     */
-    read: function(data) {
+    
+        read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -65,22 +27,13 @@ OpenLayers.Format.WMSCapabilities.v1 = OpenLayers.Class(
         var capabilities = {};
         this.readNode(data, capabilities);
         if (capabilities.service === undefined) {
-            // an exception must have occurred, so parse it
             var parser = new OpenLayers.Format.OGCExceptionReport();
             capabilities.error = parser.read(raw);
         }
         return capabilities;
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "wms": {
             "Service": function(node, obj) {
                 obj.service = {};
@@ -111,8 +64,6 @@ OpenLayers.Format.WMSCapabilities.v1 = OpenLayers.Class(
                 if (! (isNaN(res.x) && isNaN(res.y))) {
                     bbox.res = res;
                 }
-                // return the bbox so that descendant classes can set the
-                // CRS and SRS and add it to the obj
                 return bbox;
             },
             "OnlineResource": function(node, obj) {
@@ -210,7 +161,6 @@ OpenLayers.Format.WMSCapabilities.v1 = OpenLayers.Class(
             "Get": function(node, obj) {
                 obj.get = {};
                 this.readChildNodes(node, obj.get);
-                // backwards compatibility
                 if (!obj.href) {
                     obj.href = obj.get.href;
                 }
@@ -218,7 +168,6 @@ OpenLayers.Format.WMSCapabilities.v1 = OpenLayers.Class(
             "Post": function(node, obj) {
                 obj.post = {};
                 this.readChildNodes(node, obj.post);
-                // backwards compatibility
                 if (!obj.href) {
                     obj.href = obj.get.href;
                 }

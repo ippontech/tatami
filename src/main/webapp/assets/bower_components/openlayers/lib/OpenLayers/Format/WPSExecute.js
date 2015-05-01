@@ -3,27 +3,11 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XML.js
- * @requires OpenLayers/Format/OWSCommon/v1_1_0.js
- * @requires OpenLayers/Format/WCSGetCoverage.js
- * @requires OpenLayers/Format/WFST/v1_1_0.js
- */
 
-/**
- * Class: OpenLayers.Format.WPSExecute version 1.0.0
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
                                             OpenLayers.Format.Filter.v1_1_0, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         ows: "http://www.opengis.net/ows/1.1",
         gml: "http://www.opengis.net/gml",
         wps: "http://www.opengis.net/wps/1.0.0",
@@ -34,51 +18,23 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Constant: VERSION
-     * {String} 1.0.0
-     */
-    VERSION: "1.0.0",
+        VERSION: "1.0.0",
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location
-     */
-    schemaLocation: "http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd",
+        schemaLocation: "http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd",
 
     schemaLocationAttr: function(options) {
         return undefined;
     },
 
-    /**
-     * Constructor: OpenLayers.Format.WPSExecute
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * options - {Object} Optional object.
-     *
-     * Returns:
-     * {String} An WPS Execute request XML string.
-     */
-    write: function(options) {
+    
+        write: function(options) {
         var doc;
         if (OpenLayers.Format.XML.supportActiveX) {
             doc = new ActiveXObject("Microsoft.XMLDOM");
@@ -94,17 +50,7 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
         return OpenLayers.Format.XML.prototype.write.apply(this, [node]);
     }, 
 
-    /**
-     * APIMethod: read
-     * Parse a WPS Execute and return an object with its information.
-     * 
-     * Parameters: 
-     * data - {String} or {DOMElement} data to read/parse.
-     *
-     * Returns:
-     * {Object}
-     */
-    read: function(data) {
+        read: function(data) {
         if(typeof data == "string") {
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -116,13 +62,7 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
         return info;
     },
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "wps": {
             "Execute": function(options) {
                 var node = this.createElementNSPlus("wps:Execute", {
@@ -272,8 +212,6 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
                     this.writeNode("wcs:GetCoverage", body.wcs, node);
                 }
                 else if (body.wfs) {
-                    // OpenLayers.Format.WFST expects these to be on the 
-                    // instance and not in the options
                     this.featureType = body.wfs.featureType;
                     this.version = body.wfs.version;
                     this.writeNode("wfs:GetFeature", body.wfs, node);
@@ -289,15 +227,7 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
         "ows": OpenLayers.Format.OWSCommon.v1_1_0.prototype.writers.ows
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "wps": {
             "ExecuteResponse": function(node, obj) {
                 obj.executeResponse = {
@@ -356,8 +286,6 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
                     encoding: node.getAttribute("encoding"),
                     value: ""
                 };
-                
-                // try to get *some* value, ignore the empty text values
                 if (this.isSimpleContent(node)) {
                     var child;
                     for(child=node.firstChild; child; child=child.nextSibling) {
@@ -385,8 +313,6 @@ OpenLayers.Format.WPSExecute = OpenLayers.Class(OpenLayers.Format.XML,
                 this.readChildNodes(node, output.boundingBoxData);
             }
         },
-
-        // TODO: we should add Exception parsing here
         "ows": OpenLayers.Format.OWSCommon.v1_1_0.prototype.readers["ows"]
     },
     

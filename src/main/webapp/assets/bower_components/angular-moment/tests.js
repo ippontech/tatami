@@ -23,16 +23,12 @@ describe('module angularMoment', function () {
 		angularMomentConfig = $injector.get('angularMomentConfig');
 		originalTimeAgoConfig = angular.copy(amTimeAgoConfig);
 		originalAngularMomentConfig = angular.copy(angularMomentConfig);
-
-		// Ensure the locale of moment.js is set to en by default
 		(moment.locale || moment.lang)('en');
-		// Add a sample timezones for tests
 		moment.tz.add('UTC|UTC|0|0|');
 		moment.tz.add('Pacific/Tahiti|LMT TAHT|9W.g a0|01|-2joe1.I');
 	}));
 
 	afterEach(function () {
-		// Restore original configuration after each test
 		angular.copy(originalTimeAgoConfig, amTimeAgoConfig);
 		angular.copy(originalAngularMomentConfig, angularMomentConfig);
 		jasmine.clock().uninstall();
@@ -109,7 +105,6 @@ describe('module angularMoment', function () {
 			expect(element.text()).toBe('a few seconds ago');
 
 			var waitsInterval = setInterval(function () {
-				// Wait until $rootScope.date is more than 45 seconds old
 				if (new Date().getTime() - $rootScope.testDate.getTime() < 45000) {
 					return;
 				}

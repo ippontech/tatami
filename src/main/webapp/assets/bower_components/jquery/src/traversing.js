@@ -7,7 +7,6 @@ define([
 ], function( jQuery, rneedsContext ) {
 
 var rparentsprev = /^(?:parents|prev(?:Until|All))/,
-	// methods guaranteed to produce a unique set when starting from a unique set
 	guaranteedUnique = {
 		children: true,
 		contents: true,
@@ -68,11 +67,8 @@ jQuery.fn.extend({
 
 		for ( ; i < l; i++ ) {
 			for ( cur = this[i]; cur && cur !== context; cur = cur.parentNode ) {
-				// Always skip document fragments
 				if ( cur.nodeType < 11 && (pos ?
 					pos.index(cur) > -1 :
-
-					// Don't pass non-elements to Sizzle
 					cur.nodeType === 1 &&
 						jQuery.find.matchesSelector(cur, selectors)) ) {
 
@@ -84,24 +80,14 @@ jQuery.fn.extend({
 
 		return this.pushStack( matched.length > 1 ? jQuery.unique( matched ) : matched );
 	},
-
-	// Determine the position of an element within
-	// the matched set of elements
 	index: function( elem ) {
-
-		// No argument, return index in parent
 		if ( !elem ) {
 			return ( this[0] && this[0].parentNode ) ? this.first().prevAll().length : -1;
 		}
-
-		// index in selector
 		if ( typeof elem === "string" ) {
 			return jQuery.inArray( this[0], jQuery( elem ) );
 		}
-
-		// Locate the position of the desired element
 		return jQuery.inArray(
-			// If it receives a jQuery object, the first element is used
 			elem.jquery ? elem[0] : elem, this );
 	},
 
@@ -181,12 +167,9 @@ jQuery.each({
 		}
 
 		if ( this.length > 1 ) {
-			// Remove duplicates
 			if ( !guaranteedUnique[ name ] ) {
 				ret = jQuery.unique( ret );
 			}
-
-			// Reverse order for parents* and prev-derivatives
 			if ( rparentsprev.test( name ) ) {
 				ret = ret.reverse();
 			}

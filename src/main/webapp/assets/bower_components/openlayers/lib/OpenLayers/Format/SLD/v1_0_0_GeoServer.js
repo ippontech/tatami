@@ -3,53 +3,16 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/BaseTypes.js
- * @requires OpenLayers/Format/SLD/v1_0_0.js
- */
 
-/**
- * Class: OpenLayers.Format.SLD/v1_0_0_GeoServer
- * Read and write SLD version 1.0.0 with GeoServer-specific enhanced options.
- * See http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/resources/org/geotools/sld/bindings/StyledLayerDescriptor.xsd
- * for more information.
- *
- * Inherits from:
- *  - <OpenLayers.Format.SLD.v1_0_0>
- */
 OpenLayers.Format.SLD.v1_0_0_GeoServer = OpenLayers.Class(
     OpenLayers.Format.SLD.v1_0_0, {
 
-    /**
-     * Property: version
-     * {String} The specific parser version.
-     */
-    version: "1.0.0",
+        version: "1.0.0",
 
-    /**
-     * Property: profile
-     * {String} The specific profile
-     */
-    profile: "GeoServer",
+        profile: "GeoServer",
 
-   /**
-     * Constructor: OpenLayers.Format.SLD.v1_0_0_GeoServer
-     * Create a new parser for GeoServer-enhanced SLD version 1.0.0.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: OpenLayers.Util.applyDefaults({
+   
+        readers: OpenLayers.Util.applyDefaults({
         "sld": OpenLayers.Util.applyDefaults({
             "Priority": function(node, obj) {
                 var value = this.readers.ogc._expression.call(this, node);
@@ -73,13 +36,7 @@ OpenLayers.Format.SLD.v1_0_0_GeoServer = OpenLayers.Class(
         }, OpenLayers.Format.SLD.v1_0_0.prototype.readers["sld"])
     }, OpenLayers.Format.SLD.v1_0_0.prototype.readers),
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: OpenLayers.Util.applyDefaults({
+        writers: OpenLayers.Util.applyDefaults({
         "sld": OpenLayers.Util.applyDefaults({
             "Priority": function(priority) {
                 return this.writers.sld._OGCExpression.call(
@@ -121,18 +78,7 @@ OpenLayers.Format.SLD.v1_0_0_GeoServer = OpenLayers.Class(
         }, OpenLayers.Format.SLD.v1_0_0.prototype.writers["sld"])
     }, OpenLayers.Format.SLD.v1_0_0.prototype.writers),
 
-    /**
-     * Method: addVendorOptions
-     * Add in the VendorOption tags and return the node again.
-     *
-     * Parameters:
-     * node - {DOMElement} A DOM node.
-     * symbolizer - {Object}
-     *
-     * Returns:
-     * {DOMElement} A DOM node.
-     */
-    addVendorOptions: function(node, symbolizer) {
+        addVendorOptions: function(node, symbolizer) {
         var options = symbolizer.vendorOptions;
         if (options) {
             for (var key in symbolizer.vendorOptions) {

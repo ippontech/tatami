@@ -4,48 +4,14 @@
  * full text of the license. */
 
 
-/**
- * @requires OpenLayers/BaseTypes.js
- * @requires OpenLayers/Control/ModifyFeature.js
- * @requires OpenLayers/Geometry.js
- * @requires OpenLayers/Handler/Hover.js
- */
 
-/**
- * Class: OpenLayers.Control.ModifyFeature.BySegment
- * A mixin for the ModifyFeature control to allow editing of large geometries
- *     by editing one segment at a time, the segment which is closest to the
- *     mouse cursor on hover.
- *
- * To use this is in combination with OpenLayers.Control.ModifyFeature include
- *     this file in your build and set bySegment to true on the ModifyFeature
- *     control. Also note this code depends on the rbush library which can be
- *     found at: https://github.com/mourner/rbush
- */
 OpenLayers.Control.ModifyFeature.BySegment = {
 
-    /**
-     * APIProperty: hoverTolerance
-     * {Integer} Number of pixels around the hover location to query the
-     *     spatial index in order to find the closest segment. Defaults to 25.
-     */
-    hoverTolerance: 25,
+        hoverTolerance: 25,
 
-    /**
-     * Method: collectVertices
-     * Collect the vertices from the modifiable feature's geometry and push
-     *     them on to the control's vertices array.
-     */
-    collectVertices: OpenLayers.Function.Void,
+        collectVertices: OpenLayers.Function.Void,
 
-    /**
-     * Method: setMap
-     * Set the map property for the control and all handlers.
-     *
-     * Parameters:
-     * map - {<OpenLayers.Map>} The control's map.
-     */
-    setMap: function(map) {
+        setMap: function(map) {
         OpenLayers.Control.ModifyFeature.prototype.setMap.apply(this, arguments);
         if (!this.handlers.hover) {
             this.handlers.hover = new OpenLayers.Handler.Hover(this, { 
@@ -60,19 +26,11 @@ OpenLayers.Control.ModifyFeature.BySegment = {
        });
     },
 
-    /**
-     * Method: deactivateHover
-     * Deactivate the hover handler.
-     */
-    deactivateHover: function() {
+        deactivateHover: function() {
         this.handlers.hover.deactivate();
     },
 
-    /**
-     * APIMethod: destroy
-     * Take care of things that are not handled in superclass.
-     */
-    destroy: function() {
+        destroy: function() {
         if (this.layer) {
             this.layer.events.un({
                 beforefeaturemodified: this.createSpatialIndex,
@@ -83,17 +41,7 @@ OpenLayers.Control.ModifyFeature.BySegment = {
         OpenLayers.Control.ModifyFeature.prototype.destroy.apply(this, []);
     },
 
-    /**
-     * Method: dragStart
-     * Called by the drag handler before a feature is dragged.  This method is
-     *     used to differentiate between points and vertices
-     *     of higher order geometries.
-     *
-     * Parameters:
-     * feature - {<OpenLayers.Feature.Vector>} The point or vertex about to be
-     *     dragged.
-     */
-    dragStart: function(feature) {
+        dragStart: function(feature) {
         OpenLayers.Control.ModifyFeature.prototype.dragStart.apply(this, arguments);
         this.vertexGeom = feature.geometry.clone();
         if (this.handlers.drag.stopDown) {
@@ -101,29 +49,13 @@ OpenLayers.Control.ModifyFeature.BySegment = {
         }
     },
 
-    /**
-     * Method: dragComplete
-     * Called by the drag handler when the feature dragging is complete.
-     *
-     * Parameters:
-     * vertex - {<OpenLayers.Feature.Vector>} The vertex being dragged.
-     */
-    dragComplete: function(vertex) {
+        dragComplete: function(vertex) {
         this.updateSpatialIndex(vertex);
         OpenLayers.Control.ModifyFeature.prototype.dragComplete.apply(this, arguments);
         this.handlers.hover.activate();
     },
 
-    /**
-     * Method: onHoverMove
-     * Move listener of the hover handler. Draws the 2 vertices of the segment
-     * closest to the mouse cursor, and one virtual vertex in the center of the
-     * segment.
-     *
-     * Parameters:
-     * evt - {Object} The event object.
-     */
-    onHoverMove: function(evt) {
+        onHoverMove: function(evt) {
         if(this.vertices.length > 0) {
             this.layer.removeFeatures(this.vertices, {silent: true});
             this.vertices = [];
@@ -164,7 +96,6 @@ OpenLayers.Control.ModifyFeature.BySegment = {
             };
             createVertex.call(this, closestHit.point1);
             createVertex.call(this, closestHit.point2);
-            // create virtual vertex
             var point = this.createVirtualVertex(closestHit.point1, closestHit.point2);
             point._previous = closestHit.point1;
             point._next = closestHit.point2;
@@ -176,14 +107,7 @@ OpenLayers.Control.ModifyFeature.BySegment = {
         this.layer.addFeatures(this.virtualVertices, {silent: true});
     },
 
-    /**
-     * Method: createSpatialIndex
-     * Creates a spatial index for all the segments of the feature's geometry.
-     *
-     * Parameters:
-     * evt - {Object} The event object.
-     */
-    createSpatialIndex: function(evt) {
+        createSpatialIndex: function(evt) {
         var feature = evt.feature;
         var data = [];
         function collectComponentVertices(geometry) {
@@ -215,18 +139,7 @@ OpenLayers.Control.ModifyFeature.BySegment = {
         this.handlers.hover.activate();
     },
 
-    /**
-     * Method: createBBOX
-     * Create an array of 4 points (minx, miny, maxx, maxy) that represents the
-     * bounding box of the 2 provided points.
-     *
-     * Parameters:
-     * point1 - {<OpenLayers.Geometry.Point>} The first point.
-     * point2 - {<OpenLayers.Geometry.Point>} The second point.
-     *
-     * Returns: {Array(float)}
-     */
-    createBBOX: function(point1, point2) {
+        createBBOX: function(point1, point2) {
         return [
             point1.x < point2.x ? point1.x : point2.x,
             point1.y < point2.y ? point1.y : point2.y,
@@ -235,15 +148,7 @@ OpenLayers.Control.ModifyFeature.BySegment = {
         ];
     },
 
-    /**
-     * Method: updateSpatialIndex
-     * Update the spatial index after a (virtual) vertex gets moved.
-     *
-     * Parameters:
-     * vertex - {<OpenLayers.Feature.Vector>}
-     */
-    updateSpatialIndex: function(vertex) {
-        // this.vertexGeom is the original location of the vertex
+        updateSpatialIndex: function(vertex) {
         var hits = this.tree.search([
             this.vertexGeom.x, 
             this.vertexGeom.y, 
@@ -251,9 +156,7 @@ OpenLayers.Control.ModifyFeature.BySegment = {
             this.vertexGeom.y
         ]);
         var bbox, i, ii;
-        // virtual vertex
         if (vertex._previous) {
-            // split segment into 2 and add them to spatial index
             bbox = this.createBBOX(vertex._previous, vertex.geometry);
             bbox.point1 = vertex._previous;
             bbox.point2 = vertex.geometry;

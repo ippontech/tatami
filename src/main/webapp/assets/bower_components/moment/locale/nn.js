@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : norwegian nynorsk (nn)
-//! author : https://github.com/mechuwind
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

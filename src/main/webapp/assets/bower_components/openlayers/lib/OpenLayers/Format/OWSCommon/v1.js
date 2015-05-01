@@ -3,56 +3,24 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/OWSCommon.js
- */
 
-/**
- * Class: OpenLayers.Format.OWSCommon.v1
- * Common readers and writers for OWSCommon v1.X formats
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.OWSCommon.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
    
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * Method: read
-     *
-     * Parameters:
-     * data - {DOMElement} An OWSCommon document element.
-     * options - {Object} Options for the reader.
-     *
-     * Returns:
-     * {Object} An object representing the OWSCommon document.
-     */
-    read: function(data, options) {
+        read: function(data, options) {
         options = OpenLayers.Util.applyDefaults(options, this.options);
         var ows = {};
         this.readChildNodes(data, ows);
         return ows;
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "ows": {
             "Exception": function(node, exceptionReport) {
                 var exception = {
@@ -231,10 +199,6 @@ OpenLayers.Format.OWSCommon.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                this.readChildNodes(node, boundingBox);
             },
             "BoundingBox": function(node, obj) {
-                // FIXME: We consider that BoundingBox is the same as WGS84BoundingBox
-                // LowerCorner = "min_x min_y"
-                // UpperCorner = "max_x max_y"
-                // It should normally depend on the projection
                 this.readers['ows']['WGS84BoundingBox'].apply(this, [node, obj]);
             },
             "LowerCorner": function(node, obj) {
@@ -265,13 +229,7 @@ OpenLayers.Format.OWSCommon.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         }
     },
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "ows": {
             "BoundingBox": function(options, nodeName) {
                 var node = this.createElementNSPlus(nodeName || "ows:BoundingBox", {

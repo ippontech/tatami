@@ -3,18 +3,7 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/WCSDescribeCoverage.js
- * @requires OpenLayers/Format/XML.js
- */
 
-/**
- * Class: OpenLayers.Format.WCSDescribeCoverage.v1
- * Abstract class not to be instantiated directly.
- * 
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.WCSDescribeCoverage.v1 = OpenLayers.Class(
     OpenLayers.Format.XML, {
 
@@ -23,21 +12,9 @@ OpenLayers.Format.WCSDescribeCoverage.v1 = OpenLayers.Class(
         splitSpace: (/\s+/)
     },
 
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "wcs",
+        defaultPrefix: "wcs",
 
-    /**
-     * APIMethod: read
-     *
-     * Parameters:
-     * data - {DOMElement|String} A WCS DescribeCoverage document.
-     *
-     * Returns:
-     * {Object} An object representing the WCS DescribeCoverage response.
-     */
-    read: function(data) {
+        read: function(data) {
         if(typeof data == "string") { 
             data = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
         }
@@ -46,7 +23,6 @@ OpenLayers.Format.WCSDescribeCoverage.v1 = OpenLayers.Class(
         }
         var schema = {};
         if (data.nodeName.split(":").pop() === 'ExceptionReport') {
-            // an exception must have occurred, so parse it
             var parser = new OpenLayers.Format.OGCExceptionReport();
             schema.error = parser.read(data);
         } else {

@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : tamil (ta)
-//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
@@ -50,7 +47,6 @@
         ordinal : function (number) {
             return number + 'வது';
         },
-        // refer http://ta.wikipedia.org/s/1er1
         meridiemParse: /யாமம்|வைகறை|காலை|நண்பகல்|எற்பாடு|மாலை/,
         meridiem : function (hour, minute, isLower) {
             if (hour < 2) {

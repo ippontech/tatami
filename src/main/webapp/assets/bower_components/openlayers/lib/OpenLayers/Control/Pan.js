@@ -3,54 +3,16 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Control/Button.js
- */
 
-/**
- * Class: OpenLayers.Control.Pan
- * The Pan control is a single button to pan the map in one direction. For
- * a more complete control see <OpenLayers.Control.PanPanel>.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.Pan = OpenLayers.Class(OpenLayers.Control.Button, {
 
-    /** 
-     * APIProperty: slideFactor
-     * {Integer} Number of pixels by which we'll pan the map in any direction 
-     *     on clicking the arrow buttons, defaults to 50.  If you want to pan
-     *     by some ratio of the map dimensions, use <slideRatio> instead.
-     */
-    slideFactor: 50,
+        slideFactor: 50,
 
-    /** 
-     * APIProperty: slideRatio
-     * {Number} The fraction of map width/height by which we'll pan the map            
-     *     on clicking the arrow buttons.  Default is null.  If set, will
-     *     override <slideFactor>. E.g. if slideRatio is .5, then Pan Up will
-     *     pan up half the map height. 
-     */
-    slideRatio: null,
+        slideRatio: null,
 
-    /** 
-     * Property: direction
-     * {String} in {'North', 'South', 'East', 'West'}
-     */
-    direction: null,
+        direction: null,
 
-    /**
-     * Constructor: OpenLayers.Control.Pan 
-     * Control which handles the panning (in any of the cardinal directions)
-     *     of the map by a set px distance. 
-     *
-     * Parameters:
-     * direction - {String} The direction this button should pan.
-     * options - {Object} An optional object whose properties will be used
-     *     to extend the control.
-     */
-    initialize: function(direction, options) {
+        initialize: function(direction, options) {
     
         this.direction = direction;
         this.CLASS_NAME += this.direction;
@@ -58,10 +20,7 @@ OpenLayers.Control.Pan = OpenLayers.Class(OpenLayers.Control.Button, {
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
     },
     
-    /**
-     * Method: trigger
-     */
-    trigger: function(){
+        trigger: function(){
         if (this.map) {
             var getSlideFactor = OpenLayers.Function.bind(function (dim) {
                 return this.slideRatio ?

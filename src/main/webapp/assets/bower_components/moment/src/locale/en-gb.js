@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : great britain english (en-gb)
-//! author : Chris Gedrim : https://github.com/chrisgedrim
 
 import moment from '../moment';
 

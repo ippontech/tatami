@@ -3,45 +3,13 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Strategy.js
- */
 
-/**
- * Class: OpenLayers.Strategy.Fixed
- * A simple strategy that requests features once and never requests new data.
- *
- * Inherits from:
- *  - <OpenLayers.Strategy>
- */
 OpenLayers.Strategy.Fixed = OpenLayers.Class(OpenLayers.Strategy, {
     
-    /**
-     * APIProperty: preload
-     * {Boolean} Load data before layer made visible. Enabling this may result
-     *   in considerable overhead if your application loads many data layers
-     *   that are not visible by default. Default is false.
-     */
-    preload: false,
+        preload: false,
 
-    /**
-     * Constructor: OpenLayers.Strategy.Fixed
-     * Create a new Fixed strategy.
-     *
-     * Parameters:
-     * options - {Object} Optional object whose properties will be set on the
-     *     instance.
-     */
-
-    /**
-     * Method: activate
-     * Activate the strategy: load data or add listener to load when visible
-     *
-     * Returns:
-     * {Boolean} True if the strategy was successfully activated or false if
-     *      the strategy was already active.
-     */
-    activate: function() {
+    
+        activate: function() {
         var activated = OpenLayers.Strategy.prototype.activate.apply(this, arguments);
         if(activated) {
             this.layer.events.on({
@@ -60,14 +28,7 @@ OpenLayers.Strategy.Fixed = OpenLayers.Class(OpenLayers.Strategy, {
         return activated;
     },
     
-    /**
-     * Method: deactivate
-     * Deactivate the strategy.  Undo what is done in <activate>.
-     * 
-     * Returns:
-     * {Boolean} The strategy was successfully deactivated.
-     */
-    deactivate: function() {
+        deactivate: function() {
         var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
         if(deactivated) {
             this.layer.events.un({
@@ -79,14 +40,7 @@ OpenLayers.Strategy.Fixed = OpenLayers.Class(OpenLayers.Strategy, {
         return deactivated;
     },
 
-    /**
-     * Method: load
-     * Tells protocol to load data and unhooks the visibilitychanged event
-     *
-     * Parameters:
-     * options - {Object} options to pass to protocol read.
-     */
-    load: function(options) {
+        load: function(options) {
         var layer = this.layer;
         layer.events.triggerEvent("loadstart", {filter: layer.filter});
         layer.protocol.read(OpenLayers.Util.applyDefaults({
@@ -100,17 +54,7 @@ OpenLayers.Strategy.Fixed = OpenLayers.Class(OpenLayers.Strategy, {
         });
     },
 
-    /**
-     * Method: merge
-     * Add all features to the layer.
-     *     If the layer projection differs from the map projection, features
-     *     will be transformed from the layer projection to the map projection.
-     *
-     * Parameters:
-     * resp - {<OpenLayers.Protocol.Response>} The response object passed
-     *      by the protocol.
-     */
-    merge: function(resp) {
+        merge: function(resp) {
         var layer = this.layer;
         layer.destroyFeatures();
         var features = resp.features;

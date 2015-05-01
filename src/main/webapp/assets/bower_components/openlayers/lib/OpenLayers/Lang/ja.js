@@ -3,16 +3,7 @@
  *  - Mage Whopper
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["ja"]
- * Dictionary for 日本語.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["ja"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "未処理の要求は ${statusText} を返します",

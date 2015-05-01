@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : catalan (ca)
-//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

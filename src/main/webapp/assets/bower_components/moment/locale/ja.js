@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : japanese (ja)
-//! author : LI Long : https://github.com/baryon
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

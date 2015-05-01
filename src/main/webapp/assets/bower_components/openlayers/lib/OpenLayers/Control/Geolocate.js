@@ -3,102 +3,28 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Control.js
- * @requires OpenLayers/Geometry/Point.js
- * @requires OpenLayers/Projection.js
- */
 
-/**
- * Class: OpenLayers.Control.Geolocate
- * The Geolocate control wraps w3c geolocation API into control that can be
- * bound to a map, and generate events on location update
- *
- * To use this control requires to load the proj4js library if the projection
- * of the map is not EPSG:4326 or EPSG:900913.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
 
-    /** 
-     * APIProperty: events
-     * {<OpenLayers.Events>} Events instance for listeners and triggering
-     *     control specific events.
-     *
-     * Register a listener for a particular event with the following syntax:
-     * (code)
-     * control.events.register(type, obj, listener);
-     * (end)
-     *
-     * Supported event types (in addition to those from <OpenLayers.Control.events>):
-     * locationupdated - Triggered when browser return a new position. Listeners will 
-     *     receive an object with a 'position' property which is the browser.geolocation.position
-     *     native object, as well as a 'point' property which is the location transformed in the 
-     *     current map projection.
-     * locationfailed - Triggered when geolocation has failed
-     * locationuncapable - Triggered when control is activated on a browser
-     *     which doesn't support geolocation
-     */
+    
+        geolocation: null,
 
-    /**
-     * Property: geolocation
-     * {Object} The geolocation engine, as a property to be possibly mocked.
-     * This is set lazily to avoid a memory leak in IE9.
-     */
-    geolocation: null,
+        available: ('geolocation' in navigator),
 
-    /**
-     * Property: available
-     * {Boolean} The navigator.geolocation object is available.
-     */
-    available: ('geolocation' in navigator),
+        bind: true,
 
-    /**
-     * APIProperty: bind
-     * {Boolean} If true, map center will be set on location update.
-     */
-    bind: true,
+        watch: false,
 
-    /**
-     * APIProperty: watch
-     * {Boolean} If true, position will be update regularly.
-     */
-    watch: false,
+        geolocationOptions: null,
 
-    /**
-     * APIProperty: geolocationOptions
-     * {Object} Options to pass to the navigator's geolocation API. See
-     *     <http://dev.w3.org/geo/api/spec-source.html>. No specific
-     *     option is passed to the geolocation API by default.
-     */
-    geolocationOptions: null,
-
-    /**
-     * Constructor: OpenLayers.Control.Geolocate
-     * Create a new control to deal with browser geolocation API
-     *
-     */
-
-    /**
-     * Method: destroy
-     */
-    destroy: function() {
+    
+        destroy: function() {
         this.deactivate();
         OpenLayers.Control.prototype.destroy.apply(this, arguments);
     },
 
-    /**
-     * Method: activate
-     * Activates the control.
-     *
-     * Returns:
-     * {Boolean} The control was effectively activated.
-     */
-    activate: function () {
+        activate: function () {
         if (this.available && !this.geolocation) {
-            // set lazily to avoid IE9 memory leak
             this.geolocation = navigator.geolocation;
         }
         if (!this.geolocation) {
@@ -120,14 +46,7 @@ OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
         return false;
     },
 
-    /**
-     * Method: deactivate
-     * Deactivates the control.
-     *
-     * Returns:
-     * {Boolean} The control was effectively deactivated.
-     */
-    deactivate: function () {
+        deactivate: function () {
         if (this.active && this.watchId !== null) {
             this.geolocation.clearWatch(this.watchId);
         }
@@ -136,12 +55,7 @@ OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
         );
     },
 
-    /**
-     * Method: geolocate
-     * Activates the control.
-     *
-     */
-    geolocate: function (position) {
+        geolocate: function (position) {
         var center = new OpenLayers.LonLat(
             position.coords.longitude,
             position.coords.latitude
@@ -160,14 +74,7 @@ OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
         });
     },
 
-    /**
-     * APIMethod: getCurrentLocation
-     *
-     * Returns:
-     * {Boolean} Returns true if a event will be fired (successful
-     * registration)
-     */
-    getCurrentLocation: function() {
+        getCurrentLocation: function() {
         if (!this.active || this.watch) {
             return false;
         }
@@ -179,12 +86,7 @@ OpenLayers.Control.Geolocate = OpenLayers.Class(OpenLayers.Control, {
         return true;
     },
 
-    /**
-     * Method: failure
-     * method called on browser's geolocation failure
-     *
-     */
-    failure: function (error) {
+        failure: function (error) {
         this.events.triggerEvent("locationfailed", {error: error});
     },
 

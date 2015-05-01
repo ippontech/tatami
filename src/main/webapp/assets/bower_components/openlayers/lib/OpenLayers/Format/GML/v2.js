@@ -3,51 +3,16 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/GML/Base.js
- */
 
-/**
- * Class: OpenLayers.Format.GML.v2
- * Parses GML version 2.
- *
- * Inherits from:
- *  - <OpenLayers.Format.GML.Base>
- */
 OpenLayers.Format.GML.v2 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
     
-    /**
-     * Property: schemaLocation
-     * {String} Schema location for a particular minor version.
-     */
-    schemaLocation: "http://www.opengis.net/gml http://schemas.opengis.net/gml/2.1.2/feature.xsd",
+        schemaLocation: "http://www.opengis.net/gml http://schemas.opengis.net/gml/2.1.2/feature.xsd",
 
-    /**
-     * Constructor: OpenLayers.Format.GML.v2
-     * Create a parser for GML v2.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     *
-     * Valid options properties:
-     * featureType - {String} Local (without prefix) feature typeName (required).
-     * featureNS - {String} Feature namespace (required).
-     * geometryName - {String} Geometry element name.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         OpenLayers.Format.GML.Base.prototype.initialize.apply(this, [options]);
     },
 
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "gml": OpenLayers.Util.applyDefaults({
             "outerBoundaryIs": function(node, container) {
                 var obj = {};
@@ -76,23 +41,9 @@ OpenLayers.Format.GML.v2 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
         "wfs": OpenLayers.Format.GML.Base.prototype.readers["wfs"]
     },
 
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * features - {Array(<OpenLayers.Feature.Vector>) | OpenLayers.Feature.Vector}
-     *     An array of features or a single feature.
-     *
-     * Returns:
-     * {String} Given an array of features, a doc with a gml:featureMembers
-     *     element will be returned.  Given a single feature, a doc with a
-     *     gml:featureMember element will be returned.
-     */
-    write: function(features) {
+        write: function(features) {
         var name;
         if(OpenLayers.Util.isArray(features)) {
-            // GML2 only has abstract feature collections
-            // wfs provides a feature collection from a well-known schema
             name = "wfs:FeatureCollection";
         } else {
             name = "gml:featureMember";
@@ -106,13 +57,7 @@ OpenLayers.Format.GML.v2 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
         return OpenLayers.Format.XML.prototype.write.apply(this, [root]);
     },
 
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "gml": OpenLayers.Util.applyDefaults({
             "Point": function(geometry) {
                 var node = this.createElementNSPlus("gml:Point");
@@ -177,7 +122,6 @@ OpenLayers.Format.GML.v2 = OpenLayers.Class(OpenLayers.Format.GML.Base, {
                     {x: bounds.left, y: bounds.bottom},
                     {x: bounds.right, y: bounds.top}
                 ], node);
-                // srsName attribute is optional for gml:Box
                 if(this.srsName) {
                     node.setAttribute("srsName", this.srsName);
                 }

@@ -41,26 +41,26 @@ PostModule.controller('PostController', [
             return filteredGroups;
         };
 
-        $scope.current = {                      // This is the current instance of the status window
-            preview: false,                     // Determines if the status is being previewed by the user
-            geoLoc: false,                      // Determine if the geolocalization checkbox is checked
-            groups: groups,                     // The groups the user belongs to
-            reply: false,                       // Determine if this status is a reply to another user
-            uploadDone: true,                   // If the file upload is done, we should not show the progess bar
-            uploadProgress: 0,                  // The progress of the file currently being uploaded
+        $scope.current = {  // This is the current instance of the status window
+            preview: false, // Determines if the status is being previewed by the user
+            geoLoc: false,  // Determine if the geolocalization checkbox is checked
+            groups: groups, // The groups the user belongs to
+            reply: false,   // Determine if this status is a reply to another user
+            uploadDone: true,// If the file upload is done, we should not show the progess bar
+            uploadProgress: 0,// The progress of the file currently being uploaded
             upload: [],
             contentEmpty: true,
             files: [],
             attachments: []
         };
 
-        $scope.status = {            // This is the current user status information
-            content: "",             // The content contained in this status
-            groupId: "",             // The groupId that this status is being broadcast to
-            replyTo: "",             // The user we are replying to
-            attachmentIds: [],       // An array of all the attachments contained in the status
-            geoLocalization: "",     // The geographical location of the user when posting the status
-            statusPrivate: false     // Determines whether the status is private
+        $scope.status = {   // This is the current user status information
+            content: "",    // The content contained in this status
+            groupId: "",    // The groupId that this status is being broadcast to
+            replyTo: "",     // The user we are replying to
+            attachmentIds: [], // An array of all the attachments contained in the status
+            geoLocalization: "", // The geographical location of the user when posting the status
+            statusPrivate: false // Determines whether the status is private
         };
 
         $scope.charCount = 750;
@@ -74,7 +74,7 @@ PostModule.controller('PostController', [
          * Watches the current.files ng-model and handles uploads
          */
         $scope.$watch('current.files', function() {
-            if($scope.current.files != null) {
+            if($scope.current.files !== null) {
                 for(var i = 0; i < $scope.current.files.length; ++i) {
                     var file = $scope.current.files[i];
                     $scope.uploadStatus.isUploading = true;
@@ -84,22 +84,22 @@ PostModule.controller('PostController', [
                         fileFormDataName: 'uploadFile'
                     }).progress(function(evt) {
                         $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
-                    }).success(function(data, status, headers, config) {
+                    }).success(function(data) {
                         $scope.current.attachments.push(data[0]);
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
                         $scope.status.attachmentIds.push(data[0].attachmentId);
-                    }).error(function(data, status, headers, config) {
+                    }).error(function() {
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
                     })
                 }
             }
         });
-
         $scope.fileSize = function(file) {
             if(file.size / 1000 < 1000) {
                 return parseInt(file.size / 1000) + "K";
+
             }
             else{
                 return parseInt(file.size / 1000000) + "M";
@@ -122,7 +122,7 @@ PostModule.controller('PostController', [
             }
         };
 
-        $modalInstance.setCurrentStatus(curStatus)
+        $modalInstance.setCurrentStatus(curStatus);
 
         $scope.closeModal = function() {
             $modalInstance.dismiss();
@@ -160,7 +160,7 @@ PostModule.controller('PostController', [
             if(term.length > 0) {
                 return SearchService.query({ 'term': 'tags', q: term }, function(result) {
                     $scope.tags = result;
-                })
+                });
             }
 
         };
@@ -194,7 +194,7 @@ PostModule.controller('PostController', [
          * content has been provided by the user.
          */
         $scope.newStatus = function() {
-            if($scope.status.content.trim().length != 0) {
+            if($scope.status.content.trim().length !== 0) {
                 $scope.status.content = $scope.status.content.trim();
 
                 StatusService.save($scope.status, function() {
@@ -238,9 +238,9 @@ PostModule.controller('PostController', [
                 var latitude = geoLocalization.split(',')[0].trim();
                 var longitude = geoLocalization.split(',')[1].trim();
 
-                map = new OpenLayers.Map("simpleMap");
-                var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                var map = new OpenLayers.Map("simpleMap");
+                var fromProjection = new OpenLayers.Projection("EPSG:4326");// Transform from WGS 1984
+                var toProjection = new OpenLayers.Projection("EPSG:900913");// to Spherical Mercator Projection
                 var lonLat = new OpenLayers.LonLat(parseFloat(longitude), parseFloat(latitude)).transform(fromProjection, toProjection);
                 var mapnik = new OpenLayers.Layer.OSM();
                 var position = lonLat;

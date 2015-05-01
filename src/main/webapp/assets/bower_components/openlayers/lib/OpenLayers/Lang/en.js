@@ -1,13 +1,4 @@
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["en"]
- * Dictionary for English.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang.en = {
 
     'unhandledRequest': "Unhandled request return ${statusText}",
@@ -22,8 +13,6 @@ OpenLayers.Lang.en = {
 
     'browserNotSupported':
         "Your browser does not support vector rendering. Currently supported renderers are:\n${renderers}",
-
-    // console message
     'minZoomLevelError':
         "The minZoomLevel property is only intended for use " +
         "with the FixedZoomLevels-descendent layers. That this " +
@@ -61,15 +50,11 @@ OpenLayers.Lang.en = {
         "target='_blank'>click here</a>",
 
     'Scale = 1 : ${scaleDenom}': "Scale = 1 : ${scaleDenom}",
-    
-    //labels for the graticule control
     'W': 'W',
     'E': 'E',
     'N': 'N',
     'S': 'S',
     'Graticule': 'Graticule',
-
-    // console message
     'reprojectDeprecated':
         "You are using the 'reproject' option " +
         "on the ${layerName} layer. This option is deprecated: " +
@@ -77,13 +62,9 @@ OpenLayers.Lang.en = {
         "basemaps, but that functionality should now be achieved by using " +
         "Spherical Mercator support. More information is available from " +
         "http://trac.openlayers.org/wiki/SphericalMercator.",
-
-    // console message
     'methodDeprecated':
         "This method has been deprecated and will be removed in 3.0. " +
         "Please use ${newMethod} instead.",
-
-    // **** end ****
     'end': ''
     
 };
