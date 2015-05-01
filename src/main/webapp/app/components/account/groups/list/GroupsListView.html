@@ -1,6 +1,6 @@
 <div>
     <form class="row-fluid littleMargeBot">
-        <input ng-show="$state.is('tatami.account.groups.main.top.search')" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
+        <input ng-show="$state.current.name === 'tatami.account.groups.main.top.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.groups.search' | translate }}">
     </form>
     <table class="table noCollapse">
         <tbody>
