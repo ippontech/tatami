@@ -3,14 +3,7 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Protocol.js
- */
 
-/**
- * Class: OpenLayers.Protocol.CSW
- * Used to create a versioned CSW protocol. Default version is 2.0.2.
- */
 OpenLayers.Protocol.CSW = function(options) {
     options = OpenLayers.Util.applyDefaults(
         options, OpenLayers.Protocol.CSW.DEFAULTS
@@ -22,9 +15,6 @@ OpenLayers.Protocol.CSW = function(options) {
     return new cls(options);
 };
 
-/**
- * Constant: OpenLayers.Protocol.CSW.DEFAULTS
- */
 OpenLayers.Protocol.CSW.DEFAULTS = {
     "version": "2.0.2"
 };

@@ -3,9 +3,10 @@ TopMenuModule.controller('TopMenuController', [
     '$window',
     '$http',
     '$translate',
+    'amMoment',
     'UserSession',
     'SearchService',
-    function($scope, $window, $http, $translate, UserSession, SearchService) {
+    function($scope, $window, $http, $translate, amMoment, UserSession, SearchService) {
         $scope.current = {};
         $scope.current.searchString = '';
 
@@ -15,6 +16,7 @@ TopMenuModule.controller('TopMenuController', [
 
         $scope.changeLanguage = function(key) {
             $translate.use(key);
+            amMoment.changeLocale(key);
         };
 
         $scope.openPostModal = function() {
@@ -35,8 +37,9 @@ TopMenuModule.controller('TopMenuController', [
             var lang = $translate.use();
             // If it fails to detect the one being used, it will look for the proposed one.
             // Useful in asynchronous scenarios.
-            if(lang != 'fr' && lang != 'en')
-                lang = $translate.proposedLanguage();
+            if (lang !== 'fr' && lang !== 'en') {
+            lang = $translate.proposedLanguage();
+        }
            switch(lang) {
                case 'fr':
                    window.open("http://blog.ippon.fr/");
@@ -58,7 +61,7 @@ TopMenuModule.controller('TopMenuController', [
                 if(angular.isDefined(result.users[0])) {
                     result.users[0].firstUser = true;
                 }
-                //$scope.results = result.groups.concat(result.users.concat(result.tags));
+
                 return result.groups.concat(result.users.concat(result.tags));
             })
         };
@@ -74,7 +77,7 @@ TopMenuModule.controller('TopMenuController', [
             }
         };
 
-        $scope.goToPage = function($item, $model, $label) {
+        $scope.goToPage = function($item) {
             if($item.groupId) {
                 $scope.$state.go('tatami.home.home.group.statuses', { groupId: $item.groupId });
             }

@@ -3,52 +3,14 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Feature/Vector.js
- * @requires OpenLayers/Geometry/Point.js
- */
 
-/**
- * Class: OpenLayers.Format.Text
- * Read Text format. Create a new instance with the <OpenLayers.Format.Text>
- *     constructor. This reads text which is formatted like CSV text, using
- *     tabs as the seperator by default. It provides parsing of data originally
- *     used in the MapViewerService, described on the wiki. This Format is used
- *     by the <OpenLayers.Layer.Text> class.
- *
- * Inherits from:
- *  - <OpenLayers.Format>
- */
 OpenLayers.Format.Text = OpenLayers.Class(OpenLayers.Format, {
     
-    /**
-     * APIProperty: defaultStyle
-     * defaultStyle allows one to control the default styling of the features.
-     *    It should be a symbolizer hash. By default, this is set to match the
-     *    Layer.Text behavior, which is to use the default OpenLayers Icon.
-     */
-    defaultStyle: null,
+        defaultStyle: null,
      
-    /**
-     * APIProperty: extractStyles
-     * set to true to extract styles from the TSV files, using information
-     * from the image or icon, iconSize and iconOffset fields. This will result
-     * in features with a symbolizer (style) property set, using the
-     * default symbolizer specified in <defaultStyle>. Set to false if you
-     * wish to use a styleMap or OpenLayers.Style options to style your
-     * layer instead.
-     */
-    extractStyles: true,
+        extractStyles: true,
 
-    /**
-     * Constructor: OpenLayers.Format.Text
-     * Create a new parser for TSV Text.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         options = options || {};
 
         if(options.extractStyles !== false) {
@@ -64,28 +26,16 @@ OpenLayers.Format.Text = OpenLayers.Class(OpenLayers.Format, {
         OpenLayers.Format.prototype.initialize.apply(this, [options]);
     }, 
 
-    /**
-     * APIMethod: read
-     * Return a list of features from a Tab Separated Values text string.
-     * 
-     * Parameters:
-     * text - {String} 
-     *
-     * Returns:
-     * Array({<OpenLayers.Feature.Vector>})
-     */
-    read: function(text) {
+        read: function(text) {
         var lines = text.split('\n');
         var columns;
         var features = [];
-        // length - 1 to allow for trailing new line
         for (var lcv = 0; lcv < (lines.length - 1); lcv++) {
             var currLine = lines[lcv].replace(/^\s*/,'').replace(/\s*$/,'');
         
             if (currLine.charAt(0) != '#') { /* not a comment */
             
                 if (!columns) {
-                    //First line is columns
                     columns = currLine.split('\t');
                 } else {
                     var vals = currLine.split('\t');
@@ -127,8 +77,6 @@ OpenLayers.Format.Text = OpenLayers.Class(OpenLayers.Format, {
                             } else if (columns[valIndex] == 'overflow') {
                                 attributes['overflow'] = vals[valIndex];
                             } else {
-                                // For StyleMap filtering, allow additional
-                                // columns to be stored as attributes.
                                 attributes[columns[valIndex]] = vals[valIndex];
                             }    
                         }

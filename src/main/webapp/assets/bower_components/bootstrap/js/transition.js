@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-  // ============================================================
-
   function transitionEnd() {
     var el = document.createElement('bootstrap')
 
@@ -39,8 +36,6 @@
       }
     }
   }
-
-  // http://blog.alexmaccaw.com/css-transitions
   $.fn.emulateTransitionEnd = function (duration) {
     var called = false, $el = this
     $(this).one($.support.transition.end, function () { called = true })

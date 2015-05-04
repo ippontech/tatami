@@ -3,32 +3,10 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/BaseTypes.js
- * @requires OpenLayers/Rule.js
- * @requires OpenLayers/Format/SLD.js
- * @requires OpenLayers/Format/Filter/v1_0_0.js
- * @requires OpenLayers/Symbolizer/Point.js
- * @requires OpenLayers/Symbolizer/Line.js
- * @requires OpenLayers/Symbolizer/Polygon.js
- * @requires OpenLayers/Symbolizer/Text.js
- * @requires OpenLayers/Symbolizer/Raster.js
- */
 
-/**
- * Class: OpenLayers.Format.SLD.v1
- * Superclass for SLD version 1 parsers.
- *
- * Inherits from:
- *  - <OpenLayers.Format.Filter.v1_0_0>
- */
 OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         sld: "http://www.opengis.net/sld",
         ogc: "http://www.opengis.net/ogc",
         gml: "http://www.opengis.net/gml",
@@ -37,43 +15,15 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         xmlns: "http://www.w3.org/2000/xmlns/"
     },
     
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "sld",
+        defaultPrefix: "sld",
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location for a particular minor version.
-     */
-    schemaLocation: null,
+        schemaLocation: null,
     
-    /** 
-     * APIProperty: multipleSymbolizers
-     * {Boolean} Support multiple symbolizers per rule.  Default is false.  if
-     *     true, an OpenLayers.Style2 instance will be created to represent 
-     *     user styles instead of an OpenLayers.Style instace.  The 
-     *     OpenLayers.Style2 class allows collections of rules with multiple
-     *     symbolizers, but is not currently useful for client side rendering.
-     *     If multiple symbolizers is true, multiple FeatureTypeStyle elements
-     *     are preserved in reading/writing by setting symbolizer zIndex values.
-     *     In addition, the <defaultSymbolizer> property is ignored if 
-     *     multiple symbolizers are supported (defaults should be applied
-     *     when rendering).
-     */
-    multipleSymbolizers: false,
+        multipleSymbolizers: false,
 
-    /**
-     * Property: featureTypeCounter
-     * {Number} Private counter for multiple feature type styles.
-     */
-    featureTypeCounter: null,
+        featureTypeCounter: null,
 
-    /**
-     * APIProperty: defaultSymbolizer.
-     * {Object} A symbolizer with the SLD defaults.
-     */
-    defaultSymbolizer: {
+        defaultSymbolizer: {
         fillColor: "#808080",
         fillOpacity: 1,
         strokeColor: "#000000",
@@ -84,32 +34,8 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         graphicName: "square"
     },
     
-    /**
-     * Constructor: OpenLayers.Format.SLD.v1
-     * Instances of this class are not created directly.  Use the
-     *     <OpenLayers.Format.SLD> constructor instead.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-    
-    /**
-     * Method: read
-     *
-     * Parameters:
-     * data - {DOMElement} An SLD document element.
-     * options - {Object} Options for the reader.
-     *
-     * Valid options:
-     * namedLayersAsArray - {Boolean}  Generate a namedLayers array.  If false,
-     *     the namedLayers property value will be an object keyed by layer name.
-     *     Default is false.
-     *
-     * Returns:
-     * {Object} An object representing the SLD.
-     */
-    read: function(data, options) {
+        
+        read: function(data, options) {
         options = OpenLayers.Util.applyDefaults(options, this.options);
         var sld = {
             namedLayers: options.namedLayersAsArray === true ? [] : {}
@@ -118,15 +44,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         return sld;
     },
     
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: OpenLayers.Util.applyDefaults({
+        readers: OpenLayers.Util.applyDefaults({
         "sld": {
             "StyledLayerDescriptor": function(node, sld) {
                 sld.version = node.getAttribute("version");
@@ -147,7 +65,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                     namedStyles: []
                 };
                 this.readChildNodes(node, layer);
-                // give each of the user styles this layer name
                 for(var i=0, len=layer.userStyles.length; i<len; ++i) {
                     layer.userStyles[i].layerName = layer.name;
                 }
@@ -255,14 +172,12 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "AnchorPointX": function(node, symbolizer) {
                 var labelAnchorPointX = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(labelAnchorPointX) {
                     symbolizer.labelAnchorPointX = labelAnchorPointX;
                 }
             },
             "AnchorPointY": function(node, symbolizer) {
                 var labelAnchorPointY = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(labelAnchorPointY) {
                     symbolizer.labelAnchorPointY = labelAnchorPointY;
                 }
@@ -272,14 +187,12 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "DisplacementX": function(node, symbolizer) {
                 var labelXOffset = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(labelXOffset) {
                     symbolizer.labelXOffset = labelXOffset;
                 }
             },
             "DisplacementY": function(node, symbolizer) {
                 var labelYOffset = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(labelYOffset) {
                     symbolizer.labelYOffset = labelYOffset;
                 }
@@ -289,7 +202,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "PerpendicularOffset": function(node, symbolizer) {
                 var labelPerpendicularOffset = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(labelPerpendicularOffset) {
                     symbolizer.labelPerpendicularOffset = labelPerpendicularOffset;
                 }
@@ -304,7 +216,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                 this.readChildNodes(node, symbolizer);
             },
             "Halo": function(node, symbolizer) {
-                // halo has a fill, so send fresh object
                 var obj = {};
                 this.readChildNodes(node, obj);
                 symbolizer.haloRadius = obj.haloRadius;
@@ -314,7 +225,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             "Radius": function(node, symbolizer) {
                 var radius = this.readers.ogc._expression.call(this, node);
                 if(radius != null) {
-                    // radius is only used for halo
                     symbolizer.haloRadius = radius;
                 }
             },
@@ -412,8 +322,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             "CssParameter": function(node, symbolizer) {
                 var cssProperty = node.getAttribute("name");
                 var symProperty = this.cssMap[cssProperty];
-                // for labels, fill should map to fontColor and fill-opacity 
-                // to fontOpacity
                 if (symbolizer.label) {
                     if (cssProperty === 'fill') {
                         symProperty = "fontColor";
@@ -422,9 +330,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                     }
                 }
                 if(symProperty) {
-                    // Limited support for parsing of OGC expressions
                     var value = this.readers.ogc._expression.call(this, node);
-                    // always string, could be an empty string
                     if(value) {
                         symbolizer[symProperty] = value;
                     }
@@ -433,9 +339,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             "Graphic": function(node, symbolizer) {
                 symbolizer.graphic = true;
                 var graphic = {};
-                // painter's order not respected here, clobber previous with next
                 this.readChildNodes(node, graphic);
-                // directly properties with names that match symbolizer properties
                 var properties = [
                     "stroke", "strokeColor", "strokeWidth", "strokeOpacity",
                     "strokeLinecap", "fill", "fillColor", "fillOpacity",
@@ -449,14 +353,12 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                         symbolizer[prop] = value;
                     }
                 }
-                // set other generic properties with specific graphic property names
                 if(graphic.opacity != undefined) {
                     symbolizer.graphicOpacity = graphic.opacity;
                 }
                 if(graphic.size != undefined) {
                     var pointRadius = graphic.size / 2;
                     if (isNaN(pointRadius)) {
-                        // likely a property name
                         symbolizer.graphicWidth = graphic.size;
                     } else {
                         symbolizer.pointRadius = graphic.size / 2;
@@ -480,21 +382,18 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "Opacity": function(node, obj) {
                 var opacity = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(opacity) {
                     obj.opacity = opacity;
                 }
             },
             "Size": function(node, obj) {
                 var size = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(size) {
                     obj.size = size;
                 }
             },
             "Rotation": function(node, obj) {
                 var rotation = this.readers.ogc._expression.call(this, node);
-                // always string, could be empty string
                 if(rotation) {
                     obj.rotation = rotation;
                 }
@@ -510,12 +409,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         }
     }, OpenLayers.Format.Filter.v1_0_0.prototype.readers),
     
-    /**
-     * Property: cssMap
-     * {Object} Object mapping supported css property names to OpenLayers
-     *     symbolizer property names.
-     */
-    cssMap: {
+        cssMap: {
         "stroke": "strokeColor",
         "stroke-opacity": "strokeOpacity",
         "stroke-width": "strokeWidth",
@@ -529,18 +423,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         "font-style": "fontStyle"
     },
     
-    /**
-     * Method: getCssProperty
-     * Given a symbolizer property, get the corresponding CSS property
-     *     from the <cssMap>.
-     *
-     * Parameters:
-     * sym - {String} A symbolizer property name.
-     *
-     * Returns:
-     * {String} A CSS property name or null if none found.
-     */
-    getCssProperty: function(sym) {
+        getCssProperty: function(sym) {
         var css = null;
         for(var prop in this.cssMap) {
             if(this.cssMap[prop] == sym) {
@@ -551,20 +434,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         return css;
     },
     
-    /**
-     * Method: getGraphicFormat
-     * Given a href for an external graphic, try to determine the mime-type.
-     *     This method doesn't try too hard, and will fall back to
-     *     <defaultGraphicFormat> if one of the known <graphicFormats> is not
-     *     the file extension of the provided href.
-     *
-     * Parameters:
-     * href - {String}
-     *
-     * Returns:
-     * {String} The graphic format.
-     */
-    getGraphicFormat: function(href) {
+        getGraphicFormat: function(href) {
         var format, regex;
         for(var key in this.graphicFormats) {
             if(this.graphicFormats[key].test(href)) {
@@ -575,48 +445,21 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
         return format || this.defaultGraphicFormat;
     },
     
-    /**
-     * Property: defaultGraphicFormat
-     * {String} If none other can be determined from <getGraphicFormat>, this
-     *     default will be returned.
-     */
-    defaultGraphicFormat: "image/png",
+        defaultGraphicFormat: "image/png",
     
-    /**
-     * Property: graphicFormats
-     * {Object} Mapping of image mime-types to regular extensions matching 
-     *     well-known file extensions.
-     */
-    graphicFormats: {
+        graphicFormats: {
         "image/jpeg": /\.jpe?g$/i,
         "image/gif": /\.gif$/i,
         "image/png": /\.png$/i
     },
 
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * sld - {Object} An object representing the SLD.
-     *
-     * Returns:
-     * {DOMElement} The root of an SLD document.
-     */
-    write: function(sld) {
+        write: function(sld) {
         return this.writers.sld.StyledLayerDescriptor.apply(this, [sld]);
     },
     
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: OpenLayers.Util.applyDefaults({
+        writers: OpenLayers.Util.applyDefaults({
         "sld": {
             "_OGCExpression": function(nodeName, value) {
-                // only the simplest of ogc:expression handled
-                // {label: "some text and a ${propertyName}"}
                 var node = this.createElementNSPlus(nodeName);
                 var tokens = typeof value == "string" ?
                     value.split("${") :
@@ -636,7 +479,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                             this.createTextNode(item.substring(++last))
                         );
                     } else {
-                        // no ending }, so this is a literal ${
                         node.appendChild(
                             this.createTextNode("${" + item)
                         );
@@ -652,9 +494,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                         "xsi:schemaLocation": this.schemaLocation
                     }}
                 );
-
-                // For ArcGIS Server it is necessary to define this
-                // at the root level (see ticket:2166).
                 this.setAttributeNS(
                     root, this.namespaces.xmlns,
                     "xmlns:ogc", this.namespaces.ogc
@@ -663,21 +502,15 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                     root, this.namespaces.xmlns,
                     "xmlns:gml", this.namespaces.gml
                 );
-
-                // add in optional name
                 if(sld.name) {
                     this.writeNode("Name", sld.name, root);
                 }
-                // add in optional title
                 if(sld.title) {
                     this.writeNode("Title", sld.title, root);
                 }
-                // add in optional description
                 if(sld.description) {
                     this.writeNode("Abstract", sld.description, root);
                 }
-                // add in named layers
-                // allow namedLayers to be an array
                 if(OpenLayers.Util.isArray(sld.namedLayers)) {
                     for(var i=0, len=sld.namedLayers.length; i<len; ++i) {
                         this.writeNode("NamedLayer", sld.namedLayers[i], root);
@@ -702,13 +535,7 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "NamedLayer": function(layer) {
                 var node = this.createElementNSPlus("sld:NamedLayer");
-
-                // add in required name
                 this.writeNode("Name", layer.name, node);
-
-                // optional sld:LayerFeatureConstraints here
-
-                // add in named styles
                 if(layer.namedStyles) {
                     for(var i=0, len=layer.namedStyles.length; i<len; ++i) {
                         this.writeNode(
@@ -716,8 +543,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                         );
                     }
                 }
-                
-                // add in user styles
                 if(layer.userStyles) {
                     for(var i=0, len=layer.userStyles.length; i<len; ++i) {
                         this.writeNode(
@@ -735,28 +560,19 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "UserStyle": function(style) {
                 var node = this.createElementNSPlus("sld:UserStyle");
-
-                // add in optional name
                 if(style.name) {
                     this.writeNode("Name", style.name, node);
                 }
-                // add in optional title
                 if(style.title) {
                     this.writeNode("Title", style.title, node);
                 }
-                // add in optional description
                 if(style.description) {
                     this.writeNode("Abstract", style.description, node);
                 }
-                
-                // add isdefault
                 if(style.isDefault) {
                     this.writeNode("IsDefault", style.isDefault, node);
                 }
-                
-                // add FeatureTypeStyles
                 if (this.multipleSymbolizers && style.rules) {
-                    // group style objects by symbolizer zIndex
                     var rulesByZ = {
                         0: []
                     };
@@ -784,11 +600,9 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                                 rulesByZ[zIndex].push(ruleMap[zIndex]);
                             }
                         } else {
-                            // no symbolizers in rule
                             rulesByZ[0].push(rule.clone());
                         }
                     }
-                    // write one FeatureTypeStyle per zIndex
                     zValues.sort();
                     var rules;
                     for (var i=0, ii=zValues.length; i<ii; ++i) {
@@ -812,12 +626,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "FeatureTypeStyle": function(style) {
                 var node = this.createElementNSPlus("sld:FeatureTypeStyle");
-                
-                // OpenLayers currently stores no Name, Title, Abstract,
-                // FeatureTypeName, or SemanticTypeIdentifier information
-                // related to FeatureTypeStyle
-                
-                // add in rules
                 for(var i=0, len=style.rules.length; i<len; ++i) {
                     this.writeNode("Rule", style.rules[i], node);
                 }
@@ -826,30 +634,20 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "Rule": function(rule) {
                 var node = this.createElementNSPlus("sld:Rule");
-
-                // add in optional name
                 if(rule.name) {
                     this.writeNode("Name", rule.name, node);
                 }
-                // add in optional title
                 if(rule.title) {
                     this.writeNode("Title", rule.title, node);
                 }
-                // add in optional description
                 if(rule.description) {
                     this.writeNode("Abstract", rule.description, node);
                 }
-                
-                // add in LegendGraphic here
-                
-                // add in optional filters
                 if(rule.elseFilter) {
                     this.writeNode("ElseFilter", null, node);
                 } else if(rule.filter) {
                     this.writeNode("ogc:Filter", rule.filter, node);
                 }
-                
-                // add in scale limits
                 if(rule.minScaleDenominator != undefined) {
                     this.writeNode(
                         "MinScaleDenominator", rule.minScaleDenominator, node
@@ -872,7 +670,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                         );
                     }
                 } else {
-                    // add in symbolizers (relies on geometry type keys)
                     var types = OpenLayers.Style.SYMBOLIZER_PREFIXES;
                     for(var i=0, len=types.length; i<len; ++i) {
                         type = types[i];
@@ -902,7 +699,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "LineSymbolizer": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:LineSymbolizer");
-                // add in optional Geometry
                 if (symbolizer.geometry) {
                     this.writeNode("Geometry", symbolizer.geometry, node);
                 }
@@ -911,11 +707,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "Stroke": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:Stroke");
-
-                // GraphicFill here
-                // GraphicStroke here
-
-                // add in CssParameters
                 if(symbolizer.strokeColor != undefined) {
                     this.writeNode(
                         "CssParameter",
@@ -938,7 +729,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                     );
                 }
                 if(symbolizer.strokeDashstyle != undefined && symbolizer.strokeDashstyle !== "solid") {
-                    // assumes valid stroke-dasharray value
                     this.writeNode(
                         "CssParameter", 
                         {symbolizer: symbolizer, key: "strokeDashstyle"},
@@ -955,7 +745,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                 return node;
             },
             "CssParameter": function(obj) {
-                // not handling ogc:expressions for now
                 return this.createElementNSPlus("sld:CssParameter", {
                     attributes: {name: this.getCssProperty(obj.key)},
                     value: obj.symbolizer[obj.key]
@@ -963,22 +752,18 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "TextSymbolizer": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:TextSymbolizer");
-                // add in optional Geometry
                 if (symbolizer.geometry) {
                     this.writeNode("Geometry", symbolizer.geometry, node);
                 }
-                // add in optional Label
                 if(symbolizer.label != null) {
                     this.writeNode("Label", symbolizer.label, node);
                 }
-                // add in optional Font
                 if(symbolizer.fontFamily != null ||
                     symbolizer.fontSize != null ||
                     symbolizer.fontWeight != null ||
                     symbolizer.fontStyle != null) {
                         this.writeNode("Font", symbolizer, node);
                 }
-                // add in optional LabelPlacement
                 if (symbolizer.labelAnchorPointX != null ||
                     symbolizer.labelAnchorPointY != null || 
                     symbolizer.labelAlign != null ||
@@ -988,13 +773,11 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
                     symbolizer.labelPerpendicularOffset != null) {
                         this.writeNode("LabelPlacement", symbolizer, node);
                 }
-                // add in optional Halo
                 if(symbolizer.haloRadius != null ||
                     symbolizer.haloColor != null ||
                     symbolizer.haloOpacity != null) {
                         this.writeNode("Halo", symbolizer, node);
                 }
-                // add in optional Fill
                 if(symbolizer.fontColor != null ||
                    symbolizer.fontOpacity != null) {
                     this.writeNode("Fill", {
@@ -1006,7 +789,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "LabelPlacement": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:LabelPlacement");
-                // PointPlacement and LinePlacement are choices, so don't output both
                 if ((symbolizer.labelAnchorPointX != null ||
                     symbolizer.labelAnchorPointY != null ||
                     symbolizer.labelAlign != null ||
@@ -1111,7 +893,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "Font": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:Font");
-                // add in CssParameters
                 if(symbolizer.fontFamily) {
                     this.writeNode(
                         "CssParameter",
@@ -1205,7 +986,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "PolygonSymbolizer": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:PolygonSymbolizer");
-                // add in optional Geometry
                 if (symbolizer.geometry) {
                     this.writeNode("Geometry", symbolizer.geometry, node);
                 }
@@ -1219,10 +999,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "Fill": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:Fill");
-                
-                // GraphicFill here
-                
-                // add in CssParameters
                 if(symbolizer.fillColor) {
                     this.writeNode(
                         "CssParameter",
@@ -1241,7 +1017,6 @@ OpenLayers.Format.SLD.v1 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0, {
             },
             "PointSymbolizer": function(symbolizer) {
                 var node = this.createElementNSPlus("sld:PointSymbolizer");
-                // add in optional Geometry
                 if (symbolizer.geometry) {
                     this.writeNode("Geometry", symbolizer.geometry, node);
                 }

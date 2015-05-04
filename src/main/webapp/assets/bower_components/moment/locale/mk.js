@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : macedonian (mk)
-//! author : Borislav Mickov : https://github.com/B0k0
 
 (function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :

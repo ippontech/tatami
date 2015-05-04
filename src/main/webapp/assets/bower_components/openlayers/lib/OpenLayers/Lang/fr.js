@@ -3,16 +3,7 @@
  *  - IAlex
  */
 
-/**
- * @requires OpenLayers/Lang.js
- */
 
-/**
- * Namespace: OpenLayers.Lang["fr"]
- * Dictionary for Français.  Keys for entries are used in calls to
- *     <OpenLayers.Lang.translate>.  Entry bodies are normal strings or
- *     strings formatted for use with <OpenLayers.String.format> calls.
- */
 OpenLayers.Lang["fr"] = OpenLayers.Util.applyDefaults({
 
     'unhandledRequest': "Requête non gérée, retournant ${statusText}",

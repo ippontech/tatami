@@ -6,7 +6,7 @@
             <span ng-if="newMessages.length > 1" translate="tatami.home.newMessages"></span>
         </div>
     </section>
-    <section class="timeline" infinite-scroll="loadMore()" infinite-scroll-disabled="busy">
+    <section class="timeline" infinite-scroll="requestOldStatuses()" infinite-scroll-disabled="busy">
         <div class="tatams" ng-repeat="status in statuses">
             <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false">
@@ -38,8 +38,12 @@
                                 <small> · </small>
                                 <!-- Replace hover title with hover bubble -->
                                 <a ui-sref="tatami.home.status({ statusId: status.statusId })">
-                                    <small ng-if="!isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}" am-time-ago="status.statusDate"></small>
-                                    <small ng-if="isOneDayOrMore(status.statusDate)" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY'}}">{{ status.statusDate | amDateFormat:'MMM D'}}</small>
+                                    <!--English-->
+                                    <small ng-if="!isOneDayOrMore(status.statusDate) && getLanguageKey() == 'en'" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}" am-time-ago="status.statusDate"></small>
+                                    <small ng-if="isOneDayOrMore(status.statusDate) && getLanguageKey() == 'en'" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}">{{ status.statusDate | amDateFormat:'MMM D' }}</small>
+                                    <!--French-->
+                                    <small ng-if="!isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}" am-time-ago="status.statusDate"></small>
+                                    <small ng-if="isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}">{{ status.statusDate | amDateFormat:'D MMMM' }}</small>
                                 </a>
                                 <a ng-if="status.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ status.locationURL }}" target="_blank"></a>
                             </h5>

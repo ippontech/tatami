@@ -4,179 +4,40 @@
  * full text of the license. */
 
 
-/**
- * @requires OpenLayers/Control.js
- * @requires OpenLayers/Handler/Click.js
- * @requires OpenLayers/Handler/Hover.js
- * @requires OpenLayers/Request.js
- * @requires OpenLayers/Format/WMSGetFeatureInfo.js
- */
 
-/**
- * Class: OpenLayers.Control.WMTSGetFeatureInfo
- * The WMTSGetFeatureInfo control uses a WMTS query to get information about a 
- *     point on the map.  The information may be in a display-friendly format 
- *     such as HTML, or a machine-friendly format such as GML, depending on the 
- *     server's capabilities and the client's configuration.  This control 
- *     handles click or hover events, attempts to parse the results using an 
- *     OpenLayers.Format, and fires a 'getfeatureinfo' event for each layer
- *     queried.
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
 
-   /**
-     * APIProperty: hover
-     * {Boolean} Send GetFeatureInfo requests when mouse stops moving.
-     *     Default is false.
-     */
-    hover: false,
+       hover: false,
     
-    /**
-     * Property: requestEncoding
-     * {String} One of "KVP" or "REST".  Only KVP encoding is supported at this 
-     *     time.
-     */
-    requestEncoding: "KVP",
+        requestEncoding: "KVP",
 
-    /**
-     * APIProperty: drillDown
-     * {Boolean} Drill down over all WMTS layers in the map. When
-     *     using drillDown mode, hover is not possible.  A getfeatureinfo event
-     *     will be fired for each layer queried.
-     */
-    drillDown: false,
+        drillDown: false,
 
-    /**
-     * APIProperty: maxFeatures
-     * {Integer} Maximum number of features to return from a WMTS query. This
-     *     sets the feature_count parameter on WMTS GetFeatureInfo
-     *     requests.
-     */
-    maxFeatures: 10,
+        maxFeatures: 10,
 
-    /** APIProperty: clickCallback
-     *  {String} The click callback to register in the
-     *      {<OpenLayers.Handler.Click>} object created when the hover
-     *      option is set to false. Default is "click".
-     */
-    clickCallback: "click",
+        clickCallback: "click",
     
-    /**
-     * Property: layers
-     * {Array(<OpenLayers.Layer.WMTS>)} The layers to query for feature info.
-     *     If omitted, all map WMTS layers will be considered.
-     */
-    layers: null,
+        layers: null,
 
-    /**
-     * APIProperty: queryVisible
-     * {Boolean} Filter out hidden layers when searching the map for layers to 
-     *     query.  Default is true.
-     */
-    queryVisible: true,
+        queryVisible: true,
 
-    /**
-     * Property: infoFormat
-     * {String} The mimetype to request from the server
-     */
-    infoFormat: 'text/html',
+        infoFormat: 'text/html',
     
-    /**
-     * Property: vendorParams
-     * {Object} Additional parameters that will be added to the request, for
-     * WMTS implementations that support them. This could e.g. look like
-     * (start code)
-     * {
-     *     radius: 5
-     * }
-     * (end)
-     */
-    vendorParams: {},
+        vendorParams: {},
     
-    /**
-     * Property: format
-     * {<OpenLayers.Format>} A format for parsing GetFeatureInfo responses.
-     *     Default is <OpenLayers.Format.WMSGetFeatureInfo>.
-     */
-    format: null,
+        format: null,
     
-    /**
-     * Property: formatOptions
-     * {Object} Optional properties to set on the format (if one is not provided
-     *     in the <format> property.
-     */
-    formatOptions: null,
+        formatOptions: null,
 
-    /**
-     * APIProperty: handlerOptions
-     * {Object} Additional options for the handlers used by this control, e.g.
-     * (start code)
-     * {
-     *     "click": {delay: 100},
-     *     "hover": {delay: 300}
-     * }
-     * (end)
-     */
+        
+        handler: null,
     
-    /**
-     * Property: handler
-     * {Object} Reference to the <OpenLayers.Handler> for this control
-     */
-    handler: null,
+        hoverRequest: null,
     
-    /**
-     * Property: hoverRequest
-     * {<OpenLayers.Request>} contains the currently running hover request
-     *     (if any).
-     */
-    hoverRequest: null,
-    
-    /** 
-     * APIProperty: events
-     * {<OpenLayers.Events>} Events instance for listeners and triggering
-     *     control specific events.
-     *
-     * Register a listener for a particular event with the following syntax:
-     * (code)
-     * control.events.register(type, obj, listener);
-     * (end)
-     *
-     * Supported event types (in addition to those from <OpenLayers.Control.events>):
-     * beforegetfeatureinfo - Triggered before each request is sent.
-     *      The event object has an *xy* property with the position of the 
-     *      mouse click or hover event that triggers the request and a *layer*
-     *      property referencing the layer about to be queried.  If a listener
-     *      returns false, the request will not be issued.
-     * getfeatureinfo - Triggered when a GetFeatureInfo response is received.
-     *      The event object has a *text* property with the body of the
-     *      response (String), a *features* property with an array of the
-     *      parsed features, an *xy* property with the position of the mouse
-     *      click or hover event that triggered the request, a *layer* property
-     *      referencing the layer queried and a *request* property with the 
-     *      request itself. If drillDown is set to true, one event will be fired
-     *      for each layer queried.
-     * exception - Triggered when a GetFeatureInfo request fails (with a 
-     *      status other than 200) or whenparsing fails.  Listeners will receive 
-     *      an event with *request*, *xy*, and *layer*  properties.  In the case 
-     *      of a parsing error, the event will also contain an *error* property.
-     */
-    
-    /** 
-     * Property: pending
-     * {Number}  The number of pending requests.
-     */
-    pending: 0,
+        
+        pending: 0,
 
-    /**
-     * Constructor: <OpenLayers.Control.WMTSGetFeatureInfo>
-     *
-     * Parameters:
-     * options - {Object} 
-     */
-    initialize: function(options) {
+        initialize: function(options) {
         options = options || {};
         options.handlerOptions = options.handlerOptions || {};
 
@@ -211,33 +72,15 @@ OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: getInfoForClick 
-     * Called on click
-     *
-     * Parameters:
-     * evt - {<OpenLayers.Event>} 
-     */
-    getInfoForClick: function(evt) {
+        getInfoForClick: function(evt) {
         this.request(evt.xy, {});
     },
    
-    /**
-     * Method: getInfoForHover
-     * Pause callback for the hover handler
-     *
-     * Parameters:
-     * evt - {Object}
-     */
-    getInfoForHover: function(evt) {
+        getInfoForHover: function(evt) {
         this.request(evt.xy, {hover: true});
     },
 
-    /**
-     * Method: cancelHover
-     * Cancel callback for the hover handler
-     */
-    cancelHover: function() {
+        cancelHover: function() {
         if (this.hoverRequest) {
             --this.pending;
             if (this.pending <= 0) {
@@ -249,12 +92,7 @@ OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: findLayers
-     * Internal method to get the layers, independent of whether we are
-     *     inspecting the map or using a client-provided array
-     */
-    findLayers: function() {
+        findLayers: function() {
         var candidates = this.layers || this.map.layers;
         var layers = [];
         var layer;
@@ -272,16 +110,7 @@ OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         return layers;
     },
     
-    /**
-     * Method: buildRequestOptions
-     * Build an object with the relevant options for the GetFeatureInfo request.
-     *
-     * Parameters:
-     * layer - {<OpenLayers.Layer.WMTS>} A WMTS layer.
-     * xy - {<OpenLayers.Pixel>} The position on the map where the 
-     *     mouse event occurred.
-     */
-    buildRequestOptions: function(layer, xy) {
+        buildRequestOptions: function(layer, xy) {
         var loc = this.map.getLonLatFromPixel(xy);
         var getTileUrl = layer.getURL(
             new OpenLayers.Bounds(loc.lon, loc.lat, loc.lon, loc.lat)
@@ -308,19 +137,7 @@ OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         };
     },
 
-    /**
-     * Method: request
-     * Sends a GetFeatureInfo request to the WMTS
-     * 
-     * Parameters:
-     * xy - {<OpenLayers.Pixel>} The position on the map where the mouse event 
-     *     occurred.
-     * options - {Object} additional options for this method.
-     * 
-     * Valid options:
-     * - *hover* {Boolean} true if we do the request for the hover handler
-     */
-    request: function(xy, options) {
+        request: function(xy, options) {
         options = options || {};
         var layers = this.findLayers();
         if (layers.length > 0) {
@@ -346,17 +163,7 @@ OpenLayers.Control.WMTSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: handleResponse
-     * Handler for the GetFeatureInfo response.
-     * 
-     * Parameters:
-     * xy - {<OpenLayers.Pixel>} The position on the map where the mouse event 
-     *     occurred.
-     * request - {XMLHttpRequest} The request object.
-     * layer - {<OpenLayers.Layer.WMTS>} The queried layer.
-     */
-    handleResponse: function(xy, request, layer) {
+        handleResponse: function(xy, request, layer) {
         --this.pending;
         if (this.pending <= 0) {
             OpenLayers.Element.removeClass(this.map.viewPortDiv, "olCursorWait");

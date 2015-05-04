@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : uzbek (uz)
-//! author : Sardor Muminov : https://github.com/muminoff
 
 import moment from '../moment';
 

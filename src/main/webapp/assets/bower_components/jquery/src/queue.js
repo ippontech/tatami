@@ -11,8 +11,6 @@ jQuery.extend({
 		if ( elem ) {
 			type = ( type || "fx" ) + "queue";
 			queue = jQuery._data( elem, type );
-
-			// Speed up dequeue by getting out quickly if this is just a lookup
 			if ( data ) {
 				if ( !queue || jQuery.isArray(data) ) {
 					queue = jQuery._data( elem, type, jQuery.makeArray(data) );
@@ -34,22 +32,15 @@ jQuery.extend({
 			next = function() {
 				jQuery.dequeue( elem, type );
 			};
-
-		// If the fx queue is dequeued, always remove the progress sentinel
 		if ( fn === "inprogress" ) {
 			fn = queue.shift();
 			startLength--;
 		}
 
 		if ( fn ) {
-
-			// Add a progress sentinel to prevent the fx queue from being
-			// automatically dequeued
 			if ( type === "fx" ) {
 				queue.unshift( "inprogress" );
 			}
-
-			// clear up the last queue stop function
 			delete hooks.stop;
 			fn.call( elem, next, hooks );
 		}
@@ -58,8 +49,6 @@ jQuery.extend({
 			hooks.empty.fire();
 		}
 	},
-
-	// not intended for public consumption - generates a queueHooks object, or returns the current one
 	_queueHooks: function( elem, type ) {
 		var key = type + "queueHooks";
 		return jQuery._data( elem, key ) || jQuery._data( elem, key, {
@@ -89,8 +78,6 @@ jQuery.fn.extend({
 			this :
 			this.each(function() {
 				var queue = jQuery.queue( this, type, data );
-
-				// ensure a hooks for this queue
 				jQuery._queueHooks( this, type );
 
 				if ( type === "fx" && queue[0] !== "inprogress" ) {
@@ -106,8 +93,6 @@ jQuery.fn.extend({
 	clearQueue: function( type ) {
 		return this.queue( type || "fx", [] );
 	},
-	// Get a promise resolved when queues of a certain type
-	// are emptied (fx is the type by default)
 	promise: function( type, obj ) {
 		var tmp,
 			count = 1,

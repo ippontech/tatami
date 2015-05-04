@@ -3,95 +3,37 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/XLS.js
- * @requires OpenLayers/Format/GML/v3.js
- */
 
-/**
- * Class: OpenLayers.Format.XLS.v1
- * Superclass for XLS version 1 parsers. Only supports GeocodeRequest for now.
- *
- * Inherits from:
- *  - <OpenLayers.Format.XML>
- */
 OpenLayers.Format.XLS.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
     
-    /**
-     * Property: namespaces
-     * {Object} Mapping of namespace aliases to namespace URIs.
-     */
-    namespaces: {
+        namespaces: {
         xls: "http://www.opengis.net/xls",
         gml: "http://www.opengis.net/gml",
         xsi: "http://www.w3.org/2001/XMLSchema-instance"
     },
 
-    /**
-     * Property: regExes
-     * Compiled regular expressions for manipulating strings.
-     */
-    regExes: {
+        regExes: {
         trimSpace: (/^\s*|\s*$/g),
         removeSpace: (/\s*/g),
         splitSpace: (/\s+/),
         trimComma: (/\s*,\s*/g)
     },
 
-    /**
-     * APIProperty: xy
-     * {Boolean} Order of the GML coordinate true:(x,y) or false:(y,x)
-     * Changing is not recommended, a new Format should be instantiated.
-     */
-    xy: true,
+        xy: true,
     
-    /**
-     * Property: defaultPrefix
-     */
-    defaultPrefix: "xls",
+        defaultPrefix: "xls",
 
-    /**
-     * Property: schemaLocation
-     * {String} Schema location for a particular minor version.
-     */
-    schemaLocation: null,
+        schemaLocation: null,
     
-    /**
-     * Constructor: OpenLayers.Format.XLS.v1
-     * Instances of this class are not created directly.  Use the
-     *     <OpenLayers.Format.XLS> constructor instead.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-    
-    /**
-     * Method: read
-     *
-     * Parameters:
-     * data - {DOMElement} An XLS document element.
-     * options - {Object} Options for the reader.
-     *
-     * Returns:
-     * {Object} An object representing the XLSResponse.
-     */
-    read: function(data, options) {
+        
+        read: function(data, options) {
         options = OpenLayers.Util.applyDefaults(options, this.options);
         var xls = {};
         this.readChildNodes(data, xls);
         return xls;
     },
     
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+        readers: {
         "xls": {
             "XLS": function(node, xls) {
                 xls.version = node.getAttribute("version");
@@ -117,7 +59,6 @@ OpenLayers.Format.XLS.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 var feature = new OpenLayers.Feature.Vector();
                 responseList.features.push(feature);
                 this.readChildNodes(node, feature);
-                // post-process geometry
                 feature.geometry = feature.components[0];
             },
             "GeocodeMatchCode": function(node, feature) {
@@ -150,13 +91,9 @@ OpenLayers.Format.XLS.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                 };
             },
             "Street": function(node, address) {
-                // only support the built-in primitive type for now
                 address.street.push(this.getChildValue(node));
             },
             "Place": function(node, address) {
-                // type is one of CountrySubdivision, 
-                // CountrySecondarySubdivision, Municipality or
-                // MunicipalitySubdivision
                 address.place[node.getAttribute("type")] = 
                     this.getChildValue(node);
             },
@@ -167,26 +104,11 @@ OpenLayers.Format.XLS.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
         "gml": OpenLayers.Format.GML.v3.prototype.readers.gml
     },
     
-    /**
-     * Method: write
-     *
-     * Parameters:
-     * request - {Object} An object representing the geocode request.
-     *
-     * Returns:
-     * {DOMElement} The root of an XLS document.
-     */
-    write: function(request) {
+        write: function(request) {
         return this.writers.xls.XLS.apply(this, [request]);
     },
     
-    /**
-     * Property: writers
-     * As a compliment to the readers property, this structure contains public
-     *     writing functions grouped by namespace alias and named like the
-     *     node names they produce.
-     */
-    writers: {
+        writers: {
         "xls": {
             "XLS": function(request) {
                 var root = this.createElementNSPlus(

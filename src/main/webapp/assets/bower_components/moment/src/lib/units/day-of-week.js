@@ -5,8 +5,6 @@ import { addWeekParseToken } from '../parse/token';
 import toInt from '../utils/to-int';
 import { createLocal } from '../create/local';
 
-// FORMATTING
-
 addFormatToken('d', 0, 'do', 'day');
 
 addFormatToken('dd', 0, 0, function (format) {
@@ -24,13 +22,9 @@ addFormatToken('dddd', 0, 0, function (format) {
 addFormatToken('e', 0, 0, 'weekday');
 addFormatToken('E', 0, 0, 'isoWeekday');
 
-// ALIASES
-
 addUnitAlias('day', 'd');
 addUnitAlias('weekday', 'e');
 addUnitAlias('isoWeekday', 'E');
-
-// PARSING
 
 addRegexToken('d',    match1to2);
 addRegexToken('e',    match1to2);
@@ -41,7 +35,6 @@ addRegexToken('dddd', matchWord);
 
 addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config) {
     var weekday = config._locale.weekdaysParse(input);
-    // if we didn't get a weekday name, mark the date as invalid
     if (weekday != null) {
         week.d = weekday;
     } else {
@@ -52,8 +45,6 @@ addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config) {
 addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
     week[token] = toInt(input);
 });
-
-// HELPERS
 
 function parseWeekday(input, locale) {
     if (typeof input === 'string') {
@@ -69,8 +60,6 @@ function parseWeekday(input, locale) {
     }
     return input;
 }
-
-// LOCALES
 
 export var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
 export function localeWeekdays (m) {
@@ -95,20 +84,16 @@ export function localeWeekdaysParse (weekdayName) {
     }
 
     for (i = 0; i < 7; i++) {
-        // make the regex if we don't have it already
         if (!this._weekdaysParse[i]) {
             mom = createLocal([2000, 1]).day(i);
             regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
             this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
         }
-        // test the regex
         if (this._weekdaysParse[i].test(weekdayName)) {
             return i;
         }
     }
 }
-
-// MOMENTS
 
 export function getSetDayOfWeek (input) {
     var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
@@ -126,8 +111,5 @@ export function getSetLocaleDayOfWeek (input) {
 }
 
 export function getSetISODayOfWeek (input) {
-    // behaves the same as moment#day except
-    // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
-    // as a setter, sunday should belong to the previous week.
     return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
 }

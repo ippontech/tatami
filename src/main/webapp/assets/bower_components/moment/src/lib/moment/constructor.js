@@ -1,8 +1,5 @@
 import { hooks } from '../utils/hooks';
 import hasOwnProp from '../utils/has-own-prop';
-
-// Plugins that add properties should also add the key here (null value),
-// so we can properly clone ourselves.
 var momentProperties = hooks.momentProperties = [];
 
 export function copyConfig(to, from) {
@@ -53,13 +50,9 @@ export function copyConfig(to, from) {
 }
 
 var updateInProgress = false;
-
-// Moment prototype object
 export function Moment(config) {
     copyConfig(this, config);
     this._d = new Date(+config._d);
-    // Prevent infinite loop in case updateOffset creates new moment
-    // objects.
     if (updateInProgress === false) {
         updateInProgress = true;
         hooks.updateOffset(this);

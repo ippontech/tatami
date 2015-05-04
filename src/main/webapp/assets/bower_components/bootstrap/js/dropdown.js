@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
   var backdrop = '.dropdown-backdrop'
   var toggle   = '[data-toggle=dropdown]'
   var Dropdown = function (element) {
@@ -41,7 +38,6 @@
 
     if (!isActive) {
       if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
         $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
       }
 
@@ -114,10 +110,6 @@
     return $parent && $parent.length ? $parent : $this.parent()
   }
 
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
   var old = $.fn.dropdown
 
   $.fn.dropdown = function (option) {
@@ -132,18 +124,10 @@
 
   $.fn.dropdown.Constructor = Dropdown
 
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
   $.fn.dropdown.noConflict = function () {
     $.fn.dropdown = old
     return this
   }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
 
   $(document)
     .on('click.bs.dropdown.data-api', clearMenus)

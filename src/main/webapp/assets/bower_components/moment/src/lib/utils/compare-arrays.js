@@ -1,6 +1,4 @@
 import toInt from './to-int';
-
-// compare two arrays, return the number of differences
 export default function compareArrays(array1, array2, dontConvert) {
     var len = Math.min(array1.length, array2.length),
         lengthDiff = Math.abs(array1.length - array2.length),

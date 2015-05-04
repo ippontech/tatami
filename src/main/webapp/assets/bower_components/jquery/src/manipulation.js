@@ -39,13 +39,10 @@ var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figca
 	rtbody = /<tbody/i,
 	rhtml = /<|&#?\w+;/,
 	rnoInnerhtml = /<(?:script|style|link)/i,
-	// checked="checked" or checked
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
 	rscriptType = /^$|\/(?:java|ecma)script/i,
 	rscriptTypeMasked = /^true\/(.*)/,
 	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
-
-	// We have to close these tags to support XHTML (#13200)
 	wrapMap = {
 		option: [ 1, "<select multiple='multiple'>", "</select>" ],
 		legend: [ 1, "<fieldset>", "</fieldset>" ],
@@ -55,9 +52,6 @@ var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figca
 		tr: [ 2, "<table><tbody>", "</tbody></table>" ],
 		col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
 		td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
-
-		// IE6-8 can't serialize link, script, style, or any html5 (NoScope) tags,
-		// unless wrapped in a div with non-breaking characters in front of it.
 		_default: support.htmlSerialize ? [ 0, "", "" ] : [ 1, "X<div>", "</div>"  ]
 	},
 	safeFragment = createSafeFragment( document ),
@@ -88,16 +82,11 @@ function getAll( context, tag ) {
 		jQuery.merge( [ context ], found ) :
 		found;
 }
-
-// Used in buildFragment, fixes the defaultChecked property
 function fixDefaultChecked( elem ) {
 	if ( rcheckableType.test( elem.type ) ) {
 		elem.defaultChecked = elem.checked;
 	}
 }
-
-// Support: IE<8
-// Manipulating tables requires a tbody
 function manipulationTarget( elem, content ) {
 	return jQuery.nodeName( elem, "table" ) &&
 		jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ?
@@ -106,8 +95,6 @@ function manipulationTarget( elem, content ) {
 			elem.appendChild( elem.ownerDocument.createElement("tbody") ) :
 		elem;
 }
-
-// Replace/restore the type attribute of script elements for safe DOM manipulation
 function disableScript( elem ) {
 	elem.type = (jQuery.find.attr( elem, "type" ) !== null) + "/" + elem.type;
 	return elem;
@@ -121,8 +108,6 @@ function restoreScript( elem ) {
 	}
 	return elem;
 }
-
-// Mark scripts as having already been evaluated
 function setGlobalEval( elems, refElements ) {
 	var elem,
 		i = 0;
@@ -152,8 +137,6 @@ function cloneCopyEvent( src, dest ) {
 			}
 		}
 	}
-
-	// make the cloned public data object a copy from the original
 	if ( curData.data ) {
 		curData.data = jQuery.extend( {}, curData.data );
 	}
@@ -161,66 +144,38 @@ function cloneCopyEvent( src, dest ) {
 
 function fixCloneNodeIssues( src, dest ) {
 	var nodeName, e, data;
-
-	// We do not need to do anything for non-Elements
 	if ( dest.nodeType !== 1 ) {
 		return;
 	}
 
 	nodeName = dest.nodeName.toLowerCase();
-
-	// IE6-8 copies events bound via attachEvent when using cloneNode.
 	if ( !support.noCloneEvent && dest[ jQuery.expando ] ) {
 		data = jQuery._data( dest );
 
 		for ( e in data.events ) {
 			jQuery.removeEvent( dest, e, data.handle );
 		}
-
-		// Event data gets referenced instead of copied if the expando gets copied too
 		dest.removeAttribute( jQuery.expando );
 	}
-
-	// IE blanks contents when cloning scripts, and tries to evaluate newly-set text
 	if ( nodeName === "script" && dest.text !== src.text ) {
 		disableScript( dest ).text = src.text;
 		restoreScript( dest );
-
-	// IE6-10 improperly clones children of object elements using classid.
-	// IE10 throws NoModificationAllowedError if parent is null, #12132.
 	} else if ( nodeName === "object" ) {
 		if ( dest.parentNode ) {
 			dest.outerHTML = src.outerHTML;
 		}
-
-		// This path appears unavoidable for IE9. When cloning an object
-		// element in IE9, the outerHTML strategy above is not sufficient.
-		// If the src has innerHTML and the destination does not,
-		// copy the src.innerHTML into the dest.innerHTML. #10324
 		if ( support.html5Clone && ( src.innerHTML && !jQuery.trim(dest.innerHTML) ) ) {
 			dest.innerHTML = src.innerHTML;
 		}
 
 	} else if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
-		// IE6-8 fails to persist the checked state of a cloned checkbox
-		// or radio button. Worse, IE6-7 fail to give the cloned element
-		// a checked appearance if the defaultChecked value isn't also set
 
 		dest.defaultChecked = dest.checked = src.checked;
-
-		// IE6-7 get confused and end up setting the value of a cloned
-		// checkbox/radio button to an empty string instead of "on"
 		if ( dest.value !== src.value ) {
 			dest.value = src.value;
 		}
-
-	// IE6-8 fails to return the selected option to the default selected
-	// state when cloning options
 	} else if ( nodeName === "option" ) {
 		dest.defaultSelected = dest.selected = src.defaultSelected;
-
-	// IE6-8 fails to set the defaultValue to the correct value when
-	// cloning other types of input fields
 	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
@@ -233,8 +188,6 @@ jQuery.extend({
 
 		if ( support.html5Clone || jQuery.isXMLDoc(elem) || !rnoshimcache.test( "<" + elem.nodeName + ">" ) ) {
 			clone = elem.cloneNode( true );
-
-		// IE<=8 does not properly clone detached, unknown element nodes
 		} else {
 			fragmentDiv.innerHTML = elem.outerHTML;
 			fragmentDiv.removeChild( clone = fragmentDiv.firstChild );
@@ -242,21 +195,14 @@ jQuery.extend({
 
 		if ( (!support.noCloneEvent || !support.noCloneChecked) &&
 				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
-
-			// We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
 			destElements = getAll( clone );
 			srcElements = getAll( elem );
-
-			// Fix all IE cloning issues
 			for ( i = 0; (node = srcElements[i]) != null; ++i ) {
-				// Ensure that the destination node is not null; Fixes #9587
 				if ( destElements[i] ) {
 					fixCloneNodeIssues( node, destElements[i] );
 				}
 			}
 		}
-
-		// Copy the events from the original to the clone
 		if ( dataAndEvents ) {
 			if ( deepDataAndEvents ) {
 				srcElements = srcElements || getAll( elem );
@@ -269,16 +215,12 @@ jQuery.extend({
 				cloneCopyEvent( elem, clone );
 			}
 		}
-
-		// Preserve script evaluation history
 		destElements = getAll( clone, "script" );
 		if ( destElements.length > 0 ) {
 			setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
 		}
 
 		destElements = srcElements = node = null;
-
-		// Return the cloned set
 		return clone;
 	},
 
@@ -286,8 +228,6 @@ jQuery.extend({
 		var j, elem, contains,
 			tmp, tag, tbody, wrap,
 			l = elems.length,
-
-			// Ensure a safe fragment
 			safe = createSafeFragment( context ),
 
 			nodes = [],
@@ -297,44 +237,26 @@ jQuery.extend({
 			elem = elems[ i ];
 
 			if ( elem || elem === 0 ) {
-
-				// Add nodes directly
 				if ( jQuery.type( elem ) === "object" ) {
 					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
-
-				// Convert non-html into a text node
 				} else if ( !rhtml.test( elem ) ) {
 					nodes.push( context.createTextNode( elem ) );
-
-				// Convert html into DOM nodes
 				} else {
 					tmp = tmp || safe.appendChild( context.createElement("div") );
-
-					// Deserialize a standard representation
 					tag = (rtagName.exec( elem ) || [ "", "" ])[ 1 ].toLowerCase();
 					wrap = wrapMap[ tag ] || wrapMap._default;
 
 					tmp.innerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
-
-					// Descend through wrappers to the right content
 					j = wrap[0];
 					while ( j-- ) {
 						tmp = tmp.lastChild;
 					}
-
-					// Manually add leading whitespace removed by IE
 					if ( !support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
 						nodes.push( context.createTextNode( rleadingWhitespace.exec( elem )[0] ) );
 					}
-
-					// Remove IE's autoinserted <tbody> from table fragments
 					if ( !support.tbody ) {
-
-						// String was a <table>, *may* have spurious <tbody>
 						elem = tag === "table" && !rtbody.test( elem ) ?
 							tmp.firstChild :
-
-							// String was a bare <thead> or <tfoot>
 							wrap[1] === "<table>" && !rtbody.test( elem ) ?
 								tmp :
 								0;
@@ -348,52 +270,32 @@ jQuery.extend({
 					}
 
 					jQuery.merge( nodes, tmp.childNodes );
-
-					// Fix #12392 for WebKit and IE > 9
 					tmp.textContent = "";
-
-					// Fix #12392 for oldIE
 					while ( tmp.firstChild ) {
 						tmp.removeChild( tmp.firstChild );
 					}
-
-					// Remember the top-level container for proper cleanup
 					tmp = safe.lastChild;
 				}
 			}
 		}
-
-		// Fix #11356: Clear elements from fragment
 		if ( tmp ) {
 			safe.removeChild( tmp );
 		}
-
-		// Reset defaultChecked for any radios and checkboxes
-		// about to be appended to the DOM in IE 6/7 (#8060)
 		if ( !support.appendChecked ) {
 			jQuery.grep( getAll( nodes, "input" ), fixDefaultChecked );
 		}
 
 		i = 0;
 		while ( (elem = nodes[ i++ ]) ) {
-
-			// #4087 - If origin and destination elements are the same, and this is
-			// that element, do not do anything
 			if ( selection && jQuery.inArray( elem, selection ) !== -1 ) {
 				continue;
 			}
 
 			contains = jQuery.contains( elem.ownerDocument, elem );
-
-			// Append to fragment
 			tmp = getAll( safe.appendChild( elem ), "script" );
-
-			// Preserve script evaluation history
 			if ( contains ) {
 				setGlobalEval( tmp );
 			}
-
-			// Capture executables
 			if ( scripts ) {
 				j = 0;
 				while ( (elem = tmp[ j++ ]) ) {
@@ -428,22 +330,14 @@ jQuery.extend({
 						for ( type in data.events ) {
 							if ( special[ type ] ) {
 								jQuery.event.remove( elem, type );
-
-							// This is a shortcut to avoid jQuery.event.remove's overhead
 							} else {
 								jQuery.removeEvent( elem, type, data.handle );
 							}
 						}
 					}
-
-					// Remove cache only if it was not already removed by jQuery.event.remove
 					if ( cache[ id ] ) {
 
 						delete cache[ id ];
-
-						// IE does not allow us to delete expando properties from nodes,
-						// nor does it have a removeAttribute function on Document nodes;
-						// we must handle all of these cases
 						if ( deleteExpando ) {
 							delete elem[ internalKey ];
 
@@ -532,18 +426,12 @@ jQuery.fn.extend({
 			i = 0;
 
 		for ( ; (elem = this[i]) != null; i++ ) {
-			// Remove element nodes and prevent memory leaks
 			if ( elem.nodeType === 1 ) {
 				jQuery.cleanData( getAll( elem, false ) );
 			}
-
-			// Remove any remaining nodes
 			while ( elem.firstChild ) {
 				elem.removeChild( elem.firstChild );
 			}
-
-			// If this is a select, ensure that it displays empty (#12336)
-			// Support: IE<9
 			if ( elem.options && jQuery.nodeName( elem, "select" ) ) {
 				elem.options.length = 0;
 			}
@@ -572,8 +460,6 @@ jQuery.fn.extend({
 					elem.innerHTML.replace( rinlinejQuery, "" ) :
 					undefined;
 			}
-
-			// See if we can take a shortcut and just use innerHTML
 			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
 				( support.htmlSerialize || !rnoshimcache.test( value )  ) &&
 				( support.leadingWhitespace || !rleadingWhitespace.test( value ) ) &&
@@ -583,7 +469,6 @@ jQuery.fn.extend({
 
 				try {
 					for (; i < l; i++ ) {
-						// Remove element nodes and prevent memory leaks
 						elem = this[i] || {};
 						if ( elem.nodeType === 1 ) {
 							jQuery.cleanData( getAll( elem, false ) );
@@ -592,8 +477,6 @@ jQuery.fn.extend({
 					}
 
 					elem = 0;
-
-				// If using innerHTML throws an exception, use the fallback method
 				} catch(e) {}
 			}
 
@@ -605,8 +488,6 @@ jQuery.fn.extend({
 
 	replaceWith: function() {
 		var arg = arguments[ 0 ];
-
-		// Make the changes, replacing each context element with the new content
 		this.domManip( arguments, function( elem ) {
 			arg = this.parentNode;
 
@@ -616,8 +497,6 @@ jQuery.fn.extend({
 				arg.replaceChild( elem, this );
 			}
 		});
-
-		// Force removal if there was no new content (e.g., from empty arguments)
 		return arg && (arg.length || arg.nodeType) ? this : this.remove();
 	},
 
@@ -626,8 +505,6 @@ jQuery.fn.extend({
 	},
 
 	domManip: function( args, callback ) {
-
-		// Flatten any nested arrays
 		args = concat.apply( [], args );
 
 		var first, node, hasScripts,
@@ -638,8 +515,6 @@ jQuery.fn.extend({
 			iNoClone = l - 1,
 			value = args[0],
 			isFunction = jQuery.isFunction( value );
-
-		// We can't cloneNode fragments that contain checked, in WebKit
 		if ( isFunction ||
 				( l > 1 && typeof value === "string" &&
 					!support.checkClone && rchecked.test( value ) ) ) {
@@ -663,16 +538,11 @@ jQuery.fn.extend({
 			if ( first ) {
 				scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
 				hasScripts = scripts.length;
-
-				// Use the original fragment for the last item instead of the first because it can end up
-				// being emptied incorrectly in certain situations (#8070).
 				for ( ; i < l; i++ ) {
 					node = fragment;
 
 					if ( i !== iNoClone ) {
 						node = jQuery.clone( node, true, true );
-
-						// Keep references to cloned scripts for later restoration
 						if ( hasScripts ) {
 							jQuery.merge( scripts, getAll( node, "script" ) );
 						}
@@ -683,18 +553,13 @@ jQuery.fn.extend({
 
 				if ( hasScripts ) {
 					doc = scripts[ scripts.length - 1 ].ownerDocument;
-
-					// Reenable scripts
 					jQuery.map( scripts, restoreScript );
-
-					// Evaluate executable scripts on first document insertion
 					for ( i = 0; i < hasScripts; i++ ) {
 						node = scripts[ i ];
 						if ( rscriptType.test( node.type || "" ) &&
 							!jQuery._data( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
 
 							if ( node.src ) {
-								// Optional AJAX dependency, but won't run scripts if not present
 								if ( jQuery._evalUrl ) {
 									jQuery._evalUrl( node.src );
 								}
@@ -704,8 +569,6 @@ jQuery.fn.extend({
 						}
 					}
 				}
-
-				// Fix #11809: Avoid leaking memory
 				fragment = first = null;
 			}
 		}
@@ -731,8 +594,6 @@ jQuery.each({
 		for ( ; i <= last; i++ ) {
 			elems = i === last ? this : this.clone(true);
 			jQuery( insert[i] )[ original ]( elems );
-
-			// Modern browsers can apply jQuery collections as arrays, but oldIE needs a .get()
 			push.apply( ret, elems.get() );
 		}
 

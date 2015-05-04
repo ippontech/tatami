@@ -6,13 +6,8 @@ import { expandFormat, formatTokenFunctions, formattingTokens } from '../format/
 import checkOverflow from './check-overflow';
 import { HOUR } from '../units/constants';
 import { hooks } from '../utils/hooks';
-
-// constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
-
-// date from string and format string
 export function configFromStringAndFormat(config) {
-    // TODO: Move this to another part of the creation flow to prevent circular deps
     if (config._f === hooks.ISO_8601) {
         configFromISO(config);
         return;
@@ -20,8 +15,6 @@ export function configFromStringAndFormat(config) {
 
     config._a = [];
     config._pf.empty = true;
-
-    // This array is used to make a Date, either with `new Date` or `Date.UTC`
     var string = '' + config._i,
         i, parsedInput, tokens, token, skipped,
         stringLength = string.length,
@@ -40,7 +33,6 @@ export function configFromStringAndFormat(config) {
             string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
             totalParsedInputLength += parsedInput.length;
         }
-        // don't parse if it's not a known token
         if (formatTokenFunctions[token]) {
             if (parsedInput) {
                 config._pf.empty = false;
@@ -54,18 +46,13 @@ export function configFromStringAndFormat(config) {
             config._pf.unusedTokens.push(token);
         }
     }
-
-    // add remaining unparsed input length to the string
     config._pf.charsLeftOver = stringLength - totalParsedInputLength;
     if (string.length > 0) {
         config._pf.unusedInput.push(string);
     }
-
-    // clear _12h flag if hour is <= 12
     if (config._pf.bigHour === true && config._a[HOUR] <= 12) {
         config._pf.bigHour = undefined;
     }
-    // handle meridiem
     config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
 
     configFromArray(config);
@@ -77,13 +64,11 @@ function meridiemFixWrap (locale, hour, meridiem) {
     var isPm;
 
     if (meridiem == null) {
-        // nothing to do
         return hour;
     }
     if (locale.meridiemHour != null) {
         return locale.meridiemHour(hour, meridiem);
     } else if (locale.isPM != null) {
-        // Fallback
         isPm = locale.isPM(meridiem);
         if (isPm && hour < 12) {
             hour += 12;
@@ -93,7 +78,6 @@ function meridiemFixWrap (locale, hour, meridiem) {
         }
         return hour;
     } else {
-        // this is not supposed to happen
         return hour;
     }
 }

@@ -4,96 +4,32 @@
  * full text of the license. */
 
 
-/**
- * @requires OpenLayers/Control/PanZoom.js
- */
 
-/**
- * Class: OpenLayers.Control.PanZoomBar
- * The PanZoomBar is a visible control composed of a
- * <OpenLayers.Control.PanPanel> and a <OpenLayers.Control.ZoomBar>. 
- * By default it is displayed in the upper left corner of the map as 4
- * directional arrows above a vertical slider.
- *
- * Inherits from:
- *  - <OpenLayers.Control.PanZoom>
- */
 OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
 
-    /** 
-     * APIProperty: zoomStopWidth
-     */
-    zoomStopWidth: 18,
+        zoomStopWidth: 18,
 
-    /** 
-     * APIProperty: zoomStopHeight
-     */
-    zoomStopHeight: 11,
+        zoomStopHeight: 11,
 
-    /** 
-     * Property: slider
-     */
-    slider: null,
+        slider: null,
 
-    /** 
-     * Property: sliderEvents
-     * {<OpenLayers.Events>}
-     */
-    sliderEvents: null,
+        sliderEvents: null,
 
-    /** 
-     * Property: zoombarDiv
-     * {DOMElement}
-     */
-    zoombarDiv: null,
+        zoombarDiv: null,
 
-    /** 
-     * APIProperty: zoomWorldIcon
-     * {Boolean}
-     */
-    zoomWorldIcon: false,
+        zoomWorldIcon: false,
 
-    /**
-     * APIProperty: panIcons
-     * {Boolean} Set this property to false not to display the pan icons. If
-     * false the zoom world icon is placed under the zoom bar. Defaults to
-     * true.
-     */
-    panIcons: true,
+        panIcons: true,
 
-    /**
-     * APIProperty: forceFixedZoomLevel
-     * {Boolean} Force a fixed zoom level even though the map has 
-     *     fractionalZoom
-     */
-    forceFixedZoomLevel: false,
+        forceFixedZoomLevel: false,
 
-    /**
-     * Property: mouseDragStart
-     * {<OpenLayers.Pixel>}
-     */
-    mouseDragStart: null,
+        mouseDragStart: null,
 
-    /**
-     * Property: deltaY
-     * {Number} The cumulative vertical pixel offset during a zoom bar drag.
-     */
-    deltaY: null,
+        deltaY: null,
 
-    /**
-     * Property: zoomStart
-     * {<OpenLayers.Pixel>}
-     */
-    zoomStart: null,
+        zoomStart: null,
 
-    /**
-     * Constructor: OpenLayers.Control.PanZoomBar
-     */ 
-
-    /**
-     * APIMethod: destroy
-     */
-    destroy: function() {
+        destroy: function() {
 
         this._removeZoomBar();
 
@@ -109,13 +45,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         delete this.zoomStart;
     },
     
-    /**
-     * Method: setMap
-     * 
-     * Parameters:
-     * map - {<OpenLayers.Map>} 
-     */
-    setMap: function(map) {
+        setMap: function(map) {
         OpenLayers.Control.PanZoom.prototype.setMap.apply(this, arguments);
         
         if (this.outsideViewport) {
@@ -129,11 +59,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         });
     },
 
-    /** 
-     * Method: redraw
-     * clear the div and start over.
-     */
-    redraw: function() {
+        redraw: function() {
         if (this.div != null) {
             this.removeButtons();
             this._removeZoomBar();
@@ -141,18 +67,9 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         this.draw();
     },
     
-    /**
-    * Method: draw 
-    *
-    * Parameters:
-    * px - {<OpenLayers.Pixel>} 
-    */
-    draw: function(px) {
-        // initialize our internal div
+        draw: function(px) {
         OpenLayers.Control.prototype.draw.apply(this, arguments);
         px = this.position.clone();
-
-        // place the controls
         this.buttons = [];
 
         var sz = {w: 18, h: 18};
@@ -190,13 +107,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         return this.div;
     },
 
-    /** 
-    * Method: _addZoomBar
-    * 
-    * Parameters:
-    * centered - {<OpenLayers.Pixel>} where zoombar drawing is to start.
-    */
-    _addZoomBar:function(centered) {
+        _addZoomBar:function(centered) {
         var imgLocation = OpenLayers.Util.getImageLocation("slider.png");
         var id = this.id + "_" + this.map.id;
         var minZoom = this.map.getMinZoom();
@@ -257,10 +168,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         return centered; 
     },
     
-    /**
-     * Method: _removeZoomBar
-     */
-    _removeZoomBar: function() {
+        _removeZoomBar: function() {
         this.sliderEvents.un({
             "touchstart": this.zoomBarDown,
             "touchmove": this.zoomBarDrag,
@@ -279,13 +187,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         this.map.events.unregister("zoomend", this, this.moveZoomBar);
     },
     
-    /**
-     * Method: onButtonClick
-     *
-     * Parameters:
-     * evt - {Event}
-     */
-    onButtonClick: function(evt) {
+        onButtonClick: function(evt) {
         OpenLayers.Control.PanZoom.prototype.onButtonClick.apply(this, arguments);
         if (evt.buttonElement === this.zoombarDiv) {
             var levels = evt.buttonXY.y / this.zoomStopHeight;
@@ -298,15 +200,7 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         }
     },
     
-    /**
-     * Method: passEventToSlider
-     * This function is used to pass events that happen on the div, or the map,
-     * through to the slider, which then does its moving thing.
-     *
-     * Parameters:
-     * evt - {<OpenLayers.Event>} 
-     */
-    passEventToSlider:function(evt) {
+        passEventToSlider:function(evt) {
         this.sliderEvents.handleBrowserEvent(evt);
     },
     
@@ -332,7 +226,6 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         this.mouseDragStart = evt.xy.clone();
         this.zoomStart = evt.xy.clone();
         this.div.style.cursor = "move";
-        // reset the div offsets just in case the div moved
         this.zoombarDiv.offsets = null; 
         OpenLayers.Event.stop(evt);
     },
@@ -357,7 +250,6 @@ OpenLayers.Control.PanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
                 this.slider.style.top = newTop+"px";
                 this.mouseDragStart = evt.xy.clone();
             }
-            // set cumulative displacement
             this.deltaY = this.zoomStart.y - evt.xy.y;
             OpenLayers.Event.stop(evt);
         }

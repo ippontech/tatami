@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -1124,28 +1124,17 @@
                             </capability>
                         </webDriverCapabilities>
                         <preloadSources>
-                            <!-- angular preloading -->
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/bootstrap-tour/docs/assets/vendor/jquery.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.min.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.min.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.min.js</source> 
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js</source> 
-                            <source>${project.basedir}/src/main/webapp/assets/vendor/js/marked/marked.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/moment/moment.js</source>
-                            <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
 
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
-                        <!-- <jsSrcDir>src/main/webapp</jsSrcDir>
-                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir -->>
+                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir> 
                         <sourceExcludes>
                             <exclude>**/bower_components/**/*.*</exclude>
                             <exclude>**/js/vendor/**/*.*</exclude>
                         </sourceExcludes> 
                     </configuration>
-                </plugin>
+                </plugin> 
                 <plugin>
                     <groupId>com.github.timurstrekalov</groupId>
                     <artifactId>saga-maven-plugin</artifactId>

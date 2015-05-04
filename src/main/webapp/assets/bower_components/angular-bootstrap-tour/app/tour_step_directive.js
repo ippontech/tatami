@@ -11,8 +11,6 @@
                 scope: true,
                 require: '^tour',
                 link: function (scope, element, attrs, ctrl) {
-
-                    //Assign required options
                     var step = {
                             element: element,
                             stepId: attrs.tourStep
@@ -22,21 +20,13 @@
                         orderWatch,
                         skipWatch,
                         templateReady;
-
-                    //Pass interpolated values through
                     TourHelpers.attachInterpolatedValues(attrs, step, options);
                     orderWatch = attrs.$observe(TourHelpers.getAttrName('order'), function (order) {
                         step.order = !isNaN(order*1) ? order*1 : 0;
                         ctrl.refreshTour();
                     });
-
-                    //Attach event handlers
                     TourHelpers.attachEventHandlers(scope, attrs, step, events);
-
-                    //Compile templates
                     templateReady = TourHelpers.attachTemplate(scope, attrs, step);
-
-                    //Check whether or not the step should be skipped
                     function stepIsSkipped() {
                         var skipped;
                         if (attrs[TourHelpers.getAttrName('skip')]) {
@@ -60,13 +50,9 @@
                         orderWatch();
                         skipWatch();
                     });
-
-                    //If there is an options argument passed, just use that instead
                     if (attrs[TourHelpers.getAttrName('options')]) {
                         angular.extend(step, scope.$eval(attrs[TourHelpers.getAttrName('options')]));
                     }
-
-                    //set up redirects
                     function setRedirect(direction, path, targetName) {
                         var oldHandler = step[direction];
                         step[direction] = function (tour) {
@@ -88,8 +74,6 @@
                         step.redirectPrev = true;
                         setRedirect('onPrev', step.prevPath, step.prevStep);
                     }
-
-                    //Add step to tour
                     templateReady.then(function () {
                         ctrl.addStep(step);
                     });

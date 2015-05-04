@@ -1,7 +1,3 @@
-//! moment.js locale configuration
-//! locale : russian (ru)
-//! author : Viktorminator : https://github.com/Viktorminator
-//! Author : Menelion Elensúle : https://github.com/Oire
 
 import moment from '../moment';
 

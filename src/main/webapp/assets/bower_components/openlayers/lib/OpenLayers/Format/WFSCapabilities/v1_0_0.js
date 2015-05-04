@@ -3,38 +3,12 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/WFSCapabilities/v1.js
- */
 
-/**
- * Class: OpenLayers.Format.WFSCapabilities/v1_0_0
- * Read WFS Capabilities version 1.0.0.
- * 
- * Inherits from:
- *  - <OpenLayers.Format.WFSCapabilities.v1>
- */
 OpenLayers.Format.WFSCapabilities.v1_0_0 = OpenLayers.Class(
     OpenLayers.Format.WFSCapabilities.v1, {
     
-    /**
-     * Constructor: OpenLayers.Format.WFSCapabilities.v1_0_0
-     * Create a new parser for WFS capabilities version 1.0.0.
-     *
-     * Parameters:
-     * options - {Object} An optional object whose properties will be set on
-     *     this instance.
-     */
-
-    /**
-     * Property: readers
-     * Contains public functions, grouped by namespace prefix, that will
-     *     be applied when a namespaced node is found matching the function
-     *     name.  The function will be applied in the scope of this parser
-     *     with two arguments: the node being read and a context object passed
-     *     from the parent.
-     */
-    readers: {
+    
+        readers: {
         "wfs": OpenLayers.Util.applyDefaults({
             "Service": function(node, capabilities) {
                 capabilities.service = {};

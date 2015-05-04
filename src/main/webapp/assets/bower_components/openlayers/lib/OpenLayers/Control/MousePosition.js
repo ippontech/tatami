@@ -4,119 +4,36 @@
  * full text of the license. */
 
 
-/**
- * @requires OpenLayers/Control.js
- */
 
-/**
- * Class: OpenLayers.Control.MousePosition
- * The MousePosition control displays geographic coordinates of the mouse
- * pointer, as it is moved about the map.
- *
- * You can use the <prefix>- or <suffix>-properties to provide more information
- * about the displayed coordinates to the user:
- *
- * (code)
- *     var mousePositionCtrl = new OpenLayers.Control.MousePosition({
- *         prefix: '<a target="_blank" ' +
- *             'href="http://spatialreference.org/ref/epsg/4326/">' +
- *             'EPSG:4326</a> coordinates: '
- *         }
- *     );
- * (end code)
- *
- * Inherits from:
- *  - <OpenLayers.Control>
- */
 OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
 
-    /**
-     * APIProperty: autoActivate
-     * {Boolean} Activate the control when it is added to a map.  Default is
-     *     true.
-     */
-    autoActivate: true,
+        autoActivate: true,
 
-    /**
-     * Property: element
-     * {DOMElement}
-     */
-    element: null,
+        element: null,
 
-    /**
-     * APIProperty: prefix
-     * {String} A string to be prepended to the current pointers coordinates
-     *     when it is rendered.  Defaults to the empty string ''.
-     */
-    prefix: '',
+        prefix: '',
 
-    /**
-     * APIProperty: separator
-     * {String} A string to be used to separate the two coordinates from each
-     *     other.  Defaults to the string ', ', which will result in a
-     *     rendered coordinate of e.g. '42.12, 21.22'.
-     */
-    separator: ', ',
+        separator: ', ',
 
-    /**
-     * APIProperty: suffix
-     * {String} A string to be appended to the current pointers coordinates
-     *     when it is rendered.  Defaults to the empty string ''.
-     */
-    suffix: '',
+        suffix: '',
 
-    /**
-     * APIProperty: numDigits
-     * {Integer} The number of digits each coordinate shall have when being
-     *     rendered, Defaults to 5.
-     */
-    numDigits: 5,
+        numDigits: 5,
 
-    /**
-     * APIProperty: granularity
-     * {Integer}
-     */
-    granularity: 10,
+        granularity: 10,
 
-    /**
-     * APIProperty: emptyString
-     * {String} Set this to some value to set when the mouse is outside the
-     *     map.
-     */
-    emptyString: null,
+        emptyString: null,
 
-    /**
-     * Property: lastXy
-     * {<OpenLayers.Pixel>}
-     */
-    lastXy: null,
+        lastXy: null,
 
-    /**
-     * APIProperty: displayProjection
-     * {<OpenLayers.Projection>} The projection in which the mouse position is
-     *     displayed.
-     */
-    displayProjection: null,
+        displayProjection: null,
 
-    /**
-     * Constructor: OpenLayers.Control.MousePosition
-     *
-     * Parameters:
-     * options - {Object} Options for control.
-     */
-
-    /**
-     * Method: destroy
-     */
-     destroy: function() {
+    
+         destroy: function() {
          this.deactivate();
          OpenLayers.Control.prototype.destroy.apply(this, arguments);
      },
 
-    /**
-     * APIMethod: activate
-     */
-    activate: function() {
+        activate: function() {
         if (OpenLayers.Control.prototype.activate.apply(this, arguments)) {
             this.map.events.register('mousemove', this, this.redraw);
             this.map.events.register('mouseout', this, this.reset);
@@ -127,10 +44,7 @@ OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * APIMethod: deactivate
-     */
-    deactivate: function() {
+        deactivate: function() {
         if (OpenLayers.Control.prototype.deactivate.apply(this, arguments)) {
             this.map.events.unregister('mousemove', this, this.redraw);
             this.map.events.unregister('mouseout', this, this.reset);
@@ -141,11 +55,7 @@ OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: draw
-     * {DOMElement}
-     */
-    draw: function() {
+        draw: function() {
         OpenLayers.Control.prototype.draw.apply(this, arguments);
 
         if (!this.element) {
@@ -157,10 +67,7 @@ OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
         return this.div;
     },
 
-    /**
-     * Method: redraw
-     */
-    redraw: function(evt) {
+        redraw: function(evt) {
 
         var lonLat;
 
@@ -178,7 +85,6 @@ OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
 
             lonLat = this.map.getLonLatFromPixel(evt.xy);
             if (!lonLat) {
-                // map has not yet been properly initialized
                 return;
             }
             if (this.displayProjection) {
@@ -196,23 +102,13 @@ OpenLayers.Control.MousePosition = OpenLayers.Class(OpenLayers.Control, {
         }
     },
 
-    /**
-     * Method: reset
-     */
-    reset: function(evt) {
+        reset: function(evt) {
         if (this.emptyString != null) {
             this.element.innerHTML = this.emptyString;
         }
     },
 
-    /**
-     * Method: formatOutput
-     * Override to provide custom display output
-     *
-     * Parameters:
-     * lonLat - {<OpenLayers.LonLat>} Location to display
-     */
-    formatOutput: function(lonLat) {
+        formatOutput: function(lonLat) {
         var digits = parseInt(this.numDigits);
         var newHtml =
             this.prefix +

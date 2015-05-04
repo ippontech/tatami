@@ -20,9 +20,6 @@
 
 +function ($) { "use strict";
 
-  // COLLAPSE PUBLIC CLASS DEFINITION
-  // ================================
-
   var Collapse = function (element, options) {
     this.$element      = $(element)
     this.options       = $.extend({}, Collapse.DEFAULTS, options)
@@ -125,10 +122,6 @@
     this[this.$element.hasClass('in') ? 'hide' : 'show']()
   }
 
-
-  // COLLAPSE PLUGIN DEFINITION
-  // ==========================
-
   var old = $.fn.collapse
 
   $.fn.collapse = function (option) {
@@ -144,18 +137,10 @@
 
   $.fn.collapse.Constructor = Collapse
 
-
-  // COLLAPSE NO CONFLICT
-  // ====================
-
   $.fn.collapse.noConflict = function () {
     $.fn.collapse = old
     return this
   }
-
-
-  // COLLAPSE DATA-API
-  // =================
 
   $(document).on('click.bs.collapse.data-api', '[data-toggle=collapse]', function (e) {
     var $this   = $(this), href

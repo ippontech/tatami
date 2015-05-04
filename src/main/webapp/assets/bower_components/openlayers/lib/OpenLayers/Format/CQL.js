@@ -3,22 +3,7 @@
  * See license.txt in the OpenLayers distribution or repository for the
  * full text of the license. */
 
-/**
- * @requires OpenLayers/Format/WKT.js
- * @requires OpenLayers/Filter/Comparison.js
- * @requires OpenLayers/Filter/Logical.js
- * @requires OpenLayers/Filter/Spatial.js
- */
 
-/**
- * Class: OpenLayers.Format.CQL
- * Read CQL strings to get <OpenLayers.Filter> objects.  Write 
- *     <OpenLayers.Filter> objects to get CQL strings. Create a new parser with 
- *     the <OpenLayers.Format.CQL> constructor.
- *
- * Inherits from:
- *  - <OpenLayers.Format>
- */
 OpenLayers.Format.CQL = (function() {
     
     var tokens = [
@@ -54,7 +39,6 @@ OpenLayers.Format.CQL = (function() {
                                 depth--;
                                 break;
                             default:
-                                // in default case, do nothing
                         }
                     }
                 }
@@ -345,17 +329,7 @@ OpenLayers.Format.CQL = (function() {
     }
 
     return OpenLayers.Class(OpenLayers.Format, {
-        /**
-         * APIMethod: read
-         * Generate a filter from a CQL string.
-
-         * Parameters:
-         * text - {String} The CQL text.
-         *
-         * Returns:
-         * {<OpenLayers.Filter>} A filter based on the CQL text.
-         */
-        read: function(text) { 
+                read: function(text) { 
             var result = buildAst(tokenize(text));
             if (this.keepData) {
                 this.data = result;
@@ -363,17 +337,7 @@ OpenLayers.Format.CQL = (function() {
             return result;
         },
 
-        /**
-         * APIMethod: write
-         * Convert a filter into a CQL string.
-
-         * Parameters:
-         * filter - {<OpenLayers.Filter>} The filter.
-         *
-         * Returns:
-         * {String} A CQL string based on the filter.
-         */
-        write: function(filter) {
+                write: function(filter) {
             if (filter instanceof OpenLayers.Geometry) {
                 return filter.toString();
             }
@@ -407,8 +371,6 @@ OpenLayers.Format.CQL = (function() {
                     }
                 case "OpenLayers.Filter.Logical":
                     if (filter.type == OpenLayers.Filter.Logical.NOT) {
-                        // TODO: deal with precedence of logical operators to 
-                        // avoid extra parentheses (not urgent)
                         return "NOT (" + this.write(filter.filters[0]) + ")";
                     } else {
                         var res = "(";

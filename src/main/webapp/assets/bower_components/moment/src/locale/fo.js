@@ -1,6 +1,3 @@
-//! moment.js locale configuration
-//! locale : faroese (fo)
-//! author : Ragnar Johannesen : https://github.com/ragnar123
 
 import moment from '../moment';
 

@@ -34,95 +34,18 @@
     <script src="/assets/vendor/js/respond/respond.js"></script>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!--
-    <c:if test="${googleAnalyticsKey ne ''}">
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', '${googleAnalyticsKey}']);
-            _gaq.push(['_trackPageview']);
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </c:if>
-    -->
-
-    <!--
-    <sec:authorize ifAnyGranted="ROLE_USER">
-        <c:if test="${not empty user.rssUid}">
-            <link rel="alternate" type="application/rss+xml" title="RSS"
-                  href="/tatami/syndic/${user.rssUid}" />
-        </c:if>
-    </sec:authorize>
-    -->
+    
 </head>
 <body ng-app="TatamiApp" tour>
     <toast></toast>
     <div ui-view="topMenu"></div>
     <div ui-view></div>
 
-    <!-- Begin Footer -->
-
     <!--- ------------------------------------------------------------------ -->
-    <!-- AngularJS & Other Libraries -->
+    <!-- All dependencies added in gruntfile.js -->
     <!--- ------------------------------------------------------------------ -->
-
-    <script src="/assets/bower_components/angular/angular.min.js"></script>
-    <script src="/assets/bower_components/angular-touch/angular-touch.min.js"></script>
-
-    <script src="/assets/bower_components/angular-resource/angular-resource.min.js"></script>
-    <script src="/assets/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-
-    <script src="/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-
-    <script src="/assets/bower_components/angular-translate/angular-translate.min.js"></script>
-    <script src="/assets/bower_components/angular-cookies/angular-cookies.min.js"></script>
-    <script src="/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
-
-    <script src="/assets/vendor/js/marked/marked.js"></script>
-
-    <script src="/assets/bower_components/moment/min/moment.min.js"></script>
-    <!--<script src="/assets/bower_components/moment/locale/fr.js"></script>-->
-    <script src="/assets/bower_components/angular-moment/angular-moment.min.js"></script>
-
-    <script src="/assets/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
-
-    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <!-- Minified version doesn't work -->
-    <script src="/assets/bower_components/ment.io/dist/mentio.js"></script>
-
-    <script src="/assets/bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="/assets/bower_components/ngtoast/dist/ngToast.min.js"></script>
-
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
-    <script src="/assets/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
-
-    <script src="/assets/bower_components/openlayers/OpenLayers.min.js"></script>
-
-    <script src="/assets/bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-
-    <script src="/assets/bower_components/angular-poller/angular-poller.min.js"></script>
-
-    <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/vendor/css/bootstrap/js/bootstrap.js"></script>
-    <script src="/assets/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
-    <!-- Minified version causes errors in console -->
-    <script src="/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js"></script>
-
-    <!--- ------------------------------------------------------------------ -->
-
-    <!--- ------------------------------------------------------------------ -->
-    <!-- App and Highest Level Modules -->
-    <!--- ------------------------------------------------------------------ -->
-
     <script src="TATAMI.CONCAT.js"></script>
-
     <!--- ------------------------------------------------------------------ -->
-    
-    <!-- End Footer -->
+
 </body>
 </html>
