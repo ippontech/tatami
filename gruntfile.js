@@ -2,11 +2,38 @@ module.exports = function(grunt) {
     grunt.initConfig({
         uglify: {
             options: {
-                mangle: false
+                mangle: true
             },
             my_target: {
                 files: {
+                    //ADD DEPENDENCIES HERE
                     'src/main/webapp/TATAMI.CONCAT.js': [
+                        "src/main/webapp/assets/bower_components/angular/angular.min.js",
+                        "src/main/webapp/assets/bower_components/angular-touch/angular-touch.min.js",
+                        "src/main/webapp/assets/bower_components/angular-resource/angular-resource.min.js",
+                        "src/main/webapp/assets/bower_components/angular-sanitize/angular-sanitize.min.js",
+                        "src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js",
+                        "src/main/webapp/assets/bower_components/angular-translate/angular-translate.min.js",
+                        "src/main/webapp/assets/bower_components/angular-cookies/angular-cookies.min.js",
+                        "src/main/webapp/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
+                        "src/main/webapp/assets/vendor/js/marked/marked.js",
+                        "src/main/webapp/assets/bower_components/moment/min/moment.min.js",
+                        "src/main/webapp/assets/bower_components/moment/locale/fr.js",
+                        "src/main/webapp/assets/bower_components/angular-moment/angular-moment.min.js",
+                        "src/main/webapp/assets/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js",
+                        "src/main/webapp/assets/bower_components/angular-bootstrap/ui-bootstrap.min.js",
+                        "src/main/webapp/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
+                        "src/main/webapp/assets/bower_components/ment.io/dist/mentio.js",
+                        "src/main/webapp/assets/bower_components/angular-animate/angular-animate.min.js",
+                        "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.min.js",
+                        "src/main/webapp/assets/bower_components/ng-file-upload/angular-file-upload-shim.min.js",
+                        "src/main/webapp/assets/bower_components/ng-file-upload/angular-file-upload.min.js",
+                        "src/main/webapp/assets/bower_components/openlayers/OpenLayers.min.js",
+                        "src/main/webapp/assets/bower_components/angular-local-storage/dist/angular-local-storage.min.js",
+                        "src/main/webapp/assets/bower_components/jquery/dist/jquery.min.js",
+                        "src/main/webapp/assets/vendor/css/bootstrap/js/bootstrap.js",
+                        "src/main/webapp/assets/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js",
+                        "src/main/webapp/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js",
                         "src/main/webapp/app/TatamiApp.js",
                         "src/main/webapp/app/shared/topMenu/TopMenuModule.js",
                         "src/main/webapp/app/components/login/LoginModule.js",

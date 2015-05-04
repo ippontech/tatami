@@ -1125,15 +1125,7 @@
                         </webDriverCapabilities>
                         <preloadSources>
                             <!-- angular preloading -->
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/bootstrap-tour/docs/assets/vendor/jquery.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular/angular.min.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-resource/angular-resource.min.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.min.js</source> 
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js</source> 
-                            <source>${project.basedir}/src/main/webapp/assets/vendor/js/marked/marked.js</source>
-                            <source>${project.basedir}/src/main/webapp/assets/bower_components/moment/moment.js</source>
-                            <!-- tatami app preloading -->
+                           <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
 
                         </preloadSources>
