@@ -1124,20 +1124,17 @@
                             </capability>
                         </webDriverCapabilities>
                         <preloadSources>
-                            <!-- angular preloading -->
-                           <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
 
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
-                        <!-- <jsSrcDir>src/main/webapp</jsSrcDir>
-                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir -->>
+                        <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir> 
                         <sourceExcludes>
                             <exclude>**/bower_components/**/*.*</exclude>
                             <exclude>**/js/vendor/**/*.*</exclude>
                         </sourceExcludes> 
                     </configuration>
-                </plugin>
+                </plugin> 
                 <plugin>
                     <groupId>com.github.timurstrekalov</groupId>
                     <artifactId>saga-maven-plugin</artifactId>

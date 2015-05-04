@@ -1,4 +1,4 @@
-describe("About module routing test", function() {
+ /** describe("About module routing test", function() {
 
     var rootScope, state, injector;
     beforeEach(module("ui.router"));
@@ -15,4 +15,4 @@ describe("About module routing test", function() {
     });
 
 
-});
+}); */
