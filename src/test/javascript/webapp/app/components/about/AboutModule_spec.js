@@ -1,4 +1,4 @@
- /** describe("About module routing test", function() {
+describe("About module routing test", function() {
 
     var stateProvider,
         rootScope;
@@ -18,4 +18,4 @@
        // rootScope.$apply();
 
     });
-}); */
+}); 
