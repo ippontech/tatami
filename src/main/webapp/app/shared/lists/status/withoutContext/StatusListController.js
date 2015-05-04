@@ -22,7 +22,7 @@ HomeModule.controller('StatusListController', [
         $scope.statuses = statuses;
         $scope.busy = false;
 
-        if($scope.statuses.length == 0) {
+        if($scope.statuses.length === 0) {
             $scope.end = true;
         } else {
             $scope.end = false;
@@ -35,7 +35,8 @@ HomeModule.controller('StatusListController', [
         $window.document.title = 'Tatami';
 
         var requestNewStatuses = function() {
-            var pollingDelay = 20000; // In milliseconds
+            // In milliseconds
+            var pollingDelay = 20000;
 
             $scope.poller = $timeout(function() {
                 var arguments = null;
@@ -83,7 +84,7 @@ HomeModule.controller('StatusListController', [
                     requestNewStatuses();
                 };
 
-                var error = function(err) {
+                var error = function() {
                     requestNewStatuses();
                 };
 
@@ -160,11 +161,6 @@ HomeModule.controller('StatusListController', [
                 for more than 50 favorites and adding &finish=timelineId to the
                 REST url.
             */
-            /*
-            else if($scope.$state.is('tatami.home.home.favorites')) {
-                HomeService.getFavorites({ finish: $scope.finish }, loadOldStatuses);
-            }
-            */
 
             else if($scope.$state.is('tatami.home.home.tag')) {
                 TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadOldStatuses);
@@ -180,7 +176,7 @@ HomeModule.controller('StatusListController', [
         };
 
         var loadOldStatuses = function(statuses) {
-            if(statuses.length == 0) {
+            if(statuses.length === 0) {
                 $scope.end = true; // reached end of list
                 return;
             }
@@ -225,11 +221,11 @@ HomeModule.controller('StatusListController', [
             StatusService.update({ statusId: status.statusId }, { announced: true },
                 function() {
                     $scope.$state.reload();
-                    //$scope.$state.transitionTo('tatami.home.home.timeline', {}, { reload: true });
+
             });
         };
 
-        $scope.deleteStatus = function(status, index, confirmMessage) {
+        $scope.deleteStatus = function(status, index) {
             // Need a confirmation modal here
             StatusService.delete({ statusId: status.statusId }, null,
                 function() {
@@ -238,7 +234,7 @@ HomeModule.controller('StatusListController', [
         };
 
         $scope.getShares = function(status, index) {
-            if(status.type == 'STATUS' && status.shares == null) {
+            if(status.type === 'STATUS' && status.shares === null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
                         $scope.statuses[index].shares = response.sharedByLogins;

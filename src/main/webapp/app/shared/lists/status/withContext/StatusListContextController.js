@@ -44,7 +44,7 @@ HomeModule.controller('StatusListContextController', [
                 $scope.poller = $timeout(function() {
                     var arguments = {};
 
-                    if($scope.statuses.length != 0) {
+                    if($scope.statuses.length !== 0) {
                         arguments = { start: statuses[0].timelineId };
                     }
 
@@ -56,7 +56,7 @@ HomeModule.controller('StatusListContextController', [
                         requestNewStatuses();
                     };
 
-                    var error = function(err) {
+                    var error = function() {
                         requestNewStatuses();
                     };
 
@@ -114,7 +114,7 @@ HomeModule.controller('StatusListContextController', [
                     for(j = 0; j < $scope.statusesWithContext.length; j++) {
                         // If the status isn't already in the timeline as a
                         // context status, then add it to individualStatuses
-                        if(statuses[i].statusId == $scope.statusesWithContext[j].status.statusId) {
+                        if(statuses[i].statusId === $scope.statusesWithContext[j].status.statusId) {
                             addIt = false;
                             break;
                         }
@@ -123,7 +123,7 @@ HomeModule.controller('StatusListContextController', [
                     for(j = 0; j < statusesWithContext.length; j++) {
                         // If the status isn't already in the timeline as a
                         // context status, then add it to individualStatuses
-                        if(statuses[i].statusId == statusesWithContext[j].status.statusId) {
+                        if(statuses[i].statusId === statusesWithContext[j].status.statusId) {
                             addIt = false;
                             break;
                         }
@@ -147,7 +147,7 @@ HomeModule.controller('StatusListContextController', [
                         // If the status block has replies, we need to check the 
                         // last reply's post date/time, because that is the latest status in the block.
                         // We order the timeline by the latest status in the block.
-                        if(statusesWithContext[j].replies != null && statusesWithContext[j].replies.length != 0) {
+                        if(statusesWithContext[j].replies !== null && statusesWithContext[j].replies.length !== 0) {
                             var index = statusesWithContext[j].replies.length - 1;
                             if(statusesWithContext[j].replies[index].statusDate < individualStatuses[i].statusDate) {
                                 statusesWithContext.splice(j, 0, { status: individualStatuses[i], replies: null });
@@ -178,7 +178,8 @@ HomeModule.controller('StatusListContextController', [
 
         var getContext = function(statuses) {
             if(statuses.length == 0) {
-                $scope.end = true; // reached end of list
+                // reached end of list
+                $scope.end = true;
                 return;
             }
 
@@ -264,10 +265,10 @@ HomeModule.controller('StatusListContextController', [
         };
 
         $scope.getShares = function(status, firstIndex, secondIndex) {
-            if(status.type == 'STATUS' && status.shares == null) {
+            if(status.type === 'STATUS' && status.shares === null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
-                        if(secondIndex == null) {
+                        if(secondIndex === null) {
                             $scope.statusesWithContext[firstIndex].status.shares = response.sharedByLogins;
                         } else {
                             $scope.statusesWithContext[firstIndex]['replies'][secondIndex].shares = response.sharedByLogins;
