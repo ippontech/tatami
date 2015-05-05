@@ -2,11 +2,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
         uglify: {
             options: {
-                mangle: true
+                mangle: false
             },
             my_target: {
                 files: {
-                    //ADD DEPENDENCIES HERE
                     'src/main/webapp/TATAMI.CONCAT.js': [
                         "src/main/webapp/assets/bower_components/angular/angular.min.js",
                         "src/main/webapp/assets/bower_components/angular-touch/angular-touch.min.js",
@@ -16,7 +15,7 @@ module.exports = function(grunt) {
                         "src/main/webapp/assets/bower_components/angular-translate/angular-translate.min.js",
                         "src/main/webapp/assets/bower_components/angular-cookies/angular-cookies.min.js",
                         "src/main/webapp/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
-                        "src/main/webapp/assets/vendor/js/marked/marked.js",
+                        "src/main/webapp/assets/vendor/js/marked/marked.min.js",
                         "src/main/webapp/assets/bower_components/moment/min/moment.min.js",
                         "src/main/webapp/assets/bower_components/moment/locale/fr.js",
                         "src/main/webapp/assets/bower_components/angular-moment/angular-moment.min.js",
@@ -31,7 +30,7 @@ module.exports = function(grunt) {
                         "src/main/webapp/assets/bower_components/openlayers/OpenLayers.min.js",
                         "src/main/webapp/assets/bower_components/angular-local-storage/dist/angular-local-storage.min.js",
                         "src/main/webapp/assets/bower_components/jquery/dist/jquery.min.js",
-                        "src/main/webapp/assets/vendor/css/bootstrap/js/bootstrap.js",
+                        "src/main/webapp/assets/vendor/css/bootstrap/js/bootstrap.min.js",
                         "src/main/webapp/assets/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js",
                         "src/main/webapp/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js",
                         "src/main/webapp/app/TatamiApp.js",

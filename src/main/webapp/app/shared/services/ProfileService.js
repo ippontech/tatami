@@ -3,15 +3,15 @@ TatamiApp.factory('ProfileService', ['$resource', function($resource) {
     {
         'get': { 
             method: 'GET',
-            transformResponse: function(profile, headersGetter) {
+            transformResponse: function(profile) {
                 profile = angular.fromJson(profile);
-                profile['avatarURL'] = profile.avatar=='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + profile.avatar + '/photo.jpg';
+                profile['avatarURL'] = profile.avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + profile.avatar + '/photo.jpg';
                 return profile;
             }
         },
         'update' : { 
             method: 'PUT',
-            transformRequest: function(profile, headersGetter) {
+            transformRequest: function(profile) {
                 delete profile['avatarURL'];
                 return angular.toJson(profile);
             }
