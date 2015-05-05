@@ -1124,6 +1124,11 @@
                             </capability>
                         </webDriverCapabilities>
                         <preloadSources>
+                            <!-- angular preloading -->
+
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-mocks/angular-mocks.js</source>
+                            <source>${project.basedir}/src/main/webapp/assets/bower_components/angular-route/angular-route.min.js</source>
+                            <!-- tatami app preloading -->
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
