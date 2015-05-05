@@ -1125,7 +1125,6 @@
                         </webDriverCapabilities>
                         <preloadSources>
                             <source>${project.basedir}/src/main/webapp/TATAMI.CONCAT.js</source>
-
                         </preloadSources>
                         <jasmineTargetDir>${project.testresult.directory}/jasmine</jasmineTargetDir> 
                         <jsTestSrcDir>src/main/test/javascript</jsTestSrcDir> 
