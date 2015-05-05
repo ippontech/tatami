@@ -39,40 +39,40 @@ HomeModule.controller('StatusListController', [
             var pollingDelay = 20000;
 
             $scope.poller = $timeout(function() {
-                var arguments = null;
+                var args = null;
 
                 if($scope.statuses.length > 0) {
                     if($scope.$state.is('tatami.home.home.tag')) {
-                        arguments = { tag: $scope.$stateParams.tag, start: statuses[0].timelineId };
+                        args = { tag: $scope.$stateParams.tag, start: statuses[0].timelineId };
                     }
 
                     else if($scope.$state.is('tatami.home.home.group.statuses')) {
-                        arguments = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
+                        args = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
                     }
 
                     else if($scope.$state.is('tatami.home.profile.statuses')) {
-                        arguments = { username: $scope.$stateParams.username, start: statuses[0].timelineId };
+                        args = { username: $scope.$stateParams.username, start: statuses[0].timelineId };
                     }
 
                     else {
-                        arguments = { start: statuses[0].timelineId };
+                        args = { start: statuses[0].timelineId };
                     }
                 }
                 else {
                     if($scope.$state.is('tatami.home.home.tag')) {
-                        arguments = { tag: $scope.$stateParams.tag };
+                        args = { tag: $scope.$stateParams.tag };
                     }
 
                     else if($scope.$state.is('tatami.home.home.group.statuses')) {
-                        arguments = { groupId: $scope.$stateParams.groupId };
+                        args = { groupId: $scope.$stateParams.groupId };
                     }
 
                     else if($scope.$state.is('tatami.home.profile.statuses')) {
-                        arguments = { username: $scope.$stateParams.username };
+                        args = { username: $scope.$stateParams.username };
                     }
 
                     else {
-                        arguments = {};
+                        args = {};
                     }
                 }
 
@@ -89,27 +89,27 @@ HomeModule.controller('StatusListController', [
                 };
 
                 if($scope.$state.is('tatami.home.home.timeline')) {
-                    StatusService.getHomeTimeline(arguments, success, error);
+                    StatusService.getHomeTimeline(args, success, error);
                 }
 
                 else if($scope.$state.is('tatami.home.home.mentions')) {
-                    HomeService.getMentions(arguments, success, error);
+                    HomeService.getMentions(args, success, error);
                 }
 
                 else if($scope.$state.is('tatami.home.home.company')) {
-                    HomeService.getCompanyTimeline(arguments, success, error);
+                    HomeService.getCompanyTimeline(args, success, error);
                 }
 
                 else if($scope.$state.is('tatami.home.home.tag')) {
-                    TagService.getTagTimeline(arguments, success, error);
+                    TagService.getTagTimeline(args, success, error);
                 }
 
                 else if($scope.$state.is('tatami.home.home.group.statuses')) {
-                    GroupService.getStatuses(arguments, success, error);
+                    GroupService.getStatuses(args, success, error);
                 }
 
                 else if($scope.$state.is('tatami.home.profile.statuses')) {
-                    StatusService.getUserTimeline(arguments, success, error);
+                    StatusService.getUserTimeline(args, success, error);
                 }
             }, pollingDelay);
         };
