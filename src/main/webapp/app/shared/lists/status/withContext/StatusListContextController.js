@@ -39,7 +39,8 @@ HomeModule.controller('StatusListContextController', [
         if($scope.$state.is('tatami.home.home.timeline') ||
            $scope.$state.is('tatami.home.home.company')) {
             var requestNewStatuses = function() {
-                var pollingDelay = 20000; // In milliseconds
+                // In milliseconds
+                var pollingDelay = 20000;
 
                 $scope.poller = $timeout(function() {
                     var arguments = {};
@@ -177,7 +178,7 @@ HomeModule.controller('StatusListContextController', [
         };
 
         var getContext = function(statuses) {
-            if(statuses.length == 0) {
+            if(statuses.length === 0) {
                 // reached end of list
                 $scope.end = true;
                 return;
