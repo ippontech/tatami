@@ -120,8 +120,8 @@ module.exports = function(grunt) {
             target: {
                 files: {
                     'src/main/webapp/css/CSSMIN.css': [
-                        "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
                         "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.css",
+                        "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
                         "src/main/webapp/assets/bower_components/ment.io/ment.io/styles.css",
                         "src/main/webapp/assets/bower_components/bootstrap-tour/build/css/bootstrap-tour.css"
                     ]
