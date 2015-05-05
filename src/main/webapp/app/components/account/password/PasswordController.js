@@ -16,17 +16,17 @@ PasswordModule.controller('PasswordController', ['$scope', '$translate', 'Passwo
     };
 
     $scope.changePassword = function() {
-        if(!$scope.password.oldPassword) {
+        if($scope.password.oldPassword === '') {
             // Display a popover on Old password field
-            $scope.oldEmpty = true;
+            $scope.status.oldEmpty = true;
         }
-        else if(!$scope.password.newPassword) {
+        else if($scope.password.newPassword === '') {
             // Display a popover on the new password field
-            $scope.newEmpty = true;
+            $scope.status.newEmpty = true;
         }
         else if($scope.password.newPassword !== $scope.password.newPasswordConfirmation) {
             // Display a popover on password confirmation
-            cofirmWrong = true;
+            $scope.status.confirmWrong = true;
         }
         else {
             // Everything is alright, we can send the new password
