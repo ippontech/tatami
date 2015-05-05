@@ -2,11 +2,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
         uglify: {
             options: {
-                mangle: true
+                mangle: false
             },
             my_target: {
                 files: {
-                    //ADD DEPENDENCIES HERE
                     'src/main/webapp/TATAMI.CONCAT.js': [
                         "src/main/webapp/assets/bower_components/angular/angular.min.js",
                         "src/main/webapp/assets/bower_components/angular-touch/angular-touch.min.js",
