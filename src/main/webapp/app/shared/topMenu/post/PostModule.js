@@ -2,7 +2,7 @@ var PostModule = angular.module('PostModule', ['angularFileUpload', 'ui.router']
 
 PostModule.config(['$stateProvider', function($stateProvider) {
     var onEnterArray = ['$stateParams', '$modal', function($stateParams, $modal) {
-        var $modalInstance = $modal.open({
+        $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'PostController',
             keyboard: true,
@@ -20,7 +20,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
     }];
 
     var onEnterArrayStatusView = ['$stateParams', '$modal', function($stateParams, $modal) {
-        var $modalInstance = $modal.open({
+       $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.html',
             controller: 'PostController',
             keyboard: true,

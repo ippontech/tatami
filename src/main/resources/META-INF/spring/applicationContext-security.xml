@@ -61,8 +61,8 @@
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
         <!-- tatami.google.clientId and tatami.google.clientSecret must be set in pom.xml -->
-        <beans:property name="key" value="${tatami.google.clientId}"/>
-        <beans:property name="secret" value="${tatami.google.clientSecret}"/>
+        <beans:property name="key" value="155941861789-u5tsr4kt9l3bkpqtogm4s8dc0dt6ajoq.apps.googleusercontent.com"/>
+        <beans:property name="secret" value="gYb5xP0gHCgkTESisf_LqTLY"/>
     </beans:bean>
 
     <beans:bean id="clients" class="org.pac4j.core.client.Clients">

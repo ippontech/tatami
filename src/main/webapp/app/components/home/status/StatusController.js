@@ -17,11 +17,12 @@ HomeModule.controller('StatusController', [
             $scope.statuses = context.discussionStatuses;
         }
         try {
-          for(var i = 0; i <= context.discussionStatuses.length; i++)
-              if(status.statusDate < $scope.statuses[i].statusDate) {
+          for(var i = 0; i <= context.discussionStatuses.length; i++) {
+              if (status.statusDate < $scope.statuses[i].statusDate) {
                   $scope.statuses.splice(i, 0, status);
                   break;
               }
+          }
         } catch(err) {
             $scope.statuses.push(status);
         }

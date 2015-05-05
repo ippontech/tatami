@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
         uglify: {
             options: {
                 mangle: true
@@ -16,7 +17,7 @@ module.exports = function(grunt) {
                         "src/main/webapp/assets/bower_components/angular-translate/angular-translate.min.js",
                         "src/main/webapp/assets/bower_components/angular-cookies/angular-cookies.min.js",
                         "src/main/webapp/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
-                        "src/main/webapp/assets/vendor/js/marked/marked.js",
+                        "src/main/webapp/assets/vendor/js/marked/marked.min.js",
                         "src/main/webapp/assets/bower_components/moment/min/moment.min.js",
                         "src/main/webapp/assets/bower_components/moment/locale/fr.js",
                         "src/main/webapp/assets/bower_components/angular-moment/angular-moment.min.js",
@@ -31,7 +32,7 @@ module.exports = function(grunt) {
                         "src/main/webapp/assets/bower_components/openlayers/OpenLayers.min.js",
                         "src/main/webapp/assets/bower_components/angular-local-storage/dist/angular-local-storage.min.js",
                         "src/main/webapp/assets/bower_components/jquery/dist/jquery.min.js",
-                        "src/main/webapp/assets/vendor/css/bootstrap/js/bootstrap.js",
+                        "src/main/webapp/assets/vendor/css/bootstrap/js/bootstrap.min.js",
                         "src/main/webapp/assets/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js",
                         "src/main/webapp/assets/bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js",
                         "src/main/webapp/app/TatamiApp.js",
@@ -108,9 +109,29 @@ module.exports = function(grunt) {
                         "src/main/webapp/app/shared/services/AuthenticationService.js",
                         "src/main/webapp/app/shared/topMenu/TopMenuController.js"
                     ]
-                }} }
+                }
+            }
+        },
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            target: {
+                files: {
+                    'src/main/webapp/css/CSSMIN.css': [
+                        "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
+                        "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.css",
+                        "src/main/webapp/assets/bower_components/ment.io/ment.io/styles.css",
+                        "src/main/webapp/assets/bower_components/bootstrap-tour/build/css/bootstrap-tour.css"
+                    ]
+                }
+            }
+        }
 
    } );
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('default', ['uglify']);
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.registerTask('default', ['clean','uglify', 'cssmin']);
 };
