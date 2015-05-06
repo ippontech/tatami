@@ -10,6 +10,7 @@ import org.atmosphere.handler.OnMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 @ManagedService(
@@ -19,6 +20,8 @@ public class RealtimeService extends OnMessage<TatamiNotification> {
     private static final Logger log = LoggerFactory.getLogger(RealtimeService.class);
 
     private static final ObjectMapper jsonObjectMapper = new ObjectMapper();
+    @Inject
+    BroadcasterFactory BCF;
 
     @Override
     public void onOpen(AtmosphereResource resource) throws IOException {
@@ -28,8 +31,7 @@ public class RealtimeService extends OnMessage<TatamiNotification> {
                 resource.getRequest().getRemoteUser();
 
         log.debug("Subscribing this resource to broadcaster: {}", broadcasterName);
-        Broadcaster b =
-                BroadcasterFactory.getDefault().lookup(broadcasterName, true);
+        Broadcaster b = BCF.lookup(broadcasterName, true);
 
         b.addAtmosphereResource(resource);
     }
