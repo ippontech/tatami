@@ -46,6 +46,7 @@ describe("Password controller test", function() {
 
     it('Empty old password', function() {
         $scope.changePassword();
+        
         expect($scope.status.oldEmpty).toBeTruthy();
         expect($scope.status.newEmpty).toBeFalsy();
         expect($scope.status.confirmWrong).toBeFalsy();
