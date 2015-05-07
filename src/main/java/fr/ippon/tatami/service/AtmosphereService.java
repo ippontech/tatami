@@ -18,8 +18,9 @@ public class AtmosphereService {
 
     @Inject
     private TimelineService timelineService;
-    @Inject
-    BroadcasterFactory BCF;
+
+
+
     /**
      * Notifies the user with Atmosphere.
      */
@@ -30,8 +31,7 @@ public class AtmosphereService {
         notification.setLogin(login);
         notification.setStatusDTO(statusDTO);
         try {
-            Broadcaster broadcaster =
-                  BCF.lookup("/realtime/statuses/home_timeline/" + login, true);
+            Broadcaster broadcaster = BroadcasterFactory.getDefault().lookup("/realtime/statuses/home_timeline/" + login, true);
 
             if (broadcaster != null) {
                 broadcaster.broadcast(notification);
