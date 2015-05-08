@@ -1,10 +1,8 @@
 package fr.ippon.tatami.security;
 
 import com.google.inject.Inject;
-import fr.ippon.tatami.domain.User;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
-import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
@@ -49,12 +47,12 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider {
             logger.debug("credentials : {}", credentials);
             String clientName = token.getClientName();
             Client client = this.clients.findClient(clientName);
-            UserProfile userProfile = client.getUserProfile(credentials, (WebContext)null);
+            UserProfile userProfile = client.getUserProfile(credentials, null);
             logger.debug("userProfile : {}", userProfile);
             Object authorities = new ArrayList();
-            ClientAuthenticationToken result = null;
+            ClientAuthenticationToken result;
             logger.debug("userDetailsService: {}", this.userDetailsService);
-            result = new ClientAuthenticationToken(credentials, clientName, userProfile, (Collection)null);
+            result = new ClientAuthenticationToken(credentials, clientName, userProfile, null);
             UserDetails userDetails = this.userDetailsService.loadUserDetails(result);
             logger.debug("userDetails : {}", userDetails);
             if(userDetails != null) {
