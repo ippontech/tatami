@@ -35,8 +35,8 @@ public class EmbeddedElasticsearchEngine implements ElasticsearchEngine {
             final NodesInfoResponse nir =
                     client().admin().cluster().prepareNodesInfo().execute().actionGet();
 
-            log.info("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
-                    + nir.clusterName() + "\"");
+            log.info("Elasticsearch client is now connected to the " + nir.getNodes().length + " node(s) cluster named \""
+                    + nir.getClusterName() + "\"");
         }
     }
 

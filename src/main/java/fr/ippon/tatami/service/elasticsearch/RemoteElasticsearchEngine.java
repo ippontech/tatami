@@ -51,8 +51,8 @@ public class RemoteElasticsearchEngine implements ElasticsearchEngine {
             NodesInfoResponse nir =
                     client.admin().cluster().nodesInfo(new NodesInfoRequest()).actionGet();
 
-            log.info("Elasticsearch client is now connected to the " + nir.nodes().length + " node(s) cluster named \""
-                    + nir.clusterName() + "\"");
+            log.info("Elasticsearch client is now connected to the " + nir.getNodes().length + " node(s) cluster named \""
+                    + nir.getClusterName() + "\"");
         }
     }
 
