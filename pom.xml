@@ -1140,7 +1140,7 @@
                 <plugin>
                     <groupId>com.github.timurstrekalov</groupId>
                     <artifactId>saga-maven-plugin</artifactId>
-                    <version>1.5.3</version>
+                    <version>1.5.4</version>
                     <executions>
                         <execution>
                             <phase>verify</phase>
