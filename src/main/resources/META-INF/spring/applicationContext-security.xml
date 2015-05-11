@@ -11,6 +11,7 @@
           http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context.xsd">
 
+
     <context:property-placeholder location="classpath:/META-INF/tatami/tatami.properties"/>
 
     <global-method-security pre-post-annotations="enabled"/>
@@ -24,6 +25,7 @@
 
     <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true" entry-point-ref="googleEntryPoint">
         <intercept-url pattern="/tatami/j_spring_pac4j_security_check" access="isAuthenticated()"/>
+        <csrf disabled="true"/>
     </http>
 
 
@@ -47,7 +49,7 @@
                 authentication-failure-url="/tatami/login?action=loginFailure"
                 default-target-url="/tatami/"
                 authentication-success-handler-ref="tatamiAuthenticationSuccessHandler"/>
-
+        <csrf disabled="true"/>
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
     </http>

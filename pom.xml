@@ -424,7 +424,7 @@
         <!-- Dependencies -->
 
         <spring.version>4.1.6.RELEASE</spring.version>
-        <spring.security.version>3.1.3.RELEASE</spring.security.version>
+        <spring.security.version>4.0.1.RELEASE</spring.security.version>
         <elasticsearch.version>0.20.6</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -462,7 +462,7 @@
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.13.v20130916</maven.jetty.version>
+        <maven.jetty.version>9.3.0.M2</maven.jetty.version>
         <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
         <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
@@ -1015,7 +1015,7 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
+                <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${maven.jetty.version}</version>
                 <configuration>
