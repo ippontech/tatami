@@ -458,10 +458,10 @@
         <selenium.version>2.31.0</selenium.version>
 
         <!-- Maven plugins -->
-        <maven.compiler.version>3.0</maven.compiler.version>
+        <maven.compiler.version>3.3</maven.compiler.version>
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.14</maven.surefire.version>
-        <maven.war.version>2.3</maven.war.version>
+        <maven.war.version>2.6</maven.war.version>
         <maven.jetty.version>9.3.0.M2</maven.jetty.version>
         <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
         <maven.wro4j.version>1.7.0</maven.wro4j.version>
