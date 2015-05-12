@@ -18,7 +18,3 @@ phantomjsdriver.log
 *.log
 
 src/main/webapp/TATAMI.CONCAT.js
-
-src/main/webapp/css/tatami.min.css
-
-src/main/webapp/css/tatami.min.css
