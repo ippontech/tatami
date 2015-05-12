@@ -1,10 +1,11 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
         uglify: {
             options: {
                 mangle: false
             },
-            my_target: {
+            BuildingTatamiConcat: {
                 files: {
                     'src/main/webapp/TATAMI.CONCAT.js': [
                         "src/main/webapp/assets/bower_components/angular/angular.min.js",
@@ -107,9 +108,32 @@ module.exports = function(grunt) {
                         "src/main/webapp/app/shared/services/AuthenticationService.js",
                         "src/main/webapp/app/shared/topMenu/TopMenuController.js"
                     ]
-                }} }
+                }
+            }
+        },
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            target: {
+                files: {
+                    'src/main/webapp/css/CSSMIN.css': [
+                        "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.min.css",
+                        "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
+                        "src/main/webapp/assets/css/ie-only.css",
+                        "src/main/webapp/assets/bower_components/ment.io/ment.io/styles.css",
+                        "src/main/webapp/assets/bower_components/bootstrap-tour/build/css/bootstrap-tour.css"
+
+                    ],
+                    'src/main/webapp/css/tatami.min.css':["src/main/webapp/css/tatami.css"]
+                }
+            }
+        }
 
    } );
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('default', ['uglify']);
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.registerTask('default', ['clean','uglify', 'cssmin']);
 };
