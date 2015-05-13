@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
         uglify: {
             options: {
-                mangle: false
+                mangle: true
             },
             BuildingTatamiConcat: {
                 files: {

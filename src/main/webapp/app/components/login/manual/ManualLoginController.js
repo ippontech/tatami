@@ -38,5 +38,5 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
             console.log('Error');
             console.log(data);
         });
-    }
+    };
 }]);
