@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
         uglify: {
             options: {
-                mangle: true
+                mangle: false
             },
             BuildingTatamiConcat: {
                 files: {
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
                 roundingPrecision: -1
             },
             target: {
-                files: {
+                files: { //tatami.css should not be minified-- it breaks.
                     'src/main/webapp/css/CSSMIN.css': [
                         "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.min.css",
                         "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
