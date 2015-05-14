@@ -30,7 +30,6 @@
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="2592000"/>
-
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
         <intercept-url pattern="/tatami/tos" access="permitAll()"/>
         <intercept-url pattern="/tatami/license" access="permitAll()"/>
@@ -40,7 +39,7 @@
 
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
-
+        <access-denied-handler error-page="/tatami/login"/>
         <form-login
                 login-processing-url="/tatami/authentication"
                 login-page="/tatami/login"
@@ -50,6 +49,9 @@
 
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
+        <session-management invalid-session-url="/tatami/login">
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+        </session-management>
     </http>
 
     <authentication-manager alias="authenticationManager">
