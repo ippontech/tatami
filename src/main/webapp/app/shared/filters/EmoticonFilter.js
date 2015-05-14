@@ -35,7 +35,9 @@ TatamiApp.filter('emoticon', function() {
             ';)': '/assets/img/emoticons/winking_grinning.png',
             ';p': '/assets/img/emoticons/winking_tongue_out.png',
             ';P': '/assets/img/emoticons/winking_tongue_out.png',
-            ':t': '/assets/img/emoticons/trollface.png'
+            ':t': '/assets/img/emoticons/trollface.png',
+            ':T': '/assets/img/emoticons/trollface.png',
+            '(troll)': '/assets/img/emoticons/trollface.png'
         };
 
         function escapeRegExp(str) {
