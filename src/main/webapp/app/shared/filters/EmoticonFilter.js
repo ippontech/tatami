@@ -1,6 +1,6 @@
 TatamiApp.filter('emoticon', function() {
     return function(content) {
-        if(content == null) {
+        if(content === null) {
             return content;
         }
 
