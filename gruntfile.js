@@ -133,10 +133,10 @@ module.exports = function(grunt) {
                     removeComments: true,
                     collapseWhitespace: true
                 },
-                files: {
-                    'src/main/webapp/app/components/about/tos/ToSView.min.html': 'src/main/webapp/app/components/about/tos/ToSView.html',     // 'destination': 'source'
-                    'src/main/webapp/app/components/about/license/LicenseView.min.html': 'src/main/webapp/app/components/about/license/LicenseView.html',     // 'destination': 'source'
-                    'src/main/webapp/app/components/about/presentation/PresentationView.min.html': 'src/main/webapp/app/components/about/presentation/PresentationView.html',     // 'destination': 'source'
+                files: {// 'destination': 'source'
+                    'src/main/webapp/app/components/about/tos/ToSView.min.html': 'src/main/webapp/app/components/about/tos/ToSView.html',
+                    'src/main/webapp/app/components/about/license/LicenseView.min.html': 'src/main/webapp/app/components/about/license/LicenseView.html',
+                    'src/main/webapp/app/components/about/presentation/PresentationView.min.html': 'src/main/webapp/app/components/about/presentation/PresentationView.html',
                     'src/main/webapp/app/components/account/AccountView.min.html': 'src/main/webapp/app/components/account/AccountView.html',
                     'src/main/webapp/app/components/account/profile/ProfileView.min.html': 'src/main/webapp/app/components/account/profile/ProfileView.html',
                     'src/main/webapp/app/components/account/preferences/PreferencesView.min.html':'src/main/webapp/app/components/account/preferences/PreferencesView.html',
@@ -151,6 +151,19 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/account/tags/TagsView.min.html':'src/main/webapp/app/components/account/tags/TagsView.html',
                     'src/main/webapp/app/components/account/topPosters/TopPostersView.min.html':'src/main/webapp/app/components/account/topPosters/TopPostersView.html',
                     'src/main/webapp/app/components/admin/AdminView.min.html':'src/main/webapp/app/components/admin/AdminView.html',
+                    'src/main/webapp/app/components/home/HomeView.min.html':'src/main/webapp/app/components/home/HomeView.html',
+                    'src/main/webapp/app/components/home/status/StatusView.min.html':'src/main/webapp/app/components/home/status/StatusView.html',
+                    'src/main/webapp/app/components/home/search/SearchHeaderView.min.html':'src/main/webapp/app/components/home/search/SearchHeaderView.html',
+                    'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.min.html':'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.html',
+                    'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.min.html':'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.html',
+                    'src/main/webapp/app/components/home/timeline/TimelineHeaderView.min.html':'src/main/webapp/app/components/home/timeline/TimelineHeaderView.html',
+                    'src/main/webapp/app/components/home/welcome/WelcomeView.min.html':'src/main/webapp/app/components/home/welcome/WelcomeView.html',
+                    'src/main/webapp/app/shared/lists/user/UserListView.min.html':'src/main/webapp/app/shared/lists/user/UserListView.html',
+                    'src/main/webapp/app/components/home/group/GroupHeaderView.min.html':'src/main/webapp/app/components/home/group/GroupHeaderView.html',
+                    'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.min.html':'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.html',
+                    'src/main/webapp/app/components/home/profile/ProfileHeaderView.min.html':'src/main/webapp/app/components/home/profile/ProfileHeaderView.html',
+
+
 
                 }
             }
