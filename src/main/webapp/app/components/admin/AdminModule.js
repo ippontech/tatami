@@ -4,7 +4,7 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     $stateProvider
         .state('admin',{
             url: '/admin?message',
-            templateUrl: '/app/components/admin/AdminView.html',
+            templateUrl: '/app/components/admin/AdminView.min.html',
             resolve: {
                 adminData: ['AdminService', '$state', function(AdminService, $state) {
                     return AdminService.get().$promise.then(function(success) {

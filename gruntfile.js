@@ -126,11 +126,66 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {// 'destination': 'source'
+                    'src/main/webapp/app/components/about/tos/ToSView.min.html': 'src/main/webapp/app/components/about/tos/ToSView.html',
+                    'src/main/webapp/app/components/about/license/LicenseView.min.html': 'src/main/webapp/app/components/about/license/LicenseView.html',
+                    'src/main/webapp/app/components/about/presentation/PresentationView.min.html': 'src/main/webapp/app/components/about/presentation/PresentationView.html',
+                    'src/main/webapp/app/components/account/AccountView.min.html': 'src/main/webapp/app/components/account/AccountView.html',
+                    'src/main/webapp/app/components/account/profile/ProfileView.min.html': 'src/main/webapp/app/components/account/profile/ProfileView.html',
+                    'src/main/webapp/app/components/account/preferences/PreferencesView.min.html':'src/main/webapp/app/components/account/preferences/PreferencesView.html',
+                    'src/main/webapp/app/components/account/password/PasswordView.min.html': 'src/main/webapp/app/components/account/password/PasswordView.html',
+                    'src/main/webapp/app/components/account/files/FilesView.min.html':'src/main/webapp/app/components/account/files/FilesView.html',
+                    'src/main/webapp/app/components/account/FormView.min.html':'src/main/webapp/app/components/account/FormView.html',
+                    'src/main/webapp/app/components/account/users/UsersView.min.html':'src/main/webapp/app/components/account/users/UsersView.html',
+                    'src/main/webapp/app/components/account/groups/GroupsView.min.html':'src/main/webapp/app/components/account/groups/GroupsView.html',
+                    'src/main/webapp/app/components/account/groups/creation/GroupsCreateView.min.html':'src/main/webapp/app/components/account/groups/creation/GroupsCreateView.html',
+                    'src/main/webapp/app/components/account/groups/list/GroupsListView.min.html':'src/main/webapp/app/components/account/groups/list/GroupsListView.html',
+                    'src/main/webapp/app/components/account/groups/manage/GroupsManageView.min.html':'src/main/webapp/app/components/account/groups/manage/GroupsManageView.html',
+                    'src/main/webapp/app/components/account/tags/TagsView.min.html':'src/main/webapp/app/components/account/tags/TagsView.html',
+                    'src/main/webapp/app/components/account/topPosters/TopPostersView.min.html':'src/main/webapp/app/components/account/topPosters/TopPostersView.html',
+                    'src/main/webapp/app/components/admin/AdminView.min.html':'src/main/webapp/app/components/admin/AdminView.html',
+                    'src/main/webapp/app/components/home/HomeView.min.html':'src/main/webapp/app/components/home/HomeView.html',
+                    'src/main/webapp/app/components/home/status/StatusView.min.html':'src/main/webapp/app/components/home/status/StatusView.html',
+                    'src/main/webapp/app/components/home/search/SearchHeaderView.min.html':'src/main/webapp/app/components/home/search/SearchHeaderView.html',
+                    'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.min.html':'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.html',
+                    'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.min.html':'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.html',
+                    'src/main/webapp/app/components/home/timeline/TimelineHeaderView.min.html':'src/main/webapp/app/components/home/timeline/TimelineHeaderView.html',
+                    'src/main/webapp/app/components/home/welcome/WelcomeView.min.html':'src/main/webapp/app/components/home/welcome/WelcomeView.html',
+                    'src/main/webapp/app/shared/lists/user/UserListView.min.html':'src/main/webapp/app/shared/lists/user/UserListView.html',
+                    'src/main/webapp/app/components/home/group/GroupHeaderView.min.html':'src/main/webapp/app/components/home/group/GroupHeaderView.html',
+                    'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.min.html':'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.html',
+                    'src/main/webapp/app/components/home/profile/ProfileHeaderView.min.html':'src/main/webapp/app/components/home/profile/ProfileHeaderView.html',
+                    //Login Module
+                    'src/main/webapp/app/components/login/LoginView.min.html':'src/main/webapp/app/components/login/LoginView.html',
+                    'src/main/webapp/app/components/login/manual/ManualLoginView.min.html':'src/main/webapp/app/components/login/manual/ManualLoginView.html',
+                    'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html':'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.html',
+                    'src/main/webapp/app/components/login/google/GoogleLoginView.min.html':'src/main/webapp/app/components/login/google/GoogleLoginView.html',
+                    'src/main/webapp/app/components/login/register/RegisterView.min.html':'src/main/webapp/app/components/login/register/RegisterView.html',
+                    'src/main/webapp/app/components/login/email/EmailRegistration.min.html':'src/main/webapp/app/components/login/email/EmailRegistration.html',
+                    //TatamiApp module
+                    'src/main/webapp/app/shared/topMenu/TopMenuView.min.html':'src/main/webapp/app/shared/topMenu/TopMenuView.html',
+                    'src/main/webapp/app/shared/error/404View.min.html':'src/main/webapp/app/shared/error/404View.html',
+                    'src/main/webapp/app/shared/error/505View.min.html':'src/main/webapp/app/shared/error/505View.html'
+
+
+
+
+
+                }
+            }
         }
 
    } );
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.registerTask('default', ['clean','uglify', 'cssmin']);
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.registerTask('default', ['clean','cssmin', 'htmlmin', 'uglify']);
 };

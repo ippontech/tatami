@@ -12,7 +12,7 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             url: '/presentation',
             views: {
                 'aboutBody': {
-                    templateUrl: 'app/components/about/presentation/PresentationView.html'
+                    templateUrl: 'app/components/about/presentation/PresentationView.min.html'
                 }
             },
             data: {
@@ -23,7 +23,7 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             url: '/tos',
             views: {
                 'aboutBody': {
-                    templateUrl: 'app/components/about/tos/ToSView.html'
+                    templateUrl: 'app/components/about/tos/ToSView.min.html'
                 }
             },
             data: {
@@ -34,7 +34,7 @@ AboutModule.config(['$stateProvider', function($stateProvider) {
             url: '/license',
             views: {
                 'aboutBody': {
-                    templateUrl: 'app/components/about/license/LicenseView.html',
+                    templateUrl: 'app/components/about/license/LicenseView.min.html',
                     controller: 'LicenseController'
                 }
             },
