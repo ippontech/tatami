@@ -126,11 +126,28 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'src/main/webapp/app/components/about/tos/ToSView.min.html': 'src/main/webapp/app/components/about/tos/ToSView.html',     // 'destination': 'source'
+                    'src/main/webapp/app/components/about/license/LicenseView.min.html': 'src/main/webapp/app/components/about/license/LicenseView.html',     // 'destination': 'source'
+                    'src/main/webapp/app/components/about/presentation/PresentationView.min.html': 'src/main/webapp/app/components/about/presentation/PresentationView.html',     // 'destination': 'source'
+                    'src/main/webapp/app/components/account/AccountView.min.html': 'src/main/webapp/app/components/account/AccountView.html',
+                    'src/main/webapp/app/components/account/profile/ProfileView.min.html': 'src/main/webapp/app/components/account/profile/ProfileView.html',
+                    'src/main/webapp/app/components/account/preferences/PreferencesView.min.html':'src/main/webapp/app/components/account/preferences/PreferencesView.html'
+                }
+            }
         }
 
    } );
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.registerTask('default', ['clean','uglify', 'cssmin']);
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.registerTask('default', ['clean','cssmin', 'htmlmin', 'uglify']);
 };

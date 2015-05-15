@@ -15,7 +15,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         .state('tatami.account',{
             url: '/account',
             abstract: true,
-            templateUrl: 'app/components/account/AccountView.html',
+            templateUrl: 'app/components/account/AccountView.min.html',
             resolve: {
                 profileInfo: ['ProfileService', function(ProfileService) {
                     return ProfileService.get().$promise;
@@ -30,7 +30,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.profile', {
             url: '/profile',
-            templateUrl: 'app/components/account/profile/ProfileView.html',
+            templateUrl: 'app/components/account/profile/ProfileView.min.html',
             resolve: {
                 userLogin: ['UserService', 'profileInfo', function(UserService, profileInfo) {
                     return UserService.get({ username: profileInfo.username }).$promise;
@@ -40,7 +40,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.preferences', {
             url: '/preferences',
-            templateUrl: 'app/components/account/preferences/PreferencesView.html',
+            templateUrl: 'app/components/account/preferences/PreferencesView.min.html',
             resolve: {
                 prefs: ['PreferencesService', function(PreferencesService) {
                     return PreferencesService.get().$promise;
